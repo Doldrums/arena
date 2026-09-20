@@ -1,0 +1,76 @@
+{
+  "checked_at": "2026-09-20T17:25:43.601332+00:00",
+  "scope": "Read-only local deployment preflight; no environment reads, credentials, stop, restart or launch actions",
+  "listener": "127.0.0.1:8787",
+  "before": {
+    "pid": 10318,
+    "started_at_ps": "Sun Sep 20 21:14:26 2026",
+    "command": ".venv/bin/python -m arena --port 8787 --root /Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_parallel_gemini_rl_full_live_20260920_reviewfix_v29 --root /Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_parallel_gemini_live_20260920_reviewfix_v29 --root /Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_parallel_gemini_rl_presets_vq_live_20260920_reviewfix_v29 --root /Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_opus5_rl_presets_vq_research_cells_live_20260920_v26",
+    "cwd_lsof": "p10318\nfcwd\nn/Users/amoriodi/fall2026/arena"
+  },
+  "after": {
+    "pid": 10318,
+    "started_at_ps": "Sun Sep 20 21:14:26 2026",
+    "command": ".venv/bin/python -m arena --port 8787 --root /Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_parallel_gemini_rl_full_live_20260920_reviewfix_v29 --root /Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_parallel_gemini_live_20260920_reviewfix_v29 --root /Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_parallel_gemini_rl_presets_vq_live_20260920_reviewfix_v29 --root /Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_opus5_rl_presets_vq_research_cells_live_20260920_v26",
+    "cwd_lsof": "p10318\nfcwd\nn/Users/amoriodi/fall2026/arena"
+  },
+  "identity_unchanged": true,
+  "configured_roots": [
+    "/Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_parallel_gemini_rl_full_live_20260920_reviewfix_v29",
+    "/Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_parallel_gemini_live_20260920_reviewfix_v29",
+    "/Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_parallel_gemini_rl_presets_vq_live_20260920_reviewfix_v29",
+    "/Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_opus5_rl_presets_vq_research_cells_live_20260920_v26"
+  ],
+  "api_runs": [
+    {
+      "id": "bee71e2c4d4ce6e903e7",
+      "path": "/Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_parallel_gemini_rl_full_live_20260920_reviewfix_v29",
+      "status": "paused"
+    },
+    {
+      "id": "e3feb0b189890e6812eb",
+      "path": "/Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_parallel_gemini_live_20260920_reviewfix_v29",
+      "status": "paused"
+    },
+    {
+      "id": "b5ec449f0642cda1db71",
+      "path": "/Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_parallel_gemini_rl_presets_vq_live_20260920_reviewfix_v29",
+      "status": "paused"
+    },
+    {
+      "id": "009febf851ce59512600",
+      "path": "/Users/amoriodi/fall2026/sciel-packing-gallery/outputs/circle_opus5_rl_presets_vq_research_cells_live_20260920_v26",
+      "status": "paused"
+    }
+  ],
+  "api_run_count": 4,
+  "assets": {
+    "app.js": {
+      "http_status": 200,
+      "sha256": "b3d809bd76bf69ad8360c93eb7687ef5c1ea5338766fa7224ee2b045e34c8db0",
+      "matches_local": true
+    },
+    "effort.js": {
+      "http_status": 200,
+      "sha256": "00f346350ccd066430d51138aec9b90517873a416a871331612d6e43a61933cf",
+      "matches_local": true
+    },
+    "effort.css": {
+      "http_status": 200,
+      "sha256": "ac2d8d12d34dd618ee5ba007a2a37d82d359945c81936f72f544f4f622130fa8",
+      "matches_local": true
+    },
+    "experiment.html": {
+      "http_status": 200,
+      "sha256": "2f97bfc94258241be27bd5f403101d19fa9000cf96c6934def93abf9853c4289",
+      "matches_local": true
+    }
+  },
+  "working_tree_commit": "8519bfc2a9b5042cf5a159d4bf32c86998eda09e",
+  "findings": [
+    "Current Arena process is PID10318, replacing earlier56288.",
+    "The process watches only4 historical roots (3GeminiV29 and OpusV26), not requested V32/V33 roots.",
+    "Static assets match current working files; imported Python modules need a controlled observer restart for a guaranteed source version.",
+    "Keep the4 existing roots when adding current runs; authenticate process identity again immediately before any stop."
+  ]
+}
