@@ -117,6 +117,13 @@ class PendingResearchView:
                     elif row.get('phase')=='episode_finished' or (row.get('phase')=='research_step'
                             and row.get('proposal_id')==decision['proposal_id']):
                         decision['status']='awaiting_wave_commit'
+            queue_event = next((row for row in reversed(rows) if row.get('phase') in
+                ('continuation_queued','continuation_scheduled','continuation_completed') and
+                isinstance(row.get('snapshot_artifact_id'),str) and HASH.fullmatch(row['snapshot_artifact_id'])),None)
+            if queue_event:
+                cell['pending_continuation'] = dict(_compact(queue_event),
+                    scope='authenticated_pending_wave',committed=False,
+                    status='scheduled' if queue_event['phase']=='continuation_scheduled' else 'awaiting_wave_commit')
             cell.update(publication='pending',committed=ident in committed,
                 pending_decision=decision,active_decision=decision if decision and decision['status']!='awaiting_wave_commit' else None,
                 current_question=_obj(decision).get('question'),state_source='authenticated_pending_wave',
@@ -148,7 +155,7 @@ class PendingResearchView:
         body = dict(committed or dict(id=overlay['id'],kind='cell',verified=True,
             genesis=overlay.get('genesis'),head_revision=None,revision_history=[],history_truncated=False,
             summary={},related={},related_coverage={},research_state=None))
-        body.update(publication='pending',pending_decision=overlay.get('pending_decision'),
+        body.update(publication='pending',pending_continuation=overlay.get('pending_continuation'),pending_decision=overlay.get('pending_decision'),
             active_decision=overlay.get('active_decision'),
             current_question=overlay.get('current_question') or body.get('current_question'),
             question_scope='Authenticated pending wave; uncommitted',

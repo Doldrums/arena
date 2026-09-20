@@ -246,11 +246,43 @@ function renderResearch(view,pane,row,body,data) {
   if(state.steps_omitted>0)nodes.push(note(state.steps_omitted+' earlier steps omitted from the retained sequence. Cumulative usage still includes them.'));
   reconcile(stepsRoot,nodes.length?nodes:[note('No completed scientific step recorded yet.')]);
 }
+function renderExchange(view,pane,row,body,data) {
+  const queue=body.pending_continuation||row.pending_continuation||body.summary?.continuation||row.continuation;
+  if(queue){
+    const target=section(pane,'continuation','Continuation schedule');
+    reconcile(target,[renderRecord(pane,'queue:'+row.id,label(queue.status)+' · '+(queue.committed===false?'uncommitted':'checkpoint'),label(queue.reason),queue,()=>{
+      const node=el('div');node.append(pairs([['Queue order',number(queue.queue_sequence)],['Recorded dispatches',number(queue.dispatch_count)],['Last completed iteration',number(queue.last_completed_iteration)]]),note('Scheduler state only. It does not establish running CPU or a scientific conclusion. Research and evolution retain a shared wave commit boundary.'));return node;
+    })]);
+  }else if(pane.sections.has('continuation')){pane.sections.get('continuation').remove();pane.sections.delete('continuation');}
+  const entries=array(data.shared_observations),coverage=body.related_coverage?.shared_observations;
+  if(!entries.length&&!coverage?.recorded){if(pane.sections.has('observations')){pane.sections.get('observations').remove();pane.sections.delete('observations');}return;}
+  const target=section(pane,'observations','Shared observations in model prompts',entries.length),nodes=[];
+  for(const delivery of entries){
+    const key='delivery:'+delivery.proposal_id;
+    nodes.push(renderRecord(pane,key,array(delivery.entries).length+(array(delivery.entries).length===1?' check delivered · ':' checks delivered · ')+number(delivery.omitted_count)+' omitted',timestamp(delivery.timestamp)+' · recipient island '+delivery.recipient_island_id,delivery,()=>{
+      const node=el('div');node.append(note('Exact saved prompt excerpts. Receipt links retain the original measurements. Model use, tool adoption and causal benefit are not established.'));
+      for(const entry of array(delivery.entries)){
+        const block=el('div','rc-shared-observation');block.append(el('h4','',entry.question||'Question not recorded'),pairs([['Source', 'Island '+entry.island_id+' · cell '+short(entry.cell_id)],['Candidate',program(view,entry.candidate_id)],['Recorded outcome',label(entry.status)],['Publication',label(entry.publication)],['Tool CPU',seconds(entry.resources?.cpu_seconds)]]));
+        block.append(panel(key+':measurement:'+entry.receipt_id,'Observation excerpt delivered to the model',raw(entry.measurement)));
+        if(entry.decision)block.append(panel(key+':interpretation:'+entry.receipt_id,(entry.decision_scope_matches_check===false?'Context from another question · ':'Model interpretation · ')+label(entry.decision.conclusion),raw(entry.decision)));
+        if(entry.decision&&entry.decision_scope_matches_check===false)block.append(note('This interpretation concerns another question; it does not refute or support the check above.'));
+        if(entry.decision&&entry.decision_scope_matches_check===undefined)block.append(note('Interpretation scope was not recorded.'));
+        if(entry.detail_omitted)block.append(note('Detail was omitted from this prompt; the source receipt retains the saved result.'));
+        node.append(block);
+      }
+      return node;
+    }));
+    nodes.push(lazyRow(view,pane,target,key+':prompt','Recipient request & response',short(delivery.prompt_sha256),'artifact',delivery.proposal_id));
+    for(const entry of array(delivery.entries))nodes.push(lazyRow(view,pane,target,key+':receipt:'+entry.receipt_id,'Original observation · island '+entry.island_id,label(entry.status)+' · '+short(entry.receipt_id),'artifact',entry.receipt_id));
+  }
+  if(coverage?.awaiting_model_receipt>0)nodes.push(note(coverage.awaiting_model_receipt+' prepared prompts await a saved model receipt. Delivery is not yet authenticated.'));
+  reconcileEvidence(target,nodes,'No authenticated shared observation delivery recorded.',coverage);
+}
 function renderCellBody(view,pane,row,body) {
   const data=related(view,row,body);pane.body=body;pane.status.textContent='Verified cell history · '+scope(body.summary||row);
   pane.question.textContent=currentQuestion(row,body);
   if(body.publication==='pending')pane.status.textContent='Authenticated pending wave · uncommitted · '+(view.data.pending_cells?.run_status||'process status unknown');
-  renderResearch(view,pane,row,body,data);renderList(view);
+  renderResearch(view,pane,row,body,data);renderExchange(view,pane,row,body,data);renderList(view);renderQueue(view);
   const facts=[['Origin island',body.genesis?.origin_island??row.origin_island_id??'Not recorded'],['Island affinities',array(row.affinities).join(', ')||'Not recorded'],['Created',timeNode(row.created_at)],['Last activity',timeNode(row.last_activity_at)]];
   pane.facts.replaceChildren(pairs(facts));
   const revisions=array(body.revision_history),history=section(pane,'history','Recorded revisions',revisions.length);
@@ -317,6 +349,27 @@ function select(view,id) {
   const row=array(view.data.cells).find(row=>row.id===id);if(!row)return;
   view.selected=id;const pane=getPane(view,id);if(view.detail.firstChild!==pane.node)view.detail.replaceChildren(pane.node);renderList(view);refreshCell(view,row,pane);
 }
+function renderQueue(view) {
+  const queue=view.data.continuations,root=view.queue;
+  const pending=array(view.data.cells).filter(cell=>cell.pending_continuation);
+  root.replaceChildren();root.hidden=!queue?.available&&!pending.length;
+  if(root.hidden)return;
+  root.append(el('h3','','Research continuation'),note('Recorded scheduler state. Research jobs can run alongside evolution; their results publish at wave commit. Queue state is separate from scientific conclusions.'));
+  const counts=queue?.summary||{};
+  root.append(el('p','rc-queue-counts',queue?.available?number(counts.ready)+' ready · '+number(counts.waiting)+' waiting · '+number(counts.closed)+' closed':pending.length+' uncommitted continuation'+(pending.length===1?'':'s')+' · committed queue not recorded'));
+  const pendingIDs=new Set(pending.map(cell=>cell.id));
+  const items=[...pending.map(cell=>({...cell.pending_continuation,cell_id:cell.id})),...array(queue?.items).filter(item=>item.status!=='closed'&&!pendingIDs.has(item.cell_id))];
+  const list=el('div','rc-queue-list');
+  for(const item of items){
+    const cell=array(view.data.cells).find(cell=>cell.id===item.cell_id);
+    const row=button('',()=>select(view,item.cell_id),'rc-queue-row');row.dataset.cellId=item.cell_id;row.disabled=!cell;
+    row.append(el('span','rc-status',label(item.status)+(item.committed===false?' · uncommitted':'')),el('span','rc-queue-question',cell?currentQuestion(cell,view.panes.get(cell.id)?.body):'Cell details outside the retained view'),el('span','rc-muted','Cell '+short(item.cell_id)+' · '+number(item.dispatch_count)+' recorded dispatches'));
+    list.append(row);
+  }
+  root.append(list.childElementCount?list:note('No ready or waiting continuation is recorded.'));
+  if(counts.omitted>0)root.append(note(counts.omitted+' queue entries are outside this bounded view.'));
+  if(counts.invalid>0)root.append(note(counts.invalid+' queue entries are unavailable or have invalid recorded metadata.'));
+}
 function matchesFilter(row,filter) {
   if(filter==='active')return row.scheduled===true;
   if(filter==='research')return ['research','propose'].includes(row.stage);
@@ -336,8 +389,9 @@ function createView(root,identity,options) {
   const heading=el('header','rc-heading'),summary=el('div','rc-summary'),notice=note(''),workspace=el('div','rc-workspace'),sidebar=el('aside','rc-sidebar'),controls=el('div','rc-controls'),search=el('input','rc-search'),filter=el('select','rc-filter'),listCount=el('p','rc-list-count'),list=el('div','rc-list'),detail=el('div','rc-detail-host'),emptyRoot=el('div');
   search.type='search';search.placeholder='Search questions, cells or islands';search.setAttribute('aria-label','Search research cells');filter.setAttribute('aria-label','Filter research cells');
   for(const [value,text] of [['all','All activity'],['active','Scheduled cells'],['research','Research'],['sharing','Replay & adoption'],['issues','Errors & deferred']]){const option=el('option','',text);option.value=value;filter.append(option);}
-  heading.append(el('h2','','Research cells'),note('Durable research questions and method histories, independent of population storage.'));controls.append(search,filter);sidebar.append(controls,listCount,list);workspace.append(sidebar,detail);root.append(heading,summary,notice,emptyRoot,workspace);
-  const view={root,identity,options,summary,notice,emptyRoot,workspace,search,filter,listCount,list,detail,selected:null,listRows:new Map(),panes:new Map(),cache:new Map(),pending:new Map()};sessions.set(root,view);search.addEventListener('input',()=>renderList(view));filter.addEventListener('change',()=>renderList(view));return view;
+  const queue=el('section','rc-queue');queue.setAttribute('aria-label','Recorded research continuation queue');
+  heading.append(el('h2','','Research cells'),note('Durable research questions and method histories, independent of population storage.'));controls.append(search,filter);sidebar.append(controls,listCount,list);workspace.append(sidebar,detail);root.append(heading,summary,notice,queue,emptyRoot,workspace);
+  const view={root,identity,options,summary,notice,queue,emptyRoot,workspace,search,filter,listCount,list,detail,selected:null,listRows:new Map(),panes:new Map(),cache:new Map(),pending:new Map()};sessions.set(root,view);search.addEventListener('input',()=>renderList(view));filter.addEventListener('change',()=>renderList(view));return view;
 }
 export function renderResearchCells(root,data={},options={}) {
   const identity=JSON.stringify([options.runId,options.identity]);let view=sessions.get(root);
@@ -352,6 +406,7 @@ export function renderResearchCells(root,data={},options={}) {
   if(array(data.pending_cells?.cells).length)view.notice.textContent+=' Pending wave · '+(data.pending_cells.run_status||'process status unknown')+'. Questions below are uncommitted; counters and usage show committed evidence only. No running computation is implied.';
   if(array(data.pending_cells?.warnings).length)view.notice.textContent+=' '+data.pending_cells.warnings.join(' ');
   view.emptyRoot.replaceChildren();view.workspace.hidden=cells.length===0;
+  renderQueue(view);
   if(!cells.length){const title=status==='disabled'?'Research cells are disabled for this run':status==='enabled'?'Waiting for the first research cell':'Research-cell configuration not recorded';const text=status==='disabled'?'This run has not enabled authored research tools. Population storage, VQ placement and reinforcement learning do not enable research cells by themselves.':status==='enabled'?'No cell has been recorded yet. Bootstrap or the configured scheduling gates may still be in progress. This is not evidence of a failed search.':'No recorded cell data is available for this run. Absence of metadata does not establish that the feature was disabled.';view.emptyRoot.append(empty(title,text));if(config.reason)view.emptyRoot.append(note(config.reason));return view;}
   if(status==='disabled')view.emptyRoot.append(note('Current configuration is disabled; recorded historical cells remain available below.'));
   const selected=cells.find(row=>row.id===view.selected)||cells.at(-1);select(view,selected.id);return view;

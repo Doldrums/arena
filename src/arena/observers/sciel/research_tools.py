@@ -54,6 +54,9 @@ def _compact(row):
     keys += ('action','proposal_id','scientific_steps','experiment','next_decision','observed_at',
         'decision_if_supported','decision_if_refuted','conclusion','steps_omitted','canonical_evaluation_id',
         'candidate_receipt_id','candidate_tool_id','candidate_source_sha256','candidate_invocation_id')
+    keys += ('snapshot_artifact_id','continuation_snapshot_id','continuation_sequence','queue_sequence',
+        'dispatch_count','last_action_id','last_completed_iteration','recipient_candidate_id','prompt_sha256',
+        'evidence_schema','total_checks','omitted_count','scope')
     result = {key:row[key] if type(row[key]) in (int, float, bool) or row[key] is None else _text(row[key], 1500)
         for key in keys if key in row and not isinstance(row[key], (dict, list))}
     if isinstance(row.get('error'), dict):
@@ -74,6 +77,12 @@ def _compact(row):
         result['requested_limits'] = {key:_job_number(row['requested_limits'].get(key)) for key in ('cpu_seconds','wall_seconds')}
     if isinstance(row.get('research_state'), dict):
         result['research_state'] = _research_state(row['research_state'])
+    if row.get('phase') == 'shared_observations_delivered':
+        result['source_islands'] = [_island(value) for value in row.get('source_islands',[])[:16]] if isinstance(row.get('source_islands'),list) else []
+        result['delivered'] = [{**{key:_text(value.get(key),128) for key in ('receipt_id','source_cell_id','source_candidate_id','decision_proposal_id','measurement_projection')},
+            'source_island_id':_island(value.get('source_island_id')), 'detail_omitted':value.get('detail_omitted') is True,
+            'measurement_omitted':value.get('measurement_omitted') is True}
+            for value in row.get('delivered',[])[:32] if isinstance(value,dict)] if isinstance(row.get('delivered'),list) else []
     return result
 
 
@@ -99,6 +108,42 @@ def _research_state(value):
         result['pending_method_trial'] = {key:_text(pending.get(key),128) for key in
             ('tool_id','source_program_id','source_sha256','submission_receipt_id')}
     return result
+
+
+def _continuations(checkpoint, cells):
+    """Checkpoint scheduler metadata only; never infer execution from queue age."""
+    state = _obj(_obj(checkpoint.get('research_tools')).get('continuations'))
+    empty = dict(available=False, items=[], summary={}, scope='not_recorded')
+    if not state:
+        return empty
+    if state.get('schema') != 'sciel-research-continuations/1' or not isinstance(state.get('items'), dict) or type(state.get('next_sequence')) is not int or state['next_sequence'] < 0:
+        return dict(empty, reason='Continuation state has an unsupported or malformed schema.')
+    items, invalid, sequences = [], 0, set()
+    for cell_id, item in state['items'].items():
+        if (cell_id not in cells or not isinstance(cell_id,str) or not HASH.fullmatch(cell_id)
+                or not isinstance(item,dict) or item.get('status') not in {'ready','waiting','closed'}
+                or not isinstance(item.get('snapshot_artifact_id'),str) or not HASH.fullmatch(item['snapshot_artifact_id'])
+                or any(type(item.get(key)) is not int or item[key] < 0 for key in ('queue_sequence','dispatch_count'))
+                or item['queue_sequence'] >= state['next_sequence'] or item['queue_sequence'] in sequences
+                or not isinstance(item.get('reason'),str)
+                or (item.get('last_action_id') is not None and (not isinstance(item['last_action_id'],str) or not HASH.fullmatch(item['last_action_id'])))
+                or (item.get('last_completed_iteration') is not None and
+                    (type(item['last_completed_iteration']) is not int or item['last_completed_iteration'] < 0))):
+            invalid += 1
+            continue
+        row = dict(cell_id=cell_id, status=item['status'], snapshot_artifact_id=item['snapshot_artifact_id'],
+            reason=_text(item.get('reason'),256),
+            queue_sequence=item['queue_sequence'], dispatch_count=item['dispatch_count'],
+            last_action_id=_text(item.get('last_action_id'),256), last_completed_iteration=item.get('last_completed_iteration'),
+            scope='committed_checkpoint', snapshot_verified=False)
+        sequences.add(item['queue_sequence'])
+        items.append(row)
+        cells[cell_id]['continuation'] = row
+    items.sort(key=lambda row:(row['status']=='closed',row['queue_sequence'],row['cell_id']))
+    summary={status:sum(row['status']==status for row in items) for status in ('ready','waiting','closed')}
+    summary.update(total=len(items),omitted=max(0,len(items)-LIMIT),invalid=invalid)
+    return dict(available=True,items=items[:LIMIT],summary=summary,scope='committed_checkpoint',
+        note='Recorded queue state. Snapshot artifact content is not authenticated by this metadata projection.')
 
 
 def _job_bindings(checkpoint):
@@ -277,7 +322,7 @@ def _configuration(start, checkpoint):
         contract = value.get('engine_contract') or _obj(value.get('identity')).get('engine_contract')
         # This recorded contract initializes tools only for an enabled block
         # (Engine.__init__). Do not apply today's default to unknown archives.
-        if contract in {'espalier-3.21', 'espalier-3.22', 'espalier-3.23', 'espalier-3.24', 'espalier-3.25', 'espalier-3.26', 'espalier-3.27', 'espalier-3.28'} and isinstance(config, dict) and 'research_tools' not in config:
+        if contract in {'espalier-3.21', 'espalier-3.22', 'espalier-3.23', 'espalier-3.24', 'espalier-3.25', 'espalier-3.26', 'espalier-3.27', 'espalier-3.28','espalier-3.29','espalier-3.30','espalier-3.31','espalier-3.32'} and isinstance(config, dict) and 'research_tools' not in config:
             return dict(status='disabled', enabled=False, source=source,
                 reason=f'The recorded configuration has no research_tools block. In its recorded Engine contract ({contract}), tools are disabled unless explicitly enabled.')
     return dict(status='not_recorded', enabled=None, source=None,
@@ -489,7 +534,9 @@ def research_tools_view(start, checkpoint, rows):
             used_by=list(dict.fromkeys(str(row['island_id']) for row in uses if row.get('island_id') is not None)),
             children=[dict(program_id=row['child_program_id'],island_id=row.get('island_id'),link_kind=row.get('link_kind'),receipt_ids=row.get('receipt_ids',[])) for row in links[-LIMIT:]])
     actual = [row for row in invocations.values() if row['actual_execution']]
-    cells = _enrich_cells(_cells_view(checkpoint, rows), events, checkpoint)
+    cells = _cells_view(checkpoint, rows)
+    continuations = _continuations(checkpoint,cells)
+    cells = _enrich_cells(cells, events, checkpoint)
     lifecycle_events = [_compact(row) for row in events if row.get('phase') in ('replay_result','adopted','post_adoption_attempt','post_adoption_use')]
     lifecycle_events = list({(row.get('phase'),row.get('cell_id'),row.get('tool_id'),row.get('receipt_id')):row for row in lifecycle_events}.values())
     actual_receipts = {row.get('receipt_id') for row in actual}
@@ -511,7 +558,7 @@ def research_tools_view(start, checkpoint, rows):
         cells=list(cells.values())[-LIMIT:],lifecycle=dict(counts=counts,events=lifecycle_events[-LIMIT:],
             recorded=bool(cells),scope='Counts describe different transitions in the selected journal lineage, not a success funnel or evidence of task benefit. Missing historical events are not reconstructed.'),
         versions=list(versions.values())[-LIMIT:],invocations=list(invocations.values())[-LIMIT:],
-        jobs=_job_base(checkpoint,configured),
+        jobs=_job_base(checkpoint,configured),continuations=continuations,
         llm_calls=list(calls.values())[-LIMIT:],contexts=list(contexts.values())[-LIMIT:],
         child_links=list(children.values())[-LIMIT:],events=[_compact(row) for row in events[-LIMIT:]],
         coverage=dict(limit=LIMIT,scope='Selected Engine journal lineage after checkpoint restoration; artifact bodies load only when opened.',
@@ -840,12 +887,15 @@ def _cell_related(run_dir, ident, checkpoint, rows, history, *, reader=None):
         except (OSError,ValueError,KeyError,TypeError):
             rejected += 1
     coverage['followups'] = dict(recorded=len(candidates),visible=len(related['followups']),omitted=max(0,len(candidates)-DETAIL_LIMIT),verification_failed=rejected)
+    from .research_exchange import deliveries
+    related['shared_observations'], coverage['shared_observations'] = deliveries(run_dir,ident,checkpoint,rows,reader)
     return related, coverage
 
 
 def cell_detail(run_dir, ident, checkpoint, rows):
     """Only retained journal/checkpoint IDs grant visibility; never discover by files."""
     cells = _cells_view(checkpoint, rows)
+    _continuations(checkpoint,cells)
     if ident not in cells:
         raise KeyError('Cell is not recorded in the selected journal/checkpoint lineage')
     genesis = _read_object(run_dir, 'cells/genesis', ident, 256*1024)

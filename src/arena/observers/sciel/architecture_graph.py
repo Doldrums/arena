@@ -33,7 +33,7 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
     novelty = _dict(config.get("candidate_novelty"))
     parallel = _dict(config.get('parallel_search'))
     contract = _text(start.get("engine_contract")) or _text(_dict(checkpoint.get("identity")).get("engine_contract"))
-    preset_timing = ("before" if contract in {"espalier-3.3", "espalier-3.4", "espalier-3.5", "espalier-3.6", "espalier-3.7", "espalier-3.8", "espalier-3.9", "espalier-3.10", "espalier-3.11", "espalier-3.12", "espalier-3.13", "espalier-3.14", "espalier-3.15", "espalier-3.16", "espalier-3.17", "espalier-3.18", "espalier-3.19", "espalier-3.20", "espalier-3.21", "espalier-3.22", "espalier-3.23", "espalier-3.24", "espalier-3.25", "espalier-3.26", "espalier-3.27", "espalier-3.28"} else
+    preset_timing = ("before" if contract in {"espalier-3.3", "espalier-3.4", "espalier-3.5", "espalier-3.6", "espalier-3.7", "espalier-3.8", "espalier-3.9", "espalier-3.10", "espalier-3.11", "espalier-3.12", "espalier-3.13", "espalier-3.14", "espalier-3.15", "espalier-3.16", "espalier-3.17", "espalier-3.18", "espalier-3.19", "espalier-3.20", "espalier-3.21", "espalier-3.22", "espalier-3.23", "espalier-3.24", "espalier-3.25", "espalier-3.26", "espalier-3.27", "espalier-3.28", "espalier-3.29", "espalier-3.30", "espalier-3.31", "espalier-3.32"} else
                      "after" if contract in {"espalier-3", "espalier-3.1", "espalier-3.2"} else "unknown")
     descriptor = (_dict(start.get("descriptor")) or
                   _dict(_dict(checkpoint.get("identity")).get("descriptor")))
@@ -319,6 +319,7 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
     if not config:
         notes.append("No resolved configuration is available. Current engine defaults are not substituted.")
     tools = _dict(config.get('research_tools'))
+    independent = contract == 'espalier-3.32' and tools.get('independent_research') is True
     proactive_every = tools.get('proactive_every_attempts')
     proactive = (tools.get('enabled') is True and type(proactive_every) is int
                  and proactive_every > 0)
@@ -329,25 +330,40 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
         node('tool_library', 'Island tool library' if tools.get('share_between_islands') is False else 'Shared tool library', 'Immutable executable versions', kind='knowledge',
              detail=('Cross-island sharing is explicitly disabled. ' if tools.get('share_between_islands') is False else '') + 'Islands can author executable tools and publish versions after a successful contract trial. Published tools become visible at the next wave within their recorded scope. Availability does not establish use by another island. This library supplements the existing population; native Programs, hypotheses and lessons retain their own records.',
              features=[str(len(published)) + ' published versions recorded'])
-        node('tool_execution', 'Isolated tool calls', 'Receipts before candidate generation', kind='rule',
+        node('tool_execution', 'Isolated tool calls', 'Saved experiment receipts' if independent else 'Receipts before candidate generation', kind='rule',
              detail='Actual invocations retain exact inputs, output, dispatch status and resource receipts. Tool results can be prepared in the generation Snapshot; context_prepared alone is not proof of prompt delivery. Child receipt links identify consumed executions, not causal utility or reward credit. These are tool trials, not native task evaluations.',
              features=[str(len(executed)) + ' executions recorded'])
-        edge('generation', 'tool_library', 'Author / revise a tool before candidate generation', 'control')
+        if not independent:
+            edge('generation', 'tool_library', 'Author / revise a tool before candidate generation', 'control')
         edge('tool_library', 'tool_execution', 'Explicit version invocation', 'flow')
         edge('tool_execution', 'generation', 'Prepared Snapshot context · delivery separately recorded', 'knowledge')
-        if proactive or isinstance(tools.get('trigger_sources'),list) or any(row.get('phase')=='cell_created' for row in tool_events):
+        if independent or proactive or isinstance(tools.get('trigger_sources'),list) or any(row.get('phase')=='cell_created' for row in tool_events):
             cadence = (f'Proactive research is due at the first ordinary attempt after bootstrap, then every {proactive_every} globally committed ordinary attempts, independent of new records. Capacity and planning gates can defer execution. ' if proactive else '')
+            yields_after_trial = (contract in {'espalier-3.30', 'espalier-3.31','espalier-3.32'}
+                and tools.get('yield_after_success') is True
+                and type(tools.get('max_scientific_steps')) is int
+                and tools['max_scientific_steps'] > 1)
+            continuation = (' After a successful foreground tool, ordinary generation receives its observations. '
+                'The question stays open for a later scheduled research opportunity. The first planner call, '
+                'foreground tool and independent method pipeline can still block; this is not a background planner.'
+                if yields_after_trial and not independent else '')
             node('research_cells','Research cells',
                 f'Proactive every {proactive_every} attempts + search signals' if proactive else 'Durable questions and method history',kind='knowledge',
-                detail=cadence + 'Recorded population stagnation and enabled plateau signals can open a research question. A cell retains immutable revisions, roles, tool versions and evidence independently of candidate generations or island population slots. Local trials, independent replay, recipient adoption trials and later use are distinct transitions. Adoption does not establish task benefit.',
-                features=([f'Proactive every {proactive_every} attempts'] if proactive else []) + ['Triggered by recorded search signals','Independent cell and program lineages'])
+                detail=cadence + 'Recorded population stagnation and enabled plateau signals can open a research question. A cell retains immutable revisions, roles, tool versions and evidence independently of candidate generations or island population slots. Local trials, independent replay, recipient adoption trials and later use are distinct transitions. Adoption does not establish task benefit.' + continuation,
+                features=([f'Proactive every {proactive_every} attempts'] if proactive else []) + ['Triggered by recorded search signals','Independent cell and program lineages'] + (['Yield after a successful tool'] if yields_after_trial else []))
+            if independent:
+                notes.append('Research continuations have a checkpoint-owned queue and may dispatch alongside ordinary evolutionary jobs. A shared wave commit barrier remains; this is not independent asynchronous publication. Queue status does not establish running CPU.')
+                edge('scheduler','research_cells','Independent continuation queue · shared wave commit','control')
+                if tools.get('shared_observations') is True:
+                    edge('research_checks','research_cells','Receipt-bound observations across islands · prompt delivery recorded','knowledge')
+                    notes.append('Shared observations may include negative and unpublished checks. Delivery to a model does not imply tool adoption, actual use or causal benefit.')
             node('research_checks','Research check results','Compact evidence for G',kind='knowledge',
                 detail='Bounded research-check cards carry the question, exact source/receipt references, observations and limitations into prepared generation context. The next program still passes ordinary candidate novelty and task evaluation. A prepared Snapshot alone is not proof of actual prompt delivery, causal utility or a policy reward.')
             edge('scheduler','research_cells',('Proactive cadence; ' if proactive else '') + 'Recorded stagnation / enabled plateau signals','control')
             edge('research_cells','tool_library','Propose or reuse immutable methods','knowledge')
             edge('tool_execution','research_checks','Bounded observations and receipt references','knowledge')
             edge('research_checks','generation','Prepared research cards · ordinary G / evaluation follows','knowledge')
-            if contract in {'espalier-3.25','espalier-3.26','espalier-3.27','espalier-3.28'}:
+            if contract in {'espalier-3.25','espalier-3.26','espalier-3.27','espalier-3.28','espalier-3.29','espalier-3.30','espalier-3.31','espalier-3.32'}:
                 edge('population','research_cells','Saved sources, outputs and observed search limits','knowledge')
                 edge('tool_execution','research_cells','Inspect saved measurements; choose the next test','knowledge')
                 edge('research_cells','tool_execution','Revise, continue saved state, or close the question','control')

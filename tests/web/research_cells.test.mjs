@@ -185,3 +185,27 @@ test('pending decision shows actual current question and planned work without ad
   assert.equal(root.querySelector('.rc-question').textContent,'Previous committed question');assert.doesNotMatch(root.querySelector('.rc-research').textContent,/Uncommitted model decision/);
  }finally{dom.window.close();}
 });
+
+test('continuation queue distinguishes checkpoint waiting from uncommitted scheduled work',async()=>{
+ const {dom,w,root}=mount();try{
+  const data=fixture();data.continuations={available:true,summary:{ready:0,waiting:1,closed:0},items:[{cell_id:cell,status:'waiting',reason:'no_independent_branch',queue_sequence:3,dispatch_count:2}]};
+  const body=detail();body.summary={continuation:data.continuations.items[0]};
+  const opts={runId:'queue',fetchJSON:async()=>body};w.renderResearchCells(root,data,opts);await until(()=>root.querySelector('[data-section="continuation"]'));
+  assert.match(root.querySelector('.rc-queue').textContent,/0 ready · 1 waiting · 0 closed/);
+  assert.match(root.querySelector('[data-section="continuation"]').textContent,/no independent branch/);
+  data.pending_cells={version:'scheduled',run_status:'paused',cells:[{id:cell,publication:'pending',committed:true,pending_continuation:{status:'scheduled',committed:false,dispatch_count:3,queue_sequence:3,reason:'research_open'}}]};
+  w.renderResearchCells(root,data,opts);assert.match(root.querySelector('.rc-queue').textContent,/scheduled · uncommitted/);assert.match(root.textContent,/Pending wave · paused/);assert.match(root.textContent,/No running computation is implied/);
+  assert.equal(data.continuations.summary.waiting,1);assert.equal(root.querySelectorAll('.rc-queue-row').length,1);
+ }finally{dom.window.close();}
+});
+
+test('shared negative observations show exact prompt scope, omissions and lazy source receipts without claiming adoption',async()=>{
+ const {dom,w,root}=mount();try{
+  const body=detail();body.related.shared_observations=[{verified:true,proposal_id:proposal,prompt_sha256:'9'.repeat(64),timestamp:'2026-09-20T08:03:00Z',recipient_island_id:1,omitted_count:2,total_checks:3,entries:[{receipt_id:receipt,tool_id:tool,cell_id:other,island_id:0,candidate_id:'p7',question:'Does reuse help <img src=x>?',status:'tool_error',publication:'unpublished',measurement:{observations:{gain:0}},resources:{cpu_seconds:2.5},decision_scope_matches_check:false,decision:{conclusion:'refuted',interpretation:'No gain observed.'}}]}];
+  body.related_coverage.shared_observations={recorded:2,visible:1,awaiting_model_receipt:1};
+  const requests=[];w.renderResearchCells(root,fixture(),{runId:'shared',fetchJSON:async path=>{requests.push(path);return path.includes('/research-cells/')?body:{verified:true,kind:'invocation',payload:{receipt:{status:'ok',output:{status:'tool_error',observations:{gain:0}},resources:{cpu_seconds:2.5}}}};}});
+  await until(()=>root.querySelector('[data-section="observations"]'));
+  const target=root.querySelector('[data-section="observations"]');assert.match(target.textContent,/1 check delivered · 2 omitted/);assert.match(target.textContent,/Model use, tool adoption and causal benefit are not established/);assert.match(target.textContent,/unpublished/);assert.match(target.textContent,/Context from another question · refuted/);assert.match(target.textContent,/does not refute or support the check above/);assert.match(target.textContent,/prepared prompts await a saved model receipt/);assert.equal(target.querySelector('img'),null);assert.equal(requests.length,1);
+  const original=[...target.querySelectorAll('.rc-record')].find(node=>node.firstChild.textContent.startsWith('Original observation'));open(w,original);await until(()=>requests.length===2);assert.match(requests[1],/research-tool-artifacts\/d{64}$/);
+ }finally{dom.window.close();}
+});

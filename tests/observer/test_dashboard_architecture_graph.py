@@ -252,3 +252,17 @@ class ArchitectureGraphTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_recorded_independent_research_has_shared_wave_barrier_and_cross_island_observations():
+    start=baseline();start['engine_contract']='espalier-3.32'
+    start['config']['research_tools']={'enabled':True,'independent_research':True,'shared_observations':True,
+        'trigger_sources':['plateau'],'yield_after_success':True,'max_scientific_steps':3}
+    graph=architecture_graph(start,{},[])
+    assert any('Independent continuation queue' in row['label'] for row in links(graph,'scheduler','research_cells'))
+    assert links(graph,'research_checks','research_cells')
+    assert any('shared wave commit barrier' in note for note in graph['notes'])
+    assert any('negative and unpublished' in note for note in graph['notes'])
+    start['engine_contract']='espalier-3.31'
+    old=architecture_graph(start,{},[])
+    assert not any('Independent continuation queue' in row['label'] for row in links(old,'scheduler','research_cells'))

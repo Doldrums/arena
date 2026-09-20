@@ -195,3 +195,18 @@ def test_old_committed_cell_outside_summary_window_still_opens_and_gets_pending_
     body=store.research_cell(run,first['id'])
     assert body['revision_history']==original['revision_history']
     assert body['current_question']=='Test a new stage on this older branch.'
+
+
+def test_pending_continuation_is_lease_metadata_and_disappears_on_rollback(rig):
+    engine,store,run=rig
+    parallel_store.begin(engine,0);cell=create_cell(engine)
+    emit(engine,'continuation_scheduled',cell_id=cell['id'],action_id='a'*64,snapshot_artifact_id='b'*64,
+        status='scheduled',reason='research_open',queue_sequence=2,dispatch_count=1)
+    snapshot=store.snapshot(run)
+    overlay=snapshot['research_tools']['pending_cells']['cells'][0]
+    assert overlay['pending_continuation']['status']=='scheduled'
+    assert overlay['pending_continuation']['committed'] is False
+    assert snapshot['research_tools']['continuations']['available'] is False
+    assert store.research_cell(run,cell['id'])['pending_continuation']==overlay['pending_continuation']
+    (Path(engine.run_dir)/'.parallel/current.json').unlink()
+    assert store.snapshot(run)['research_tools']['pending_cells']['cells']==[]
