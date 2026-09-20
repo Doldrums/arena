@@ -14,11 +14,12 @@ from urllib.parse import urlsplit
 
 from arena.registry import (CAPABILITIES, RegistryError, _json, _object, _require,
                             _text, _hash, _SHA256, validate_participant,
-                            participant_view, validate_participants)
+                            participant_view, validate_participants, validate_attribution)
 
 
 SOURCE_FILE = "participant-corpus.json"
 DESCRIPTIONS_FILE = "participant-descriptions.json"
+ATTRIBUTIONS_FILE = "participant-attributions.json"
 ALIASES = {"shinkaevolve": "shinka", "dgm": "dgm"}
 FAMILIES = {"FunSearch / EoH": "funsearch-eoh", "AlphaEvolve / OpenEvolve": "alphaevolve-openevolve",
             "DGM / ADAS": "dgm-adas", "Promptbreeder / EvoPrompt": "promptbreeder-evoprompt",
@@ -153,7 +154,20 @@ def validate_corpus(value, source_metadata):
     return value
 
 
-def build_participant_catalog(declarations, corpus=None, descriptions=None, bibliography=None):
+def _apply_attributions(records, attributions):
+    if attributions is not None:
+        _object(attributions, ("schema", "entries"), "participant attributions")
+        _require(attributions["schema"] == "arena.participant-attributions/1" and type(attributions["entries"]) is dict,
+                 "Invalid participant attributions schema")
+        credited = attributions["entries"]
+        _require(set(credited) <= set(records), "Attribution names an unknown participant")
+        _require({ident for ident, record in records.items() if record.get("papers")} <= set(credited),
+                 "Attributions must cover every research work")
+        for ident, attribution in credited.items():
+            records[ident]["attribution"] = deepcopy(validate_attribution(attribution))
+
+
+def build_participant_catalog(declarations, corpus=None, descriptions=None, bibliography=None, attributions=None):
     records = {}
     for declaration in declarations:
         validate_participant(declaration)
@@ -161,6 +175,7 @@ def build_participant_catalog(declarations, corpus=None, descriptions=None, bibl
         _require(declaration["id"] not in records, "Duplicate participant declaration")
         records[declaration["id"]] = deepcopy(declaration)
     if corpus is None:
+        _apply_attributions(records, attributions)
         return validate_participants(participant_view(sorted(records.values(), key=lambda p: p["id"])))
     validate_corpus(corpus, bibliography)
     _object(descriptions, ("schema", "descriptions"), "participant descriptions")
@@ -198,16 +213,21 @@ def build_participant_catalog(declarations, corpus=None, descriptions=None, bibl
                                   "description_basis": "Pinned system declaration; corpus supplies the bibliography." if record["record_kind"] == "system_registration"
                                                        else "Arena editorial summary of the source mechanism; not an execution result."})
         records[ident] = record
+    _apply_attributions(records, attributions)
     return validate_participants(participant_view(sorted(records.values(), key=lambda p: (p["name"].casefold(), p["id"]))))
 
 
 def expected_participants(root):
     declarations = [_json(path) for path in sorted((root / "participants").glob("*.json"))]
+    attribution_path = root / ATTRIBUTIONS_FILE
+    if not attribution_path.exists() and (root / "participants.json").exists():
+        _require(not any(item.get("attribution") for item in _json(root / "participants.json").get("participants", [])),
+                 "Missing attribution sources; refusing to drop research credits")
     if not (root / SOURCE_FILE).exists():
         if (root / "participants.json").exists():
             old = _json(root / "participants.json")
             _require(not any(item.get("papers") or item.get("record_kind") == "research_work" for item in old.get("participants", [])),
                      "Missing corpus capture; refusing to drop scholarly participant entries")
-        return build_participant_catalog(declarations)
+        return build_participant_catalog(declarations, attributions=_json(attribution_path) if attribution_path.exists() else None)
     return build_participant_catalog(declarations, _json(root / SOURCE_FILE), _json(root / DESCRIPTIONS_FILE),
-                                     _json(root / "search-family-sources.json"))
+                                     _json(root / "search-family-sources.json"), _json(attribution_path) if attribution_path.exists() else None)

@@ -59,6 +59,7 @@ test('overview keeps domains visible and technical data collapsed without undoin
     assert.ok(browser.contains(doc.getElementById('arena-list-panel')));
     assert.equal(browser.contains(doc.getElementById('arena-detail')),false);
     doc.querySelector('[data-domain-card="geometry"]').click();
+    doc.querySelector('.field-catalog-link').click();
     assert.equal(browser.open,true);
     browser.open=false;
     app.render();
@@ -71,6 +72,90 @@ test('overview keeps domains visible and technical data collapsed without undoin
     assert.equal(browser.open,true);
     doc.getElementById('arena-clear').click();
     assert.equal(browser.open,true);
+  } finally { dom.window.close(); }
+});
+
+test('scientific cards expose a keyboard-accessible preview without opening or filtering the catalog', async () => {
+  const tasks=[task(),task({id:'second',name:'Second construction'}),task({id:'other',name:'Other task',family:'Physics'})];
+  const scrolls=[];
+  const {dom,w,doc,app}=await mount({tasks,prepare(w){
+    w.HTMLElement.prototype.scrollIntoView=function(){scrolls.push(this.id);};
+  }});
+  try {
+    const browser=doc.getElementById('arena-catalog-browser'),before=w.location.href,historyLength=w.history.length;
+    const card=doc.querySelector('[data-domain-card="geometry"]');
+    assert.equal(card.tagName,'BUTTON');assert.equal(card.type,'button');assert.equal(card.tabIndex,0);
+    assert.equal(card.getAttribute('aria-expanded'),'false');
+    assert.equal(card.getAttribute('aria-controls'),'arena-domain-preview');
+    card.focus();
+    // Native keyboard activation produces a zero-detail click; JSDOM does not synthesize it from keydown.
+    card.dispatchEvent(new w.MouseEvent('click',{bubbles:true,detail:0}));
+    const preview=doc.getElementById('arena-domain-preview');
+    assert.ok(preview);assert.equal(preview.getAttribute('role'),'region');
+    assert.equal(preview.getAttribute('aria-labelledby'),'arena-domain-preview-title');
+    assert.equal(doc.activeElement.id,'arena-domain-preview-title');
+    assert.equal(doc.querySelector('[data-domain-card="geometry"]').getAttribute('aria-expanded'),'true');
+    assert.match(preview.textContent,/Geometry scientific role/);
+    assert.equal(preview.querySelectorAll('.field-example').length,2);
+    assert.equal(browser.open,false);assert.equal(w.location.href,before);assert.equal(w.history.length,historyLength);
+    assert.equal(doc.getElementById('arena-result-count').textContent,'3 of 3 tasks');
+    assert.equal(doc.getElementById('arena-active-filters').hidden,true);
+    assert.ok(!scrolls.some(id=>['arena-list-panel','arena-analysis','arena-catalog-browser'].includes(id)));
+    app.render();await app.reload();
+    assert.equal(browser.open,false);assert.equal(w.location.href,before);
+    assert.equal(doc.querySelector('[data-domain-card="geometry"]').getAttribute('aria-expanded'),'true');
+    doc.querySelector('.field-detail-close').focus();
+    doc.querySelector('.field-detail-close').click();
+    assert.equal(doc.querySelector('[data-field-detail]'),null);
+    assert.equal(doc.activeElement.dataset.domainCard,'geometry');
+    assert.equal(doc.activeElement.getAttribute('aria-expanded'),'false');
+    assert.equal(browser.open,false);assert.equal(w.location.href,before);assert.equal(w.history.length,historyLength);
+  } finally { dom.window.close(); }
+});
+
+test('domain previews preserve deep-link filters and both manually open and closed catalog states', async () => {
+  const tasks=[task(),task({id:'unsupported',executable:false}),task({id:'other',name:'Other task',family:'Physics'})];
+  const {dom,w,doc,app}=await mount({tasks,url:'http://arena.test/?domain=geometry&type=construction'});
+  try {
+    const browser=doc.getElementById('arena-catalog-browser'),before=w.location.href;
+    assert.equal(browser.open,true);
+    assert.equal(doc.querySelector('[data-field-detail]').dataset.fieldDetail,'geometry');
+    assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 3 tasks');
+    doc.querySelector('[data-domain-card="other"]').click();
+    assert.equal(browser.open,true);assert.equal(w.location.href,before);
+    assert.equal(doc.querySelector('[data-field-detail]').dataset.fieldDetail,'other');
+    assert.equal(doc.querySelector('[data-domain-card="geometry"]').getAttribute('aria-expanded'),'false');
+    assert.equal(doc.querySelector('[data-domain-card="other"]').getAttribute('aria-expanded'),'true');
+    assert.equal(doc.querySelector('.insights-composition [data-filter-value="geometry"]').getAttribute('aria-pressed'),'true');
+    assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 3 tasks');
+    doc.querySelector('.field-detail-close').click();
+    assert.equal(doc.activeElement.dataset.domainCard,'other');
+    assert.equal(doc.querySelector('[data-field-detail]'),null);
+    assert.equal(browser.open,true);assert.equal(w.location.href,before);
+    browser.open=false;app.render();
+    doc.querySelector('[data-domain-card="geometry"]').click();
+    assert.equal(browser.open,false);assert.equal(w.location.href,before);
+    doc.querySelector('.field-catalog-link').click();
+    assert.equal(browser.open,true);
+    assert.equal(new URL(w.location).searchParams.get('domain'),'geometry');
+    assert.equal(new URL(w.location).searchParams.get('type'),'construction');
+    assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 3 tasks');
+  } finally { dom.window.close(); }
+});
+
+test('a scientific preview example opens task detail without applying a domain filter first', async () => {
+  const {dom,w,doc}=await mount();
+  try {
+    const browser=doc.getElementById('arena-catalog-browser');
+    doc.querySelector('[data-domain-card="geometry"]').click();
+    assert.equal(browser.open,false);
+    doc.querySelector('#arena-domain-preview .field-example a').click();
+    assert.equal(new URL(w.location).searchParams.get('task'),'packing/circle');
+    assert.equal(new URL(w.location).searchParams.get('domain'),null);
+    assert.equal(doc.getElementById('arena-detail').hidden,false);
+    assert.equal(doc.getElementById('arena-insights').hidden,true);
+    assert.equal(browser.hidden,true);assert.equal(browser.open,false);
+    assert.match(doc.getElementById('arena-detail').textContent,/Circle packing/);
   } finally { dom.window.close(); }
 });
 
@@ -137,6 +222,7 @@ test('pagination and removing the last filter keep the catalog open and focus it
   try {
     const browser=doc.getElementById('arena-catalog-browser');
     doc.querySelector('[data-domain-card="geometry"]').click();
+    doc.querySelector('.field-catalog-link').click();
     browser.open=false;
     doc.querySelector('button[aria-label="Remove domain filter: Geometry"]').click();
     assert.equal(browser.open,true);
@@ -320,8 +406,8 @@ test('domain and task-type charts combine URL filters and preserve keyboard focu
   const insights = insightsFixture(tasks); insights.domains[0].percentage=66.6;
   const {dom,w,doc} = await mount({tasks,insights});
   try {
-    const domain = doc.querySelector('[data-filter-kind="domain"][data-filter-value="geometry"]');
-    assert.doesNotMatch(domain.textContent,/%/);
+    const domain = doc.querySelector('.insights-composition [data-filter-kind="domain"][data-filter-value="geometry"]');
+    assert.match(domain.textContent,/66\.6%/);
     assert.match(doc.querySelector('.insights-composition').textContent,/66\.6%/);
     assert.equal(doc.querySelector('.insights-composition').open,false);
     assert.match(domain.getAttribute('aria-label'),/1 executable definitions, 1 awaiting an evaluator/);
@@ -377,7 +463,8 @@ test('reference examples follow every filter and distinguish published values fr
     assert.match(rows[1].textContent,/n: 26/);
     assert.match(rows[1].textContent,/1 construction/);
     assert.doesNotMatch(rows[1].textContent,/Cases: 1/);
-    doc.querySelector('[data-filter-kind="domain"][data-filter-value="geometry"]').click();
+    doc.querySelector('[data-domain-card="geometry"]').click();
+    doc.querySelector('.field-catalog-link').click();
     rows=doc.querySelectorAll('#arena-analysis [data-reference-task]');
     assert.equal(rows.length,1); assert.equal(rows[0].dataset.referenceTask,'packing/circle');
     input(w,doc.getElementById('arena-search'),'missing query');
@@ -537,8 +624,11 @@ test('scientific direction cards retain exact corpus counts and open real chemis
     assert.equal(composition.open,true);
     const chemistry=doc.querySelector('[data-domain-card="chemistry-materials"]');chemistry.focus();chemistry.click();
     assert.equal(doc.querySelector('.insights-composition').open,true);
-    assert.equal(doc.activeElement.dataset.domainCard,'chemistry-materials');
-    assert.equal(doc.activeElement.getAttribute('aria-pressed'),'true');
+    assert.equal(doc.activeElement.id,'arena-domain-preview-title');
+    assert.equal(doc.querySelector('[data-domain-card="chemistry-materials"]').getAttribute('aria-expanded'),'true');
+    assert.equal(new URL(w.location).searchParams.get('domain'),null);
+    assert.equal(doc.getElementById('arena-catalog-browser').open,false);
+    doc.querySelector('.field-catalog-link').click();
     assert.equal(new URL(w.location).searchParams.get('domain'),'chemistry-materials');
     const expected=catalog.tasks.filter(item=>insights.task_annotations[item.id]?.domain_id==='chemistry-materials');
     assert.equal(doc.getElementById('arena-result-count').textContent,`${expected.length} of ${catalog.tasks.length.toLocaleString('en-US')} tasks`);
@@ -552,22 +642,25 @@ test('scientific direction cards retain exact corpus counts and open real chemis
     doc.querySelector('#arena-detail a[data-arena-route]').click();
     assert.equal(doc.querySelector('.insights-composition').open,true);
     doc.querySelector('.insights-composition summary').click();
-    const selected=doc.querySelector('[data-domain-card="chemistry-materials"]');selected.focus();selected.click();
+    const beforeClose=w.location.href;
+    doc.querySelector('.field-detail-close').click();
     assert.equal(doc.querySelector('.insights-composition').open,false);
     assert.equal(doc.activeElement.dataset.domainCard,'chemistry-materials');
-    assert.equal(doc.activeElement.getAttribute('aria-pressed'),'true');
+    assert.equal(doc.activeElement.getAttribute('aria-expanded'),'false');
+    assert.equal(w.location.href,beforeClose);
     doc.activeElement.click();
     assert.equal(doc.querySelector('.insights-composition').open,false);
-    assert.equal(doc.activeElement.getAttribute('aria-pressed'),'false');
-    assert.equal(new URL(w.location).searchParams.get('domain'),null);
+    assert.equal(doc.querySelector('[data-domain-card="chemistry-materials"]').getAttribute('aria-expanded'),'true');
+    assert.equal(w.location.href,beforeClose);
   } finally { dom.window.close(); }
 });
 
-test('every scientific direction example belongs to that domain and preserves source-only status', async () => {
+test('all 24 scientific examples explain the task and research value with safe primary sources', async () => {
   const {catalog,insights,fetchJSON}=recordedOverview(),tasks=new Map(catalog.tasks.map(item=>[item.id,item]));
   const {dom,doc}=await mount({fetchJSON});
   try {
     let executableExamples=0,sourceOnlyExamples=0;
+    const contexts=new Map();
     for(const domain of insights.domains) {
       doc.querySelector(`[data-domain-card="${domain.id}"]`).click();
       const detail=doc.querySelector(`[data-field-detail="${domain.id}"]`);
@@ -576,16 +669,43 @@ test('every scientific direction example belongs to that domain and preserves so
       const examples=[...detail.querySelectorAll('.field-example')];
       assert.equal(examples.length,2,`${domain.id} must offer two real examples`);
       for(const example of examples) {
-        const id=new URL(example.querySelector('a').href).searchParams.get('task'),task=tasks.get(id);
+        const id=new URL(example.querySelector('a[data-arena-route]').href).searchParams.get('task'),task=tasks.get(id);
         assert.ok(task,`${id} must exist in the catalog`);
         assert.equal(insights.task_annotations[id].domain_id,domain.id,`${id} must belong to the selected domain`);
-        assert.equal(example.querySelector('small').textContent,task.executable?'Evaluation definition recorded':'Source-only definition');
+        const context=example.querySelector('.field-example-context');
+        assert.ok(context,`${id} needs a task explanation, not a readiness label`);
+        const summary=context.textContent.trim();
+        assert.ok(summary.split(/\s+/).length>=20,`${id} needs a substantial explanation of the task and research value`);
+        assert.doesNotMatch(summary,/Evaluation definition recorded|Source-only definition|awaiting an evaluator|runtime readiness/i);
+        assert.notEqual(summary,domain.why_it_matters,`${id} must describe this task, not repeat its domain card`);
+        assert.equal(context.querySelector('img,script,iframe'),null);
+        const source=example.querySelector('.field-context-source');
+        assert.ok(source,`${id} needs a source for its explanation`);
+        const url=new URL(source.href);
+        assert.equal(url.protocol,'https:');assert.equal(url.username,'');assert.equal(url.password,'');
+        assert.equal(source.target,'_blank');assert.match(source.rel,/noopener/);assert.match(source.rel,/noreferrer/);
+        assert.equal(source.hasAttribute('data-arena-route'),false);
+        assert.ok(source.textContent.trim());
+        assert.equal(contexts.has(id),false,`${id} must not be reused as a different scientific example`);
+        contexts.set(id,summary);
         if(task.executable)executableExamples++;else sourceOnlyExamples++;
         if(['earth-environment','finance-economics'].includes(domain.id))assert.equal(task.executable,false);
       }
     }
+    assert.equal(contexts.size,24);
     assert.ok(executableExamples>0);
     assert.ok(sourceOnlyExamples>=4,'Source-only Earth and Finance examples must remain visible');
+    const matrix=contexts.get('alphaevolve-matrix-multiplication-4-4-4');
+    assert.match(matrix,/4[×x]4/);assert.match(matrix,/49/);assert.match(matrix,/Strassen/);assert.match(matrix,/1969/);
+    for(const [id,summary] of contexts) {
+      if(id!=='alphaevolve-matrix-multiplication-4-4-4')assert.doesNotMatch(summary,/Strassen|1969/,`${id} must not inherit matrix multiplication history`);
+    }
+    const forest=contexts.get('loongflow-tabular-playground-series-dec-2021');
+    assert.match(forest,/synthetic/i);assert.match(forest,/generat(?:ed|ion)|modeled on/i);
+    assert.match(forest,/class(?:es|ification)/i);
+    const packing=contexts.get('alphaevolve-circle-packing-in-unit-square');
+    assert.match(packing,/26/);assert.match(packing,/lower bound/i);assert.match(packing,/(?:total|sum(?: of)?) radii/i);
+    assert.doesNotMatch(packing,/proven optimal packing|optimal arrangement|globally optimal|best possible packing|solves the packing problem/i);
   } finally { dom.window.close(); }
 });
 
@@ -636,5 +756,36 @@ test('participant search includes bibliography and family filters with paginatio
     assert.equal(doc.querySelector('.arena-participant').dataset.participant,'work-29');
     doc.getElementById('arena-clear').click();
     assert.match(doc.getElementById('arena-result-count').textContent,/31 of 31/);
+  } finally {dom.window.close();}
+});
+
+
+test('participant bylines credit primary research sources and search full institutions', async () => {
+  const records=[{id:'lab-method',name:'Lab method',record_kind:'research_work',
+    attribution:{kind:'organizations',display:'Sakana AI · UBC',organizations:['Sakana AI','University of British Columbia'],authors:[],
+      source_url:'https://arxiv.org/pdf/2505.22954v3',source_locator:'p. 1 author affiliations',evidence_note:'Work-done affiliations.'}},
+    {id:'author-method',name:'Author method',record_kind:'research_work',
+      attribution:{kind:'authors',display:'A <script>literal</script>',organizations:[],authors:['A Researcher'],source_url:'javascript:alert(1)'}}];
+  const {dom,doc,w}=await mount({url:'http://arena.test/?view=participants',participantRecords:{participants:records}});
+  try {
+    const byline=doc.querySelector('[data-participant="lab-method"] .arena-participant-byline');
+    assert.equal(byline.textContent,'by Sakana AI · UBC');
+    const source=byline.querySelector('a');
+    assert.equal(source.href,'https://arxiv.org/pdf/2505.22954v3');
+    assert.equal(source.target,'_blank');assert.match(source.rel,/noopener/);
+    const author=doc.querySelector('[data-participant="author-method"] .arena-participant-byline');
+    assert.equal(author.querySelector('a'),null);assert.equal(author.querySelector('script'),null);
+    assert.equal(author.textContent,'by A <script>literal</script>');
+    input(w,doc.getElementById('arena-search'),'British Columbia');
+    assert.equal(doc.querySelectorAll('.arena-participant').length,1);
+    doc.querySelector('.arena-participant .arena-task-link').click();
+    const detail=doc.getElementById('arena-detail');
+    assert.equal(detail.querySelector('.arena-participant-byline').textContent,'by Sakana AI · UBC');
+    assert.match(detail.querySelector('.arena-attribution-context').textContent,/University of British Columbia/);
+    assert.match(detail.querySelector('.arena-attribution-context').textContent,/Work-done affiliations/);
+    doc.querySelector('#arena-detail a[data-arena-route]').click();
+    input(w,doc.getElementById('arena-search'),'A Researcher');
+    assert.equal(doc.querySelectorAll('.arena-participant').length,1);
+    assert.equal(doc.querySelector('.arena-participant').dataset.participant,'author-method');
   } finally {dom.window.close();}
 });

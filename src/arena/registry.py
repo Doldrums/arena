@@ -208,7 +208,7 @@ def validate_catalog(value):
 def validate_participant(value):
     _object(value, ("id", "name", "description", "repository", "registration_status", "adapter_status",
                    "capabilities", "supported_protocols", "limitations"), "participant",
-            optional=("record_kind", "papers", "search_family", "code_links", "provenance"))
+            optional=("record_kind", "papers", "search_family", "code_links", "provenance", "attribution"))
     _identifier(value["id"], "participant.id")
     for key in ("name", "description"):
         _text(value[key], key)
@@ -228,6 +228,8 @@ def validate_participant(value):
     _strings(value["supported_protocols"], "supported_protocols", unique=True)
     _require(not value["supported_protocols"], "unimplemented adapter cannot advertise compatible task protocols")
     _strings(value["limitations"], "limitations")
+    if "attribution" in value:
+        validate_attribution(value["attribution"])
     if "papers" in value:
         _require(type(value["papers"]) is list, "participant papers must be a list")
         paper_ids = set()
@@ -275,6 +277,22 @@ def validate_participant(value):
         _relative(source["path"], "bibliography source path")
         _hash(source["sha256"], _SHA256, "bibliography source SHA256")
         _url(source["url"], "bibliography source URL")
+
+
+def validate_attribution(value):
+    _object(value, ("kind", "display", "organizations", "authors", "source_url", "source_locator",
+                    "evidence_note", "checked_at"), "participant attribution")
+    _require(value["kind"] in ("organizations", "authors", "team"), "Invalid attribution kind")
+    for key in ("display", "source_locator", "evidence_note"):
+        _text(value[key], f"attribution {key}")
+    _strings(value["organizations"], "attribution organizations", unique=True)
+    _strings(value["authors"], "attribution authors", unique=True)
+    _require(value["organizations"] if value["kind"] in ("organizations", "team") else value["authors"],
+             "Attribution needs the credited organizations or authors")
+    _url(value["source_url"], "attribution source URL")
+    _require(type(value["checked_at"]) is str and re.fullmatch(r"20\d\d-\d{2}-\d{2}", value["checked_at"]),
+             "Attribution needs a review date")
+    return value
 
 
 def participant_view(participants):
@@ -328,7 +346,7 @@ def get_participants(registry_root=None):
     value = validate_participants(_json(root / "participants.json"))
     _require(not any(item.get("papers") or item.get("record_kind") == "research_work" for item in value["participants"])
              or (root / "participant-corpus.json").exists(), "Participant corpus capture is required for scholarly entries")
-    if (root / "participant-corpus.json").exists():
+    if (root / "participant-corpus.json").exists() or (root / "participant-attributions.json").exists() or any(p.get("attribution") for p in value["participants"]):
         from arena.participant_corpus import expected_participants
         _require(value == expected_participants(root), "Participant snapshot differs from the reviewed corpus or pinned declarations")
     return deepcopy(value)

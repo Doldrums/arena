@@ -10,7 +10,7 @@ import sys
 import pytest
 
 from arena.participant_corpus import (capture_corpus, validate_corpus, expected_participants,
-                                     build_participant_catalog, code_links)
+                                     build_participant_catalog, code_links, ATTRIBUTIONS_FILE)
 from arena.registry import RegistryError, get_participants, validate_participant, validate_registry
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -152,7 +152,8 @@ def test_all_source_descriptions_are_present_and_no_local_paths_or_verdicts_ente
 
 
 def test_participant_build_check_is_offline_deterministic_and_does_not_mutate_sources():
-    paths = [REGISTRY / name for name in ("participant-corpus.json", "participant-descriptions.json", "participants.json")]
+    paths = [REGISTRY / name for name in ("participant-corpus.json", "participant-descriptions.json",
+                                         ATTRIBUTIONS_FILE, "participants.json")]
     before = {path: path.read_bytes() for path in paths}
     result = subprocess.run([sys.executable, str(ROOT / "scripts/build_participants.py"), "--check"],
                             capture_output=True, text=True)
@@ -161,3 +162,146 @@ def test_participant_build_check_is_offline_deterministic_and_does_not_mutate_so
     assert before == {path: path.read_bytes() for path in paths}
     assert expected_participants(REGISTRY) == get_participants()
     assert validate_registry()["valid"] is True
+
+
+def build_with_attributions(attributions):
+    declarations = [read(f"participants/{ident}.json") for ident in ("sciel", "shinka", "dgm")]
+    return build_participant_catalog(declarations, read("participant-corpus.json"),
+                                     read("participant-descriptions.json"),
+                                     read("search-family-sources.json"), attributions)
+
+
+def test_every_research_work_preserves_its_reviewed_attribution_exactly_once():
+    sources = read(ATTRIBUTIONS_FILE)
+    view = get_participants()
+    participants = {p["id"]: p for p in view["participants"]}
+    research = {ident: entry for ident, entry in participants.items() if entry["papers"]}
+    assert len(research) == 98
+    assert set(research) <= set(sources["entries"]) <= set(participants)
+    assert "shinka" in sources["entries"]
+    assert "shinkaevolve" not in sources["entries"]  # Paper alias is not a second participant.
+    for ident, attribution in sources["entries"].items():
+        assert participants[ident]["attribution"] == attribution
+        assert type(attribution["organizations"]) is list
+        assert type(attribution["authors"]) is list
+        assert attribution["kind"] in {"organizations", "authors", "team"}
+        assert attribution["source_url"].startswith("https://")
+    assert "Sakana AI" in participants["shinka"]["attribution"]["organizations"]
+    assert "Sakana AI" in participants["dgm"]["attribution"]["organizations"]
+    assert participants["elm"]["attribution"]["organizations"] == ["OpenAI"]
+    assert not {"Meta", "Amazon", "Microsoft"} & set(participants["coral"]["attribution"]["organizations"])
+    author_credit = participants["agentic-optimization"]["attribution"]
+    assert author_credit["kind"] == "authors"
+    assert author_credit["authors"] == ["Junye Pan"]
+    assert author_credit["organizations"] == []  # No institution inferred from an email domain.
+
+
+@pytest.mark.parametrize("mutation,message", [
+    (lambda s: s["entries"].pop("ael"), "cover every research work"),
+    (lambda s: s["entries"].update(unknown=deepcopy(s["entries"]["ael"])), "unknown participant"),
+    (lambda s: s["entries"].update(shinkaevolve=s["entries"].pop("shinka")), "unknown participant"),
+    (lambda s: s.update(schema="arena.participant-attributions/999"), "Invalid participant attributions schema"),
+])
+def test_attribution_source_coverage_rejects_dropped_credits_unknown_ids_and_paper_aliases(mutation, message):
+    sources = read(ATTRIBUTIONS_FILE)
+    mutation(sources)
+    with pytest.raises(RegistryError, match=message):
+        build_with_attributions(sources)
+
+
+def test_attribution_arrays_are_detached_from_reviewed_sources():
+    sources = read(ATTRIBUTIONS_FILE)
+    original = deepcopy(sources)
+    built = build_with_attributions(sources)
+    assert sources == original
+    next(p for p in built["participants"] if p["id"] == "dgm")["attribution"]["organizations"].clear()
+    assert sources == original
+    rebuilt = build_with_attributions(sources)
+    assert "Sakana AI" in next(p for p in rebuilt["participants"] if p["id"] == "dgm")["attribution"]["organizations"]
+
+
+def test_declaration_only_builder_does_not_ignore_explicit_attribution():
+    attribution = read(ATTRIBUTIONS_FILE)["entries"]["dgm"]
+    sources = {"schema": "arena.participant-attributions/1", "entries": {"dgm": attribution}}
+    built = build_participant_catalog([read("participants/dgm.json")], attributions=sources)
+    assert built["participants"][0]["attribution"] == attribution
+    assert built["summary"]["research_work_count"] == 0
+    assert built["summary"]["integrated_count"] == 0
+
+
+@pytest.mark.parametrize("change", ["changed_source", "missing_source", "missing_snapshot_credit"])
+def test_declaration_only_reader_rejects_stale_or_dropped_attribution(tmp_path, change):
+    registry = tmp_path / "registry"
+    (registry / "participants").mkdir(parents=True)
+    declaration = read("participants/dgm.json")
+    (registry / "participants/dgm.json").write_text(json.dumps(declaration))
+    sources = {"schema": "arena.participant-attributions/1",
+               "entries": {"dgm": read(ATTRIBUTIONS_FILE)["entries"]["dgm"]}}
+    source_path = registry / ATTRIBUTIONS_FILE
+    source_path.write_text(json.dumps(sources))
+    snapshot_path = registry / "participants.json"
+    snapshot = build_participant_catalog([declaration], attributions=sources)
+    snapshot_path.write_text(json.dumps(snapshot))
+    assert get_participants(registry) == expected_participants(registry) == snapshot
+    if change == "changed_source":
+        sources["entries"]["dgm"]["source_locator"] = "Updated reviewed affiliation locator"
+        source_path.write_text(json.dumps(sources))
+    elif change == "missing_source":
+        source_path.unlink()
+    else:
+        snapshot["participants"][0].pop("attribution")
+        snapshot_path.write_text(json.dumps(snapshot))
+    before = {path: path.read_bytes() for path in registry.rglob("*.json")}
+    message = "refusing to drop research credits" if change == "missing_source" else "differs from the reviewed corpus"
+    with pytest.raises(RegistryError, match=message):
+        get_participants(registry)
+    if change == "missing_source":
+        with pytest.raises(RegistryError, match="refusing to drop research credits"):
+            expected_participants(registry)
+    assert before == {path: path.read_bytes() for path in registry.rglob("*.json")}
+
+
+@pytest.mark.parametrize("check", [True, False])
+def test_missing_attribution_capture_cannot_silently_drop_research_credits(tmp_path, check):
+    copied = tmp_path / "registry"
+    shutil.copytree(REGISTRY, copied)
+    (copied / ATTRIBUTIONS_FILE).unlink()
+    before = (copied / "participants.json").read_bytes()
+    with pytest.raises(RegistryError, match="refusing to drop research credits"):
+        expected_participants(copied)
+    with pytest.raises(RegistryError, match="refusing to drop research credits"):
+        get_participants(copied)
+    command = [sys.executable, str(ROOT / "scripts/build_participants.py"), "--registry-root", str(copied)]
+    result = subprocess.run(command + (["--check"] if check else []), capture_output=True, text=True)
+    assert result.returncode == 1
+    assert "refusing to drop research credits" in result.stderr
+    assert (copied / "participants.json").read_bytes() == before
+
+
+def test_changed_credit_source_requires_explicit_snapshot_rebuild(tmp_path):
+    copied = tmp_path / "registry"
+    shutil.copytree(REGISTRY, copied)
+    sources = read(ATTRIBUTIONS_FILE)
+    sources["entries"]["dgm"]["source_locator"] = "Updated review locator: p. 1 author block"
+    (copied / ATTRIBUTIONS_FILE).write_text(json.dumps(sources))
+    before = {path: path.read_bytes() for path in (copied / ATTRIBUTIONS_FILE, copied / "participants.json")}
+    with pytest.raises(RegistryError, match="differs from the reviewed corpus"):
+        get_participants(copied)
+    result = subprocess.run([sys.executable, str(ROOT / "scripts/build_participants.py"),
+                             "--registry-root", str(copied), "--check"], capture_output=True, text=True)
+    assert result.returncode == 1
+    assert "differs from reviewed sources" in result.stderr
+    assert before == {path: path.read_bytes() for path in before}
+
+
+def test_initial_participant_build_without_attribution_or_prior_snapshot_still_works(tmp_path):
+    copied = tmp_path / "registry"
+    shutil.copytree(REGISTRY, copied)
+    (copied / ATTRIBUTIONS_FILE).unlink()
+    (copied / "participants.json").unlink()
+    result = subprocess.run([sys.executable, str(ROOT / "scripts/build_participants.py"),
+                             "--registry-root", str(copied)], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    built = get_participants(copied)
+    assert built["summary"]["research_work_count"] == 98
+    assert all("attribution" not in entry for entry in built["participants"])

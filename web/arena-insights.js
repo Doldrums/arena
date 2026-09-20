@@ -117,6 +117,155 @@ const FIELD_STORIES = {
   'finance-economics': {tone:'blue', symbol:'decisions', question:'How do policies balance return and risk?', topics:'Allocation · trading policies · risk', examples:['ael-harness-d-full-portfolio-allocation','algoevolve-numin-intraday-equity-trading']},
   unknown: {tone:'neutral', symbol:'mixed', question:'Which scientific target does this task define?', topics:'Mixed suites · open classification', examples:['deliberate-evolution-lsr-transform','adaevolve-frontier-cs']},
 };
+// Editorial context for the exact task examples, checked against the primary sources below.
+// Historical references describe source results, not an Arena result or a claim of optimality.
+const TASK_CONTEXT = {
+  "coevo-oscillation-1": {
+    "summary": "Recover an equation for the acceleration of a driven, damped oscillator from its position and velocity. An explicit formula helps connect observed motion to a physical model that researchers can inspect and analyze.",
+    "source_url": "https://github.com/pgg3/CoEvo/blob/dcad65e9799961cf67cf29865ff41dda2902a808/CoEvo/src/coevo/tasks/oscillation_1.py",
+    "source_locator": "task_description and equation function skeleton",
+    "evidence_note": "The pinned task explicitly specifies a damped nonlinear oscillator with a driving force, position and velocity inputs, and acceleration output. Scientific usefulness describes the equation-discovery objective, without claiming that recovered formulas identify the true physical law."
+  },
+  "a2dept-ode-integration-discretized-heat-equation-n-20": {
+    "summary": "Design a numerical method to track heat spreading through a model with 20 coupled variables. The challenge is to keep the simulation accurate and stable while limiting calculations, a central trade-off in computational physics.",
+    "source_url": "https://arxiv.org/pdf/2604.24043",
+    "source_locator": "Appendix G.1, printed pp. 38–39, Experimental Setup and Table 17",
+    "evidence_note": "Appendix G.1 specifies N=20, an accuracy–computation score and fixed-step stability challenges. Spatial geometry and boundary conditions are unspecified; no runnable reproduction is claimed."
+  },
+  "a2dept-ode-integration-robertson-kinetics": {
+    "summary": "Develop a solver for a chemical reaction model with fast and slow changes occurring together. This stiffness can make time stepping unstable; the scientific challenge is accurate, stable simulation without excessive computation.",
+    "source_url": "https://arxiv.org/pdf/2604.24043",
+    "source_locator": "Appendix G.1, printed pp. 38–39, Robertson Kinetics and Table 17",
+    "evidence_note": "Appendix G.1 identifies Robertson as stiff and balances accuracy against function evaluations. Standard equations cross-checked in SciML’s Robertson example: https://docs.sciml.ai/DiffEqDocs/v7.14/tutorials/faster_ode_example/."
+  },
+  "coevo-stress-strain": {
+    "summary": "Find an equation linking an aluminium rod’s stress to deformation and temperature, covering both reversible stretching and permanent deformation. Such material models help explain how mechanical response changes across conditions and support simulations of loaded structures.",
+    "source_url": "https://github.com/pgg3/CoEvo/blob/dcad65e9799961cf67cf29865ff41dda2902a808/CoEvo/src/coevo/tasks/stress_strain.py",
+    "source_locator": "task_description and equation function skeleton",
+    "evidence_note": "The pinned task specifies stress from strain and temperature in an aluminium rod across elastic and plastic regions. Reversible versus permanent deformation explains those regimes in plain language; downstream structural simulation is scientific motivation, not a demonstrated deployment."
+  },
+  "coevo-e-coli-growth": {
+    "summary": "Find an equation describing how E. coli growth depends on population density, nutrients, temperature and acidity. The resulting formula makes these relationships explicit, helping researchers compare biological models across environmental conditions.",
+    "source_url": "https://github.com/pgg3/CoEvo/blob/dcad65e9799961cf67cf29865ff41dda2902a808/CoEvo/src/coevo/tasks/bactgrow.py",
+    "source_locator": "task_description and equation function skeleton",
+    "evidence_note": "The source specifies growth rate from bacterial population density, substrate concentration, temperature and pH. 'Nutrients' and 'acidity' explain substrate and pH for a general reader. No new wet-lab result or causal identification is asserted."
+  },
+  "dga2d-ode-solver-lotka-volterra": {
+    "summary": "Build a numerical solver for interacting predator and prey populations. Following their coupled changes accurately with few calculations helps study population dynamics while separating numerical error from behavior produced by the ecological model itself.",
+    "source_url": "https://arxiv.org/html/2608.00700v1",
+    "source_locator": "Appendix G.1, Numerical ODE Integration: problem families and accuracy–cost score",
+    "evidence_note": "Appendix G.1 names Lotka–Volterra and scores final-state error against right-hand-side evaluations. The standard two-population equations were cross-checked in the official SciPy solve_ivp examples: https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html. No species, field dataset, or conservation test is invented."
+  },
+  "alphaevolve-circle-packing-in-unit-square": {
+    "summary": "Fit 26 nonoverlapping circles of varying sizes inside a unit square while maximizing their total radii. A better valid arrangement improves a mathematical lower bound, helping narrow the gap between what can be constructed and what can be proved optimal.",
+    "source_url": "https://arxiv.org/pdf/2506.13131",
+    "source_locator": "Appendix B.12, printed pp. 43–44; Figure 14, left",
+    "evidence_note": "The paper explicitly maximizes the sum of radii and reports the n=26 construction as an improved bound. The summary makes no claim about a nineteenth-century origin, current record, or proven optimal packing."
+  },
+  "alphaevolve-matrix-multiplication-4-4-4": {
+    "summary": "Find exact rules for multiplying two 4×4 matrices with fewer scalar products. The 49-product construction derived from Strassen’s 1969 algorithm provides a historical reference; reducing this count studies the arithmetic cost of a basic operation in scientific computing.",
+    "source_url": "https://arxiv.org/pdf/2506.13131",
+    "source_locator": "Section 3.1, printed pp. 9–10; Appendix A, Table 3; reference 95",
+    "evidence_note": "Section 3.1 explicitly derives rank 49 by recursively applying Strassen; reference 95 dates it to 1969. AlphaEvolve's reported rank-48 construction uses complex arithmetic. The summary does not call rank 49 optimal or equate fewer scalar products with measured runtime gains."
+  },
+  "loongflow-predict-volcanic-eruptions-ingv-oe": {
+    "summary": "Estimate the time remaining before a volcanic eruption from ten-minute recordings of ten seismic sensors. Finding useful precursors in these signals supports research on eruption forecasting, where warning time matters as well as prediction accuracy.",
+    "source_url": "https://github.com/openai/mle-bench/blob/507f92e1138bb6e40dac5c6ee7a6758e6424bf97/mlebench/competitions/predict-volcanic-eruptions-ingv-oe/description.md",
+    "source_locator": "Archived competition description, Overview and Dataset Description, lines 3–7 and 49–57",
+    "evidence_note": "MLE-bench preserves the INGV/Kaggle task description, target time_to_eruption, and ten-minute, ten-sensor recordings. Forecasting motivation is explicit in the competition description; no operational warning system or field reliability is claimed."
+  },
+  "loongflow-tabular-playground-series-dec-2021": {
+    "summary": "Predict forest-cover classes from synthetic data modeled on a real forest-cover benchmark. It provides a controlled setting for comparing how learning methods use terrain and soil features to distinguish vegetation classes.",
+    "source_url": "https://github.com/openai/mle-bench/blob/507f92e1138bb6e40dac5c6ee7a6758e6424bf97/mlebench/competitions/tabular-playground-series-dec-2021/description.md",
+    "source_locator": "Archived competition description, lines 12, 16–19 and Dataset Description, lines 41–48",
+    "evidence_note": "The official competition text preserved by MLE-bench explicitly says the data were generated by a GAN trained on Forest Cover Type Prediction data, with relationships potentially differing from the original. Target Cover_Type and multiclass accuracy are recorded."
+  },
+  "a2dept-feedback-control-cartpole-stabilization": {
+    "summary": "Design a feedback rule that moves a cart to keep an upright pole balanced. Maintaining stability over a long simulation while limiting tracking error and control effort studies a basic challenge shared by robots and other controlled machines.",
+    "source_url": "https://arxiv.org/pdf/2604.24043",
+    "source_locator": "Appendix G.3 and Table 19, printed p. 40",
+    "evidence_note": "Appendix G.3 specifies unstable CartPole dynamics, 5,000 simulation steps, divergence penalties, tracking error and control action. Broader robotics relevance is motivation, not a deployment claim."
+  },
+  "text2reward-button-press-v2": {
+    "summary": "Design a reward function that guides a simulated robot arm to reach and press a button. Turning a simple goal into useful step-by-step feedback helps study how robots learn precise manipulation through reinforcement learning.",
+    "source_url": "https://arxiv.org/html/2309.11489v3",
+    "source_locator": "Appendix B, Table 4, Button Press; reward-shaping method in Section 3",
+    "evidence_note": "Table 4 specifies pressing a button along the y direction. The pinned implementation at https://github.com/xlang-ai/text2reward/blob/e7f57efcf76b22bbfb7c3eb9d67d98ff2765a926/run_metaworld/reward_code/button-press-v2/specific.py scores gripper distance, object state and actions. The summary describes reward design in simulation, not a deployed physical skill."
+  },
+  "a2dept-capacitated-electric-vehicle-routing-with-time-windows": {
+    "summary": "Plan electric-vehicle delivery routes while respecting cargo limits, battery charge and customer time windows. The task tests whether a generated solver can reduce travel cost while satisfying several interacting constraints.",
+    "source_url": "https://arxiv.org/pdf/2604.24043v1",
+    "source_locator": "Appendix A.4.5, pp.21–22; Appendix D.1.2, Table 5",
+    "evidence_note": "The formulation minimizes travel cost with cargo, battery, recharge and time-window constraints. The reported benchmark uses ESOGU-CEVRPTW instances. No historical open-problem claim is made."
+  },
+  "reference-online-bin-packing": {
+    "summary": "Place incoming items into fixed-capacity bins without seeing future arrivals, using as few bins as possible. This isolates online heuristic design: each local placement changes the space available for later items.",
+    "source_url": "https://github.com/IMRUNya/autoresearch-tasks/blob/995768fc462b8e327f90e6762846cc6ccb06cc2c/suite/reference-online-bin-packing/problem.json",
+    "source_locator": "#/contract, #/parameters, #/protocol_description; sibling evaluator.py: task()",
+    "evidence_note": "Verified in local checkout at the cited commit: generated fixed-seed instances, capacity 100, priority-based placement, and excess-bin scoring. This is the native recreated task, not a published experimental reproduction; unauthenticated source URL returned 404."
+  },
+  "adaevolve-expert-placement-load-balancing": {
+    "summary": "Rearrange and replicate a mixture-of-experts model’s experts across GPUs to balance their workload. The benchmark evaluates both load balance and the speed of the placement algorithm, exposing the cost of computing a better assignment.",
+    "source_url": "https://github.com/skydiscover-ai/skydiscover/blob/0d932b690670a7e544388ad362e9876c8bd256a0/benchmarks/ADRS/eplb/README.md",
+    "source_locator": "Opening task definition and Files table",
+    "evidence_note": "Fetched the pinned upstream README directly. It explicitly describes rearrangement and replication across GPUs, with evaluator scores for load-balance quality and execution speed; also corroborated by AdaEvolve Appendix B, Table 6."
+  },
+  "pairwise-validator-txn-scheduling": {
+    "summary": "Order database transactions to shorten the time needed to finish a workload, accounting for conflicts between reads and writes. It tests scheduling heuristics whose choices affect how much work can proceed concurrently.",
+    "source_url": "https://arxiv.org/pdf/2607.14408v1",
+    "source_locator": "Section 5.4, Table 5; pp.24–27, ADRS code-evolution outputs: get_best_schedule",
+    "evidence_note": "The paper identifies the ADRS txn_scheduling task and includes a candidate scheduler with read/write conflict checks, transaction durations and minimum-makespan objective. Purpose statement describes this scheduling problem, not a reproduced result."
+  },
+  "adaevolve-arc-agi-2": {
+    "summary": "Infer a transformation from example pairs of colored grids and apply it to a new input. These tasks test how a solver combines visual relations, contextual rules and multiple reasoning steps from a small set of examples.",
+    "source_url": "https://github.com/arcprize/ARC-AGI-2",
+    "source_locator": "README: Task success criterion and Task file format; AdaEvolve Appendix C, Table 8",
+    "evidence_note": "Official ARC-AGI-2 README defines demonstration pairs and exact output-grid prediction; the official benchmark page identifies compositional and contextual-rule tasks. AdaEvolve Appendix C identifies its 120-instance ARC-AGI-2 experiment and labels it exploratory."
+  },
+  "promptbreeder-gsm8k": {
+    "summary": "Evolve prompts for solving grade-school mathematics word problems, then check the resulting numerical answers. This provides a concrete test of whether changes to instructions and worked examples improve multistep arithmetic reasoning.",
+    "source_url": "https://arxiv.org/pdf/2309.16797v1",
+    "source_locator": "Section 4; Appendix I.2 Arithmetic Reasoning; Appendix J.8 GSM8K",
+    "evidence_note": "Promptbreeder explicitly evaluates GSM8K mathematical word problems and evolves instructions plus optional worked-example context. The summary states the optimization target and evaluation purpose, not an improvement achieved by Arena."
+  },
+  "sciel-bench-kattis-alphabet": {
+    "summary": "Find the fewest letters to insert into a string so that the alphabet appears in order as a subsequence. This compact programming task tests sequence reasoning and exact correctness through an online judge.",
+    "source_url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/online_judge_programming/README.md",
+    "source_locator": "Problem Description; copied as suite/sciel-bench-kattis-alphabet/README.upstream.md in pinned task snapshot",
+    "evidence_note": "Verified the copied upstream problem statement in task checkout 995768fc462b8e327f90e6762846cc6ccb06cc2c: lowercase input and minimum insertions for a..z subsequence. The upstream URL returned 404; this is verification against its recorded source copy."
+  },
+  "sciel-bench-web-scraper-api-docs": {
+    "summary": "Extract function names, signatures and parameters from three fixed HTML documentation layouts. The task tests parser changes against known outputs, measuring extraction accuracy, completeness and the number of pages processed without errors.",
+    "source_url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/web_scraper_optillm/evaluator.py",
+    "source_locator": "evaluate(), get_test_cases(), evaluate_extraction(); copied as suite/sciel-bench-web-scraper-api-docs/evaluator.py in pinned task snapshot",
+    "evidence_note": "Read copied evaluator at task commit 995768fc462b8e327f90e6762846cc6ccb06cc2c. It uses three embedded HTML cases, expected function/parameter data, and parsing-exception counts; no claim of broad web coverage. Upstream URL currently returned 404."
+  },
+  "ael-harness-d-full-portfolio-allocation": {
+    "summary": "Allocate weights across ten equities and cash using a sequence of historical market observations. The benchmark studies how memory, tool use and decision procedures affect portfolio returns and risk across changing market conditions.",
+    "source_url": "https://arxiv.org/pdf/2604.21725v2",
+    "source_locator": "Section 4.1; Appendix L, Tables 17–18; experiments/run_portfolio.py at c95f5f961667e7df4bdddf750b22332158951bf2",
+    "evidence_note": "Paper specifies ten equities plus cash, hourly observations and chronological train/validation/test episodes; runner allocates weights across tickers per bar. The summary describes a historical benchmark, without investment guidance or a future-performance claim."
+  },
+  "algoevolve-numin-intraday-equity-trading": {
+    "summary": "Produce buy, sell or hold decisions from five-minute equity data in a paper-trading simulator. Returns, volatility and drawdown expose how evolved programs behave across historical trading windows, including the effects of transaction costs.",
+    "source_url": "https://arxiv.org/pdf/2606.26173v1",
+    "source_locator": "Section 5.1 Market Environment and Feature Representation, pp.4–5; Section 5.2",
+    "evidence_note": "The source defines NUMIN as an anonymized multi-asset intraday paper-trading environment, with five-minute observations, buy/sell/hold outputs, fixed transaction/slippage cost and return/risk metrics. Section 5.1 is the actual setup locator in v1."
+  },
+  "deliberate-evolution-lsr-transform": {
+    "summary": "Recover mathematical expressions from data generated by transformed benchmark equations. Changing familiar equation forms makes this a test of symbolic-regression search designed to challenge formula recall while measuring how closely candidate expressions fit the data.",
+    "source_url": "https://arxiv.org/pdf/2606.04360v1",
+    "source_locator": "Appendix E.1 Benchmark Details, Table 6; Section 4, Table 1",
+    "evidence_note": "Appendix E.1 defines the transform subset by changing existing equation representations; Table 6 names LSR-Transform and Table 1 evaluates normalized MSE. The purpose is framed as benchmark design, not proof that memorization is eliminated; conflicting total dataset counts are omitted."
+  },
+  "adaevolve-frontier-cs": {
+    "summary": "Generate executable solutions for a suite of 172 computer-science problems spanning algorithm design and systems optimization. This provides varied, task-specific feedback for studying program search where solution quality matters beyond whether code merely runs.",
+    "source_url": "https://arxiv.org/pdf/2602.20133v1",
+    "source_locator": "Section 4.4 Frontier-CS, Table 3",
+    "evidence_note": "AdaEvolve explicitly evaluates 172 Frontier-CS problems spanning algorithmic optimization and systems tasks via executable programs. The number describes this paper’s benchmark evaluation; no claim that every problem is historically open is made."
+  }
+};
+
 const FIELD_SYMBOLS = {
   orbit:'M20 48c0-14 56-14 56 0s-56 14-56 0 M34 24c12-7 40 41 28 48S22 31 34 24 M62 24c12 7-16 55-28 48s16-55 28-48',
   bonds:'M48 20 72 34v28L48 76 24 62V34z M48 20v18m24-4L56 44m16 18L56 52M48 76V58M24 62l16-10M24 34l16 10',
@@ -131,43 +280,57 @@ const FIELD_SYMBOLS = {
   decisions:'M20 48h56 M48 20v56 M27 28l42 42 M27 68l42-42',
   mixed:'M26 24h12v12H26z M57 24h12v12H57z M26 57h12v12H26z M57 57h12v12H57z',
 };
-function scientificFields(root, insights, catalog, current, onFilter) {
+function scientificFields(root, insights, catalog, current, onFilter, exploredDomain, onExploreDomain) {
   const {make,link} = ui(root), section = make('section','insights-fields');
+  const selectedId = exploredDomain === undefined ? current.domain : exploredDomain;
+  const explore = onExploreDomain || (id => onFilter('domain', id));
   section.setAttribute('aria-label','Explore scientific directions');
   const header = make('div','fields-heading');
   const intro=make('div');intro.append(make('span','fields-eyebrow','SCIENTIFIC CONTEXT'),make('h3','','Research domains'),
     make('p','','Problems, methods and example tasks across the scientific domains represented in the catalog.'));
   header.append(intro,make('span','fields-heading-note',`${number(insights.domains.filter(item=>item.id!=='unknown').length)} research directions`));section.append(header);
-  const grid=make('div','fields-grid'); grid.setAttribute('role','group');grid.setAttribute('aria-label','Scientific directions, filter task catalog');
+  const grid=make('div','fields-grid'); grid.setAttribute('role','group');grid.setAttribute('aria-label','Explore scientific directions');
   const order=Object.keys(FIELD_STORIES), domains=[...insights.domains].sort((a,b)=>(order.indexOf(a.id)<0?99:order.indexOf(a.id))-(order.indexOf(b.id)<0?99:order.indexOf(b.id)));
   for(const domain of domains){
     const story=FIELD_STORIES[domain.id] || {tone:'blue',symbol:'mixed',question:domain.description || domain.label,topics:'Explore the recorded scientific context'};
     const card=make('button','field-card');card.type='button';card.dataset.tone=story.tone;card.dataset.domainCard=domain.id;
     card.dataset.insightsAction=`field:${domain.id}`;card.dataset.filterKind='domain';card.dataset.filterValue=domain.id;
-    card.setAttribute('aria-pressed',String(current.domain===domain.id));
-    card.setAttribute('aria-label',`${domain.label}: ${number(domain.total)} tasks; ${number(domain.executable)} executable definitions, ${number(domain.unsupported)} awaiting an evaluator. ${story.question} Filter catalog.`);
+    card.setAttribute('aria-expanded',String(selectedId===domain.id));
+    card.setAttribute('aria-controls','arena-domain-preview');
+    card.setAttribute('aria-label',`${domain.label}: ${number(domain.total)} tasks; ${number(domain.executable)} executable definitions, ${number(domain.unsupported)} awaiting an evaluator. ${story.question} Explore research direction.`);
     const copy=make('span','field-copy'),meta=make('span','field-meta');
     meta.append(make('span','field-topics',story.topics),make('span','field-count',`${number(domain.total)} tasks`));
     copy.append(meta,make('span','field-title',domain.label),make('span','field-question',story.question));
     const visual=make('span','field-visual');visual.setAttribute('aria-hidden','true');
     const svg=root.ownerDocument.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 96 96');svg.setAttribute('class',`field-symbol field-symbol-${story.symbol}`);
     const path=root.ownerDocument.createElementNS(svg.namespaceURI,'path');path.setAttribute('d',FIELD_SYMBOLS[story.symbol] || FIELD_SYMBOLS.mixed);svg.append(path);visual.append(svg);
-    visual.append(make('span','field-explore',current.domain===domain.id?'Selected direction':'Explore direction'),make('span','field-arrow',current.domain===domain.id?'✓':'↗'));
-    card.append(copy,visual);card.addEventListener('click',()=>onFilter('domain',current.domain===domain.id?null:domain.id));grid.append(card);
+    visual.append(make('span','field-explore',selectedId===domain.id?'Close direction':'Explore direction'),make('span','field-arrow',selectedId===domain.id?'−':'↗'));
+    card.append(copy,visual);card.addEventListener('click',()=>explore(selectedId===domain.id?null:domain.id));grid.append(card);
   }
   section.append(grid);
-  const selected=insights.domains.find(domain=>domain.id===current.domain);
+  const selected=insights.domains.find(domain=>domain.id===selectedId);
   if(selected){
-    const story=FIELD_STORIES[selected.id],detail=make('div','field-detail');detail.dataset.fieldDetail=selected.id;
-    const description=make('div');description.append(make('span','fields-eyebrow','INSIDE THIS DIRECTION'),make('h4','',selected.label),make('p','',selected.why_it_matters || selected.description));
+    const story=FIELD_STORIES[selected.id],detail=make('div','field-detail');detail.dataset.fieldDetail=selected.id;detail.id='arena-domain-preview';
+    detail.setAttribute('role','region');detail.setAttribute('aria-labelledby','arena-domain-preview-title');
+    const close=make('button','field-detail-close','×');close.type='button';close.setAttribute('aria-label','Close research direction');close.addEventListener('click',()=>explore(null));detail.append(close);
+    const description=make('div');description.append(make('span','fields-eyebrow','INSIDE THIS DIRECTION'),Object.assign(make('h4','',selected.label),{id:'arena-domain-preview-title',tabIndex:-1}),make('p','',selected.why_it_matters || selected.description));
     const examples=make('div','field-examples');examples.append(make('span','fields-eyebrow','START WITH A TASK'));
     const tasks=new Map(catalog.tasks.map(task=>[task.id,task]));
     const ids=story?.examples || selected.representative_task_ids || [];
     for(const id of ids.slice(0,2)){
       const task=tasks.get(id);if(!task || insights.task_annotations?.[id]?.domain_id!==selected.id)continue;
-      const row=make('div','field-example');row.append(link(`${task.name || id} ↗`,`/?task=${encodeURIComponent(id)}`,true),make('small','',task.executable?'Evaluation definition recorded':'Source-only definition'));examples.append(row);
+      const row=make('div','field-example'),context=TASK_CONTEXT[id];
+      row.append(link(`${task.name || id} ↗`,`/?task=${encodeURIComponent(id)}`,true));
+      const explanation=make('p','field-example-context',context?.summary || task.description || selected.why_it_matters || selected.description);
+      const source=safeURL(context?.source_url);
+      if(source){
+        const citation=link('Source ↗',source);citation.className='field-context-source';
+        citation.title=context.source_locator;citation.setAttribute('aria-label',`Source for ${task.name || id}: ${context.source_locator}`);
+        explanation.append(' ',citation);
+      }
+      row.append(explanation);examples.append(row);
     }
-    const browse=make('a','field-catalog-link','Browse matching tasks ↓');browse.href='#arena-list-panel';examples.append(browse);detail.append(description,examples);section.append(detail);
+    const browse=make('a','field-catalog-link','Browse matching tasks ↓');browse.href=`/?domain=${encodeURIComponent(selected.id)}#arena-list-panel`;browse.addEventListener('click',event=>{if(event.button!==0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)return;event.preventDefault();onFilter('domain',selected.id);});examples.append(browse);detail.append(description,examples);section.append(detail);
   }
   section.append(make('p','fields-footnote','Each direction gets its own space. Counts describe this task collection; variants of the same benchmark are counted separately.'));
   return section;
@@ -287,9 +450,9 @@ export function renderTaskReferences(root, {record, references, error, loading})
 }
 
 export function renderArenaInsights(root, options) {
-  const {insights, references, catalog, current, analysisRoot, statisticsRoot, matchingTasks = catalog?.tasks || [], errors = {}, loading, onFilter, onRetry} = options;
+  const {insights, references, catalog, current, analysisRoot, statisticsRoot, exploredDomain, onExploreDomain, matchingTasks = catalog?.tasks || [], errors = {}, loading, onFilter, onRetry} = options;
   const separateAnalysis = analysisRoot && analysisRoot !== root ? analysisRoot : null;
-  const previous = sessions.get(root), key = [insights, references, catalog, separateAnalysis, statisticsRoot, current.domain, current.type, current.reference, current.query, current.family, current.search_family, current.protocol, errors.insights, errors.references, loading];
+  const previous = sessions.get(root), key = [insights, references, catalog, separateAnalysis, statisticsRoot, exploredDomain, current.domain, current.type, current.reference, current.query, current.family, current.search_family, current.protocol, errors.insights, errors.references, loading];
   if (previous && key.every((value, index) => value === previous.key[index])) return;
   const active = root.ownerDocument.activeElement;
   const focusRoot = statisticsRoot?.contains(active) ? statisticsRoot : separateAnalysis?.contains(active) ? separateAnalysis : root;
@@ -302,7 +465,7 @@ export function renderArenaInsights(root, options) {
   const jump = make('a', 'insights-catalog-jump', `${number(matchingTasks.length)} matching tasks · View catalog ↓`); jump.href = '#arena-list-panel';
   heading.append(jump); container.append(heading);
   if (insights && catalog) {
-    container.append(scientificFields(root,insights,catalog,current,onFilter));
+    container.append(scientificFields(root,insights,catalog,current,onFilter,exploredDomain,onExploreDomain));
     const composition=make('details','insights-composition');composition.open=compositionOpen;
     const compositionSummary=make('summary');compositionSummary.append(make('span','','Catalog statistics'),make('small','',`${number(insights.denominator.task_count)} task packages · domain shares & evaluation coverage`));composition.append(compositionSummary);
     const grid=make('div','insights-grid');

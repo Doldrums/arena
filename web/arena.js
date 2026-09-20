@@ -142,7 +142,20 @@ export function createArenaApp({document: doc = document, window: win = window,
     if (catalog) revealCatalog({scroll: scrollCatalog, focus, target});
     else if (focus) $('main').focus({preventScroll: true});
   }
+  function exploreDomain(id) {
+    const previous = state.fieldDomain === undefined ? locationState().domain : state.fieldDomain;
+    state.fieldDomain = id; render();
+    if (id) {
+      const detail = $('arena-domain-preview');
+      const reducedMotion = win.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      detail?.scrollIntoView?.({behavior: reducedMotion ? 'instant' : 'smooth', block: 'center'});
+      $('arena-domain-preview-title')?.focus({preventScroll: true});
+    } else {
+      [...doc.querySelectorAll('[data-domain-card]')].find(card => card.dataset.domainCard === previous)?.focus({preventScroll: true});
+    }
+  }
   function filterCatalog(kind, value) {
+    if (kind === 'domain') state.fieldDomain = value;
     navigate(route({[kind]: value, page: null, task: null}), {catalog: true, scrollCatalog: true});
   }
   function badge(text, kind = 'neutral') { return element('span', `badge ${kind}`, text); }
@@ -284,6 +297,7 @@ export function createArenaApp({document: doc = document, window: win = window,
     const title = element('div'); title.append(element('h2', 'arena-detail-title', participant.name || participant.id), element('span', 'arena-task-id', participant.id));
     heading.append(title, badge(participantKind(participant)));
     holder.append(heading, element('p', 'arena-detail-description', participant.description || 'No description supplied.'));
+    participantAttribution(holder, participant, true);
     participantPapers(holder, participant, true);
     const facts = element('dl', 'arena-detail-facts');
     if (participant.search_family?.label) fact(facts, 'Method family', participant.search_family.label);
@@ -306,6 +320,22 @@ export function createArenaApp({document: doc = document, window: win = window,
     const refs = (participant.code_links || []).map(item => [item.label || 'Research source', item.url]);
     if (participant.repository?.url && !refs.some(([,url]) => url === participant.repository.url)) refs.unshift(['Code', participant.repository.url]);
     return refs;
+  }
+  function participantAttribution(container, participant, detailed = false) {
+    const attribution = participant.attribution;
+    if (!attribution?.display) return;
+    const byline = element('div', `arena-participant-byline${detailed ? ' is-detail' : ''}`);
+    byline.append(element('span', '', 'by '));
+    const source = safeExternalURL(attribution.source_url);
+    const name = source ? link(attribution.display, source, 'arena-attribution-link') : element('span', '', attribution.display);
+    name.title = `${attribution.source_locator || 'Research attribution'}${attribution.evidence_note ? ` · ${attribution.evidence_note}` : ''}`;
+    byline.append(name); container.append(byline);
+    if (detailed) {
+      const context = element('p', 'arena-attribution-context');
+      context.append(element('span', '', (attribution.kind === 'authors' ? attribution.authors : attribution.organizations)?.join(' · ') || attribution.display));
+      if (attribution.evidence_note) context.append(element('span', '', attribution.evidence_note));
+      container.append(context);
+    }
   }
   function participantPapers(container, participant, detailed = false) {
     if (!participant.papers?.length) return;
@@ -353,7 +383,7 @@ export function createArenaApp({document: doc = document, window: win = window,
   function participantResults(current) {
     const terms = current.query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
     const all = state.participants.participants;
-    const participants = all.filter(item => (!current.family || item.search_family?.id === current.family) && terms.every(term => [item.id, item.name, item.description, item.search_family?.label, ...(item.papers || []).flatMap(paper => [paper.title, paper.year, paper.venue])].join(' ').toLocaleLowerCase().includes(term)));
+    const participants = all.filter(item => (!current.family || item.search_family?.id === current.family) && terms.every(term => [item.id, item.name, item.description, item.search_family?.label, item.attribution?.display, ...(item.attribution?.organizations || []), ...(item.attribution?.authors || []), ...(item.papers || []).flatMap(paper => [paper.title, paper.year, paper.venue])].join(' ').toLocaleLowerCase().includes(term)));
     $('arena-result-count').textContent = `${participants.length} of ${all.length} participants`;
     const results = $('arena-results'); results.replaceChildren();
     if (!participants.length) { empty(results, all.length ? 'No participants match your search' : 'No participants registered', all.length ? 'Try another name or clear the search.' : 'Propose a participant through a pull request.'); return; }
@@ -367,7 +397,8 @@ export function createArenaApp({document: doc = document, window: win = window,
       const art = element('div', 'arena-participant-art'); art.dataset.participant = item.id; art.setAttribute('aria-hidden', 'true');
       art.append(element('span', 'arena-participant-glyph'));
       const heading = element('div', 'arena-participant-heading'), identity = element('div');
-      identity.append(title, element('span', 'arena-participant-family', item.search_family?.label || 'Research system')); heading.append(art, identity);
+      identity.append(title); participantAttribution(identity, item);
+      identity.append(element('span', 'arena-participant-family', item.search_family?.label || 'Research system')); heading.append(art, identity);
       card.append(heading, element('p', 'arena-participant-description', item.description || 'Research system registration.'));
       participantPapers(card, item);
       const footer = element('div', 'arena-participant-footer');
@@ -415,6 +446,7 @@ export function createArenaApp({document: doc = document, window: win = window,
     $('arena-statistics').hidden = !isTasks || Boolean(selected);
     if (isTasks && !selected) renderArenaInsights($('arena-insights'), {
       insights: state.insights, references: state.references, catalog: state.catalog, current, analysisRoot: $('arena-analysis'), statisticsRoot: $('arena-statistics'),
+      exploredDomain: state.fieldDomain, onExploreDomain: exploreDomain,
       matchingTasks: state.catalog ? filterTasks(state.catalog.tasks, current, state) : [],
       errors: state.errors, loading: state.loading, onFilter: filterCatalog, onRetry: load,
     });
@@ -439,7 +471,7 @@ export function createArenaApp({document: doc = document, window: win = window,
     $('arena-detail').hidden = !selected || !dataset;
     $('arena-list-panel').hidden = Boolean(selected && dataset);
     $('arena-pagination').hidden = true;
-    $('arena-search').placeholder = `Search ${current.view}`;
+    $('arena-search').placeholder = isTasks ? 'Search tasks' : 'Search systems, papers, labs';
     $('arena-search').setAttribute('aria-label', `Search ${current.view}`);
     if ($('arena-search').value !== current.query) $('arena-search').value = current.query;
     populateFamilies();
@@ -535,7 +567,7 @@ export function createArenaApp({document: doc = document, window: win = window,
   $('arena-clear').addEventListener('click', () => navigate(route({q: null, family: null, protocol: null, domain: null, type: null, reference: null, search_family: null, page: null}), {replace: true, catalog: true}));
   doc.addEventListener('click', event => {
     const anchor = event.target.closest?.('a[href]');
-    if (!anchor || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (event.defaultPrevented || !anchor || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const url = new URL(anchor.href), currentURL = new URL(win.location.href);
     const hashTarget = url.origin === currentURL.origin && url.pathname === currentURL.pathname && url.search === currentURL.search ? catalogHashTarget(url) : null;
     if (hashTarget) {

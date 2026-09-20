@@ -32,8 +32,27 @@ upstream `sciel-supplement` task collection.
 the recorded mechanisms. They describe the research methods, without adding
 performance comparisons, audit verdicts or claims about Arena execution.
 
+## Research attribution
+
+`participant-attributions.json` records creator credits for all 98 research
+works. Each `by …` line uses organizations explicitly named in a primary paper
+or official technical report. The source URL, page/section, verification date
+and evidence note are retained. For large collaborations the card abbreviates
+the byline; the participant detail lists every credited organization.
+
+Work-done footnotes take precedence over later employment. Acknowledgements,
+email domains, GitHub handles and predecessor systems do not establish creator
+affiliations. Agentic Optimization credits its named author, Junye Pan, because
+its report does not declare an institutional affiliation. SCiEL has no invented
+organizational credit while the team's preferred attribution is being confirmed.
+These credits describe the cited research; they do not imply endorsement or an
+active Arena submission by those organizations.
+
 ## Public fields
 
+- `attribution`: compact byline, full organizations or authors, primary source
+  URL, source location, evidence note and verification date. Optional for
+  registrations without an established research credit.
 - `record_kind`: `system_registration` or `research_work`.
 - `papers`: ID, full title, direct URL, corpus year, corpus venue and publication
   kind. An empty array is explicit when no paper is attached.
@@ -65,7 +84,8 @@ python -m arena.registry validate
 ```
 
 These commands run offline. The first checks exact reproducibility from the
-captured document metadata, English summaries, bibliography and registrations;
+captured document metadata, English summaries, bibliography, attributions and
+registrations;
 the registry validator and Python API also reject a stale scholarly snapshot.
 The checked-in JSON is the equivalent snapshot used by the Cloudflare Worker.
 

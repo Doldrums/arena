@@ -14,7 +14,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from arena.registry import RegistryError, _json, resolve_registry_root
-from arena.participant_corpus import (SOURCE_FILE, DESCRIPTIONS_FILE, capture_corpus,
+from arena.participant_corpus import (SOURCE_FILE, DESCRIPTIONS_FILE, ATTRIBUTIONS_FILE, capture_corpus,
                                      build_participant_catalog)
 
 
@@ -35,7 +35,11 @@ def main(argv=None):
         bibliography = _json(root / "search-family-sources.json")
         corpus = capture_corpus(args.corpus.read_bytes(), bibliography) if args.corpus else _json(root / SOURCE_FILE)
         declarations = [_json(path) for path in sorted((root / "participants").glob("*.json"))]
-        view = build_participant_catalog(declarations, corpus, _json(root / DESCRIPTIONS_FILE), bibliography)
+        attribution_path = root / ATTRIBUTIONS_FILE
+        if not attribution_path.exists() and (root / "participants.json").exists() and any(item.get("attribution") for item in _json(root / "participants.json").get("participants", [])):
+            raise RegistryError("Missing attribution sources; refusing to drop research credits")
+        view = build_participant_catalog(declarations, corpus, _json(root / DESCRIPTIONS_FILE), bibliography,
+                                         _json(attribution_path) if attribution_path.exists() else None)
         if args.check:
             if corpus != _json(root / SOURCE_FILE):
                 raise RegistryError("Captured corpus differs from the supplied source document")

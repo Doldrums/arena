@@ -246,6 +246,102 @@
           "additionalProperties": false
         }
       ]
+    },
+    "attribution": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "organizations",
+            "authors",
+            "team"
+          ]
+        },
+        "display": {
+          "type": "string",
+          "minLength": 1
+        },
+        "organizations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "source_url": {
+          "type": "string",
+          "pattern": "^https://[^\\s]+$"
+        },
+        "source_locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checked_at": {
+          "type": "string",
+          "pattern": "^20\\d\\d-\\d{2}-\\d{2}$"
+        }
+      },
+      "required": [
+        "kind",
+        "display",
+        "organizations",
+        "authors",
+        "source_url",
+        "source_locator",
+        "evidence_note",
+        "checked_at"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "organizations",
+                  "team"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "organizations": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "authors"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "authors": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
     }
   },
   "required": [

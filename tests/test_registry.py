@@ -102,6 +102,76 @@ def test_participants_are_pinned_but_native_adapters_are_not_claimed():
             validate_participant(changed)
 
 
+@pytest.fixture
+def attribution():
+    return {
+        "kind": "organizations", "display": "Sakana AI",
+        "organizations": ["Sakana AI"], "authors": [],
+        "source_url": "https://arxiv.org/pdf/2505.22954v3",
+        "source_locator": "p. 1 author affiliations",
+        "evidence_note": "Sakana AI is explicitly named in the author affiliations.",
+        "checked_at": "2026-09-20",
+    }
+
+
+@pytest.mark.parametrize("kind,names", [
+    ("organizations", ["Sakana AI", "University of British Columbia"]),
+    ("authors", ["Junye Pan"]),
+    ("team", ["SCiEL research team"]),
+])
+def test_optional_attribution_preserves_explicit_credit_without_granting_readiness(attribution, kind, names):
+    participant = json.loads((ROOT / "registry/participants/dgm.json").read_text())
+    validate_participant(participant)  # Existing registrations need no invented affiliation.
+    original = deepcopy(participant)
+    attribution.update(kind=kind, display=" · ".join(names),
+                       organizations=[] if kind == "authors" else names,
+                       authors=names if kind == "authors" else [])
+    participant["attribution"] = attribution
+    before = deepcopy(participant)
+    validate_participant(participant)
+    assert participant == before
+    assert {key: participant[key] for key in original} == original
+
+
+@pytest.mark.parametrize("mutate", [
+    lambda a: a.update(kind="github_owner"),
+    lambda a: a.update(organizations=[]),
+    lambda a: a.update(kind="authors", authors=[]),
+    lambda a: a.update(kind="team", organizations=[]),
+    lambda a: a.update(organizations=["Sakana AI", "Sakana AI"]),
+    lambda a: a.update(authors=["Junye Pan", "Junye Pan"]),
+    lambda a: a.update(organizations="Sakana AI"),
+    lambda a: a.update(display=" "),
+    lambda a: a.update(source_url="javascript:alert(1)"),
+    lambda a: a.update(source_url="https://example.org/paper?access_token=private"),
+    lambda a: a.update(source_locator="/Users/reviewer/private/paper.pdf"),
+    lambda a: a.update(checked_at="September 2026"),
+    lambda a: a.update(unreviewed_owner="github-owner"),
+])
+def test_attribution_rejects_unsubstantiated_shapes_and_unsafe_provenance(attribution, mutate):
+    participant = json.loads((ROOT / "registry/participants/dgm.json").read_text())
+    mutate(attribution)
+    participant["attribution"] = attribution
+    with pytest.raises(RegistryError):
+        validate_participant(participant)
+
+
+@pytest.mark.parametrize("missing", ["source_url", "source_locator", "evidence_note", "checked_at"])
+def test_attribution_requires_a_reviewable_source(attribution, missing):
+    participant = json.loads((ROOT / "registry/participants/dgm.json").read_text())
+    attribution.pop(missing)
+    participant["attribution"] = attribution
+    with pytest.raises(RegistryError, match="missing fields"):
+        validate_participant(participant)
+
+
+def test_explicit_null_attribution_is_not_an_optional_omission():
+    participant = json.loads((ROOT / "registry/participants/dgm.json").read_text())
+    participant["attribution"] = None
+    with pytest.raises(RegistryError, match="expected object"):
+        validate_participant(participant)
+
+
 @pytest.mark.parametrize("updates", [
     {"manifest_path": "../secret.json"}, {"admission": "webhook_auto_run"},
     {"refresh": "automated"}, {"kind": "arbitrary_shell"}, {"unexpected": "field"},
