@@ -11,6 +11,7 @@ function mount(){
   const dom=new JSDOM(readFileSync(new URL('experiment.html',root),'utf8'),{url:'http://localhost/',runScripts:'outside-only',pretendToBeVisual:true});
   const w=dom.window;w.ResizeObserver=class{observe(){}};w.matchMedia=()=>({matches:true});
   w.renderChart=()=>({total:0,displayed:0});w.fetch=()=>assert.fail('fixture must not fetch');
+  w.eval('{'+readFileSync(new URL('effort.js',root),'utf8').replace(/^export /gm,'')+';Object.assign(window,{renderEffort,effortDetailsHTML,publishedEffortHTML});}');
   w.eval('{'+readFileSync(new URL('population-preview.js',root),'utf8').replace(/^export /gm,'')+';Object.assign(window,{renderPopulationPreview,destroyPopulationPreview});}');
   w.eval('{'+app+';window.fixture={state,applySnapshot,renderTab};}');
   const api=w.fixture;api.state.runId='fixture';api.state.tab='lessons';

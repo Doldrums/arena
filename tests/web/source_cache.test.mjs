@@ -22,6 +22,7 @@ function mount(fetchDetail){
   w.ResizeObserver=class{observe(){}};w.matchMedia=()=>({matches:true});
   w.renderChart=()=>({total:0,displayed:0});w.renderLLMCalls=()=>{};
   w.fetch=async url=>({ok:true,json:()=>fetchDetail(url)});
+  w.eval('{'+readFileSync(new URL('effort.js',root),'utf8').replace(/^export /gm,'')+';Object.assign(window,{renderEffort,effortDetailsHTML,publishedEffortHTML});}');
   w.eval('{'+readFileSync(new URL('population-preview.js',root),'utf8').replace(/^export /gm,'')+';Object.assign(window,{renderPopulationPreview,destroyPopulationPreview});}');
   w.eval('{'+source+';window.fixture={state,applySnapshot,renderCode,applyRuntime};}');
   const {state}=w.fixture;state.runId='same-path';state.tab='code';state.codeMode='code';state.runs=[snapshot().run];

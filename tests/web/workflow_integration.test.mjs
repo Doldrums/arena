@@ -20,6 +20,7 @@ function mount(){
   w.renderWorkFlow=(node,options)=>{calls.push({node,options});if(!node.firstChild){const details=w.document.createElement('details');details.innerHTML='<summary>Saved request</summary><pre>Prompt fixture</pre>';node.append(details);}};
   w.destroyWorkFlow=node=>{destroys.push(node);node.replaceChildren();};
   w.fetch=async url=>({ok:true,json:async()=>snapshot(decodeURIComponent(String(url).split('/').at(-1)),'science-b','v2')});
+  w.eval('{'+readFileSync(new URL('effort.js',assets),'utf8').replace(/^export /gm,'')+';Object.assign(window,{renderEffort,effortDetailsHTML,publishedEffortHTML});}');
   w.eval('{'+readFileSync(new URL('population-preview.js',assets),'utf8').replace(/^export /gm,'')+';Object.assign(window,{renderPopulationPreview,destroyPopulationPreview});}');
   w.eval('{'+source+';window.fixture={state,applySnapshot,applyRuntime,switchTab,selectRun,connection};}');
   const api=w.fixture;api.state.runId='path-a';api.state.runs=[snapshot().run];api.state.timingConnected=true;

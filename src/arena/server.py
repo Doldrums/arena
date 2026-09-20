@@ -218,7 +218,7 @@ class Handler(BaseHTTPRequestHandler):
         elif len(parts) == 1 and parts[0] in {"arena.js", "arena.css", "arena-insights.js", "arena-insights.css",
                                              "arena-atlas.js", "arena-atlas.css", "arena-theme.css"}:
             file = STATIC / parts[0]
-        elif len(parts) == 1 and parts[0] in {"app.js", "style.css", "chart.js", "learning.js", "llm_calls.js", "llm_calls.css", "architecture.js", "architecture.css", "population.js", "population.css", "storage-view.js", "population-preview.js", "population-preview.css", "methods.js", "methods.css", "methods_progress.js", "methods_progress.css", "methods_atlas.js", "methods_atlas.css", "research_tools.js", "research_tools.css", "research_cells.js", "research_cells.css", "workflow.js", "workflow.css", "packings.js", "packings.css", "favicon.svg"}:
+        elif len(parts) == 1 and parts[0] in {"app.js", "style.css", "effort.js", "effort.css", "chart.js", "learning.js", "llm_calls.js", "llm_calls.css", "architecture.js", "architecture.css", "population.js", "population.css", "storage-view.js", "population-preview.js", "population-preview.css", "methods.js", "methods.css", "methods_progress.js", "methods_progress.css", "methods_atlas.js", "methods_atlas.css", "research_tools.js", "research_tools.css", "research_cells.js", "research_cells.css", "workflow.js", "workflow.css", "packings.js", "packings.css", "favicon.svg"}:
             file = STATIC / parts[0]
         else:
             self.reply({"error": "Page not found."}, 404)

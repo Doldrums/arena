@@ -69,6 +69,7 @@ async function mounted({runId=fixtureRun.id,tab,fetchOverride,ready,configure}={
   let copied=null;
   Object.defineProperty(w.navigator,'clipboard',{value:{writeText:async text=>{copied=text;}}});
   // Separate scopes mirror ES modules; only the explicit export is shared.
+  w.eval('{'+readFileSync(assets+'effort.js','utf8').replace(/^export /gm,'')+';Object.assign(window,{renderEffort,effortDetailsHTML,publishedEffortHTML});}');
   w.eval('{'+chart+'; window.renderChart=renderChart;}');
   w.eval('{'+learning+'; window.learningHTML=learningHTML;}');
   w.eval('{'+architecture+'; Object.assign(window,{architectureGraphHTML,bindArchitectureGraph,updateArchitectureGraphPhase});}');
@@ -772,11 +773,13 @@ test('published reference is separate from task target, shows scope and accepts 
     const snapshot=await (await fetch(base+'/api/runs/'+fixtureRun.id)).json();
     snapshot.stats.best_score=2.5/2.635;snapshot.stats.best_metric_display=measured(2.5,snapshot.stats.best_score,'Sum of radii');
     snapshot.benchmark={label:'SOTA reference',value:2.6359830849176078,current_value:2.5,metric:'Sum of radii',task_target:2.635,target_metric:'Sum of radii',source_url:'https://www.gotherlabs.com/results/circle-packing-26-unit-square/',source_label:'Göther Labs · strict witness',note:'Published strict packing (τ = 0). The comparison is descriptive, not a proof of a new record.'};
+    snapshot.benchmark.run_tolerance=1e-6;snapshot.benchmark.reference_tolerance=1e-6;
+    snapshot.benchmark.best_known={status:'known',label:'Best known',name:'Göther',value:snapshot.benchmark.value,current_value:2.5,tolerance:1e-6};
     streams.at(-1).snapshot(snapshot);
     const panel=doc.getElementById('benchmark-comparison');
     assert.equal(doc.getElementById('best-score-label').textContent,'Sum of radii');
     assert.equal(doc.getElementById('best-score').textContent,'2.500000');
-    assert.equal(doc.getElementById('best-score-comparison').textContent,'| 5.16% below SOTA');
+    assert.equal(doc.getElementById('best-score-comparison').textContent,'| 5.16% below Best known · Göther');
     assert.match(doc.getElementById('chart-subtitle').textContent,/Sum of radii/);
     assert.equal(panel.previousElementSibling,doc.querySelector('.metrics'));
     assert.equal(panel.nextElementSibling,doc.querySelector('.overview-grid'));
@@ -790,17 +793,18 @@ test('published reference is separate from task target, shows scope and accepts 
     snapshot.benchmark.references=[{name:'ShinkaEvolve — reported',value_label:'2.635983099011548',tolerance:1e-6,status:'reported',source_name:'Sakana AI',source_url:'https://openreview.net/pdf?id=lKEdGCoDNC',gap_percent:.000001},
       {name:'Strict reference',value_label:'2.6359830849176077831865694854434817303966767982744748577457711298607038493344723396767997365079',tolerance:0,status:'audited',source_name:'Untrusted <script>',source_url:'javascript:alert(1)',gap_percent:-.000003}];
     streams.at(-1).snapshot(snapshot);
-    assert.equal(panel.querySelectorAll('.benchmark-table tbody tr').length,2);
+    assert.equal(panel.querySelectorAll('.benchmark-table tbody tr').length,3);
     assert.match(panel.textContent,/τ = 0 \(strict\)/);
     assert.match(panel.textContent,/0\.000001% below/);
-    assert.match(panel.textContent,/0\.000003% above/);
+    assert.match(panel.textContent,/Different tolerance \/ comparison unavailable/);
+    assert.doesNotMatch(panel.textContent,/0\.000003% above/);
     assert.equal(panel.querySelectorAll('.benchmark-table a').length,1);
     assert.equal(panel.querySelectorAll('script').length,0);
     snapshot.benchmark.references=[];
     snapshot.benchmark.source_url='javascript:window.owned=true';streams.at(-1).snapshot(snapshot);
     assert.equal(panel.querySelector('a'),null);
-    snapshot.benchmark.current_value=snapshot.benchmark.value*1.01;snapshot.stats.best_score=snapshot.benchmark.current_value/2.635;snapshot.stats.best_metric_display=measured(snapshot.benchmark.current_value,snapshot.stats.best_score,'Sum of radii');streams.at(-1).snapshot(snapshot);
-    assert.equal(doc.getElementById('best-score-comparison').textContent,'| 1.00% above SOTA');
+    snapshot.benchmark.current_value=snapshot.benchmark.value*1.01;snapshot.stats.best_score=snapshot.benchmark.current_value/2.635;snapshot.stats.best_metric_display=measured(snapshot.benchmark.current_value,snapshot.stats.best_score,'Sum of radii');snapshot.benchmark.best_known.current_value=snapshot.benchmark.current_value;streams.at(-1).snapshot(snapshot);
+    assert.equal(doc.getElementById('best-score-comparison').textContent,'| 1.00% above Best known · Göther');
     snapshot.benchmark.current_value=null;snapshot.stats.best_metric_display={...snapshot.stats.best_metric_display,status:'unknown',value:null};streams.at(-1).snapshot(snapshot);
     assert.equal(doc.getElementById('best-score').textContent,'Not measured');
     assert.equal(doc.getElementById('best-score-comparison').hidden,true);

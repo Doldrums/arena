@@ -36,9 +36,12 @@ class DashboardCacheTests(unittest.TestCase):
             for _ in range(3):
                 got, kind, small = self.store.stream_update(ident, version)
                 self.assertEqual((got, kind), (version, "runtime"))
-                self.assertEqual(set(small), {"run", "runtime", "timing"})
+                self.assertEqual(set(small), {"run", "runtime", "timing", "effort"})
+                self.assertEqual(small['effort']['schema'], 'arena-run-effort/1')
+                self.assertNotIn('_effort_basis', small)
                 self.assertNotIn("hypotheses", small["timing"])
-                self.assertLess(len(json.dumps(small)), 1000)
+                self.assertLess(len(json.dumps({k:v for k,v in small.items() if k != 'effort'})), 1000)
+                self.assertLess(len(json.dumps(small['effort'])), 3000)
             (self.run / "runtime.json").write_text(json.dumps(dict(
                 schema="sciel-runtime/1", run_id="r", segment_id="s", status="paused")))
             _, kind, small = self.store.stream_update(ident, version)

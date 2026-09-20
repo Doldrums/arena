@@ -15,6 +15,7 @@ function mount(){
   const w=dom.window;w.ResizeObserver=class{observe(){}};w.matchMedia=()=>({matches:true});
   w.renderChart=()=>({total:0,displayed:0});w.renderLLMCalls=()=>{};
   w.fetch=()=>assert.fail('fixture must not fetch');
+  w.eval('{'+readFileSync(new URL('effort.js',root),'utf8').replace(/^export /gm,'')+';Object.assign(window,{renderEffort,effortDetailsHTML,publishedEffortHTML});}');
   w.eval('{'+readFileSync(new URL('population-preview.js',root),'utf8').replace(/^export /gm,'')+';Object.assign(window,{renderPopulationPreview,destroyPopulationPreview});}');
   w.eval('{'+app+';window.fixture={state,applySnapshot,renderTab,resultHistoryDetailHTML,renderResultHistory};}');
   return {dom,w,doc:w.document,api:w.fixture};

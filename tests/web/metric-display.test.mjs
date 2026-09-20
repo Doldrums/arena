@@ -23,6 +23,7 @@ function setup(data) {
   w.eval('{'+read('chart.js').replace('export function renderChart','function renderChart')+';window.renderChart=renderChart;}');
   w.eval('{'+read('population.js').replace(/export function /g,'function ')+';Object.assign(window,{renderPopulationMap,destroyPopulationMap});}');
   w.eval('{'+read('storage-view.js').replace('export function renderStorageSpace','function renderStorageSpace')+';window.renderStorageSpace=renderStorageSpace;}');
+  w.eval('{'+readFileSync(new URL('effort.js',assets),'utf8').replace(/^export /gm,'')+';Object.assign(window,{renderEffort,effortDetailsHTML,publishedEffortHTML});}');
   w.eval('{'+readFileSync(new URL('population-preview.js',assets),'utf8').replace(/^export /gm,'')+';Object.assign(window,{renderPopulationPreview,destroyPopulationPreview});}');
   w.eval('{'+app+';window.metricFixture={set(data){state.snapshot=data;state.runId="fixture";state.contentVersion=data.content_version;state.selected=null;plotProjection=null;},state,renderPlot,renderTrials,renderHypotheses,renderPopulation,metricDisplay,metricText,metricDifference,metricLabel};}');
   w.metricFixture.set(data);

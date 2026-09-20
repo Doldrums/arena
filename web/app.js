@@ -10,6 +10,7 @@ import {learningHTML} from './learning.js';
 import {renderLLMCalls} from './llm_calls.js';
 import {renderWorkFlow, destroyWorkFlow} from './workflow.js';
 import {architectureGraphHTML, bindArchitectureGraph, updateArchitectureGraphPhase} from './architecture.js';
+import {renderEffort, effortDetailsHTML, publishedEffortHTML} from './effort.js';
 
 const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -35,6 +36,7 @@ const empty = (title,body='') => '<div class="empty-panel"><strong>'+esc(title)+
 const hypothesisText = hypothesis => typeof hypothesis==='string'?hypothesis:(hypothesis?.text || hypothesis?.hypothesis || '');
 const currentTrial = () => state.snapshot?.trials.find(t=>key(t)===state.selected);
 const taskName = task => ({'oe/circle_packing':'Circle packing','oe/heilbronn_triangle':'Heilbronn triangle','oe/function_minimization_oracle':'Function minimization'}[task] || task || 'Experiment');
+const runEffort = run => {const value=run.committed_effort;if(!value)return '<span class="run-effort">Effort not recorded</span>';const models=new Set(value.configured_models||[]);return '<span class="run-effort" title="'+esc(value.note)+'">'+esc(value.ordinary_iterations??'—')+' iterations · '+(numeric(value.known_llm_usd)?(value.cost_status==='known_logged_lower_bound'?'≥ ':'')+'$'+value.known_llm_usd.toFixed(2):'USD unknown')+' committed · '+(models.size||'unknown')+' configured LLMs</span>';};
 const nameOf = run => {
   const path=run.path || run.name;
   const known=[['s04_r2_cycle','Research cycle · S04 r2'],['s04_cycle','Research cycle · S04'],['s05_r2_pair','Memory · S05 r2'],['s05_pair','Memory · S05'],['circle_body_engine_r2','Circle body · r2'],['circle_body_engine','Circle body']];
@@ -61,7 +63,7 @@ function renderRuns() {
   const query=$('run-search').value.toLowerCase();
   const runs=state.runs.filter(run=>(nameOf(run)+' '+run.task+' '+run.path).toLowerCase().includes(query));
   $('run-count').textContent=state.runs.length;
-  $('run-list').innerHTML=runs.map(run=>'<button class="run-item'+(run.id===state.runId?' selected':'')+'" data-run="'+esc(run.id)+'" '+(run.id===state.runId?'aria-current="true"':'')+'><span class="run-icon" aria-hidden="true">↗</span><span class="run-info"><span class="run-name">'+esc(nameOf(run))+'</span><span class="run-meta"><span class="run-state-dot '+(['running','starting'].includes(run.status)?'live':'')+'"></span>'+esc(statuses[run.status]?.[0]||'Archive')+' · '+(run.kind==='methods'?'Research labs':numeric(run.best_score)?format(run.best_score,4):'—')+'</span></span></button>').join('') || '<div class="sidebar-empty">'+(query?'No matching runs':'No runs yet')+'</div>';
+  $('run-list').innerHTML=runs.map(run=>'<button class="run-item'+(run.id===state.runId?' selected':'')+'" data-run="'+esc(run.id)+'" '+(run.id===state.runId?'aria-current="true"':'')+'><span class="run-icon" aria-hidden="true">↗</span><span class="run-info"><span class="run-name">'+esc(nameOf(run))+'</span><span class="run-meta"><span class="run-state-dot '+(['running','starting'].includes(run.status)?'live':'')+'"></span>'+esc(statuses[run.status]?.[0]||'Archive')+' · '+(run.kind==='methods'?'Research labs':numeric(run.best_score)?format(run.best_score,4):'—')+'</span>'+runEffort(run)+'</span></button>').join('') || '<div class="sidebar-empty">'+(query?'No matching runs':'No runs yet')+'</div>';
 }
 
 async function refreshRuns(initial=false) {
@@ -196,6 +198,7 @@ function applyRuntime(update) {
   const changed=state.snapshot.run.status!==update.run.status||state.snapshot.run.status_reason!==update.run.status_reason||state.snapshot.run.stop_detail!==update.run.stop_detail;
   Object.assign(state.snapshot.run,{status:update.run.status,status_reason:update.run.status_reason,stop_detail:update.run.stop_detail});
   state.snapshot.runtime=update.runtime;
+  if(update.effort){state.snapshot.effort=update.effort;renderBenchmark();}
   if(update.research_tool_jobs&&state.snapshot.research_tools){
     const changed=state.snapshot.research_tools.jobs?.version!==update.research_tool_jobs.version;
     state.snapshot.research_tools.jobs=update.research_tool_jobs;
@@ -296,13 +299,13 @@ function renderSummary() {
   $('best-score').textContent=numeric(value)?format(value):metricStatus(bestDisplay);
   $('best-score').title=numeric(value)?String(value):metricText(bestDisplay);
   const comparison=$('best-score-comparison');
-  comparison.hidden=!(reference&&numeric(value)&&numeric(reference.value)&&reference.value>0);
+  const gaps=[reference?.best_known,reference?.best_ai_method].filter(item=>item?.status==='known'&&item.current_value===value&&numeric(value)&&numeric(item.value)&&item.value>0&&numeric(reference?.run_tolerance)&&item.tolerance===reference.run_tolerance);
+  comparison.hidden=!gaps.length;
   document.querySelector('.metrics').classList.toggle('has-reference',!comparison.hidden);
   comparison.textContent='';
   if(!comparison.hidden){
-    const gap=(reference.value-value)/reference.value*100;
-    comparison.textContent='| '+percent(gap)+'% '+(gap>=0?'below':'above')+' SOTA';
-    comparison.title='Published reference: '+reference.value+' · '+(reference.note||'');
+    comparison.innerHTML=gaps.map(item=>{const gap=(item.value-value)/item.value*100;return '<span class="benchmark-reference-gap">| '+percent(gap)+'% '+(gap>=0?'below':'above')+' '+esc(item.label||'Published reference')+' · '+esc(item.name)+'</span>';}).join('');
+    comparison.title='Comparable published values at the recorded task tolerance. '+(reference.note||'');
   }
   const gain=metricDifference(bestDisplay,metricDisplay(stats,'seed_metric_display','seed_score'));
   $('score-gain').textContent=numeric(gain)?(gain>0?'↗ ':'')+delta(gain)+' from initial program':'Measured gain unavailable';
@@ -339,6 +342,14 @@ function renderSummary() {
 
 function renderSpend() {
   const {stats,runtime}=state.snapshot, pending=runtime?.uncommitted_cost;
+  const physical=state.snapshot.effort?.total;
+  if(physical){
+    const partial=physical.status!=='complete';
+    $('cost').textContent=(partial&&numeric(physical.reported_usd)?'≥ ':'')+(numeric(physical.reported_usd)?'$'+physical.reported_usd.toFixed(4):'Unknown');
+    $('cost-note').textContent=String(physical.physical_llm_calls)+' completed physical LLM calls'+(physical.pending_llm_calls?' · '+physical.pending_llm_calls+' pending':'')+(physical.unknown_cost_calls?' · '+physical.unknown_cost_calls+' charges unknown':'');
+    $('cost').title='Receipt-backed cumulative run spend. '+state.snapshot.effort.note;
+    return;
+  }
   let value=stats.cost_total,partial=stats.cost_status==='known_logged_lower_bound';
   let note=stats.cost_status==='estimated'?'Estimated from token rates':partial?'Partial recorded spend':'Generation and analysis';
   let title=stats.cost_status==='estimated'?'Estimated LLM spend from uncached token rates; actual billed cost may differ.':'Recorded LLM spend; excludes compute infrastructure costs.';
@@ -425,23 +436,41 @@ function renderRuntime() {
 
 function renderBenchmark() {
   let panel=$('benchmark-comparison');
-  if(!panel){panel=document.createElement('section');panel.id='benchmark-comparison';panel.className='benchmark-comparison';panel.setAttribute('aria-label','Published reference comparison');document.querySelector('.metrics').after(panel);}
-  const reference=state.snapshot.benchmark;
+  if(!panel){panel=document.createElement('section');panel.id='benchmark-comparison';panel.className='benchmark-comparison';panel.setAttribute('aria-label','Published reference and effort comparison');document.querySelector('.metrics').after(panel);}
+  const reference=state.snapshot.benchmark,effort=state.snapshot.effort;
   const start=state.snapshot.events.find(e=>e.event==='run_start')?.data||{};
   const target=reference?.task_target??start.known_best;
-  panel.hidden=!reference&&!numeric(target);
+  panel.hidden=!reference&&!numeric(target)&&!effort;
   const referenceOpen=panel.querySelector('.benchmark-disclosure')?.open===true;
+  const disclosureKey=node=>JSON.stringify([node.closest('tr')?.querySelector('td')?.textContent||node.closest('section')?.querySelector('.effort-title')?.textContent||'reference',node.querySelector('summary')?.textContent]);
+  const openDetails=new Set([...panel.querySelectorAll('details[open]')].map(disclosureKey));
+  const current=measuredValue(metricDisplay(state.snapshot.stats,'best_metric_display','best_score'));
+  const bound=reference?.current_value===current&&numeric(current)&&numeric(reference?.run_tolerance);
   let html='';
   if(reference&&numeric(reference.value)){
-    const current=measuredValue(metricDisplay(state.snapshot.stats,'best_metric_display','best_score')),gap=numeric(current)?current-reference.value:null;
-    const source=sourceLink(reference.source_url,reference.source_label||'Published source');
-    html='<div class="benchmark-heading"><strong>'+esc(reference.label||'Published reference')+'</strong>'+source+'</div><div class="benchmark-values"><div>This run<strong>'+format(current,9)+'</strong></div><div>'+esc(reference.metric||'Reference value')+'<strong>'+format(reference.value,9)+'</strong></div><div>Gap to reference<strong>'+delta(gap)+'</strong></div><div>Of reference<strong>'+(numeric(current)&&reference.value!==0?(current/reference.value*100).toFixed(4)+'%':'—')+'</strong></div></div>';
+    const comparable=bound&&reference.reference_tolerance===reference.run_tolerance;
+    const gap=comparable?current-reference.value:null;
+    html='<div class="benchmark-heading"><strong>'+esc(reference.label||'Published reference')+'</strong>'+sourceLink(reference.source_url,reference.source_label||'Published source')+'</div><div class="benchmark-values"><div>This run<strong>'+format(current,9)+'</strong></div><div>'+esc(reference.metric||'Reference value')+'<strong>'+format(reference.value,9)+'</strong></div><div>Gap to reference<strong>'+delta(gap)+'</strong></div><div>Of reference<strong>'+(comparable&&reference.value!==0?(current/reference.value*100).toFixed(4)+'%':'—')+'</strong></div></div>';
     if(reference.note)html+='<p class="benchmark-note">'+esc(reference.note)+'</p>';
-    if(reference.references?.length)html+='<div class="table-wrap benchmark-table"><table><thead><tr><th>Published result</th><th>Sum of radii</th><th>Constraint tolerance</th><th>Numerical gap</th><th>Evidence</th></tr></thead><tbody>'+reference.references.map(row=>'<tr><td>'+esc(row.name)+'</td><td class="number published-value">'+esc(row.value_label||String(row.value))+'</td><td>'+esc(toleranceLabel(row.tolerance))+'</td><td class="number">'+(numeric(current)&&numeric(row.gap_percent)?percent(row.gap_percent)+'% '+(row.gap_percent>=0?'below':'above'):'—')+'</td><td>'+sourceLink(row.source_url,row.source_name)+'<small>'+esc(row.status||'')+'</small></td></tr>').join('')+'</tbody></table></div>';
+    const rows=(reference.references||[]).map(row=>({...row}));
+    if(bound)rows.push({current:true,name:'Current solution · '+(state.snapshot.best_candidate_id||'ID not recorded'),value:current,tolerance:reference.run_tolerance});
+    // Only the tolerance-matched group is ordered together. Other protocols
+    // remain visibly separate; this table is not a cross-protocol ranking.
+    const comparableRows=rows.filter(row=>row.tolerance===reference.run_tolerance).sort((a,b)=>(numeric(b.value)?b.value:-Infinity)-(numeric(a.value)?a.value:-Infinity));
+    const otherRows=rows.filter(row=>row.tolerance!==reference.run_tolerance);
+    const renderRow=row=>{
+      if(row.current)return '<tr class="benchmark-current" data-program-id="'+esc(state.snapshot.best_candidate_id||'')+'"><td>'+esc(row.name)+'<small>Canonical evaluator · current best</small></td><td class="number published-value">'+esc(String(current))+'</td><td>'+esc(toleranceLabel(row.tolerance))+'</td><td>This run</td><td>'+effortDetailsHTML(effort?.to_best)+'</td><td>Saved measurement<small>Effort cutoff: evaluation completion</small></td></tr>';
+      const match=bound&&row.tolerance===reference.run_tolerance;
+      const kind={ai_search_framework:'AI search',ai_assisted:'AI-assisted',unknown:'Method not classified'}[row.method_classification]||'Method not classified';
+      return '<tr><td>'+esc(row.name)+'<small>'+kind+'</small></td><td class="number published-value">'+esc(row.value_label||String(row.value))+'</td><td>'+esc(toleranceLabel(row.tolerance))+'</td><td class="number">'+(match&&numeric(row.gap_percent)?percent(row.gap_percent)+'% '+(row.gap_percent>=0?'below':'above'):'Different tolerance / comparison unavailable')+'</td><td>'+publishedEffortHTML(row.effort)+'</td><td>'+sourceLink(row.source_url,row.source_name)+'<small>'+esc(row.status||'')+'</small>'+(row.effort?.source_url?sourceLink(row.effort.source_url,'Effort source'):'')+'</td></tr>';
+    };
+    if(rows.length)html+='<div class="table-wrap benchmark-table"><table><thead><tr><th>Result</th><th>'+esc(reference.metric||'Native metric')+'</th><th>Constraint tolerance</th><th>This run vs reference</th><th>Discovery effort</th><th>Evidence</th></tr></thead><tbody>'+comparableRows.map(renderRow).join('')+otherRows.map(renderRow).join('')+'</tbody></table></div>';
   }
   if(html)html='<details class="benchmark-disclosure"'+(referenceOpen?' open':'')+'><summary>'+esc(reference.label||'Tolerance-matched reference')+'</summary>'+html+'</details>';
+  if(effort)html+=renderEffort(effort);
   if(numeric(target))html+='<div class="benchmark-target"><span>Task target'+(reference?.target_metric?' · '+esc(reference.target_metric):'')+'</span><strong>'+esc(target)+'</strong><span>Recorded task target; separate from the published reference.</span></div>';
   panel.innerHTML=html;
+  panel.querySelectorAll('details').forEach(node=>{if(openDetails.has(disclosureKey(node)))node.open=true;});
 }
 
 function renderArchitecturePhase() {

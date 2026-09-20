@@ -26,6 +26,7 @@ from .metric_display import project_metrics
 from .population import population_view
 from .parallel import parallel_view, runtime_parallel
 from .parallel_cost import WaveSpendMonitor
+from .effort import EffortMonitor, effort_basis
 from .learning import learning_view
 from .reliability import reliability_view
 from .result_history import result_history_view
@@ -193,6 +194,7 @@ class RunStore:
         self._lock = threading.RLock()
         self.timing_monitor = TimingMonitor(cache_dir=timing_cache_dir)
         self.wave_spend_monitor = WaveSpendMonitor()
+        self.effort_monitor = EffortMonitor()
         self._timing_targets = {}
         self._timing_scan_at = -math.inf
         self._methods_views = OrderedDict()
@@ -332,7 +334,7 @@ class RunStore:
             self._summaries.pop(path, None)
         return version, projection
 
-    def _live_view(self, ident, path, metadata, *, observe_timing=True, job_base=None, research_base=None):
+    def _live_view(self, ident, path, metadata, *, observe_timing=True, job_base=None, research_base=None, effort_base=None):
         """Refresh only process state and age; never replay journal history."""
         start, end, modified, stop_detail = metadata
         runtime = self._runtime(path, start)
@@ -356,6 +358,9 @@ class RunStore:
         result = {"run": {"id": ident, "status": status, "status_reason": reason,
                         "stop_detail": stop_detail if status in {"stopped", "failed", "interrupted", "paused"} else None},
                 "runtime": runtime, "timing": timing}
+        if effort_base is not None:
+            rows, _ = self._journal(path)
+            result['effort'] = self.effort_monitor.observe(path.parent, start, rows, effort_base)
         if job_base is not None and job_base.get('available') is True:
             if path not in self._background_jobs:
                 self._cache_put(self._background_jobs,path,BackgroundJobView(path.parent))
@@ -379,6 +384,8 @@ class RunStore:
         snapshot["run"].update(_safe(live["run"]))
         snapshot["runtime"] = _safe(live["runtime"])
         snapshot['timing'] = _safe(live['timing'])
+        snapshot.pop('_effort_basis', None)
+        snapshot['effort'] = _safe(live.get('effort'))
         if 'research_tool_jobs' in live:
             snapshot['research_tools']['jobs'] = _safe(live['research_tool_jobs'])
         if 'research_pending_cells' in live:
@@ -1160,6 +1167,12 @@ class RunStore:
         display = project_metrics(snapshot, checkpoint, rows, sources, evidence)
         snapshot['benchmark'] = benchmark_for(task, display.metric, best,
             metric_display=snapshot['stats']['best_metric_display'])
+        snapshot['_effort_basis'] = effort_basis(rows, sources, best_candidate_id, best,
+            _dict(checkpoint.get('identity')).get('task_hash'), iterations)
+        run['committed_effort'] = dict(scope='committed_journal', ordinary_iterations=iterations,
+            ordinary_successful_evaluations=evaluations, known_llm_usd=_number(cost), cost_status=cost_status,
+            configured_models=_list(start.get('models')),
+            note='Committed accounting only. Physical pending receipts and actual model use require the selected run view.')
         return snapshot, sources, evidence, (start, end, modified, _stop_detail(checkpoint, rows[last_start + 1:]))
 
     def discover(self):
@@ -1192,7 +1205,8 @@ class RunStore:
                 return self._methods_snapshot(run_id, path)
             _, projection = self._projection(run_id, path)
             return self._snapshot_view(projection, self._live_view(run_id, path, projection[3],
-                job_base=projection[0]['research_tools']['jobs'],research_base=projection[0]['research_tools']))
+                job_base=projection[0]['research_tools']['jobs'],research_base=projection[0]['research_tools'],
+                effort_base=projection[0].get('_effort_basis')))
 
     def stream_update(self, run_id, previous_version=None):
         """Full content on change; tiny runtime-only frames between writes."""
@@ -1207,7 +1221,7 @@ class RunStore:
                 return version, 'snapshot', dict(_safe(projection), **live)
             version, projection = self._projection(run_id, path)
             live = self._live_view(run_id, path, projection[3],job_base=projection[0]['research_tools']['jobs'],
-                research_base=projection[0]['research_tools'])
+                research_base=projection[0]['research_tools'],effort_base=projection[0].get('_effort_basis'))
             if version == previous_version:
                 # Recent hypothesis timestamps ride on content snapshots only.
                 live['timing'] = {key: value for key, value in live['timing'].items()
