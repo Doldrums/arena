@@ -1,0 +1,36 @@
+@startuml
+!include style.puml
+top to bottom direction
+state "queued" as Q
+state "leased" as L
+state "running" as R
+state "finalizing" as F
+state "completed" as C
+state "cancel_requested" as X
+state "stopped" as S
+state "orphaned" as O
+state "reconciling" as RE
+state "failed" as FAIL
+[*] --> Q
+Q --> L : atomic claim
+L --> R : start confirmed
+R --> F : participant finished
+F --> C : artifacts committed
+R --> X : cancel command
+X --> S : children stopped; checkpoint saved
+L --> O : lease expired
+R --> O : heartbeat lost
+F --> O : upload interrupted
+O --> RE : check worker + costs + artifacts
+RE --> R : original attempt recovered
+RE --> Q : old attempt closed; retry allowed
+RE --> FAIL : recovery impossible
+R --> FAIL : terminal execution error
+C --> [*]
+S --> [*]
+FAIL --> [*]
+note bottom of O
+  Потеря heartbeat не доказывает остановку процесса.
+  Автоповтор может удвоить вычисления и платные вызовы.
+end note
+@enduml

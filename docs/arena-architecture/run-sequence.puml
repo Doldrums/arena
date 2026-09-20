@@ -1,0 +1,38 @@
+@startuml
+!include style.puml
+autonumber
+actor "User" as U
+participant "Arena API\nCloudflare" as A
+database "D1" as D
+participant "Supervisor\nVast.ai" as W
+participant "Participant" as P
+participant "Arena evaluator" as E
+collections "R2" as R
+U -> A : POST /runs\n+ idempotency_key
+A -> D : RunSpec + queued
+A --> U : run_id
+W -> A : claim(capabilities)
+A -> D : atomic claim\n+ lease_epoch
+A --> W : RunSpec + attempt_id\n+ lease
+W -> P : start(spec, task_bundle,\nscoped_token)
+loop Пока действует lease и есть бюджет
+  W -> A : heartbeat\n+ events batch
+  A --> W : renew / cancel_requested
+  P -> E : evaluate(candidate_ref,\nrequest_id)
+  E -> E : reserve; execute\ntask protocol
+  E --> P : feedback + evaluation_id
+  E -> W : immutable receipt + cost
+  W -> R : upload artifacts\n/ checkpoint
+  W -> A : commit receipt\n+ object refs
+end
+P --> W : completed / stopped\n+ checkpoint
+W -> R : upload final manifest
+W -> A : finish(attempt, epoch,\nmanifest_digest)
+A -> D : terminal state\n+ artifact index
+U -> A : GET /runs/{id}
+A --> U : metrics + state + artifact links
+note over W,E
+  Evaluator и бюджет принадлежат Arena.
+  Участник не может сам назначить официальный score.
+end note
+@enduml

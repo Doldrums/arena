@@ -1,0 +1,38 @@
+@startuml
+!include style.puml
+top to bottom direction
+actor "Пользователь" as User
+node "Cloudflare · control plane" as CF #F5F8FF {
+  node "Workers" {
+    artifact "Board / static assets" as UI
+    component "Arena API\nGitHub App webhook\nworker endpoints" as API
+  }
+  database "D1\nregistry · runs · leases\nevents index · ledger" as DB
+  storage "R2\nsource bundles · artifacts\nlogs · checkpoints" as R2
+  UI --> API : /api
+  API --> DB : control state
+  API --> R2 : signed URLs
+}
+node "Vast.ai · Linux VM + Docker" as Vast #FFF8ED {
+  component "Arena Supervisor\nclaim · heartbeat · reconcile" as Sup
+  node "Participant container" {
+    artifact "SCiEL / Shinka / DGM\npinned image + RunSpec" as P
+  }
+  node "Task environment container" {
+    component "Arena evaluator\ncandidate sandbox" as E
+  }
+  component "Model gateway\nлимиты и учёт вызовов" as L
+  storage "Local spool\nкэш + недоставленные события" as Spool
+  Sup --> P : start / control
+  Sup --> E : create isolated job
+  P --> E : local evaluation API
+  P --> L : model requests
+  E --> L : LLM tasks
+  Sup --> Spool : journal
+}
+cloud "Model providers" as Models
+User --> UI : HTTPS
+Sup -up-> API : HTTPS pull\nclaim / renew / events
+Sup -up-> R2 : upload / download
+L --> Models : model API
+@enduml

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <title>Arena · Tasks</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/arena.css">
+  <script type="module" src="/arena.js"></script>
+</head>
+<body data-arena-app="true">
+  <a class="skip" href="#main">Skip to content</a>
+  <aside class="sidebar arena-sidebar">
+    <a class="brand" href="/" aria-label="Arena home">
+      <span class="brand-mark" aria-hidden="true">a<span>·</span></span>
+      <span>Arena<span class="brand-caption">RESEARCH ARENA</span></span>
+    </a>
+    <nav class="arena-nav" aria-label="Arena">
+      <a href="/" data-arena-view="tasks" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>Tasks<span id="nav-task-count"></span></a>
+      <a href="/?view=participants" data-arena-view="participants"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 4v2"/></svg>Participants<span id="nav-participant-count"></span></a>
+      <a href="/experiments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16h16M7 15l4-5 4 3 5-7"/></svg>Experiments<small aria-hidden="true">↗</small></a>
+    </nav>
+    <div class="arena-sidebar-note"><div class="section-label">Shared arena</div><p>Task definitions, participant integrations and recorded experiments.</p><a class="inline-link" href="https://github.com/Doldrums/arena" target="_blank" rel="noopener noreferrer">Repository ↗</a></div>
+    <footer class="sidebar-footer">
+      <span class="connection-dot" id="arena-connection-dot"></span>
+      <div><span id="arena-connection" role="status" aria-live="polite">Loading registry…</span><span class="footer-note">Read-only catalog</span></div>
+    </footer>
+  </aside>
+  <div class="workspace">
+    <header class="topbar">
+      <div class="breadcrumbs"><a href="/">Arena</a><span class="slash">/</span><span id="arena-breadcrumb">Tasks</span></div>
+      <div class="topbar-right"><span class="read-only">Read only</span><a class="inline-link" href="https://github.com/Doldrums/arena/pulls" target="_blank" rel="noopener noreferrer">Contribute ↗</a></div>
+    </header>
+    <main id="main" tabindex="-1">
+      <div class="page-heading arena-page-heading">
+        <div><div class="eyebrow">RESEARCH ARENA</div><h1 id="arena-title">Tasks</h1><p id="arena-subtitle" class="subtitle">Browse tasks and inspect their evaluation contracts.</p></div>
+        <a id="arena-contribute" class="button primary" href="https://github.com/Doldrums/arena/compare" target="_blank" rel="noopener noreferrer">Add a task <span aria-hidden="true">↗</span></a>
+      </div>
+      <section id="arena-summary" class="metrics arena-metrics" aria-label="Registry summary"></section>
+      <p id="arena-scope" class="arena-scope" hidden></p>
+      <div id="arena-error" class="error-banner" role="alert" hidden></div>
+      <section id="arena-detail" class="panel arena-detail" aria-label="Selected item" hidden></section>
+      <section id="arena-list-panel" class="panel">
+        <form id="arena-filters" class="arena-filters" role="search" aria-label="Search catalog">
+          <label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="arena-search" type="search" placeholder="Search tasks" aria-label="Search tasks" autocomplete="off"></label>
+          <label class="arena-select-label" id="family-filter-label">Family<select id="arena-family"><option value="">All families</option></select></label>
+          <label class="arena-select-label" id="protocol-filter-label">Protocol<select id="arena-protocol"><option value="">All protocols</option><option value="original">Original</option><option value="recreated_verified">Recreated · verified</option><option value="recreated">Recreated</option><option value="unsupported">Unsupported</option></select></label>
+          <button id="arena-clear" class="text-button" type="button" hidden>Clear filters</button>
+        </form>
+        <div class="arena-results-heading"><h2 id="arena-results-title">Task catalog</h2><span id="arena-result-count" role="status" aria-live="polite">Loading…</span></div>
+        <div id="arena-results" aria-busy="true"><div class="loading">Loading task definitions…</div></div>
+        <nav id="arena-pagination" class="arena-pagination" aria-label="Results pages" hidden></nav>
+      </section>
+      <footer class="page-footer arena-page-footer"><span id="arena-source-note">Versioned task definitions and participant registrations.</span><a href="/experiments">Open experiment board ↗</a></footer>
+      <noscript><p class="arena-scope">JavaScript is needed to load the catalog. <a href="https://github.com/Doldrums/arena">Browse the repository</a>.</p></noscript>
+    </main>
+  </div>
+</body>
+</html>

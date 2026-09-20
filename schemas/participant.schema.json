@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Doldrums/arena/raw/main/schemas/participant.schema.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository": {
+      "$ref": "common.schema.json#/$defs/repository"
+    },
+    "registration_status": {
+      "const": "planned"
+    },
+    "adapter_status": {
+      "const": "not_implemented"
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "native_run": {
+          "const": false
+        },
+        "canonical_evaluation": {
+          "const": false
+        },
+        "pause": {
+          "const": false
+        },
+        "resume": {
+          "const": false
+        }
+      },
+      "required": [
+        "native_run",
+        "canonical_evaluation",
+        "pause",
+        "resume"
+      ],
+      "additionalProperties": false
+    },
+    "supported_protocols": {
+      "type": "array",
+      "maxItems": 0,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "description",
+    "repository",
+    "registration_status",
+    "adapter_status",
+    "capabilities",
+    "supported_protocols",
+    "limitations"
+  ],
+  "additionalProperties": false
+}

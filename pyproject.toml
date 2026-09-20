@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "research-arena"
+version = "0.1.0"
+description = "Independent research task catalog, participant registry, and experiment board"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26,<3"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+arena = "arena.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/arena"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"web" = "arena/_assets/web"
+"registry" = "arena/_assets/registry"
+"schemas" = "arena/_assets/schemas"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

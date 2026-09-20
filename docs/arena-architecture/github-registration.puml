@@ -1,0 +1,50 @@
+@startuml github-registration
+!include style.puml
+title Регистрация и обновление GitHub-пакета
+
+actor "Участник команды\n/ куратор" as Author
+participant "GitHub\nregistry/ + source repos" as GitHub
+participant "GitHub App" as App
+participant "Arena API\n+ Durable Inbox" as API
+participant "Vast Worker\nBuild / Conformance" as Worker
+database "Version Registry" as Versions
+
+Author -> GitHub : PR в registry/:\nrepo, manifest, ref,\nnamespace, build policy
+Author -> App : Доступ к выбранным\npublic / private repos
+Author -> GitHub : Merge регистрации
+GitHub -> App : Webhook: merge /\nобновление ref
+App -> App : Проверить HMAC\nи installation scope
+App -> API : Событие +\ndelivery ID
+API -> API : Durable append\nс дедупликацией
+API --> App : 202 после записи
+
+group Разрешение новой версии после durable acceptance
+  API -> GitHub : Прочитать точный commit\nчерез installation token
+  GitHub --> API : Commit SHA + manifest
+  API -> API : Проверить schema, owner,\nref и build-квоту
+  API -> Versions : Candidate version:\nsource + manifest + data locks
+  API -> API : Поставить bounded\nBuildConformanceJob
+end
+
+Worker -> API : Получить lease
+API --> Worker : Job + locks + limits\n+ fencing token
+Worker -> GitHub : Получить точный commit\nс repo-scoped token
+GitHub --> Worker : Source / build recipe / locks
+Worker -> Worker : Build image → digest\nConformance проверки
+Worker -> API : Отчёт + evidence refs\nversion + fencing token
+
+alt Conformance пройден
+  API -> Versions : available: image lock\n+ результаты проверки
+else Нет окружения / нарушен контракт
+  API -> Versions : blocked / rejected:\nпричина + результаты
+end
+API -> API : Завершить job\nидемпотентно
+
+note over API,Versions
+  V1: PR нашей команды в общий registry/.
+  Webhook не создаёт research Run.
+  Проверки ограничены build-квотой.
+  Старые Run сохраняют version locks.
+end note
+
+@enduml

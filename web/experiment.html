@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <title>Arena · Experiments</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/arena.css">
+  <link rel="stylesheet" href="/architecture.css">
+  <link rel="stylesheet" href="/research_tools.css">
+  <link rel="stylesheet" href="/research_cells.css">
+  <link rel="stylesheet" href="/packings.css">
+  <link rel="stylesheet" href="/llm_calls.css">
+  <link rel="stylesheet" href="/workflow.css">
+  <link rel="stylesheet" href="/population.css">
+  <link rel="stylesheet" href="/population-preview.css">
+  <link rel="stylesheet" href="/methods.css">
+  <link rel="stylesheet" href="/methods_progress.css">
+  <link rel="stylesheet" href="/methods_atlas.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to experiment</a>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="Arena home">
+      <span class="brand-mark" aria-hidden="true">a<span>·</span></span>
+      <span>Arena<span class="brand-caption">RESEARCH ARENA</span></span>
+    </a>
+    <nav class="arena-nav arena-native-nav" aria-label="Arena">
+      <a href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>Tasks</a>
+      <a href="/?view=participants"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 4v2"/></svg>Participants</a>
+      <a href="/experiments" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16h16M7 15l4-5 4 3 5-7"/></svg>Experiments</a>
+    </nav>
+    <div class="sidebar-section">
+      <div class="section-label">Experiments <span id="run-count">—</span></div>
+      <label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="run-search" type="search" placeholder="Search runs" aria-label="Search runs"></label>
+    </div>
+    <nav id="run-list" aria-label="Select experiment"><div class="sidebar-empty">Loading run logs…</div></nav>
+    <footer class="sidebar-footer">
+      <span class="connection-dot" id="connection-dot"></span>
+      <div><span id="connection" role="status" aria-live="polite">Connecting…</span><span class="footer-note">Local monitor</span></div>
+      <button id="help-button" class="icon-button" title="How to connect an experiment" aria-label="How to connect an experiment">?</button>
+    </footer>
+  </aside>
+  <div class="workspace">
+    <header class="topbar">
+      <div class="breadcrumbs"><a href="/">Arena</a><span class="slash">/</span><span>Experiments</span></div>
+      <div class="topbar-right"><span class="read-only">Read only</span><button id="refresh-button" class="icon-button" title="Refresh runs and data" aria-label="Refresh"><svg viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 7a7 7 0 0 1 11.5-1L20 9M4 15l2.4 3A7 7 0 0 0 18 17"/></svg></button></div>
+    </header>
+    <main id="main" tabindex="-1">
+      <div id="error-banner" class="error-banner" hidden></div>
+      <section id="empty-state" class="empty-main" hidden>
+        <span class="empty-symbol">↗</span><h1>Watch your search unfold</h1>
+        <p>Waiting for the first experiment log.<br>New runs appear automatically.</p>
+        <button class="button primary" id="empty-help">Connect an experiment</button>
+      </section>
+      <div id="dashboard" hidden>
+        <div class="page-heading">
+          <div><div class="eyebrow" id="run-task">EXPERIMENT</div><div class="title-line"><h1 id="run-title">Loading…</h1><span id="run-status" class="badge"></span></div><p id="run-subtitle" class="subtitle"></p></div>
+          <button class="button primary" id="follow-button" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M7 5v14M17 5v14"/></svg><span>Pause updates</span></button>
+        </div>
+        <section id="runtime-bar" class="runtime-bar" aria-label="Engine runtime" hidden></section>
+        <section id="timing-bar" class="timing-bar" aria-label="Experiment timings" hidden>
+          <div><span>Session time</span><strong id="run-elapsed">—</strong><small>Excludes time paused</small></div>
+          <div><span>Since last hypothesis</span><strong id="hypothesis-age">—</strong><small id="last-hypothesis-id">Not recorded</small></div>
+          <div><span>Last hypothesis interval</span><strong id="hypothesis-interval">—</strong><small>Between recorded hypotheses</small></div>
+          <div><span>Median interval</span><strong id="hypothesis-median">—</strong><small id="hypothesis-interval-count">Not recorded</small></div>
+          <p id="timing-note"></p>
+        </section>
+        <div id="run-note" class="run-note" hidden></div>
+        <section class="metrics" aria-label="Experiment metrics">
+          <article class="metric primary-metric"><div class="metric-label"><span id="best-score-label">Best score</span><span class="tiny-label">↑ MAX</span></div><div class="metric-reading"><span class="metric-value" id="best-score">—</span><span id="best-score-comparison" class="metric-reference" hidden></span></div><div class="metric-foot" id="score-gain">Waiting for a score</div></article>
+          <article class="metric"><div class="metric-label">Successful search evaluations</div><div class="metric-value" id="evaluations">—</div><div class="metric-foot" id="attempts">—</div><div class="metric-foot" id="evaluation-scope">Excludes seed, bootstrap and failed evaluations.</div></article>
+          <article class="metric"><div class="metric-label">Stored active knowledge</div><div class="metric-value memory-number"><span id="lessons-count">—</span><span class="value-unit" id="lessons-unit">lessons</span></div><div class="metric-foot" id="hypotheses-count">—</div></article>
+          <article class="metric"><div class="metric-label">LLM spend <span class="tiny-label">USD</span></div><div class="metric-value" id="cost">—</div><div class="metric-foot" id="cost-note">Generation and reviews</div></article>
+        </section>
+        <section id="benchmark-comparison" class="benchmark-comparison" aria-label="Published reference comparison" hidden></section>
+        <section class="overview-grid">
+          <article class="panel chart-panel">
+            <div class="panel-heading"><div><h2>Search progress</h2><p id="chart-subtitle">Score by iteration</p></div><div class="segmented" aria-label="Chart axis"><button data-axis="iteration" class="active" aria-pressed="true">Iterations</button><button data-axis="cost_total" aria-pressed="false">Spend</button></div></div>
+            <div class="chart-legend"><span><i class="legend-line"></i><span id="chart-metric-label">Best score</span></span><span><i class="legend-point"></i>Candidate</span><span><i class="legend-parent"></i>Parent links on hover</span><span id="selected-point-label" class="chart-selection"></span></div>
+            <div id="score-chart" class="score-chart"></div>
+            <div class="chart-footer"><span id="chart-start">Search started</span><span id="chart-end">—</span></div>
+          </article>
+          <article class="panel population-preview-panel">
+            <div class="panel-heading"><div><h2>Population</h2><p>Recorded storage · hover to inspect</p></div></div>
+            <div id="population-preview"></div>
+          </article>
+        </section>
+          <article class="panel activity-panel overview-activity">
+            <div class="panel-heading"><h2>Activity</h2><span id="event-count" class="count-pill">0</span></div>
+            <div id="activity-feed" class="activity-feed"></div>
+            <button id="all-events-button" class="text-button">All events <span>↗</span></button>
+          </article>
+        <section class="panel research-panel">
+          <div class="tabs-row">
+            <div role="tablist" aria-label="Experiment data" class="tabs">
+              <button role="tab" id="tab-architecture" data-tab="architecture" aria-selected="false" aria-controls="tab-content">Architecture</button>
+              <button role="tab" id="tab-trials" data-tab="trials" aria-selected="true" aria-controls="tab-content" class="active">Programs <span id="trials-tab-count">0</span></button>
+              <button role="tab" id="tab-hypotheses" data-tab="hypotheses" aria-selected="false" aria-controls="tab-content">Hypotheses <span id="hypotheses-tab-count">0</span></button>
+              <button role="tab" id="tab-lessons" data-tab="lessons" aria-selected="false" aria-controls="tab-content">Lessons <span id="lessons-tab-count">0</span></button>
+              <button role="tab" id="tab-code" data-tab="code" aria-selected="false" aria-controls="tab-content">Code & diff</button>
+              <button role="tab" id="tab-llm" data-tab="llm" aria-selected="false" aria-controls="tab-content">LLM calls</button>
+              <button role="tab" id="tab-workflow" data-tab="workflow" aria-selected="false" aria-controls="tab-content">Work Flow</button>
+              <button role="tab" id="tab-events" data-tab="events" aria-selected="false" aria-controls="tab-content">Events</button>
+              <button role="tab" id="tab-population" data-tab="population" aria-selected="false" aria-controls="tab-content">Population</button>
+              <button role="tab" id="tab-packings" data-tab="packings" aria-selected="false" aria-controls="tab-content">Packings</button>
+              <button role="tab" id="tab-research-cells" data-tab="research-cells" aria-selected="false" aria-controls="tab-content">Research cells <span id="cells-tab-count">0</span></button>
+              <button role="tab" id="tab-tools" data-tab="tools" aria-selected="false" aria-controls="tab-content">Tool library <span id="tools-tab-count">0</span></button>
+              <button role="tab" id="tab-learning" data-tab="learning" aria-selected="false" aria-controls="tab-content">Bandits & RL</button>
+            </div>
+          </div>
+          <div id="tab-content" role="tabpanel" aria-labelledby="tab-trials"></div>
+        </section>
+        <footer class="page-footer"><span id="run-path"></span><span>Arena · Recorded experiments</span></footer>
+      </div>
+    </main>
+  </div>
+  <dialog id="help-dialog">
+    <div class="dialog-heading"><h2>Connect an experiment</h2><button class="icon-button" id="close-help" aria-label="Close">×</button></div>
+    <p>New runs in the monitored folder appear automatically. Hypotheses, lessons, tools and research cells are shown when their records are available.</p>
+    <p>To watch a different folder, start the monitor with its path:</p>
+    <pre>python -m arena --root /path/to/runs</pre>
+    <p class="muted">The monitor reads logs without changing them. Pausing updates stops new data from appearing; the experiment keeps running. Archived runs retain their original status.</p>
+    <button class="button primary" id="help-done">Got it</button>
+  </dialog>
+</body>
+</html>

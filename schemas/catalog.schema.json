@@ -1,0 +1,446 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Doldrums/arena/raw/main/schemas/catalog.schema.json",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "arena.catalog/1"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "common.schema.json#/$defs/identifier"
+          },
+          "repository": {
+            "$ref": "common.schema.json#/$defs/repository"
+          },
+          "catalog_path": {
+            "$ref": "common.schema.json#/$defs/relative_path"
+          },
+          "catalog_sha256": {
+            "$ref": "common.schema.json#/$defs/sha256"
+          },
+          "index_path": {
+            "$ref": "common.schema.json#/$defs/relative_path"
+          },
+          "index_sha256": {
+            "$ref": "common.schema.json#/$defs/sha256"
+          }
+        },
+        "required": [
+          "id",
+          "repository",
+          "catalog_path",
+          "catalog_sha256",
+          "index_path",
+          "index_sha256"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "task_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "executable_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unsupported_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "protocol_counts": {
+          "type": "object",
+          "properties": {
+            "original": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "recreated_verified": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "recreated": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unsupported": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "original",
+            "recreated_verified",
+            "recreated",
+            "unsupported"
+          ],
+          "additionalProperties": false
+        },
+        "runtime_readiness": {
+          "const": "not_verified"
+        }
+      },
+      "required": [
+        "task_count",
+        "executable_count",
+        "unsupported_count",
+        "protocol_counts",
+        "runtime_readiness"
+      ],
+      "additionalProperties": false
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "common.schema.json#/$defs/identifier"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "family": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "protocol": {
+            "enum": [
+              "original",
+              "recreated_verified",
+              "recreated",
+              "unsupported"
+            ]
+          },
+          "executable": {
+            "type": "boolean"
+          },
+          "declared_status": {
+            "enum": [
+              "ready",
+              "blocked",
+              "requires_setup"
+            ]
+          },
+          "runtime_readiness": {
+            "const": "not_verified"
+          },
+          "metric": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "direction": {
+            "enum": [
+              "maximize",
+              "minimize",
+              null
+            ]
+          },
+          "requirements": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "paper_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true,
+            "minItems": 1
+          },
+          "source_id": {
+            "$ref": "common.schema.json#/$defs/identifier"
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "native",
+                  "upstream",
+                  "specification"
+                ]
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "pattern": "^https://[^/@]+/"
+                    },
+                    "type": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "locator": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "type",
+                    "locator"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 1
+              },
+              "limitations": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "validation_level": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "upstream_reproduction": {
+                "type": "boolean"
+              },
+              "benchmark": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "paper_metric": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1
+              },
+              "paper_direction": {
+                "enum": [
+                  "maximize",
+                  "minimize",
+                  null
+                ]
+              },
+              "upstream_repository": {
+                "anyOf": [
+                  {
+                    "$ref": "common.schema.json#/$defs/repository"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "index_requirements": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "uniqueItems": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "metadata_notes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "sources",
+              "limitations",
+              "validation_level",
+              "upstream_reproduction",
+              "benchmark",
+              "paper_metric",
+              "paper_direction",
+              "upstream_repository",
+              "index_requirements",
+              "metadata_notes"
+            ],
+            "additionalProperties": false
+          },
+          "unsupported_reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "unsupported_category": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "contract": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "contract_source": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "pattern": "^https://github\\.com/[^/]+/[^/]+/blob/[0-9a-f]{40}/suite/[^/]+/problem\\.json$"
+                  },
+                  "path": {
+                    "$ref": "common.schema.json#/$defs/relative_path"
+                  },
+                  "sha256": {
+                    "$ref": "common.schema.json#/$defs/sha256"
+                  }
+                },
+                "required": [
+                  "url",
+                  "path",
+                  "sha256"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "family",
+          "protocol",
+          "executable",
+          "declared_status",
+          "runtime_readiness",
+          "metric",
+          "direction",
+          "requirements",
+          "paper_ids",
+          "source_id",
+          "provenance",
+          "unsupported_reason",
+          "unsupported_category",
+          "contract",
+          "contract_source"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "protocol": {
+                  "const": "unsupported"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "executable": {
+                  "const": false
+                },
+                "declared_status": {
+                  "enum": [
+                    "blocked",
+                    "requires_setup"
+                  ]
+                },
+                "unsupported_reason": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "executable": {
+                  "const": true
+                },
+                "declared_status": {
+                  "const": "ready"
+                },
+                "direction": {
+                  "enum": [
+                    "maximize",
+                    "minimize"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "contract": {
+                  "type": "string"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "contract_source": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "sources",
+    "summary",
+    "tasks"
+  ],
+  "additionalProperties": false
+}

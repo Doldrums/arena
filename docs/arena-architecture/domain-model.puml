@@ -1,0 +1,95 @@
+@startuml domain-model
+!include style.puml
+title Доменная модель независимой Arena
+top to bottom direction
+hide methods
+
+class RepositoryRegistration {
+  registration_id
+  github_repository_id
+  manifest_path
+  tracked_ref / installation_id
+}
+
+abstract class PackageVersion <<immutable>> {
+  version_id
+  source_commit_sha
+  manifest_sha256
+}
+
+class TaskVersion {
+  task_id / protocol_hash
+  candidate_schema
+  data_locks
+  metric / direction / validity
+}
+
+class ParticipantVersion {
+  participant_id
+  adapter_contract
+  native_entrypoint
+  supported_protocols
+  capabilities
+}
+
+class EnvironmentVersion <<immutable>> {
+  environment_id
+  image_digest / platform
+  build_recipe_hash
+  dependency_lock
+}
+
+class Run {
+  run_id / state
+  config_hash / seed
+  budget_policy / model_policy
+}
+
+class RunAttempt {
+  attempt_id / state
+  worker_lease / fencing_token
+  checkpoint_ref / heartbeat
+}
+
+class CandidateArtifact <<immutable>> {
+  candidate_id / content_sha256
+  media_type / schema_id
+  parent_refs / artifact_ref
+}
+
+class EvaluationRequest {
+  evaluation_id / idempotency_key
+  profile / assigned_seeds
+  resource_limits / state
+}
+
+class EvaluationReceipt <<immutable>> {
+  receipt_id / request_hash
+  validity / raw_metrics
+  output_refs / usage / provenance
+}
+
+RepositoryRegistration "1" --> "0..*" PackageVersion : версии пакета
+PackageVersion <|-- TaskVersion
+PackageVersion <|-- ParticipantVersion
+TaskVersion "0..*" --> "1..*" EnvironmentVersion : evaluator / episode
+ParticipantVersion "0..*" --> "1" EnvironmentVersion : native runtime
+
+Run "0..*" --> "1" TaskVersion : задача закреплена
+Run "0..*" --> "1" ParticipantVersion : участник закреплён
+Run "1" *-- "0..*" RunAttempt : попытки исполнения
+Run "1" --> "0..*" CandidateArtifact : кандидаты
+RunAttempt "1" --> "0..*" EvaluationRequest : запросы оценки
+EvaluationRequest "0..*" --> "1" CandidateArtifact : точный артефакт
+EvaluationRequest "1" --> "0..1" EvaluationReceipt : канонический результат
+
+TaskVersion -[hidden]right- ParticipantVersion
+CandidateArtifact -[hidden]right- EvaluationRequest
+
+note bottom of EvaluationReceipt
+  Создаётся evaluator-процессом Arena.
+  Поиск и архив принадлежат участнику;
+  валидность и метрики — evaluator.
+end note
+
+@enduml

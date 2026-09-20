@@ -1,0 +1,38 @@
+@startuml
+!include style.puml
+top to bottom direction
+allowmixing
+package "ARENA · независимая платформа" as Arena #F5F8FF {
+  component "Board\nкаталог · запуски · сравнение" as Board
+  component "Control API\nдоступ · команды · история" as API
+  component "Registry\nзадачи · окружения · участники" as Registry
+  component "Run Orchestrator\nочередь · лимиты · состояние" as Orchestrator
+  component "Execution Runtime\nзапуск и остановка участника" as Runtime
+  component "Evaluation Service\nпроверка по правилам задачи" as Eval
+  database "Results\nоценки · код · затраты" as Results
+  Board --> API : HTTPS
+  API --> Registry : версии
+  API --> Orchestrator : RunSpec
+  Orchestrator --> Runtime : задание + lease
+  Runtime --> Eval : запустить проверку
+  Eval --> Results : официальный результат
+  API ..> Results : read
+}
+package "PARTICIPANTS · внешние GitHub-пакеты" as Participants #FFF8ED {
+  interface "ParticipantProtocol v1" as P {
+    start(RunSpec)
+    cancel()
+    checkpoint()
+  }
+  component "SCiEL\nродной Engine + adapter" as Sciel
+  component "ShinkaEvolve\nродной runner + adapter" as Shinka
+  component "DGM\nагент / outer loop + adapter" as DGM
+  Sciel -[hidden]down- Shinka
+  Shinka -[hidden]down- DGM
+}
+Runtime -right-> P : lifecycle
+Sciel ..|> P
+Shinka ..|> P
+DGM ..|> P
+Participants ..> Eval : evaluate()
+@enduml
