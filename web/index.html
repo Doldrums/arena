@@ -9,6 +9,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/arena.css">
+  <link rel="stylesheet" href="/arena-insights.css">
   <script type="module" src="/arena.js"></script>
 </head>
 <body data-arena-app="true">
@@ -41,9 +42,11 @@
       </div>
       <section id="arena-summary" class="metrics arena-metrics" aria-label="Registry summary"></section>
       <p id="arena-scope" class="arena-scope" hidden></p>
+      <section id="arena-insights" aria-label="Scientific overview"></section>
       <div id="arena-error" class="error-banner" role="alert" hidden></div>
       <section id="arena-detail" class="panel arena-detail" aria-label="Selected item" hidden></section>
       <section id="arena-list-panel" class="panel">
+        <div id="arena-active-filters" class="arena-active-filters" aria-label="Selected scientific filters" hidden></div>
         <form id="arena-filters" class="arena-filters" role="search" aria-label="Search catalog">
           <label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="arena-search" type="search" placeholder="Search tasks" aria-label="Search tasks" autocomplete="off"></label>
           <label class="arena-select-label" id="family-filter-label">Family<select id="arena-family"><option value="">All families</option></select></label>

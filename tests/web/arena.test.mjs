@@ -4,7 +4,8 @@ import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
 
 const html = readFileSync(new URL('../../web/index.html', import.meta.url), 'utf8').replace('data-arena-app="true"', 'data-arena-app="test"');
-const source = readFileSync(new URL('../../web/arena.js', import.meta.url), 'utf8').replace(/^export /gm, '');
+const source = readFileSync(new URL('../../web/arena.js', import.meta.url), 'utf8').replace(/^export /gm, '').replace(/^import .*$/gm, '');
+const insightsSource = readFileSync(new URL('../../web/arena-insights.js', import.meta.url), 'utf8').replace(/^export /gm, '');
 function task(overrides = {}) {
   return {id: 'packing/circle', name: 'Circle packing', family: 'Geometry', description: 'Pack circles into a square.',
     protocol: 'original', executable: true, runtime_readiness: 'not_verified', metric: 'sum_radii',
@@ -14,12 +15,26 @@ const participants = {summary: {integrated_count: 0}, participants: [{id: 'sciel
   description: 'Evolutionary research system.', registration_status: 'planned', adapter_status: 'not_implemented',
   repository: {url: 'https://github.com/example/sciel', commit: '123abc'},
   capabilities: {native_run: false, canonical_evaluation: false, pause: false, resume: false}}]};
-async function mount({tasks = [task()], url = 'http://arena.test/', fetchJSON} = {}) {
+function insightsFixture(tasks) {
+  const task_annotations = Object.fromEntries(tasks.map(item => [item.id, {domain_id: item.family === 'Geometry' ? 'geometry' : 'other', task_type_id: item.executable ? 'construction' : 'analysis', rationale: 'Synthetic metadata classification.'}]));
+  const groups = (key, definitions) => definitions.map(([id,label]) => {
+    const rows = tasks.filter(item => task_annotations[item.id][key] === id);
+    return {id,label,total:rows.length,executable:rows.filter(item=>item.executable).length,unsupported:rows.filter(item=>!item.executable).length,
+      description:`${label} description.`,why_it_matters:`${label} scientific role.`,representative_task_ids:rows.slice(0,2).map(item=>item.id)};
+  }).filter(item=>item.total);
+  return {denominator:{task_count:tasks.length,unit:'task_package'},summary:{unique_paper_count:1},
+    domains:groups('domain_id',[['geometry','Geometry'],['other','Other domain']]),task_types:groups('task_type_id',[['construction','Construction'],['analysis','Analysis']]),
+    task_annotations,coverage:[{id:'executable',total:tasks.filter(item=>item.executable).length},{id:'recorded_contract',total:0},{id:'runtime_verified',total:0}]};
+}
+async function mount({tasks = [task()], url = 'http://arena.test/', fetchJSON, insights, references} = {}) {
   const dom = new JSDOM(html, {url, runScripts: 'outside-only', pretendToBeVisual: true});
   const w = dom.window;
+  w.eval(`{${insightsSource}; Object.assign(window,{renderArenaInsights,renderTaskReferences,referenceMatches});}`);
   w.eval(`{${source}; window.createArenaApp = createArenaApp; window.safeExternalURL = safeExternalURL;}`);
   const catalog = {tasks, sources: [{id: 'catalog', url: 'https://github.com/example/tasks'}]};
-  const app = w.createArenaApp({fetchJSON: fetchJSON || (async path => path === '/api/catalog' ? catalog : participants)});
+  const responses = {'/api/catalog':catalog,'/api/participants':participants,'/api/insights':insights||insightsFixture(tasks),
+    '/api/references':references||{summary:{task_count:tasks.length,tasks_with_published_reference:0,tasks_with_recorded_baseline:0,tasks_without_numeric_reference:tasks.length,verified_current_sota:0,current_sota_status:'not_assessed'},tasks:tasks.map(item=>({task_id:item.id,anchors:[]}))}};
+  const app = w.createArenaApp({fetchJSON: fetchJSON || (async path => responses[path])});
   await app.ready;
   return {dom, w, doc: w.document, app};
 }
@@ -143,5 +158,141 @@ test('absent task contracts stay explicitly unrecorded without inventing a signa
     assert.equal(section.querySelector('.arena-contract-note'), null);
     assert.equal(section.querySelector('a'), null);
     assert.match(section.textContent, /suite\/circle\/problem.json/);
+  } finally { dom.window.close(); }
+});
+
+function referenceFixture(tasks) {
+  return {as_of:'2026-09-20',summary:{tasks_with_published_reference:1,tasks_with_recorded_baseline:2,
+    tasks_without_numeric_reference:tasks.length-2,current_sota_status:'not_assessed',verified_current_sota:0},
+    highlights:[{task_id:tasks[1].id},{task_id:tasks[0].id}],tasks:tasks.map((item,index)=>({task_id:item.id,
+      evaluation:{parameters:{n:26},case_count:10,case_count_kind:'configured_default'},
+      anchors:index>1?[]:[...(index===0?[{kind:'published_reference',label:'Published value',value:2.63,metric_label:'Sum of radii',
+        direction:'maximize',scope:'Exact construction only',evaluation:{case_count:1,case_count_kind:'candidate_construction'},reproduction:'recorded_upstream',source:{url:'https://example.org/pinned'},
+        primary_sources:[{type:'paper',url:'https://example.org/paper'}],reproduction_source:{url:'https://example.org/receipt'},notes:['Use identical constraints.']}]:[]),
+        {kind:'recorded_seed_baseline',label:'Recorded seed',value:index===0?2.14:100,metric_label:index===0?'Sum of radii':'Exact-match percentage',
+          direction:'maximize',validity:index===0?true:null,comparison:'historical_smoke_only',scope:'Historical check',
+          evaluation:{case_count:5},source:{url:'https://example.org/seed'},notes:['Historical sample only.']}]}))};
+}
+
+test('domain and task-type charts combine URL filters and preserve keyboard focus', async () => {
+  const tasks = [task(),task({id:'packing/unsupported',executable:false}),task({id:'other',name:'Other task',family:'Physics'})];
+  const insights = insightsFixture(tasks); insights.domains[0].percentage=66.6;
+  const {dom,w,doc} = await mount({tasks,insights});
+  try {
+    const domain = doc.querySelector('[data-filter-kind="domain"][data-filter-value="geometry"]');
+    assert.match(domain.textContent,/66\.6%/);
+    assert.match(domain.getAttribute('aria-label'),/1 executable definitions, 1 unsupported/);
+    domain.focus(); domain.click();
+    assert.equal(doc.activeElement.dataset.filterValue,'geometry');
+    assert.equal(doc.activeElement.getAttribute('aria-pressed'),'true');
+    assert.equal(new URL(w.location).searchParams.get('domain'),'geometry');
+    assert.equal(doc.getElementById('arena-result-count').textContent,'2 of 3 tasks');
+    doc.querySelector('[data-filter-kind="type"][data-filter-value="construction"]').click();
+    assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 3 tasks');
+    assert.match(doc.querySelector('.insights-catalog-jump').textContent,/1 matching tasks/);
+    doc.querySelector('button[aria-label="Remove domain filter: Geometry"]').click();
+    assert.equal(doc.getElementById('arena-result-count').textContent,'2 of 3 tasks');
+    assert.equal(new URL(w.location).searchParams.get('domain'),null);
+    w.history.replaceState(null,'','/?domain=geometry&type=analysis');
+    w.dispatchEvent(new w.PopStateEvent('popstate'));
+    assert.equal(doc.querySelector('.arena-task-link').textContent,'Circle packing');
+    assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 3 tasks');
+    doc.getElementById('arena-clear').click();
+    assert.equal(doc.getElementById('arena-result-count').textContent,'3 of 3 tasks');
+  } finally { dom.window.close(); }
+});
+
+test('all scientific domains are visible while the independent task-type chart expands', async () => {
+  const tasks=[task()],insights=insightsFixture(tasks);
+  insights.domains=Array.from({length:12},(_,i)=>({id:`domain-${i}`,label:`Domain ${i}`,total:1,executable:1,unsupported:0}));
+  insights.task_types=Array.from({length:18},(_,i)=>({id:`type-${i}`,label:`Type ${i}`,total:1,executable:1,unsupported:0}));
+  const {dom,doc}=await mount({tasks,insights});
+  try {
+    assert.equal(doc.querySelectorAll('[data-filter-kind="domain"]').length,12);
+    assert.equal(doc.querySelectorAll('[data-filter-kind="type"]').length,10);
+    doc.querySelector('[data-insights-action="expand:type"]').click();
+    assert.equal(doc.querySelectorAll('[data-filter-kind="type"]').length,18);
+    assert.equal(doc.querySelector('[data-insights-action="expand:type"]').getAttribute('aria-expanded'),'true');
+  } finally { dom.window.close(); }
+});
+
+test('reference examples follow every filter and distinguish published values from seed smoke', async () => {
+  const tasks=[task(),task({id:'model',name:'Model task',family:'ML'}),task({id:'no-reference',name:'Missing reference',family:'ML'})];
+  const {dom,w,doc}=await mount({tasks,references:referenceFixture(tasks)});
+  try {
+    let rows=doc.querySelectorAll('#arena-insights [data-reference-task]');
+    assert.equal(rows.length,2);
+    assert.equal(rows[0].dataset.referenceTask,'model');
+    assert.match(rows[0].textContent,/Validity not recorded/);
+    assert.match(rows[0].textContent,/5 items \(historical smoke\)/);
+    assert.match(rows[1].textContent,/Published reference: 2.63/);
+    assert.match(rows[1].textContent,/Seed smoke: 2.14/);
+    assert.match(rows[1].textContent,/n: 26/);
+    assert.match(rows[1].textContent,/1 construction/);
+    assert.doesNotMatch(rows[1].textContent,/Cases: 1/);
+    doc.querySelector('[data-filter-kind="domain"][data-filter-value="geometry"]').click();
+    rows=doc.querySelectorAll('#arena-insights [data-reference-task]');
+    assert.equal(rows.length,1); assert.equal(rows[0].dataset.referenceTask,'packing/circle');
+    input(w,doc.getElementById('arena-search'),'missing query');
+    assert.equal(doc.querySelectorAll('#arena-insights [data-reference-task]').length,0);
+    assert.match(doc.getElementById('arena-insights').textContent,/No numeric references are recorded for the selected tasks/);
+    doc.getElementById('arena-clear').click();
+    doc.querySelector('[data-insights-action="reference:missing"]').click();
+    assert.equal(new URL(w.location).searchParams.get('reference'),'missing');
+    assert.equal(doc.querySelector('.arena-task-link').textContent,'Missing reference');
+  } finally { dom.window.close(); }
+});
+
+test('task detail includes scientific context, precise metric, parameters and source evidence', async () => {
+  const tasks=[task(),task({id:'model',name:'Model task',family:'ML'})];
+  const {dom,doc}=await mount({tasks,references:referenceFixture(tasks),url:'http://arena.test/?task=packing%2Fcircle'});
+  try {
+    assert.equal(doc.getElementById('arena-insights').hidden,true);
+    assert.match(doc.querySelector('[data-task-science]').textContent,/Geometry scientific role/);
+    const section=doc.querySelector('[data-task-references]');
+    assert.match(section.textContent,/Sum of radii/);
+    assert.match(section.textContent,/Task instance: n: 26/);
+    assert.match(section.textContent,/Evaluation size: 10 cases \(configured default\)/);
+    assert.match(section.textContent,/5 items \(historical smoke\)/);
+    assert.match(section.textContent,/Use identical constraints/);
+    assert.ok(section.querySelector('a[href="https://example.org/paper"]'));
+    assert.ok(section.querySelector('a[href="https://example.org/receipt"]'));
+    assert.match(section.textContent,/Neither alone establishes current SOTA/);
+  } finally { dom.window.close(); }
+});
+
+test('overview API outages keep task search usable and do not invent zero evidence', async () => {
+  const {dom,w,doc}=await mount({url:'http://arena.test/?domain=geometry',fetchJSON:async path=>{
+    if(path==='/api/catalog') return {tasks:[task()]};
+    if(path==='/api/participants') return participants;
+    throw new Error('Offline');
+  }});
+  try {
+    assert.equal(doc.getElementById('arena-error').hidden,true);
+    assert.match(doc.getElementById('arena-insights').textContent,/Scientific overview unavailable/);
+    assert.match(doc.getElementById('arena-insights').textContent,/Reference evidence unavailable/);
+    assert.match(doc.getElementById('arena-active-filters').textContent,/Some filters await overview data/);
+    assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 1 tasks');
+    input(w,doc.getElementById('arena-search'),'circle');
+    assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 1 tasks');
+    doc.querySelector('.arena-task-link').click();
+    assert.match(doc.querySelector('[data-task-references]').textContent,/does not establish that the task has no reference/);
+    assert.doesNotMatch(doc.querySelector('[data-task-references]').textContent,/No numeric reference is recorded/);
+  } finally { dom.window.close(); }
+});
+
+test('scientific and reference metadata remain text and external links reject active content', async () => {
+  const tasks=[task(),task({id:'second'})],insights=insightsFixture(tasks),references=referenceFixture(tasks);
+  insights.domains[0].label='<img src=x onerror=alert(1)>';
+  insights.domains[0].why_it_matters='<script>alert(1)</script>';
+  references.tasks[0].anchors[0].value='<img src=x>';
+  references.tasks[0].anchors[0].source.url='javascript:alert(1)';
+  references.tasks[0].anchors[0].primary_sources=[{url:'data:text/html,bad'}];
+  const {dom,doc}=await mount({tasks,insights,references});
+  try {
+    assert.match(doc.getElementById('arena-insights').textContent,/<img src=x onerror=alert\(1\)>/);
+    assert.equal(doc.querySelector('#arena-insights img, #arena-insights script, #arena-insights a[href^="javascript:"]'),null);
+    doc.querySelector('.arena-task-link').click();
+    assert.equal(doc.querySelector('#arena-detail img, #arena-detail script, #arena-detail a[href^="data:"]'),null);
   } finally { dom.window.close(); }
 });

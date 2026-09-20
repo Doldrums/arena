@@ -7,6 +7,7 @@ The board is extracted from the current SCiEL dashboard. Its typography, yellow 
 ## Working now
 
 - Task catalog: **1,138 task packages**, searchable by name/content and filterable by family and protocol. Task details expose available source input/output contracts, metrics, requirements and pinned provenance; missing contracts remain explicit.
+- Scientific overview: interactive domain and task-type distributions, research context, and source-bound reference/seed evidence. Charts drill down into the task catalog. See [what the statistics mean](docs/task-overview.md).
 - GitHub registry: **three participant declarations** (SCiEL, ShinkaEvolve, DGM), immutable source revisions, JSON schemas, offline validation and PR templates.
 - Independent SCiEL observer: existing experiment, source/diff, population, workflow, LLM accounting, research cells/tools and packing views. It reads saved journals and live heartbeat files; it does not import SCiEL Engine.
 - Cloudflare Worker: the same catalog and static UI, with verified Cloudflare Access tokens required in production. Local development is available without cloud credentials.

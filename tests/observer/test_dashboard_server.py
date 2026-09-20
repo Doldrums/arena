@@ -111,6 +111,7 @@ class DashboardServerTests(unittest.TestCase):
         for path, mime in [("/", "text/html"), ("/index.html", "text/html"),
                            ("/experiments", "text/html"), ("/experiment.html", "text/html"),
                            ("/arena.js", "javascript"), ("/arena.css", "text/css"),
+                           ("/arena-insights.js", "javascript"), ("/arena-insights.css", "text/css"),
                            ("/app.js", "javascript"), ("/chart.js", "javascript"),
                            ("/learning.js", "javascript"),
                            ("/population.js", "javascript"), ("/population.css", "text/css"),
@@ -156,6 +157,8 @@ class DashboardServerTests(unittest.TestCase):
         self.assertEqual(health['mode'], 'read_only')
         self.assertTrue(health['version'])
         for route, schema, key in (('/api/catalog', 'arena.catalog/1', 'tasks'),
+                                   ('/api/insights', 'arena.insights/1', 'task_annotations'),
+                                   ('/api/references', 'arena.references/1', 'summary'),
                                    ('/api/participants', 'arena.participants/1', 'participants')):
             status, _, body = self.get(route)
             self.assertEqual(status, 200)

@@ -127,6 +127,14 @@ class Handler(BaseHTTPRequestHandler):
         if parts == ["api", "participants"]:
             self.reply(get_participants(self.server.registry_root))
             return
+        if parts == ["api", "insights"]:
+            from .insights import get_insights
+            self.reply(get_insights(self.server.registry_root))
+            return
+        if parts == ["api", "references"]:
+            from .references import get_references
+            self.reply(get_references(self.server.registry_root))
+            return
         if parts == ["api", "runs"]:
             with self.server.store_lock:
                 payload = {"runs": self.server.store.discover(), "refresh_seconds": 2}
@@ -200,7 +208,7 @@ class Handler(BaseHTTPRequestHandler):
             file = STATIC / "index.html"
         elif parts in (["experiments"], ["experiment.html"]):
             file = STATIC / "experiment.html"
-        elif len(parts) == 1 and parts[0] in {"arena.js", "arena.css"}:
+        elif len(parts) == 1 and parts[0] in {"arena.js", "arena.css", "arena-insights.js", "arena-insights.css"}:
             file = STATIC / parts[0]
         elif len(parts) == 1 and parts[0] in {"app.js", "style.css", "chart.js", "learning.js", "llm_calls.js", "llm_calls.css", "architecture.js", "architecture.css", "population.js", "population.css", "storage-view.js", "population-preview.js", "population-preview.css", "methods.js", "methods.css", "methods_progress.js", "methods_progress.css", "methods_atlas.js", "methods_atlas.css", "research_tools.js", "research_tools.css", "research_cells.js", "research_cells.css", "workflow.js", "workflow.css", "packings.js", "packings.css", "favicon.svg"}:
             file = STATIC / parts[0]

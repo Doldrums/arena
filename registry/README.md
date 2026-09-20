@@ -26,3 +26,21 @@ The command never fetches repositories, installs dependencies or executes tasks.
 Six prompt-optimization task records contain different dependency declarations in the source `catalog/tasks.json` and `suite/index.json`. The snapshot preserves the catalog's requirements and records the alternate index requirements and an explanatory note in task provenance. The difference does not establish runtime availability.
 
 Remote refresh, GitHub App provisioning, webhook processing, image builds, conformance execution, native framework runners and canonical evaluation services remain planned. Source `validation_level` and `upstream_reproduction` fields retain the library author's assertions and are not independent Arena certifications.
+
+## Scientific overview and comparison evidence
+
+`taxonomy.json` defines reviewed primary domains and task types. `insights.json` stores their deterministic package counts, percentages and per-task assignments. Refresh it after a catalog or taxonomy change:
+
+```sh
+python scripts/build_insights.py
+python scripts/build_insights.py --check
+```
+
+`references.json` is a separate snapshot of allowlisted source-reported numeric anchors, seed smoke outcomes and available evaluation-size metadata. It does not import raw run logs or create Arena participant results. Published references, seed baselines, recorded upstream artifact checks and current SOTA are distinct fields. Regenerate from the same pinned source and validate offline:
+
+```sh
+python scripts/build_references.py /path/to/autoresearch-tasks
+python -m arena.references validate
+```
+
+Both overview endpoints use these same JSON snapshots in Python and Cloudflare. The checks run in CI without source-repository access or evaluator execution. Read [the scientific overview semantics](../docs/task-overview.md), [taxonomy methodology](../docs/scientific-taxonomy.md) and [reference evidence](../docs/reference-evidence.md) before changing their interpretation.

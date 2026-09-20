@@ -10,7 +10,7 @@ const env: Env = {ASSETS: {fetch: async request => new Response(new URL(request.
 const request = (path: string, init?: RequestInit) => new Request(`http://localhost${path}`, init);
 
 test('production protects HTML, assets and API even when Access is unconfigured', async () => {
-  for (const path of ['/', '/style.css', '/api/catalog', '/experiments']) {
+  for (const path of ['/', '/style.css', '/api/catalog', '/api/insights', '/api/references', '/experiments']) {
     const response = await worker.fetch(request(path), env);
     assert.equal(response.status, 503);
     assert.equal((await response.json()).error, 'access_not_configured');
@@ -52,4 +52,18 @@ test('asset routing preserves the native experiment view and HEAD semantics', as
   assert.equal(response.headers.get('Cache-Control'), 'private, no-store');
   assert.equal(await (await route(request('/'), env)).text(), '/index.html');
   assert.equal(await (await route(request('/api/catalog', {method: 'HEAD'}), env)).text(), '');
+});
+
+test('scientific overview counts every catalog task once and serves evidence separately', async () => {
+  const catalog = await (await route(request('/api/catalog'), env)).json();
+  const insights = await (await route(request('/api/insights'), env)).json();
+  const references = await (await route(request('/api/references'), env)).json();
+  assert.equal(insights.schema, 'arena.insights/1');
+  assert.equal(references.schema, 'arena.references/1');
+  assert.deepEqual(Object.keys(insights.task_annotations).sort(), catalog.tasks.map((t: {id: string}) => t.id).sort());
+  for (const groups of [insights.domains, insights.task_types]) {
+    assert.equal(groups.reduce((sum: number, item: {total: number}) => sum + item.total, 0), catalog.tasks.length);
+    assert.ok(Math.abs(groups.reduce((sum: number, item: {percentage: number}) => sum + item.percentage, 0) - 100) < 1e-8);
+  }
+  assert.equal(await (await route(request('/api/insights', {method: 'HEAD'}), env)).text(), '');
 });
