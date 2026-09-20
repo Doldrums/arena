@@ -229,42 +229,113 @@ dialog pre{border-radius:13px;background:#f2f1f6}
 .arena-participant .inline-link{font-size:12px;min-height:36px;display:inline-flex;align-items:center}
 .arena-empty{padding:44px 26px;font-size:13px;line-height:1.8}.arena-empty strong{font-weight:500}
 
-/* The recorded experiment board keeps its sidebar and all plot geometry. */
-.arena-native .sidebar{background:#fbfaf7;border-right-color:#e6e2d9}
+/* Experiments is the analytical workspace: neutral surfaces, semantic data color. */
+.arena-native{
+  --bg:#f6f6f6;--surface:#fff;--text:#202022;--muted:#747478;--border:#e5e5e7;
+  --accent:#303034;--accent-soft:#ededee;--selected:#e9e9eb;--blue:#48627c;
+  --card-radius:23px;--control-radius:12px;--card-shadow:0 1px 2px #00000004;
+  --control-shadow:0 1px 2px #00000004;
+  background:var(--bg);color:var(--text);
+}
+.arena-native :is(button,a,input,select,textarea,summary,[tabindex]):focus-visible{outline-color:#56565d}
+.arena-native .sidebar{background:#f6f6f6;border-right-color:#e4e4e6}
 .arena-native .brand{height:98px;font-size:24px;font-weight:600}
-.arena-native .arena-native-nav{padding:0 12px 15px;gap:5px;border-bottom-color:#e9e6ee}
-.arena-native .arena-nav>a{min-height:43px;padding:11px 13px;border-radius:13px;font-size:12px}
-.arena-native .arena-nav>a:hover{background:#f0edf5}
-.arena-native .arena-nav>a[aria-current=page]{background:#ebe5f5;color:#5e4b7e;font-weight:500}
-.arena-native .sidebar-section{padding-top:22px}.arena-native .section-label{font-size:10px;letter-spacing:1px;color:#706578}
+.arena-native .brand-mark{background:#2d2d30;box-shadow:none}
+.arena-native .brand-caption{color:#77777b;font-size:8px;letter-spacing:1.4px}
+.arena-native .arena-native-nav{padding:0 12px 15px;gap:5px;border-bottom-color:#e5e5e7}
+.arena-native .arena-nav>a{min-height:43px;padding:11px 13px;border-radius:13px;font-size:12px;color:#77777b}
+.arena-native .arena-nav>a:hover{background:#ededee;color:#202022}
+.arena-native .arena-nav>a[aria-current=page]{background:#fff;color:#222225;font-weight:500;box-shadow:0 1px 3px #00000008}
+.arena-native .sidebar-section{padding-top:22px}.arena-native .section-label{font-size:10px;letter-spacing:1px;color:#757579}
+.arena-native .count-pill,.arena-native .section-label span{background:#e9e9eb;color:#68686e}
 .arena-native #run-list{padding-right:12px;padding-left:12px}
 .arena-native .run-item{padding:13px 12px;border-radius:15px;margin:3px 0}
-.arena-native .run-item:hover{background:#f0edf5}.arena-native .run-item.selected{background:#eae4f2}
-.arena-native .run-icon{border-radius:9px;width:28px;height:28px;background:#fff;border-color:#e5dfeb;color:#867894}
-.arena-native .run-item.selected .run-icon{background:#d9cceb;border-color:#d9cceb;color:#6b4d8c}
-.arena-native .run-name{font-size:12px;font-weight:500}.arena-native .run-meta{font-size:10px;color:#706578}
-.arena-native .sidebar-footer{font-size:11px;border-color:#e5e0eb;color:#74677d}
-.arena-native .sidebar-footer .icon-button{min-height:40px;min-width:40px;border-radius:12px;background:#fff;border-color:#e4dfeb}
+.arena-native .run-item:hover{background:#ededee}.arena-native .run-item.selected{background:#e7e7e9}
+.arena-native .run-icon{border-radius:9px;width:28px;height:28px;background:#fff;border-color:#e2e2e4;color:#89898d}
+.arena-native .run-item.selected .run-icon{background:#fff;border-color:#d9d9dc;color:#343438}
+.arena-native .run-name{font-size:12px;font-weight:500}.arena-native .run-meta{font-size:11px;color:#747478}
+.arena-native .sidebar-footer{font-size:11px;border-color:#e2e2e5;color:#747478}
+.arena-native .sidebar-footer .icon-button{min-height:40px;min-width:40px;border-radius:12px;background:#fff;border-color:#e2e2e5}
 .arena-native .topbar{background:transparent;border:0;height:68px;padding:0 34px}
-.arena-native .breadcrumbs{font-size:12px;color:#777080}
-.arena-native .read-only{font-size:10px;padding:5px 9px;border-radius:8px;background:#e9e7ef;color:#6c5e76}
+.arena-native .breadcrumbs{font-size:12px;color:#77777b}
+.arena-native .read-only{font-size:10px;padding:5px 9px;border-radius:8px;background:#ededee;color:#747478}
 .arena-native main{padding-top:20px}
-.arena-native .metric{padding:22px 21px}.arena-native .metric-value{font-size:34px;letter-spacing:-1.2px}
-.arena-native .primary-metric{background:radial-gradient(ellipse at 105% 120%,#edbb7791,transparent 68%),linear-gradient(130deg,#fffefa,#faefde);border-color:#fffaf1}
-.arena-native .metric:nth-child(2){background:radial-gradient(ellipse at 105% 120%,#b9a0dc91,transparent 68%),linear-gradient(130deg,#fdfbff,#ede4f7);border-color:#fcf8ff}
-.arena-native .metric:nth-child(3){background:radial-gradient(ellipse at 105% 120%,#8cb58a80,transparent 68%),linear-gradient(130deg,#fcfef7,#e4efd9);border-color:#f8fcf1}
-.arena-native .metric:nth-child(4){background:radial-gradient(ellipse at 105% 120%,#82a7df85,transparent 68%),linear-gradient(130deg,#fcfdff,#e4edfa);border-color:#f7faff}
-.arena-native .tabs-row{padding:0 23px;border-color:#ece8f1}
-.arena-native .tabs{gap:23px}.arena-native .tabs button{font-size:12px;min-height:52px;color:#75697f}
-.arena-native .tabs button.active{color:#574667;font-weight:500}
-.arena-native .tabs button.active:after{background:#b69dce;height:3px;border-radius:3px}
-.arena-native .research-card{border-color:#ebe5f0;border-radius:19px;padding:20px}
-.arena-native .card-facts{border-color:#eee9f3}
+.arena-native .page-heading h1{font-size:27px;font-weight:500;letter-spacing:-.7px;line-height:1.35}
+.arena-native .eyebrow{color:#747478;letter-spacing:1.5px}
+.arena-native .subtitle{color:#747478;font-size:13px}
+.arena-native .panel,.arena-native .metric{background:#fff;border:1px solid #e7e7e9;box-shadow:var(--card-shadow)}
+.arena-native .metric{padding:22px 21px}
+.arena-native .metric-value{font-size:34px;letter-spacing:-1.2px;color:#202022}
+.arena-native .metric-label{color:#6b6b70}
+.arena-native .metric-foot,.arena-native .metric-reference,.arena-native .tiny-label{color:#747478}
+.arena-native .metric-foot.positive{color:var(--green)}
+.arena-native .metric-foot.negative{color:var(--red)}
+.arena-native .button{background:#fff;border-color:#dedee1;color:#37373c;box-shadow:none}
+.arena-native .button:hover{background:#f0f0f1;border-color:#ceced2;box-shadow:none}
+.arena-native .button.primary{background:#2d2d30;color:#fff;border-color:#2d2d30;box-shadow:none}
+.arena-native .button.primary:hover{background:#454549;border-color:#454549}
+.arena-native .icon-button{color:#747478}
+.arena-native .icon-button:hover{background:#e9e9eb}
+.arena-native .search-box{background:#efeff0;border-color:transparent;box-shadow:none}
+.arena-native .search-box:focus-within{background:#fff;border-color:#aaaab0;box-shadow:0 0 0 2px #dedee3}
+.arena-native .search-box svg,.arena-native .search-box input::placeholder{color:#8a8a90}
+.arena-native .segmented{background:#efeff0;box-shadow:none}
+.arena-native .segmented button{color:#77777d}
+.arena-native .segmented button.active{background:#fff;color:#242428;box-shadow:0 1px 3px #00000006}
+.arena-native .badge.neutral,.arena-native .badge:not(.success):not(.blue):not(.warning):not(.negative){background:#ededee;color:#6e6e74}
+.arena-native .tabs-row{padding:12px 18px;border-color:#e8e8ea}
+.arena-native .tabs{gap:5px}
+.arena-native .tabs button{font-size:12px;min-height:40px;padding:10px 12px;border-radius:11px;color:#77777d}
+.arena-native .tabs button:hover{background:#f5f5f6;color:#303034}
+.arena-native .tabs button.active{color:#29292d;background:#ededee;font-weight:500}
+.arena-native .tabs button.active:after{display:none}
+.arena-native .tabs button span{color:#85858b}
+.arena-native .research-card{border-color:#e5e5e7;border-radius:19px;padding:20px}
+.arena-native .card-facts{border-color:#e8e8eb}
 .arena-native .table-toolbar{padding-top:17px;padding-bottom:17px}
-.arena-native .run-note{border-radius:15px;background:#faf0db;border-color:#f1e2bb}
-.arena-native .timing-bar{border-radius:22px}
-.arena-native .load-more{min-height:40px;border-radius:12px;padding:9px 14px}
-.arena-native .text-button{min-height:42px;color:#7a6b89}
+.arena-native .table-toolbar input,.arena-native .code-select{background:#f5f5f6;border-color:#e2e2e5;color:#45454a}
+.arena-native .run-note{border-radius:13px;background:#eeeef0;border-color:transparent;color:#747478}
+.arena-native .runtime-bar{border-color:#e5e5e7;border-radius:14px}
+.arena-native .timing-bar{border-radius:20px;background:#f0f0f1;border-color:transparent}
+.arena-native .benchmark-comparison{border-color:#e5e5e7;border-left-color:#b8b8bf;background:#fff;border-radius:15px}
+.arena-native .load-more{min-height:40px;border-radius:12px;padding:9px 14px;background:#f0f0f1;border-color:#e4e4e7;color:#515157}
+.arena-native .text-button{min-height:42px;color:#626268}
+.arena-native .activity-icon{background:#ededee;color:#85858b}
+.arena-native .activity-icon.yellow{background:#f6f0df;color:#9a7e2d}
+.arena-native .activity-icon.green{background:#e8f1eb;color:var(--green)}
+.arena-native .activity-icon.blue{background:#eaf0f5;color:#58728c}
+.arena-native .activity-title{font-size:12px;color:#333338}
+.arena-native .activity-subtitle,.arena-native .activity-seq{color:#818187}
+.arena-native .chart-card-actions>button{background:#eeeef0;color:#49494f}
+.arena-native .chart-card-actions>button:first-child{background:#303034;color:#fff}
+.arena-native .empty-main .empty-symbol{background:#e9e9ec;color:#797980}
+.arena-native dialog pre{background:#f1f1f3;border-color:#e2e2e6}
+
+/* Neutral selection and reading surfaces inside the native experiment tools. */
+.arena-native tr.interactive.selected{background:#f1f1f2}
+.arena-native .methods-lab.selected{background:#f3f3f4;border-left-color:#73737b}
+.arena-native .methods-tab.active{border-bottom-color:#53535c}
+.arena-native .rc-cell-row.selected{background:#f1f1f2;box-shadow:inset 3px 0 #77777f}
+.arena-native .rc-next-decision{border-left-color:#b1b1b8}
+.arena-native .methods-run-policy>.methods-status{background:#f1f1f2;border-color:#dedee2;color:#74747b}
+.arena-native .preview-stage,.arena-native .storage-stage{background:#fff}
+.arena-native .preview-pause,.arena-native .preview-full{color:#74747b}
+.arena-native .preview-pause:hover:not(:disabled),.arena-native .preview-full:hover{background:#f0f0f2;color:#3d3d45}
+.arena-native .preview-pause:disabled{color:#a2a2a9}
+.arena-native .territory-view-switch button{color:#797980}
+.arena-native .territory-view-switch button:hover{color:#45454d;background:#ededf0}
+.arena-native .territory-view-switch button[aria-pressed=true],.arena-native .territory-view-switch button.active,.arena-native .territory-view-switch button.is-active{background:#fff;border-color:#dedee2;color:#42424a}
+.arena-native .territory-display-modes button[aria-pressed=true],.arena-native .storage-toolbar button[aria-pressed=true]{background:#eeeef0;border-color:#d8d8de;color:#4c4c55}
+.arena-native .storage-camera input{accent-color:#787880}
+.arena-native .territory-island[aria-pressed=true]{background:#f2f2f4}
+.arena-native .architecture-node.selected{border-color:#76767e;background:#f1f1f3;box-shadow:0 0 0 1px #76767e}
+.arena-native .graph-inspector{border-color:#e1e1e5;background:#fafafa}
+.arena-native .graph-reset{color:#74747d}
+.arena-native .graph-features li{border-color:#e1e1e5;color:#707079}
+.arena-native .graph-connection-note{border-left-color:#c9c9cf}
+.arena-native .graph-connection-note strong{color:#6f6f78}
+.arena-native .wf-model .wf-bubble{background:#f5f5f6;border-color:#e6e6ea}
+.arena-native .wf-tool .wf-bubble,.arena-native .wf-task .wf-bubble{background:#fafafa;border-color:#e7e7eb}
 
 @media(min-width:1600px){.arena-canvas{padding-top:34px}.arena-masthead{padding-top:30px;padding-bottom:27px}.arena-metrics .metric{min-height:170px}.arena-metrics .metric-value{font-size:43px}}
 @media(max-width:1180px){
@@ -308,7 +379,7 @@ dialog pre{border-radius:13px;background:#f2f1f6}
   .arena-detail-section p,.arena-detail-section li{font-size:12px}.arena-detail-section pre{font-size:10px;padding:15px}
   .arena-participants{padding:4px 20px 20px;gap:16px}.arena-participant{padding:24px}
   .page-footer{font-size:10px;gap:14px}.page-footer>span:first-child{max-width:70%}
-  .arena-native .brand{height:76px;padding-left:20px;font-size:22px}.arena-native .sidebar{border-bottom-color:#e5dfeb}
+  .arena-native .brand{height:76px;padding-left:20px;font-size:22px}.arena-native .sidebar{border-bottom-color:#e5e5e7}
   .arena-native .arena-native-nav{padding:0 14px 13px;gap:5px}.arena-native .arena-nav>a{font-size:11px;padding:10px 9px;min-height:41px}
   .arena-native .sidebar-section{padding-top:15px}.arena-native .run-item{padding:11px;margin:0;border-radius:13px}
   .arena-native .sidebar-footer{top:22px;right:20px;font-size:10px}.arena-native .sidebar-footer .icon-button{min-height:40px;min-width:40px}
@@ -379,7 +450,7 @@ main#main:target h1{text-decoration:underline;text-decoration-color:#b4a0cb;text
 .insights-domain-note p,.insights-small-facts dt,.insights-small-facts dd small{color:#6b6275}
 .insights-bar{font-size:13px}.insights-bar-value small{font-size:12px}
 .arena-native .metric-foot,.arena-native .panel-heading p{font-size:12px;line-height:1.65}
-.arena-native .run-meta{font-size:11px;color:#6b6176}
+.arena-native .run-meta{font-size:11px;color:#747478}
 .arena-native .metric-label{font-size:12px;line-height:1.55}
 @media(max-width:720px){
   .arena-page-heading .subtitle{font-size:13px}.arena-page-heading>.inline-link{font-size:12px;line-height:1.7}

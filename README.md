@@ -4,7 +4,7 @@ Empira is an independent research arena and experiment board. The name evokes em
 
 Tasks, environments, participant registration and comparison belong here. SCiEL, ShinkaEvolve and Darwin Gödel Machine remain separate framework repositories.
 
-The board keeps the native SCiEL experiment views inside an independent Arena shell. Its visual system uses SF Pro Text, soft widget cards and an interactive research landscape. SF Pro Text resolves from a local installation; system sans-serif is the fallback. Font binaries are not redistributed.
+The board keeps the native SCiEL experiment views inside an independent Arena shell. Its visual system uses SF Pro Text, soft widget cards and an interactive research landscape. Experiments has a separate neutral treatment: white cards, gray controls, dark type and color reserved for statuses and data. SF Pro Text resolves from a local installation; system sans-serif is the fallback. Font binaries are not redistributed.
 
 ## Working now
 
