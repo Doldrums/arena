@@ -313,7 +313,7 @@ test('atlas switches modes, persists URL and combines source-method and task-fam
   const {dom,w,doc}=await mount({tasks,searchFamilies,url:'http://arena.test/?search_family=evo'});
   try {
     assert.equal(doc.getElementById('arena-result-count').textContent,'2 of 3 tasks');
-    assert.equal(doc.querySelectorAll('#arena-atlas rect[data-task-id]').length,3);
+    assert.equal(doc.querySelectorAll('#arena-atlas circle[data-task-id]').length,3);
     doc.querySelector('[data-atlas-mode="families"]').click();
     assert.equal(new URL(w.location).searchParams.get('atlas'),'families');
     input(w,doc.getElementById('arena-family'),'__unspecified__','change');

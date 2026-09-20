@@ -127,10 +127,10 @@ test('unrelated rerenders preserve selected cluster and deterministic coordinate
  const {dom,w,root}=mount();
  try {
   root.querySelector('[data-atlas-cluster="evolution"]').dispatchEvent(new w.Event('click'));
-  const before=[...root.querySelectorAll('[data-task-id]')].map(p=>[p.dataset.taskId,p.getAttribute('x'),p.getAttribute('y')]);
+  const before=[...root.querySelectorAll('[data-task-id]')].map(p=>[p.dataset.taskId,p.getAttribute('cx'),p.getAttribute('cy')]);
   w.renderArenaAtlas(root,{...fixture,current:{query:'unrelated'}});
   assert.equal(root.querySelector('[data-atlas-cluster="evolution"]').getAttribute('aria-pressed'),'true');
-  assert.deepEqual([...root.querySelectorAll('[data-task-id]')].map(p=>[p.dataset.taskId,p.getAttribute('x'),p.getAttribute('y')]),before);
+  assert.deepEqual([...root.querySelectorAll('[data-task-id]')].map(p=>[p.dataset.taskId,p.getAttribute('cx'),p.getAttribute('cy')]),before);
  }finally{dom.window.close();}
 });
 

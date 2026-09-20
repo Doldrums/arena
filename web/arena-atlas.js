@@ -54,7 +54,7 @@ export function layoutAtlasGroups(groups) {
     if (dx*dx+dy*dy<=1 && Math.hypot(x-center.x,y-center.y)>136) candidates.push({x,y});
   }
   groups.forEach((group,index)=>{
-    const radius=Math.max(12, Math.sqrt(group.count)*4.05+11);
+    const radius=Math.max(12, Math.sqrt(group.count)*4.4+13);
     const angle = (-110 + (index < 8 ? index*45 : index*137.508))*Math.PI/180;
     const target={x:center.x+Math.cos(angle)*270,y:center.y+Math.sin(angle)*216};
     let chosen=null,best=Infinity;
@@ -67,23 +67,94 @@ export function layoutAtlasGroups(groups) {
     }
     const item={...group,...chosen,radius};
     const seed=hash(group.id), rotation=(seed%360)*Math.PI/180, sx=.84+(seed%29)/100, sy=1/sx;
-    // A loose mosaic: distinct task tiles, a denser core and a softly scattered edge.
+    // Packed rest positions keep each real task distinct as the particle field moves.
     const cells=[], side=Math.ceil(Math.sqrt(group.count)*1.15)+3;
     for(let row=-side;row<=side;row++) for(let col=-side;col<=side;col++) {
-      const x=(col+(row%2)*.5)*7.1,y=row*6.25,theta=Math.atan2(y,x);
-      const boundary=1+.19*Math.sin(theta*3+rotation)+.13*Math.cos(theta*5-rotation);
+      const x=(col+(row%2)*.5)*8.0,y=row*6.95,theta=Math.atan2(y,x);
+      const boundary=1+.10*Math.sin(theta*3+rotation)+.07*Math.cos(theta*5-rotation);
       cells.push({x,y,rank:Math.hypot(x/sx,y/sy)/boundary});
     }
     cells.sort((a,b)=>a.rank-b.rank || a.x-b.x || a.y-b.y);
     item.points=group.tasks.map((task,pointIndex)=>{
-      const cell=cells[pointIndex],jitter=hash(task.id),dx=cell.x+((jitter%9)-4)*.33,dy=cell.y+((Math.floor(jitter/9)%9)-4)*.33;
+      const cell=cells[pointIndex],jitter=hash(task.id),dx=cell.x+((jitter%9)-4)*.12,dy=cell.y+((Math.floor(jitter/9)%9)-4)*.12;
       return {id:task.id,name:task.name || task.id,x:Number((item.x+dx*Math.cos(rotation)-dy*Math.sin(rotation)).toFixed(2)),
-        y:Number((item.y+dx*Math.sin(rotation)+dy*Math.cos(rotation)).toFixed(2)),size:3.5+(jitter%11)*.29,
-        angle:(Math.floor(jitter/11)%29)-14,tone:Math.floor(jitter/319)%6};
+        y:Number((item.y+dx*Math.sin(rotation)+dy*Math.cos(rotation)).toFixed(2)),size:jitter%19===0?3.8:2.1+(jitter%7)*.18,opacity:.48+(Math.floor(jitter/7)%6)*.09};
     });
     placed.push(item);
   });
   return placed;
+}
+
+/** One visible particle field, with springs toward each cluster's packed rest positions. */
+function startAtlasMotion(root, map, particles, options={}) {
+  const doc=root.ownerDocument,win=doc.defaultView;
+  if(!win?.matchMedia || !win.requestAnimationFrame) return {update(){},destroy(){}};
+  const preference=win.matchMedia('(prefers-reduced-motion: reduce)');
+  let frame=null,last=null,time=0,paused=Boolean(options.paused),allowMotion=Boolean(options.allowMotion),visible=!win.IntersectionObserver,disposed=false,activeId=null;
+  for(const p of particles){
+    p.phase=(p.seed%628)/100;p.rate=.65+(p.seed%7)*.065;
+    const dx=p.homeX-p.centerX,dy=p.homeY-p.centerY,d=Math.hypot(dx,dy)||1;
+    p.ux=dx/d;p.uy=dy/d;p.flight=(p.seed%6===0?24:8)*p.range;
+    const spread=(18+p.seed%30)*p.range;
+    p.x=p.homeX+p.ux*spread;p.y=p.homeY+p.uy*spread;p.vx=0;p.vy=0;
+  }
+  const render=()=>{
+    for(const p of particles)p.node.setAttribute('transform',`translate(${(p.x-p.homeX).toFixed(2)} ${(p.y-p.homeY).toFixed(2)})`);
+  };
+  const settle=()=>{
+    for(const p of particles){p.x=p.homeX;p.y=p.homeY;p.vx=0;p.vy=0;}
+    render();
+  };
+  const reduced=()=>preference.matches&&!allowMotion;
+  const canRun=()=>!disposed&&!paused&&!reduced()&&visible&&!doc.hidden&&!root.hidden&&map.isConnected;
+  const sync=()=>{
+    const running=canRun();map.dataset.motion=reduced()?'reduced':running?'running':'paused';
+    if(!disposed)options.onStateChange?.(map.dataset.motion);
+    if(!running){if(frame!==null)win.cancelAnimationFrame(frame);frame=null;last=null;}
+    else if(frame===null)frame=win.requestAnimationFrame(tick);
+  };
+  function tick(now){
+    frame=null;
+    if(!canRun()){sync();return;}
+    if(last!==null&&now-last<15){frame=win.requestAnimationFrame(tick);return;}
+    const dt=last===null?1/60:Math.min((now-last)/1000,.035);last=now;time+=dt;
+    const damping=Math.exp(-4.8*dt);
+    for(const p of particles){
+      const phase=time*p.rate+p.phase,focused=p.groupId===activeId;
+      const pull=focused?.92:1;
+      const radial=Math.sin(phase)*p.flight,tangent=Math.cos(phase*.83)*p.flight*.75;
+      const targetX=p.centerX+(p.homeX-p.centerX)*pull+p.ux*radial-p.uy*tangent;
+      const targetY=p.centerY+(p.homeY-p.centerY)*pull+p.uy*radial+p.ux*tangent;
+      p.vx=(p.vx+(targetX-p.x)*13*dt)*damping;
+      p.vy=(p.vy+(targetY-p.y)*13*dt)*damping;
+      p.x+=p.vx*dt;p.y+=p.vy*dt;
+    }
+    // Local neighbors only: keep the round dots legible without all-pairs physics.
+    const cells=new Map(),cellSize=10;
+    for(const p of particles){
+      const cx=Math.floor(p.x/cellSize),cy=Math.floor(p.y/cellSize);
+      for(let x=cx-1;x<=cx+1;x++)for(let y=cy-1;y<=cy+1;y++){
+        for(const other of cells.get(`${x},${y}`)||[]){
+          const dx=p.x-other.x,dy=p.y-other.y,d=Math.hypot(dx,dy),gap=p.radius+other.radius+1;
+          if(d>0&&d<gap){const push=(gap-d)/d*.32;p.x+=dx*push;p.y+=dy*push;other.x-=dx*push;other.y-=dy*push;}
+        }
+      }
+      const key=`${cx},${cy}`;if(!cells.has(key))cells.set(key,[]);cells.get(key).push(p);
+    }
+    render();frame=win.requestAnimationFrame(tick);
+  }
+  const onPreference=()=>{if(disposed)return;if(reduced())settle();sync();};
+  const observer=win.IntersectionObserver?new win.IntersectionObserver(entries=>{
+    if(disposed)return;visible=entries[0].isIntersecting;sync();
+  }):null;
+  observer?.observe(map);
+  preference.addEventListener('change',onPreference);
+  doc.addEventListener('visibilitychange',sync);
+  if(reduced()||paused)settle();else render();
+  return {
+    update(isPaused,active,enabled){paused=isPaused;activeId=active;allowMotion=Boolean(enabled);sync();},
+    destroy(){disposed=true;sync();observer?.disconnect();preference.removeEventListener('change',onPreference);doc.removeEventListener('visibilitychange',sync);}
+  };
 }
 
 /** Root calls this on catalog/URL changes. Internal hover and selection survive unrelated renders. */
@@ -105,6 +176,7 @@ export function renderArenaAtlas(root, options = {}) {
   if(session.selected && !session.model.groups.some(group=>group.id===session.selected)) session.selected=null;
   if (session.built && !changed) { session.update(); return; }
   session.cleanup?.();
+  session.cleanup=null;
   session.built=true;
   const doc=root.ownerDocument;
   const make=(tag,cls,value)=>{const node=doc.createElement(tag);if(cls)node.className=cls;if(value!=null)node.textContent=String(value);return node;};
@@ -112,7 +184,7 @@ export function renderArenaAtlas(root, options = {}) {
   const button=(label,cls,action)=>{const node=make('button',cls,label);node.type='button';node.addEventListener('click',action);return node;};
   const card=make('section','atlas-card');card.setAttribute('aria-label','Interactive task atlas');
   const header=make('header','atlas-header'),heading=make('div','atlas-heading');
-  heading.append(make('span','atlas-eyebrow','A PLACE TO EXPLORE'),make('h2','','Task atlas'),make('p','atlas-intro','Find a research direction. Every square is a real task.'));
+  heading.append(make('span','atlas-eyebrow','A PLACE TO EXPLORE'),make('h2','','Task atlas'),make('p','atlas-intro','Find a research direction. Every dot is a real task.'));
   const modeControl=make('div','atlas-modes');modeControl.setAttribute('role','group');modeControl.setAttribute('aria-label','Group tasks by');
   for(const[mode,label]of[['methods','Search methods'],['families','Task families']]) {
     const control=button(label,'atlas-mode',()=>{
@@ -138,31 +210,23 @@ export function renderArenaAtlas(root, options = {}) {
     card.append(missing);root.replaceChildren(card);session.update=()=>{};return;
   }
   const body=make('div','atlas-body'),canvas=make('div','atlas-canvas'),map=svgNode('svg',{viewBox:'0 0 900 680',class:'atlas-map',role:'group','aria-label':`${session.mode==='methods'?'Search method':'Task family'} clusters. Select a cluster to explore its tasks.`});
-  const mapTitle=svgNode('title');mapTitle.textContent='Task atlas: one square per catalog task';map.append(mapTitle);
-  const defs=svgNode('defs');
-  // Shared paper-like finishes keep the mosaic light; color does not encode task results.
-  for(const[index,colors]of [['#c0b6a7','#746957'],['#a5b0a3','#627567'],['#e4d8c2','#b9a185'],['#b4b0c0','#767486'],['#a49e92','#53564e'],['#d2b7a5','#967461']].entries()) {
-    const gradient=svgNode('linearGradient',{id:`atlas-paper-${index}`,x1:'0%',y1:'0%',x2:'85%',y2:'100%'});
-    gradient.append(svgNode('stop',{offset:'0%','stop-color':colors[0]}),svgNode('stop',{offset:'100%','stop-color':colors[1]}));defs.append(gradient);
-  }
-  map.append(defs);
+  const mapTitle=svgNode('title');mapTitle.textContent='Task atlas: one dot per catalog task';map.append(mapTitle);
   const center=svgNode('g',{class:'atlas-center','aria-hidden':'true'}),centerValue=svgNode('text',{x:450,y:327,'text-anchor':'middle',class:'atlas-center-value'}),centerLabel=svgNode('text',{x:450,y:354,'text-anchor':'middle',class:'atlas-center-label'});
   center.append(centerValue,centerLabel);map.append(center);
-  const clusters=new Map();
+  const clusters=new Map(),particles=[];
+  const palette=['#927ad5','#88a397','#42b5b1','#6c99da','#cd8bb5','#6ab394','#c9a656','#8f9dc8'];
   const choose=id=>{session.selected=session.selected===id?null:id;session.preview=null;session.update();};
   for(const[groupIndex,group]of session.layout.entries()) {
     const cluster=svgNode('g',{class:'atlas-cluster',tabindex:0,role:'button','aria-label':`${group.label}, ${format(group.count)} tasks. Select cluster.`, 'aria-pressed':'false','data-atlas-cluster':group.id});
     const hit=svgNode('circle',{cx:group.x,cy:group.y,r:Math.max(23,group.radius+8),class:'atlas-cluster-hit'});cluster.append(hit);
-    const cloud=svgNode('g',{class:'atlas-cloud'}),patches=[];
-    for(let patchIndex=0;patchIndex<Math.min(3,Math.ceil(group.count/24));patchIndex++) {
-      const seed=hash(`${group.id}:${patchIndex}`),patch=svgNode('g',{class:'atlas-drift'});
-      patch.style.cssText=`--drift-x:${(seed%2?1:-1)*(2+seed%3)}px;--drift-y:${(seed%3?1:-1)*(2+seed%4)}px;--drift-turn:${seed%2?.65:-.65}deg;--drift-duration:${19+seed%12}s;--drift-delay:-${seed%23}s;transform-origin:${group.x}px ${group.y}px`;
-      patches.push(patch);cloud.append(patch);
-    }
-    for(const[pointIndex,point]of group.points.entries()) {
-      const particle=svgNode('rect',{x:point.x-point.size/2,y:point.y-point.size/2,width:point.size,height:point.size,rx:.55,
-        transform:`rotate(${point.angle} ${point.x} ${point.y})`,fill:`url(#atlas-paper-${point.tone})`,class:'atlas-point','data-task-id':point.id,'aria-hidden':'true'});
-      const title=svgNode('title');title.textContent=point.name;particle.append(title);patches[pointIndex%patches.length].append(particle);
+    const cloud=svgNode('g',{class:'atlas-cloud','aria-hidden':'true'});
+    cluster.style.setProperty('--cluster-color',palette[groupIndex%palette.length]);
+    for(const point of group.points) {
+      const particle=svgNode('circle',{cx:point.x,cy:point.y,r:point.size,opacity:point.opacity,
+        class:'atlas-point','data-task-id':point.id,'aria-hidden':'true'});
+      const title=svgNode('title');title.textContent=point.name;particle.append(title);cloud.append(particle);
+      particles.push({node:particle,homeX:point.x,homeY:point.y,centerX:group.x,centerY:group.y,
+        groupId:group.id,radius:point.size,seed:hash(point.id),range:Math.min(1,group.radius/45)});
     }
     cluster.append(cloud);
     const above=group.y<338,labelY=group.y+(above?-group.radius-17:group.radius+24);
@@ -184,8 +248,12 @@ export function renderArenaAtlas(root, options = {}) {
     clusters.set(group.id,cluster);map.append(cluster);
   }
   canvas.append(map);
-  const legend=make('div','atlas-map-legend');legend.append(make('span','atlas-key-square'),make('span','',`${format(session.model.total)} task packages · ${format(session.model.groups.length)} ${session.mode==='methods'?'method groups':'task-family groups'}`));
-  const motionToggle=button('','atlas-motion-toggle',()=>{session.motionPaused=!session.motionPaused;session.update();});
+  const legend=make('div','atlas-map-legend');legend.append(make('span','atlas-key-dot'),make('span','',`${format(session.model.total)} task packages · ${format(session.model.groups.length)} ${session.mode==='methods'?'method groups':'task-family groups'}`));
+  const motionToggle=button('Ⅱ Pause motion','atlas-motion-toggle',()=>{
+    if(map.dataset.motion==='reduced'){session.motionEnabled=true;session.motionPaused=false;}
+    else session.motionPaused=!session.motionPaused;
+    session.update();
+  });
   legend.append(motionToggle);canvas.append(legend);
   const aside=make('aside','atlas-context');aside.setAttribute('aria-label','Cluster details');
   const picker=make('div','atlas-picker'),pickerLabel=make('label','atlas-picker-label','Jump to a cluster'),select=make('select','atlas-select');select.setAttribute('aria-label','Select atlas cluster');
@@ -205,23 +273,22 @@ export function renderArenaAtlas(root, options = {}) {
   const details=make('div','atlas-details');aside.append(details);body.append(canvas,aside);card.append(body);
   const footer=make('footer','atlas-footer');
   const hint=make('p','','Select a cluster to keep it highlighted. Use arrow keys to move between clusters; Escape clears the selection.');
-  const note=make('details','atlas-note');note.append(make('summary','','About this map'),make('p','','One square is one task package, including unsupported definitions. Cluster size reflects package count. Positions are a visual arrangement of groups, not distances, performance or solved results.'));
+  const note=make('details','atlas-note');note.append(make('summary','','About this map'),make('p','','One dot is one task package, including unsupported definitions. Color identifies a group; cluster size reflects package count. Dot sizes, positions and motion are decorative, not performance or solved results.'));
   if(session.mode==='methods')note.append(make('p','','Method groups follow the source paper-family labels. A task with several paper associations uses its recorded primary group for this map.'));
   else note.append(make('p','','Task families use the evaluator-family field in the catalog. Packages without that field remain in the Unspecified group.'));
   footer.append(hint,note);card.append(footer);
   card.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();session.selected=null;session.preview=null;session.update();}});
   root.replaceChildren(card);
-  const Observer=doc.defaultView?.IntersectionObserver;
-  if(Observer){
-    card.classList.add('is-offscreen');
-    const observer=new Observer(entries=>card.classList.toggle('is-offscreen',!entries[0].isIntersecting));
-    observer.observe(card);session.cleanup=()=>observer.disconnect();
-  }
+  const motion=startAtlasMotion(root,map,particles,{paused:session.motionPaused,allowMotion:session.motionEnabled,onStateChange:state=>{
+    const action=state==='reduced'?'Enable':session.motionPaused?'Resume':'Pause';
+    motionToggle.textContent=`${action==='Pause'?'Ⅱ':'▶'} ${action} motion`;
+    motionToggle.setAttribute('aria-label',`${action} atlas animation`);
+  }});
+  session.cleanup=()=>motion.destroy();
   session.update=()=>{
     const activeId=session.preview||session.selected,active=session.model.groups.find(group=>group.id===activeId);
     card.dataset.hasSelection=String(Boolean(active));
-    card.classList.toggle('is-motion-paused',Boolean(session.motionPaused));
-    motionToggle.textContent=session.motionPaused?'▶ Resume motion':'Ⅱ Pause motion';
+    motion.update(Boolean(session.motionPaused),activeId,session.motionEnabled);
     for(const[id,cluster]of clusters){cluster.classList.toggle('is-active',id===activeId);cluster.classList.toggle('is-muted',Boolean(activeId)&&id!==activeId);cluster.setAttribute('aria-pressed',String(id===session.selected));}
     centerValue.textContent=format(active?.count??session.model.total);centerLabel.textContent=active?'tasks in this cluster':'task packages';
     select.value=session.selected||'';
