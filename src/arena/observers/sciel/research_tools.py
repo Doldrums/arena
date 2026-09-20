@@ -322,7 +322,7 @@ def _configuration(start, checkpoint):
         contract = value.get('engine_contract') or _obj(value.get('identity')).get('engine_contract')
         # This recorded contract initializes tools only for an enabled block
         # (Engine.__init__). Do not apply today's default to unknown archives.
-        if contract in {'espalier-3.21', 'espalier-3.22', 'espalier-3.23', 'espalier-3.24', 'espalier-3.25', 'espalier-3.26', 'espalier-3.27', 'espalier-3.28','espalier-3.29','espalier-3.30','espalier-3.31','espalier-3.32','espalier-3.33', 'espalier-3.34'} and isinstance(config, dict) and 'research_tools' not in config:
+        if contract in {'espalier-3.21', 'espalier-3.22', 'espalier-3.23', 'espalier-3.24', 'espalier-3.25', 'espalier-3.26', 'espalier-3.27', 'espalier-3.28','espalier-3.29','espalier-3.30','espalier-3.31','espalier-3.32','espalier-3.33', 'espalier-3.34', 'espalier-3.35'} and isinstance(config, dict) and 'research_tools' not in config:
             return dict(status='disabled', enabled=False, source=source,
                 reason=f'The recorded configuration has no research_tools block. In its recorded Engine contract ({contract}), tools are disabled unless explicitly enabled.')
     return dict(status='not_recorded', enabled=None, source=None,

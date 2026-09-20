@@ -255,7 +255,7 @@ if __name__ == "__main__":
     unittest.main()
 
 
-@pytest.mark.parametrize('contract', ['espalier-3.32', 'espalier-3.33', 'espalier-3.34'])
+@pytest.mark.parametrize('contract', ['espalier-3.32', 'espalier-3.33', 'espalier-3.34', 'espalier-3.35'])
 def test_recorded_independent_research_has_shared_wave_barrier_and_cross_island_observations(contract):
     start=baseline();start['engine_contract']=contract
     start['config']['research_tools']={'enabled':True,'independent_research':True,'shared_observations':True,
