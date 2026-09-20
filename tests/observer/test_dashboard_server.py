@@ -112,6 +112,8 @@ class DashboardServerTests(unittest.TestCase):
                            ("/experiments", "text/html"), ("/experiment.html", "text/html"),
                            ("/arena.js", "javascript"), ("/arena.css", "text/css"),
                            ("/arena-insights.js", "javascript"), ("/arena-insights.css", "text/css"),
+                           ("/arena-atlas.js", "javascript"), ("/arena-atlas.css", "text/css"),
+                           ("/arena-theme.css", "text/css"),
                            ("/app.js", "javascript"), ("/chart.js", "javascript"),
                            ("/learning.js", "javascript"),
                            ("/population.js", "javascript"), ("/population.css", "text/css"),
@@ -156,9 +158,12 @@ class DashboardServerTests(unittest.TestCase):
         self.assertEqual(health['component'], 'arena')
         self.assertEqual(health['mode'], 'read_only')
         self.assertTrue(health['version'])
+        self.assertTrue(health['capabilities']['search_families'])
+        self.assertFalse(health['capabilities']['launch'])
         for route, schema, key in (('/api/catalog', 'arena.catalog/1', 'tasks'),
                                    ('/api/insights', 'arena.insights/1', 'task_annotations'),
                                    ('/api/references', 'arena.references/1', 'summary'),
+                                   ('/api/search-families', 'arena.search-families/1', 'groups'),
                                    ('/api/participants', 'arena.participants/1', 'participants')):
             status, _, body = self.get(route)
             self.assertEqual(status, 200)
@@ -168,6 +173,40 @@ class DashboardServerTests(unittest.TestCase):
         self.assertNotEqual(self.get('/')[2], self.get('/experiments')[2])
         self.assertEqual(self.fingerprints(), before)
         self.assertFalse(self.executed.exists())
+
+    def test_search_family_route_partitions_all_catalog_packages(self):
+        before = self.fingerprints()
+        status, headers, body = self.get('/api/search-families')
+        self.assertEqual(status, 200)
+        self.assertEqual(headers['Cache-Control'], 'no-store')
+        view = json.loads(body)
+        catalog = json.loads(self.get('/api/catalog')[2])
+        ids = [ident for group in view['groups'] for ident in group['task_ids']]
+        self.assertEqual(len(ids), 1138)
+        self.assertEqual(len(set(ids)), 1138)
+        self.assertEqual(set(ids), {task['id'] for task in catalog['tasks']})
+        self.assertEqual(view['summary']['corpus_paper_count'], 98)
+        self.assertEqual(view['summary']['source_group_count'], 99)
+        self.assertEqual(view['task_annotations']['reference-online-bin-packing']['related_search_family_ids'],
+                         ['funsearch-eoh', 'other'])
+        self.assertEqual(self.fingerprints(), before)
+        self.assertFalse(self.executed.exists())
+
+    def test_stale_search_family_data_returns_503_without_exposing_source_paths(self):
+        from arena.registry import resolve_registry_root
+        source_root = resolve_registry_root()
+        custom_registry = self.root / 'registry'
+        custom_registry.mkdir()
+        for name in ('catalog.json', 'search-family-sources.json', 'search-families.json'):
+            (custom_registry / name).write_bytes((source_root / name).read_bytes())
+        view = json.loads((custom_registry / 'search-families.json').read_text())
+        view['catalog_digest'] = '0' * 64
+        (custom_registry / 'search-families.json').write_text(json.dumps(view))
+        self.server.registry_root = custom_registry
+        status, _, body = self.get('/api/search-families')
+        self.assertEqual(status, 503)
+        self.assertEqual(json.loads(body), {'error': 'Registry unavailable or invalid.'})
+        self.assertNotIn(str(custom_registry).encode(), body)
 
     def test_unknown_routes_ids_and_path_traversal_cannot_read_files(self):
         before = self.fingerprints()

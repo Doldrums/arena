@@ -119,7 +119,10 @@ class Handler(BaseHTTPRequestHandler):
         if parts == ["api", "health"]:
             from . import __version__
             self.reply({"status": "ok", "component": "arena", "version": __version__,
-                        "mode": "read_only", "observer": "sciel"})
+                        "mode": "read_only", "observer": "sciel",
+                        "capabilities": {"catalog": True, "participants": True, "insights": True,
+                                         "references": True, "search_families": True,
+                                         "run_observation": True, "launch": False}})
             return
         if parts == ["api", "catalog"]:
             self.reply(get_catalog(self.server.registry_root))
@@ -134,6 +137,10 @@ class Handler(BaseHTTPRequestHandler):
         if parts == ["api", "references"]:
             from .references import get_references
             self.reply(get_references(self.server.registry_root))
+            return
+        if parts == ["api", "search-families"]:
+            from .search_families import get_search_families
+            self.reply(get_search_families(self.server.registry_root))
             return
         if parts == ["api", "runs"]:
             with self.server.store_lock:
@@ -208,7 +215,8 @@ class Handler(BaseHTTPRequestHandler):
             file = STATIC / "index.html"
         elif parts in (["experiments"], ["experiment.html"]):
             file = STATIC / "experiment.html"
-        elif len(parts) == 1 and parts[0] in {"arena.js", "arena.css", "arena-insights.js", "arena-insights.css"}:
+        elif len(parts) == 1 and parts[0] in {"arena.js", "arena.css", "arena-insights.js", "arena-insights.css",
+                                             "arena-atlas.js", "arena-atlas.css", "arena-theme.css"}:
             file = STATIC / parts[0]
         elif len(parts) == 1 and parts[0] in {"app.js", "style.css", "chart.js", "learning.js", "llm_calls.js", "llm_calls.css", "architecture.js", "architecture.css", "population.js", "population.css", "storage-view.js", "population-preview.js", "population-preview.css", "methods.js", "methods.css", "methods_progress.js", "methods_progress.css", "methods_atlas.js", "methods_atlas.css", "research_tools.js", "research_tools.css", "research_cells.js", "research_cells.css", "workflow.js", "workflow.css", "packings.js", "packings.css", "favicon.svg"}:
             file = STATIC / parts[0]

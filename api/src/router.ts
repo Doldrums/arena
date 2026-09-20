@@ -2,6 +2,7 @@ import catalog from '../../registry/catalog.json';
 import participants from '../../registry/participants.json';
 import insights from '../../registry/insights.json';
 import references from '../../registry/references.json';
+import searchFamilies from '../../registry/search-families.json';
 import type {AccessConfig} from './auth.ts';
 
 export interface Env extends AccessConfig {
@@ -22,7 +23,7 @@ export async function route(request: Request, env: Env): Promise<Response> {
   let response: Response;
   if (url.pathname === '/api/health') {
     response = json({status: 'ok', component: 'arena', version: '0.1.0', mode: 'catalog_only',
-      capabilities: {catalog: true, participants: true, insights: true, references: true, native_runs: false, launch: false}});
+      capabilities: {catalog: true, participants: true, insights: true, references: true, search_families: true, native_runs: false, launch: false}});
   } else if (url.pathname === '/api/catalog') {
     response = json(catalog);
   } else if (url.pathname === '/api/participants') {
@@ -31,6 +32,8 @@ export async function route(request: Request, env: Env): Promise<Response> {
     response = json(insights);
   } else if (url.pathname === '/api/references') {
     response = json(references);
+  } else if (url.pathname === '/api/search-families') {
+    response = json(searchFamilies);
   } else if (url.pathname === '/api/runs' || url.pathname.startsWith('/api/runs/')) {
     response = json({error: 'observer_not_connected', message: 'Cloud run ingestion is not connected yet. Use the local Arena observer to inspect SCiEL runs.'}, 503);
   } else if (url.pathname === '/api' || url.pathname.startsWith('/api/')) {

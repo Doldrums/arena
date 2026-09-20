@@ -2,10 +2,12 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
+import {webcrypto} from 'node:crypto';
 
 const html = readFileSync(new URL('../../web/index.html', import.meta.url), 'utf8').replace('data-arena-app="true"', 'data-arena-app="test"');
 const source = readFileSync(new URL('../../web/arena.js', import.meta.url), 'utf8').replace(/^export /gm, '').replace(/^import .*$/gm, '');
 const insightsSource = readFileSync(new URL('../../web/arena-insights.js', import.meta.url), 'utf8').replace(/^export /gm, '');
+const atlasSource = readFileSync(new URL('../../web/arena-atlas.js', import.meta.url), 'utf8').replace(/^export /gm, '');
 function task(overrides = {}) {
   return {id: 'packing/circle', name: 'Circle packing', family: 'Geometry', description: 'Pack circles into a square.',
     protocol: 'original', executable: true, runtime_readiness: 'not_verified', metric: 'sum_radii',
@@ -26,13 +28,16 @@ function insightsFixture(tasks) {
     domains:groups('domain_id',[['geometry','Geometry'],['other','Other domain']]),task_types:groups('task_type_id',[['construction','Construction'],['analysis','Analysis']]),
     task_annotations,coverage:[{id:'executable',total:tasks.filter(item=>item.executable).length},{id:'recorded_contract',total:0},{id:'runtime_verified',total:0}]};
 }
-async function mount({tasks = [task()], url = 'http://arena.test/', fetchJSON, insights, references} = {}) {
+async function mount({tasks = [task()], url = 'http://arena.test/', fetchJSON, insights, references, searchFamilies} = {}) {
   const dom = new JSDOM(html, {url, runScripts: 'outside-only', pretendToBeVisual: true});
   const w = dom.window;
+  w.TextEncoder = TextEncoder; Object.defineProperty(w.crypto, 'subtle', {value:webcrypto.subtle});
   w.eval(`{${insightsSource}; Object.assign(window,{renderArenaInsights,renderTaskReferences,referenceMatches});}`);
+  w.eval(`{${atlasSource}; Object.assign(window,{renderArenaAtlas});}`);
   w.eval(`{${source}; window.createArenaApp = createArenaApp; window.safeExternalURL = safeExternalURL;}`);
   const catalog = {tasks, sources: [{id: 'catalog', url: 'https://github.com/example/tasks'}]};
   const responses = {'/api/catalog':catalog,'/api/participants':participants,'/api/insights':insights||insightsFixture(tasks),
+    '/api/search-families':searchFamilies||{groups:[{id:'evolution',label:'Evolution',description:'Research program search.',task_ids:tasks.map(item=>item.id)}],task_annotations:Object.fromEntries(tasks.map(item=>[item.id,{search_family_id:'evolution'}]))},
     '/api/references':references||{summary:{task_count:tasks.length,tasks_with_published_reference:0,tasks_with_recorded_baseline:0,tasks_without_numeric_reference:tasks.length,verified_current_sota:0,current_sota_status:'not_assessed'},tasks:tasks.map(item=>({task_id:item.id,anchors:[]}))}};
   const app = w.createArenaApp({fetchJSON: fetchJSON || (async path => responses[path])});
   await app.ready;
@@ -294,5 +299,68 @@ test('scientific and reference metadata remain text and external links reject ac
     assert.equal(doc.querySelector('#arena-insights img, #arena-insights script, #arena-insights a[href^="javascript:"]'),null);
     doc.querySelector('.arena-task-link').click();
     assert.equal(doc.querySelector('#arena-detail img, #arena-detail script, #arena-detail a[href^="data:"]'),null);
+  } finally { dom.window.close(); }
+});
+
+
+test('atlas switches modes, persists URL and combines source-method and task-family filters', async () => {
+  const tasks=[task(),task({id:'unsupported',family:null,executable:false}),task({id:'algebra',family:'Algebra'})];
+  const searchFamilies={groups:[{id:'evo',label:'Evolutionary search',task_ids:['packing/circle','unsupported']},{id:'prompt',label:'Prompt optimization',task_ids:['algebra']}],
+    task_annotations:{'packing/circle':{search_family_id:'evo'},unsupported:{search_family_id:'evo'},algebra:{search_family_id:'prompt'}}};
+  const {dom,w,doc}=await mount({tasks,searchFamilies,url:'http://arena.test/?search_family=evo'});
+  try {
+    assert.equal(doc.getElementById('arena-result-count').textContent,'2 of 3 tasks');
+    assert.equal(doc.querySelectorAll('#arena-atlas rect[data-task-id]').length,3);
+    doc.querySelector('[data-atlas-mode="families"]').click();
+    assert.equal(new URL(w.location).searchParams.get('atlas'),'families');
+    input(w,doc.getElementById('arena-family'),'__unspecified__','change');
+    assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 3 tasks');
+    assert.match(doc.getElementById('arena-active-filters').textContent,/Task family: Unspecified/);
+    assert.match(doc.getElementById('arena-active-filters').textContent,/Search method: Evolutionary search/);
+    doc.querySelector('button[aria-label="Remove search method filter: Evolutionary search"]').click();
+    assert.equal(new URL(w.location).searchParams.get('search_family'),null);
+    doc.getElementById('arena-clear').click();
+    assert.equal(doc.getElementById('arena-result-count').textContent,'3 of 3 tasks');
+    assert.equal(doc.querySelector('[data-atlas-mode="families"]').getAttribute('aria-pressed'),'true');
+    doc.querySelector('#arena-results .arena-task-link').click();
+    assert.equal(doc.getElementById('arena-atlas').hidden,true);
+  } finally { dom.window.close(); }
+});
+
+test('method filters also update published reference examples', async () => {
+  const tasks=[task(),task({id:'model',family:'ML'})];
+  const searchFamilies={groups:[{id:'evo',label:'Evolution',task_ids:['packing/circle']},{id:'prompt',label:'Prompt',task_ids:['model']}],
+    task_annotations:{'packing/circle':{search_family_id:'evo'},model:{search_family_id:'prompt'}}};
+  const {dom,w,doc}=await mount({tasks,searchFamilies,references:referenceFixture(tasks)});
+  try {
+    w.history.replaceState(null,'','/?search_family=evo'); w.dispatchEvent(new w.PopStateEvent('popstate'));
+    assert.equal(doc.querySelectorAll('#arena-insights [data-reference-task]').length,1);
+    assert.equal(doc.querySelector('#arena-insights [data-reference-task]').dataset.referenceTask,'packing/circle');
+    w.history.replaceState(null,'','/?search_family=prompt'); w.dispatchEvent(new w.PopStateEvent('popstate'));
+    assert.equal(doc.querySelector('#arena-insights [data-reference-task]').dataset.referenceTask,'model');
+  } finally { dom.window.close(); }
+});
+
+
+test('unmapped method cluster filters tasks with missing source assignments', async () => {
+  const tasks=[task(),task({id:'unmapped'})];
+  const searchFamilies={groups:[{id:'evo',label:'Evolution',task_ids:['packing/circle']}],task_annotations:{'packing/circle':{search_family_id:'evo'}}};
+  const {dom,doc}=await mount({tasks,searchFamilies,url:'http://arena.test/?search_family=unclassified'});
+  try {
+    assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 2 tasks');
+    assert.equal(doc.querySelector('#arena-results .arena-task-id').textContent,'unmapped');
+  } finally { dom.window.close(); }
+});
+
+
+test('metadata from a different catalog revision is unavailable while task search stays usable', async () => {
+  const tasks=[task()],insights=insightsFixture(tasks);
+  insights.catalog_digest='0'.repeat(64);
+  const searchFamilies={catalog_digest:'0'.repeat(64),groups:[{id:'evo',label:'Evolution',task_ids:['packing/circle']}],task_annotations:{'packing/circle':{search_family_id:'evo'}}};
+  const {dom,doc}=await mount({tasks,insights,searchFamilies});
+  try {
+    assert.match(doc.getElementById('arena-insights').textContent,/Scientific overview unavailable/);
+    assert.match(doc.getElementById('arena-atlas').textContent,/unavailable/i);
+    assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 1 tasks');
   } finally { dom.window.close(); }
 });

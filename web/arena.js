@@ -1,3 +1,4 @@
+import {renderArenaAtlas} from './arena-atlas.js';
 import {renderArenaInsights, renderTaskReferences, referenceMatches} from './arena-insights.js';
 const REPOSITORY = 'https://github.com/Doldrums/arena';
 const PAGE_SIZE = 25;
@@ -9,6 +10,17 @@ const textValue = value => value == null || value === '' ? 'Not specified' :
   typeof value === 'object' ? JSON.stringify(value) : String(value);
 const words = value => textValue(value).replaceAll('_', ' ');
 
+function canonicalJSON(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalJSON).join(',')}]`;
+  if (value && typeof value === 'object') return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonicalJSON(value[key])}`).join(',')}}`;
+  return JSON.stringify(value);
+}
+async function catalogDigest(catalog) {
+  const bytes = new TextEncoder().encode(canonicalJSON(catalog));
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
 export function safeExternalURL(value) {
   if (typeof value !== 'string') return null;
   try {
@@ -17,10 +29,11 @@ export function safeExternalURL(value) {
   } catch { return null; }
 }
 
-export function filterTasks(tasks, {query = '', family = '', protocol = '', domain = '', type = '', reference = ''} = {}, {insights, references} = {}) {
+export function filterTasks(tasks, {query = '', family = '', protocol = '', domain = '', type = '', reference = '', search_family = ''} = {}, {insights, references, searchFamilies} = {}) {
   const terms = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
   const referenceMap = new Map((references?.tasks || []).map(record => [record.task_id, record]));
-  return tasks.filter(task => (!family || task.family === family) &&
+  return tasks.filter(task => (!family || (family === '__unspecified__' ? !task.family : task.family === family)) &&
+    (!search_family || !searchFamilies || (searchFamilies.task_annotations[task.id]?.search_family_id || 'unclassified') === search_family) &&
     (!protocol || task.protocol === protocol) && (!domain || !insights || insights.task_annotations[task.id]?.domain_id === domain) &&
     (!type || !insights || insights.task_annotations[task.id]?.task_type_id === type) &&
     (!reference || !references || referenceMatches(referenceMap.get(task.id), reference)) && terms.every(term =>
@@ -35,7 +48,7 @@ export function createArenaApp({document: doc = document, window: win = window,
     return response.json();
   }} = {}) {
   const $ = id => doc.getElementById(id);
-  const state = {catalog: null, participants: null, insights: null, references: null, errors: {}, loading: true};
+  const state = {catalog: null, participants: null, insights: null, references: null, searchFamilies: null, errors: {}, loading: true};
   let loadRevision = 0;
 
   function element(tag, className, text) {
@@ -59,7 +72,8 @@ export function createArenaApp({document: doc = document, window: win = window,
   function locationState() {
     const params = new URL(win.location.href).searchParams;
     return {view: params.get('view') === 'participants' ? 'participants' : 'tasks',
-      query: params.get('q') || '', family: params.get('family') || '',
+      atlasMode: params.get('atlas') === 'families' ? 'families' : 'methods',
+      search_family: params.get('search_family') || '', query: params.get('q') || '', family: params.get('family') || '',
       domain: params.get('domain') || '', type: params.get('type') || '', reference: params.get('reference') || '',
       protocol: params.get('protocol') || '', task: params.get('task'),
       participant: params.get('participant'), page: Math.max(1, Number.parseInt(params.get('page'), 10) || 1)};
@@ -111,10 +125,10 @@ export function createArenaApp({document: doc = document, window: win = window,
     const tasks = state.catalog?.tasks;
     const counts = tasks ? [tasks.length, tasks.filter(task => task.executable).length] : ['—', '—'];
     const metrics = locationState().view === 'tasks' ? [
-      ['Task packages', counts[0], 'One package per catalog task'],
-      ['Classified domains', state.insights ? state.insights.domains.filter(item => item.id !== 'unknown').length : '—', state.insights?.summary?.unknown_domain_count != null ? `${state.insights.summary.unknown_domain_count} packages unclassified` : 'Primary scientific context'],
-      ['Evaluator families', tasks ? new Set(tasks.map(task => task.family).filter(Boolean)).size : '—', 'Recorded nonempty family labels'],
-      ['Corpus papers', state.insights?.summary?.corpus_paper_count ?? '—', state.insights?.summary?.source_group_count != null ? `${state.insights.summary.source_group_count} source groups incl. supplements` : 'Excludes source supplements'],
+      ['Task packages', counts[0], `${typeof counts[1] === 'number' ? counts[1].toLocaleString('en-US') : '—'} with evaluation definitions`],
+      ['Research domains', state.insights ? state.insights.domains.filter(item => item.id !== 'unknown').length : '—', state.insights?.summary?.unknown_domain_count != null ? `${state.insights.summary.unknown_domain_count} packages unclassified` : 'Primary scientific context'],
+      ['Task families', tasks ? new Set(tasks.map(task => task.family).filter(Boolean)).size : '—', 'Packing, equations, algorithms & more'],
+      ['Research papers', state.insights?.summary?.corpus_paper_count ?? '—', state.insights?.summary?.source_group_count != null ? 'Plus the SCiEL task collection' : 'Excludes source supplements'],
     ] : [
       ['Task definitions', counts[0], 'Versioned evaluation contracts'],
       ['Executable definitions', counts[1], 'Runtime availability not yet verified'],
@@ -122,9 +136,15 @@ export function createArenaApp({document: doc = document, window: win = window,
         state.participants?.summary?.integrated_count == null ? 'Integration status unavailable' : `${state.participants.summary.integrated_count} integrated drivers`],
     ];
     container.classList.toggle('arena-task-metrics', locationState().view === 'tasks');
-    for (const [label, value, note] of metrics) {
+    for (const [index, [label, value, note]] of metrics.entries()) {
       const metric = element('article', 'metric');
-      metric.append(element('div', 'metric-label', label),
+      const caption = element('div', 'metric-label');
+      const icon = element('span', 'arena-metric-icon'); icon.setAttribute('aria-hidden', 'true');
+      const svg = doc.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('viewBox', '0 0 24 24');
+      const path = doc.createElementNS(svg.namespaceURI, 'path');
+      path.setAttribute('d', ['M4 4h6v6H4z M14 4h6v6h-6z M4 14h6v6H4z M14 14h6v6h-6z', 'M12 3v18 M3 12h18 M5.6 5.6l12.8 12.8 M5.6 18.4 18.4 5.6', 'M6 5h12 M6 12h12 M6 19h12 M12 5v14 M4 3h4v4H4z M16 10h4v4h-4z M4 17h4v4H4z', 'M4 4h7l1 2 1-2h7v15h-7l-1 2-1-2H4z M12 6v13'][index % 4]);
+      svg.append(path); icon.append(svg); caption.append(element('span', '', label), icon);
+      metric.append(caption,
         element('div', 'metric-value', typeof value === 'number' ? value.toLocaleString('en-US') : value),
         element('div', 'metric-foot', note)); container.append(metric);
     }
@@ -153,6 +173,8 @@ export function createArenaApp({document: doc = document, window: win = window,
     const annotation = state.insights?.task_annotations?.[task.id];
     const domain = state.insights?.domains.find(item => item.id === annotation?.domain_id);
     const taskType = state.insights?.task_types.find(item => item.id === annotation?.task_type_id);
+    const searchFamily = state.searchFamilies?.groups.find(item => item.id === state.searchFamilies.task_annotations[task.id]?.search_family_id);
+    if (searchFamily) fact(facts, 'Source method family', searchFamily.label);
     if (domain) fact(facts, 'Scientific domain', domain.label);
     if (taskType) fact(facts, 'Task type', taskType.label);
     if (domain || taskType) {
@@ -261,7 +283,9 @@ export function createArenaApp({document: doc = document, window: win = window,
       const card = element('article', 'arena-participant');
       const title = element('h3'); title.append(link(item.name || item.id, route({participant: item.id}), 'arena-task-link', true));
       const status = element('div', 'arena-participant-status'); status.append(badge(words(item.registration_status)), badge(`Adapter: ${words(item.adapter_status)}`));
-      card.append(title, status, element('p', '', item.description || 'No description supplied.'),
+      const art = element('div', 'arena-participant-art'); art.dataset.participant = item.id; art.setAttribute('aria-hidden', 'true');
+      art.append(element('span', 'arena-participant-glyph'));
+      card.append(art, title, status, element('p', '', item.description || 'No description supplied.'),
         link('View participant →', route({participant: item.id}), 'inline-link', true)); grid.append(card);
     }
     results.append(grid);
@@ -274,12 +298,23 @@ export function createArenaApp({document: doc = document, window: win = window,
     const viewName = isTasks ? 'Tasks' : 'Participants';
     doc.title = `Arena · ${viewName}`;
     $('arena-title').textContent = viewName; $('arena-breadcrumb').textContent = viewName;
-    $('arena-subtitle').textContent = isTasks ? 'Browse tasks and inspect their evaluation contracts.' : 'Research systems and their Arena integration status.';
+    $('arena-subtitle').textContent = isTasks ? 'A shared space for scientific problems, search methods and measurable progress.' : 'Research systems and their Arena integration status.';
     $('arena-contribute').textContent = isTasks ? 'Add a task ↗' : 'Add a participant ↗';
     for (const node of doc.querySelectorAll('[data-arena-view]')) {
       if (node.dataset.arenaView === current.view) node.setAttribute('aria-current', 'page'); else node.removeAttribute('aria-current');
     }
     summary();
+    $('arena-atlas').hidden = !isTasks || Boolean(selected);
+    if (isTasks && !selected) renderArenaAtlas($('arena-atlas'), {
+      catalog: state.catalog, insights: state.insights, searchFamilies: state.searchFamilies, current, errors: state.errors, loading: state.loading,
+      onFilter: (kind, value) => {
+        navigate(route({[kind]: value, page: null, task: null}));
+        const reducedMotion = win.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        $('arena-list-panel').scrollIntoView?.({behavior: reducedMotion ? 'instant' : 'smooth', block: 'start'});
+      },
+      onTask: id => navigate(route({task: id}), {focus: true}),
+      onModeChange: mode => navigate(route({atlas: mode === 'methods' ? null : mode})),
+    });
     $('arena-insights').hidden = !isTasks || Boolean(selected);
     if (isTasks && !selected) renderArenaInsights($('arena-insights'), {
       insights: state.insights, references: state.references, catalog: state.catalog, current,
@@ -287,16 +322,16 @@ export function createArenaApp({document: doc = document, window: win = window,
       errors: state.errors, loading: state.loading, onFilter: (kind, value) => navigate(route({[kind]: value, page: null, task: null})), onRetry: load,
     });
     const chips = $('arena-active-filters'); chips.replaceChildren();
-    chips.hidden = !isTasks || !(current.domain || current.type || current.reference);
+    chips.hidden = !isTasks || !(current.domain || current.type || current.reference || current.search_family || current.family);
     if (!chips.hidden) {
       chips.append(element('span', '', 'Selected filters'));
-      for (const [key, value, labels, prefix] of [['domain', current.domain, state.insights?.domains, 'Domain'], ['type', current.type, state.insights?.task_types, 'Type'], ['reference', current.reference, null, 'Reference']]) {
+      for (const [key, value, labels, prefix] of [['domain', current.domain, state.insights?.domains, 'Domain'], ['type', current.type, state.insights?.task_types, 'Type'], ['reference', current.reference, null, 'Reference'], ['search_family', current.search_family, state.searchFamilies?.groups, 'Search method'], ['family', current.family, null, 'Task family']]) {
         if (!value) continue;
-        const label = labels?.find(item => item.id === value)?.label || ({published: 'Published reference', baseline: 'Seed baseline', missing: 'No numeric reference', numeric: 'Numeric reference'}[value]) || words(value);
+        const label = labels?.find(item => item.id === value)?.label || ({__unspecified__: 'Unspecified', published: 'Published reference', baseline: 'Seed baseline', missing: 'No numeric reference', numeric: 'Numeric reference'}[value]) || words(value);
         const chip = element('div', 'arena-filter-chip'); chip.append(element('span', '', `${prefix}: ${label}`));
         const remove = button('×', () => navigate(route({[key]: null, page: null})), ''); remove.setAttribute('aria-label', `Remove ${prefix.toLowerCase()} filter: ${label}`); chip.append(remove); chips.append(chip);
       }
-      if ((current.domain || current.type) && !state.insights || current.reference && !state.references) chips.append(element('span', '', 'Some filters await overview data; available catalog rows remain visible.'));
+      if ((current.domain || current.type) && !state.insights || current.reference && !state.references || current.search_family && !state.searchFamilies) chips.append(element('span', '', 'Some filters await overview data; available catalog rows remain visible.'));
     }
     $('arena-scope').hidden = !dataset;
     $('arena-scope').textContent = isTasks ? 'Executable definitions are listed separately from runtime availability. Original, recreated and unsupported protocols retain their source labels.' : 'Registrations and execution capabilities are separate. Planned participants cannot be launched from this read-only board.';
@@ -312,7 +347,7 @@ export function createArenaApp({document: doc = document, window: win = window,
     if ($('arena-search').value !== current.query) $('arena-search').value = current.query;
     $('arena-family').value = current.family; $('arena-protocol').value = current.protocol;
     $('family-filter-label').hidden = !isTasks; $('protocol-filter-label').hidden = !isTasks;
-    $('arena-clear').hidden = !(current.query || current.family || current.protocol || current.domain || current.type || current.reference);
+    $('arena-clear').hidden = !(current.query || current.family || current.protocol || current.domain || current.type || current.reference || current.search_family);
     $('arena-results-title').textContent = isTasks ? 'Task catalog' : 'Participant registry';
     $('arena-results').setAttribute('aria-busy', String(!dataset && !error));
     if (!dataset) {
@@ -334,13 +369,22 @@ export function createArenaApp({document: doc = document, window: win = window,
     for (const family of [...new Set((state.catalog?.tasks || []).map(task => task.family).filter(Boolean))].sort()) {
       const option = element('option', '', family); option.value = family; select.append(option);
     }
+    if (state.catalog?.tasks.some(task => !task.family)) {
+      const option = element('option', '', 'Unspecified'); option.value = '__unspecified__'; select.append(option);
+    }
   }
   async function load() {
-    const revision = ++loadRevision; state.loading = true; state.errors = {}; render();
-    await Promise.all(['catalog', 'participants', 'insights', 'references'].map(async name => {
+    const revision = ++loadRevision; state.loading = true; state.errors = {};
+    // Metadata is promoted together after verifying the catalog revision.
+    const metadata = {};
+    state.insights = null; state.references = null; state.searchFamilies = null;
+    render();
+    await Promise.all(['catalog', 'participants', 'insights', 'references', 'searchFamilies'].map(async name => {
       try {
-        const data = await fetchJSON(`/api/${name}`);
-        if (name === 'insights') {
+        const data = await fetchJSON(`/api/${name === 'searchFamilies' ? 'search-families' : name}`);
+        if (name === 'searchFamilies') {
+          if (!data || !Array.isArray(data.groups) || !data.task_annotations || data.groups.some(item => typeof item.id !== 'string' || typeof item.label !== 'string' || !Array.isArray(item.task_ids))) throw new Error('The server returned an invalid search-method map.');
+        } else if (name === 'insights') {
           if (!data || !Array.isArray(data.domains) || !Array.isArray(data.task_types) || !data.task_annotations || typeof data.denominator?.task_count !== 'number' || [...data.domains, ...data.task_types].some(item => typeof item.id !== 'string' || typeof item.label !== 'string' || typeof item.total !== 'number')) throw new Error('The server returned an invalid scientific overview.');
         } else if (name === 'references') {
           if (!data || !Array.isArray(data.tasks) || data.tasks.some(item => !item || typeof item.task_id !== 'string' || !Array.isArray(item.anchors))) throw new Error('The server returned invalid reference evidence.');
@@ -349,7 +393,8 @@ export function createArenaApp({document: doc = document, window: win = window,
           if (!data || !Array.isArray(data[field]) || data[field].some(item => !item || typeof item.id !== 'string')) throw new Error('The server returned an invalid registry.');
         }
         if (revision !== loadRevision) return;
-        state[name] = data;
+        if (name === 'catalog' || name === 'participants') state[name] = data;
+        else metadata[name] = data;
         if (name === 'catalog') populateFamilies();
       } catch (error) {
         if (revision !== loadRevision) return;
@@ -357,7 +402,21 @@ export function createArenaApp({document: doc = document, window: win = window,
       }
       if (revision === loadRevision) render();
     }));
-    if (revision === loadRevision) { state.loading = false; render(); }
+    if (revision !== loadRevision) return;
+    let digest;
+    if (state.catalog && Object.values(metadata).some(data => data.catalog_digest)) {
+      try { digest = await catalogDigest(state.catalog); } catch { /* Unverifiable metadata stays unavailable. */ }
+    }
+    if (revision !== loadRevision) return;
+    for (const [name, data] of Object.entries(metadata)) {
+      const digestMismatch = data.catalog_digest && data.catalog_digest !== digest;
+      const bindingMismatch = data.catalog_binding && !state.catalog?.sources?.some(source => canonicalJSON(source) === canonicalJSON(data.catalog_binding));
+      if (!state.catalog || digestMismatch || bindingMismatch) {
+        state[name] = null;
+        state.errors[name] = 'Metadata does not match the loaded catalog revision. Reload to fetch a consistent snapshot.';
+      } else state[name] = data;
+    }
+    state.loading = false; render();
   }
   function updateFilters() {
     const current = locationState();
@@ -368,7 +427,7 @@ export function createArenaApp({document: doc = document, window: win = window,
   $('arena-family').addEventListener('change', updateFilters);
   $('arena-protocol').addEventListener('change', updateFilters);
   $('arena-filters').addEventListener('submit', event => { event.preventDefault(); updateFilters(); });
-  $('arena-clear').addEventListener('click', () => navigate(route({q: null, family: null, protocol: null, domain: null, type: null, reference: null, page: null}), {replace: true}));
+  $('arena-clear').addEventListener('click', () => navigate(route({q: null, family: null, protocol: null, domain: null, type: null, reference: null, search_family: null, page: null}), {replace: true}));
   doc.addEventListener('click', event => {
     const anchor = event.target.closest?.('a[data-arena-route], a[data-arena-view]');
     if (!anchor || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

@@ -235,7 +235,7 @@ export function renderTaskReferences(root, {record, references, error, loading})
 
 export function renderArenaInsights(root, options) {
   const {insights, references, catalog, current, matchingTasks = catalog?.tasks || [], errors = {}, loading, onFilter, onRetry} = options;
-  const previous = sessions.get(root), key = [insights, references, catalog, current.domain, current.type, current.reference, current.query, current.family, current.protocol, errors.insights, errors.references, loading];
+  const previous = sessions.get(root), key = [insights, references, catalog, current.domain, current.type, current.reference, current.query, current.family, current.search_family, current.protocol, errors.insights, errors.references, loading];
   if (previous && key.every((value, index) => value === previous.key[index])) return;
   const focus = root.contains(root.ownerDocument.activeElement) ? root.ownerDocument.activeElement?.dataset.insightsAction : null;
   const openNotes = [...root.querySelectorAll('[data-domain-note][open]')].map(node => node.dataset.domainNote);

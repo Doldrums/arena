@@ -10,7 +10,7 @@ const env: Env = {ASSETS: {fetch: async request => new Response(new URL(request.
 const request = (path: string, init?: RequestInit) => new Request(`http://localhost${path}`, init);
 
 test('production protects HTML, assets and API even when Access is unconfigured', async () => {
-  for (const path of ['/', '/style.css', '/api/catalog', '/api/insights', '/api/references', '/experiments']) {
+  for (const path of ['/', '/style.css', '/arena-atlas.js', '/arena-atlas.css', '/arena-theme.css', '/api/catalog', '/api/insights', '/api/references', '/api/search-families', '/experiments']) {
     const response = await worker.fetch(request(path), env);
     assert.equal(response.status, 503);
     assert.equal((await response.json()).error, 'access_not_configured');
@@ -51,7 +51,50 @@ test('asset routing preserves the native experiment view and HEAD semantics', as
   assert.equal(await response.text(), '/experiment.html');
   assert.equal(response.headers.get('Cache-Control'), 'private, no-store');
   assert.equal(await (await route(request('/'), env)).text(), '/index.html');
+  for (const path of ['/arena-atlas.js', '/arena-atlas.css', '/arena-theme.css']) {
+    assert.equal(await (await route(request(path), env)).text(), path);
+  }
   assert.equal(await (await route(request('/api/catalog', {method: 'HEAD'}), env)).text(), '');
+});
+
+test('search-family API partitions all packages and preserves secondary source links', async () => {
+  const catalog = await (await route(request('/api/catalog'), env)).json();
+  const response = await route(request('/api/search-families'), env);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('Cache-Control'), 'private, no-store');
+  const data = await response.json();
+  assert.equal(data.schema, 'arena.search-families/1');
+  assert.equal(data.summary.task_count, 1138);
+  assert.equal(data.summary.corpus_paper_count, 98);
+  assert.equal(data.summary.source_group_count, 99);
+  const taskIds = data.groups.flatMap((group: {task_ids: string[]}) => group.task_ids);
+  assert.equal(taskIds.length, 1138);
+  assert.equal(new Set(taskIds).size, 1138);
+  assert.deepEqual(taskIds.sort(), catalog.tasks.map((task: {id: string}) => task.id).sort());
+  assert.deepEqual(data.task_annotations['reference-online-bin-packing'].related_search_family_ids, ['funsearch-eoh', 'other']);
+  assert.equal(data.groups.find((group: {id: string}) => group.id === 'sciel-supplement').paper_count, 0);
+  const health = await (await route(request('/api/health'), env)).json();
+  assert.equal(health.capabilities.search_families, true);
+  assert.equal(health.capabilities.launch, false);
+  assert.equal(await (await route(request('/api/search-families', {method: 'HEAD'}), env)).text(), '');
+  assert.equal((await route(request('/api/search-families', {method: 'POST'}), env)).status, 405);
+});
+
+test('search-family data and atlas assets remain behind the production Access gate', async () => {
+  let assetRequests = 0;
+  const protectedEnv: Env = {
+    ASSETS: {fetch: async () => {assetRequests += 1; return new Response('private asset');}},
+    ACCESS_TEAM_DOMAIN: 'https://arena.cloudflareaccess.com', ACCESS_AUD: 'our-team-app',
+  };
+  for (const path of ['/api/search-families', '/arena-atlas.js', '/arena-atlas.css', '/arena-theme.css']) {
+    const missing = await worker.fetch(request(path), protectedEnv);
+    assert.equal(missing.status, 401);
+    assert.deepEqual(await missing.json(), {error: 'authentication_required'});
+    const forged = await worker.fetch(request(path, {headers: {'Cf-Access-Jwt-Assertion': 'forged'}}), protectedEnv);
+    assert.equal(forged.status, 403);
+    assert.deepEqual(await forged.json(), {error: 'invalid_access_token'});
+  }
+  assert.equal(assetRequests, 0);
 });
 
 test('scientific overview counts every catalog task once and serves evidence separately', async () => {
