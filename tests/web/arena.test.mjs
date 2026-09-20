@@ -28,7 +28,7 @@ function insightsFixture(tasks) {
     domains:groups('domain_id',[['geometry','Geometry'],['other','Other domain']]),task_types:groups('task_type_id',[['construction','Construction'],['analysis','Analysis']]),
     task_annotations,coverage:[{id:'executable',total:tasks.filter(item=>item.executable).length},{id:'recorded_contract',total:0},{id:'runtime_verified',total:0}]};
 }
-async function mount({tasks = [task()], url = 'http://arena.test/', fetchJSON, insights, references, searchFamilies, prepare} = {}) {
+async function mount({tasks = [task()], url = 'http://arena.test/', fetchJSON, insights, references, searchFamilies, prepare, participantRecords = participants} = {}) {
   const dom = new JSDOM(html, {url, runScripts: 'outside-only', pretendToBeVisual: true});
   const w = dom.window;
   w.TextEncoder = TextEncoder; Object.defineProperty(w.crypto, 'subtle', {value:webcrypto.subtle});
@@ -36,7 +36,7 @@ async function mount({tasks = [task()], url = 'http://arena.test/', fetchJSON, i
   w.eval(`{${atlasSource}; Object.assign(window,{renderArenaAtlas});}`);
   w.eval(`{${source}; window.createArenaApp = createArenaApp; window.safeExternalURL = safeExternalURL;}`);
   const catalog = {tasks, sources: [{id: 'catalog', url: 'https://github.com/example/tasks'}]};
-  const responses = {'/api/catalog':catalog,'/api/participants':participants,'/api/insights':insights||insightsFixture(tasks),
+  const responses = {'/api/catalog':catalog,'/api/participants':participantRecords,'/api/insights':insights||insightsFixture(tasks),
     '/api/search-families':searchFamilies||{groups:[{id:'evolution',label:'Evolution',description:'Research program search.',task_ids:tasks.map(item=>item.id)}],task_annotations:Object.fromEntries(tasks.map(item=>[item.id,{search_family_id:'evolution'}]))},
     '/api/references':references||{summary:{task_count:tasks.length,tasks_with_published_reference:0,tasks_with_recorded_baseline:0,tasks_without_numeric_reference:tasks.length,verified_current_sota:0,current_sota_status:'not_assessed'},tasks:tasks.map(item=>({task_id:item.id,anchors:[]}))}};
   prepare?.(w);
@@ -53,7 +53,9 @@ test('overview keeps domains visible and technical data collapsed without undoin
     assert.equal(browser.open,false);
     assert.ok(doc.querySelector('#arena-insights [data-domain-card]'));
     assert.equal(doc.querySelector('#arena-insights .insights-composition'),null);
-    assert.ok(doc.querySelector('#arena-analysis .insights-composition'));
+    assert.ok(doc.querySelector('#arena-statistics .insights-composition'));
+    assert.equal(browser.contains(doc.getElementById('arena-statistics')),false);
+    assert.equal(doc.getElementById('arena-statistics').hidden,false);
     assert.ok(browser.contains(doc.getElementById('arena-list-panel')));
     assert.equal(browser.contains(doc.getElementById('arena-detail')),false);
     doc.querySelector('[data-domain-card="geometry"]').click();
@@ -221,11 +223,12 @@ test('participants show planned capabilities without execution controls', async 
   const {dom, doc, w} = await mount({url: 'http://arena.test/?view=participants'});
   try {
     assert.equal(doc.getElementById('arena-title').textContent, 'Participants');
-    assert.match(doc.getElementById('arena-results').textContent, /planned/);
+    assert.match(doc.getElementById('arena-results').textContent, /Source pinned/);
+    assert.match(doc.getElementById('arena-results').textContent, /Integration open/);
     doc.querySelector('.arena-participant .arena-task-link').click();
     assert.equal(new URL(w.location.href).searchParams.get('participant'), 'sciel');
-    assert.match(doc.getElementById('arena-detail').textContent, /Native executionNot integrated/);
-    assert.match(doc.getElementById('arena-detail').textContent, /Canonical evaluationNot integrated/);
+    assert.match(doc.getElementById('arena-detail').textContent, /Native executionIntegration pending/);
+    assert.match(doc.getElementById('arena-detail').textContent, /Canonical evaluationIntegration pending/);
     assert.equal([...doc.querySelectorAll('button')].some(node => /^(Run|Start|Pause|Resume)$/.test(node.textContent)), false);
     assert.ok(doc.querySelector('a[href="/experiments"]'));
   } finally { dom.window.close(); }
@@ -321,7 +324,7 @@ test('domain and task-type charts combine URL filters and preserve keyboard focu
     assert.doesNotMatch(domain.textContent,/%/);
     assert.match(doc.querySelector('.insights-composition').textContent,/66\.6%/);
     assert.equal(doc.querySelector('.insights-composition').open,false);
-    assert.match(domain.getAttribute('aria-label'),/1 executable definitions, 1 unsupported/);
+    assert.match(domain.getAttribute('aria-label'),/1 executable definitions, 1 awaiting an evaluator/);
     domain.focus(); domain.click();
     assert.equal(doc.activeElement.dataset.filterValue,'geometry');
     assert.equal(doc.activeElement.getAttribute('aria-pressed'),'true');
@@ -529,7 +532,7 @@ test('scientific direction cards retain exact corpus counts and open real chemis
       assert.match(bar.getAttribute('aria-label'),new RegExp(`${domain.total.toLocaleString('en-US')} tasks`));
       assert.ok(bar.textContent.includes(`${domain.percentage.toFixed(1)}%`));
     }
-    assert.ok(composition.querySelector('[role="img"]').getAttribute('aria-label').includes('Unsupported: 428'));
+    assert.ok(composition.querySelector('[role="img"]').getAttribute('aria-label').includes('Evaluator to be added: 428'));
     composition.querySelector('summary').click();
     assert.equal(composition.open,true);
     const chemistry=doc.querySelector('[data-domain-card="chemistry-materials"]');chemistry.focus();chemistry.click();
@@ -584,4 +587,54 @@ test('every scientific direction example belongs to that domain and preserves so
     assert.ok(executableExamples>0);
     assert.ok(sourceOnlyExamples>=4,'Source-only Earth and Finance examples must remain visible');
   } finally { dom.window.close(); }
+});
+
+
+test('research works expose paper provenance and safe source links without implying execution support', async () => {
+  const record = {id:'method-x',name:'Method X',record_kind:'research_work',registration_status:'literature',adapter_status:'not_implemented',
+    description:'Evolves search procedures.',search_family:{id:'evolution',label:'Evolutionary methods'},
+    papers:[{id:'paper-x',title:'Research <script>literal</script>',url:'https://arxiv.org/abs/1234.56789',year:2025,venue:'Research venue'}],
+    code_links:[{label:'Result notebook',url:'https://example.org/results'},{label:'Unsafe',url:'javascript:alert(1)'}],
+    provenance:{filename:'research-corpus.md',line_start:12,line_end:30},capabilities:{native_run:false}};
+  const {dom,doc}=await mount({url:'http://arena.test/?view=participants',participantRecords:{participants:[record],summary:{research_work_count:1,pinned_registration_count:0}}});
+  try {
+    const card=doc.querySelector('.arena-participant');
+    assert.match(card.textContent,/Research work/);assert.match(card.textContent,/2025 · Research venue/);
+    assert.equal(card.querySelector('script'),null);
+    const paper=card.querySelector('.arena-paper-title');
+    assert.equal(paper.getAttribute('href'),'https://arxiv.org/abs/1234.56789');
+    assert.equal(paper.target,'_blank');assert.match(paper.rel,/noopener/);
+    assert.ok([...card.querySelectorAll('a')].some(a=>a.textContent==='Result notebook ↗'));
+    assert.equal(card.querySelector('a[href^="javascript:"]'),null);
+    card.querySelector('.arena-task-link').click();
+    const detail=doc.getElementById('arena-detail');
+    assert.ok(detail.querySelector('.arena-participant-papers.is-detail'));
+    assert.match(detail.textContent,/research-corpus.md, lines 12–30/);
+    assert.doesNotMatch(detail.textContent,/Native executionAvailable/);
+  } finally {dom.window.close();}
+});
+
+test('participant search includes bibliography and family filters with pagination and history', async () => {
+  const records=Array.from({length:31},(_,i)=>({id:`work-${i}`,name:`Work ${i}`,record_kind:'research_work',adapter_status:'not_implemented',
+    search_family:{id:i<27?'search':'prompts',label:i<27?'Search methods':'Prompt methods'},
+    papers:[{title:i===29?'Distinctive research title':`Publication ${i}`,url:`https://example.org/paper/${i}`,year:2025,venue:'Conference'}]}));
+  const {dom,doc,w}=await mount({url:'http://arena.test/?view=participants',participantRecords:{participants:records}});
+  try {
+    assert.equal(doc.querySelectorAll('.arena-participant').length,25);
+    assert.match(doc.getElementById('arena-result-count').textContent,/31 of 31/);
+    [...doc.querySelectorAll('#arena-pagination button')].find(b=>b.textContent==='Next →').click();
+    assert.equal(doc.querySelectorAll('.arena-participant').length,6);
+    assert.equal(new URL(w.location.href).searchParams.get('page'),'2');
+    doc.querySelector('.arena-participant .arena-task-link').click();
+    doc.querySelector('#arena-detail a[data-arena-route]').click();
+    assert.equal(doc.querySelectorAll('.arena-participant').length,6);
+    input(w,doc.getElementById('arena-family'),'prompts','change');
+    assert.equal(doc.querySelectorAll('.arena-participant').length,4);
+    assert.equal(new URL(w.location.href).searchParams.has('page'),false);
+    input(w,doc.getElementById('arena-search'),'Distinctive');
+    assert.equal(doc.querySelectorAll('.arena-participant').length,1);
+    assert.equal(doc.querySelector('.arena-participant').dataset.participant,'work-29');
+    doc.getElementById('arena-clear').click();
+    assert.match(doc.getElementById('arena-result-count').textContent,/31 of 31/);
+  } finally {dom.window.close();}
 });

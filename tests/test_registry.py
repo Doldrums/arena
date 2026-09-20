@@ -88,8 +88,10 @@ def test_input_output_contracts_are_bound_to_pinned_problem_files(catalog):
 
 def test_participants_are_pinned_but_native_adapters_are_not_claimed():
     view = get_participants()
-    assert view["summary"] == {"participant_count": 3, "integrated_count": 0}
-    assert {p["id"] for p in view["participants"]} == {"sciel", "shinka", "dgm"}
+    assert view["summary"] == {"participant_count": 99, "integrated_count": 0, "research_work_count": 98,
+                               "pinned_registration_count": 3, "literature_only_count": 96}
+    pinned = [p for p in view["participants"] if p["record_kind"] == "system_registration"]
+    assert {p["id"] for p in pinned} == {"sciel", "shinka", "dgm"}
     for participant in view["participants"]:
         assert participant["adapter_status"] == "not_implemented"
         assert not any(participant["capabilities"].values())

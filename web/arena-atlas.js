@@ -304,7 +304,7 @@ export function renderArenaAtlas(root, options = {}) {
   const details=make('div','atlas-details');aside.append(details);body.append(canvas,aside);card.append(body);
   const footer=make('footer','atlas-footer');
   const hint=make('p','','Select a cluster to keep it highlighted. Use arrow keys to move between clusters; Escape clears the selection.');
-  const note=make('details','atlas-note');note.append(make('summary','','About this map'),make('p','','One dot is one task package, including unsupported definitions. Color identifies a group; cluster size reflects package count. Dot sizes, positions, trails and motion are decorative, not dependencies, performance or solved results.'));
+  const note=make('details','atlas-note');note.append(make('summary','','About this map'),make('p','','One dot is one task package, including definitions awaiting an evaluator. Color identifies a group; cluster size reflects package count. Dot sizes, positions, trails and motion are decorative, not dependencies, performance or solved results.'));
   if(session.mode==='methods')note.append(make('p','','Method groups follow the source paper-family labels. A task with several paper associations uses its recorded primary group for this map.'));
   else note.append(make('p','','Task families use the evaluator-family field in the catalog. Packages without that field remain in the Unspecified group.'));
   footer.append(hint,note);card.append(footer);

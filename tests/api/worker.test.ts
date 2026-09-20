@@ -41,7 +41,13 @@ test('catalog and participants are real registry snapshots, with no fake launch 
   const catalog = await (await route(request('/api/catalog'), env)).json();
   assert.equal(catalog.tasks.length, 1138);
   const participants = await (await route(request('/api/participants'), env)).json();
-  assert.equal(participants.participants.length, 3);
+  assert.equal(participants.participants.length, 99);
+  assert.equal(participants.summary.research_work_count, 98);
+  assert.equal(participants.summary.pinned_registration_count, 3);
+  assert.equal(participants.summary.integrated_count, 0);
+  const papers = participants.participants.flatMap((item: {papers?: {id:string;url:string}[]}) => item.papers || []);
+  assert.equal(new Set(papers.map((paper: {id:string}) => paper.id)).size, 98);
+  assert.ok(papers.every((paper: {url:string}) => paper.url.startsWith('https://')));
   assert.equal((await route(request('/api/runs'), env)).status, 503);
   assert.equal((await route(request('/api/runs', {method: 'POST'}), env)).status, 405);
   assert.equal((await route(request('/api/unknown'), env)).status, 404);

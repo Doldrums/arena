@@ -3,7 +3,7 @@
 - Empira is the product name; `arena` remains the repository, Python package and API identity.
 - Arena owns its catalog, registry, environments, run lifecycle and board. Frameworks remain external participants.
 - Use the approved Arena visual direction: SF Pro Text, soft rounded widget cards, warm surfaces and green, iris, cornflower and amber gradients and an interactive research atlas. Preserve the extracted SCiEL observer behavior, data contracts and plot semantics.
-- The Tasks overview starts with summary cards and the atlas, followed by the RSI idea in large type with inline illustrations, scientific domain cards, factual differentiators, and Q/A with chevrons. Keep the task table and detailed statistics in a persistent disclosure below the domains; filters and catalog links must reveal it.
+- The Tasks overview starts with summary cards and the atlas, followed by the RSI idea in restrained type with inline illustrations, scientific domain cards, factual differentiators, and research Q/A with chevrons. Domain distribution and evaluation coverage have their own statistics disclosure directly below the domains. Keep the task table and further reference analysis in a separate persistent catalog disclosure; filters and catalog links must reveal it.
 - Experiments uses a restrained grayscale interface: white cards, neutral controls and SF Pro Text. Reserve color for semantic status and chart data; keep the richer discovery palette on Tasks and Participants.
 - `src/arena/observers/sciel` is read-only and must not import SCiEL Engine or execute user code. Preserve native schema names and provenance semantics.
 - Registry changes pin immutable commits. Registration, built environments, conformance and runnable adapters are separate states.

@@ -15,10 +15,20 @@
       "minLength": 1
     },
     "repository": {
-      "$ref": "common.schema.json#/$defs/repository"
+      "anyOf": [
+        {
+          "$ref": "common.schema.json#/$defs/repository"
+        },
+        {
+          "type": "null"
+        }
+      ]
     },
     "registration_status": {
-      "const": "planned"
+      "enum": [
+        "planned",
+        "literature"
+      ]
     },
     "adapter_status": {
       "const": "not_implemented"
@@ -61,6 +71,181 @@
         "type": "string",
         "minLength": 1
       }
+    },
+    "record_kind": {
+      "enum": [
+        "system_registration",
+        "research_work"
+      ]
+    },
+    "papers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "common.schema.json#/$defs/identifier"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://[^\\s]+$"
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 1900,
+            "maximum": 2100
+          },
+          "venue": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "paper",
+              "technical_report"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "url",
+          "year",
+          "venue",
+          "kind"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "search_family": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "common.schema.json#/$defs/identifier"
+            },
+            "label": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "id",
+            "label"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "code_links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "pattern": "^https?://[^\\s]+$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "implementation",
+              "project",
+              "artifact"
+            ]
+          }
+        },
+        "required": [
+          "url",
+          "label",
+          "kind"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "provenance": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "source_id": {
+              "$ref": "common.schema.json#/$defs/identifier"
+            },
+            "filename": {
+              "const": "human-harness-corpus.md"
+            },
+            "sha256": {
+              "$ref": "common.schema.json#/$defs/sha256"
+            },
+            "line_start": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "line_end": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "heading": {
+              "type": "string",
+              "minLength": 1
+            },
+            "section_sha256": {
+              "$ref": "common.schema.json#/$defs/sha256"
+            },
+            "metadata_source": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "$ref": "common.schema.json#/$defs/relative_path"
+                },
+                "url": {
+                  "type": "string",
+                  "pattern": "^https://[^\\s]+$"
+                },
+                "sha256": {
+                  "$ref": "common.schema.json#/$defs/sha256"
+                }
+              },
+              "required": [
+                "path",
+                "url",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "description_basis": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "source_id",
+            "filename",
+            "sha256",
+            "line_start",
+            "line_end",
+            "heading",
+            "section_sha256",
+            "metadata_source",
+            "description_basis"
+          ],
+          "additionalProperties": false
+        }
+      ]
     }
   },
   "required": [
@@ -74,5 +259,51 @@
     "supported_protocols",
     "limitations"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "record_kind": {
+            "const": "research_work"
+          }
+        },
+        "required": [
+          "record_kind"
+        ]
+      },
+      "then": {
+        "required": [
+          "papers",
+          "search_family",
+          "code_links",
+          "provenance"
+        ],
+        "properties": {
+          "repository": {
+            "type": "null"
+          },
+          "registration_status": {
+            "const": "literature"
+          },
+          "papers": {
+            "minItems": 1
+          },
+          "provenance": {
+            "type": "object"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "repository": {
+            "$ref": "common.schema.json#/$defs/repository"
+          },
+          "registration_status": {
+            "const": "planned"
+          }
+        }
+      }
+    }
+  ]
 }

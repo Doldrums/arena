@@ -5,7 +5,8 @@ This directory is the versioned, team-curated registration source for the indepe
 - `task-sources/*.json`: repository registrations pinned to a full commit SHA.
 - `participants/*.json`: pinned external framework declarations. All three native adapters are currently **not implemented**.
 - `catalog.json`: endpoint-ready metadata for 1,138 task packages; 710 declare executable evaluators, 428 explicitly do not. No runtime, dependency, GPU, dataset or service availability is inferred from those declarations.
-- `participants.json`: endpoint-ready aggregate of participant declarations.
+- `participants.json`: endpoint-ready catalog of 98 research works and the SCiEL registration, with ShinkaEvolve and DGM merged into their existing pinned entries. Literature records and pinned system registrations remain distinct.
+- `participant-corpus.json` and `participant-descriptions.json`: captured source spans and reviewed English mechanism summaries. See [participant bibliography and rebuild rules](PARTICIPANTS.md).
 
 The snapshot contains allowlisted catalog metadata, declared input/output contract prose from each pinned `problem.json`, source URLs, limitations and original source-file SHA256 values. `contract_source` records that file's exact GitHub blob URL and digest. This revision contains 710 declared contracts; all 428 unsupported tasks leave `contract` null. These contracts are source declarations, not Arena conformance evidence. The snapshot includes no evaluator code, commands, environment-variable values, credentials, local run directories or imported experiment results. A task package is not necessarily an independent scientific problem; the same benchmark can occur under several paper protocols.
 

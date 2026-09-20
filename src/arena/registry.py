@@ -207,22 +207,82 @@ def validate_catalog(value):
 
 def validate_participant(value):
     _object(value, ("id", "name", "description", "repository", "registration_status", "adapter_status",
-                   "capabilities", "supported_protocols", "limitations"), "participant")
+                   "capabilities", "supported_protocols", "limitations"), "participant",
+            optional=("record_kind", "papers", "search_family", "code_links", "provenance"))
     _identifier(value["id"], "participant.id")
     for key in ("name", "description"):
         _text(value[key], key)
-    _repository(value["repository"])
-    _require(value["registration_status"] == "planned", "v1 participant registration must be planned")
+    kind = value.get("record_kind", "system_registration")
+    _require(kind in ("system_registration", "research_work"), "Invalid participant record kind")
+    if kind == "system_registration":
+        _repository(value["repository"])
+        _require(value["registration_status"] == "planned", "v1 pinned participant registration must be planned")
+    else:
+        _require(value["repository"] is None and value["registration_status"] == "literature",
+                 "Research work metadata is not a pinned execution registration")
+        _require(all(key in value for key in ("papers", "search_family", "code_links", "provenance"))
+                 and value["papers"] and value["provenance"], "Research work needs bibliography and corpus provenance")
     _require(value["adapter_status"] == "not_implemented", "native adapters are not implemented in registry v1")
     _object(value["capabilities"], CAPABILITIES, "capabilities")
     _require(all(value["capabilities"][key] is False for key in CAPABILITIES), "unimplemented adapter cannot advertise capabilities")
     _strings(value["supported_protocols"], "supported_protocols", unique=True)
     _require(not value["supported_protocols"], "unimplemented adapter cannot advertise compatible task protocols")
     _strings(value["limitations"], "limitations")
+    if "papers" in value:
+        _require(type(value["papers"]) is list, "participant papers must be a list")
+        paper_ids = set()
+        for paper in value["papers"]:
+            _object(paper, ("id", "title", "url", "year", "venue", "kind"), "participant paper")
+            _identifier(paper["id"], "paper.id")
+            _require(paper["id"] not in paper_ids, "Duplicate participant paper")
+            paper_ids.add(paper["id"])
+            for key in ("title", "venue"):
+                _text(paper[key], f"paper.{key}")
+            _url(paper["url"], "paper.url")
+            _require(type(paper["year"]) is int and 1900 <= paper["year"] <= 2100, "Invalid paper year")
+            _require(paper["kind"] in ("paper", "technical_report"), "Invalid research publication kind")
+    family = value.get("search_family")
+    if family is not None:
+        _object(family, ("id", "label"), "participant search family")
+        _identifier(family["id"], "search_family.id")
+        _text(family["label"], "search_family.label")
+    if "code_links" in value:
+        _require(type(value["code_links"]) is list, "participant code_links must be a list")
+        urls = set()
+        for link in value["code_links"]:
+            _object(link, ("url", "label", "kind"), "participant code link")
+            _text(link["url"], "code link URL")
+            # Preserve the HTTP DSPy project URL as recorded, without claiming a
+            # checked HTTPS redirect. Credential and query rules remain equal.
+            _url(re.sub(r"^http://", "https://", link["url"]), "code link URL")
+            _require(link["url"] not in urls, "Duplicate participant code link")
+            urls.add(link["url"])
+            _text(link["label"], "code link label")
+            _require(link["kind"] in ("implementation", "project", "artifact"), "Invalid code link scope")
+    provenance = value.get("provenance")
+    if provenance is not None:
+        _object(provenance, ("source_id", "filename", "sha256", "line_start", "line_end", "heading",
+                            "section_sha256", "metadata_source", "description_basis"), "participant provenance")
+        _identifier(provenance["source_id"], "participant source ID")
+        _require(provenance["filename"] == "human-harness-corpus.md", "Unexpected participant corpus filename")
+        for key in ("sha256", "section_sha256"):
+            _hash(provenance[key], _SHA256, f"participant {key}")
+        _require(type(provenance["line_start"]) is int and type(provenance["line_end"]) is int
+                 and 0 < provenance["line_start"] <= provenance["line_end"], "Invalid participant source line span")
+        _text(provenance["heading"], "participant source heading")
+        _text(provenance["description_basis"], "participant description basis")
+        source = _object(provenance["metadata_source"], ("path", "url", "sha256"), "participant bibliography source")
+        _relative(source["path"], "bibliography source path")
+        _hash(source["sha256"], _SHA256, "bibliography source SHA256")
+        _url(source["url"], "bibliography source URL")
 
 
 def participant_view(participants):
-    return {"schema": "arena.participants/1", "summary": {"participant_count": len(participants), "integrated_count": 0},
+    return {"schema": "arena.participants/1", "summary": {
+                "participant_count": len(participants), "integrated_count": 0,
+                "research_work_count": len({paper["id"] for item in participants for paper in item.get("papers", [])}),
+                "pinned_registration_count": sum(item.get("record_kind", "system_registration") == "system_registration" for item in participants),
+                "literature_only_count": sum(item.get("record_kind") == "research_work" for item in participants)},
             "participants": participants}
 
 
@@ -230,11 +290,14 @@ def validate_participants(value):
     _object(value, ("schema", "summary", "participants"), "participants catalog")
     _require(value["schema"] == "arena.participants/1", "unsupported participant catalog schema")
     _require(type(value["participants"]) is list, "participants must be a list")
-    ids = set()
+    ids, paper_ids = set(), set()
     for participant in value["participants"]:
         validate_participant(participant)
         _require(participant["id"] not in ids, "duplicate participant id")
         ids.add(participant["id"])
+        for paper in participant.get("papers", []):
+            _require(paper["id"] not in paper_ids, "A research work appears in multiple participant entries")
+            paper_ids.add(paper["id"])
     _require(value["summary"] == participant_view(value["participants"])["summary"], "participant summary disagrees with records")
     return value
 
@@ -261,7 +324,14 @@ def get_catalog(registry_root=None):
 
 
 def get_participants(registry_root=None):
-    return deepcopy(validate_participants(_json(resolve_registry_root(registry_root) / "participants.json")))
+    root = resolve_registry_root(registry_root)
+    value = validate_participants(_json(root / "participants.json"))
+    _require(not any(item.get("papers") or item.get("record_kind") == "research_work" for item in value["participants"])
+             or (root / "participant-corpus.json").exists(), "Participant corpus capture is required for scholarly entries")
+    if (root / "participant-corpus.json").exists():
+        from arena.participant_corpus import expected_participants
+        _require(value == expected_participants(root), "Participant snapshot differs from the reviewed corpus or pinned declarations")
+    return deepcopy(value)
 
 
 def validate_registry(root=None):
@@ -279,7 +349,10 @@ def validate_registry(root=None):
     declarations = [_json(path) for path in sorted((root / "participants").glob("*.json"))]
     for participant in declarations:
         validate_participant(participant)
-    _require(sorted(declarations, key=lambda p: p["id"]) == sorted(participants["participants"], key=lambda p: p["id"]),
+    declaration_keys = {item["id"]: set(item) for item in declarations}
+    registered = [{key: item[key] for key in declaration_keys.get(item["id"], item)} for item in participants["participants"]
+                  if item.get("record_kind", "system_registration") == "system_registration"]
+    _require(sorted(declarations, key=lambda p: p["id"]) == sorted(registered, key=lambda p: p["id"]),
              "participant declarations and aggregate differ")
     return {"valid": True, "catalog": catalog["summary"], "participants": participants["summary"],
             "remote_refresh": "not_implemented", "native_runners": "not_implemented"}

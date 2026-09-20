@@ -45,7 +45,7 @@ function distribution(root, items, {title, kind, selected, total, onFilter, expa
   const {make, panel} = ui(root);
   const node = panel(title, `Share of all ${number(total)} task packages. Select a bar to filter the catalog.`, kind === 'type' ? 'insights-types' : '');
   const legend = make('div', 'insights-chart-legend');
-  legend.append(make('span', 'insights-legend-executable', 'Executable definition'), make('span', 'insights-legend-unsupported', 'Unsupported'));
+  legend.append(make('span', 'insights-legend-executable', 'Executable definition'), make('span', 'insights-legend-unsupported', 'Evaluator to be added'));
   node.append(legend);
   const list = make('div', 'insights-bars'); list.setAttribute('role', 'group'); list.setAttribute('aria-label', `${title}, filter task catalog`);
   const sorted = [...items].sort((a, b) => b.total - a.total || a.label.localeCompare(b.label));
@@ -54,7 +54,7 @@ function distribution(root, items, {title, kind, selected, total, onFilter, expa
     const share = finite(item.percentage) ? item.percentage : percent(item.total, total), button = make('button', 'insights-bar'); button.type = 'button';
     button.dataset.insightsAction = `${kind}:${item.id}`; button.dataset.filterKind = kind; button.dataset.filterValue = item.id;
     button.setAttribute('aria-pressed', String(selected === item.id));
-    button.setAttribute('aria-label', `${item.label}: ${number(item.total)} tasks, ${percentText(share)} of all tasks; ${number(item.executable)} executable definitions, ${number(item.unsupported)} unsupported. Filter catalog.`);
+    button.setAttribute('aria-label', `${item.label}: ${number(item.total)} tasks, ${percentText(share)} of all tasks; ${number(item.executable)} executable definitions, ${number(item.unsupported)} awaiting an evaluator. Filter catalog.`);
     button.title = item.description || item.label;
     const track = make('span', 'insights-bar-track'); track.setAttribute('aria-hidden', 'true');
     const fill = make('span', 'insights-bar-fill'); fill.style.width = `${Math.max(0, Math.min(100, share || 0))}%`;
@@ -79,7 +79,7 @@ function coverage(root, insights, catalog) {
   const {make, panel} = ui(root), total = insights.denominator.task_count;
   const node = panel('Evaluator & evidence coverage', 'Source protocol labels describe the available definitions. They are not Arena runtime verification.');
   const counts = catalog.tasks.reduce((all, task) => { all[task.protocol] = (all[task.protocol] || 0) + 1; return all; }, {});
-  const protocols = [['original', 'Original', '#789b84'], ['recreated_verified', 'Recreated · verified at source', '#e1b52a'], ['recreated', 'Recreated', '#93a9c0'], ['unsupported', 'Unsupported', '#d6dbe2']];
+  const protocols = [['original', 'Original', '#789b84'], ['recreated_verified', 'Recreated · verified at source', '#e1b52a'], ['recreated', 'Recreated', '#93a9c0'], ['unsupported', 'Evaluator to be added', '#d6dbe2']];
   const track = make('div', 'insights-coverage-track'); track.setAttribute('role', 'img');
   track.setAttribute('aria-label', protocols.map(([id, label]) => `${label}: ${number(counts[id] || 0)}`).join('; '));
   const list = make('div', 'insights-coverage-list');
@@ -145,7 +145,7 @@ function scientificFields(root, insights, catalog, current, onFilter) {
     const card=make('button','field-card');card.type='button';card.dataset.tone=story.tone;card.dataset.domainCard=domain.id;
     card.dataset.insightsAction=`field:${domain.id}`;card.dataset.filterKind='domain';card.dataset.filterValue=domain.id;
     card.setAttribute('aria-pressed',String(current.domain===domain.id));
-    card.setAttribute('aria-label',`${domain.label}: ${number(domain.total)} tasks; ${number(domain.executable)} executable definitions, ${number(domain.unsupported)} unsupported. ${story.question} Filter catalog.`);
+    card.setAttribute('aria-label',`${domain.label}: ${number(domain.total)} tasks; ${number(domain.executable)} executable definitions, ${number(domain.unsupported)} awaiting an evaluator. ${story.question} Filter catalog.`);
     const copy=make('span','field-copy'),meta=make('span','field-meta');
     meta.append(make('span','field-topics',story.topics),make('span','field-count',`${number(domain.total)} tasks`));
     copy.append(meta,make('span','field-title',domain.label),make('span','field-question',story.question));
@@ -287,14 +287,14 @@ export function renderTaskReferences(root, {record, references, error, loading})
 }
 
 export function renderArenaInsights(root, options) {
-  const {insights, references, catalog, current, analysisRoot, matchingTasks = catalog?.tasks || [], errors = {}, loading, onFilter, onRetry} = options;
+  const {insights, references, catalog, current, analysisRoot, statisticsRoot, matchingTasks = catalog?.tasks || [], errors = {}, loading, onFilter, onRetry} = options;
   const separateAnalysis = analysisRoot && analysisRoot !== root ? analysisRoot : null;
-  const previous = sessions.get(root), key = [insights, references, catalog, separateAnalysis, current.domain, current.type, current.reference, current.query, current.family, current.search_family, current.protocol, errors.insights, errors.references, loading];
+  const previous = sessions.get(root), key = [insights, references, catalog, separateAnalysis, statisticsRoot, current.domain, current.type, current.reference, current.query, current.family, current.search_family, current.protocol, errors.insights, errors.references, loading];
   if (previous && key.every((value, index) => value === previous.key[index])) return;
   const active = root.ownerDocument.activeElement;
-  const focusRoot = separateAnalysis?.contains(active) ? separateAnalysis : root;
+  const focusRoot = statisticsRoot?.contains(active) ? statisticsRoot : separateAnalysis?.contains(active) ? separateAnalysis : root;
   const focus = focusRoot.contains(active) ? active?.dataset.insightsAction : null;
-  const compositionOpen = Boolean((separateAnalysis || root).querySelector('.insights-composition[open]'));
+  const compositionOpen = Boolean((statisticsRoot || separateAnalysis || root).querySelector('.insights-composition[open]'));
   const session = {key, expanded: previous?.expanded || {domain: false, type: false}}; sessions.set(root, session);
   const {make} = ui(root), container = make('div', 'arena-insights');
   const analysis = separateAnalysis ? make('div', 'arena-insights arena-analysis-content') : container;
@@ -304,19 +304,23 @@ export function renderArenaInsights(root, options) {
   if (insights && catalog) {
     container.append(scientificFields(root,insights,catalog,current,onFilter));
     const composition=make('details','insights-composition');composition.open=compositionOpen;
-    const compositionSummary=make('summary');compositionSummary.append(make('span','','Corpus composition'),make('small','',`${number(insights.denominator.task_count)} task packages · domain shares & evaluation coverage`));composition.append(compositionSummary);
+    const compositionSummary=make('summary');compositionSummary.append(make('span','','Catalog statistics'),make('small','',`${number(insights.denominator.task_count)} task packages · domain shares & evaluation coverage`));composition.append(compositionSummary);
     const grid=make('div','insights-grid');
     grid.append(distribution(root,insights.domains,{title:'Domain distribution in this corpus',kind:'domain',selected:current.domain,total:insights.denominator.task_count,onFilter,expanded:true}),coverage(root,insights,catalog));
-    composition.append(grid);analysis.append(composition);
+    composition.append(grid);
+    if (statisticsRoot) statisticsRoot.replaceChildren(composition); else analysis.append(composition);
     analysis.append(distribution(root,insights.task_types,{title:'What the tasks ask you to do',kind:'type',selected:current.type,total:insights.denominator.task_count,onFilter,
       expanded:session.expanded.type,onExpand:()=>{session.expanded.type=!session.expanded.type;session.key=[];renderArenaInsights(root,options);}}));
     const methodology = make('details', 'insights-methodology'); methodology.append(make('summary', '', 'How to read these counts'));
     methodology.append(make('p', '', insights.methodology?.unit || 'Each task package contributes once to its primary domain and once to its task type. Multiple packages can describe variants of the same scientific problem.'));
     methodology.append(make('p', '', insights.methodology?.classification_authority || 'Domain and task-type assignments are Arena editorial classifications, based on the pinned task metadata. They are not claims made by the source authors.'));
-    methodology.append(make('p', '', insights.methodology?.percentages || 'Percentages use the complete catalog, including unsupported definitions.'));
+    methodology.append(make('p', '', insights.methodology?.percentages?.replace(/unsupported definitions/g, 'definitions awaiting an evaluator') || 'Percentages use the complete catalog, including definitions awaiting an evaluator.'));
     if (insights.methodology?.papers) methodology.append(make('p', '', insights.methodology.papers));
     analysis.append(methodology);
-  } else container.append(unavailable(root, loading && !errors.insights ? 'Loading scientific overview…' : 'Scientific overview unavailable', 'The task catalog remains available below. Domain and task-type counts require the recorded overview.', errors.insights ? onRetry : null));
+  } else {
+    statisticsRoot?.replaceChildren();
+    container.append(unavailable(root, loading && !errors.insights ? 'Loading scientific overview…' : 'Scientific overview unavailable', 'The task catalog remains available below. Domain and task-type counts require the recorded overview.', errors.insights ? onRetry : null));
+  }
   if (references && catalog) analysis.append(referencesPanel(root, references, catalog, current, onFilter, matchingTasks));
   else analysis.append(unavailable(root, loading && !errors.references ? 'Loading reference evidence…' : 'Reference evidence unavailable', 'Missing reference data is not evidence that no baseline or SOTA exists.', errors.references ? onRetry : null));
   root.replaceChildren(container);

@@ -4,11 +4,13 @@ const REPOSITORY = 'https://github.com/Doldrums/arena';
 const PAGE_SIZE = 25;
 const PROTOCOL_LABELS = {
   original: 'Original', recreated_verified: 'Recreated · verified',
-  recreated: 'Recreated', unsupported: 'Unsupported',
+  recreated: 'Recreated', unsupported: 'Evaluator to be added',
 };
 const textValue = value => value == null || value === '' ? 'Not specified' :
   typeof value === 'object' ? JSON.stringify(value) : String(value);
 const words = value => textValue(value).replaceAll('_', ' ');
+const participantKind = item => item.record_kind === 'research_work' ? 'Research work' : item.repository?.commit ? 'Source pinned' : words(item.registration_status);
+const adapterLabel = item => ({not_implemented: 'Integration open', planned: 'Integration planned', integrated: 'Adapter integrated'}[item.adapter_status] || words(item.adapter_status));
 
 function canonicalJSON(value) {
   if (Array.isArray(value)) return `[${value.map(canonicalJSON).join(',')}]`;
@@ -181,10 +183,9 @@ export function createArenaApp({document: doc = document, window: win = window,
       ['Task families', tasks ? new Set(tasks.map(task => task.family).filter(Boolean)).size : '—', 'Packing, equations, algorithms & more'],
       ['Research papers', state.insights?.summary?.corpus_paper_count ?? '—', state.insights?.summary?.source_group_count != null ? 'Plus the SCiEL task collection' : 'Excludes source supplements'],
     ] : [
-      ['Task definitions', counts[0], 'Versioned evaluation contracts'],
-      ['Executable definitions', counts[1], 'Runtime availability not yet verified'],
-      ['Participants', state.participants?.participants.length ?? '—',
-        state.participants?.summary?.integrated_count == null ? 'Integration status unavailable' : `${state.participants.summary.integrated_count} integrated drivers`],
+      ['Research works', state.participants?.summary?.research_work_count ?? state.participants?.participants.filter(item => item.papers?.length).length ?? '—', 'Papers, methods and source material'],
+      ['Method families', state.participants ? new Set(state.participants.participants.map(item => item.search_family?.id).filter(Boolean)).size : '—', 'Explore related research approaches'],
+      ['Source-pinned systems', state.participants?.summary?.pinned_registration_count ?? state.participants?.participants.filter(item => item.repository?.commit).length ?? '—', 'Versioned framework registrations'],
     ];
     container.classList.toggle('arena-task-metrics', locationState().view === 'tasks');
     for (const [index, [label, value, note]] of metrics.entries()) {
@@ -219,7 +220,7 @@ export function createArenaApp({document: doc = document, window: win = window,
     const facts = element('dl', 'arena-detail-facts');
     fact(facts, 'Family', task.family); fact(facts, 'Metric', task.metric);
     fact(facts, 'Direction', ['max', 'maximize'].includes(task.direction) ? 'Maximize' : ['min', 'minimize'].includes(task.direction) ? 'Minimize' : task.direction);
-    fact(facts, 'Executable definition', task.executable ? 'Present' : 'Not available');
+    fact(facts, 'Executable definition', task.executable ? 'Present' : 'Evaluator to be added');
     fact(facts, 'Runtime availability', words(task.runtime_readiness));
     fact(facts, 'Source status', words(task.declared_status)); holder.append(facts);
     if (source?.repository?.commit) fact(facts, 'Source revision', source.repository.commit);
@@ -281,18 +282,43 @@ export function createArenaApp({document: doc = document, window: win = window,
     if (!participant) { empty(holder, 'Participant not found', 'This participant is not in the current registry.'); return; }
     const heading = element('div', 'arena-detail-top');
     const title = element('div'); title.append(element('h2', 'arena-detail-title', participant.name || participant.id), element('span', 'arena-task-id', participant.id));
-    heading.append(title, badge(words(participant.registration_status)));
+    heading.append(title, badge(participantKind(participant)));
     holder.append(heading, element('p', 'arena-detail-description', participant.description || 'No description supplied.'));
+    participantPapers(holder, participant, true);
     const facts = element('dl', 'arena-detail-facts');
-    fact(facts, 'Registration', words(participant.registration_status));
-    fact(facts, 'Arena adapter', words(participant.adapter_status));
-    fact(facts, 'Source revision', participant.repository?.commit);
-    for (const [label, key] of [['Native execution', 'native_run'], ['Canonical evaluation', 'canonical_evaluation'], ['Pause', 'pause'], ['Resume', 'resume']]) {
-      const value = participant.capabilities?.[key]; fact(facts, label, value === true ? 'Available' : value === false ? 'Not integrated' : 'Not specified');
+    if (participant.search_family?.label) fact(facts, 'Method family', participant.search_family.label);
+    fact(facts, 'Arena integration', adapterLabel(participant));
+    if (participant.repository?.commit) {
+      fact(facts, 'Source revision', participant.repository.commit);
+      for (const [label, key] of [['Native execution', 'native_run'], ['Canonical evaluation', 'canonical_evaluation'], ['Pause', 'pause'], ['Resume', 'resume']]) {
+        const value = participant.capabilities?.[key]; fact(facts, label, value === true ? 'Available' : value === false ? 'Integration pending' : 'To be specified');
+      }
     }
     holder.append(facts);
-    externalLinks(holder, [['Participant repository', participant.repository?.url], ['Propose an integration', `${REPOSITORY}/compare`]]);
+    externalLinks(holder, participantSourceLinks(participant).concat([['Propose an integration', `${REPOSITORY}/compare?expand=1&template=participant.md`]]));
+    if (participant.provenance?.filename) {
+      const provenance = section(holder, 'Research provenance');
+      provenance.append(element('p', '', `Curated from ${participant.provenance.filename}${participant.provenance.line_start ? `, lines ${participant.provenance.line_start}–${participant.provenance.line_end}` : ''}. Paper and source links identify the original research.`));
+    }
     recordDetails(holder, participant);
+  }
+  function participantSourceLinks(participant) {
+    const refs = (participant.code_links || []).map(item => [item.label || 'Research source', item.url]);
+    if (participant.repository?.url && !refs.some(([,url]) => url === participant.repository.url)) refs.unshift(['Code', participant.repository.url]);
+    return refs;
+  }
+  function participantPapers(container, participant, detailed = false) {
+    if (!participant.papers?.length) return;
+    const list = element('div', `arena-participant-papers${detailed ? ' is-detail' : ''}`);
+    for (const paper of participant.papers) {
+      const row = element('div', 'arena-paper-citation');
+      const title = safeExternalURL(paper.url) ? link(paper.title || paper.id, paper.url, 'arena-paper-title') : element('span', 'arena-paper-title', paper.title || paper.id);
+      const metadata = [paper.year, paper.venue].filter(Boolean).join(' · ');
+      row.append(element('span', 'arena-paper-label', paper.kind === 'technical_report' ? 'Report' : 'Paper'), title);
+      if (metadata) row.append(element('span', 'arena-paper-meta', metadata));
+      list.append(row);
+    }
+    container.append(list);
   }
   function taskResults(current) {
     const tasks = filterTasks(state.catalog.tasks, current, state);
@@ -313,7 +339,7 @@ export function createArenaApp({document: doc = document, window: win = window,
       if (task.description) title.append(element('p', 'arena-task-description', task.description));
       const protocol = element('td'); protocol.append(badge(PROTOCOL_LABELS[task.protocol] || words(task.protocol)));
       row.append(title, element('td', 'muted', task.family || 'Unspecified'), protocol,
-        element('td', 'arena-definition', task.executable ? 'Executable source' : 'Not executable'));
+        element('td', 'arena-definition', task.executable ? 'Executable source' : 'Evaluator to be added'));
       body.append(row);
     }
     table.append(body); const wrapper = element('div', 'table-wrap'); wrapper.append(table); results.append(wrapper);
@@ -327,21 +353,37 @@ export function createArenaApp({document: doc = document, window: win = window,
   function participantResults(current) {
     const terms = current.query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
     const all = state.participants.participants;
-    const participants = all.filter(item => terms.every(term => [item.id, item.name, item.description].join(' ').toLocaleLowerCase().includes(term)));
+    const participants = all.filter(item => (!current.family || item.search_family?.id === current.family) && terms.every(term => [item.id, item.name, item.description, item.search_family?.label, ...(item.papers || []).flatMap(paper => [paper.title, paper.year, paper.venue])].join(' ').toLocaleLowerCase().includes(term)));
     $('arena-result-count').textContent = `${participants.length} of ${all.length} participants`;
     const results = $('arena-results'); results.replaceChildren();
     if (!participants.length) { empty(results, all.length ? 'No participants match your search' : 'No participants registered', all.length ? 'Try another name or clear the search.' : 'Propose a participant through a pull request.'); return; }
     const grid = element('div', 'arena-participants');
-    for (const item of participants) {
+    const pages = Math.ceil(participants.length / PAGE_SIZE), page = Math.min(current.page, pages);
+    for (const item of participants.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)) {
       const card = element('article', 'arena-participant');
+      card.dataset.participant = item.id;
       const title = element('h3'); title.append(link(item.name || item.id, route({participant: item.id}), 'arena-task-link', true));
-      const status = element('div', 'arena-participant-status'); status.append(badge(words(item.registration_status)), badge(`Adapter: ${words(item.adapter_status)}`));
+      const status = element('div', 'arena-participant-status'); status.append(badge(participantKind(item)), badge(adapterLabel(item)));
       const art = element('div', 'arena-participant-art'); art.dataset.participant = item.id; art.setAttribute('aria-hidden', 'true');
       art.append(element('span', 'arena-participant-glyph'));
-      card.append(art, title, status, element('p', '', item.description || 'No description supplied.'),
-        link('View participant →', route({participant: item.id}), 'inline-link', true)); grid.append(card);
+      const heading = element('div', 'arena-participant-heading'), identity = element('div');
+      identity.append(title, element('span', 'arena-participant-family', item.search_family?.label || 'Research system')); heading.append(art, identity);
+      card.append(heading, element('p', 'arena-participant-description', item.description || 'Research system registration.'));
+      participantPapers(card, item);
+      const footer = element('div', 'arena-participant-footer');
+      externalLinks(footer, [...(item.papers || []).map(paper => [paper.kind === 'technical_report' ? 'Report' : 'Paper', paper.url]), ...participantSourceLinks(item)]);
+      footer.append(link('Details →', route({participant: item.id}), 'inline-link', true));
+      card.append(status, footer); grid.append(card);
     }
     results.append(grid);
+    const pagination = $('arena-pagination'); pagination.replaceChildren(); pagination.hidden = pages <= 1;
+    if (pages > 1) {
+      pagination.append(element('span', '', `Page ${page} of ${pages}`));
+      const controls = element('div');
+      const previous = button('← Previous', () => navigate(route({page: page - 1}), {focus: true, catalog: true, scrollCatalog: true})); previous.disabled = page === 1;
+      const next = button('Next →', () => navigate(route({page: page + 1}), {focus: true, catalog: true, scrollCatalog: true})); next.disabled = page === pages;
+      controls.append(previous, next); pagination.append(controls);
+    }
   }
   function render() {
     const current = locationState(), isTasks = current.view === 'tasks';
@@ -351,7 +393,7 @@ export function createArenaApp({document: doc = document, window: win = window,
     const viewName = isTasks ? 'Tasks' : 'Participants';
     doc.title = `Empira · ${viewName}`;
     $('arena-title').textContent = viewName; $('arena-breadcrumb').textContent = viewName;
-    $('arena-subtitle').textContent = isTasks ? 'Versioned scientific tasks and evaluation definitions.' : 'Registered research systems and their execution support.';
+    $('arena-subtitle').textContent = isTasks ? 'Versioned scientific tasks and evaluation definitions.' : 'Research systems, their papers and the methods they build on.';
     $('arena-contribute').textContent = isTasks ? 'Add a task ↗' : 'Add a participant ↗';
     $('arena-contribute').href = `${REPOSITORY}/compare?expand=1&template=${isTasks ? 'task' : 'participant'}.md`;
     const showIntroduction = isTasks && !selected;
@@ -370,8 +412,9 @@ export function createArenaApp({document: doc = document, window: win = window,
       onModeChange: mode => navigate(route({atlas: mode === 'methods' ? null : mode})),
     });
     $('arena-insights').hidden = !isTasks || Boolean(selected);
+    $('arena-statistics').hidden = !isTasks || Boolean(selected);
     if (isTasks && !selected) renderArenaInsights($('arena-insights'), {
-      insights: state.insights, references: state.references, catalog: state.catalog, current, analysisRoot: $('arena-analysis'),
+      insights: state.insights, references: state.references, catalog: state.catalog, current, analysisRoot: $('arena-analysis'), statisticsRoot: $('arena-statistics'),
       matchingTasks: state.catalog ? filterTasks(state.catalog.tasks, current, state) : [],
       errors: state.errors, loading: state.loading, onFilter: filterCatalog, onRetry: load,
     });
@@ -388,7 +431,7 @@ export function createArenaApp({document: doc = document, window: win = window,
       if ((current.domain || current.type) && !state.insights || current.reference && !state.references || current.search_family && !state.searchFamilies) chips.append(element('span', '', 'Some filters await overview data; available catalog rows remain visible.'));
     }
     $('arena-scope').hidden = !dataset;
-    $('arena-scope').textContent = isTasks ? 'Executable definitions are listed separately from runtime availability. Original, recreated and unsupported protocols retain their source labels.' : 'Registrations and execution capabilities are separate. Planned participants cannot be launched from this read-only board.';
+    $('arena-scope').textContent = isTasks ? 'Evaluation definitions and runtime integration are tracked separately. Original source declarations remain available in each task record.' : 'Research works identify methods and their original publications. Source-pinned registrations and framework integrations are tracked separately.';
     $('arena-error').hidden = !error; $('arena-error').replaceChildren();
     if (error) {
       $('arena-error').append(element('p', 'arena-error-message', `Could not load ${isTasks ? 'the task catalog' : 'participants'}. ${error}`), button('Try again', load));
@@ -399,10 +442,11 @@ export function createArenaApp({document: doc = document, window: win = window,
     $('arena-search').placeholder = `Search ${current.view}`;
     $('arena-search').setAttribute('aria-label', `Search ${current.view}`);
     if ($('arena-search').value !== current.query) $('arena-search').value = current.query;
+    populateFamilies();
     $('arena-family').value = current.family; $('arena-protocol').value = current.protocol;
-    $('family-filter-label').hidden = !isTasks; $('protocol-filter-label').hidden = !isTasks;
+    $('family-filter-label').hidden = false; $('protocol-filter-label').hidden = !isTasks;
     $('arena-clear').hidden = !(current.query || current.family || current.protocol || current.domain || current.type || current.reference || current.search_family);
-    $('arena-results-title').textContent = isTasks ? 'Task catalog' : 'Participant registry';
+    $('arena-results-title').textContent = isTasks ? 'Task catalog' : 'Systems & research';
     $('arena-results').setAttribute('aria-busy', String(!dataset && !error));
     if (!dataset) {
       $('arena-result-count').textContent = error ? 'Unavailable' : 'Loading…'; $('arena-results').replaceChildren();
@@ -422,6 +466,11 @@ export function createArenaApp({document: doc = document, window: win = window,
   function populateFamilies() {
     const select = $('arena-family'); select.replaceChildren();
     const all = element('option', '', 'All families'); all.value = ''; select.append(all);
+    if (locationState().view === 'participants') {
+      const families = new Map((state.participants?.participants || []).filter(item => item.search_family).map(item => [item.search_family.id, item.search_family.label]));
+      for (const [id, label] of families) { const option = element('option', '', label); option.value = id; select.append(option); }
+      return;
+    }
     for (const family of [...new Set((state.catalog?.tasks || []).map(task => task.family).filter(Boolean))].sort()) {
       const option = element('option', '', family); option.value = family; select.append(option);
     }
@@ -476,7 +525,7 @@ export function createArenaApp({document: doc = document, window: win = window,
   }
   function updateFilters() {
     const current = locationState();
-    navigate(route({q: $('arena-search').value, family: current.view === 'tasks' ? $('arena-family').value : null,
+    navigate(route({q: $('arena-search').value, family: $('arena-family').value,
       protocol: current.view === 'tasks' ? $('arena-protocol').value : null, page: null, task: null, participant: null}), {replace: true, catalog: true});
   }
   $('arena-search').addEventListener('input', updateFilters);

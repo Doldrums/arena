@@ -16,8 +16,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from arena.registry import (RegistryError, build_catalog, participant_view,
-                            validate_participant, validate_participants, validate_registration, validate_registry)
+from arena.registry import (RegistryError, build_catalog, validate_registration, validate_registry)
+from arena.participant_corpus import expected_participants
 
 
 def _write(path, value):
@@ -71,12 +71,7 @@ def synchronize(checkout, registration, registry_root):
         contents[key] = json.loads(content)
     problems = _problem_files(checkout, commit, contents["catalog"])
     catalog = build_catalog(contents["catalog"], contents["index"], source, problems)
-    declarations = []
-    for path in sorted((registry_root / "participants").glob("*.json")):
-        item = json.loads(path.read_text())
-        validate_participant(item)
-        declarations.append(item)
-    participants = validate_participants(participant_view(declarations))
+    participants = expected_participants(registry_root)
     _write(registry_root / "catalog.json", catalog)
     _write(registry_root / "participants.json", participants)
     return validate_registry(registry_root)
