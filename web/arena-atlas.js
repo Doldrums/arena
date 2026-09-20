@@ -54,7 +54,7 @@ export function layoutAtlasGroups(groups) {
     if (dx*dx+dy*dy<=1 && Math.hypot(x-center.x,y-center.y)>136) candidates.push({x,y});
   }
   groups.forEach((group,index)=>{
-    const radius=Math.max(11, Math.sqrt(group.count)*3.14+9);
+    const radius=Math.max(12, Math.sqrt(group.count)*4.05+11);
     const angle = (-110 + (index < 8 ? index*45 : index*137.508))*Math.PI/180;
     const target={x:center.x+Math.cos(angle)*270,y:center.y+Math.sin(angle)*216};
     let chosen=null,best=Infinity;
@@ -67,18 +67,19 @@ export function layoutAtlasGroups(groups) {
     }
     const item={...group,...chosen,radius};
     const seed=hash(group.id), rotation=(seed%360)*Math.PI/180, sx=.84+(seed%29)/100, sy=1/sx;
-    // An irregular hexagonal island keeps individual squares apart at every task count.
+    // A loose mosaic: distinct task tiles, a denser core and a softly scattered edge.
     const cells=[], side=Math.ceil(Math.sqrt(group.count)*1.15)+3;
     for(let row=-side;row<=side;row++) for(let col=-side;col<=side;col++) {
-      const x=(col+(row%2)*.5)*5.3,y=row*4.65,theta=Math.atan2(y,x);
-      const boundary=1+.14*Math.sin(theta*3+rotation)+.09*Math.cos(theta*5-rotation);
+      const x=(col+(row%2)*.5)*7.1,y=row*6.25,theta=Math.atan2(y,x);
+      const boundary=1+.19*Math.sin(theta*3+rotation)+.13*Math.cos(theta*5-rotation);
       cells.push({x,y,rank:Math.hypot(x/sx,y/sy)/boundary});
     }
     cells.sort((a,b)=>a.rank-b.rank || a.x-b.x || a.y-b.y);
     item.points=group.tasks.map((task,pointIndex)=>{
-      const cell=cells[pointIndex],jitter=hash(task.id),dx=cell.x+((jitter%9)-4)*.12,dy=cell.y+((Math.floor(jitter/9)%9)-4)*.12;
+      const cell=cells[pointIndex],jitter=hash(task.id),dx=cell.x+((jitter%9)-4)*.33,dy=cell.y+((Math.floor(jitter/9)%9)-4)*.33;
       return {id:task.id,name:task.name || task.id,x:Number((item.x+dx*Math.cos(rotation)-dy*Math.sin(rotation)).toFixed(2)),
-        y:Number((item.y+dx*Math.sin(rotation)+dy*Math.cos(rotation)).toFixed(2)),size:3.35+(jitter%4)*.16,tone:jitter%5};
+        y:Number((item.y+dx*Math.sin(rotation)+dy*Math.cos(rotation)).toFixed(2)),size:3.5+(jitter%11)*.29,
+        angle:(Math.floor(jitter/11)%29)-14,tone:Math.floor(jitter/319)%6};
     });
     placed.push(item);
   });
@@ -103,6 +104,7 @@ export function renderArenaAtlas(root, options = {}) {
   if(requested && session.model.groups.some(group=>group.id===requested)) session.selected=requested;
   if(session.selected && !session.model.groups.some(group=>group.id===session.selected)) session.selected=null;
   if (session.built && !changed) { session.update(); return; }
+  session.cleanup?.();
   session.built=true;
   const doc=root.ownerDocument;
   const make=(tag,cls,value)=>{const node=doc.createElement(tag);if(cls)node.className=cls;if(value!=null)node.textContent=String(value);return node;};
@@ -137,6 +139,13 @@ export function renderArenaAtlas(root, options = {}) {
   }
   const body=make('div','atlas-body'),canvas=make('div','atlas-canvas'),map=svgNode('svg',{viewBox:'0 0 900 680',class:'atlas-map',role:'group','aria-label':`${session.mode==='methods'?'Search method':'Task family'} clusters. Select a cluster to explore its tasks.`});
   const mapTitle=svgNode('title');mapTitle.textContent='Task atlas: one square per catalog task';map.append(mapTitle);
+  const defs=svgNode('defs');
+  // Shared paper-like finishes keep the mosaic light; color does not encode task results.
+  for(const[index,colors]of [['#c0b6a7','#746957'],['#a5b0a3','#627567'],['#e4d8c2','#b9a185'],['#b4b0c0','#767486'],['#a49e92','#53564e'],['#d2b7a5','#967461']].entries()) {
+    const gradient=svgNode('linearGradient',{id:`atlas-paper-${index}`,x1:'0%',y1:'0%',x2:'85%',y2:'100%'});
+    gradient.append(svgNode('stop',{offset:'0%','stop-color':colors[0]}),svgNode('stop',{offset:'100%','stop-color':colors[1]}));defs.append(gradient);
+  }
+  map.append(defs);
   const center=svgNode('g',{class:'atlas-center','aria-hidden':'true'}),centerValue=svgNode('text',{x:450,y:327,'text-anchor':'middle',class:'atlas-center-value'}),centerLabel=svgNode('text',{x:450,y:354,'text-anchor':'middle',class:'atlas-center-label'});
   center.append(centerValue,centerLabel);map.append(center);
   const clusters=new Map();
@@ -144,10 +153,18 @@ export function renderArenaAtlas(root, options = {}) {
   for(const[groupIndex,group]of session.layout.entries()) {
     const cluster=svgNode('g',{class:'atlas-cluster',tabindex:0,role:'button','aria-label':`${group.label}, ${format(group.count)} tasks. Select cluster.`, 'aria-pressed':'false','data-atlas-cluster':group.id});
     const hit=svgNode('circle',{cx:group.x,cy:group.y,r:Math.max(23,group.radius+8),class:'atlas-cluster-hit'});cluster.append(hit);
-    for(const point of group.points) {
-      const particle=svgNode('rect',{x:point.x,y:point.y,width:point.size,height:point.size,rx:.9,class:`atlas-point atlas-tone-${point.tone}`,'data-task-id':point.id,'aria-hidden':'true'});
-      const title=svgNode('title');title.textContent=point.name;particle.append(title);cluster.append(particle);
+    const cloud=svgNode('g',{class:'atlas-cloud'}),patches=[];
+    for(let patchIndex=0;patchIndex<Math.min(3,Math.ceil(group.count/24));patchIndex++) {
+      const seed=hash(`${group.id}:${patchIndex}`),patch=svgNode('g',{class:'atlas-drift'});
+      patch.style.cssText=`--drift-x:${(seed%2?1:-1)*(2+seed%3)}px;--drift-y:${(seed%3?1:-1)*(2+seed%4)}px;--drift-turn:${seed%2?.65:-.65}deg;--drift-duration:${19+seed%12}s;--drift-delay:-${seed%23}s;transform-origin:${group.x}px ${group.y}px`;
+      patches.push(patch);cloud.append(patch);
     }
+    for(const[pointIndex,point]of group.points.entries()) {
+      const particle=svgNode('rect',{x:point.x-point.size/2,y:point.y-point.size/2,width:point.size,height:point.size,rx:.55,
+        transform:`rotate(${point.angle} ${point.x} ${point.y})`,fill:`url(#atlas-paper-${point.tone})`,class:'atlas-point','data-task-id':point.id,'aria-hidden':'true'});
+      const title=svgNode('title');title.textContent=point.name;particle.append(title);patches[pointIndex%patches.length].append(particle);
+    }
+    cluster.append(cloud);
     const above=group.y<338,labelY=group.y+(above?-group.radius-17:group.radius+24);
     const label=svgNode('text',{x:group.x,y:Math.max(26,Math.min(650,labelY)),'text-anchor':'middle',class:`atlas-cluster-label${groupIndex<8?' atlas-label-priority':''}`});
     const words=String(group.label).split(' '),lines=[''];for(const word of words){if(lines[lines.length-1].length+word.length>24 && lines.length<2)lines.push(word);else lines[lines.length-1]+=(lines[lines.length-1]?' ':'')+word;}
@@ -167,7 +184,9 @@ export function renderArenaAtlas(root, options = {}) {
     clusters.set(group.id,cluster);map.append(cluster);
   }
   canvas.append(map);
-  const legend=make('div','atlas-map-legend');legend.append(make('span','atlas-key-square'),make('span','',`${format(session.model.total)} task packages · ${format(session.model.groups.length)} ${session.mode==='methods'?'method groups':'task-family groups'}`));canvas.append(legend);
+  const legend=make('div','atlas-map-legend');legend.append(make('span','atlas-key-square'),make('span','',`${format(session.model.total)} task packages · ${format(session.model.groups.length)} ${session.mode==='methods'?'method groups':'task-family groups'}`));
+  const motionToggle=button('','atlas-motion-toggle',()=>{session.motionPaused=!session.motionPaused;session.update();});
+  legend.append(motionToggle);canvas.append(legend);
   const aside=make('aside','atlas-context');aside.setAttribute('aria-label','Cluster details');
   const picker=make('div','atlas-picker'),pickerLabel=make('label','atlas-picker-label','Jump to a cluster'),select=make('select','atlas-select');select.setAttribute('aria-label','Select atlas cluster');
   const fillOptions=()=>{
@@ -192,9 +211,17 @@ export function renderArenaAtlas(root, options = {}) {
   footer.append(hint,note);card.append(footer);
   card.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();session.selected=null;session.preview=null;session.update();}});
   root.replaceChildren(card);
+  const Observer=doc.defaultView?.IntersectionObserver;
+  if(Observer){
+    card.classList.add('is-offscreen');
+    const observer=new Observer(entries=>card.classList.toggle('is-offscreen',!entries[0].isIntersecting));
+    observer.observe(card);session.cleanup=()=>observer.disconnect();
+  }
   session.update=()=>{
     const activeId=session.preview||session.selected,active=session.model.groups.find(group=>group.id===activeId);
     card.dataset.hasSelection=String(Boolean(active));
+    card.classList.toggle('is-motion-paused',Boolean(session.motionPaused));
+    motionToggle.textContent=session.motionPaused?'▶ Resume motion':'Ⅱ Pause motion';
     for(const[id,cluster]of clusters){cluster.classList.toggle('is-active',id===activeId);cluster.classList.toggle('is-muted',Boolean(activeId)&&id!==activeId);cluster.setAttribute('aria-pressed',String(id===session.selected));}
     centerValue.textContent=format(active?.count??session.model.total);centerLabel.textContent=active?'tasks in this cluster':'task packages';
     select.value=session.selected||'';
