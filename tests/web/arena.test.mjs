@@ -185,7 +185,9 @@ test('domain and task-type charts combine URL filters and preserve keyboard focu
   const {dom,w,doc} = await mount({tasks,insights});
   try {
     const domain = doc.querySelector('[data-filter-kind="domain"][data-filter-value="geometry"]');
-    assert.match(domain.textContent,/66\.6%/);
+    assert.doesNotMatch(domain.textContent,/%/);
+    assert.match(doc.querySelector('.insights-composition').textContent,/66\.6%/);
+    assert.equal(doc.querySelector('.insights-composition').open,false);
     assert.match(domain.getAttribute('aria-label'),/1 executable definitions, 1 unsupported/);
     domain.focus(); domain.click();
     assert.equal(doc.activeElement.dataset.filterValue,'geometry');
@@ -213,7 +215,8 @@ test('all scientific domains are visible while the independent task-type chart e
   insights.task_types=Array.from({length:18},(_,i)=>({id:`type-${i}`,label:`Type ${i}`,total:1,executable:1,unsupported:0}));
   const {dom,doc}=await mount({tasks,insights});
   try {
-    assert.equal(doc.querySelectorAll('[data-filter-kind="domain"]').length,12);
+    assert.equal(doc.querySelectorAll('[data-domain-card]').length,12);
+    assert.equal(doc.querySelectorAll('.insights-composition [data-filter-kind="domain"]').length,12);
     assert.equal(doc.querySelectorAll('[data-filter-kind="type"]').length,10);
     doc.querySelector('[data-insights-action="expand:type"]').click();
     assert.equal(doc.querySelectorAll('[data-filter-kind="type"]').length,18);
@@ -362,5 +365,87 @@ test('metadata from a different catalog revision is unavailable while task searc
     assert.match(doc.getElementById('arena-insights').textContent,/Scientific overview unavailable/);
     assert.match(doc.getElementById('arena-atlas').textContent,/unavailable/i);
     assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 1 tasks');
+  } finally { dom.window.close(); }
+});
+
+function recordedOverview() {
+  const registry = name => JSON.parse(readFileSync(new URL(`../../registry/${name}.json`, import.meta.url), 'utf8'));
+  const catalog = registry('catalog'), insights = registry('insights');
+  const responses = {'/api/catalog':catalog,'/api/insights':insights,'/api/references':registry('references'),
+    '/api/search-families':registry('search-families'),'/api/participants':participants};
+  return {catalog,insights,fetchJSON:async path=>responses[path]};
+}
+
+test('scientific direction cards retain exact corpus counts and open real chemistry contracts', async () => {
+  const {catalog,insights,fetchJSON}=recordedOverview();
+  const {dom,w,doc}=await mount({fetchJSON});
+  try {
+    assert.equal(doc.querySelectorAll('[data-domain-card]').length,insights.domains.length);
+    const composition=doc.querySelector('.insights-composition');
+    assert.equal(composition.open,false);
+    for(const domain of insights.domains) {
+      const card=doc.querySelector(`[data-domain-card="${domain.id}"]`);
+      assert.ok(card,`Missing direction ${domain.id}`);
+      assert.equal(card.querySelector('.field-count').textContent,`${domain.total.toLocaleString('en-US')} tasks`);
+      assert.doesNotMatch(card.textContent,/%/);
+      const bar=composition.querySelector(`[data-filter-value="${domain.id}"]`);
+      assert.ok(bar,`Missing composition count ${domain.id}`);
+      assert.match(bar.getAttribute('aria-label'),new RegExp(`${domain.total.toLocaleString('en-US')} tasks`));
+      assert.ok(bar.textContent.includes(`${domain.percentage.toFixed(1)}%`));
+    }
+    assert.ok(composition.querySelector('[role="img"]').getAttribute('aria-label').includes('Unsupported: 428'));
+    composition.querySelector('summary').click();
+    assert.equal(composition.open,true);
+    const chemistry=doc.querySelector('[data-domain-card="chemistry-materials"]');chemistry.focus();chemistry.click();
+    assert.equal(doc.querySelector('.insights-composition').open,true);
+    assert.equal(doc.activeElement.dataset.domainCard,'chemistry-materials');
+    assert.equal(doc.activeElement.getAttribute('aria-pressed'),'true');
+    assert.equal(new URL(w.location).searchParams.get('domain'),'chemistry-materials');
+    const expected=catalog.tasks.filter(item=>insights.task_annotations[item.id]?.domain_id==='chemistry-materials');
+    assert.equal(doc.getElementById('arena-result-count').textContent,`${expected.length} of ${catalog.tasks.length.toLocaleString('en-US')} tasks`);
+    assert.deepEqual([...doc.querySelectorAll('#arena-results .arena-task-id')].map(node=>node.textContent).sort(),expected.map(item=>item.id).sort());
+    const example=doc.querySelector('[data-field-detail="chemistry-materials"] .field-example a');
+    const id=new URL(example.href).searchParams.get('task'),record=catalog.tasks.find(item=>item.id===id);
+    assert.ok(record.contract);
+    example.click();
+    assert.equal(doc.querySelector('[data-task-contract] .arena-contract-text').textContent,record.contract);
+    assert.equal(doc.getElementById('arena-insights').hidden,true);
+    doc.querySelector('#arena-detail a[data-arena-route]').click();
+    assert.equal(doc.querySelector('.insights-composition').open,true);
+    doc.querySelector('.insights-composition summary').click();
+    const selected=doc.querySelector('[data-domain-card="chemistry-materials"]');selected.focus();selected.click();
+    assert.equal(doc.querySelector('.insights-composition').open,false);
+    assert.equal(doc.activeElement.dataset.domainCard,'chemistry-materials');
+    assert.equal(doc.activeElement.getAttribute('aria-pressed'),'true');
+    doc.activeElement.click();
+    assert.equal(doc.querySelector('.insights-composition').open,false);
+    assert.equal(doc.activeElement.getAttribute('aria-pressed'),'false');
+    assert.equal(new URL(w.location).searchParams.get('domain'),null);
+  } finally { dom.window.close(); }
+});
+
+test('every scientific direction example belongs to that domain and preserves source-only status', async () => {
+  const {catalog,insights,fetchJSON}=recordedOverview(),tasks=new Map(catalog.tasks.map(item=>[item.id,item]));
+  const {dom,doc}=await mount({fetchJSON});
+  try {
+    let executableExamples=0,sourceOnlyExamples=0;
+    for(const domain of insights.domains) {
+      doc.querySelector(`[data-domain-card="${domain.id}"]`).click();
+      const detail=doc.querySelector(`[data-field-detail="${domain.id}"]`);
+      assert.ok(detail,`Missing selected context for ${domain.id}`);
+      assert.ok(detail.textContent.includes(domain.why_it_matters));
+      const examples=[...detail.querySelectorAll('.field-example')];
+      assert.equal(examples.length,2,`${domain.id} must offer two real examples`);
+      for(const example of examples) {
+        const id=new URL(example.querySelector('a').href).searchParams.get('task'),task=tasks.get(id);
+        assert.ok(task,`${id} must exist in the catalog`);
+        assert.equal(insights.task_annotations[id].domain_id,domain.id,`${id} must belong to the selected domain`);
+        assert.equal(example.querySelector('small').textContent,task.executable?'Evaluation definition recorded':'Source-only definition');
+        if(task.executable)executableExamples++;else sourceOnlyExamples++;
+        if(['earth-environment','finance-economics'].includes(domain.id))assert.equal(task.executable,false);
+      }
+    }
+    assert.ok(executableExamples>0);
+    assert.ok(sourceOnlyExamples>=4,'Source-only Earth and Finance examples must remain visible');
   } finally { dom.window.close(); }
 });

@@ -146,7 +146,9 @@ export function createArenaApp({document: doc = document, window: win = window,
       svg.append(path); icon.append(svg); caption.append(element('span', '', label), icon);
       metric.append(caption,
         element('div', 'metric-value', typeof value === 'number' ? value.toLocaleString('en-US') : value),
-        element('div', 'metric-foot', note)); container.append(metric);
+        element('div', 'metric-foot', note));
+      if (index === 0) { const glow = element('span', 'arena-curious-glow'); glow.setAttribute('aria-hidden', 'true'); glow.append(element('span', 'arena-curious-eye'), element('span', 'arena-curious-eye')); metric.append(glow); }
+      container.append(metric);
     }
     $('nav-task-count').textContent = tasks?.length.toLocaleString('en-US') ?? '';
     $('nav-participant-count').textContent = state.participants?.participants.length ?? '';
@@ -296,7 +298,7 @@ export function createArenaApp({document: doc = document, window: win = window,
     const error = state.errors[isTasks ? 'catalog' : 'participants'];
     const selected = isTasks ? current.task : current.participant;
     const viewName = isTasks ? 'Tasks' : 'Participants';
-    doc.title = `Arena · ${viewName}`;
+    doc.title = `Empira · ${viewName}`;
     $('arena-title').textContent = viewName; $('arena-breadcrumb').textContent = viewName;
     $('arena-subtitle').textContent = isTasks ? 'A shared space for scientific problems, search methods and measurable progress.' : 'Research systems and their Arena integration status.';
     $('arena-contribute').textContent = isTasks ? 'Add a task ↗' : 'Add a participant ↗';

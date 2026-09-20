@@ -25,3 +25,18 @@ Reported scores with different task instances, objectives, transforms or evaluat
 - Python reads reviewed local snapshots; Cloudflare bundles the same JSON. CI checks the snapshots without fetching private repositories or executing task code.
 
 Changing the catalog requires regenerating the associated summaries in the same PR. Build/check commands are documented alongside the snapshot modules and in the registry guide.
+
+
+## Scientific direction cards
+
+The default domain view is editorial navigation: each of the 11 named domains
+and the mixed/unclassified bucket receives an equal-size card. The cards are
+ordered by research context, not by package count. Each poses a research
+question, records its actual package count and filters the catalog. Selecting
+a direction exposes its scientific context and two source-bound task examples,
+including explicit source-only status where no executable definition is recorded.
+
+Exact domain percentages and evaluator coverage remain in the collapsed
+**Corpus composition** disclosure. This keeps a large collection of variants
+from visually standing in for scientific importance. No taxonomy, denominator,
+classification or underlying count changed in this presentation update.

@@ -1,6 +1,8 @@
-# Arena
+# Empira
 
-Independent research arena and experiment board. Tasks, environments, participant registration and comparison belong here. SCiEL, ShinkaEvolve and Darwin Gödel Machine remain separate framework repositories.
+Empira is an independent research arena and experiment board. The name evokes empirical knowledge: search proposes a solution; experiments establish the evidence. The Python package, API and repository retain the technical name `arena`.
+
+Tasks, environments, participant registration and comparison belong here. SCiEL, ShinkaEvolve and Darwin Gödel Machine remain separate framework repositories.
 
 The board keeps the native SCiEL experiment views inside an independent Arena shell. Its visual system uses SF Pro Text, soft widget cards and an interactive research landscape. SF Pro Text resolves from a local installation; system sans-serif is the fallback. Font binaries are not redistributed.
 
@@ -8,7 +10,7 @@ The board keeps the native SCiEL experiment views inside an independent Arena sh
 
 - Task catalog: **1,138 task packages**, searchable by name/content and filterable by family and protocol. Task details expose available source input/output contracts, metrics, requirements and pinned provenance; missing contracts remain explicit.
 - Research landscape: one point per task, with a **Search methods / Task families** switch, hover isolation, pinned selection and catalog drill-down. Search-method groups reflect source-paper associations, not measured framework compatibility or solved results. See [the source mapping](registry/SEARCH_FAMILIES.md).
-- Scientific overview: interactive domain and task-type distributions, research context, and source-bound reference/seed evidence. Charts drill down into the task catalog. See [what the statistics mean](docs/task-overview.md).
+- Scientific overview: equal-size research-direction cards with questions and real task examples; exact domain shares and evaluator coverage are available under Corpus composition. Task-type distributions and source-bound reference/seed evidence remain accessible. Charts drill down into the task catalog. See [what the statistics mean](docs/task-overview.md).
 - GitHub registry: **three participant declarations** (SCiEL, ShinkaEvolve, DGM), immutable source revisions, JSON schemas, offline validation and PR templates.
 - Independent SCiEL observer: existing experiment, source/diff, population, workflow, LLM accounting, research cells/tools and packing views. It reads saved journals and live heartbeat files; it does not import SCiEL Engine.
 - Cloudflare Worker: the same catalog and static UI, with verified Cloudflare Access tokens required in production. Local development is available without cloud credentials.

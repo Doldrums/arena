@@ -7,12 +7,16 @@
 
 :root{
   --font-sans:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  --bg:#f2f2f5;--surface:#fff;--text:#1d1d21;--muted:#676771;--border:#e5e5eb;
-  --accent:#7968b5;--accent-soft:#eee8fa;--selected:#ede8f7;--blue:#516aab;
+  --bg:#f7f6f2;--surface:#fff;--text:#232321;--muted:#686761;--border:#e7e5df;
+  --accent:#7655ac;--accent-soft:#eee7f8;--selected:#e9e2f5;--blue:#416ab8;
   --green:#337653;--red:#b2474d;--yellow:#e8c46d;
-  --peach:#fae7dc;--lavender:#eae4f8;--mint:#e1eee6;--sky:#e3ecf7;
+  --peach:#f4d4b0;--lavender:#dcd1f6;--mint:#c5dfad;--sky:#b8d8fa;
+  --field-green:#347a5a;--field-green-light:#c5dfad;
+  --field-blue:#4578db;--field-blue-light:#b8d8fa;
+  --field-lilac:#8560c6;--field-lilac-light:#dcd1f6;
+  --field-amber:#e8a34d;--field-amber-light:#f9db9f;
   --card-radius:28px;--control-radius:14px;
-  --card-shadow:0 2px 4px #24243503,0 10px 30px #24243504,inset 0 1px 0 #ffffffd9;
+  --card-shadow:0 2px 4px #38342503,0 10px 30px #38342504,inset 0 1px 0 #ffffffd9;
   --control-shadow:0 2px 5px #24243508,inset 0 1px 0 #fff;
 }
 
@@ -39,11 +43,11 @@ button,a{touch-action:manipulation}
 .arena-brand{display:inline-flex;align-items:center;gap:12px;width:fit-content;font-size:24px;font-weight:600;letter-spacing:-.9px;line-height:1.15}
 .arena-brand>span:not(.arena-brand-mark):not(.brand-mark){display:flex;flex-direction:column;gap:3px}
 .arena-brand small{display:block;font-size:10px;font-weight:400;letter-spacing:.02em;color:#807a85;line-height:1.35}
-.arena-brand-mark{height:41px;width:41px;flex-shrink:0;display:grid;place-items:center;border-radius:14px;background:linear-gradient(140deg,#f5d8c4,#e8d7e8 62%,#dcd1ee);box-shadow:inset 0 1px 1px #ffffffbf,0 3px 8px #6e53620c;color:#73596e}
+.arena-brand-mark{height:41px;width:41px;flex-shrink:0;display:grid;place-items:center;border-radius:14px;background:linear-gradient(140deg,#f6d19b,#e5c5c9 60%,#cdb7e9);box-shadow:inset 0 1px 1px #ffffffbf,0 3px 8px #6e53620c;color:#654b62}
 .arena-brand-mark svg{height:23px;width:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.arena-brand .brand-mark,.brand-mark{width:40px;height:40px;border-radius:14px;background:linear-gradient(145deg,#fedcc7 0%,#edcddd 54%,#d7cbed 100%);font-size:30px;color:#3c303a;font-weight:600;box-shadow:inset 0 1px 1px #ffffffc7,0 3px 8px #6e53620c}
+.arena-brand .brand-mark,.brand-mark{width:40px;height:40px;border-radius:14px;background:radial-gradient(ellipse at 68% 90%,#f2aa42,transparent 85%),linear-gradient(145deg,#ffe2a8,#edbb76);font-size:30px;color:#44313f;font-weight:600;box-shadow:inset 0 1px 1px #ffffffc7,0 3px 8px #6e53620c}
 .brand-caption{font-size:9px;color:#6c6873;letter-spacing:1.7px;line-height:1.5;font-weight:500;margin-top:3px}
-.arena-tabs{display:flex;align-items:center;gap:4px;padding:5px;border-radius:19px;background:#eaeaec;box-shadow:inset 0 1px 4px #26263807,0 1px 0 #ffffffb8;min-width:0}
+.arena-tabs{display:flex;align-items:center;gap:4px;padding:5px;border-radius:19px;background:#eeede8;box-shadow:inset 0 1px 4px #39342208,0 1px 0 #ffffffb8;min-width:0}
 .arena-tabs>a{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:9px 19px;border-radius:14px;font-size:12px;font-weight:500;color:#71717b;white-space:nowrap;transition:background .16s,color .16s,box-shadow .16s}
 .arena-tabs>a:hover{color:var(--text);background:#ffffff65}
 .arena-tabs>a[aria-current=page]{background:#fff;color:var(--text);box-shadow:0 2px 5px #3131440a,0 1px 2px #31314405}
@@ -64,20 +68,20 @@ button,a{touch-action:manipulation}
 /* Tactile controls stay flat enough to read clearly against the soft surfaces. */
 .button{min-height:42px;padding:10px 16px;border-radius:var(--control-radius);border:1px solid #e5e5eb;background:#fff;box-shadow:var(--control-shadow);font-size:12px;font-weight:500;transition:background .15s,border-color .15s,box-shadow .15s}
 .button:hover{background:#f8f7fb;border-color:#d9d4e5;box-shadow:0 3px 8px #24243509,inset 0 1px 0 #fff}
-.button.primary{color:#372b36;border:1px solid #e3c4d0;background:linear-gradient(120deg,#f7d2b7 0%,#edcbd6 52%,#daceef 100%);box-shadow:inset 0 1px 0 #ffffff9e,0 4px 10px #76556d0c}
-.button.primary:hover{background:linear-gradient(120deg,#f5c8a7 0%,#eac0cf 52%,#d2c4ed 100%);border-color:#d5b5c5}
+.button.primary{color:#3d2f35;border:1px solid #dec2b6;background:linear-gradient(115deg,#f4cb97 0%,#edc2b4 48%,#d4b9e8 100%);box-shadow:inset 0 1px 0 #ffffffa6,0 4px 10px #976b4810}
+.button.primary:hover{background:linear-gradient(115deg,#f0bc7c 0%,#e9b6a4 48%,#c8a7e2 100%);border-color:#cdacb0}
 .button.primary:active,.button:active{box-shadow:inset 0 1px 3px #53435812}
 .button svg{width:15px;height:15px}
 .icon-button{height:40px;width:40px;border-radius:13px;color:#74707f}
 .icon-button:hover{background:var(--accent-soft)}
-.search-box{border:1px solid #e4e3e9;border-radius:14px;background:#f5f5f7;min-height:44px;padding:10px 13px;gap:9px;box-shadow:inset 0 1px 2px #24243503}
+.search-box{border:1px solid #e5e2da;border-radius:14px;background:#f7f6f2;min-height:44px;padding:10px 13px;gap:9px;box-shadow:inset 0 1px 2px #24243503}
 .search-box input{font-size:13px;color:var(--text)}
 .search-box input::placeholder{color:#81818a}
 .search-box svg{height:17px;width:17px;color:#939099}
 .search-box:focus-within{border-color:#a797c7;background:#fff;box-shadow:0 0 0 3px #eae4f880}
 .arena-select-label{gap:7px;font-size:11px;color:var(--muted);font-weight:500}
-.arena-select-label select,.table-toolbar input,.code-select{min-height:42px;border:1px solid #e4e3e9;border-radius:12px;background:#f7f7f9;padding:10px 28px 10px 12px;font-size:12px;color:#494650}
-.segmented{padding:4px;gap:3px;background:#eeeef2;border-radius:13px;box-shadow:inset 0 1px 3px #23233504}
+.arena-select-label select,.table-toolbar input,.code-select{min-height:42px;border:1px solid #e5e2da;border-radius:12px;background:#f8f7f4;padding:10px 28px 10px 12px;font-size:12px;color:#494650}
+.segmented{padding:4px;gap:3px;background:#efede8;border-radius:13px;box-shadow:inset 0 1px 3px #39342206}
 .segmented button{min-height:40px;padding:7px 13px;border-radius:9px;font-size:11px;color:#777380}
 .segmented button.active{background:#fff;box-shadow:0 1px 4px #2623380d;color:var(--text)}
 .badge{font-size:10px;line-height:1.5;font-weight:500;padding:4px 9px;border-radius:8px;background:#eeeef2;color:#67646e}
@@ -86,26 +90,34 @@ button,a{touch-action:manipulation}
 .badge.neutral{background:#efeff3;color:#706b78}
 .count-pill,.section-label span{border-radius:7px;background:#ece9f3;color:#6d5c89;padding:2px 7px}
 
-/* Shared cards and numerals. Pastels identify widgets, not evidence quality. */
+/* White reading surfaces with colored corner light; color is decorative only. */
 .panel,.metric{border:1px solid #ffffffc4;border-radius:var(--card-radius);background:var(--surface);box-shadow:var(--card-shadow)}
 .metrics{gap:18px;margin-bottom:26px}
 .metric{padding:23px 24px 21px;position:relative;overflow:hidden}
 .metric-label{font-size:12px;font-weight:500;line-height:1.45;color:#686270;white-space:normal;min-height:18px;gap:12px}
 .metric-value{font-family:var(--font-sans);font-size:39px;font-weight:400;line-height:1.2;letter-spacing:-1.8px;margin:15px 0 11px;font-variant-numeric:tabular-nums}
-.metric-foot{font-size:11px;line-height:1.65;color:#655e6b}
+.metric-foot{font-size:11px;line-height:1.65;color:#4c4551}
 .metric-foot.positive{color:var(--green)}
 .metric .tiny-label{color:#6a6172;font-size:9px;letter-spacing:.7px}
-.arena-metrics .metric{min-height:156px}
-.arena-metrics .metric:nth-child(4n+1):not([data-tone]),.arena-metrics .metric[data-tone=peach]{background:linear-gradient(125deg,#fbebe0,#f9e3d7);border-color:#fff7f1}
-.arena-metrics .metric:nth-child(4n+2):not([data-tone]),.arena-metrics .metric[data-tone=lavender]{background:linear-gradient(125deg,#eee9f9,#e5dff3);border-color:#f8f5ff}
-.arena-metrics .metric:nth-child(4n+3):not([data-tone]),.arena-metrics .metric[data-tone=mint]{background:linear-gradient(125deg,#e9f1e9,#ddebe2);border-color:#f5fbf5}
-.arena-metrics .metric:nth-child(4n+4):not([data-tone]),.arena-metrics .metric[data-tone=sky]{background:linear-gradient(125deg,#e9eff9,#dfe8f3);border-color:#f6faff}
-.arena-metric-icon{height:30px;width:30px;border-radius:10px;display:grid;place-items:center;background:#ffffff66;color:#746875;flex-shrink:0}
+.arena-metrics .metric{min-height:156px;isolation:isolate}
+.arena-metrics .metric:nth-child(4n+1):not([data-tone]),.arena-metrics .metric[data-tone=peach]{background:radial-gradient(ellipse at 110% 115%,#ecc08588,transparent 69%),linear-gradient(130deg,#fffefa 20%,#faf0df);border-color:#fffdf7}
+.arena-metrics .metric:nth-child(4n+2):not([data-tone]),.arena-metrics .metric[data-tone=lavender]{background:radial-gradient(ellipse at 105% 115%,#b99ade9e,transparent 68%),linear-gradient(130deg,#fdfbff 20%,#eee5f8);border-color:#fffaff}
+.arena-metrics .metric:nth-child(4n+3):not([data-tone]),.arena-metrics .metric[data-tone=mint]{background:radial-gradient(ellipse at 110% 115%,#87b49480,transparent 68%),linear-gradient(130deg,#fdfff9 20%,#e6efdc);border-color:#fcfff7}
+.arena-metrics .metric:nth-child(4n+4):not([data-tone]),.arena-metrics .metric[data-tone=sky]{background:radial-gradient(ellipse at 105% 115%,#7ba1e391,transparent 67%),linear-gradient(130deg,#fbfdff 20%,#e6eefa);border-color:#fcfdff}
+.arena-metrics .metric>.metric-label,.arena-metrics .metric>.metric-value,.arena-metrics .metric>.metric-foot{position:relative;z-index:1}
+.arena-metric-icon{height:30px;width:30px;border-radius:10px;display:grid;place-items:center;background:#ffffffb3;color:#706176;flex-shrink:0;box-shadow:0 1px 4px #51443f05}
 .arena-metric-icon svg{height:17px;width:17px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .arena-metric-trend{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:3px 7px;border-radius:7px;background:#ffffff80;color:#655c6c}
 .arena-widget-visual{position:absolute;right:22px;top:20px;display:grid;place-items:center;height:36px;width:36px;border-radius:12px;background:#ffffff5c;color:#857484;box-shadow:inset 0 1px 0 #ffffff72;pointer-events:none}
 .arena-widget-visual svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .arena-metrics .metric:has(.arena-widget-visual) .metric-label{padding-right:43px}
+/* A single, quiet orange companion. Its eyes are decorative, never a control. */
+.arena-curious-glow{position:absolute;width:112px;height:95px;right:-5px;bottom:-13px;pointer-events:none;z-index:0;isolation:isolate}
+.arena-curious-glow:before{content:"";position:absolute;inset:-4px;background:radial-gradient(ellipse at 54% 70%,#ffb34f 0%,#f9c25ecf 31%,#ffdc8d72 53%,transparent 75%);filter:blur(9px);border-radius:48% 52% 34% 40%}
+.arena-curious-eye{position:absolute;left:47px;top:44px;width:8px;height:13px;border-radius:48%;background:#fff;transform:rotate(8deg);box-shadow:0 1px 2px #e49c4420}
+.arena-curious-eye+.arena-curious-eye{left:63px;top:47px;height:12px;transform:rotate(12deg)}
+.arena-metrics .metric:not(:first-child) .arena-curious-glow{display:none}
+.arena-metrics .metric:has(.arena-curious-glow)>.metric-foot{max-width:calc(100% - 44px)}
 .panel-heading{padding:24px 26px 0;gap:16px}
 .panel-heading h2{font-size:16px}.panel-heading p{font-size:12px;line-height:1.6}
 .error-banner,.insights-unavailable{border-radius:18px}
@@ -194,20 +206,23 @@ dialog pre{border-radius:13px;background:#f2f1f6}
 .arena-detail-links{gap:15px;margin-top:22px}.arena-detail-links a{font-size:12px;min-height:32px;display:inline-flex;align-items:center}
 .arena-contract-source>div{font-size:11px;line-height:1.7}
 .arena-participants{padding:4px 26px 26px;gap:19px}
-.arena-participant{padding:25px;border:1px solid #eeebf2;border-radius:23px;gap:17px;background:linear-gradient(155deg,#fbf9fe,#fff 70%);box-shadow:0 2px 7px #2d233804}
-.arena-participant:nth-child(3n+2){background:linear-gradient(155deg,#fff8f2,#fff 70%)}
-.arena-participant:nth-child(3n+3){background:linear-gradient(155deg,#f3f8f5,#fff 70%)}
-.arena-participant-art{position:relative;isolation:isolate;overflow:hidden;width:100%;height:150px;border-radius:17px;background:radial-gradient(ellipse at 75% 16%,#fff9 0,transparent 62%),#ebe5f5;display:grid;place-items:center;margin-bottom:3px}
-.arena-participant-art:before{content:"";position:absolute;width:104px;height:87px;border-radius:16px;transform:rotate(-11deg) translate(-6px,4px);background:linear-gradient(135deg,#fefcff,#e1d8ef);border:1px solid #ffffffc4;box-shadow:0 11px 18px #7f699c1c,inset 0 1px 0 #fff}
-.arena-participant-art:after{content:"";position:absolute;width:84px;height:76px;border-radius:14px;transform:rotate(9deg) translate(18px,5px);background:linear-gradient(140deg,#cfbddf,#b8a2ce);border:1px solid #e6d9f2;box-shadow:0 8px 18px #7853991a,inset 0 1px 0 #ffffff68}
-.arena-participant-glyph{display:grid;place-items:center;position:relative;z-index:2;transform:translate(16px,8px);color:#fff9;font-size:29px;font-weight:400}
+.arena-participant{padding:25px;border:1px solid #e8e4da;border-radius:23px;gap:17px;background:#fffefa;box-shadow:0 2px 7px #39342504}
+.arena-participant:nth-child(3n+2){background:#fdfefa}
+.arena-participant:nth-child(3n+3){background:#fefcff}
+/* Abstract seed, ripple and constellation forms; these are not method logos. */
+.arena-participant-art{position:relative;isolation:isolate;overflow:hidden;width:100%;height:172px;border-radius:17px;background:radial-gradient(ellipse at 26% 113%,#8045d9 0%,transparent 64%),radial-gradient(ellipse at 97% 6%,#eee0fc 0%,transparent 64%),linear-gradient(135deg,#ccc5ec,#aa8cdf 64%,#8b91d9);display:grid;place-items:center;margin-bottom:3px}
+.arena-participant-art:before{content:"";position:absolute;width:235px;height:138px;left:-22px;bottom:-86px;border-radius:50%;transform:rotate(-18deg);background:#653eb4;filter:blur(27px);opacity:.43}
+.arena-participant-art:after{content:"";position:absolute;width:9px;height:9px;border-radius:50%;background:#ffffffea;box-shadow:0 -28px 0 #ffffffea,0 28px 0 #ffffffea,28px 0 0 #ffffffea,-28px 0 0 #ffffffea,20px 20px 0 #ffffffea,-20px 20px 0 #ffffffea,20px -20px 0 #ffffffea,-20px -20px 0 #ffffffea;filter:drop-shadow(0 2px 4px #583e9320)}
+.arena-participant-glyph{display:grid;place-items:center;position:relative;z-index:2;width:88px;height:88px;border:1px solid #ffffff66;border-radius:50%;color:#fff;font-size:29px;font-weight:400}
 .arena-participant-glyph svg{height:35px;width:35px;fill:none;stroke:currentColor;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
-[data-participant=sciel] .arena-participant-art,.arena-participant-art[data-participant=sciel]{background:radial-gradient(ellipse at 20% 15%,#fff9,transparent 65%),#e4eee7}
-[data-participant=sciel] .arena-participant-art:before,.arena-participant-art[data-participant=sciel]:before{background:linear-gradient(145deg,#f5fbf6,#dcebdd);border-color:#ffffffdc;transform:rotate(-9deg) translate(-12px,3px)}
-[data-participant=sciel] .arena-participant-art:after,.arena-participant-art[data-participant=sciel]:after{background:linear-gradient(140deg,#bad2be,#94b89e);border-color:#d6e6d7;box-shadow:0 8px 18px #5d866f1c,inset 0 1px 0 #ffffff80}
-[data-participant=dgm] .arena-participant-art,.arena-participant-art[data-participant=dgm]{background:radial-gradient(ellipse at 75% 15%,#fff9,transparent 65%),#f6e7dc}
-[data-participant=dgm] .arena-participant-art:before,.arena-participant-art[data-participant=dgm]:before{background:linear-gradient(135deg,#fffbf5,#efdbc9);border-color:#fff8;transform:rotate(-7deg) translate(-8px,3px)}
-[data-participant=dgm] .arena-participant-art:after,.arena-participant-art[data-participant=dgm]:after{background:linear-gradient(140deg,#e7c4a6,#d3a687);border-color:#f5dcc6;box-shadow:0 8px 18px #a278551c,inset 0 1px 0 #ffffff80}
+[data-participant=sciel] .arena-participant-art,.arena-participant-art[data-participant=sciel]{background:radial-gradient(ellipse at 4% 102%,#205b48 0%,transparent 58%),radial-gradient(ellipse at 93% 7%,#c7d896 0%,transparent 68%),linear-gradient(135deg,#5b9b79,#3c765a 67%,#99b077)}
+[data-participant=sciel] .arena-participant-art:before,.arena-participant-art[data-participant=sciel]:before{width:290px;height:90px;left:25%;bottom:10px;background:#214e32;filter:blur(20px);opacity:.65;transform:rotate(-12deg)}
+[data-participant=sciel] .arena-participant-art:after,.arena-participant-art[data-participant=sciel]:after{width:7px;height:7px;background:#fffff4;box-shadow:0 -14px 0 #fffff4,0 -28px 0 #fffff4,0 14px 0 #fffff4,0 28px 0 #fffff4,14px -7px 0 #fffff4,14px 7px 0 #fffff4,14px -21px 0 #fffff4,14px 21px 0 #fffff4,-14px -7px 0 #fffff4,-14px 7px 0 #fffff4,-14px -21px 0 #fffff4,-14px 21px 0 #fffff4,28px 0 0 #fffff4,28px -14px 0 #fffff4,28px 14px 0 #fffff4,-28px 0 0 #fffff4,-28px -14px 0 #fffff4,-28px 14px 0 #fffff4;filter:drop-shadow(0 2px 5px #153b2940)}
+[data-participant=sciel] .arena-participant-glyph,.arena-participant-art[data-participant=sciel] .arena-participant-glyph{border:0}
+[data-participant=dgm] .arena-participant-art,.arena-participant-art[data-participant=dgm]{background:radial-gradient(ellipse at 12% 15%,#b0dff5 0%,transparent 68%),radial-gradient(ellipse at 95% 100%,#3561c8 0%,transparent 60%),linear-gradient(130deg,#77b2f5,#6b98e9 53%,#5681da)}
+[data-participant=dgm] .arena-participant-art:before,.arena-participant-art[data-participant=dgm]:before{width:230px;height:150px;left:42%;bottom:-77px;background:#376fcf;filter:blur(24px);opacity:.48;transform:rotate(20deg)}
+[data-participant=dgm] .arena-participant-art:after,.arena-participant-art[data-participant=dgm]:after{width:43px;height:66px;border-radius:54% 46% 55% 45%;background:linear-gradient(150deg,#fffffffa,#d7e9ffce);transform:rotate(31deg);box-shadow:inset -4px -3px 10px #80a9e133,0 4px 12px #235bb62b;filter:none}
+[data-participant=dgm] .arena-participant-glyph,.arena-participant-art[data-participant=dgm] .arena-participant-glyph{width:118px;height:70px;border:1px solid #ffffffa6;transform:rotate(-22deg);box-shadow:0 0 0 13px #ffffff10}
 .arena-participant h3{font-size:20px;letter-spacing:-.55px;font-weight:500}
 .arena-participant p{font-size:12px;line-height:1.8;color:#79717f}
 .arena-participant-status{gap:7px}
@@ -215,7 +230,7 @@ dialog pre{border-radius:13px;background:#f2f1f6}
 .arena-empty{padding:44px 26px;font-size:13px;line-height:1.8}.arena-empty strong{font-weight:500}
 
 /* The recorded experiment board keeps its sidebar and all plot geometry. */
-.arena-native .sidebar{background:#f9f9fb;border-right-color:#e6e5ed}
+.arena-native .sidebar{background:#fbfaf7;border-right-color:#e6e2d9}
 .arena-native .brand{height:98px;font-size:24px;font-weight:600}
 .arena-native .arena-native-nav{padding:0 12px 15px;gap:5px;border-bottom-color:#e9e6ee}
 .arena-native .arena-nav>a{min-height:43px;padding:11px 13px;border-radius:13px;font-size:12px}
@@ -235,10 +250,10 @@ dialog pre{border-radius:13px;background:#f2f1f6}
 .arena-native .read-only{font-size:10px;padding:5px 9px;border-radius:8px;background:#e9e7ef;color:#6c5e76}
 .arena-native main{padding-top:20px}
 .arena-native .metric{padding:22px 21px}.arena-native .metric-value{font-size:34px;letter-spacing:-1.2px}
-.arena-native .primary-metric{background:linear-gradient(125deg,#f9eadf,#f5e0d5);border-color:#fff4ed}
-.arena-native .metric:nth-child(2){background:#ece7f6;border-color:#f7f3ff}
-.arena-native .metric:nth-child(3){background:#e6eee7;border-color:#f2f9f4}
-.arena-native .metric:nth-child(4){background:#e5ecf7;border-color:#f5f9ff}
+.arena-native .primary-metric{background:radial-gradient(ellipse at 105% 120%,#edbb7791,transparent 68%),linear-gradient(130deg,#fffefa,#faefde);border-color:#fffaf1}
+.arena-native .metric:nth-child(2){background:radial-gradient(ellipse at 105% 120%,#b9a0dc91,transparent 68%),linear-gradient(130deg,#fdfbff,#ede4f7);border-color:#fcf8ff}
+.arena-native .metric:nth-child(3){background:radial-gradient(ellipse at 105% 120%,#8cb58a80,transparent 68%),linear-gradient(130deg,#fcfef7,#e4efd9);border-color:#f8fcf1}
+.arena-native .metric:nth-child(4){background:radial-gradient(ellipse at 105% 120%,#82a7df85,transparent 68%),linear-gradient(130deg,#fcfdff,#e4edfa);border-color:#f7faff}
 .arena-native .tabs-row{padding:0 23px;border-color:#ece8f1}
 .arena-native .tabs{gap:23px}.arena-native .tabs button{font-size:12px;min-height:52px;color:#75697f}
 .arena-native .tabs button.active{color:#574667;font-weight:500}
@@ -339,8 +354,8 @@ main#main:target h1{text-decoration:underline;text-decoration-color:#b4a0cb;text
 .arena-participant p{font-size:13px;line-height:1.8;color:#69616f}
 .arena-participant-status .badge{font-size:11px;line-height:1.6;padding:5px 9px;color:#665d6f}
 .arena-participant .inline-link{font-size:13px}
-.arena-metrics .metric-label{font-size:12px;line-height:1.55;color:#655e6b}
-.arena-metrics .metric-foot{font-size:12px;line-height:1.65;color:#655e6b}
+.arena-metrics .metric-label{font-size:12px;line-height:1.55;color:#4c4551}
+.arena-metrics .metric-foot{font-size:12px;line-height:1.65;color:#4c4551}
 .arena-header-actions .button{font-size:12px}
 .arena-live-status{font-size:11px;color:#6b6275}
 .arena-tabs>a>span,.arena-tabs>a>small{color:#6c627c}
