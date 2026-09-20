@@ -197,7 +197,7 @@ export function renderArenaAtlas(root, options = {}) {
   const button=(label,cls,action)=>{const node=make('button',cls,label);node.type='button';node.addEventListener('click',action);return node;};
   const card=make('section','atlas-card');card.setAttribute('aria-label','Interactive task atlas');
   const header=make('header','atlas-header'),heading=make('div','atlas-heading');
-  heading.append(make('span','atlas-eyebrow','A PLACE TO EXPLORE'),make('h2','','Task atlas'),make('p','atlas-intro','Find a research direction. Every dot is a real task.'));
+  heading.append(make('span','atlas-eyebrow','CATALOG MAP'),make('h2','','Task atlas'),make('p','atlas-intro','Every dot is a task. Group by search method or task family.'));
   const modeControl=make('div','atlas-modes');modeControl.setAttribute('role','group');modeControl.setAttribute('aria-label','Group tasks by');
   for(const[mode,label]of[['methods','Search methods'],['families','Task families']]) {
     const control=button(label,'atlas-mode',()=>{
@@ -331,8 +331,8 @@ export function renderArenaAtlas(root, options = {}) {
     const panelKey=activeId+'|'+session.selected;
     if(details.dataset.panelKey===panelKey)return;details.dataset.panelKey=panelKey;details.replaceChildren();
     if(!active){
-      details.append(make('span','atlas-context-kicker','THE RESEARCH LANDSCAPE'),make('h3','','Many paths.\nOne shared arena.'),
-        make('p','atlas-context-description','Explore the methods behind the papers, or switch to the kinds of tasks they tackle. Choose a cluster to see its domains and concrete examples.'));
+      details.append(make('span','atlas-context-kicker','TASK GROUPS'),make('h3','','Methods and task families'),
+        make('p','atlas-context-description','Select a group to see its scientific domains, evaluation definitions and example tasks.'));
       const list=make('div','atlas-starting-points');
       for(const group of session.model.groups.slice(0,4)){
         const item=button('','atlas-starting-point',()=>{session.selected=group.id;session.preview=null;session.update();});item.append(make('span','',group.label),make('span','',`${format(group.count)} ↗`));list.append(item);

@@ -135,8 +135,8 @@ function scientificFields(root, insights, catalog, current, onFilter) {
   const {make,link} = ui(root), section = make('section','insights-fields');
   section.setAttribute('aria-label','Explore scientific directions');
   const header = make('div','fields-heading');
-  const intro=make('div');intro.append(make('span','fields-eyebrow','FOLLOW A QUESTION'),make('h3','','Where will curiosity take you?'),
-    make('p','','Explore scientific questions, from the behavior of matter to the design of intelligent systems.'));
+  const intro=make('div');intro.append(make('span','fields-eyebrow','SCIENTIFIC CONTEXT'),make('h3','','Research domains'),
+    make('p','','Problems, methods and example tasks across the scientific domains represented in the catalog.'));
   header.append(intro,make('span','fields-heading-note',`${number(insights.domains.filter(item=>item.id!=='unknown').length)} research directions`));section.append(header);
   const grid=make('div','fields-grid'); grid.setAttribute('role','group');grid.setAttribute('aria-label','Scientific directions, filter task catalog');
   const order=Object.keys(FIELD_STORIES), domains=[...insights.domains].sort((a,b)=>(order.indexOf(a.id)<0?99:order.indexOf(a.id))-(order.indexOf(b.id)<0?99:order.indexOf(b.id)));

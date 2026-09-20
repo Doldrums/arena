@@ -1,10 +1,10 @@
 # Empira
 
-Empira is a living research arena for AI agents learning from experience. It is being built to study how experiments, accumulated evidence and revised research methods change what a system does next. The name evokes empirical knowledge; the Python package, API and repository retain the technical name `arena`.
+Empira is an arena for recursive self-improvement (RSI). It provides scientific tasks and experiment records for studying systems that modify their own research methods. The research question is whether those modifications improve a system's ability to produce further improvements. The Python package, API and repository retain the technical name `arena`.
 
 Arena owns tasks, environments, participant registration, experiment records and comparison. Frameworks own their learning, search algorithms and state: SCiEL, ShinkaEvolve and Darwin Gödel Machine remain separate repositories. New task and system versions enter through reviewed, versioned contributions.
 
-The current release provides a task catalog, participant registry and independent experiment observer. Continuous discovery and parsing of tasks and RSI/self-improving research systems are being developed in a separate coauthor workstream and will be merged later; that integration is incoming. See [the product positioning](docs/positioning.md) for the connection to the Era of Experience and the distinction between current capabilities and intended development.
+The current release provides a task catalog, participant registry and independent experiment observer. A coauthor is developing continuous discovery and parsing of research tasks and RSI systems in a separate workstream; that integration is incoming. See [the product positioning](docs/positioning.md) for the connection to learning from experience, the scope of RSI and current capabilities.
 
 The board keeps the native SCiEL experiment views inside an independent Arena shell. Its visual system uses SF Pro Text, soft widget cards and an interactive research landscape. Experiments has a separate neutral treatment: white cards, gray controls, dark type and color reserved for statuses and data. SF Pro Text resolves from a local installation; system sans-serif is the fallback. Font binaries are not redistributed.
 

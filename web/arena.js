@@ -300,7 +300,7 @@ export function createArenaApp({document: doc = document, window: win = window,
     const viewName = isTasks ? 'Tasks' : 'Participants';
     doc.title = `Empira · ${viewName}`;
     $('arena-title').textContent = viewName; $('arena-breadcrumb').textContent = viewName;
-    $('arena-subtitle').textContent = isTasks ? 'A shared space for scientific problems, search methods and measurable progress.' : 'Research systems and their Arena integration status.';
+    $('arena-subtitle').textContent = isTasks ? 'Versioned scientific tasks and evaluation definitions.' : 'Registered research systems and their execution support.';
     $('arena-contribute').textContent = isTasks ? 'Add a task ↗' : 'Add a participant ↗';
     $('arena-contribute').href = `${REPOSITORY}/compare?expand=1&template=${isTasks ? 'task' : 'participant'}.md`;
     const showIntroduction = isTasks && !selected;
