@@ -302,6 +302,10 @@ export function createArenaApp({document: doc = document, window: win = window,
     $('arena-title').textContent = viewName; $('arena-breadcrumb').textContent = viewName;
     $('arena-subtitle').textContent = isTasks ? 'A shared space for scientific problems, search methods and measurable progress.' : 'Research systems and their Arena integration status.';
     $('arena-contribute').textContent = isTasks ? 'Add a task ↗' : 'Add a participant ↗';
+    $('arena-contribute').href = `${REPOSITORY}/compare?expand=1&template=${isTasks ? 'task' : 'participant'}.md`;
+    const showIntroduction = isTasks && !selected;
+    for (const id of ['arena-intro', 'arena-positioning', 'arena-growth']) $(id).hidden = !showIntroduction;
+    $('arena-page-heading').hidden = showIntroduction;
     for (const node of doc.querySelectorAll('[data-arena-view]')) {
       if (node.dataset.arenaView === current.view) node.setAttribute('aria-current', 'page'); else node.removeAttribute('aria-current');
     }
