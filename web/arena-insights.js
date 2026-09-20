@@ -287,13 +287,17 @@ export function renderTaskReferences(root, {record, references, error, loading})
 }
 
 export function renderArenaInsights(root, options) {
-  const {insights, references, catalog, current, matchingTasks = catalog?.tasks || [], errors = {}, loading, onFilter, onRetry} = options;
-  const previous = sessions.get(root), key = [insights, references, catalog, current.domain, current.type, current.reference, current.query, current.family, current.search_family, current.protocol, errors.insights, errors.references, loading];
+  const {insights, references, catalog, current, analysisRoot, matchingTasks = catalog?.tasks || [], errors = {}, loading, onFilter, onRetry} = options;
+  const separateAnalysis = analysisRoot && analysisRoot !== root ? analysisRoot : null;
+  const previous = sessions.get(root), key = [insights, references, catalog, separateAnalysis, current.domain, current.type, current.reference, current.query, current.family, current.search_family, current.protocol, errors.insights, errors.references, loading];
   if (previous && key.every((value, index) => value === previous.key[index])) return;
-  const focus = root.contains(root.ownerDocument.activeElement) ? root.ownerDocument.activeElement?.dataset.insightsAction : null;
-  const compositionOpen = Boolean(root.querySelector('.insights-composition[open]'));
+  const active = root.ownerDocument.activeElement;
+  const focusRoot = separateAnalysis?.contains(active) ? separateAnalysis : root;
+  const focus = focusRoot.contains(active) ? active?.dataset.insightsAction : null;
+  const compositionOpen = Boolean((separateAnalysis || root).querySelector('.insights-composition[open]'));
   const session = {key, expanded: previous?.expanded || {domain: false, type: false}}; sessions.set(root, session);
   const {make} = ui(root), container = make('div', 'arena-insights');
+  const analysis = separateAnalysis ? make('div', 'arena-insights arena-analysis-content') : container;
   const heading = make('div', 'insights-heading'); heading.append(make('h2', '', 'Scientific overview'), make('p', '', 'Explore the problem mix, evaluation definitions and source evidence before choosing a task.'));
   const jump = make('a', 'insights-catalog-jump', `${number(matchingTasks.length)} matching tasks · View catalog ↓`); jump.href = '#arena-list-panel';
   heading.append(jump); container.append(heading);
@@ -303,18 +307,19 @@ export function renderArenaInsights(root, options) {
     const compositionSummary=make('summary');compositionSummary.append(make('span','','Corpus composition'),make('small','',`${number(insights.denominator.task_count)} task packages · domain shares & evaluation coverage`));composition.append(compositionSummary);
     const grid=make('div','insights-grid');
     grid.append(distribution(root,insights.domains,{title:'Domain distribution in this corpus',kind:'domain',selected:current.domain,total:insights.denominator.task_count,onFilter,expanded:true}),coverage(root,insights,catalog));
-    composition.append(grid);container.append(composition);
-    container.append(distribution(root,insights.task_types,{title:'What the tasks ask you to do',kind:'type',selected:current.type,total:insights.denominator.task_count,onFilter,
+    composition.append(grid);analysis.append(composition);
+    analysis.append(distribution(root,insights.task_types,{title:'What the tasks ask you to do',kind:'type',selected:current.type,total:insights.denominator.task_count,onFilter,
       expanded:session.expanded.type,onExpand:()=>{session.expanded.type=!session.expanded.type;session.key=[];renderArenaInsights(root,options);}}));
     const methodology = make('details', 'insights-methodology'); methodology.append(make('summary', '', 'How to read these counts'));
     methodology.append(make('p', '', insights.methodology?.unit || 'Each task package contributes once to its primary domain and once to its task type. Multiple packages can describe variants of the same scientific problem.'));
     methodology.append(make('p', '', insights.methodology?.classification_authority || 'Domain and task-type assignments are Arena editorial classifications, based on the pinned task metadata. They are not claims made by the source authors.'));
     methodology.append(make('p', '', insights.methodology?.percentages || 'Percentages use the complete catalog, including unsupported definitions.'));
     if (insights.methodology?.papers) methodology.append(make('p', '', insights.methodology.papers));
-    container.append(methodology);
+    analysis.append(methodology);
   } else container.append(unavailable(root, loading && !errors.insights ? 'Loading scientific overview…' : 'Scientific overview unavailable', 'The task catalog remains available below. Domain and task-type counts require the recorded overview.', errors.insights ? onRetry : null));
-  if (references && catalog) container.append(referencesPanel(root, references, catalog, current, onFilter, matchingTasks));
-  else container.append(unavailable(root, loading && !errors.references ? 'Loading reference evidence…' : 'Reference evidence unavailable', 'Missing reference data is not evidence that no baseline or SOTA exists.', errors.references ? onRetry : null));
+  if (references && catalog) analysis.append(referencesPanel(root, references, catalog, current, onFilter, matchingTasks));
+  else analysis.append(unavailable(root, loading && !errors.references ? 'Loading reference evidence…' : 'Reference evidence unavailable', 'Missing reference data is not evidence that no baseline or SOTA exists.', errors.references ? onRetry : null));
   root.replaceChildren(container);
-  if (focus) [...root.querySelectorAll('[data-insights-action]')].find(node => node.dataset.insightsAction === focus)?.focus({preventScroll: true});
+  if (separateAnalysis) separateAnalysis.replaceChildren(analysis);
+  if (focus) [...focusRoot.querySelectorAll('[data-insights-action]')].find(node => node.dataset.insightsAction === focus)?.focus({preventScroll: true});
 }

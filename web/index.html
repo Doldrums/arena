@@ -34,64 +34,23 @@
   </header>
   <main id="main" class="arena-canvas" tabindex="-1">
       <span id="arena-breadcrumb" hidden>Tasks</span>
-      <section id="arena-intro" class="arena-intro" aria-labelledby="arena-intro-title">
-        <div class="arena-intro-copy">
-          <p class="arena-intro-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 7a7 7 0 1 0 1 9M18 3v5h-5"/><path d="M8 12h7m-3-3 3 3-3 3"/></svg> Empira · Research arena</p>
-          <h1 id="arena-intro-title"><span class="arena-intro-preface">An arena for</span><br> recursive <span class="arena-joined-term">self-improvement.</span></h1>
-          <p class="arena-intro-description">Scientific tasks and experiment records for studying systems that modify their own research methods.</p>
-          <div class="arena-research-tags" aria-label="Research scope"><span>Code evolution</span><span>Search procedures</span><span>Learning mechanisms</span></div>
-          <div class="arena-intro-actions"><a class="button arena-browse-action" href="#arena-atlas">Browse tasks <span aria-hidden="true">↗</span></a><a class="arena-text-action" href="#arena-growth">Add a task or system <span aria-hidden="true">+</span></a></div>
-        </div>
-        <aside class="arena-source-card" aria-label="From Welcome to the Era of Experience">
-          <div class="arena-source-heading"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h5"/></svg><span>On learning from experience</span></div>
-          <blockquote cite="https://storage.googleapis.com/deepmind-media/Era-of-Experience%20/The%20Era%20of%20Experience%20Paper.pdf#page=1"><p>“experience will become <span>the dominant medium of improvement</span>”</p></blockquote>
-          <a class="arena-source-credit" href="https://storage.googleapis.com/deepmind-media/Era-of-Experience%20/The%20Era%20of%20Experience%20Paper.pdf#page=1" target="_blank" rel="noopener noreferrer"><strong>David Silver &amp; Richard Sutton <span aria-hidden="true">↗</span></strong><span>Welcome to the Era of Experience · p. 1</span></a>
-        </aside>
-      </section>
-      <div id="arena-page-heading" class="page-heading arena-page-heading">
+      <div id="arena-page-heading" class="page-heading arena-page-heading" hidden>
         <div><div class="eyebrow">RESEARCH REGISTRY</div><h1 id="arena-title">Tasks</h1><p id="arena-subtitle" class="subtitle">Versioned scientific tasks and evaluation definitions.</p></div>
         <a class="inline-link" href="https://github.com/Doldrums/arena" target="_blank" rel="noopener noreferrer">View registry on GitHub ↗</a>
       </div>
       <section id="arena-summary" class="metrics arena-metrics" aria-label="Registry summary"></section>
       <section id="arena-atlas" aria-label="Research landscape"></section>
-      <section id="arena-positioning" class="arena-positioning" aria-labelledby="arena-positioning-title">
-        <div class="arena-research-focus">
-          <h2 id="arena-positioning-title">Research focus</h2>
-          <p class="arena-research-statement">Can a system improve <span>the process that produces its next improvements?</span><svg class="arena-research-line" viewBox="0 0 146 37" aria-hidden="true"><path d="M2 23c18-23 34-23 44-2s22 19 29 0 23-18 34-3 21 10 34-7M133 11h10v10"/></svg></p>
-          <p class="arena-research-description">A change to code, a search procedure or an update rule is a hypothesis. Subsequent experiments test its effect on further research.</p>
-          <p class="arena-research-context">Learning from experience motivates this work. Recursive self-improvement is the specific process we want to study.</p>
-        </div>
-        <aside class="arena-record" aria-labelledby="arena-record-title">
-          <header><h3 id="arena-record-title">Research record</h3><span>What an experiment documents</span></header>
-          <dl>
-            <div><dt><span class="arena-record-mark is-blue" aria-hidden="true">↻</span> System revision</dt><dd>Code &amp; configuration</dd></div>
-            <div><dt><span class="arena-record-mark is-violet" aria-hidden="true">⊡</span> Task &amp; protocol</dt><dd>Inputs, outputs &amp; evaluation</dd></div>
-            <div><dt><span class="arena-record-mark is-mint" aria-hidden="true">≋</span> Experimental evidence</dt><dd>Results, failures &amp; artifacts</dd></div>
-            <div><dt><span class="arena-record-mark is-stone" aria-hidden="true">◷</span> Resources</dt><dd>Models, compute &amp; recorded cost</dd></div>
-          </dl>
-          <p>Currently available: registry metadata and native SCiEL experiment records. Shared execution and cross-system comparison are planned.</p>
-        </aside>
-      </section>
-      <section id="arena-growth" class="arena-growth" aria-labelledby="arena-growth-title">
-        <div class="arena-growth-heading"><h2 id="arena-growth-title">Adding tasks and systems</h2><a class="arena-text-action" href="https://github.com/Doldrums/arena/blob/main/registry/README.md" target="_blank" rel="noopener noreferrer">Registry guide <span aria-hidden="true">↗</span></a></div>
-        <div class="arena-growth-paths">
-          <article class="arena-discovery-card">
-            <header><h3>Continuous discovery</h3><span class="arena-status-upcoming">In development</span></header>
-            <p>New research tasks and RSI systems will be collected from papers and repositories, then reviewed for inclusion.</p>
-            <div class="arena-discovery-lanes"><div><span class="arena-lane-mark is-violet" aria-hidden="true">↘</span><span>Research tasks<small>Problems &amp; evaluation definitions</small></span></div><div><span class="arena-lane-mark is-mint" aria-hidden="true">↘</span><span>RSI systems<small>Implementations &amp; new revisions</small></span></div></div>
-            <p class="arena-discovery-now">The current catalog is a versioned snapshot. The discovery pipeline will be integrated separately.</p>
-          </article>
-          <article class="arena-contribution-card">
-            <header><h3>Contribute through GitHub</h3><span class="arena-status-available">Available now</span></header>
-            <p>Propose a task or system with a pull request. The team reviews every addition to the shared registry.</p>
-            <div class="arena-contribution-actions"><a class="button" href="https://github.com/Doldrums/arena/compare?expand=1&amp;template=task.md" target="_blank" rel="noopener noreferrer">Submit a task <span aria-hidden="true">+</span></a><a class="button" href="https://github.com/Doldrums/arena/compare?expand=1&amp;template=participant.md" target="_blank" rel="noopener noreferrer">Submit a system <span aria-hidden="true">+</span></a></div>
-            <p class="arena-contribution-note">Registration and execution support are tracked separately.</p>
-          </article>
-        </div>
+      <section id="arena-intro" class="arena-intro" aria-labelledby="arena-intro-title">
+        <svg class="arena-idea-mark" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="24"/><path d="M37 20a13 13 0 1 0 3 14M37 12v10H27"/></svg>
+        <h1 id="arena-intro-title">Research on<br>recursive <span class="arena-idea-term">self-improvement.</span></h1>
+        <p class="arena-idea-text">Systems revise their own <span class="arena-idea-word">code <span class="arena-inline-art is-code" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="m15 12-8 8 8 8m10-16 8 8-8 8M23 8l-6 24"/></svg></span></span>, test <span class="arena-idea-word">search procedures <span class="arena-inline-art is-search" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M8 29c0-11 24-23 24-13S8 33 8 19s24-7 24 8"/><circle cx="13" cy="26" r="3"/><circle cx="27" cy="15" r="3"/></svg></span></span> and learn from <span class="arena-idea-word">experiments <span class="arena-inline-art is-lab" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M15 6h10M17 6v11L9 30a3 3 0 0 0 3 4h16a3 3 0 0 0 3-4l-8-13V6M13 25h14"/><circle cx="19" cy="29" r="1"/></svg></span></span>. We study the process that produces their next <span class="arena-idea-word">improvements <span class="arena-inline-art is-revision" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M30 13a13 13 0 1 0 2 14M30 5v9h-9"/><path d="M15 21h11m-4-4 4 4-4 4"/></svg></span></span>.</p>
+        <figure class="arena-idea-source"><blockquote>“experience will become the dominant medium of improvement”</blockquote><figcaption><a href="https://storage.googleapis.com/deepmind-media/Era-of-Experience%20/The%20Era%20of%20Experience%20Paper.pdf#page=1" target="_blank" rel="noopener noreferrer">David Silver &amp; Richard Sutton · Welcome to the Era of Experience <span aria-hidden="true">↗</span></a></figcaption></figure>
       </section>
       <section id="arena-insights" aria-label="Scientific overview"></section>
       <div id="arena-error" class="error-banner" role="alert" hidden></div>
       <section id="arena-detail" class="panel arena-detail" aria-label="Selected item" hidden></section>
+      <details id="arena-catalog-browser" class="arena-catalog-browser">
+        <summary id="arena-catalog-toggle"><span>Task catalog<small>Search, filters and evaluation data</small></span><span class="arena-catalog-toggle-label">Browse <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></summary>
       <section id="arena-list-panel" class="panel">
         <div id="arena-active-filters" class="arena-active-filters" aria-label="Selected scientific filters" hidden></div>
         <form id="arena-filters" class="arena-filters" role="search" aria-label="Search catalog">
@@ -103,6 +62,43 @@
         <div class="arena-results-heading"><h2 id="arena-results-title">Task catalog</h2><span id="arena-result-count" role="status" aria-live="polite">Loading…</span></div>
         <div id="arena-results" aria-busy="true"><div class="loading">Loading task definitions…</div></div>
         <nav id="arena-pagination" class="arena-pagination" aria-label="Results pages" hidden></nav>
+      </section>
+        <section id="arena-analysis" aria-label="Task statistics and reference evidence"></section>
+      </details>
+      <section id="arena-positioning" class="arena-positioning" aria-labelledby="arena-positioning-title">
+        <header class="arena-difference-heading"><h2 id="arena-positioning-title">What’s different here</h2><p>The system, its research methods and the evidence across experiments.</p></header>
+        <div class="arena-difference-layout">
+          <article class="arena-evidence-card">
+            <div class="arena-record-preview" aria-label="Information available in native SCiEL experiment records">
+              <div class="arena-record-preview-title"><span>Inside an experiment</span><span class="arena-record-source">SCiEL</span></div>
+              <dl>
+                <div><dt><span class="arena-record-symbol is-code" aria-hidden="true">⌘</span> Source</dt><dd>Code &amp; revisions</dd></div>
+                <div><dt><span class="arena-record-symbol is-search" aria-hidden="true">↝</span> Research trail</dt><dd>Attempts &amp; decisions</dd></div>
+                <div><dt><span class="arena-record-symbol is-lab" aria-hidden="true">⊡</span> Results</dt><dd>Outcomes &amp; artifacts</dd></div>
+                <div><dt><span class="arena-record-symbol is-revision" aria-hidden="true">◷</span> Resources</dt><dd>Models &amp; recorded cost</dd></div>
+              </dl>
+            </div>
+            <div class="arena-evidence-copy"><h3>Evidence you can inspect</h3><p>Follow the code, candidates, failures and artifacts behind an experiment. Native SCiEL records are available in the local board.</p><a class="arena-text-action" href="/experiments">Open experiments <span aria-hidden="true">↗</span></a></div>
+          </article>
+          <div class="arena-difference-rows">
+            <article class="arena-difference-row"><span class="arena-difference-icon is-revision" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M30 13a13 13 0 1 0 2 14M30 5v9h-9"/><path d="M15 21h11m-4-4 4 4-4 4"/></svg></span><div><h3>RSI as the research target</h3><p>Study changes to the system’s own code, search procedures and learning mechanisms through subsequent experiments.</p></div></article>
+            <article class="arena-difference-row"><span class="arena-difference-icon is-code" aria-hidden="true"><svg viewBox="0 0 40 40"><rect x="9" y="6" width="22" height="27" rx="4"/><path d="M6 13v19a5 5 0 0 0 5 5h15M15 14h10M15 20h10M15 26h6"/></svg></span><div><h3>Tasks and systems keep evolving</h3><p>Reviewed contributions add tasks and system versions. Continuous discovery of both is in development.</p><span class="arena-status-upcoming">Discovery in development</span></div></article>
+            <article class="arena-difference-row"><span class="arena-difference-icon is-search" aria-hidden="true"><svg viewBox="0 0 40 40"><rect x="5" y="7" width="11" height="11" rx="3"/><rect x="24" y="7" width="11" height="11" rx="3"/><rect x="14" y="26" width="12" height="10" rx="3"/><path d="M10 18v5h20v-5M20 23v3"/></svg></span><div><h3>Frameworks keep their own methods</h3><p>SCiEL, ShinkaEvolve and DGM remain independent. Each keeps its own search, memory and learning code.</p></div></article>
+          </div>
+        </div>
+        <div id="arena-growth" class="arena-growth"><div><h3>Contribute through GitHub</h3><p>Tasks and systems enter through team-reviewed pull requests.</p></div><div class="arena-contribution-actions"><a class="button" href="https://github.com/Doldrums/arena/compare?expand=1&amp;template=task.md" target="_blank" rel="noopener noreferrer">Submit a task <span aria-hidden="true">+</span></a><a class="button" href="https://github.com/Doldrums/arena/compare?expand=1&amp;template=participant.md" target="_blank" rel="noopener noreferrer">Submit a system <span aria-hidden="true">+</span></a></div></div>
+      </section>
+      <section id="arena-faq" class="arena-faq" aria-labelledby="arena-faq-title">
+        <div class="arena-faq-heading"><h2 id="arena-faq-title">Q / A</h2><p>Scope, participation and what is available today.</p></div>
+        <div class="arena-faq-list">
+          <details><summary><span>What is Empira testing?</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div><p>Empira is being built to study whether a system’s changes to its own research methods improve its ability to produce further improvements. Tasks and experiment records provide the setting and evidence for that research.</p></div></details>
+          <details><summary><span>Does a system have to be an agent?</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div><p>No. The scope includes program-evolution frameworks, search systems, agents and learning systems. The research target is how a system changes its own improvement process.</p></div></details>
+          <details><summary><span>How does this relate to the Era of Experience?</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div><p>Learning from experience is the broader idea: observations and feedback change future behavior. RSI concerns changes to the process that produces further improvements; a better task result alone does not establish it.</p><a href="https://storage.googleapis.com/deepmind-media/Era-of-Experience%20/The%20Era%20of%20Experience%20Paper.pdf" target="_blank" rel="noopener noreferrer">Read Silver &amp; Sutton ↗</a></div></details>
+          <details><summary><span>Does the catalog update automatically?</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div><p>This release serves a reviewed, versioned snapshot. Continuous discovery and parsing of research tasks and RSI systems are being developed separately and will be integrated into the registry.</p></div></details>
+          <details><summary><span>What counts as a task package?</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div><p>Each package is a task definition; parameter variants and paper-specific versions can be separate packages. The total is not a count of unique scientific problems, and an evaluation definition does not by itself establish runtime compatibility.</p><a href="#arena-list-panel">Browse task definitions ↓</a></div></details>
+          <details><summary><span>Which systems can run here today?</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div><p>SCiEL, ShinkaEvolve and DGM have versioned registrations, but no framework launch adapter is integrated yet. The local observer can inspect existing SCiEL experiments; it does not launch them.</p><a href="/?view=participants">View participant status ↗</a></div></details>
+          <details><summary><span>How do I add a task or system?</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div><p>Propose a registration through a pull request with a pinned source revision. The team reviews additions; registration and execution support are tracked separately.</p><a href="https://github.com/Doldrums/arena/blob/main/registry/README.md" target="_blank" rel="noopener noreferrer">Read the registry guide ↗</a></div></details>
+        </div>
       </section>
       <p id="arena-scope" class="arena-scope" hidden></p>
       <footer class="page-footer arena-page-footer"><span id="arena-source-note">Versioned task definitions and participant registrations.</span><a href="/experiments">Open experiment board ↗</a></footer>

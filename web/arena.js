@@ -50,6 +50,8 @@ export function createArenaApp({document: doc = document, window: win = window,
   const $ = id => doc.getElementById(id);
   const state = {catalog: null, participants: null, insights: null, references: null, searchFamilies: null, errors: {}, loading: true};
   let loadRevision = 0;
+  let lastCatalogRoute = null;
+  let pendingCatalogHash = null;
 
   function element(tag, className, text) {
     const node = doc.createElement(tag);
@@ -87,10 +89,59 @@ export function createArenaApp({document: doc = document, window: win = window,
     }
     return url.pathname + url.search;
   }
-  function navigate(href, {replace = false, focus = false} = {}) {
+  function catalogHashTarget(url = new URL(win.location.href)) {
+    const browser = $('arena-catalog-browser');
+    if (!browser || !url.hash) return null;
+    let target;
+    try { target = $(decodeURIComponent(url.hash.slice(1))); } catch { return null; }
+    return target && (target === browser || browser.contains(target)) ? target : null;
+  }
+  function revealCatalog({scroll = false, focus = false, target = $('arena-list-panel')} = {}) {
+    const current = locationState();
+    if (current.view === 'tasks' ? current.task : current.participant) return;
+    const browser = $('arena-catalog-browser');
+    if (browser) browser.open = true;
+    if (scroll) {
+      const reducedMotion = win.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      target?.scrollIntoView?.({behavior: reducedMotion ? 'instant' : 'smooth', block: 'start'});
+    }
+    if (focus) {
+      const heading = target === $('arena-list-panel') ? $('arena-results-title') : target;
+      heading?.setAttribute('tabindex', '-1'); heading?.focus({preventScroll: true});
+    }
+  }
+  function catalogDisclosure(current) {
+    const browser = $('arena-catalog-browser');
+    if (!browser) return;
+    const isTasks = current.view === 'tasks', selected = isTasks ? current.task : current.participant;
+    browser.hidden = Boolean(selected);
+    if ($('arena-catalog-toggle')) $('arena-catalog-toggle').hidden = !isTasks;
+    if ($('arena-analysis')) $('arena-analysis').hidden = !isTasks || Boolean(selected);
+    const url = new URL(win.location.href), hashTarget = catalogHashTarget(url);
+    const filters = [current.query, current.family, current.protocol, current.domain, current.type, current.reference, current.search_family];
+    const key = JSON.stringify([current.view, current.task, current.participant, ...filters, url.searchParams.get('page'), url.hash]);
+    if (lastCatalogRoute?.key !== key) pendingCatalogHash = !selected && isTasks ? hashTarget?.id || null : null;
+    if (!isTasks) browser.open = true;
+    else if (lastCatalogRoute?.key !== key && !selected) {
+      if (filters.some(Boolean) || url.searchParams.has('page') || hashTarget || lastCatalogRoute?.task) browser.open = true;
+      else if (lastCatalogRoute?.view === 'participants') browser.open = false;
+    }
+    lastCatalogRoute = {key, view: current.view, task: current.task};
+  }
+  function finishCatalogHashNavigation() {
+    if (!pendingCatalogHash || state.loading) return;
+    const target = $(pendingCatalogHash), browser = $('arena-catalog-browser');
+    pendingCatalogHash = null;
+    if (target && browser?.open && !browser.hidden) revealCatalog({scroll: true, target});
+  }
+  function navigate(href, {replace = false, focus = false, catalog = false, scrollCatalog = false, target} = {}) {
     win.history[replace ? 'replaceState' : 'pushState'](null, '', href);
     render();
-    if (focus) $('main').focus({preventScroll: true});
+    if (catalog) revealCatalog({scroll: scrollCatalog, focus, target});
+    else if (focus) $('main').focus({preventScroll: true});
+  }
+  function filterCatalog(kind, value) {
+    navigate(route({[kind]: value, page: null, task: null}), {catalog: true, scrollCatalog: true});
   }
   function badge(text, kind = 'neutral') { return element('span', `badge ${kind}`, text); }
   function fact(list, label, value) {
@@ -269,8 +320,8 @@ export function createArenaApp({document: doc = document, window: win = window,
     const pagination = $('arena-pagination'); pagination.replaceChildren(); pagination.hidden = pages <= 1;
     pagination.append(element('span', '', `Page ${page} of ${pages}`));
     const controls = element('div');
-    const previous = button('← Previous', () => navigate(route({page: page - 1}), {focus: true})); previous.disabled = page === 1;
-    const next = button('Next →', () => navigate(route({page: page + 1}), {focus: true})); next.disabled = page === pages;
+    const previous = button('← Previous', () => navigate(route({page: page - 1}), {focus: true, catalog: true, scrollCatalog: true})); previous.disabled = page === 1;
+    const next = button('Next →', () => navigate(route({page: page + 1}), {focus: true, catalog: true, scrollCatalog: true})); next.disabled = page === pages;
     controls.append(previous, next); pagination.append(controls);
   }
   function participantResults(current) {
@@ -304,8 +355,9 @@ export function createArenaApp({document: doc = document, window: win = window,
     $('arena-contribute').textContent = isTasks ? 'Add a task ↗' : 'Add a participant ↗';
     $('arena-contribute').href = `${REPOSITORY}/compare?expand=1&template=${isTasks ? 'task' : 'participant'}.md`;
     const showIntroduction = isTasks && !selected;
-    for (const id of ['arena-intro', 'arena-positioning', 'arena-growth']) $(id).hidden = !showIntroduction;
+    for (const id of ['arena-intro', 'arena-positioning', 'arena-growth', 'arena-faq']) if ($(id)) $(id).hidden = !showIntroduction;
     $('arena-page-heading').hidden = showIntroduction;
+    catalogDisclosure(current);
     for (const node of doc.querySelectorAll('[data-arena-view]')) {
       if (node.dataset.arenaView === current.view) node.setAttribute('aria-current', 'page'); else node.removeAttribute('aria-current');
     }
@@ -313,19 +365,15 @@ export function createArenaApp({document: doc = document, window: win = window,
     $('arena-atlas').hidden = !isTasks || Boolean(selected);
     if (isTasks && !selected) renderArenaAtlas($('arena-atlas'), {
       catalog: state.catalog, insights: state.insights, searchFamilies: state.searchFamilies, current, errors: state.errors, loading: state.loading,
-      onFilter: (kind, value) => {
-        navigate(route({[kind]: value, page: null, task: null}));
-        const reducedMotion = win.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-        $('arena-list-panel').scrollIntoView?.({behavior: reducedMotion ? 'instant' : 'smooth', block: 'start'});
-      },
+      onFilter: filterCatalog,
       onTask: id => navigate(route({task: id}), {focus: true}),
       onModeChange: mode => navigate(route({atlas: mode === 'methods' ? null : mode})),
     });
     $('arena-insights').hidden = !isTasks || Boolean(selected);
     if (isTasks && !selected) renderArenaInsights($('arena-insights'), {
-      insights: state.insights, references: state.references, catalog: state.catalog, current,
+      insights: state.insights, references: state.references, catalog: state.catalog, current, analysisRoot: $('arena-analysis'),
       matchingTasks: state.catalog ? filterTasks(state.catalog.tasks, current, state) : [],
-      errors: state.errors, loading: state.loading, onFilter: (kind, value) => navigate(route({[kind]: value, page: null, task: null})), onRetry: load,
+      errors: state.errors, loading: state.loading, onFilter: filterCatalog, onRetry: load,
     });
     const chips = $('arena-active-filters'); chips.replaceChildren();
     chips.hidden = !isTasks || !(current.domain || current.type || current.reference || current.search_family || current.family);
@@ -335,7 +383,7 @@ export function createArenaApp({document: doc = document, window: win = window,
         if (!value) continue;
         const label = labels?.find(item => item.id === value)?.label || ({__unspecified__: 'Unspecified', published: 'Published reference', baseline: 'Seed baseline', missing: 'No numeric reference', numeric: 'Numeric reference'}[value]) || words(value);
         const chip = element('div', 'arena-filter-chip'); chip.append(element('span', '', `${prefix}: ${label}`));
-        const remove = button('×', () => navigate(route({[key]: null, page: null})), ''); remove.setAttribute('aria-label', `Remove ${prefix.toLowerCase()} filter: ${label}`); chip.append(remove); chips.append(chip);
+        const remove = button('×', () => navigate(route({[key]: null, page: null}), {catalog: true}), ''); remove.setAttribute('aria-label', `Remove ${prefix.toLowerCase()} filter: ${label}`); chip.append(remove); chips.append(chip);
       }
       if ((current.domain || current.type) && !state.insights || current.reference && !state.references || current.search_family && !state.searchFamilies) chips.append(element('span', '', 'Some filters await overview data; available catalog rows remain visible.'));
     }
@@ -360,6 +408,7 @@ export function createArenaApp({document: doc = document, window: win = window,
       $('arena-result-count').textContent = error ? 'Unavailable' : 'Loading…'; $('arena-results').replaceChildren();
       if (error) empty($('arena-results'), 'Registry unavailable', 'Use Try again above to reload the registry.');
       else $('arena-results').append(element('div', 'loading', `Loading ${isTasks ? 'task definitions' : 'participants'}…`));
+      finishCatalogHashNavigation();
       return;
     }
     if (selected) {
@@ -368,6 +417,7 @@ export function createArenaApp({document: doc = document, window: win = window,
     } else if (isTasks) taskResults(current); else participantResults(current);
     const sourceCount = state.catalog?.sources?.length;
     $('arena-source-note').textContent = sourceCount ? `Catalog records from ${sourceCount} pinned source${sourceCount === 1 ? '' : 's'}. Inspect a task for provenance.` : 'Versioned task definitions and participant registrations.';
+    finishCatalogHashNavigation();
   }
   function populateFamilies() {
     const select = $('arena-family'); select.replaceChildren();
@@ -427,19 +477,32 @@ export function createArenaApp({document: doc = document, window: win = window,
   function updateFilters() {
     const current = locationState();
     navigate(route({q: $('arena-search').value, family: current.view === 'tasks' ? $('arena-family').value : null,
-      protocol: current.view === 'tasks' ? $('arena-protocol').value : null, page: null, task: null, participant: null}), {replace: true});
+      protocol: current.view === 'tasks' ? $('arena-protocol').value : null, page: null, task: null, participant: null}), {replace: true, catalog: true});
   }
   $('arena-search').addEventListener('input', updateFilters);
   $('arena-family').addEventListener('change', updateFilters);
   $('arena-protocol').addEventListener('change', updateFilters);
   $('arena-filters').addEventListener('submit', event => { event.preventDefault(); updateFilters(); });
-  $('arena-clear').addEventListener('click', () => navigate(route({q: null, family: null, protocol: null, domain: null, type: null, reference: null, search_family: null, page: null}), {replace: true}));
+  $('arena-clear').addEventListener('click', () => navigate(route({q: null, family: null, protocol: null, domain: null, type: null, reference: null, search_family: null, page: null}), {replace: true, catalog: true}));
   doc.addEventListener('click', event => {
-    const anchor = event.target.closest?.('a[data-arena-route], a[data-arena-view]');
+    const anchor = event.target.closest?.('a[href]');
     if (!anchor || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault(); navigate(anchor.href, {focus: true});
+    const url = new URL(anchor.href), currentURL = new URL(win.location.href);
+    const hashTarget = url.origin === currentURL.origin && url.pathname === currentURL.pathname && url.search === currentURL.search ? catalogHashTarget(url) : null;
+    if (hashTarget) {
+      event.preventDefault(); navigate(anchor.href, {catalog: true, scrollCatalog: true, focus: true, target: hashTarget});
+    } else if (anchor.matches('a[data-arena-route], a[data-arena-view]')) {
+      const current = locationState();
+      const backToCatalog = current.view === 'tasks' && current.task && url.searchParams.get('view') !== 'participants' && !url.searchParams.has('task');
+      event.preventDefault(); navigate(anchor.href, {focus: true, catalog: Boolean(backToCatalog), scrollCatalog: Boolean(backToCatalog)});
+    }
   });
   win.addEventListener('popstate', render);
+  win.addEventListener('hashchange', () => {
+    render();
+    const target = catalogHashTarget();
+    if (target) revealCatalog({scroll: true, target});
+  });
   const ready = load();
   return {ready, reload: load, render};
 }

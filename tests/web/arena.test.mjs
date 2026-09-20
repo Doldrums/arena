@@ -28,7 +28,7 @@ function insightsFixture(tasks) {
     domains:groups('domain_id',[['geometry','Geometry'],['other','Other domain']]),task_types:groups('task_type_id',[['construction','Construction'],['analysis','Analysis']]),
     task_annotations,coverage:[{id:'executable',total:tasks.filter(item=>item.executable).length},{id:'recorded_contract',total:0},{id:'runtime_verified',total:0}]};
 }
-async function mount({tasks = [task()], url = 'http://arena.test/', fetchJSON, insights, references, searchFamilies} = {}) {
+async function mount({tasks = [task()], url = 'http://arena.test/', fetchJSON, insights, references, searchFamilies, prepare} = {}) {
   const dom = new JSDOM(html, {url, runScripts: 'outside-only', pretendToBeVisual: true});
   const w = dom.window;
   w.TextEncoder = TextEncoder; Object.defineProperty(w.crypto, 'subtle', {value:webcrypto.subtle});
@@ -39,11 +39,144 @@ async function mount({tasks = [task()], url = 'http://arena.test/', fetchJSON, i
   const responses = {'/api/catalog':catalog,'/api/participants':participants,'/api/insights':insights||insightsFixture(tasks),
     '/api/search-families':searchFamilies||{groups:[{id:'evolution',label:'Evolution',description:'Research program search.',task_ids:tasks.map(item=>item.id)}],task_annotations:Object.fromEntries(tasks.map(item=>[item.id,{search_family_id:'evolution'}]))},
     '/api/references':references||{summary:{task_count:tasks.length,tasks_with_published_reference:0,tasks_with_recorded_baseline:0,tasks_without_numeric_reference:tasks.length,verified_current_sota:0,current_sota_status:'not_assessed'},tasks:tasks.map(item=>({task_id:item.id,anchors:[]}))}};
+  prepare?.(w);
   const app = w.createArenaApp({fetchJSON: fetchJSON || (async path => responses[path])});
   await app.ready;
   return {dom, w, doc: w.document, app};
 }
 function input(w, node, value, event = 'input') { node.value = value; node.dispatchEvent(new w.Event(event, {bubbles: true})); }
+
+test('overview keeps domains visible and technical data collapsed without undoing manual closure', async () => {
+  const {dom,w,doc,app} = await mount();
+  try {
+    const browser = doc.getElementById('arena-catalog-browser');
+    assert.equal(browser.open,false);
+    assert.ok(doc.querySelector('#arena-insights [data-domain-card]'));
+    assert.equal(doc.querySelector('#arena-insights .insights-composition'),null);
+    assert.ok(doc.querySelector('#arena-analysis .insights-composition'));
+    assert.ok(browser.contains(doc.getElementById('arena-list-panel')));
+    assert.equal(browser.contains(doc.getElementById('arena-detail')),false);
+    doc.querySelector('[data-domain-card="geometry"]').click();
+    assert.equal(browser.open,true);
+    browser.open=false;
+    app.render();
+    assert.equal(browser.open,false);
+    await app.reload();
+    assert.equal(browser.open,false);
+    doc.querySelector('[data-atlas-mode="families"]').click();
+    assert.equal(browser.open,false);
+    input(w,doc.getElementById('arena-search'),'circle');
+    assert.equal(browser.open,true);
+    doc.getElementById('arena-clear').click();
+    assert.equal(browser.open,true);
+  } finally { dom.window.close(); }
+});
+
+test('catalog query and hash deep links reveal results while detail links stay outside the disclosure', async t => {
+  for (const query of ['q=circle','family=Geometry','protocol=original','domain=geometry','type=construction','reference=missing','search_family=evolution','page=1','#arena-list-panel','#arena-analysis']) {
+    await t.test(query,async()=>{
+      const {dom,doc}=await mount({url:`http://arena.test/${query.startsWith('#')?'':'?'}${query}`});
+      try { assert.equal(doc.getElementById('arena-catalog-browser').open,true); }
+      finally { dom.window.close(); }
+    });
+  }
+  const {dom,doc}=await mount({url:'http://arena.test/?task=packing%2Fcircle'});
+  try {
+    assert.equal(doc.getElementById('arena-catalog-browser').hidden,true);
+    assert.equal(doc.getElementById('arena-detail').hidden,false);
+    assert.equal(doc.getElementById('arena-faq').hidden,true);
+    doc.querySelector('#arena-detail a[data-arena-route]').click();
+    assert.equal(doc.getElementById('arena-catalog-browser').hidden,false);
+    assert.equal(doc.getElementById('arena-catalog-browser').open,true);
+    assert.equal(doc.activeElement.id,'arena-results-title');
+  } finally { dom.window.close(); }
+});
+
+test('catalog anchors and history reveal the target before scrolling, including repeated hash links', async () => {
+  const {dom,w,doc}=await mount();
+  try {
+    const browser=doc.getElementById('arena-catalog-browser'),panel=doc.getElementById('arena-list-panel'),scrolls=[];
+    panel.scrollIntoView=()=>scrolls.push(browser.open);
+    doc.querySelector('.insights-catalog-jump').click();
+    assert.equal(w.location.hash,'#arena-list-panel');
+    assert.equal(browser.open,true);
+    assert.equal(doc.activeElement.id,'arena-results-title');
+    assert.ok(scrolls.length);assert.ok(scrolls.every(Boolean));
+    browser.open=false;
+    doc.querySelector('.insights-catalog-jump').click();
+    assert.equal(browser.open,true);
+    browser.open=false;
+    const faqLink=doc.querySelector('#arena-faq a[href="#arena-list-panel"]');
+    faqLink.closest('details').open=true;faqLink.click();
+    assert.equal(browser.open,true);
+    assert.equal(doc.activeElement.id,'arena-results-title');
+    browser.open=false;
+    w.history.replaceState(null,'','/?domain=geometry');w.dispatchEvent(new w.PopStateEvent('popstate'));
+    assert.equal(browser.open,true);
+    browser.open=false;
+    w.history.replaceState(null,'','/#arena-analysis');w.dispatchEvent(new w.HashChangeEvent('hashchange'));
+    assert.equal(browser.open,true);
+  } finally { dom.window.close(); }
+});
+
+test('initial catalog hash scroll waits for domain cards to establish the target position', async () => {
+  const scrolls=[];
+  const {dom}=await mount({url:'http://arena.test/#arena-list-panel',prepare(w){
+    w.HTMLElement.prototype.scrollIntoView=function(){scrolls.push({id:this.id,domains:w.document.querySelectorAll('[data-domain-card]').length});};
+  }});
+  try {
+    assert.ok(scrolls.length);
+    assert.ok(scrolls.every(item=>item.id==='arena-list-panel' && item.domains>0));
+  } finally { dom.window.close(); }
+});
+
+test('pagination and removing the last filter keep the catalog open and focus its results', async () => {
+  const {dom,w,doc}=await mount({tasks:Array.from({length:31},(_,index)=>task({id:`task-${index}`,name:`Task ${index}`}))});
+  try {
+    const browser=doc.getElementById('arena-catalog-browser');
+    doc.querySelector('[data-domain-card="geometry"]').click();
+    browser.open=false;
+    doc.querySelector('button[aria-label="Remove domain filter: Geometry"]').click();
+    assert.equal(browser.open,true);
+    [...doc.querySelectorAll('#arena-pagination button')].find(node=>node.textContent==='Next →').click();
+    assert.equal(browser.open,true);
+    assert.equal(new URL(w.location).searchParams.get('page'),'2');
+    assert.equal(doc.activeElement.id,'arena-results-title');
+    assert.equal(doc.querySelectorAll('.arena-table tbody tr').length,6);
+    doc.querySelector('.arena-task-link').click();
+    assert.equal(browser.hidden,true);
+    doc.querySelector('#arena-detail a[data-arena-route]').click();
+    assert.equal(browser.open,true);
+    assert.match(doc.getElementById('arena-pagination').textContent,/Page 2 of 2/);
+  } finally { dom.window.close(); }
+});
+
+test('participants remain visible without the task disclosure or scientific analysis', async () => {
+  const {dom,doc}=await mount({url:'http://arena.test/?view=participants'});
+  try {
+    const browser=doc.getElementById('arena-catalog-browser');
+    assert.equal(browser.open,true);assert.equal(browser.hidden,false);
+    assert.equal(doc.getElementById('arena-catalog-toggle').hidden,true);
+    assert.equal(doc.getElementById('arena-analysis').hidden,true);
+    assert.equal(doc.getElementById('arena-faq').hidden,true);
+    assert.ok(doc.querySelector('.arena-participant'));
+    doc.querySelector('[data-arena-view="tasks"]').click();
+    assert.equal(browser.open,false);
+    assert.equal(doc.getElementById('arena-catalog-toggle').hidden,false);
+    assert.equal(doc.getElementById('arena-analysis').hidden,false);
+  } finally { dom.window.close(); }
+});
+
+test('standalone scientific overview retains combined charts and references without an analysis root', async () => {
+  const tasks=[task(),task({id:'model'})],{dom,w,doc}=await mount({tasks});
+  try {
+    const root=doc.createElement('div');doc.body.append(root);
+    w.renderArenaInsights(root,{catalog:{tasks},insights:insightsFixture(tasks),references:referenceFixture(tasks),current:{},onFilter:()=>{}});
+    assert.ok(root.querySelector('[data-domain-card]'));
+    assert.ok(root.querySelector('.insights-composition'));
+    assert.ok(root.querySelector('[data-reference-task]'));
+  } finally { dom.window.close(); }
+});
 
 test('catalog searches real records, combines filters and restores deep-linked task details', async () => {
   const {dom, w, doc} = await mount({tasks: [task(), task({id: 'math/tensor', name: 'Tensor decomposition', description: 'Decompose a tensor.', family: 'Algebra', protocol: 'recreated', executable: false})]});
@@ -194,7 +327,10 @@ test('domain and task-type charts combine URL filters and preserve keyboard focu
     assert.equal(doc.activeElement.getAttribute('aria-pressed'),'true');
     assert.equal(new URL(w.location).searchParams.get('domain'),'geometry');
     assert.equal(doc.getElementById('arena-result-count').textContent,'2 of 3 tasks');
-    doc.querySelector('[data-filter-kind="type"][data-filter-value="construction"]').click();
+    const taskType=doc.querySelector('[data-filter-kind="type"][data-filter-value="construction"]');
+    taskType.focus();taskType.click();
+    assert.equal(doc.activeElement.dataset.insightsAction,'type:construction');
+    assert.equal(doc.getElementById('arena-analysis').contains(doc.activeElement),true);
     assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 3 tasks');
     assert.match(doc.querySelector('.insights-catalog-jump').textContent,/1 matching tasks/);
     doc.querySelector('button[aria-label="Remove domain filter: Geometry"]').click();
@@ -228,7 +364,7 @@ test('reference examples follow every filter and distinguish published values fr
   const tasks=[task(),task({id:'model',name:'Model task',family:'ML'}),task({id:'no-reference',name:'Missing reference',family:'ML'})];
   const {dom,w,doc}=await mount({tasks,references:referenceFixture(tasks)});
   try {
-    let rows=doc.querySelectorAll('#arena-insights [data-reference-task]');
+    let rows=doc.querySelectorAll('#arena-analysis [data-reference-task]');
     assert.equal(rows.length,2);
     assert.equal(rows[0].dataset.referenceTask,'model');
     assert.match(rows[0].textContent,/Validity not recorded/);
@@ -239,11 +375,11 @@ test('reference examples follow every filter and distinguish published values fr
     assert.match(rows[1].textContent,/1 construction/);
     assert.doesNotMatch(rows[1].textContent,/Cases: 1/);
     doc.querySelector('[data-filter-kind="domain"][data-filter-value="geometry"]').click();
-    rows=doc.querySelectorAll('#arena-insights [data-reference-task]');
+    rows=doc.querySelectorAll('#arena-analysis [data-reference-task]');
     assert.equal(rows.length,1); assert.equal(rows[0].dataset.referenceTask,'packing/circle');
     input(w,doc.getElementById('arena-search'),'missing query');
-    assert.equal(doc.querySelectorAll('#arena-insights [data-reference-task]').length,0);
-    assert.match(doc.getElementById('arena-insights').textContent,/No numeric references are recorded for the selected tasks/);
+    assert.equal(doc.querySelectorAll('#arena-analysis [data-reference-task]').length,0);
+    assert.match(doc.getElementById('arena-analysis').textContent,/No numeric references are recorded for the selected tasks/);
     doc.getElementById('arena-clear').click();
     doc.querySelector('[data-insights-action="reference:missing"]').click();
     assert.equal(new URL(w.location).searchParams.get('reference'),'missing');
@@ -278,7 +414,7 @@ test('overview API outages keep task search usable and do not invent zero eviden
   try {
     assert.equal(doc.getElementById('arena-error').hidden,true);
     assert.match(doc.getElementById('arena-insights').textContent,/Scientific overview unavailable/);
-    assert.match(doc.getElementById('arena-insights').textContent,/Reference evidence unavailable/);
+    assert.match(doc.getElementById('arena-analysis').textContent,/Reference evidence unavailable/);
     assert.match(doc.getElementById('arena-active-filters').textContent,/Some filters await overview data/);
     assert.equal(doc.getElementById('arena-result-count').textContent,'1 of 1 tasks');
     input(w,doc.getElementById('arena-search'),'circle');
@@ -299,7 +435,7 @@ test('scientific and reference metadata remain text and external links reject ac
   const {dom,doc}=await mount({tasks,insights,references});
   try {
     assert.match(doc.getElementById('arena-insights').textContent,/<img src=x onerror=alert\(1\)>/);
-    assert.equal(doc.querySelector('#arena-insights img, #arena-insights script, #arena-insights a[href^="javascript:"]'),null);
+    assert.equal(doc.querySelector('#arena-insights img, #arena-insights script, #arena-insights a[href^="javascript:"], #arena-analysis img, #arena-analysis script, #arena-analysis a[href^="javascript:"]'),null);
     doc.querySelector('.arena-task-link').click();
     assert.equal(doc.querySelector('#arena-detail img, #arena-detail script, #arena-detail a[href^="data:"]'),null);
   } finally { dom.window.close(); }
@@ -337,10 +473,10 @@ test('method filters also update published reference examples', async () => {
   const {dom,w,doc}=await mount({tasks,searchFamilies,references:referenceFixture(tasks)});
   try {
     w.history.replaceState(null,'','/?search_family=evo'); w.dispatchEvent(new w.PopStateEvent('popstate'));
-    assert.equal(doc.querySelectorAll('#arena-insights [data-reference-task]').length,1);
-    assert.equal(doc.querySelector('#arena-insights [data-reference-task]').dataset.referenceTask,'packing/circle');
+    assert.equal(doc.querySelectorAll('#arena-analysis [data-reference-task]').length,1);
+    assert.equal(doc.querySelector('#arena-analysis [data-reference-task]').dataset.referenceTask,'packing/circle');
     w.history.replaceState(null,'','/?search_family=prompt'); w.dispatchEvent(new w.PopStateEvent('popstate'));
-    assert.equal(doc.querySelector('#arena-insights [data-reference-task]').dataset.referenceTask,'model');
+    assert.equal(doc.querySelector('#arena-analysis [data-reference-task]').dataset.referenceTask,'model');
   } finally { dom.window.close(); }
 });
 
