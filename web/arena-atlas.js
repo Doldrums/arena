@@ -90,6 +90,7 @@ function startAtlasMotion(root, map, particles, options={}) {
   const doc=root.ownerDocument,win=doc.defaultView;
   if(!win?.matchMedia || !win.requestAnimationFrame) return {update(){},destroy(){}};
   const preference=win.matchMedia('(prefers-reduced-motion: reduce)');
+  const streams=options.streams||[];
   let frame=null,last=null,time=0,paused=Boolean(options.paused),allowMotion=Boolean(options.allowMotion),visible=!win.IntersectionObserver,disposed=false,activeId=null;
   for(const p of particles){
     p.phase=(p.seed%628)/100;p.rate=.65+(p.seed%7)*.065;
@@ -101,8 +102,20 @@ function startAtlasMotion(root, map, particles, options={}) {
   const render=()=>{
     for(const p of particles)p.node.setAttribute('transform',`translate(${(p.x-p.homeX).toFixed(2)} ${(p.y-p.homeY).toFixed(2)})`);
   };
+  const renderStreams=()=>{
+    for(const stream of streams){
+      if(!stream.prominent&&stream.groupId!==activeId)continue;
+      const phase=(time/stream.duration+stream.phase)%1;
+      const fade=Math.min(1,phase/.12,(1-phase)/.18);
+      stream.head.setAttribute('stroke-dashoffset',(-phase*100).toFixed(2));
+      stream.tail.setAttribute('stroke-dashoffset',(6-phase*100).toFixed(2));
+      stream.head.setAttribute('opacity',(fade*.7).toFixed(3));
+      stream.tail.setAttribute('opacity',(fade*.2).toFixed(3));
+    }
+  };
   const settle=()=>{
     for(const p of particles){p.x=p.homeX;p.y=p.homeY;p.vx=0;p.vy=0;}
+    for(const stream of streams){stream.head.setAttribute('opacity',0);stream.tail.setAttribute('opacity',0);}
     render();
   };
   const reduced=()=>preference.matches&&!allowMotion;
@@ -141,7 +154,7 @@ function startAtlasMotion(root, map, particles, options={}) {
       }
       const key=`${cx},${cy}`;if(!cells.has(key))cells.set(key,[]);cells.get(key).push(p);
     }
-    render();frame=win.requestAnimationFrame(tick);
+    render();renderStreams();frame=win.requestAnimationFrame(tick);
   }
   const onPreference=()=>{if(disposed)return;if(reduced())settle();sync();};
   const observer=win.IntersectionObserver?new win.IntersectionObserver(entries=>{
@@ -211,16 +224,34 @@ export function renderArenaAtlas(root, options = {}) {
   }
   const body=make('div','atlas-body'),canvas=make('div','atlas-canvas'),map=svgNode('svg',{viewBox:'0 0 900 680',class:'atlas-map',role:'group','aria-label':`${session.mode==='methods'?'Search method':'Task family'} clusters. Select a cluster to explore its tasks.`});
   const mapTitle=svgNode('title');mapTitle.textContent='Task atlas: one dot per catalog task';map.append(mapTitle);
+  // The faint decorative paths converge on the total; the text keeps a clear halo.
+  const defs=svgNode('defs'),fade=svgNode('radialGradient',{id:'atlas-center-fade'});
+  fade.append(svgNode('stop',{offset:'80%','stop-color':'#000'}),svgNode('stop',{offset:'100%','stop-color':'#fff'}));
+  const mask=svgNode('mask',{id:'atlas-center-clear',maskUnits:'userSpaceOnUse',x:0,y:0,width:900,height:680});
+  mask.append(svgNode('rect',{width:900,height:680,fill:'#fff'}),svgNode('ellipse',{cx:450,cy:338,rx:118,ry:79,fill:'url(#atlas-center-fade)'}));
+  defs.append(fade,mask);map.append(defs);
+  const streamLayer=svgNode('g',{class:'atlas-streams',mask:'url(#atlas-center-clear)','aria-hidden':'true'});
+  map.append(streamLayer);
   const center=svgNode('g',{class:'atlas-center','aria-hidden':'true'}),centerValue=svgNode('text',{x:450,y:327,'text-anchor':'middle',class:'atlas-center-value'}),centerLabel=svgNode('text',{x:450,y:354,'text-anchor':'middle',class:'atlas-center-label'});
   center.append(centerValue,centerLabel);map.append(center);
-  const clusters=new Map(),particles=[];
+  const clusters=new Map(),particles=[],streams=[];
   const palette=['#927ad5','#88a397','#42b5b1','#6c99da','#cd8bb5','#6ab394','#c9a656','#8f9dc8'];
   const choose=id=>{session.selected=session.selected===id?null:id;session.preview=null;session.update();};
   for(const[groupIndex,group]of session.layout.entries()) {
+    const color=palette[groupIndex%palette.length],seed=hash(group.id);
+    const dx=450-group.x,dy=338-group.y,distance=Math.hypot(dx,dy)||1,ux=dx/distance,uy=dy/distance;
+    const startX=group.x+ux*group.radius*.28,startY=group.y+uy*group.radius*.28,bend=30+seed%35;
+    const path=`M ${startX} ${startY} C ${startX+dx*.28-uy*bend} ${startY+dy*.28+ux*bend} ${450-dx*.3-uy*bend*.6} ${338-dy*.3+ux*bend*.6} 450 338`;
+    const route=svgNode('g',{class:'atlas-stream','data-stream-group':group.id,stroke:color});
+    const track=svgNode('path',{d:path,pathLength:100,class:'atlas-stream-track'});
+    const tail=svgNode('path',{d:path,pathLength:100,class:'atlas-stream-tail','stroke-dasharray':'6 94',opacity:0});
+    const head=svgNode('path',{d:path,pathLength:100,class:'atlas-stream-head','stroke-dasharray':'1.2 98.8',opacity:0});
+    route.append(track,tail,head);streamLayer.append(route);
+    streams.push({node:route,head,tail,groupId:group.id,prominent:groupIndex<12,duration:7+seed%5,phase:(seed%997)/997});
     const cluster=svgNode('g',{class:'atlas-cluster',tabindex:0,role:'button','aria-label':`${group.label}, ${format(group.count)} tasks. Select cluster.`, 'aria-pressed':'false','data-atlas-cluster':group.id});
     const hit=svgNode('circle',{cx:group.x,cy:group.y,r:Math.max(23,group.radius+8),class:'atlas-cluster-hit'});cluster.append(hit);
     const cloud=svgNode('g',{class:'atlas-cloud','aria-hidden':'true'});
-    cluster.style.setProperty('--cluster-color',palette[groupIndex%palette.length]);
+    cluster.style.setProperty('--cluster-color',color);
     for(const point of group.points) {
       const particle=svgNode('circle',{cx:point.x,cy:point.y,r:point.size,opacity:point.opacity,
         class:'atlas-point','data-task-id':point.id,'aria-hidden':'true'});
@@ -273,13 +304,13 @@ export function renderArenaAtlas(root, options = {}) {
   const details=make('div','atlas-details');aside.append(details);body.append(canvas,aside);card.append(body);
   const footer=make('footer','atlas-footer');
   const hint=make('p','','Select a cluster to keep it highlighted. Use arrow keys to move between clusters; Escape clears the selection.');
-  const note=make('details','atlas-note');note.append(make('summary','','About this map'),make('p','','One dot is one task package, including unsupported definitions. Color identifies a group; cluster size reflects package count. Dot sizes, positions and motion are decorative, not performance or solved results.'));
+  const note=make('details','atlas-note');note.append(make('summary','','About this map'),make('p','','One dot is one task package, including unsupported definitions. Color identifies a group; cluster size reflects package count. Dot sizes, positions, trails and motion are decorative, not dependencies, performance or solved results.'));
   if(session.mode==='methods')note.append(make('p','','Method groups follow the source paper-family labels. A task with several paper associations uses its recorded primary group for this map.'));
   else note.append(make('p','','Task families use the evaluator-family field in the catalog. Packages without that field remain in the Unspecified group.'));
   footer.append(hint,note);card.append(footer);
   card.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();session.selected=null;session.preview=null;session.update();}});
   root.replaceChildren(card);
-  const motion=startAtlasMotion(root,map,particles,{paused:session.motionPaused,allowMotion:session.motionEnabled,onStateChange:state=>{
+  const motion=startAtlasMotion(root,map,particles,{streams,paused:session.motionPaused,allowMotion:session.motionEnabled,onStateChange:state=>{
     const action=state==='reduced'?'Enable':session.motionPaused?'Resume':'Pause';
     motionToggle.textContent=`${action==='Pause'?'Ⅱ':'▶'} ${action} motion`;
     motionToggle.setAttribute('aria-label',`${action} atlas animation`);
@@ -289,8 +320,12 @@ export function renderArenaAtlas(root, options = {}) {
     const activeId=session.preview||session.selected,active=session.model.groups.find(group=>group.id===activeId);
     card.dataset.hasSelection=String(Boolean(active));
     motion.update(Boolean(session.motionPaused),activeId,session.motionEnabled);
+    for(const stream of streams){
+      stream.node.classList.toggle('is-visible',stream.prominent||stream.groupId===activeId);
+      stream.node.classList.toggle('is-muted',Boolean(activeId)&&stream.groupId!==activeId);
+    }
     for(const[id,cluster]of clusters){cluster.classList.toggle('is-active',id===activeId);cluster.classList.toggle('is-muted',Boolean(activeId)&&id!==activeId);cluster.setAttribute('aria-pressed',String(id===session.selected));}
-    centerValue.textContent=format(active?.count??session.model.total);centerLabel.textContent=active?'tasks in this cluster':'task packages';
+    centerValue.textContent=format(session.model.total);centerLabel.textContent='task packages';
     select.value=session.selected||'';
     // Keep the panel stable while the same cluster remains active.
     const panelKey=activeId+'|'+session.selected;
