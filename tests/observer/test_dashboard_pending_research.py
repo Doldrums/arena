@@ -96,7 +96,10 @@ def test_new_cell_and_real_pending_proposal_visible_before_commit_without_scient
     waiting=store.snapshot(run)['research_tools']['pending_cells']['cells'][0]
     assert waiting['active_decision'] is None
     assert waiting['pending_decision']['status']=='awaiting_wave_commit'
-    assert '999' not in json.dumps(waiting)
+    # Check measured fields directly; authenticated hashes may contain "999".
+    for projection in (waiting, waiting['pending_decision']):
+        assert {'known_cost', 'resources'}.isdisjoint(projection)
+    assert waiting['pending_decision']['requested_limits']=={'cpu_seconds':120,'wall_seconds':180}
     tx.commit()
     committed=store.snapshot(run)['research_tools']
     assert committed['pending_cells']['cells']==[] and len(committed['cells'])==1
