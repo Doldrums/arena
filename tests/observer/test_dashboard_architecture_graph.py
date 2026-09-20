@@ -2,6 +2,7 @@
 import copy
 import json
 import unittest
+import pytest
 
 from arena.observers.sciel.architecture import architecture
 from arena.observers.sciel.architecture_graph import architecture_graph
@@ -254,8 +255,9 @@ if __name__ == "__main__":
     unittest.main()
 
 
-def test_recorded_independent_research_has_shared_wave_barrier_and_cross_island_observations():
-    start=baseline();start['engine_contract']='espalier-3.32'
+@pytest.mark.parametrize('contract', ['espalier-3.32', 'espalier-3.33'])
+def test_recorded_independent_research_has_shared_wave_barrier_and_cross_island_observations(contract):
+    start=baseline();start['engine_contract']=contract
     start['config']['research_tools']={'enabled':True,'independent_research':True,'shared_observations':True,
         'trigger_sources':['plateau'],'yield_after_success':True,'max_scientific_steps':3}
     graph=architecture_graph(start,{},[])

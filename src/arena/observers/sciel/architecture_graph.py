@@ -33,7 +33,7 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
     novelty = _dict(config.get("candidate_novelty"))
     parallel = _dict(config.get('parallel_search'))
     contract = _text(start.get("engine_contract")) or _text(_dict(checkpoint.get("identity")).get("engine_contract"))
-    preset_timing = ("before" if contract in {"espalier-3.3", "espalier-3.4", "espalier-3.5", "espalier-3.6", "espalier-3.7", "espalier-3.8", "espalier-3.9", "espalier-3.10", "espalier-3.11", "espalier-3.12", "espalier-3.13", "espalier-3.14", "espalier-3.15", "espalier-3.16", "espalier-3.17", "espalier-3.18", "espalier-3.19", "espalier-3.20", "espalier-3.21", "espalier-3.22", "espalier-3.23", "espalier-3.24", "espalier-3.25", "espalier-3.26", "espalier-3.27", "espalier-3.28", "espalier-3.29", "espalier-3.30", "espalier-3.31", "espalier-3.32"} else
+    preset_timing = ("before" if contract in {"espalier-3.3", "espalier-3.4", "espalier-3.5", "espalier-3.6", "espalier-3.7", "espalier-3.8", "espalier-3.9", "espalier-3.10", "espalier-3.11", "espalier-3.12", "espalier-3.13", "espalier-3.14", "espalier-3.15", "espalier-3.16", "espalier-3.17", "espalier-3.18", "espalier-3.19", "espalier-3.20", "espalier-3.21", "espalier-3.22", "espalier-3.23", "espalier-3.24", "espalier-3.25", "espalier-3.26", "espalier-3.27", "espalier-3.28", "espalier-3.29", "espalier-3.30", "espalier-3.31", "espalier-3.32", "espalier-3.33"} else
                      "after" if contract in {"espalier-3", "espalier-3.1", "espalier-3.2"} else "unknown")
     descriptor = (_dict(start.get("descriptor")) or
                   _dict(_dict(checkpoint.get("identity")).get("descriptor")))
@@ -319,7 +319,7 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
     if not config:
         notes.append("No resolved configuration is available. Current engine defaults are not substituted.")
     tools = _dict(config.get('research_tools'))
-    independent = contract == 'espalier-3.32' and tools.get('independent_research') is True
+    independent = contract in {'espalier-3.32','espalier-3.33'} and tools.get('independent_research') is True
     proactive_every = tools.get('proactive_every_attempts')
     proactive = (tools.get('enabled') is True and type(proactive_every) is int
                  and proactive_every > 0)
@@ -339,7 +339,7 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
         edge('tool_execution', 'generation', 'Prepared Snapshot context · delivery separately recorded', 'knowledge')
         if independent or proactive or isinstance(tools.get('trigger_sources'),list) or any(row.get('phase')=='cell_created' for row in tool_events):
             cadence = (f'Proactive research is due at the first ordinary attempt after bootstrap, then every {proactive_every} globally committed ordinary attempts, independent of new records. Capacity and planning gates can defer execution. ' if proactive else '')
-            yields_after_trial = (contract in {'espalier-3.30', 'espalier-3.31','espalier-3.32'}
+            yields_after_trial = (contract in {'espalier-3.30', 'espalier-3.31','espalier-3.32','espalier-3.33'}
                 and tools.get('yield_after_success') is True
                 and type(tools.get('max_scientific_steps')) is int
                 and tools['max_scientific_steps'] > 1)
@@ -363,7 +363,7 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
             edge('research_cells','tool_library','Propose or reuse immutable methods','knowledge')
             edge('tool_execution','research_checks','Bounded observations and receipt references','knowledge')
             edge('research_checks','generation','Prepared research cards · ordinary G / evaluation follows','knowledge')
-            if contract in {'espalier-3.25','espalier-3.26','espalier-3.27','espalier-3.28','espalier-3.29','espalier-3.30','espalier-3.31','espalier-3.32'}:
+            if contract in {'espalier-3.25','espalier-3.26','espalier-3.27','espalier-3.28','espalier-3.29','espalier-3.30','espalier-3.31','espalier-3.32','espalier-3.33'}:
                 edge('population','research_cells','Saved sources, outputs and observed search limits','knowledge')
                 edge('tool_execution','research_cells','Inspect saved measurements; choose the next test','knowledge')
                 edge('research_cells','tool_execution','Revise, continue saved state, or close the question','control')
