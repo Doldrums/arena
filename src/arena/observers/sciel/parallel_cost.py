@@ -10,6 +10,8 @@ import math
 from pathlib import Path
 import re
 
+from .cost_accounting import subscription_unpriced
+
 SCHEMA = 'sciel-wave-transaction/2'
 MAX_CALLS = 4096
 TOOL_KINDS = frozenset({'tool_execution', 'tool_job_submit', 'tool_job_poll', 'tool_job_cancel'})
@@ -76,6 +78,7 @@ class WaveSpendMonitor:
             value, digest = _read(path, 128*1024*1024)
             provenance = value.get('provenance') or {}
             return dict(sha256=digest, cost=_number(value.get('cost_total')),
+                unpriced_calls=value.get('llm_unpriced_calls', 0),
                 run_id=provenance.get('run_id'), anchor=provenance.get('journal_anchor'))
         return self._memo(('checkpoint', str(path), _signature(path)), read)
 
@@ -130,7 +133,9 @@ class WaveSpendMonitor:
                 return dict(kind=kind, cost=0., unknown=int(payload.get('not_dispatched') is not True), pending=0)
             value = payload.get('value')
             cost = _number(value.get('cost')) if isinstance(value, dict) else None
-            return dict(kind=kind, cost=cost or 0., unknown=int(cost is None), pending=0)
+            unpriced = subscription_unpriced(value)
+            return dict(kind=kind, cost=cost or 0., unknown=int(cost is None and not unpriced),
+                unpriced=int(unpriced), pending=0)
         return self._memo(('call', str(directory), signatures), read)
 
     def observe(self, run_dir, start):
@@ -188,11 +193,13 @@ class WaveSpendMonitor:
             known = math.fsum(fact['cost'] for fact in llm)
             unknown = sum(fact['unknown'] for fact in llm)
             pending = sum(fact['pending'] for fact in llm)
+            unpriced = sum(fact.get('unpriced', 0) for fact in llm)
             return dict(schema='sciel-uncommitted-spend/1', available=True, wave=wave,
                 phase=manifest['phase'], known_cost=known, unknown_call_count=unknown,
-                pending_call_count=pending, baseline_cost=baseline['cost'],
+                pending_call_count=pending, unpriced_call_count=unpriced,
+                baseline_unpriced_calls=baseline['unpriced_calls'], baseline_cost=baseline['cost'],
                 known_spend=(baseline['cost']+known if baseline['cost'] is not None else None),
-                status='partial' if unknown or pending else 'known',
+                status='partial' if unknown or pending else 'subscription_unpriced' if unpriced or baseline['unpriced_calls'] else 'known',
                 source='Checksum-bound current wave receipts', included_in_stats=False)
         except (OSError, ValueError, TypeError, OverflowError, RecursionError, KeyError):
             return dict(schema='sciel-uncommitted-spend/1', available=False,

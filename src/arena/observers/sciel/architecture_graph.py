@@ -33,7 +33,7 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
     novelty = _dict(config.get("candidate_novelty"))
     parallel = _dict(config.get('parallel_search'))
     contract = _text(start.get("engine_contract")) or _text(_dict(checkpoint.get("identity")).get("engine_contract"))
-    preset_timing = ("before" if contract in {"espalier-3.3", "espalier-3.4", "espalier-3.5", "espalier-3.6", "espalier-3.7", "espalier-3.8", "espalier-3.9", "espalier-3.10", "espalier-3.11", "espalier-3.12", "espalier-3.13", "espalier-3.14", "espalier-3.15", "espalier-3.16", "espalier-3.17", "espalier-3.18", "espalier-3.19", "espalier-3.20", "espalier-3.21", "espalier-3.22", "espalier-3.23", "espalier-3.24", "espalier-3.25", "espalier-3.26", "espalier-3.27", "espalier-3.28", "espalier-3.29", "espalier-3.30", "espalier-3.31", "espalier-3.32", "espalier-3.33", "espalier-3.34", "espalier-3.35"} else
+    preset_timing = ("before" if contract in {"espalier-3.3", "espalier-3.4", "espalier-3.5", "espalier-3.6", "espalier-3.7", "espalier-3.8", "espalier-3.9", "espalier-3.10", "espalier-3.11", "espalier-3.12", "espalier-3.13", "espalier-3.14", "espalier-3.15", "espalier-3.16", "espalier-3.17", "espalier-3.18", "espalier-3.19", "espalier-3.20", "espalier-3.21", "espalier-3.22", "espalier-3.23", "espalier-3.24", "espalier-3.25", "espalier-3.26", "espalier-3.27", "espalier-3.28", "espalier-3.29", "espalier-3.30", "espalier-3.31", "espalier-3.32", "espalier-3.33", "espalier-3.34", "espalier-3.35", "espalier-3.36", "espalier-3.37", "espalier-3.38", "espalier-3.39", "espalier-3.40", "espalier-3.41", "espalier-3.42", "espalier-3.43", "espalier-3.44", "espalier-3.45", "espalier-3.46", "espalier-3.47", "espalier-3.48", "espalier-3.49", "espalier-3.50", "espalier-3.51", "espalier-3.52", "espalier-3.53", "espalier-3.54", "espalier-3.55", "espalier-3.56", "espalier-3.57", "espalier-3.58", "espalier-3.59"} else
                      "after" if contract in {"espalier-3", "espalier-3.1", "espalier-3.2"} else "unknown")
     descriptor = (_dict(start.get("descriptor")) or
                   _dict(_dict(checkpoint.get("identity")).get("descriptor")))
@@ -111,11 +111,14 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
          status=core_status, detail="Generate a candidate program and preserve its required entry points." +
          (" Full research also requests a pre-evaluation hypothesis and forecast." if research_on else ""), phase="generating")
     output_repeats = _dict(config.get("candidate_novelty")).get("output_repeats") is True
+    near_policy = _dict(config.get("candidate_novelty")).get("output_resolution")
     evaluator = _dict(start.get("evaluator"))
     node("evaluation", "Evaluate candidate", _text(evaluator.get("backend")) or "Task evaluator",
          status=core_status, detail="Run task validity and scoring stages; failed evaluations are distinct from measured zero scores. Limits and isolation follow the recorded evaluator." +
-         (" Exact recorded-output repeats return to generation before population admission, sharing at most two extra requests with source novelty. Equal scores alone do not trigger rejection." if output_repeats else ""),
-         features=["Exact output repeat retries"] if output_repeats else [], phase="evaluating")
+         (" Exact recorded-output repeats return to generation before population admission, sharing at most two extra requests with source novelty. Equal scores alone do not trigger rejection." if output_repeats else "") +
+         (" Task-bound output resolution also rejects nearby historical outputs without a canonical score improvement. Every strict measured improvement remains eligible. Rejected measurements and costs are retained." if near_policy else ""),
+         features=(["Exact output repeat retries"] if output_repeats else []) +
+                  (["Non-improving near-output retries"] if near_policy else []), phase="evaluating")
     storage = _text(container.get("kind"))
     population_label = {"legacy": "MAP-Elites + archive", "grid": "MAP-Elites population",
                         "pool": "Program pool", "pool_novelty": "Novelty-gated pool",
@@ -319,7 +322,7 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
     if not config:
         notes.append("No resolved configuration is available. Current engine defaults are not substituted.")
     tools = _dict(config.get('research_tools'))
-    independent = contract in {'espalier-3.32','espalier-3.33', 'espalier-3.34', 'espalier-3.35'} and tools.get('independent_research') is True
+    independent = contract in {'espalier-3.32','espalier-3.33', 'espalier-3.34', 'espalier-3.35', 'espalier-3.36', 'espalier-3.37', 'espalier-3.38', 'espalier-3.39', 'espalier-3.40', 'espalier-3.41', 'espalier-3.42', 'espalier-3.43', 'espalier-3.44', 'espalier-3.45', 'espalier-3.46', 'espalier-3.47','espalier-3.48', 'espalier-3.49', 'espalier-3.50', 'espalier-3.51', 'espalier-3.52', 'espalier-3.53', 'espalier-3.54', 'espalier-3.55', 'espalier-3.56', 'espalier-3.57', 'espalier-3.58', 'espalier-3.59'} and tools.get('independent_research') is True
     proactive_every = tools.get('proactive_every_attempts')
     proactive = (tools.get('enabled') is True and type(proactive_every) is int
                  and proactive_every > 0)
@@ -339,7 +342,7 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
         edge('tool_execution', 'generation', 'Prepared Snapshot context · delivery separately recorded', 'knowledge')
         if independent or proactive or isinstance(tools.get('trigger_sources'),list) or any(row.get('phase')=='cell_created' for row in tool_events):
             cadence = (f'Proactive research is due at the first ordinary attempt after bootstrap, then every {proactive_every} globally committed ordinary attempts, independent of new records. Capacity and planning gates can defer execution. ' if proactive else '')
-            yields_after_trial = (contract in {'espalier-3.30', 'espalier-3.31','espalier-3.32','espalier-3.33', 'espalier-3.34', 'espalier-3.35'}
+            yields_after_trial = (contract in {'espalier-3.30', 'espalier-3.31','espalier-3.32','espalier-3.33', 'espalier-3.34', 'espalier-3.35', 'espalier-3.36', 'espalier-3.37', 'espalier-3.38', 'espalier-3.39', 'espalier-3.40', 'espalier-3.41', 'espalier-3.42', 'espalier-3.43', 'espalier-3.44', 'espalier-3.45', 'espalier-3.46', 'espalier-3.47','espalier-3.48', 'espalier-3.49', 'espalier-3.50', 'espalier-3.51', 'espalier-3.52', 'espalier-3.53', 'espalier-3.54', 'espalier-3.55', 'espalier-3.56', 'espalier-3.57', 'espalier-3.58', 'espalier-3.59'}
                 and tools.get('yield_after_success') is True
                 and type(tools.get('max_scientific_steps')) is int
                 and tools['max_scientific_steps'] > 1)
@@ -354,6 +357,12 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
             if independent:
                 notes.append('Research continuations have a checkpoint-owned queue and may dispatch alongside ordinary evolutionary jobs. A shared wave commit barrier remains; this is not independent asynchronous publication. Queue status does not establish running CPU.')
                 edge('scheduler','research_cells','Independent continuation queue · shared wave commit','control')
+                if contract in {'espalier-3.53', 'espalier-3.54', 'espalier-3.55', 'espalier-3.56', 'espalier-3.57', 'espalier-3.58', 'espalier-3.59'} and tools.get('share_between_islands') is True:
+                    edge('scheduler','tool_library','Independent method exchange queue · replay / adopt / use again','control')
+                    notes.append('Method exchange has separate durable work for existing recipient cells on other islands. '
+                        'It shares the research dispatch budget fairly with scientific questions and does not wait for '
+                        'stagnation or ordinary parent reselection. A recipient must exist; scheduling, replay, adoption '
+                        'and later use are distinct observations and do not establish method benefit.')
                 if tools.get('shared_observations') is True:
                     edge('research_checks','research_cells','Receipt-bound observations across islands · prompt delivery recorded','knowledge')
                     notes.append('Shared observations may include negative and unpublished checks. Delivery to a model does not imply tool adoption, actual use or causal benefit.')
@@ -363,7 +372,7 @@ def architecture_graph(start, checkpoint, rows, *, protocol=None):
             edge('research_cells','tool_library','Propose or reuse immutable methods','knowledge')
             edge('tool_execution','research_checks','Bounded observations and receipt references','knowledge')
             edge('research_checks','generation','Prepared research cards · ordinary G / evaluation follows','knowledge')
-            if contract in {'espalier-3.25','espalier-3.26','espalier-3.27','espalier-3.28','espalier-3.29','espalier-3.30','espalier-3.31','espalier-3.32','espalier-3.33', 'espalier-3.34', 'espalier-3.35'}:
+            if contract in {'espalier-3.25','espalier-3.26','espalier-3.27','espalier-3.28','espalier-3.29','espalier-3.30','espalier-3.31','espalier-3.32','espalier-3.33', 'espalier-3.34', 'espalier-3.35', 'espalier-3.36', 'espalier-3.37', 'espalier-3.38', 'espalier-3.39', 'espalier-3.40', 'espalier-3.41', 'espalier-3.42', 'espalier-3.43', 'espalier-3.44', 'espalier-3.45', 'espalier-3.46', 'espalier-3.47','espalier-3.48', 'espalier-3.49', 'espalier-3.50', 'espalier-3.51', 'espalier-3.52', 'espalier-3.53', 'espalier-3.54', 'espalier-3.55', 'espalier-3.56', 'espalier-3.57', 'espalier-3.58', 'espalier-3.59'}:
                 edge('population','research_cells','Saved sources, outputs and observed search limits','knowledge')
                 edge('tool_execution','research_cells','Inspect saved measurements; choose the next test','knowledge')
                 edge('research_cells','tool_execution','Revise, continue saved state, or close the question','control')

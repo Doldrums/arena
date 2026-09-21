@@ -156,6 +156,7 @@ def architecture(start, checkpoint, rows):
         ('parallel_search.host_llm_slots', 'Shared host LLM slots'),
         ('parallel_search.provider_slots', 'Shared provider slots'),
         ('parallel_search.host_evaluator_slots', 'Shared host evaluator slots'),
+        ('parallel_search.host_research_slots', 'Research tools within shared evaluator slots'),
         ('parallel_search.max_inflight_per_island', 'Maximum in-flight jobs per island'),
         ('parallel_search.max_inflight_per_parent', 'Maximum in-flight jobs per parent')])
     if _dict(config.get('parallel_search')).get('enabled') is True:

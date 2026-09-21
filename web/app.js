@@ -36,7 +36,15 @@ const empty = (title,body='') => '<div class="empty-panel"><strong>'+esc(title)+
 const hypothesisText = hypothesis => typeof hypothesis==='string'?hypothesis:(hypothesis?.text || hypothesis?.hypothesis || '');
 const currentTrial = () => state.snapshot?.trials.find(t=>key(t)===state.selected);
 const taskName = task => ({'oe/circle_packing':'Circle packing','oe/heilbronn_triangle':'Heilbronn triangle','oe/function_minimization_oracle':'Function minimization'}[task] || task || 'Experiment');
-const runEffort = run => {const value=run.committed_effort;if(!value)return '<span class="run-effort">Effort not recorded</span>';const models=new Set(value.configured_models||[]);return '<span class="run-effort" title="'+esc(value.note)+'">'+esc(value.ordinary_iterations??'—')+' iterations · '+(numeric(value.known_llm_usd)?(value.cost_status==='known_logged_lower_bound'?'≥ ':'')+'$'+value.known_llm_usd.toFixed(2):'USD unknown')+' committed · '+(models.size||'unknown')+' configured LLMs</span>';};
+const runEffort = run => {
+  const value=run.committed_effort;
+  if(!value)return '<span class="run-effort">Effort not recorded</span>';
+  const models=new Set(value.configured_models||[]);
+  const subscription=value.billing_mode==='subscription_unpriced'||value.cost_status==='subscription_unpriced';
+  const price=subscription?(value.known_llm_usd>0?'≥ $'+value.known_llm_usd.toFixed(2)+' known + subscription · USD unavailable':'Subscription · USD unavailable'):
+    numeric(value.known_llm_usd)?(value.cost_status==='known_logged_lower_bound'?'≥ ':'')+'$'+value.known_llm_usd.toFixed(2):'USD unknown';
+  return '<span class="run-effort" title="'+esc(value.note)+'">'+esc(value.ordinary_iterations??'—')+' iterations · '+price+' committed'+(value.unknown_cost_present?' · charges unknown':'')+' · '+(models.size||'unknown')+' configured LLMs</span>';
+};
 const nameOf = run => {
   const path=run.path || run.name;
   const known=[['s04_r2_cycle','Research cycle · S04 r2'],['s04_cycle','Research cycle · S04'],['s05_r2_pair','Memory · S05 r2'],['s05_pair','Memory · S05'],['circle_body_engine_r2','Circle body · r2'],['circle_body_engine','Circle body']];
@@ -300,6 +308,29 @@ function metricBadge(row) {
   return view.status==='invalid_penalty'?'<span class="badge negative">Invalid result · penalty</span>':view.status==='failed'?badge('eval_fail'):view.status==='unknown'&&row.status==='evaluated'?'<span class="badge neutral">Measurement unavailable</span>':badge(row.status);
 }
 
+function referenceGapText(gap) {
+  if(gap===0)return 'equal';
+  const magnitude=Math.abs(gap),digits=magnitude<.01?6:magnitude<1?4:2;
+  return (magnitude<.000001?'<0.000001':magnitude.toFixed(digits))+'% '+(gap>0?'below':'above');
+}
+
+function referenceComparisonsHTML(reference,value) {
+  if(!reference||!numeric(value)||reference.current_value!==value)return '';
+  const legacy={status:'known',label:'Best known',value:reference.value,
+    current_value:reference.current_value,tolerance:reference.reference_tolerance,
+    name:reference.source_label,source_url:reference.source_url};
+  return [['best-known',reference.best_known||legacy,'Best known'],
+    ['ai-search',reference.best_ai_method,'Best AI search']].map(([key,item,label])=>{
+      label=item?.label||label;
+      const comparable=item?.status==='known'&&numeric(item.value)&&item.value>0&&
+        item.current_value===value&&numeric(reference.run_tolerance)&&item.tolerance===reference.run_tolerance;
+      const text=comparable?(item.value===value?'matches':referenceGapText((item.value-value)/item.value*100))+' '+label.toLowerCase():label+': not available';
+      const title=comparable?(item.name||label)+' · '+(item.value_label||item.value)+' · '+toleranceLabel(item.tolerance)+
+        ' · gap '+((item.value-value)/item.value*100).toPrecision(8)+'% · '+(item.source_url||'')+' · '+(reference.note||''):(item?.reason||'A comparable reference with a recorded method classification is not available.');
+      return '<span class="benchmark-reference-gap" data-reference-comparison="'+key+'" title="'+esc(title)+'">| '+esc(text)+'</span>';
+    }).join(' ');
+}
+
 function renderSummary() {
   const {run,stats,warnings=[]}=state.snapshot;
   $('run-title').textContent=nameOf(run);
@@ -316,14 +347,11 @@ function renderSummary() {
   $('best-score').textContent=numeric(value)?format(value):metricStatus(bestDisplay);
   $('best-score').title=numeric(value)?String(value):metricText(bestDisplay);
   const comparison=$('best-score-comparison');
-  const gaps=[reference?.best_known,reference?.best_ai_method].filter(item=>item?.status==='known'&&item.current_value===value&&numeric(value)&&numeric(item.value)&&item.value>0&&numeric(reference?.run_tolerance)&&item.tolerance===reference.run_tolerance);
-  comparison.hidden=!gaps.length;
+  const comparisonHTML=referenceComparisonsHTML(reference,value);
+  comparison.hidden=!comparisonHTML;
   document.querySelector('.metrics').classList.toggle('has-reference',!comparison.hidden);
-  comparison.textContent='';
-  if(!comparison.hidden){
-    comparison.innerHTML=gaps.map(item=>{const gap=(item.value-value)/item.value*100;return '<span class="benchmark-reference-gap">| '+percent(gap)+'% '+(gap>=0?'below':'above')+' '+esc(item.label||'Published reference')+' · '+esc(item.name)+'</span>';}).join('');
-    comparison.title='Comparable published values at the recorded task tolerance. '+(reference.note||'');
-  }
+  comparison.innerHTML=comparisonHTML;
+  comparison.removeAttribute('title');
   const gain=metricDifference(bestDisplay,metricDisplay(stats,'seed_metric_display','seed_score'));
   $('score-gain').textContent=numeric(gain)?(gain>0?'↗ ':'')+delta(gain)+' from initial program':'Measured gain unavailable';
   $('score-gain').className='metric-foot'+(gain>0?' positive':'');
@@ -333,8 +361,8 @@ function renderSummary() {
   $('attempts').textContent=attempts+' '+plural(attempts,['attempt','attempts'])+' · '+iterations+' '+plural(iterations,['iteration','iterations'])+
     (numeric(stats.remeasurements)?' · '+stats.remeasurements+' '+plural(stats.remeasurements,['remeasurement','remeasurements']):'')+
     (numeric(stats.measured_results)?' · '+stats.measured_results+' measured results':'')+
-    (numeric(stats.repeated_outputs)?' · '+stats.repeated_outputs+' exact output repeats':'');
-  $('attempts').title='Measured results include seeds, bootstrap, failed evaluations and evaluated retries. Exact output repeats compare saved outputs under a compatible protocol; they do not prove equivalent algorithms.';
+    (numeric(stats.repeated_outputs)?' · '+stats.repeated_outputs+(stats.output_resolution?' output repeat refusals':' exact output repeats'):'');
+  $('attempts').title='Measured results include seeds, bootstrap, failed evaluations and evaluated retries. Output checks compare saved outputs under a compatible protocol; they do not prove equivalent algorithms.'+(stats.output_resolution?' Near-output refusal requires no canonical score improvement within the task-configured output resolution.':'');
   const memory=state.snapshot.reliability?.memory,stored=memory?memory.stored_active:stats.lessons;
   $('lessons-count').textContent=stored ?? '—';
   $('lessons-unit').textContent=plural(stored,['lesson','lessons']);
@@ -362,12 +390,14 @@ function renderSpend() {
   const physical=state.snapshot.effort?.total;
   if(physical){
     const partial=physical.status!=='complete';
-    $('cost').textContent=(partial&&numeric(physical.reported_usd)?'≥ ':'')+(numeric(physical.reported_usd)?'$'+physical.reported_usd.toFixed(4):'Unknown');
-    $('cost-note').textContent=String(physical.physical_llm_calls)+' completed physical LLM calls'+(physical.pending_llm_calls?' · '+physical.pending_llm_calls+' pending':'')+(physical.unknown_cost_calls?' · '+physical.unknown_cost_calls+' charges unknown':'');
+    const subscription=physical.unpriced_llm_calls>0||physical.billing_mode==='subscription_unpriced'||physical.cost_status==='subscription_unpriced'||stats.billing_mode==='subscription_unpriced'||stats.cost_status==='subscription_unpriced';
+    $('cost').textContent=subscription?(physical.reported_usd>0?'≥ $'+physical.reported_usd.toFixed(4)+' + subscription':'Subscription'):(partial&&numeric(physical.reported_usd)?'≥ ':'')+(numeric(physical.reported_usd)?'$'+physical.reported_usd.toFixed(4):'Unknown');
+    $('cost-note').textContent=String(physical.physical_llm_calls)+' completed physical LLM calls'+(subscription?' · USD unavailable':'')+(physical.pending_llm_calls?' · '+physical.pending_llm_calls+' pending':'')+(physical.unknown_cost_calls?' · '+physical.unknown_cost_calls+' charges unknown':'');
     $('cost').title='Receipt-backed cumulative run spend. '+state.snapshot.effort.note;
     return;
   }
   let value=stats.cost_total,partial=stats.cost_status==='known_logged_lower_bound';
+  const subscription=stats.billing_mode==='subscription_unpriced'||stats.cost_status==='subscription_unpriced'||pending?.unpriced_call_count>0||pending?.baseline_unpriced_calls>0;
   let note=stats.cost_status==='estimated'?'Estimated from token rates':partial?'Partial recorded spend':'Generation and analysis';
   let title=stats.cost_status==='estimated'?'Estimated LLM spend from uncached token rates; actual billed cost may differ.':'Recorded LLM spend; excludes compute infrastructure costs.';
   if(pending?.available===true){
@@ -382,7 +412,13 @@ function renderSpend() {
   }else if(pending?.available===false){
     partial=true;note='Committed spend · current wave cost unavailable';title=pending.reason||'Current wave receipts are not yet verifiable.';
   }
-  $('cost').textContent=(partial&&numeric(value)?'≥ ':'')+(numeric(value)?'$'+value.toFixed(4):'—');
+  if(subscription){
+    note='Subscription · USD price not supplied'+(pending?.pending_call_count?' · '+pending.pending_call_count+' awaiting receipts':'');
+    if(pending?.unknown_call_count>0)note+=' · '+pending.unknown_call_count+' unknown-cost calls';
+    else if(stats.unknown_cost_present)note+=' · charges unknown';
+    if(pending?.available===false)note+=' · current wave receipts unavailable';
+  }
+  $('cost').textContent=subscription?(value>0?'≥ $'+value.toFixed(4)+' + subscription':'Subscription'):(partial&&numeric(value)?'≥ ':'')+(numeric(value)?'$'+value.toFixed(4):'—');
   $('cost-note').textContent=note;$('cost').title=title;
 }
 
@@ -451,6 +487,26 @@ function renderRuntime() {
   }
 }
 
+function benchmarkTableHTML(reference) {
+  const view=metricDisplay(state.snapshot.stats,'best_metric_display','best_score'),current=measuredValue(view);
+  const tolerance=reference.run_tolerance,knownTolerance=numeric(tolerance)&&tolerance>=0;
+  const bound=numeric(current)&&reference.current_value===current;
+  const references=Array.isArray(reference.references)?reference.references:[];
+  const matched=references.filter(row=>knownTolerance&&row.tolerance===tolerance);
+  const other=references.filter(row=>!knownTolerance||row.tolerance!==tolerance);
+  const id=typeof state.snapshot.best_candidate_id==='string'?state.snapshot.best_candidate_id:null;
+  const currentRow={current:true,value:current};
+  const renderRow=(row,comparable)=>{
+    if(row.current)return '<tr class="benchmark-current" data-current-solution data-comparable="'+comparable+'"><td><strong>This run · best</strong><small>'+(id?'<button class="inline-link mono" data-benchmark-candidate="'+esc(id)+'" aria-label="Open best program '+esc(id)+'">'+esc(id)+' ↗</button>':'Program ID not recorded')+'</small></td><td class="number published-value" title="'+esc(numeric(current)?String(current):view.reason||'')+'">'+(numeric(current)?esc(String(current)):metricHTML(view))+'</td><td>'+esc(knownTolerance?toleranceLabel(tolerance):'Not recorded')+'</td><td>'+(comparable?'This solution':'Not ranked')+'</td><td>'+effortDetailsHTML(state.snapshot.effort?.to_best)+'</td><td>Saved evaluator result<small>'+(numeric(current)?(comparable?'Position among the selected references at the same tolerance.':'Comparable measurement contract not available.'):esc(metricStatus(view)))+'</small></td></tr>';
+    const gap=bound&&comparable&&numeric(row.value)&&row.value>0?(row.value-current)/row.value*100:null;
+    const method={ai_search_framework:'AI search',ai_assisted:'AI-assisted',human:'Human method',unknown:'Method not classified'}[row.method_classification]||'Method not classified';
+    return '<tr data-reference-row><td>'+esc(row.name)+'</td><td class="number published-value">'+esc(row.value_label||String(row.value))+'</td><td>'+esc(toleranceLabel(row.tolerance))+'</td><td class="number">'+(numeric(gap)?esc(referenceGapText(gap)):'—')+(!comparable?'<small>Not comparable</small>':'')+'</td><td>'+publishedEffortHTML(row.effort)+'</td><td>'+sourceLink(row.source_url,row.source_name)+'<small title="'+esc(row.classification_basis||'')+'">'+esc(row.status||'')+' · '+sourceLink(row.classification_source_url,method)+'</small></td></tr>';
+  };
+  const group=(label,rows,comparable)=>rows.length?'<tbody data-comparability="'+(comparable?'matched':'unranked')+'"><tr class="benchmark-group"><th colspan="6" scope="colgroup">'+esc(label)+'</th></tr>'+rows.map(row=>renderRow(row,comparable)).join('')+'</tbody>':'';
+  const ordered=[...matched,...(knownTolerance&&bound?[currentRow]:[])].sort((a,b)=>(numeric(b.value)?b.value:-Infinity)-(numeric(a.value)?a.value:-Infinity));
+  return '<div class="table-wrap benchmark-table"><table><thead><tr><th>Result</th><th>'+esc(reference.metric||metricLabel())+'</th><th>Constraint tolerance</th><th>This run vs reference</th><th>Discovery effort</th><th>Evidence</th></tr></thead>'+group('Same tolerance as this run · '+toleranceLabel(tolerance)+' · ordered by recorded value',ordered,true)+group(knownTolerance?'Different or unrecorded tolerance · no ranking against this run':'Tolerance not recorded · no ranking',other,false)+(!(knownTolerance&&bound)?group('Current solution · not ranked',[currentRow],false):'')+'</table></div>';
+}
+
 function renderBenchmark() {
   let panel=$('benchmark-comparison');
   if(!panel){panel=document.createElement('section');panel.id='benchmark-comparison';panel.className='benchmark-comparison';panel.setAttribute('aria-label','Published reference and effort comparison');document.querySelector('.metrics').after(panel);}
@@ -461,33 +517,22 @@ function renderBenchmark() {
   const referenceOpen=panel.querySelector('.benchmark-disclosure')?.open===true;
   const disclosureKey=node=>JSON.stringify([node.closest('tr')?.querySelector('td')?.textContent||node.closest('section')?.querySelector('.effort-title')?.textContent||'reference',node.querySelector('summary')?.textContent]);
   const openDetails=new Set([...panel.querySelectorAll('details[open]')].map(disclosureKey));
-  const current=measuredValue(metricDisplay(state.snapshot.stats,'best_metric_display','best_score'));
-  const bound=reference?.current_value===current&&numeric(current)&&numeric(reference?.run_tolerance);
   let html='';
   if(reference&&numeric(reference.value)){
-    const comparable=bound&&reference.reference_tolerance===reference.run_tolerance;
+    const current=measuredValue(metricDisplay(state.snapshot.stats,'best_metric_display','best_score'));
+    const comparable=numeric(current)&&reference.current_value===current&&numeric(reference.run_tolerance)&&reference.run_tolerance>=0&&reference.reference_tolerance===reference.run_tolerance;
     const gap=comparable?current-reference.value:null;
-    html='<div class="benchmark-heading"><strong>'+esc(reference.label||'Published reference')+'</strong>'+sourceLink(reference.source_url,reference.source_label||'Published source')+'</div><div class="benchmark-values"><div>This run<strong>'+format(current,9)+'</strong></div><div>'+esc(reference.metric||'Reference value')+'<strong>'+format(reference.value,9)+'</strong></div><div>Gap to reference<strong>'+delta(gap)+'</strong></div><div>Of reference<strong>'+(comparable&&reference.value!==0?(current/reference.value*100).toFixed(4)+'%':'—')+'</strong></div></div>';
+    const source=sourceLink(reference.source_url,reference.source_label||'Published source');
+    html='<div class="benchmark-heading"><strong>'+esc(reference.label||'Published reference')+'</strong>'+source+'</div><div class="benchmark-values"><div>This run<strong>'+format(current,9)+'</strong></div><div>'+esc(reference.metric||'Reference value')+'<strong>'+format(reference.value,9)+'</strong></div><div>Gap to reference<strong>'+delta(gap)+'</strong></div><div>Of reference<strong>'+(comparable&&reference.value!==0?(current/reference.value*100).toFixed(4)+'%':'—')+'</strong></div></div>';
     if(reference.note)html+='<p class="benchmark-note">'+esc(reference.note)+'</p>';
-    const rows=(reference.references||[]).map(row=>({...row}));
-    if(bound)rows.push({current:true,name:'Current solution · '+(state.snapshot.best_candidate_id||'ID not recorded'),value:current,tolerance:reference.run_tolerance});
-    // Only the tolerance-matched group is ordered together. Other protocols
-    // remain visibly separate; this table is not a cross-protocol ranking.
-    const comparableRows=rows.filter(row=>row.tolerance===reference.run_tolerance).sort((a,b)=>(numeric(b.value)?b.value:-Infinity)-(numeric(a.value)?a.value:-Infinity));
-    const otherRows=rows.filter(row=>row.tolerance!==reference.run_tolerance);
-    const renderRow=row=>{
-      if(row.current)return '<tr class="benchmark-current" data-program-id="'+esc(state.snapshot.best_candidate_id||'')+'"><td>'+esc(row.name)+'<small>Canonical evaluator · current best</small></td><td class="number published-value">'+esc(String(current))+'</td><td>'+esc(toleranceLabel(row.tolerance))+'</td><td>This run</td><td>'+effortDetailsHTML(effort?.to_best)+'</td><td>Saved measurement<small>Effort cutoff: evaluation completion</small></td></tr>';
-      const match=bound&&row.tolerance===reference.run_tolerance;
-      const kind={ai_search_framework:'AI search',ai_assisted:'AI-assisted',unknown:'Method not classified'}[row.method_classification]||'Method not classified';
-      return '<tr><td>'+esc(row.name)+'<small>'+kind+'</small></td><td class="number published-value">'+esc(row.value_label||String(row.value))+'</td><td>'+esc(toleranceLabel(row.tolerance))+'</td><td class="number">'+(match&&numeric(row.gap_percent)?percent(row.gap_percent)+'% '+(row.gap_percent>=0?'below':'above'):'Different tolerance / comparison unavailable')+'</td><td>'+publishedEffortHTML(row.effort)+'</td><td>'+sourceLink(row.source_url,row.source_name)+'<small>'+esc(row.status||'')+'</small>'+(row.effort?.source_url?sourceLink(row.effort.source_url,'Effort source'):'')+'</td></tr>';
-    };
-    if(rows.length)html+='<div class="table-wrap benchmark-table"><table><thead><tr><th>Result</th><th>'+esc(reference.metric||'Native metric')+'</th><th>Constraint tolerance</th><th>This run vs reference</th><th>Discovery effort</th><th>Evidence</th></tr></thead><tbody>'+comparableRows.map(renderRow).join('')+otherRows.map(renderRow).join('')+'</tbody></table></div>';
+    html+=benchmarkTableHTML(reference);
   }
   if(html)html='<details class="benchmark-disclosure"'+(referenceOpen?' open':'')+'><summary>'+esc(reference.label||'Tolerance-matched reference')+'</summary>'+html+'</details>';
   if(effort)html+=renderEffort(effort);
   if(numeric(target))html+='<div class="benchmark-target"><span>Task target'+(reference?.target_metric?' · '+esc(reference.target_metric):'')+'</span><strong>'+esc(target)+'</strong><span>Recorded task target; separate from the published reference.</span></div>';
   panel.innerHTML=html;
   panel.querySelectorAll('details').forEach(node=>{if(openDetails.has(disclosureKey(node)))node.open=true;});
+  panel.onclick=event=>{const candidate=event.target.closest('[data-benchmark-candidate]');if(candidate){state.selected=candidate.dataset.benchmarkCandidate;state.detail=null;renderPlot();switchTab('code');}};
 }
 
 function renderArchitecturePhase() {
@@ -581,6 +626,7 @@ function eventTitle(event) {
   if(event.event==='decision'&&event.data?.policy==='output_novelty'){
     const data=event.data;
     return data.status==='exact_recorded_repeat'?'Exact recorded output repeated'+(data.remeasurement?' · remeasurement':' · mutation not admitted'):
+      data.status==='non_improving_near_repeat'?'Near output without improvement'+(data.remeasurement?' · remeasurement':' · mutation not admitted'):
       data.status==='unsupported'?'Output identity unavailable · evaluation retained':'New recorded output';
   }
   return researchOutcome(event)?.title||phaseNames[event.phase]||phaseNames[event.event]||event.summary||event.phase||event.event;

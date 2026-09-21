@@ -179,7 +179,7 @@ class ArchitectureGraphTests(unittest.TestCase):
         for contract, timing in [('espalier-3.2', 'after C/R'), ('espalier-3.3', 'before C/R'),
                                  ('espalier-3.4', 'before C/R'), ('espalier-3.5', 'before C/R'), ('espalier-3.6', 'before C/R'),
                                  ('espalier-3.7', 'before C/R'), ('espalier-3.8', 'before C/R'), ('espalier-3.9', 'before C/R'), ('espalier-3.10', 'before C/R'), ('espalier-3.11', 'before C/R'), ('espalier-3.12', 'before C/R'), ('espalier-3.13', 'before C/R'), ('espalier-3.14', 'before C/R'), ('espalier-3.15', 'before C/R'), ('espalier-3.16', 'before C/R'), ('espalier-3.17', 'before C/R'), ('espalier-3.18', 'before C/R'), ('espalier-3.19', 'before C/R'), ('espalier-3.20', 'before C/R'), ('espalier-3.21', 'before C/R'), ('espalier-3.22', 'before C/R'), ('espalier-3.23', 'before C/R'), (None, 'timing not recorded'),
-                                 ('espalier-3.24', 'before C/R'), ('espalier-3.25', 'before C/R'), ('espalier-3.26', 'before C/R'), ('espalier-3.27', 'before C/R'), ('espalier-3.28', 'before C/R'), ('unknown', 'timing not recorded')]:
+                                 ('espalier-3.24', 'before C/R'), ('espalier-3.25', 'before C/R'), ('espalier-3.26', 'before C/R'), ('espalier-3.27', 'before C/R'), ('espalier-3.28', 'before C/R'), ('espalier-3.29', 'before C/R'), ('espalier-3.30', 'before C/R'), ('espalier-3.31', 'before C/R'), ('unknown', 'timing not recorded')]:
             with self.subTest(contract=contract):
                 first['engine_contract'] = contract
                 graph = architecture_graph(first, {}, [])
@@ -224,6 +224,43 @@ class ArchitectureGraphTests(unittest.TestCase):
         self.assertNotIn('research_cells', {item['id'] for item in disabled['nodes']})
         self.assertNotIn('Proactive', json.dumps(disabled))
 
+    def test_sequential_research_edges_survive_the_exploration_contract_update(self):
+        first = baseline()
+        first['config']['research_tools'] = {
+            'enabled': True, 'proactive_every_attempts': 8,
+        }
+        for contract in ('espalier-3.28', 'espalier-3.29', 'espalier-3.30', 'espalier-3.31'):
+            with self.subTest(contract=contract):
+                first['engine_contract'] = contract
+                graph = architecture_graph(first, {}, [])
+                self.assertTrue(links(graph, 'population', 'research_cells'))
+                self.assertTrue(links(graph, 'tool_execution', 'research_cells'))
+                self.assertTrue(links(graph, 'research_cells', 'tool_execution'))
+                self.assertTrue(links(graph, 'tool_execution', 'evaluation'))
+                self.assertTrue(any('sequential decision history' in note for note in graph['notes']))
+
+    def test_research_yield_is_shown_only_for_recorded_supported_configuration(self):
+        first = baseline()
+        tools = {'enabled': True, 'proactive_every_attempts': 8,
+                 'max_scientific_steps': 3, 'yield_after_success': True}
+        first['config']['research_tools'] = tools
+        first['engine_contract'] = 'espalier-3.30'
+        graph = architecture_graph(first, {}, [])
+        cell = node(graph, 'research_cells')
+        self.assertIn('Yield after a successful tool', cell['features'])
+        self.assertIn('question stays open', cell['detail'])
+        self.assertIn('can still block', cell['detail'])
+        self.assertTrue(links(graph, 'research_checks', 'generation'))
+        for contract, flag, steps in [('unknown', True, 3), ('espalier-3.29', True, 3),
+                ('espalier-3.30', False, 3), ('espalier-3.30', None, 3),
+                ('espalier-3.30', True, 1), ('espalier-3.31', True, 1)]:
+            with self.subTest(contract=contract, flag=flag, steps=steps):
+                first['engine_contract'] = contract
+                tools.update(yield_after_success=flag, max_scientific_steps=steps)
+                cell = node(architecture_graph(first, {}, []), 'research_cells')
+                self.assertNotIn('Yield after a successful tool', cell['features'])
+                self.assertNotIn('question stays open', cell['detail'])
+
     def test_memory_and_format_corrections_require_explicit_recorded_flags(self):
         first = baseline()
         first['config']['idea_two_stage'] = {'enabled': True, 'card_repair_attempts': 1}
@@ -255,7 +292,7 @@ if __name__ == "__main__":
     unittest.main()
 
 
-@pytest.mark.parametrize('contract', ['espalier-3.32', 'espalier-3.33', 'espalier-3.34', 'espalier-3.35'])
+@pytest.mark.parametrize('contract', ['espalier-3.32', 'espalier-3.33', 'espalier-3.34', 'espalier-3.35', 'espalier-3.36', 'espalier-3.37', 'espalier-3.38', 'espalier-3.39', 'espalier-3.40', 'espalier-3.41', 'espalier-3.42', 'espalier-3.43', 'espalier-3.44', 'espalier-3.45', 'espalier-3.46', 'espalier-3.47', 'espalier-3.48', 'espalier-3.49', 'espalier-3.50', 'espalier-3.51', 'espalier-3.52', 'espalier-3.53', 'espalier-3.54', 'espalier-3.55', 'espalier-3.56', 'espalier-3.57', 'espalier-3.58', 'espalier-3.59'])
 def test_recorded_independent_research_has_shared_wave_barrier_and_cross_island_observations(contract):
     start=baseline();start['engine_contract']=contract
     start['config']['research_tools']={'enabled':True,'independent_research':True,'shared_observations':True,
@@ -268,3 +305,43 @@ def test_recorded_independent_research_has_shared_wave_barrier_and_cross_island_
     start['engine_contract']='espalier-3.31'
     old=architecture_graph(start,{},[])
     assert not any('Independent continuation queue' in row['label'] for row in links(old,'scheduler','research_cells'))
+
+
+@pytest.mark.parametrize('contract,sharing,expected', [
+    ('espalier-3.53', True, True), ('espalier-3.53', False, False),
+    ('espalier-3.54', True, True), ('espalier-3.54', False, False),
+    ('espalier-3.59', True, True), ('espalier-3.59', False, False),
+    ('espalier-3.52', True, False), ('unknown', True, False),
+])
+def test_independent_method_exchange_is_shown_only_for_recorded_support(contract, sharing, expected):
+    start = baseline()
+    start['engine_contract'] = contract
+    start['config']['research_tools'] = {'enabled': True, 'independent_research': True,
+                                         'share_between_islands': sharing}
+    graph = architecture_graph(start, {}, [])
+    edges = links(graph, 'scheduler', 'tool_library')
+    assert any('Independent method exchange queue' in row['label'] for row in edges) is expected
+    if expected:
+        assert any('recipient must exist' in note and 'do not establish method benefit' in note for note in graph['notes'])
+
+
+def test_current_recorded_contract_preserves_near_output_policy_and_credit_timing():
+    start = baseline()
+    start['engine_contract'] = 'espalier-3.59'
+    start['config']['preset_selection'] = True
+    start['config']['preset_adaptive'] = True
+    start['config']['candidate_novelty'] = {
+        'output_repeats': True,
+        'output_resolution': {'schema': 'task-bound-output-resolution/1'},
+    }
+    original = copy.deepcopy(start)
+    graph = architecture_graph(start, {}, [])
+    evaluation = node(graph, 'evaluation')
+    assert 'Non-improving near-output retries' in evaluation['features']
+    assert 'Every strict measured improvement remains eligible' in evaluation['detail']
+    assert 'Rejected measurements and costs are retained' in evaluation['detail']
+    assert any('before conclusion/reflection' in note for note in graph['notes'])
+    assert start == original
+    start['config']['candidate_novelty'].pop('output_resolution')
+    assert 'Non-improving near-output retries' not in node(
+        architecture_graph(start, {}, []), 'evaluation')['features']

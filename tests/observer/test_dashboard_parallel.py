@@ -13,7 +13,7 @@ from arena.observers.sciel.population import population_view
 
 def config():
     return dict(parallel_search=dict(enabled=True, workers=4, host_llm_slots=12,
-        provider_slots=8, host_evaluator_slots=2, max_inflight_per_island=1,
+        provider_slots=8, host_evaluator_slots=2, host_research_slots=None, max_inflight_per_island=1,
         max_inflight_per_parent=1))
 
 
@@ -130,3 +130,17 @@ def test_unknown_population_count_or_missing_member_list_never_claims_complete_d
     assert view['source_summary']['source_bound_members'] == 1
     assert view['source_summary']['unique_sources'] is None
     assert population_view({}, [], {}, {})['source_summary']['unique_sources'] is None
+
+
+def test_research_capacity_class_is_recorded_without_inventing_historical_utilization():
+    cfg=config();cfg['parallel_search'].update(host_evaluator_slots=4,host_research_slots=2)
+    before=deepcopy(cfg)
+    view=parallel_view({'config':cfg},{},[])
+    assert view['limits']['host_evaluator_slots']==4
+    assert view['limits']['host_research_slots']==2 and cfg==before
+    fields={f['key']:f for section in architecture({'config':cfg},{},[])['sections'] for f in section['fields']}
+    assert fields['parallel_search.host_research_slots']['value']==2
+    assert fields['parallel_search.host_research_slots']['status']=='recorded'
+    del cfg['parallel_search']['host_research_slots']
+    assert 'host_research_slots' not in parallel_view({'config':cfg},{},[])['limits']
+    assert 'active_research_slots' not in view

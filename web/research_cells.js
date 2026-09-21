@@ -10,6 +10,8 @@ const money = value => finite(value) ? '$' + value.toFixed(6) : 'Unknown';
 const stringify = value => typeof value === 'string' ? value : JSON.stringify(value ?? null, null, 2);
 const stageLabels = {propose:'Question opened',research:'Research',independent_replay:'Independent replay',adopt_trial:'Recipient trial',adopted_for_trials:'Adopted for trials',use_again:'Later use',background_submitted:'Background submitted',background_deferred:'Background deferred'};
 const label = value => stageLabels[value] || String(value || 'Not recorded').replaceAll('_', ' ');
+const linkBasis = row => ({canonical_candidate_source:'Canonical producer',observations_before_generation:'Observations before generation'}[row.link_basis] || 'Recorded association');
+const linkScope = row => row.link_basis==='canonical_candidate_source'?(row.link_kind==='remeasurement'?'Exact saved source was canonically remeasured; this is not a new program. ':'Exact saved source produced this canonically evaluated program. ')+'Method benefit and cross-branch transfer are not established.':row.link_basis==='observations_before_generation'?'These observations preceded ordinary generation; model use and causal benefit are not established.':'Historical recorded association; this alone does not prove prompt delivery or causal benefit.';
 const timestamp = value => {
   if (typeof value !== 'string') return 'Not recorded';
   const date = new Date(value);
@@ -100,6 +102,17 @@ function inputSources(view, inputs) {
   }
   node.append(note('Available references do not establish which source was used.')); return node;
 }
+function comparisonCheck(value, key) {
+  if (!value || typeof value!=='object') return null;
+  const body=el('div'),assessment=value.assessment;
+  if(value.status==='assessed'&&assessment){
+    body.append(pairs([['Report shape',label(assessment.report_shape)],['Protocol adherence','Tool-reported · unverified']]));
+    for(const problem of array(assessment.problems))body.append(note(problem));
+    body.append(note(assessment.scope||'A complete report does not establish equal actual CPU or task benefit.'));
+  }else body.append(note(value.status==='not_comparison'?'The saved declaration does not specify a controlled comparison.':'No linked comparison declaration is available. Successful execution does not establish a valid comparison.'));
+  if(value.receipt_id)body.append(pairs([['Source receipt',short(value.receipt_id)],['Declaration',value.proposal_id?short(value.proposal_id):'Not recorded']]));
+  return panel(key+':comparison','Comparison validity',body,assessment?.report_shape==='invalid');
+}
 function artifactContent(view, body, key) {
   const node=el('div','rc-artifact'); node.append(el('p','rc-verified','Verified saved content'));
   if (body.kind==='proposal') {
@@ -124,6 +137,7 @@ function artifactContent(view, body, key) {
     if (receipt) {
       const result=receipt.output||{};
       node.append(pairs([['Execution',label(receipt.status)],['Tool result',label(result.status)],['Measured CPU / requested',seconds(receipt.resources?.cpu_seconds)+' / '+seconds(receipt.limits?.cpu_seconds??body.request?.limits?.cpu_seconds)],['Measured wall / requested',seconds(receipt.resources?.wall_seconds)+' / '+seconds(receipt.limits?.wall_seconds??body.request?.limits?.wall_seconds)]]));
+      const check=comparisonCheck(body.comparison_assessment,key);if(check)node.append(check);
       if (result.error || receipt.stderr) node.append(panel(key+':error','Recorded error',raw(result.error||receipt.stderr),true));
       node.append(panel(key+':observations','Observations',raw(result.observations ?? 'No observations recorded'),true));
       if (result.diagnostics) node.append(panel(key+':diagnostics','Diagnostics',raw(result.diagnostics)));
@@ -234,11 +248,39 @@ function renderResearch(view,pane,row,body,data) {
   root.append(pairs([['Scientific steps',number(usage.scientific_steps)],['Cell model cost · known',money(usage.known_llm_cost)],['Cell tool CPU',seconds(usage.resources?.cpu_seconds)],['Cell tool wall time',seconds(usage.resources?.wall_seconds)]]));
   const unknown=[];if(usage.unknown_llm_calls>0)unknown.push(usage.unknown_llm_calls+' model calls with unknown cost');if(usage.resources?.unknown_cpu_invocations>0)unknown.push(usage.resources.unknown_cpu_invocations+' executions with unknown CPU');
   root.append(note((usage.scope==='cell_cumulative'?'Usage is cumulative for committed cell work. ':'Committed usage scope: '+(usage.scope||'not recorded')+'. ')+(unknown.length?unknown.join(' · ')+'. ':'')+'CPU is measured separately from model charges; missing usage is not zero.'));
-  if(state.pending_method_trial)root.append(note('Next transfer check: run method '+short(state.pending_method_trial.tool_id)+' on a source different from '+(state.pending_method_trial.source_program_id||short(state.pending_method_trial.source_sha256))+'. This check is pending; transfer benefit is not established.'));
+  if(usage.transfer_review_pending===true)root.append(note('Transfer results await model review on the original question’s source. Execution and canonical evaluation do not establish method benefit.'));
+  const transfer=usage.background_transfer;
+  if(transfer?.schema==='sciel-background-method-transfer/1'){
+    const progress=el('div','rc-background-transfer');
+    progress.append(el('h3','','Background method transfer'),pairs([['Collected stages',number(transfer.collected_stages)+' / '+number(transfer.total_stages)],['Successful stages',number(transfer.successful_stages)],['Submitted stages',number(transfer.submitted_stages)],['Recipient snapshot',short(transfer.snapshot_artifact_id)]]));
+    if(transfer.current_job_id){
+      const job=array(data.jobs).find(value=>(value.id||value.job_id)===transfer.current_job_id);
+      const state=job?'Recorded job: '+outcome(job):'Awaiting job status';
+      progress.append(lazyRow(view,pane,progress,'transfer-job:'+transfer.current_job_id,'Current stage job',state+' · collection pending','job',transfer.current_job_id,JSON.stringify([job?.status,job?.updated_at])));
+    }else{
+      const last=array(transfer.stage_results).at(-1);
+      progress.append(note(last&&last.status!=='success'?'Last stage: '+label(last.status)+'. Transfer resolution pending.':transfer.collected_stages<transfer.total_stages?'Waiting for the next stage.':'Stages collected; transfer completion is pending.'));
+    }
+    progress.append(note('Recorded stage progress, not live CPU utilization or method benefit.'));
+    root.append(progress);
+  }
+  const transfers=[...(usage.pending_method_trial?[usage.pending_method_trial]:[]),...array(usage.pending_method_trial_backlog)];
+  if(transfers.length&&Object.hasOwn(usage,'pending_method_trial_backlog')){
+    const queued=el('div'),list=el('ol');
+    queued.append(note('Saved transfer checks in FIFO order; the oldest eligible check can run. An open question can continue while another branch is unavailable. Transfer benefit is not established.'));
+    for(const trial of transfers){const item=el('li');item.textContent='Method '+short(trial.tool_id)+' · original source '+(trial.source_program_id||short(trial.source_sha256))+' · receipt '+short(trial.submission_receipt_id)+(trial.blocked_reason?' · waiting: '+label(trial.blocked_reason):'');list.append(item);}
+    queued.append(list);
+    if(usage.pending_method_trials_omitted>0)queued.append(note(usage.pending_method_trials_omitted+' additional queued checks omitted from this view.'));
+    const disclosure=panel('method-transfer-queue','Pending method transfers · '+number(usage.pending_method_trials_total??transfers.length),queued);disclosure.classList.add('rc-transfer-queue');root.append(disclosure);
+  }else if(usage.pending_method_trial)root.append(note('Next transfer check: run method '+short(usage.pending_method_trial.tool_id)+' on a source different from '+(usage.pending_method_trial.source_program_id||short(usage.pending_method_trial.source_sha256))+'. This check is pending; transfer benefit is not established.'));
   const steps=array(usage.steps),stepsRoot=section(pane,'steps','Research sequence',steps.length),nodes=[];
   for(const [index,step] of steps.entries()){
     const key='step:'+(step.action_id||'')+':'+(step.proposal_id||step.receipt_id||index);
-    nodes.push(renderRecord(pane,key,label(step.action)+' · '+label(step.status),timestamp(step.observed_at||step.timestamp)+' · CPU '+seconds(step.resources?.cpu_seconds)+' / '+seconds(step.requested_limits?.cpu_seconds),step,()=>pairs([['Experiment',step.experiment],['Next decision',step.next_decision],['Tool version',step.tool_id?short(step.tool_id):'Not recorded']])));
+    nodes.push(renderRecord(pane,key,label(step.action)+' · '+label(step.status),timestamp(step.observed_at||step.timestamp)+' · CPU '+seconds(step.resources?.cpu_seconds)+' / '+seconds(step.requested_limits?.cpu_seconds),step,()=>{
+      const node=el('div');node.append(pairs([['Experiment',step.experiment],['Next decision',step.next_decision],['Tool version',step.tool_id?short(step.tool_id):'Not recorded']]));
+      if(step.comparison_report_assessment)node.append(comparisonCheck({status:'assessed',assessment:step.comparison_report_assessment,receipt_id:step.receipt_id,proposal_id:step.proposal_id},key));
+      return node;
+    }));
     if(step.proposal_id)nodes.push(lazyRow(view,pane,stepsRoot,key+':proposal','Model request & response',short(step.proposal_id),'artifact',step.proposal_id));
     if(step.receipt_id)nodes.push(lazyRow(view,pane,stepsRoot,key+':receipt','Saved experiment input & result',short(step.receipt_id),'artifact',step.receipt_id));
     if(step.canonical_evaluation_id)nodes.push(lazyRow(view,pane,stepsRoot,key+':evaluation','Canonical evaluator record',label(step.status)+' · '+short(step.canonical_evaluation_id),'artifact',step.canonical_evaluation_id));
@@ -264,6 +306,7 @@ function renderExchange(view,pane,row,body,data) {
       for(const entry of array(delivery.entries)){
         const block=el('div','rc-shared-observation');block.append(el('h4','',entry.question||'Question not recorded'),pairs([['Source', 'Island '+entry.island_id+' · cell '+short(entry.cell_id)],['Candidate',program(view,entry.candidate_id)],['Recorded outcome',label(entry.status)],['Publication',label(entry.publication)],['Tool CPU',seconds(entry.resources?.cpu_seconds)]]));
         block.append(panel(key+':measurement:'+entry.receipt_id,'Observation excerpt delivered to the model',raw(entry.measurement)));
+        if(entry.comparison_report)block.append(comparisonCheck({status:'assessed',assessment:entry.comparison_report,receipt_id:entry.receipt_id,proposal_id:entry.experiment_proposal_id},key+':shared:'+entry.receipt_id));
         if(entry.decision)block.append(panel(key+':interpretation:'+entry.receipt_id,(entry.decision_scope_matches_check===false?'Context from another question · ':'Model interpretation · ')+label(entry.decision.conclusion),raw(entry.decision)));
         if(entry.decision&&entry.decision_scope_matches_check===false)block.append(note('This interpretation concerns another question; it does not refute or support the check above.'));
         if(entry.decision&&entry.decision_scope_matches_check===undefined)block.append(note('Interpretation scope was not recorded.'));
@@ -311,7 +354,11 @@ function renderCellBody(view,pane,row,body) {
 
   const followups=array(data.followups),outcomes=section(pane,'outcomes','Linked candidate outcomes',followups.length),outcomeNodes=[];
   for(const item of followups){const result=item.outcome||item;const id=item.sha256||item.followup_sha256||item.experiment_id;outcomeNodes.push(renderRecord(pane,'followup:'+id,item.experiment_id||'Recorded outcome',label(result.status||item.outcome_status)+' · iteration '+(item.iteration??'Not recorded'),item,()=>{const node=el('div');node.append(program(view,result.child_program_id??item.child_program_id),note('Chronological exposure only. Model use and causal benefit remain unknown.'));const evaluation=result.evaluation||item.canonical_evaluation;if(evaluation)node.append(pairs([['Canonical outcome',evaluation.ok===true?'Evaluation returned':evaluation.ok===false?'Evaluation failed':'Not recorded'],['Controller score',number(evaluation.score)],['Stage',label(evaluation.reached)]]));else node.append(pairs([['Generation',label(item.generation?.dispatch)],['Controller score',number(item.score)],['Recorded change',number(item.actual_delta)]]));if(item.score_scope)node.append(note(item.score_scope));if(result.failure||item.failure)node.append(raw(result.failure||item.failure));return node;}));}
-  for(const link of array(data.child_links))outcomeNodes.push(renderRecord(pane,'program:'+(link.id||link.child_program_id),link.child_program_id||'Program link',label(link.link_kind),link,()=>{const node=el('div');node.append(program(view,link.child_program_id),note('Recorded association; this alone does not prove prompt delivery or causal benefit.'));return node;}));
+  for(const link of array(data.child_links)){
+    const key='program:'+(link.id||link.child_program_id);
+    outcomeNodes.push(renderRecord(pane,key,link.child_program_id||'Program link',linkBasis(link)+' · '+label(link.link_kind),link,()=>{const node=el('div');node.append(program(view,link.child_program_id),note(linkScope(link)));return node;}));
+    if(link.link_basis==='canonical_candidate_source'&&link.canonical_evaluation_id)outcomeNodes.push(lazyRow(view,pane,outcomes,key+':evaluation','Canonical evaluator record',short(link.canonical_evaluation_id),'artifact',link.canonical_evaluation_id));
+  }
   reconcileEvidence(outcomes,outcomeNodes,'No committed candidate followup recorded. Missing outcomes are not failed outcomes.',body.related_coverage?.followups);
   const events=array(data.events),activityRoot=section(pane,'activity','Activity log',events.length);
   reconcile(activityRoot,events.length?events.map((event,index)=>renderRecord(pane,'event:'+(event.segment_id||'')+':'+(event.event_seq??index),label(event.phase),timestamp(event.timestamp)+(event.iteration?' · G'+event.iteration:''),event)):[note('No event details retained in the selected journal window.')]);

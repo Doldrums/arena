@@ -163,6 +163,33 @@ class ResearchToolDashboardTests(unittest.TestCase):
         self.assertEqual(view['versions'][0]['children'][0]['program_id'], 'p3')
         self.assertIn('not proven delivery', ' '.join(view['notes']))
 
+    def test_candidate_links_keep_exact_producer_separate_from_later_tools_and_historical_links(self):
+        producer, later, receipt, canonical_id = (char * 64 for char in 'abcd')
+        binding = dict(link_basis='canonical_candidate_source', candidate_source_sha256='e'*64,
+            canonical_evaluation_id=canonical_id, evaluation_id='physical-evaluation',
+            candidate_invocation_id='producer-invocation', scope='Method benefit is not established.')
+        rows = [event('registered',tool_id=producer), event('registered',tool_id=later),
+            event('invocation_result',tool_id=later,invocation_id='later-check',receipt_id='f'*64,
+                status='ok',dispatch_status='invoked'),
+            event('child_link',action_id='canonical',child_program_id='p29',island_id=0,
+                link_kind='mutation',tool_ids=[producer],receipt_ids=[receipt],**binding),
+            event('child_link',action_id='ordinary',child_program_id='p30',island_id=0,
+                link_kind='mutation',link_basis='observations_before_generation',
+                tool_ids=[later],receipt_ids=['f'*64]),
+            event('child_link',action_id='legacy',child_program_id='p12',island_id=0,
+                link_kind='remeasurement',tool_ids=[later],receipt_ids=['f'*64])]
+        view = research_tools_view({}, {}, rows)
+        for row in [view['child_links'][0], view['events'][3], view['versions'][0]['children'][0]]:
+            for key, value in binding.items():
+                self.assertEqual(row[key], value)
+        self.assertEqual(view['versions'][0]['children'][0]['receipt_ids'], [receipt])
+        self.assertEqual([row['program_id'] for row in view['versions'][1]['children']], ['p30','p12'])
+        self.assertEqual(view['child_links'][1]['link_basis'], 'observations_before_generation')
+        self.assertNotIn('canonical_evaluation_id', view['child_links'][1])
+        self.assertNotIn('link_basis', view['child_links'][2])
+        self.assertNotIn('link_basis', view['versions'][1]['children'][1])
+        self.assertIn('None establishes causal utility', ' '.join(view['notes']))
+
     def test_metadata_windows_are_bounded_and_totals_retain_history(self):
         rows=[event('registered',tool_id=f'{n:064x}',author_island_id=0) for n in range(250)]
         view=research_tools_view({}, {}, rows)

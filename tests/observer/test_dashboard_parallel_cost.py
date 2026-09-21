@@ -180,3 +180,26 @@ def test_unrecognized_call_kind_is_not_silently_treated_as_free(tmp_path):
     call(directory,'unknown-kind',kind='future_paid_provider')
     view=WaveSpendMonitor().observe(tmp_path,start)
     assert view['available'] is False and view['known_cost'] is None
+
+
+def test_subscription_unpriced_receipt_is_distinct_from_unknown_and_pending(tmp_path):
+    start,directory,_=wave(tmp_path)
+    path=call(directory,'subscription',cost=None)
+    receipt=json.loads((path/'receipt.json').read_text())
+    receipt['payload']['value'].update(finish_reason='stop',response_error=None,
+        cost_provenance={'schema':'sciel-llm-cost-provenance/1','source':'subscription_unpriced',
+            'provider':'codex_responses','response_status':'completed',
+            'endpoint_sha256':sha(b'https://chatgpt.com/backend-api/codex/responses')})
+    receipt['sha256']=digest(receipt['payload']);write(path/'receipt.json',receipt)
+    monitor=WaveSpendMonitor()
+    first=monitor.observe(tmp_path,start)
+    assert first['unpriced_call_count']==1 and first['unknown_call_count']==0
+    assert first['status']=='subscription_unpriced' and first['known_spend']==1.25
+    call(directory,'unknown',cost=None);call(directory,'pending',receipt=False)
+    second=monitor.observe(tmp_path,start)
+    assert second['unpriced_call_count']==1 and second['unknown_call_count']==1
+    assert second['pending_call_count']==1 and second['status']=='partial'
+    receipt['payload']['value']['cost_provenance']['endpoint_sha256']='a'*64
+    receipt['sha256']=digest(receipt['payload']);write(path/'receipt.json',receipt)
+    third=monitor.observe(tmp_path,start)
+    assert third['unpriced_call_count']==0 and third['unknown_call_count']==2

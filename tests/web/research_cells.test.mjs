@@ -29,6 +29,27 @@ test('terminal interpretation is visible separately from execution and hides dur
  }finally{dom.window.close();}
 });
 
+test('committed FIFO transfers and required review remain visible beside a new uncommitted question',async()=>{
+ const {dom,w,root}=mount();try{
+  const body=detail(),data=fixture();
+  body.research_state={question:'Interpret measured output.',status:'open',resources:{},steps:[],transfer_review_pending:true,
+   pending_method_trial:{tool_id:tool,source_program_id:'p1',submission_receipt_id:receipt},
+   pending_method_trial_backlog:[{tool_id:other,source_program_id:'p2 <img src=x>',submission_receipt_id:proposal,blocked_reason:'pipeline_exceeds_scientific_limit'}],pending_method_trials_total:3,pending_method_trials_omitted:1};
+  body.active_decision={question:'Next check before another branch exists.',experiment:'Read saved measurements.',next_decision:'Select a bounded follow-up.',status:'planned',pending_method_trial:null};
+  w.renderResearchCells(root,data,{runId:'fifo',fetchJSON:async()=>body});await until(()=>root.querySelector('.rc-transfer-queue'));
+  const current=root.querySelector('.rc-research'),queue=current.querySelector('.rc-transfer-queue');
+  assert.match(current.textContent,/Transfer results await model review on the original question’s source/);
+  assert.match(current.textContent,/do not establish method benefit/);
+  assert.match(queue.firstChild.textContent,/Pending method transfers · 3/);assert.equal(queue.open,false);
+  assert.match(queue.textContent,/oldest eligible check/);assert.match(queue.textContent,/open question can continue/);
+  const entries=[...queue.querySelectorAll('li')];assert.equal(entries.length,2);assert.match(entries[0].textContent,/original source p1/);assert.match(entries[1].textContent,/p2 <img src=x>/);assert.match(entries[1].textContent,/pipeline exceeds scientific limit/);
+  assert.match(queue.textContent,/1 additional queued checks omitted/);assert.equal(queue.querySelector('img'),null);
+  delete body.active_decision;delete body.research_state.pending_method_trial_backlog;delete body.research_state.transfer_review_pending;
+  data.cells[0].detail_version='historical';w.renderResearchCells(root,data,{runId:'fifo',fetchJSON:async()=>body});await until(()=>!root.querySelector('.rc-transfer-queue'));
+  assert.match(current.textContent,/Next transfer check/);assert.doesNotMatch(current.textContent,/open question can continue|await model review|Pending method transfers/);
+ }finally{dom.window.close();}
+});
+
 test('disabled, enabled waiting, and unrecorded config are distinct; disabled history remains visible',async()=>{
  const {dom,w,root}=mount();try{
   const options={runId:'vq',fetchJSON:()=>assert.fail('empty states do not fetch')};
@@ -202,10 +223,67 @@ test('continuation queue distinguishes checkpoint waiting from uncommitted sched
 test('shared negative observations show exact prompt scope, omissions and lazy source receipts without claiming adoption',async()=>{
  const {dom,w,root}=mount();try{
   const body=detail();body.related.shared_observations=[{verified:true,proposal_id:proposal,prompt_sha256:'9'.repeat(64),timestamp:'2026-09-20T08:03:00Z',recipient_island_id:1,omitted_count:2,total_checks:3,entries:[{receipt_id:receipt,tool_id:tool,cell_id:other,island_id:0,candidate_id:'p7',question:'Does reuse help <img src=x>?',status:'tool_error',publication:'unpublished',measurement:{observations:{gain:0}},resources:{cpu_seconds:2.5},decision_scope_matches_check:false,decision:{conclusion:'refuted',interpretation:'No gain observed.'}}]}];
+  const supplied=body.related.shared_observations[0].entries[0];
+  supplied.experiment_proposal_id='8'.repeat(64);
+  supplied.comparison_report={report_shape:'invalid',problems:['reported conditions differ'],adherence:'tool_reported_unverified',scope:'Shape validation does not establish task benefit.'};
   body.related_coverage.shared_observations={recorded:2,visible:1,awaiting_model_receipt:1};
   const requests=[];w.renderResearchCells(root,fixture(),{runId:'shared',fetchJSON:async path=>{requests.push(path);return path.includes('/research-cells/')?body:{verified:true,kind:'invocation',payload:{receipt:{status:'ok',output:{status:'tool_error',observations:{gain:0}},resources:{cpu_seconds:2.5}}}};}});
   await until(()=>root.querySelector('[data-section="observations"]'));
   const target=root.querySelector('[data-section="observations"]');assert.match(target.textContent,/1 check delivered · 2 omitted/);assert.match(target.textContent,/Model use, tool adoption and causal benefit are not established/);assert.match(target.textContent,/unpublished/);assert.match(target.textContent,/Context from another question · refuted/);assert.match(target.textContent,/does not refute or support the check above/);assert.match(target.textContent,/prepared prompts await a saved model receipt/);assert.equal(target.querySelector('img'),null);assert.equal(requests.length,1);
+  assert.match(target.textContent,/reported conditions differ/);assert.match(target.textContent,/Declaration\s*88888/);
   const original=[...target.querySelectorAll('.rc-record')].find(node=>node.firstChild.textContent.startsWith('Original observation'));open(w,original);await until(()=>requests.length===2);assert.match(requests[1],/research-tool-artifacts\/d{64}$/);
+ }finally{dom.window.close();}
+});
+
+
+test('candidate outcomes distinguish canonical producer, ordinary exposure and historical associations',async()=>{
+ const {dom,w,root}=mount();try{
+  const body=detail(),canonical='9'.repeat(64),paths=[];
+  body.related.child_links=[{child_program_id:'p29',link_kind:'remeasurement',link_basis:'canonical_candidate_source',canonical_evaluation_id:canonical,receipt_ids:[receipt]},
+    {child_program_id:'p30',link_kind:'mutation',link_basis:'observations_before_generation'},
+    {child_program_id:'p12',link_kind:'mutation'}];
+  w.renderResearchCells(root,fixture(),{runId:'producer',fetchJSON:async path=>{paths.push(path);return path.includes('/research-cells/')?body:{verified:true,kind:'candidate_evaluation',payload:{source:'# exact source <script>',evaluation:{status:'evaluated',evaluation_id:'physical-eval'},provenance:{receipt_id:receipt}}};}});
+  await until(()=>root.querySelector('[data-section="outcomes"] .rc-record'));
+  const outcomes=root.querySelector('[data-section="outcomes"]');assert.match(outcomes.textContent,/Canonical producer · remeasurement/);assert.match(outcomes.textContent,/Observations before generation · mutation/);assert.match(outcomes.textContent,/Recorded association · mutation/);
+  const first=outcomes.querySelector('.rc-record');open(w,first);assert.match(first.textContent,/not a new program/);assert.match(first.textContent,/Method benefit and cross-branch transfer are not established/);
+  assert.equal(paths.length,1);const evaluation=[...outcomes.querySelectorAll('.rc-record')].find(n=>n.firstChild.textContent.includes('Canonical evaluator record'));
+  open(w,evaluation);await until(()=>evaluation.textContent.includes('physical-eval'));assert.match(evaluation.textContent,/Exact submitted candidate source/);assert.equal(evaluation.querySelector('script'),null);assert.equal(paths[1],'/api/runs/producer/research-tool-artifacts/'+canonical);
+  const old=[...outcomes.querySelectorAll('.rc-record')].find(n=>n.firstChild.textContent.includes('p12'));open(w,old);assert.match(old.textContent,/Historical recorded association/);assert.doesNotMatch(old.textContent,/Exact saved source/);
+ }finally{dom.window.close();}
+});
+
+test('background transfer shows exact collected stages and verified job link without live CPU claims',async()=>{
+ const {dom,w,root}=mount();try{
+  const data=fixture(),body=detail(),requests=[];
+  body.research_state={status:'waiting',question:'Transfer on another branch.',resources:{},steps:[],background_transfer:{schema:'sciel-background-method-transfer/1',total_stages:3,submitted_stages:2,collected_stages:1,successful_stages:1,current_job_id:job,snapshot_artifact_id:receipt}};
+  body.related.jobs=[{id:job,status:'queued'}];
+  const options={runId:'background-transfer',fetchJSON:async path=>{requests.push(path);return path.includes('/research-cells/')?body:{verified:true,kind:'job',id:job,request:{limits:{}},state:{status:'queued'}};}};
+  w.renderResearchCells(root,data,options);await until(()=>root.querySelector('.rc-background-transfer'));
+  let progress=root.querySelector('.rc-background-transfer');assert.match(progress.textContent,/Collected stages1 \/ 3/);assert.match(progress.textContent,/Recorded job: Queued/);assert.match(progress.textContent,/not live CPU utilization or method benefit/);
+  open(w,progress.querySelector('.rc-record'));await until(()=>requests.some(path=>path.endsWith('/research-tool-jobs/'+job)));
+  body.related.jobs[0].status='running';data.cells[0].detail_version='running';w.renderResearchCells(root,data,options);await until(()=>root.querySelector('.rc-background-transfer').textContent.includes('Recorded job: Running'));
+  body.research_state.background_transfer={...body.research_state.background_transfer,current_job_id:null,collected_stages:2,successful_stages:1};data.cells[0].detail_version='collected';w.renderResearchCells(root,data,options);await until(()=>root.querySelector('.rc-background-transfer').textContent.includes('Waiting for the next stage.'));
+  assert.match(root.querySelector('.rc-background-transfer').textContent,/Collected stages2 \/ 3/);
+  body.research_state.background_transfer.stage_results=[{status:'tool_error'}];data.cells[0].detail_version='failed-stage';w.renderResearchCells(root,data,options);await until(()=>root.querySelector('.rc-background-transfer').textContent.includes('Last stage: tool error'));
+  assert.doesNotMatch(root.querySelector('.rc-background-transfer').textContent,/Waiting for the next stage/);
+  body.research_state.background_transfer=null;data.cells[0].detail_version='historical';w.renderResearchCells(root,data,options);await until(()=>!root.querySelector('.rc-background-transfer'));
+ }finally{dom.window.close();}
+});
+
+
+test('successful tool execution displays invalid comparison independently and keeps raw observations',async()=>{
+ const {dom,w,root}=mount();try{
+  const data=fixture(),body=detail();
+  const observation={verified:true,kind:'invocation',payload:{receipt:{status:'ok',output:{status:'success',observations:{gain:2}},resources:{cpu_seconds:1}}},comparison_assessment:{status:'assessed',receipt_id:receipt,proposal_id:proposal,assessment:{report_shape:'invalid',problems:['reported conditions differ'],adherence:'tool_reported_unverified',scope:'Shape validation does not establish equal actual CPU or canonical task benefit.'}}};
+  w.renderResearchCells(root,data,{runId:'comparison',fetchJSON:async path=>path.includes('/research-cells/')?body:observation});
+  await until(()=>root.querySelector('[data-section="executions"] .rc-record'));
+  open(w,root.querySelector('[data-section="executions"] .rc-record'));
+  await until(()=>root.textContent.includes('reported conditions differ'));
+  assert.match(root.textContent,/Tool result\s*success/);
+  assert.match(root.textContent,/Report shape\s*invalid/);
+  assert.match(root.textContent,/Tool-reported · unverified/);
+  const warning=[...root.querySelectorAll('details')].find(node=>node.firstElementChild?.textContent==='Comparison validity');
+  assert.ok(warning);assert.equal(warning.open,true);
+  assert.match(root.textContent,/"gain": 2/);
  }finally{dom.window.close();}
 });

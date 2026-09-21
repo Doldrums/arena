@@ -12,6 +12,7 @@ import re
 
 from .parallel_cost import WaveSpendMonitor, IO_KINDS, _read, _digest, _directory, _signature, _number
 from .parallel_llm import CommittedTraceBindings
+from .cost_accounting import subscription_unpriced, token_count
 
 
 def _dict(value):
@@ -83,7 +84,8 @@ class EffortMonitor:
             fact = dict(kind=kind, key=key, wave=wave, dispatched_at=dispatched,
                 completed_at=None, status='pending', request_sha256=expected, receipt_sha256=None,
                 model=request.get('model') if isinstance(request.get('model'), str) else None,
-                reported_usd=None, cost_source=None, source_sha256=None, score=None, cases=None,
+                reported_usd=None, cost_source=None, unpriced=False, prompt_tokens=None, completion_tokens=None,
+                source_sha256=None, score=None, cases=None,
                 evaluation_id=f'evaluation:{run_id}:wave:{wave}:{key}' if kind == 'evaluation' else None)
             if kind == 'evaluation':
                 source = request.get('source')
@@ -104,7 +106,9 @@ class EffortMonitor:
                     provenance = _dict(value.get('cost_provenance'))
                     fact.update(reported_usd=_number(value.get('cost')),
                         model=value.get('model') if isinstance(value.get('model'), str) else fact['model'],
-                        cost_source=provenance.get('source') or 'unspecified_recorded_cost')
+                        cost_source=provenance.get('source') or 'unspecified_recorded_cost',
+                        unpriced=subscription_unpriced(value), prompt_tokens=token_count(value.get('prompt_tokens')),
+                        completion_tokens=token_count(value.get('completion_tokens')))
                 if kind == 'evaluation':
                     result = _dict(value.get('result'))
                     fact.update(score=_score(result.get('score')), cases=result.get('cases'), ok=result.get('ok'))
@@ -122,7 +126,7 @@ class EffortMonitor:
         checked = datetime.now(timezone.utc).isoformat()
         result = dict(schema='arena-run-effort/1', observed_at=checked, total=None, to_best=None,
             best_program_id=basis.get('program_id'), source='Checksum-bound physical I/O receipts',
-            note='All branches, retries and research calls in this run; a read-only, non-atomic receipt snapshot. USD covers recorded LLM charges only; CPU, local models and infrastructure are not priced. Evaluation cascades include seed, bootstrap, failures and remeasurements; smoke/full stages are not separate cascades.')
+            note='All branches, retries and research calls in this run; a read-only, non-atomic receipt snapshot. Subscription calls have no provider-reported USD price; known USD is a subtotal. USD covers recorded LLM charges only; CPU, local models and infrastructure are not priced. Evaluation cascades include seed, bootstrap, failures and remeasurements; smoke/full stages are not separate cascades.')
         root = Path(run_dir) / '.parallel'
         if not root.exists():
             result['reason'] = 'Physical receipt history not recorded.'
@@ -186,7 +190,7 @@ class EffortMonitor:
                     complete = False
             if not complete:
                 reasons.append('Physical history has missing or unauthenticated receipts; counts and cost are lower bounds.')
-            result['total'] = self._scope(facts, checked, complete, rows, basis.get('ordinary_iterations'))
+            result['total'] = self._scope(facts, checked, complete, rows, basis.get('ordinary_iterations'), subscription=_dict(_dict(start.get('config')).get('llm')).get('provider') == 'codex_responses')
             result['total']['reason'] = ' '.join(reasons) or None
             # A full source + saved measurement binding is required. Same-score
             # programs and repeated measurements cannot choose a cutoff by score.
@@ -196,7 +200,7 @@ class EffortMonitor:
                 and (not basis.get('evaluation_ids') or f['evaluation_id'] in basis['evaluation_ids'])]
             if len(candidates) == 1:
                 best = candidates[0]
-                result['to_best'] = self._scope(facts, best['completed_at'], complete, rows)
+                result['to_best'] = self._scope(facts, best['completed_at'], complete, rows, subscription=_dict(_dict(start.get('config')).get('llm')).get('provider') == 'codex_responses')
                 result['to_best'].update(program_id=basis.get('program_id'), evaluation_id=best['evaluation_id'],
                     source_sha256=best['source_sha256'], cutoff_kind='evaluation_completed',
                     target_iteration=basis.get('target_iteration'))
@@ -207,7 +211,7 @@ class EffortMonitor:
         return result
 
     @staticmethod
-    def _scope(facts, cutoff, complete, rows, iterations=None):
+    def _scope(facts, cutoff, complete, rows, iterations=None, *, subscription=False):
         boundary = _at(cutoff)
         started = [f for f in facts if _at(f['dispatched_at']) <= boundary and not f.get('not_dispatched')]
         ended = [f for f in started if _at(f['completed_at']) is not None and _at(f['completed_at']) <= boundary]
@@ -215,7 +219,10 @@ class EffortMonitor:
         llm = [f for f in ended if f['kind'] == 'llm']
         waiting = [f for f in started if f['kind'] == 'llm' and (f['wave'],f['key']) not in ended_keys]
         known = [f['reported_usd'] for f in llm if f['reported_usd'] is not None]
-        unknown = sum(f['reported_usd'] is None for f in llm)
+        unpriced = sum(f['unpriced'] for f in llm)
+        unknown = sum(f['reported_usd'] is None and not f['unpriced'] for f in llm)
+        tokens = {field: [f[field] for f in llm if f.get(field) is not None]
+                  for field in ('prompt_tokens', 'completion_tokens')}
         models = sorted({f['model'] for f in started if f['kind'] == 'llm' and f.get('model')})
         model_missing = any(f['kind'] == 'llm' and not f.get('model') for f in started)
         starts = [_at(r.get('timestamp')) for r in rows if r.get('event') == 'run_start' and _at(r.get('timestamp'))]
@@ -229,9 +236,13 @@ class EffortMonitor:
             evaluator_cascades=sum(f['kind'] == 'evaluation' for f in ended),
             pending_evaluator_cascades=sum(f['kind'] == 'evaluation' for f in started if (f['wave'],f['key']) not in ended_keys),
             physical_llm_calls=len(llm), dispatched_llm_calls=len(llm)+len(waiting),
-            pending_llm_calls=len(waiting), unknown_cost_calls=unknown,
-            reported_usd=math.fsum(known) if known or not llm and complete else None,
-            cost_status='reported' if complete and not waiting and not unknown and all(f['cost_source'] == 'provider_reported' for f in llm) else 'partial_or_estimated',
+            pending_llm_calls=len(waiting), unknown_cost_calls=unknown, unpriced_llm_calls=unpriced,
+            billing_mode='subscription_unpriced' if subscription or unpriced else None,
+            prompt_tokens=sum(tokens['prompt_tokens']) if tokens['prompt_tokens'] else None,
+            completion_tokens=sum(tokens['completion_tokens']) if tokens['completion_tokens'] else None,
+            token_usage_complete=complete and not waiting and all(len(v) == len(llm) for v in tokens.values()),
+            reported_usd=math.fsum(known) if known or not llm and complete and not subscription else None,
+            cost_status='subscription_unpriced' if unpriced or subscription else 'reported' if complete and not waiting and not unknown and all(f['cost_source'] == 'provider_reported' for f in llm) else 'partial_or_estimated',
             models=models, model_count=len(models) if not model_missing and complete else None,
             wall_seconds=elapsed, wall_scope='Elapsed since first recorded run start, including pauses',
             cpu_seconds=None, cpu_usd=None,

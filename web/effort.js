@@ -12,12 +12,16 @@ const modelsHTML=(models,count)=>{
 export function effortDetailsHTML(scope){
   if(!scope)return '<span class="effort-unknown">Effort unknown · no bound physical history</span>';
   const partial=scope.history_complete!==true||scope.pending_llm_calls>0||scope.unknown_cost_calls>0;
-  return '<div class="effort-facts"><span>'+text(dollars(scope.reported_usd,partial))+' <small>LLM charges'+(scope.cost_status==='partial_or_estimated'?' · partial / estimated':'')+'</small></span>'+
+  const subscription=scope.unpriced_llm_calls>0||scope.billing_mode==='subscription_unpriced'||scope.cost_status==='subscription_unpriced';
+  const price=subscription?(scope.reported_usd>0?dollars(scope.reported_usd,true)+' known + subscription · USD unavailable':'Subscription · USD unavailable'):dollars(scope.reported_usd,partial);
+  return '<div class="effort-facts"><span>'+text(price)+' <small>LLM charges'+(scope.cost_status==='partial_or_estimated'?' · partial / estimated':'')+'</small></span>'+
     '<span>'+text(number(scope.evaluator_cascades))+' program evaluations · '+text(number(scope.physical_llm_calls))+' completed LLM calls</span>'+
     '<span>'+(finite(scope.target_iteration)?'Best reached at evolution iteration '+text(number(scope.target_iteration)):text(number(scope.ordinary_iterations))+' completed evolution iterations')+'</span>'+
     '<span>'+text(duration(scope.wall_seconds))+' elapsed (incl. pauses) · CPU time unknown</span>'+
     (scope.pending_llm_calls||scope.unknown_cost_calls?'<span class="effort-uncertain">'+text(number(scope.pending_llm_calls))+' calls pending · '+text(number(scope.unknown_cost_calls))+' charges unknown</span>':'')+
     (scope.history_complete!==true?'<span class="effort-uncertain">Incomplete receipt history · observed lower bounds</span>':'')+
+    (scope.unpriced_llm_calls>0?'<span>'+text(number(scope.unpriced_llm_calls))+' completed subscription calls · no USD price supplied</span>':'')+
+    (finite(scope.prompt_tokens)||finite(scope.completion_tokens)?'<span>'+text(number(scope.prompt_tokens))+' input tokens · '+text(number(scope.completion_tokens))+' output tokens'+(scope.token_usage_complete?'':' · recorded subtotal')+'</span>':'')+
     modelsHTML(scope.models,scope.model_count)+'</div>';
 }
 

@@ -284,3 +284,170 @@ def test_explicitly_unmeasured_seed_cannot_borrow_initialized_scalar_zero(tmp_pa
     assert s['stats']['best_metric_display']['status'] == 'unknown'
     assert s['stats']['best_metric_display']['value'] is None
     assert s['programs'][0]['metric_display']['status'] == 'unknown'
+
+
+def write_tool_run(tmp_path, *, score=.27, numerator=2.7000000000000006, valid=1., alter=None,
+                   omit_program=False, remeasured=False):
+    """Canonical host records only; no candidate/tool/provider execution."""
+    _, _, rows, cp = write_run(tmp_path, tie=True)
+    source = 'tool-derived source'
+    source_hash = sha(source)
+    provenance = dict(schema='sciel-research-candidate-submission/1', candidate_origin='research_tool',
+        candidate_source_sha256=source_hash, cell_id='c'*64, action_id='d'*64,
+        receipt_id='e'*64, tool_id='f'*64, invocation_id='1'*64,
+        target_binding={'ancestry_parent_id':'p0', 'target_source_sha256':sha('seed')})
+    evaluation_id = 'evaluation:run:wave:2:G:1:6'
+    cases = {'accepted':valid, 'completed_work':numerator}
+    evaluation = dict(schema='sciel-research-candidate-evaluation/1', status='evaluated',
+        source_sha256=source_hash, evaluation_id=evaluation_id, score=score, cases=cases,
+        output_novelty={'binding':{'source_sha256':source_hash, 'task_hash':cp['identity']['task_hash']}},
+        efficacy='unknown')
+    submission = dict(source=source, provenance=provenance, evaluation=evaluation)
+    canonical_id = hashlib.sha256(json.dumps(dict(schema='sciel-research-tool-artifact/1',
+        kind='candidate_evaluation', payload=submission), sort_keys=True, separators=(',', ':'),
+        ensure_ascii=True, allow_nan=False).encode()).hexdigest()
+    step = dict(event='research_tool', phase='research_step', action='submit_candidate', status='evaluated',
+        canonical_evaluation_id=canonical_id, source_sha256=source_hash,
+        cell_id=provenance['cell_id'], action_id=provenance['action_id'],
+        **{'candidate_'+key:provenance[key] for key in ('receipt_id','tool_id','invocation_id')})
+    row = dict(event='iteration', iteration_no=2, B_evals=2, child_id='p29', parent_id='p0',
+        child_code=source, child_score=score, cases=deepcopy(cases), island=0, pop_best=max(.2,score),
+        op_used='research_tool', meta=dict(research_candidate=deepcopy(provenance),
+            evaluation_id=evaluation_id, evaluations=[dict(evaluation_id=evaluation_id,
+                source_sha256=source_hash, ok=True, score=score, admission='candidate')],
+            research_tools={'candidate_submission':submission}))
+    rows.extend([step,row])
+    rows = [dict(r, run_id='run', segment_id='segment', event_seq=i+1) for i,r in enumerate(rows)]
+    cp['iteration_no'] = 2
+    cp['db']['programs'].append(dict(id='p29', code=source, score=score, cases=deepcopy(cases),
+        island=0, origin='research_tool', parent_id='p0'))
+    if remeasured:
+        cp['db']['programs'][-1]['cases']['completed_work'] = 99.
+        rows.append(dict(event='iteration', reason='remeasurement', iteration_no=3,
+            measurement_program_id='p29', measurement_ok=True, measurement_score=score,
+            run_id='run', segment_id='segment', event_seq=len(rows)+1))
+        cp['iteration_no'] = 3
+    if omit_program:
+        cp['db']['programs'] = [p for p in cp['db']['programs'] if p['id'] != 'p29']
+    if alter:
+        alter(rows, cp)
+    cp['provenance']['journal_anchor']['event_seq'] = len(rows)
+    (tmp_path/'sciel_events.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    (tmp_path/'checkpoint.json').write_text(json.dumps(cp))
+    store = RunStore([tmp_path]); ident = store.discover()[0]['id']
+    return store, ident, rows, cp
+
+
+@pytest.mark.parametrize('score,numerator,valid,status', [
+    (.27,2.7000000000000006,1.,'measured'),
+    (0.,0.,1.,'measured'),
+    (0.,0.,0.,'invalid_penalty'),
+    (.4,4.,0.,'unknown'),
+    (.4,4.,None,'unknown'),
+])
+def test_canonical_tool_trial_and_detail_use_exact_generic_native_observation(tmp_path,score,numerator,valid,status):
+    store, ident, rows, cp = write_tool_run(tmp_path,score=score,numerator=numerator,valid=valid)
+    snapshot = store.snapshot(ident)
+    trial = next(t for t in snapshot['trials'] if t['candidate_id']=='p29')
+    detail = store.detail(ident,'p29')
+    for observation in (trial['metric_display'],detail['metric_display']):
+        assert observation['status']==status
+        assert observation['raw_score']==score
+        assert observation['value']==(numerator if status=='measured' else None)
+        assert observation['label']=='completed_work'
+    assert trial['operator']=='research_tool' and trial['hypothesis'] is None
+    assert trial['cases']=={'accepted':valid,'completed_work':numerator}
+    assert detail['display_delta'] is None
+    assert detail['parent_metric_display']['status']=='unknown'
+    assert json.loads((tmp_path/'checkpoint.json').read_text())==cp
+    assert [json.loads(s) for s in (tmp_path/'sciel_events.jsonl').read_text().splitlines()]==rows
+
+
+@pytest.mark.parametrize('omit_program,remeasured',[(True,False),(False,True)])
+def test_tool_observation_is_historical_and_does_not_depend_on_current_retention(tmp_path,omit_program,remeasured):
+    store, ident, _, _ = write_tool_run(tmp_path,omit_program=omit_program,remeasured=remeasured)
+    assert store.detail(ident,'p29')['metric_display']['value']==2.7000000000000006
+
+
+@pytest.mark.parametrize('field', [
+    'canonical_hash','canonical_source','step_action','step_cell','step_receipt','step_invocation','step_tool',
+    'step_run','step_status','row_source','row_score','row_cases','row_run','row_operator','row_failure',
+    'provenance','evaluation_id','evaluation_ok','evaluation_score','evaluation_source','evaluation_admission',
+    'canonical_task','missing_canonical','future_step',
+])
+def test_tool_metric_projection_rejects_missing_or_mismatched_canonical_binding(tmp_path,field):
+    def alter(rows,cp):
+        step,row=rows[-2:]
+        selected=row['meta']['evaluations'][0]
+        if field=='canonical_hash':step['canonical_evaluation_id']='0'*64
+        elif field=='canonical_source':step['source_sha256']='0'*64
+        elif field.startswith('step_'):
+            key={'action':'action_id','cell':'cell_id','receipt':'candidate_receipt_id',
+                 'invocation':'candidate_invocation_id','tool':'candidate_tool_id',
+                 'run':'run_id','status':'status'}[field[5:]]
+            step[key]='other'
+        elif field=='row_source':row['child_code']='unrelated source with the same score'
+        elif field=='row_score':row['child_score']=.28
+        elif field=='row_cases':row['cases']['completed_work']=17.
+        elif field=='row_run':row['run_id']='different-run'
+        elif field=='row_operator':row['op_used']='diff'
+        elif field=='row_failure':row['reason']='eval_fail'
+        elif field=='provenance':row['meta']['research_candidate']['action_id']='other'
+        elif field=='evaluation_id':row['meta']['evaluation_id']='unrelated'
+        elif field=='evaluation_ok':selected['ok']=False
+        elif field=='evaluation_score':selected['score']=.28
+        elif field=='evaluation_source':selected['source_sha256']='0'*64
+        elif field=='evaluation_admission':selected['admission']='output_repeat_rejected'
+        elif field=='canonical_task':
+            submission=row['meta']['research_tools']['candidate_submission']
+            submission['evaluation']['output_novelty']['binding']['task_hash']='b'*64
+            # Even a self-consistent canonical hash must belong to this task.
+            step['canonical_evaluation_id']=hashlib.sha256(json.dumps(dict(
+                schema='sciel-research-tool-artifact/1',kind='candidate_evaluation',payload=submission),
+                sort_keys=True,separators=(',',':'),ensure_ascii=True,allow_nan=False).encode()).hexdigest()
+        elif field=='missing_canonical':row['meta']['research_tools']={}
+        elif field=='future_step':rows[-2:]=[row,step]
+    store,ident,_,_=write_tool_run(tmp_path,alter=alter)
+    if field=='row_run':
+        # RunStore excludes foreign-run journal rows entirely. The legitimate
+        # stored program can still expose its own current checkpoint measure.
+        assert not any(t['candidate_id']=='p29' for t in store.snapshot(ident)['trials'])
+        return
+    detail=store.detail(ident,'p29')
+    assert detail['metric_display']['status']!='measured'
+    assert detail['metric_display']['value'] is None
+
+
+def test_existing_incomplete_ordinary_research_evidence_is_not_overridden_by_tool_fallback(tmp_path):
+    def alter(rows,cp):
+        cp['research']['knowledge']={'experiments':[dict(id='p29',child_id='p29',status='evaluated',
+            score=.27,parent_id='p0',source_sha256=sha('tool-derived source'),operator='research_tool',
+            evaluation={'ok':True,'score':.27,'cases':{'accepted':1.,'completed_work':10.}})]}
+    store,ident,_,_=write_tool_run(tmp_path,alter=alter)
+    assert store.detail(ident,'p29')['metric_display']['reason']=='missing_observation_metric'
+
+
+def test_generic_task_without_output_fingerprint_still_uses_its_canonical_measurement(tmp_path):
+    def alter(rows,cp):
+        step,row=rows[-2:]
+        submission=row['meta']['research_tools']['candidate_submission']
+        submission['evaluation']['output_novelty']=None
+        step['canonical_evaluation_id']=hashlib.sha256(json.dumps(dict(
+            schema='sciel-research-tool-artifact/1',kind='candidate_evaluation',payload=submission),
+            sort_keys=True,separators=(',',':'),ensure_ascii=True,allow_nan=False).encode()).hexdigest()
+    store,ident,_,_=write_tool_run(tmp_path,alter=alter)
+    assert store.detail(ident,'p29')['metric_display']['value']==2.7000000000000006
+
+
+def test_recorded_output_resolution_survives_snapshot_without_changing_history(tmp_path):
+    _, _, rows, checkpoint = write_run(tmp_path)
+    policy = {'schema': 'task-bound-output-resolution/1', 'tolerance': 1e-8}
+    rows[0]['config'] = {'candidate_novelty': {'output_resolution': policy}}
+    journal = tmp_path / 'sciel_events.jsonl'
+    journal.write_text(''.join(json.dumps(row) + '\n' for row in rows))
+    before = journal.read_bytes()
+    store = RunStore([tmp_path])
+    snapshot = store.snapshot(store.discover()[0]['id'])
+    assert snapshot['stats']['output_resolution'] == policy
+    assert journal.read_bytes() == before
+    assert json.loads((tmp_path / 'checkpoint.json').read_text()) == checkpoint

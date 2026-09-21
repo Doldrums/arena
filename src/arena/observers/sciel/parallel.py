@@ -4,7 +4,7 @@ from __future__ import annotations
 import math
 
 
-LIMITS = ('workers', 'host_llm_slots', 'provider_slots', 'host_evaluator_slots',
+LIMITS = ('workers', 'host_llm_slots', 'provider_slots', 'host_evaluator_slots', 'host_research_slots',
           'max_inflight_per_island', 'max_inflight_per_parent')
 MAX_WAVES = 30
 
@@ -64,7 +64,8 @@ def parallel_view(start, checkpoint, rows):
     policy = config.get('parallel_search')
     policy = policy if isinstance(policy, dict) else {}
     status = 'enabled' if policy.get('enabled') is True else 'disabled' if policy.get('enabled') is False else 'unknown'
-    limits = {key: _int(policy.get(key)) for key in LIMITS}
+    limits = {key: _int(policy.get(key)) for key in LIMITS
+              if key != 'host_research_slots' or key in policy}
     waves = {}
     for row in rows:
         if not isinstance(row, dict) or row.get('event') != 'decision' or row.get('policy') != 'parallel_search':

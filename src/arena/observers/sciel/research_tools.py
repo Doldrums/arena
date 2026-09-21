@@ -45,7 +45,7 @@ def _compact(row):
     keys = ('phase', 'action_id', 'tool_id', 'invocation_id', 'receipt_id', 'name', 'description',
         'source_sha256', 'status', 'dispatch_status', 'parent_program_id', 'child_program_id',
         'iteration', 'iteration_no', 'timestamp', 'event_seq', 'segment_id', 'attempt', 'error',
-        'input_sha256', 'output_sha256', 'context_sha256', 'known_cost', 'charge_id', 'stage', 'availability', 'model', 'link_kind',
+        'input_sha256', 'output_sha256', 'context_sha256', 'known_cost', 'charge_id', 'stage', 'availability', 'model', 'link_kind', 'link_basis', 'evaluation_id',
         'cell_id', 'cell_revision_id', 'question', 'reference_receipt_id', 'adoption_revision_id', 'matched', 'benefit', 'comparison')
     keys += ('job_id','parent_job_id','request_hash','cancel_requested',
         'result_schema','tool_result_status','tool_result_error','replay_policy','measurement_reproduced')
@@ -56,7 +56,7 @@ def _compact(row):
         'candidate_receipt_id','candidate_tool_id','candidate_source_sha256','candidate_invocation_id')
     keys += ('snapshot_artifact_id','continuation_snapshot_id','continuation_sequence','queue_sequence',
         'dispatch_count','last_action_id','last_completed_iteration','recipient_candidate_id','prompt_sha256',
-        'evidence_schema','total_checks','omitted_count','scope')
+        'evidence_schema','total_checks','omitted_count','scope','sharing_work_id','sharing_stage')
     result = {key:row[key] if type(row[key]) in (int, float, bool) or row[key] is None else _text(row[key], 1500)
         for key in keys if key in row and not isinstance(row[key], (dict, list))}
     if isinstance(row.get('error'), dict):
@@ -77,6 +77,13 @@ def _compact(row):
         result['requested_limits'] = {key:_job_number(row['requested_limits'].get(key)) for key in ('cpu_seconds','wall_seconds')}
     if isinstance(row.get('research_state'), dict):
         result['research_state'] = _research_state(row['research_state'])
+    if isinstance(row.get('comparison_report_assessment'), dict):
+        from .compat.comparison_assessment import SCHEMA, validate
+        assessment = row['comparison_report_assessment']
+        envelope = dict(schema=SCHEMA, receipt_id=row.get('receipt_id'),
+            proposal_id=row.get('proposal_id'), status='assessed', assessment=assessment)
+        if validate(envelope, row.get('receipt_id')):
+            result['comparison_report_assessment'] = json.loads(_canonical(assessment))
     if row.get('phase') == 'shared_observations_delivered':
         result['source_islands'] = [_island(value) for value in row.get('source_islands',[])[:16]] if isinstance(row.get('source_islands'),list) else []
         result['delivered'] = [{**{key:_text(value.get(key),128) for key in ('receipt_id','source_cell_id','source_candidate_id','decision_proposal_id','measurement_projection')},
@@ -105,8 +112,65 @@ def _research_state(value):
     result['steps_omitted'] = result.get('steps_omitted',0) + max(0,len(steps)-32)
     pending = _obj(value.get('pending_method_trial'))
     if pending:
-        result['pending_method_trial'] = {key:_text(pending.get(key),128) for key in
-            ('tool_id','source_program_id','source_sha256','submission_receipt_id')}
+        result['pending_method_trial'] = _method_trial(pending)
+    backlog = value.get('pending_method_trial_backlog')
+    if isinstance(backlog,list):
+        recorded = [row for row in backlog if isinstance(row,dict)]
+        result['pending_method_trial_backlog'] = [_method_trial(row) for row in recorded[:32]]
+        result['pending_method_trials_total'] = int(bool(pending)) + len(recorded)
+        result['pending_method_trials_omitted'] = max(0,len(recorded)-32)
+    if type(value.get('transfer_review_pending')) is bool:
+        result['transfer_review_pending'] = value['transfer_review_pending']
+    if value.get('transfer_review_pending') is not True:
+        candidates=([pending] if pending else [])+[row for row in (backlog if isinstance(backlog,list) else []) if isinstance(row,dict)]
+        progress=_background_transfer(value.get('background_transfer'),candidates)
+        if progress is not None:
+            result['background_transfer']=progress
+    return result
+
+
+def _background_transfer(value, pending):
+    """Bound recorded transfer cursors; lazy job/receipt views verify their bodies."""
+    if not isinstance(value,dict) or value.get('schema') != 'sciel-background-method-transfer/1':
+        return None
+    fields=('submission_receipt_id','snapshot_artifact_id')
+    if any(not isinstance(value.get(k),str) or not HASH.fullmatch(value[k]) for k in fields):
+        return None
+    refs,jobs,results=(value.get(k) for k in ('reference_receipt_ids','job_ids','stage_results'))
+    if (not isinstance(refs,list) or not 1<=len(refs)<=16 or not isinstance(jobs,list)
+            or not 1<=len(jobs)<=len(refs) or not isinstance(results,list)
+            or not len(jobs)-1<=len(results)<=len(jobs)):
+        return None
+    if any(_ids(ids)!=ids for ids in (refs,jobs)):
+        return None
+    for index,row in enumerate(results):
+        if (not isinstance(row,dict) or row.get('job_id')!=jobs[index]
+                or row.get('status') not in ('success','tool_error','invalid_output','host_failed','unknown')
+                or index<len(jobs)-1 and row['status']!='success'):
+            return None
+        receipt=row.get('receipt_id')
+        if (receipt is None and row['status']!='unknown') or (receipt is not None
+                and (not isinstance(receipt,str) or not HASH.fullmatch(receipt))):
+            return None
+    if not any(row.get('submission_receipt_id')==value['submission_receipt_id'] for row in pending):
+        return None
+    return dict(schema=value['schema'],**{k:value[k] for k in fields},
+        reference_receipt_ids=refs[:],job_ids=jobs[:],
+        stage_results=[{k:row.get(k) for k in ('job_id','receipt_id','status')} for row in results],
+        total_stages=len(refs),submitted_stages=len(jobs),collected_stages=len(results),
+        successful_stages=sum(row['status']=='success' for row in results),
+        current_job_id=jobs[-1] if len(jobs)>len(results) else None,
+        scope='Recorded cell state; job and receipt bodies are verified when opened. No method benefit is established.')
+
+
+def _method_trial(value):
+    result = {key:_text(value.get(key),128) for key in
+        ('tool_id','source_program_id','source_sha256','submission_receipt_id')}
+    if isinstance(value.get('blocked_reason'),str):
+        result['blocked_reason'] = _text(value['blocked_reason'],128)
+    for key in ('pipeline_stages','scientific_step_limit'):
+        if type(value.get(key)) is int and value[key] >= 0:
+            result[key] = value[key]
     return result
 
 
@@ -116,7 +180,7 @@ def _continuations(checkpoint, cells):
     empty = dict(available=False, items=[], summary={}, scope='not_recorded')
     if not state:
         return empty
-    if state.get('schema') != 'sciel-research-continuations/1' or not isinstance(state.get('items'), dict) or type(state.get('next_sequence')) is not int or state['next_sequence'] < 0:
+    if state.get('schema') not in ('sciel-research-continuations/1','sciel-research-continuations/2') or not isinstance(state.get('items'), dict) or type(state.get('next_sequence')) is not int or state['next_sequence'] < 0:
         return dict(empty, reason='Continuation state has an unsupported or malformed schema.')
     items, invalid, sequences = [], 0, set()
     for cell_id, item in state['items'].items():
@@ -126,6 +190,8 @@ def _continuations(checkpoint, cells):
                 or any(type(item.get(key)) is not int or item[key] < 0 for key in ('queue_sequence','dispatch_count'))
                 or item['queue_sequence'] >= state['next_sequence'] or item['queue_sequence'] in sequences
                 or not isinstance(item.get('reason'),str)
+                or (state['schema']=='sciel-research-continuations/2' and
+                    item.get('last_work_kind') not in (None,'question','method_transfer'))
                 or (item.get('last_action_id') is not None and (not isinstance(item['last_action_id'],str) or not HASH.fullmatch(item['last_action_id'])))
                 or (item.get('last_completed_iteration') is not None and
                     (type(item['last_completed_iteration']) is not int or item['last_completed_iteration'] < 0))):
@@ -136,6 +202,8 @@ def _continuations(checkpoint, cells):
             queue_sequence=item['queue_sequence'], dispatch_count=item['dispatch_count'],
             last_action_id=_text(item.get('last_action_id'),256), last_completed_iteration=item.get('last_completed_iteration'),
             scope='committed_checkpoint', snapshot_verified=False)
+        if item.get('last_work_kind') in ('question','method_transfer'):
+            row['last_work_kind'] = item['last_work_kind']
         sequences.add(item['queue_sequence'])
         items.append(row)
         cells[cell_id]['continuation'] = row
@@ -144,6 +212,66 @@ def _continuations(checkpoint, cells):
     summary.update(total=len(items),omitted=max(0,len(items)-LIMIT),invalid=invalid)
     return dict(available=True,items=items[:LIMIT],summary=summary,scope='committed_checkpoint',
         note='Recorded queue state. Snapshot artifact content is not authenticated by this metadata projection.')
+
+
+def _sharing(checkpoint, cells):
+    """Display committed assignment metadata; lifecycle receipts prove execution."""
+    state = _obj(_obj(checkpoint.get('research_tools')).get('sharing'))
+    empty = dict(available=False, items=[], summary={}, scope='not_recorded')
+    if not state:
+        return empty
+    if (state.get('schema') != 'sciel-research-sharing/1'
+            or not isinstance(state.get('items'), dict)
+            or not isinstance(state.get('waiting_methods'), dict)
+            or type(state.get('next_sequence')) is not int or state['next_sequence'] < 0
+            or state.get('last_queue') not in (None, 'question', 'sharing')):
+        return dict(empty, reason='Sharing state has an unsupported or malformed schema.')
+    items, invalid, sequences = [], 0, set()
+    for ident, item in state['items'].items():
+        if not isinstance(item, dict):
+            invalid += 1
+            continue
+        required = ('tool_id', 'cell_id', 'snapshot_artifact_id', 'reference_receipt_id')
+        optional = ('action_id', 'receipt_id')
+        clock, jobs = item.get('completed_iteration'), item.get('job_ids')
+        if (not isinstance(ident, str) or not HASH.fullmatch(ident)
+                or any(not isinstance(item.get(k), str) or not HASH.fullmatch(item[k]) for k in required)
+                or any(item.get(k) is not None and
+                    (not isinstance(item[k], str) or not HASH.fullmatch(item[k])) for k in optional)
+                or item['cell_id'] not in cells
+                or item.get('stage') not in ('independent_replay', 'adopt_trial', 'use_again')
+                or item.get('status') not in ('ready', 'waiting', 'completed')
+                or not isinstance(item.get('reason'), str)
+                or type(item.get('queue_sequence')) is not int
+                or not 0 <= item['queue_sequence'] < state['next_sequence']
+                or item['queue_sequence'] in sequences
+                or not isinstance(jobs, list) or len(jobs) > 1 or _ids(jobs) != jobs
+                or clock is not None and (type(clock) is not int or clock < 0)
+                or (item.get('status') == 'completed') != (clock is not None)
+                or hashlib.sha256(_canonical({k:item[k] for k in ('tool_id','stage','cell_id')})).hexdigest() != ident):
+            invalid += 1
+            continue
+        row = {k:item[k] for k in (*required, 'stage', 'status', 'queue_sequence', 'job_ids')}
+        row.update(id=ident, reason=_text(item['reason'],256),
+            **{k:item.get(k) for k in (*optional, 'completed_iteration')},
+            scope='committed_checkpoint', snapshot_verified=False)
+        sequences.add(item['queue_sequence'])
+        items.append(row)
+        cells[item['cell_id']].setdefault('sharing', []).append(row)
+    items.sort(key=lambda row:(row['status']=='completed',row['queue_sequence'],row['id']))
+    waits = [dict(tool_id=ident,reason=reason) for ident,reason in state['waiting_methods'].items()
+        if isinstance(ident,str) and HASH.fullmatch(ident) and reason=='no_recipient_yet']
+    invalid += len(state['waiting_methods']) - len(waits)
+    summary = {status:sum(row['status']==status for row in items) for status in ('ready','waiting','completed')}
+    summary.update(total=len(items),omitted=max(0,len(items)-LIMIT),invalid=invalid,
+        no_recipient_yet=len(waits),omitted_waiting_methods=max(0,len(waits)-LIMIT))
+    for cell in cells.values():
+        if 'sharing' in cell:
+            cell['sharing_total'] = len(cell['sharing'])
+            cell['sharing'] = cell['sharing'][-DETAIL_LIMIT:]
+    return dict(available=True,items=items[:LIMIT],summary=summary,waiting_methods=waits[:LIMIT],
+        last_queue=state.get('last_queue'),scope='committed_checkpoint',
+        note='Recorded assignments only. Completion is not successful replay, adoption, later use, or measured benefit. Artifact bodies are verified when opened.')
 
 
 def _job_bindings(checkpoint):
@@ -322,7 +450,7 @@ def _configuration(start, checkpoint):
         contract = value.get('engine_contract') or _obj(value.get('identity')).get('engine_contract')
         # This recorded contract initializes tools only for an enabled block
         # (Engine.__init__). Do not apply today's default to unknown archives.
-        if contract in {'espalier-3.21', 'espalier-3.22', 'espalier-3.23', 'espalier-3.24', 'espalier-3.25', 'espalier-3.26', 'espalier-3.27', 'espalier-3.28','espalier-3.29','espalier-3.30','espalier-3.31','espalier-3.32','espalier-3.33', 'espalier-3.34', 'espalier-3.35'} and isinstance(config, dict) and 'research_tools' not in config:
+        if contract in {'espalier-3.21', 'espalier-3.22', 'espalier-3.23', 'espalier-3.24', 'espalier-3.25', 'espalier-3.26', 'espalier-3.27', 'espalier-3.28','espalier-3.29','espalier-3.30','espalier-3.31','espalier-3.32','espalier-3.33', 'espalier-3.34', 'espalier-3.35', 'espalier-3.36', 'espalier-3.37', 'espalier-3.38', 'espalier-3.39', 'espalier-3.40', 'espalier-3.41', 'espalier-3.42', 'espalier-3.43', 'espalier-3.44', 'espalier-3.45', 'espalier-3.46', 'espalier-3.47','espalier-3.48', 'espalier-3.49', 'espalier-3.50', 'espalier-3.51', 'espalier-3.52', 'espalier-3.53', 'espalier-3.54', 'espalier-3.55', 'espalier-3.56', 'espalier-3.57', 'espalier-3.58', 'espalier-3.59'} and isinstance(config, dict) and 'research_tools' not in config:
             return dict(status='disabled', enabled=False, source=source,
                 reason=f'The recorded configuration has no research_tools block. In its recorded Engine contract ({contract}), tools are disabled unless explicitly enabled.')
     return dict(status='not_recorded', enabled=None, source=None,
@@ -532,10 +660,13 @@ def research_tools_view(start, checkpoint, rows):
         links = links_by_tool.get(version['id'], [])
         version.update(invocations=len(uses),foreign_invocations=sum(row['foreign_execution'] for row in uses),
             used_by=list(dict.fromkeys(str(row['island_id']) for row in uses if row.get('island_id') is not None)),
-            children=[dict(program_id=row['child_program_id'],island_id=row.get('island_id'),link_kind=row.get('link_kind'),receipt_ids=row.get('receipt_ids',[])) for row in links[-LIMIT:]])
+            children=[dict(program_id=row['child_program_id'],island_id=row.get('island_id'),link_kind=row.get('link_kind'),receipt_ids=row.get('receipt_ids',[]),
+                **{key:row[key] for key in ('link_basis','candidate_source_sha256','canonical_evaluation_id',
+                    'evaluation_id','candidate_invocation_id','scope') if key in row}) for row in links[-LIMIT:]])
     actual = [row for row in invocations.values() if row['actual_execution']]
     cells = _cells_view(checkpoint, rows)
     continuations = _continuations(checkpoint,cells)
+    sharing = _sharing(checkpoint,cells)
     cells = _enrich_cells(cells, events, checkpoint)
     lifecycle_events = [_compact(row) for row in events if row.get('phase') in ('replay_result','adopted','post_adoption_attempt','post_adoption_use')]
     lifecycle_events = list({(row.get('phase'),row.get('cell_id'),row.get('tool_id'),row.get('receipt_id')):row for row in lifecycle_events}.values())
@@ -558,14 +689,14 @@ def research_tools_view(start, checkpoint, rows):
         cells=list(cells.values())[-LIMIT:],lifecycle=dict(counts=counts,events=lifecycle_events[-LIMIT:],
             recorded=bool(cells),scope='Counts describe different transitions in the selected journal lineage, not a success funnel or evidence of task benefit. Missing historical events are not reconstructed.'),
         versions=list(versions.values())[-LIMIT:],invocations=list(invocations.values())[-LIMIT:],
-        jobs=_job_base(checkpoint,configured),continuations=continuations,
+        jobs=_job_base(checkpoint,configured),continuations=continuations,sharing=sharing,
         llm_calls=list(calls.values())[-LIMIT:],contexts=list(contexts.values())[-LIMIT:],
         child_links=list(children.values())[-LIMIT:],events=[_compact(row) for row in events[-LIMIT:]],
         coverage=dict(limit=LIMIT,scope='Selected Engine journal lineage after checkpoint restoration; artifact bodies load only when opened.',
             omitted_versions=max(0,len(versions)-LIMIT),omitted_invocations=max(0,len(invocations)-LIMIT),omitted_cells=max(0,len(cells)-LIMIT)),
         notes=['Shared availability, prepared context and actual execution are different observations.',
             'context_prepared records Snapshot preparation, not proven delivery to an LLM prompt.',
-            'A child link associates a candidate with preceding tool calls; it does not establish causal utility or give tool reward credit.',
+            'A canonical producer link identifies the saved source and evaluator record. Observation links record exposure before generation; historical links without a basis remain recorded associations. None establishes causal utility or gives tool reward credit.',
             'Tool LLM charges are already included in Engine spend. CPU observations exclude Docker daemon and VM overhead.'])
 
 
@@ -660,7 +791,24 @@ def artifact_detail(run_dir, ident, rows, *, _reader=None):
     if not any(row.get('phase')==expected_phase and all(key not in row or row[key]==payload.get(key)
         for key in binding) for row in events):
         raise ValueError('Receipt does not match its journal binding')
-    return dict(id=ident,verified=True,kind=body['kind'],payload=payload)
+    detail = dict(id=ident,verified=True,kind=body['kind'],payload=payload)
+    if body['kind'] == 'invocation':
+        detail['comparison_assessment'] = _comparison_assessment(run_dir, ident, payload, _reader)
+    return detail
+
+
+def _comparison_assessment(run_dir, ident, payload, reader=None):
+    """Recompute comparison warnings from saved declarations and invocation output."""
+    from .compat.comparison_assessment import from_record
+    read = reader or (lambda folder, key, maximum: _read_object(run_dir, folder, key, maximum))
+
+    def proposal(key):
+        record = read('artifacts', key, 16 * 1024 * 1024)
+        if record.get('schema') != 'sciel-research-tool-artifact/1' or record.get('kind') != 'proposal':
+            raise ValueError('Comparison declaration is not a saved proposal')
+        return _obj(record.get('payload'))
+
+    return from_record(payload, ident, proposal)
 
 
 def _candidate_evaluation_detail(run_dir, ident, rows, events, reader):
@@ -765,7 +913,7 @@ def _terminal_decision(ident, checkpoint, history, research_state, reader):
     from .compat.research_cells_context import _card
     from .compat.decision_projection import authenticate_projection
     card = _obj(_obj(_obj(checkpoint.get('research_tools')).get('lifecycle')).get('cards')).get(ident)
-    if not isinstance(card, dict) or card.get('schema') != 'sciel-research-check/4':
+    if not isinstance(card, dict) or card.get('schema') not in ('sciel-research-check/4', 'sciel-research-check/5'):
         return None
     decision = card.get('decision')
     if decision is None:
@@ -815,6 +963,9 @@ def _terminal_decision(ident, checkpoint, history, research_state, reader):
                     or card['observations']['status'] != _obj(record.get('result')).get('status')
                     or card['observations']['resources'] != _obj(record.get('receipt')).get('resources')):
                 raise ValueError('Decision card observation differs from its saved invocation')
+            if card.get('schema') == 'sciel-research-check/5' and card.get('comparison_assessment') != _comparison_assessment(
+                    run_dir=None, ident=source['receipt_id'], payload=record, reader=reader):
+                raise ValueError('Decision comparison assessment differs from its saved invocation')
         elif {key: source.get(key) for key in _obj(payload.get('target_binding'))} != payload.get('target_binding'):
             raise ValueError('Decision target differs from its saved proposal')
         return dict(verified, verified=True, evidence_scope='saved_proposal_and_committed_cell_revision')
@@ -896,6 +1047,7 @@ def cell_detail(run_dir, ident, checkpoint, rows):
     """Only retained journal/checkpoint IDs grant visibility; never discover by files."""
     cells = _cells_view(checkpoint, rows)
     _continuations(checkpoint,cells)
+    _sharing(checkpoint,cells)
     if ident not in cells:
         raise KeyError('Cell is not recorded in the selected journal/checkpoint lineage')
     genesis = _read_object(run_dir, 'cells/genesis', ident, 256*1024)

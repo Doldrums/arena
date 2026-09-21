@@ -7,48 +7,12 @@ SCHEMA = 'sciel-shared-research-observations/1'
 
 
 def _measurement(value, source):
-    """Verify whole observations or exact atomic JSON Pointer excerpts."""
+    """Verify full observations or exact historical/paired saved projections."""
     output=source.get('receipt',{}).get('output')
     expected={'output':{'observations':output.get('observations') if isinstance(output,dict) else None},
         'error':source.get('result',{}).get('error')}
-    encode=lambda value:json.dumps(value,ensure_ascii=True,sort_keys=True,separators=(',',':'),allow_nan=False)
-    if encode(value)==encode(expected):return
-    if not isinstance(value,dict):raise ValueError('Invalid measurement excerpt')
-    fields={};pending=[((),expected)]
-    while pending:
-        parts,item=pending.pop()
-        if isinstance(item,dict) and item:
-            pending.extend((parts+(key,),child) for key,child in item.items());continue
-        path=''.join('/'+key.replace('~','~0').replace('/','~1') for key in parts)
-        fields[path]=(item,parts[:2]==('output','observations'))
-    total_observations=sum(flag for _,flag in fields.values())
-    if value.get('omitted') is True:
-        if set(value)-{'schema','omitted','omitted_fields','omitted_observation_fields'}:
-            raise ValueError('Omission marker contains unsupported evidence')
-        if value.get('schema') not in (None,'sciel-tool-result-projection/1'):
-            raise ValueError('Unsupported measurement projection')
-        if value.get('omitted_fields',len(fields))!=len(fields) or value.get('omitted_observation_fields',total_observations)!=total_observations:
-            raise ValueError('Omitted field counts differ')
-        return
-    raw=json.dumps(expected,ensure_ascii=True,sort_keys=True,separators=(',',':'),allow_nan=False)
-    if value.get('schema')!='sciel-tool-result-projection/1' or value.get('original_sha256')!=hashlib.sha256(raw.encode('ascii')).hexdigest():
-        raise ValueError('Measurement projection hash differs from receipt')
-    shown=set()
-    for item in value.get('fields',[]):
-        path=item['path']
-        if path in shown or path not in fields or encode(item['value'])!=encode(fields[path][0]):
-            raise ValueError('Measurement projection changes a saved value')
-        shown.add(path)
-    observed=sum(fields[path][1] for path in shown)
-    observations=expected['output']['observations']
-    state=('not_present' if not isinstance(observations,dict) else 'originally_empty' if not observations
-        else 'all_omitted' if not observed else 'complete' if observed==total_observations else 'partial')
-    omitted=set(fields)-shown;paths=value.get('omitted_paths',[])
-    if (value.get('observations_state')!=state or value.get('omitted_fields')!=len(omitted)
-            or value.get('omitted_observation_fields')!=total_observations-observed
-            or len(paths)!=len(set(paths)) or not set(paths)<=omitted
-            or value.get('omitted_paths_omitted')!=len(omitted)-len(paths)):
-        raise ValueError('Measurement projection accounting differs from receipt')
+    from .compat.result_projection import verify_projection
+    verify_projection(value, expected)
 
 
 def _history(checkpoint, cell_id, reader):

@@ -90,18 +90,50 @@ def test_unproven_delivery_is_withheld(tmp_path,damage):
     assert coverage['awaiting_model_receipt' if damage=='missing_model' else 'verification_failed']==1
 
 
-def test_queue_is_checkpoint_metadata_not_running_or_scientific_conclusion(tmp_path):
+@pytest.mark.parametrize('version',[1,2])
+def test_queue_is_checkpoint_metadata_not_running_or_scientific_conclusion(tmp_path,version):
     cell,checkpoint,rows=fixture(tmp_path)
     entry=dict(snapshot_artifact_id='d'*64,status='waiting',reason='no_independent_branch',queue_sequence=0,
         dispatch_count=2,last_action_id='e'*64,last_completed_iteration=7)
-    checkpoint['research_tools']['continuations']=dict(schema='sciel-research-continuations/1',next_sequence=1,items={cell:entry})
+    if version==2:entry['last_work_kind']='method_transfer'
+    checkpoint['research_tools']['continuations']=dict(schema=f'sciel-research-continuations/{version}',next_sequence=1,items={cell:entry})
     view=research_tools_view({},checkpoint,rows);queue=view['continuations']
     assert queue['summary']['waiting']==1 and queue['summary']['ready']==0
     assert queue['items'][0]['snapshot_verified'] is False
+    assert queue['items'][0].get('last_work_kind')==('method_transfer' if version==2 else None)
     assert cell_detail(tmp_path,cell,checkpoint,rows)['summary']['continuation']['reason']=='no_independent_branch'
     entry['status']='scheduled'  # Successful published checkpoint cannot contain active lease.
     assert research_tools_view({},checkpoint,rows)['continuations']['summary']['invalid']==1
     assert research_tools_view({}, {}, [])['continuations']['available'] is False
+    checkpoint['research_tools']['continuations']['schema']={}
+    assert research_tools_view({},checkpoint,rows)['continuations']['available'] is False
+
+
+def test_fifo_transfer_projection_preserves_order_review_and_explicit_omissions(tmp_path):
+    cell,checkpoint,rows=fixture(tmp_path)
+    def trial(index):
+        return dict(tool_id=f'{index:064x}',source_program_id=f'p{index}',source_sha256='a'*64,
+                    submission_receipt_id=f'{index+100:064x}')
+    state=dict(schema='sciel-research-state/2',question='Interpret the latest measurement.',status='open',
+        pending_method_trial=trial(1),pending_method_trial_backlog=[trial(i) for i in range(2,37)],
+        transfer_review_pending=True,resources={},steps=[])
+    state['pending_method_trial']['blocked_reason']='pipeline_exceeds_scientific_limit'
+    state['pending_method_trial'].update(pipeline_stages=4,scientific_step_limit=3)
+    checkpoint['research_tools']['lifecycle']['research_state']={cell:state}
+    before=deepcopy(checkpoint)
+    projected=cell_detail(tmp_path,cell,checkpoint,rows)['research_state']
+    assert projected['question']==state['question'] and projected['status']=='open'
+    assert projected['transfer_review_pending'] is True
+    assert projected['pending_method_trials_total']==36
+    assert projected['pending_method_trial']==state['pending_method_trial']
+    assert projected['pending_method_trial_backlog']==state['pending_method_trial_backlog'][:32]
+    assert projected['pending_method_trials_omitted']==3
+    assert checkpoint==before
+    # Historical states do not acquire a review or a fabricated FIFO tail.
+    state.pop('pending_method_trial_backlog');state.pop('transfer_review_pending');state['schema']='sciel-research-state/1'
+    historical=cell_detail(tmp_path,cell,checkpoint,rows)['research_state']
+    assert historical['pending_method_trial']==state['pending_method_trial']
+    assert 'transfer_review_pending' not in historical and 'pending_method_trial_backlog' not in historical
 
 
 def test_saved_prompt_cannot_rewrite_receipt_measurement_even_with_matching_prompt_hash(tmp_path):
@@ -152,3 +184,32 @@ def test_shared_terminal_interpretation_authenticates_bounded_excerpt_or_explici
     rows.append(event('llm_result',cell_id=origin,action_id='3'*64,attempt=0,receipt_id=decision_id))
     detail=cell_detail(tmp_path,cell,checkpoint,rows)
     assert detail['related']['shared_observations'][0]['entries'][0]['decision']==decision
+
+
+def test_background_transfer_progress_is_bounded_ordered_and_not_live_cpu():
+    from arena.observers.sciel.research_tools import _research_state
+    receipt='a'*64;job1='b'*64;job2='c'*64
+    progress=dict(schema='sciel-background-method-transfer/1',submission_receipt_id=receipt,
+        snapshot_artifact_id='d'*64,reference_receipt_ids=['1'*64,'2'*64,'3'*64],
+        job_ids=[job1,job2],stage_results=[dict(job_id=job1,receipt_id='e'*64,status='success')])
+    state=dict(pending_method_trial=dict(submission_receipt_id=receipt),pending_method_trial_backlog=[],
+        transfer_review_pending=False,background_transfer=progress)
+    original=deepcopy(state);out=_research_state(state)['background_transfer']
+    assert state==original
+    assert (out['total_stages'],out['submitted_stages'],out['collected_stages'],out['successful_stages'])==(3,2,1,1)
+    assert out['current_job_id']==job2 and out['reference_receipt_ids']==progress['reference_receipt_ids']
+    assert 'cpu_seconds' not in out and 'No method benefit' in out['scope']
+    for key,value in [('schema',{}),('job_ids',[job1,job1]),('reference_receipt_ids',['x']*17),('stage_results',[{'job_id':job2,'receipt_id':'e'*64,'status':'success'}]),('submission_receipt_id','9'*64)]:
+        bad=deepcopy(state);bad['background_transfer'][key]=value
+        assert 'background_transfer' not in _research_state(bad)
+    for value in (None,{}):
+        old=deepcopy(state);old['background_transfer']=value
+        assert 'background_transfer' not in _research_state(old)
+    for outcome in ('tool_error','invalid_output','host_failed','unknown'):
+        failed=deepcopy(state);failed['background_transfer']['stage_results'].append(
+            dict(job_id=job2,receipt_id=None if outcome=='unknown' else 'f'*64,status=outcome))
+        projected=_research_state(failed)['background_transfer']
+        assert projected['collected_stages']==2 and projected['successful_stages']==1
+        assert projected['stage_results'][-1]['status']==outcome and projected['current_job_id'] is None
+    state['transfer_review_pending']=True
+    assert 'background_transfer' not in _research_state(state)

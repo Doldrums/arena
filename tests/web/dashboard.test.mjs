@@ -844,14 +844,12 @@ test('published reference is separate from task target, shows scope and accepts 
   try{
     const snapshot=await (await fetch(base+'/api/runs/'+fixtureRun.id)).json();
     snapshot.stats.best_score=2.5/2.635;snapshot.stats.best_metric_display=measured(2.5,snapshot.stats.best_score,'Sum of radii');
-    snapshot.benchmark={label:'SOTA reference',value:2.6359830849176078,current_value:2.5,metric:'Sum of radii',task_target:2.635,target_metric:'Sum of radii',source_url:'https://www.gotherlabs.com/results/circle-packing-26-unit-square/',source_label:'Göther Labs · strict witness',note:'Published strict packing (τ = 0). The comparison is descriptive, not a proof of a new record.'};
-    snapshot.benchmark.run_tolerance=1e-6;snapshot.benchmark.reference_tolerance=1e-6;
-    snapshot.benchmark.best_known={status:'known',label:'Best known',name:'Göther',value:snapshot.benchmark.value,current_value:2.5,tolerance:1e-6};
+    snapshot.benchmark={label:'SOTA reference',value:2.6359830849176078,current_value:2.5,reference_tolerance:1e-6,run_tolerance:1e-6,metric:'Sum of radii',task_target:2.635,target_metric:'Sum of radii',source_url:'https://www.gotherlabs.com/results/circle-packing-26-unit-square/',source_label:'Göther Labs · strict witness',note:'Published strict packing (τ = 0). The comparison is descriptive, not a proof of a new record.'};
     streams.at(-1).snapshot(snapshot);
     const panel=doc.getElementById('benchmark-comparison');
     assert.equal(doc.getElementById('best-score-label').textContent,'Sum of radii');
     assert.equal(doc.getElementById('best-score').textContent,'2.500000');
-    assert.equal(doc.getElementById('best-score-comparison').textContent,'| 5.16% below Best known · Göther');
+    assert.equal(doc.getElementById('best-score-comparison').textContent,'| 5.16% below best known | Best AI search: not available');
     assert.match(doc.getElementById('chart-subtitle').textContent,/Sum of radii/);
     assert.equal(panel.previousElementSibling,doc.querySelector('.metrics'));
     assert.equal(panel.nextElementSibling,doc.querySelector('.overview-grid'));
@@ -862,21 +860,23 @@ test('published reference is separate from task target, shows scope and accepts 
     assert.match(panel.textContent,/not a proof of a new record/);
     assert.match(panel.querySelector('.benchmark-target').textContent,/Task target.*2\.635/);
     assert.equal(panel.querySelector('a').getAttribute('rel'),'noopener noreferrer');
-    snapshot.benchmark.references=[{name:'ShinkaEvolve — reported',value_label:'2.635983099011548',tolerance:1e-6,status:'reported',source_name:'Sakana AI',source_url:'https://openreview.net/pdf?id=lKEdGCoDNC',gap_percent:.000001},
-      {name:'Strict reference',value_label:'2.6359830849176077831865694854434817303966767982744748577457711298607038493344723396767997365079',tolerance:0,status:'audited',source_name:'Untrusted <script>',source_url:'javascript:alert(1)',gap_percent:-.000003}];
+    snapshot.benchmark.run_tolerance=1e-6;
+    snapshot.benchmark.references=[{name:'ShinkaEvolve — reported',value:2.635983099011548,value_label:'2.635983099011548',tolerance:1e-6,status:'reported',source_name:'Sakana AI',source_url:'https://openreview.net/pdf?id=lKEdGCoDNC',gap_percent:.000001},
+      {name:'Strict reference',value:2.6359830849176078,value_label:'2.6359830849176077831865694854434817303966767982744748577457711298607038493344723396767997365079',tolerance:0,status:'audited',source_name:'Untrusted <script>',source_url:'javascript:alert(1)',gap_percent:-.000003}];
     streams.at(-1).snapshot(snapshot);
-    assert.equal(panel.querySelectorAll('.benchmark-table tbody tr').length,3);
+    assert.equal(panel.querySelectorAll('.benchmark-table [data-reference-row]').length,2);
+    assert.equal(panel.querySelectorAll('.benchmark-table [data-current-solution]').length,1);
+    assert.equal(panel.querySelector('[data-current-solution] td:nth-child(2)').textContent,'2.5');
     assert.match(panel.textContent,/τ = 0 \(strict\)/);
-    assert.match(panel.textContent,/0\.000001% below/);
-    assert.match(panel.textContent,/Different tolerance \/ comparison unavailable/);
-    assert.doesNotMatch(panel.textContent,/0\.000003% above/);
+    assert.match(panel.querySelector('.benchmark-table').textContent,/5\.16% below/);
+    assert.match(panel.querySelector('.benchmark-table').textContent,/Not comparable/);
     assert.equal(panel.querySelectorAll('.benchmark-table a').length,1);
     assert.equal(panel.querySelectorAll('script').length,0);
     snapshot.benchmark.references=[];
     snapshot.benchmark.source_url='javascript:window.owned=true';streams.at(-1).snapshot(snapshot);
     assert.equal(panel.querySelector('a'),null);
-    snapshot.benchmark.current_value=snapshot.benchmark.value*1.01;snapshot.stats.best_score=snapshot.benchmark.current_value/2.635;snapshot.stats.best_metric_display=measured(snapshot.benchmark.current_value,snapshot.stats.best_score,'Sum of radii');snapshot.benchmark.best_known.current_value=snapshot.benchmark.current_value;streams.at(-1).snapshot(snapshot);
-    assert.equal(doc.getElementById('best-score-comparison').textContent,'| 1.00% above Best known · Göther');
+    snapshot.benchmark.current_value=snapshot.benchmark.value*1.01;snapshot.stats.best_score=snapshot.benchmark.current_value/2.635;snapshot.stats.best_metric_display=measured(snapshot.benchmark.current_value,snapshot.stats.best_score,'Sum of radii');streams.at(-1).snapshot(snapshot);
+    assert.equal(doc.getElementById('best-score-comparison').textContent,'| 1.0000% above best known | Best AI search: not available');
     snapshot.benchmark.current_value=null;snapshot.stats.best_metric_display={...snapshot.stats.best_metric_display,status:'unknown',value:null};streams.at(-1).snapshot(snapshot);
     assert.equal(doc.getElementById('best-score').textContent,'Not measured');
     assert.equal(doc.getElementById('best-score-comparison').hidden,true);
@@ -1077,5 +1077,43 @@ test('overview Population stays beside search markup and opens existing full pop
     assert.equal(doc.getElementById('tab-code').getAttribute('aria-selected'),'true');
     assert.equal(doc.querySelector('#population-preview .preview-mark'),mark);
     assert.deepEqual(errors,[]);
+  }finally{dom.window.close();}
+});
+
+test('headline separates known and AI search references without stale or mismatched gaps',async()=>{
+  const {dom,doc,streams}=await mounted();
+  try{
+    const snapshot=await (await fetch(base+'/api/runs/'+fixtureRun.id)).json();
+    const update=value=>{
+      snapshot.stats.best_score=value/2.635;
+      snapshot.stats.best_metric_display=measured(value,snapshot.stats.best_score,'Sum of radii');
+      snapshot.benchmark.current_value=value;
+      snapshot.benchmark.best_known.current_value=value;
+      snapshot.benchmark.best_ai_method.current_value=value;
+    };
+    snapshot.benchmark={metric:'Sum of radii',value:2.64,current_value:2.62,
+      run_tolerance:1e-6,reference_tolerance:1e-6,references:[],
+      best_known:{status:'known',label:'Best known',name:'Published witness',value:2.64,tolerance:1e-6,current_value:2.62,source_url:'https://example.org/known'},
+      best_ai_method:{status:'known',label:'Best AI search',name:'AI <script>method</script>',value:2.63,tolerance:1e-6,current_value:2.62,source_url:'https://example.org/ai'}};
+    update(2.62);streams.at(-1).snapshot(snapshot);
+    const headline=doc.getElementById('best-score-comparison');
+    assert.equal(headline.querySelector('[data-reference-comparison="best-known"]').textContent,'| 0.7576% below best known');
+    assert.equal(headline.querySelector('[data-reference-comparison="ai-search"]').textContent,'| 0.3802% below best ai search');
+    assert.match(headline.lastElementChild.title,/https:\/\/example.org\/ai/);
+    assert.equal(headline.querySelector('script'),null);
+    update(2.65);streams.at(-1).snapshot(snapshot);
+    assert.match(headline.textContent,/above best known.*above best ai search/);
+    update(2.63);streams.at(-1).snapshot(snapshot);
+    assert.match(headline.textContent,/matches best ai search/);
+    update(2.63-1e-12);streams.at(-1).snapshot(snapshot);
+    assert.match(headline.textContent,/<0\.000001% below best ai search/);
+    snapshot.benchmark.best_ai_method.tolerance=0;streams.at(-1).snapshot(snapshot);
+    assert.match(headline.lastElementChild.textContent,/not available/);
+    snapshot.benchmark.best_ai_method={status:'unavailable',reason:'Method provenance not recorded'};
+    streams.at(-1).snapshot(snapshot);
+    assert.match(headline.lastElementChild.title,/Method provenance not recorded/);
+    snapshot.benchmark.current_value=1;streams.at(-1).snapshot(snapshot);
+    assert.equal(headline.hidden,true);
+    assert.equal(headline.textContent,'');
   }finally{dom.window.close();}
 });

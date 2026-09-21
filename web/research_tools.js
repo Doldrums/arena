@@ -9,6 +9,8 @@ const jobLabel=row=>row.cancel_requested&&['queued','running'].includes(row.stat
 const jobKey=row=>'job:'+row.id+':'+(row.receipt_id||'pending');
 const island=value=>value===null||value===undefined?'Island not recorded':'Island '+value;
 const text=value=>typeof value==='string'?value:JSON.stringify(value??null,null,2);
+const linkBasis=row=>({canonical_candidate_source:'Canonical producer',observations_before_generation:'Observations before generation'}[row.link_basis]||'Recorded association');
+const linkScope=row=>row.link_basis==='canonical_candidate_source'?(row.link_kind==='remeasurement'?'Exact saved source was canonically remeasured; this is not a new program. ':'Exact saved source produced this canonically evaluated program. ')+'Method benefit and cross-branch transfer are not established.':row.link_basis==='observations_before_generation'?'These observations preceded ordinary generation; model use and causal benefit are not established.':'Historical recorded association; not proof of prompt delivery or a causal score improvement.';
 function el(tag,className,content){const node=document.createElement(tag);if(className)node.className=className;if(content!==undefined)node.textContent=String(content);return node;}
 function button(label,fn,className='tool-link'){const node=el('button',className,label);node.type='button';node.addEventListener('click',fn);return node;}
 function blank(title,detail){const box=el('div','tools-empty');box.append(el('strong','',title),el('p','',detail));return box;}
@@ -69,6 +71,8 @@ function bodyDetail(view,body){
   }else if(body.kind==='proposal'){
     const payload=body.payload||{};
     holder.append(panel('Exact saved request',payload.prompt,true),panel('Exact saved response',payload.response,true));
+  }else if(body.kind==='candidate_evaluation'){
+    holder.append(panel('Canonical evaluator result',body.payload?.evaluation,true),panel('Exact submitted candidate source',body.payload?.source),panel('Producing tool evidence',body.payload?.provenance),el('p','tools-note','Canonical evaluation is separate from evidence of method benefit or cross-branch transfer.'));
   }else if(body.kind==='invocation'){
     const payload=body.payload||{},receipt=payload.receipt||{};
     const sources=inputSummary(payload.inputs);if(sources)holder.append(sources);
@@ -106,7 +110,8 @@ function renderInspector(view){
     if(selection.row.parent_job_id)view.inspector.append(button('Continuation of '+short(selection.row.parent_job_id),()=>{const parent=array(view.data.jobs?.items).find(row=>row.id===selection.row.parent_job_id);if(parent)select(view,'job',parent.id,parent);else select(view,'job',selection.row.parent_job_id,{id:selection.row.parent_job_id});}));
   }
   if(selection.kind==='link'){
-    view.inspector.append(el('p','tools-note','This link associates a candidate with preceding tool calls. It is not proof of prompt delivery or a causal score improvement.'),panel('Recorded link',selection.row,true));return;
+    view.inspector.append(el('p','tools-note',linkBasis(selection.row)+' · '+linkScope(selection.row)),panel('Recorded link',selection.row,true));
+    if(selection.row.link_basis==='canonical_candidate_source'&&selection.row.canonical_evaluation_id)view.inspector.append(button('Open canonical evaluator record',()=>select(view,'artifact',selection.row.canonical_evaluation_id,selection.row)));return;
   }
   const slot=el('div','tool-artifact');view.inspector.append(slot);load(view,selection,slot);
 }
@@ -160,7 +165,7 @@ function renderRows(view){
   }else if(view.tab==='calls'){
     content=table(['Episode / attempt','Caller','Result','Known cost','Request & response'],rows.map(row=>['artifact:'+row.receipt_id,[short(row.action_id)+' · '+(row.attempt??'—'),island(row.island_id),row.phase==='llm_start'?'Pending':row.status||'Response recorded',finite(row.known_cost)?'$'+row.known_cost.toFixed(4):'Unknown',artifactButton(view,row,'Open saved exchange')]]),view);
   }else{
-    content=table(['Program','Record kind','Island','Executed tools','Associated receipts','Link'],rows.map(row=>['link:'+(row.id||row.child_program_id),[button(row.child_program_id,()=>view.options.onProgram?.(row.child_program_id)),row.link_kind==='remeasurement'?'Remeasurement':row.link_kind==='mutation'?'Mutation':'Not recorded',island(row.island_id),array(row.tool_ids).map(short).join(', ')||'None recorded',array(row.receipt_ids).length,button('Inspect',()=>select(view,'link',row.id||row.child_program_id,row))]]),view);
+    content=table(['Program','Link basis / record','Island','Linked tools','Associated receipts','Link'],rows.map(row=>['link:'+(row.id||row.child_program_id),[button(row.child_program_id,()=>view.options.onProgram?.(row.child_program_id)),linkBasis(row)+' · '+(row.link_kind==='remeasurement'?'Remeasurement':row.link_kind==='mutation'?'Mutation':'Not recorded'),island(row.island_id),array(row.tool_ids).map(short).join(', ')||'None recorded',array(row.receipt_ids).length,button('Inspect',()=>select(view,'link',row.id||row.child_program_id,row))]]),view);
   }
   view.list.replaceChildren(content);
   if(focus){const row=[...view.list.querySelectorAll('[data-row-key]')].find(node=>node.dataset.rowKey===focus);row?.querySelector('button')?.focus({preventScroll:true});}

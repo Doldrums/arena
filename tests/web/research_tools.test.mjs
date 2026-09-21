@@ -184,3 +184,17 @@ test('failed input source, ancestry and available champion remain distinct',asyn
   const sources=root.querySelector('.tool-input-sources');assert.match(sources.textContent,/no admitted program ID/);assert.match(sources.textContent,/Available best reference/);assert.match(sources.textContent,/p8 · SHA256 eeeeeeeeeeee/);assert.match(sources.textContent,/does not prove which source/);assert.equal(sources.querySelector('details').open,false);assert.equal(root.querySelector('script'),null);
  }finally{dom.window.close();}
 });
+
+
+test('canonical producer links retain record kind and expose the exact evaluator separately from observations',async()=>{
+ const {dom,w,root}=mount();try{
+  const data=fixture(),canonical='c'.repeat(64),paths=[];
+  data.child_links=[{child_program_id:'p29',link_kind:'remeasurement',link_basis:'canonical_candidate_source',tool_ids:[id],receipt_ids:[receipt],canonical_evaluation_id:canonical,evaluation_id:'physical-123',candidate_source_sha256:'d'.repeat(64)},
+   {child_program_id:'p30',link_kind:'mutation',link_basis:'observations_before_generation',tool_ids:[id],receipt_ids:[receipt]}];
+  w.renderResearchTools(root,data,{runId:'run',fetchJSON:async path=>{paths.push(path);return {verified:true,kind:'candidate_evaluation',payload:{source:'# exact candidate <script>',evaluation:{status:'evaluated',evaluation_id:'physical-123'},provenance:{receipt_id:receipt}}};}});
+  tab(root,'links').click();assert.match(root.textContent,/Canonical producer · Remeasurement/);assert.match(root.textContent,/Observations before generation · Mutation/);
+  [...[...root.querySelectorAll('tbody tr')].find(n=>n.textContent.includes('p29')).querySelectorAll('button')].find(n=>n.textContent==='Inspect').click();assert.match(root.textContent,/not a new program/);assert.match(root.textContent,/Method benefit and cross-branch transfer are not established/);
+  [...root.querySelectorAll('button')].find(n=>n.textContent==='Open canonical evaluator record').click();await until(()=>root.textContent.includes('physical-123'));
+  assert.deepEqual(paths,['/api/runs/run/research-tool-artifacts/'+canonical]);assert.match(root.textContent,/Exact submitted candidate source/);assert.match(root.textContent,/# exact candidate <script>/);assert.equal(root.querySelector('script'),null);
+ }finally{dom.window.close();}
+});

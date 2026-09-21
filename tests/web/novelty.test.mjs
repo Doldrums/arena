@@ -124,6 +124,28 @@ test('legacy events remain generic and novelty receipts explicitly bound display
   }finally{dom.window.close();}
 });
 
+test('near-output refusals stay distinct from new output and exact repeats',()=>{
+  const {dom,doc,api}=mount();
+  try{
+    api.state.runId='fixture';api.state.tab='events';
+    const view=snapshot([
+      {seq:1,event:'decision',data:{policy:'output_novelty',status:'non_improving_near_repeat'}},
+      {seq:2,event:'decision',data:{policy:'output_novelty',status:'non_improving_near_repeat',remeasurement:true}},
+      {seq:3,event:'decision',data:{policy:'output_novelty',status:'exact_recorded_repeat'}}
+    ]);
+    view.stats.repeated_outputs=3;view.stats.output_resolution=1e-6;
+    api.applySnapshot(view);
+    assert.equal(doc.querySelector('[data-seq="1"] .event-title').textContent,'Near output without improvement · mutation not admitted');
+    assert.equal(doc.querySelector('[data-seq="2"] .event-title').textContent,'Near output without improvement · remeasurement');
+    assert.match(doc.querySelector('[data-seq="3"] .event-title').textContent,/Exact recorded output repeated/);
+    assert.match(doc.querySelector('#attempts').textContent,/3 output repeat refusals/);
+    assert.match(doc.querySelector('#attempts').title,/task-configured output resolution/);
+    assert.doesNotMatch(doc.querySelector('#attempts').textContent,/exact output repeats/);
+    delete view.stats.output_resolution;view.content_version='legacy';api.applySnapshot(view);
+    assert.match(doc.querySelector('#attempts').textContent,/3 exact output repeats/);
+  }finally{dom.window.close();}
+});
+
 test('four-step diagram includes novelty under Generate with rejection and evaluation edges',()=>{
   const dom=new JSDOM('<main id="graph"></main>',{runScripts:'outside-only',pretendToBeVisual:true});
   try{

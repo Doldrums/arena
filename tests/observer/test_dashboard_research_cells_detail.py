@@ -60,6 +60,7 @@ def test_recorded_current_contract_default_is_disabled_but_missing_config_or_unk
     assert research_tools_view({'engine_contract':'espalier-3.27','config':{'population_size':24}}, {}, [])['configuration']['status'] == 'disabled'
     assert research_tools_view({'engine_contract':'espalier-3.28','config':{'population_size':24}}, {}, [])['configuration']['status'] == 'disabled'
     assert research_tools_view({'engine_contract':'espalier-3.35','config':{'population_size':24}}, {}, [])['configuration']['status'] == 'disabled'
+    assert research_tools_view({'engine_contract':'espalier-3.36','config':{'population_size':24}}, {}, [])['configuration']['status'] == 'disabled'
     for start in ({'engine_contract':'espalier-3.21'}, {'engine_contract':'unknown','config':{}}, {'config':{}}):
         assert research_tools_view(start,{},[])['configuration']['status'] == 'not_recorded'
     assert research_tools_view({}, {'identity':{'engine_contract':'espalier-3.21'},'config':{}}, [])['configuration']['status'] == 'disabled'

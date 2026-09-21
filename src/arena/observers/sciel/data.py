@@ -1122,8 +1122,9 @@ class RunStore:
                 iteration=_iteration(row), summary=summary, data=_safe(row, compact=True)))
         reflections = sum(row.get("event") == "research" and row.get("phase") == "reflection" for row in rows)
         config = start.get("config") if isinstance(start.get("config"), dict) else _dict(checkpoint.get("config"))
-        cost_status = "reported" if cost_exact else "known_logged_lower_bound" if cost is not None else "unavailable"
-        if cost is not None and _dict(config.get("llm")).get("cost_reporting") == "estimated_uncached_token_rates":
+        subscription = _dict(config.get("llm")).get("provider") == "codex_responses"
+        cost_status = "subscription_unpriced" if subscription else "reported" if cost_exact else "known_logged_lower_bound" if cost is not None else "unavailable"
+        if not subscription and cost is not None and _dict(config.get("llm")).get("cost_reporting") == "estimated_uncached_token_rates":
             cost_status = "estimated"
             cost_source = "estimated_uncached_token_rates / " + cost_source
         if unknown_charge:
@@ -1143,13 +1144,16 @@ class RunStore:
             checkpoint.get('n_output_repeats'), end.get('n_output_repeats'),
             *(row.get('n_output_repeats') for row in rows if row.get('policy') == 'output_novelty'))
             if type(value) is int and value >= 0), default=None)
+        output_resolution = _dict(config.get('candidate_novelty')).get('output_resolution')
         snapshot = dict(schema=SCHEMA, run=run, stats=dict(iterations=iterations, evaluations=evaluations,
             remeasurements=remeasurements,
             measured_results=measured_results, repeated_outputs=repeated_outputs,
+            output_resolution=output_resolution,
             attempts=len(trials), hypotheses=sum(isinstance(item.get("hypothesis"), dict) for item in trials),
             lessons=sum(item["status"] == "active" for item in lessons), reflections=reflections,
             cost_total=_number(cost), cost_source=cost_source,
-            cost_status=cost_status,
+            cost_status=cost_status, billing_mode="subscription_unpriced" if subscription else None,
+            unknown_cost_present=unknown_charge, llm_unpriced_calls=checkpoint.get("llm_unpriced_calls", 0),
             best_score=best, seed_score=observed_seed_score if observed_seed_score is not None
                 else _number(end.get("seed_score", checkpoint.get("seed_score")))),
             curves=curves, programs=programs, trials=trials, hypotheses=[item for item in trials if isinstance(item.get("hypothesis"), dict)],
@@ -1171,6 +1175,7 @@ class RunStore:
             _dict(checkpoint.get('identity')).get('task_hash'), iterations)
         run['committed_effort'] = dict(scope='committed_journal', ordinary_iterations=iterations,
             ordinary_successful_evaluations=evaluations, known_llm_usd=_number(cost), cost_status=cost_status,
+            billing_mode="subscription_unpriced" if subscription else None, unknown_cost_present=unknown_charge,
             configured_models=_list(start.get('models')),
             note='Committed accounting only. Physical pending receipts and actual model use require the selected run view.')
         return snapshot, sources, evidence, (start, end, modified, _stop_detail(checkpoint, rows[last_start + 1:]))

@@ -13,7 +13,7 @@ def write(path, value):
     path.write_text(json.dumps(value))
 
 
-def fixture(tmp_path, *, score=-2, unknown=False):
+def fixture(tmp_path, *, score=-2, unknown=False, subscription=False):
     source='def result(): return -2\n'
     start=dict(event='run_start',run_id='run-1',segment_id='s1',event_seq=1,
         timestamp='2026-09-20T10:00:00+00:00',task='test',config={'parallel_search':{'enabled':True}})
@@ -26,6 +26,11 @@ def fixture(tmp_path, *, score=-2, unknown=False):
         write(path/'intent.json',dict(schema='sciel-parallel-call/1',key=key,kind=kind,request=request,request_sha256=digest))
         write(path/'dispatched.json',dict(request_sha256=digest,timestamp='2026-09-20T10:00:00+00:00'))
         value=dict(cost=cost,cost_provenance={'source':'provider_reported'}) if kind=='llm' else dict(result={'ok':True,'score':score,'cases':{'native':score,'validity':1}})
+        if kind=='llm' and subscription:
+            value.update(cost=None, finish_reason='stop', response_error=None, prompt_tokens=40, completion_tokens=12,
+                cost_provenance={'schema':'sciel-llm-cost-provenance/1','source':'subscription_unpriced',
+                    'provider':'codex_responses','response_status':'completed',
+                    'endpoint_sha256':hashlib.sha256(b'https://chatgpt.com/backend-api/codex/responses').hexdigest()})
         payload=dict(request_sha256=digest,status='returned',completed_at='2026-09-20T10:00:'+time+'+00:00',value=value)
         write(path/'receipt.json',dict(payload=payload,sha256=_digest(payload)))
         rows.append(dict(event='decision',policy='parallel_search',action='io_receipt',wave=0,job_call=key,
@@ -129,3 +134,68 @@ def test_live_uncommitted_call_refreshes_exact_cost_and_models_without_changing_
     assert second['total']['physical_llm_calls']==3 and second['to_best']==first['to_best']
     assert (tmp_path/'sciel_events.jsonl').read_bytes()==raw
     assert json.loads((tmp_path/'checkpoint.json').read_bytes())==checkpoint
+
+
+def test_subscription_completed_receipts_have_usage_but_no_dollar_price(tmp_path):
+    start,rows,basis,_=fixture(tmp_path,subscription=True)
+    view=EffortMonitor().observe(tmp_path,start,rows,basis)
+    total=view['total']
+    assert total['reported_usd'] is None
+    assert total['unpriced_llm_calls']==2 and total['unknown_cost_calls']==0
+    assert total['pending_llm_calls']==0 and total['status']=='complete'
+    assert total['cost_status']=='subscription_unpriced'
+    assert total['prompt_tokens']==80 and total['completion_tokens']==24
+    assert total['token_usage_complete'] is True
+    assert view['to_best']['unpriced_llm_calls']==1
+    assert view['to_best']['pending_llm_calls']==1
+
+
+def test_initial_pending_subscription_has_no_zero_usd_or_completed_call():
+    fact=dict(kind='llm',key='G:0',wave='0',dispatched_at='2026-09-20T10:00:00+00:00',
+        completed_at=None,reported_usd=None,unpriced=False,prompt_tokens=None,completion_tokens=None,
+        model='native-model',cost_source=None)
+    scope=EffortMonitor._scope([fact],'2026-09-20T10:00:01+00:00',True,[],subscription=True)
+    assert scope['reported_usd'] is None and scope['cost_status']=='subscription_unpriced'
+    assert scope['billing_mode']=='subscription_unpriced'
+    assert scope['pending_llm_calls']==1 and scope['physical_llm_calls']==0
+    assert scope['unpriced_llm_calls']==scope['unknown_cost_calls']==0
+    assert scope['token_usage_complete'] is False
+    historical=EffortMonitor._scope([fact],'2026-09-20T10:00:01+00:00',True,[])
+    assert historical['billing_mode'] is None and historical['pending_llm_calls']==1
+
+
+@pytest.mark.parametrize('damage',['missing','endpoint','status','extra','bool_cost','error'])
+def test_unpriced_classifier_rejects_damaged_markers(damage):
+    from arena.observers.sciel.cost_accounting import subscription_unpriced
+    value={'cost':None,'finish_reason':'stop','cost_provenance':{
+        'schema':'sciel-llm-cost-provenance/1','source':'subscription_unpriced','provider':'codex_responses',
+        'response_status':'completed','endpoint_sha256':hashlib.sha256(b'https://chatgpt.com/backend-api/codex/responses').hexdigest()}}
+    assert subscription_unpriced(value) is True
+    if damage=='missing':value.pop('cost_provenance')
+    elif damage=='endpoint':value['cost_provenance']['endpoint_sha256']='a'*64
+    elif damage=='status':value['finish_reason']='length'
+    elif damage=='extra':value['cost_provenance']['authorization']='must not escape'
+    elif damage=='bool_cost':value['cost']=False
+    else:value['response_error']={'reason':'failed'}
+    assert subscription_unpriced(value) is False
+
+
+def test_subscription_runlist_keeps_billing_mode_after_unknown_dispatch(tmp_path):
+    from arena.observers.sciel.data import RunStore
+    rows=[dict(event='run_start',run_id='subscription-run',segment_id='s1',event_seq=1,
+        timestamp='2026-09-20T10:00:00+00:00',task='fixture',models=['native-model'],
+        config={'llm':{'provider':'codex_responses','cost_reporting':'estimated_uncached_token_rates'}},
+        counters={'cost_total':0,'iteration_no':0}),
+        dict(event='decision',run_id='subscription-run',segment_id='s1',event_seq=2,
+            timestamp='2026-09-20T10:00:01+00:00',policy='cost_accounting',action='unknown_cost',
+            cost=None,current_call_cost_unknown=True)]
+    (tmp_path/'sciel_events.jsonl').write_text(''.join(json.dumps(row)+'\n' for row in rows))
+    store=RunStore([tmp_path],timing_cache_dir=tmp_path/'timings')
+    run=store.discover()[0];snapshot=store.snapshot(run['id'])
+    assert snapshot['stats']['billing_mode']=='subscription_unpriced'
+    assert snapshot['stats']['unknown_cost_present'] is True
+    assert snapshot['stats']['cost_status']=='known_logged_lower_bound'
+    assert run['committed_effort']['billing_mode']=='subscription_unpriced'
+    assert run['committed_effort']['unknown_cost_present'] is True
+    assert any('unknown' in warning.lower() for warning in snapshot['warnings'])
+    assert not any('token-rate estimates' in warning for warning in snapshot['warnings'])

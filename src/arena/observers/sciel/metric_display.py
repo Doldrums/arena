@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import json
 import math
 import re
 
@@ -119,6 +120,78 @@ def _delta(child, parent):
     return _number(child['value'] - parent['value'])
 
 
+def _canonical_tool_observations(rows, *, run_id, task_hash):
+    """Bind admitted tool results to their immutable canonical journal evidence.
+
+    These candidates deliberately have no ordinary hypothesis/KB experiment.
+    Their submission payload is also saved in the iteration; hashing its exact
+    artifact envelope authenticates it against the preceding research step.
+    No tool-reported observation or current checkpoint score supplies a value.
+    """
+    steps, observations = {}, {}
+    if not isinstance(run_id, str) or not isinstance(task_hash, str):
+        return observations
+    for row in rows:
+        if row.get('run_id') != run_id:
+            continue
+        if (row.get('event') == 'research_tool' and row.get('phase') == 'research_step'
+                and row.get('action') == 'submit_candidate' and row.get('status') == 'evaluated'):
+            ident = row.get('canonical_evaluation_id')
+            if isinstance(ident, str):
+                steps.setdefault(ident, []).append(row)
+        if (row.get('event') != 'iteration' or row.get('op_used') != 'research_tool'
+                or row.get('reason') not in (None, 'evaluated')
+                or not isinstance(row.get('child_id'), str)):
+            continue
+        meta = _dict(row.get('meta'))
+        submission = _dict(_dict(meta.get('research_tools')).get('candidate_submission'))
+        source, provenance = submission.get('source'), _dict(submission.get('provenance'))
+        evaluation = _dict(submission.get('evaluation'))
+        if not isinstance(source, str) or source != row.get('child_code'):
+            continue
+        digest = hashlib.sha256(source.encode('utf-8', errors='surrogatepass')).hexdigest()
+        score, evaluation_id = _number(row.get('child_score')), evaluation.get('evaluation_id')
+        if (provenance.get('schema') != 'sciel-research-candidate-submission/1'
+                or provenance != meta.get('research_candidate')
+                or provenance.get('candidate_origin') != 'research_tool'
+                or provenance.get('candidate_source_sha256') != digest
+                or any(not isinstance(provenance.get(key), str) or not provenance[key]
+                       for key in ('cell_id', 'action_id'))
+                or evaluation.get('schema') != 'sciel-research-candidate-evaluation/1'
+                or evaluation.get('source_sha256') != digest or evaluation.get('status') != 'evaluated'
+                or not isinstance(evaluation_id, str) or meta.get('evaluation_id') != evaluation_id
+                or score is None or _number(evaluation.get('score')) != score
+                or not isinstance(evaluation.get('cases'), dict) or evaluation['cases'] != row.get('cases')):
+            continue
+        selected = [item for item in meta.get('evaluations', []) if isinstance(item, dict)
+                    and item.get('evaluation_id') == evaluation_id] if isinstance(meta.get('evaluations'), list) else []
+        if (len(selected) != 1 or selected[0].get('ok') is not True
+                or selected[0].get('admission') != 'candidate'
+                or selected[0].get('source_sha256') != digest or _number(selected[0].get('score')) != score):
+            continue
+        novelty = evaluation.get('output_novelty')
+        if novelty is not None and (_dict(_dict(novelty).get('binding')).get('task_hash') != task_hash
+                or _dict(_dict(novelty).get('binding')).get('source_sha256') != digest):
+            continue
+        try:
+            encoded = json.dumps(dict(schema='sciel-research-tool-artifact/1', kind='candidate_evaluation',
+                payload=submission), sort_keys=True, separators=(',', ':'), ensure_ascii=True, allow_nan=False).encode()
+        except (ValueError, TypeError, OverflowError, RecursionError):
+            continue
+        if len(encoded) > 2 * 1024 * 1024:
+            continue
+        canonical_id = hashlib.sha256(encoded).hexdigest()
+        matches = [step for step in steps.get(canonical_id, [])
+            if step.get('source_sha256') == digest
+            and all(step.get(key) == provenance.get(key) for key in ('cell_id', 'action_id'))
+            and all(isinstance(provenance.get(key), str) and step.get('candidate_' + key) == provenance[key]
+                    for key in ('receipt_id', 'tool_id', 'invocation_id'))]
+        if matches:
+            observations[row['child_id']] = dict(source_sha256=digest, score=score,
+                cases=evaluation['cases'], canonical_evaluation_id=canonical_id)
+    return observations
+
+
 def project_metrics(snapshot, checkpoint, rows, sources, evidence):
     """Attach bounded display fields through explicit observation/program IDs.
 
@@ -168,10 +241,18 @@ def project_metrics(snapshot, checkpoint, rows, sources, evidence):
         return display.observation(record.get('parent_score'), cases=record.get('parent_cases'),
             metric=record.get('metric'))
 
+    tool_observations = _canonical_tool_observations(rows,
+        run_id=snapshot['run'].get('run_id'), task_hash=identity.get('task_hash'))
     trials = {}
     for trial in snapshot['trials']:
         record = evidence.get(trial['id'])
         current = display.record(record) if record else display.unknown(trial.get('score'))
+        tool = tool_observations.get(trial.get('candidate_id')) if not record else None
+        if (tool and trial.get('operator') == 'research_tool' and trial.get('status') == 'evaluated'
+                and tool['source_sha256'] == trial.get('source_sha256')
+                and tool['score'] == _number(trial.get('score'))):
+            current = display.observation(tool['score'], cases=tool['cases'])
+            trial['cases'] = copy.deepcopy(tool['cases'])
         prior = parent(record)
         trial.update(metric_display=current, parent_metric_display=prior,
             display_delta=_delta(current, prior))
