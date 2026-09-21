@@ -183,3 +183,62 @@ def test_empty_collection_is_explicit_and_inputs_are_not_modified():
     before = deepcopy(source)
     build_results_research(source)
     assert source == before
+
+
+def physical_usage(*, complete=True):
+    return dict(scope="total_physical_receipts", billing_mode="subscription_unpriced",
+                prompt_tokens=1200, completion_tokens=300, token_usage_complete=complete,
+                physical_llm_calls=4, unpriced_llm_calls=4)
+
+
+def test_complete_subscription_tokens_are_total_usage_never_cost_to_best():
+    source = run()
+    source["effort"]["usage"] = physical_usage()
+    original = deepcopy(source)
+    result = build_results_research(payload(source))
+    row = result["runs"][0]
+    assert row["tokens"] == 1500
+    assert row["usage"] == physical_usage()
+    assert row["to_best_wall_seconds"] == 250
+    assert "cost" not in json.dumps(row) and "to_best_tokens" not in row
+    assert validate_results_research(result) is result
+    assert source == original
+
+
+def test_partial_physical_receipts_preserve_observed_subtotals_without_total_tokens():
+    source = run()
+    source["effort"]["usage"] = physical_usage(complete=False)
+    row = build_results_research(payload(source))["runs"][0]
+    assert row["tokens"] is None
+    assert row["usage"]["prompt_tokens"] == 1200
+    assert row["usage"]["token_usage_complete"] is False
+
+
+@pytest.mark.parametrize("mutation", [
+    lambda u: u.update(scope="to_best"),
+    lambda u: u.update(billing_mode="free"),
+    lambda u: u.update(billing_mode=None),
+    lambda u: u.update(prompt_tokens=True),
+    lambda u: u.update(completion_tokens=-1),
+    lambda u: u.update(prompt_tokens=None),
+    lambda u: u.update(physical_llm_calls=None),
+    lambda u: u.update(unpriced_llm_calls=5),
+    lambda u: u.update(token_usage_complete=1),
+    lambda u: u.update(receipt_id="private-evidence"),
+    lambda u: u.update(cost_total=0),
+])
+def test_physical_usage_rejects_private_fields_invalid_coverage_and_price_claims(mutation):
+    source = run()
+    source["effort"]["usage"] = physical_usage()
+    mutation(source["effort"]["usage"])
+    with pytest.raises(RegistryError):
+        build_results_research(payload(source))
+
+
+def test_published_tokens_must_match_complete_receipt_usage():
+    source = run()
+    source["effort"]["usage"] = physical_usage()
+    result = build_results_research(payload(source))
+    result["runs"][0]["tokens"] = 1499
+    with pytest.raises(RegistryError):
+        validate_results_research(result)

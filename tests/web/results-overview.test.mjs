@@ -3,14 +3,15 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
 const html=readFileSync(new URL('../../web/results.html',import.meta.url),'utf8').replace('data-results-showcase="true"','data-results-showcase="test"');
-const source=readFileSync(new URL('../../web/arena-results-overview.js',import.meta.url),'utf8').replace(/^export /gm,'');
+const source=readFileSync(new URL('../../web/arena-results-overview.js',import.meta.url),'utf8').replace(/^import .*$/gm,'').replace(/^export /gm,'');
+const researchSource=readFileSync(new URL('../../web/results-research.js',import.meta.url),'utf8').replace(/^export /gm,'');
 const sample=JSON.parse(readFileSync(new URL('../../registry/results-overview.json',import.meta.url),'utf8'));
 const copy=v=>JSON.parse(JSON.stringify(v));
 const flush=async()=>{for(let i=0;i<5;i++)await new Promise(r=>setImmediate(r));};
 function mount({key='',confirmed=false,fetcher,timeout=5000}={}){
  const dom=new JSDOM(html,{url:'http://arena.test/results',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window,doc=w.document,calls=[];
  if(confirmed)doc.body.dataset.resultsAccess='connected';
- const storage={getItem:()=>key};w.eval(`${source};window.mount=initResultsOverview;`);
+ const storage={getItem:()=>key};w.eval(`(()=>{${researchSource};window.researchSummary=researchSummary;})();${source};window.mount=initResultsOverview;`);
  const app=w.mount({doc,storage,pollMs:0,requestTimeoutMs:timeout,fetcher:async(path,options)=>{calls.push({path,options});return fetcher?fetcher(path,options,calls.length):{ok:true,json:async()=>copy(sample)};}});
  return {doc,w,app,calls,root:doc.getElementById('results-overview'),close(){app.destroy();w.close();}};
 }
@@ -26,7 +27,7 @@ test('score plot selects one full cohort contract and does not blend other tasks
 });
 test('resource chart excludes incomplete token counts but retains failed verified scores for time',async()=>{
  const p=copy(sample);p.cohorts=[{...p.cohorts[0],points:[{system:'sciel-release',model:'m',state:'failed',seed_score:-1,best_score:0,wall_seconds:120,total_tokens:700,usage_complete:false,evidence_partial:true}]}];
- const t=mount({fetcher:async()=>({ok:true,json:async()=>p})});try{await flush();assert.equal(t.root.querySelector('[data-overview-focus=resource]').value,'time','when tokens are absent, the initial chart uses recorded wall time');const select=t.root.querySelector('[data-overview-focus=resource]');select.value='tokens';select.dispatchEvent(new t.w.Event('change'));assert.equal(t.root.querySelectorAll('.overview-point').length,0);const timeSelect=t.root.querySelector('[data-overview-focus=resource]');timeSelect.value='time';timeSelect.dispatchEvent(new t.w.Event('change'));const point=t.root.querySelector('.overview-point');assert.ok(point);assert.match(point.getAttribute('aria-label'),/-1 → 0/);assert.match(point.getAttribute('aria-label'),/failed.*partial/);point.dispatchEvent(new t.w.Event('focus'));assert.match(t.root.querySelector('.overview-chart-detail').textContent,/failed/);}finally{t.close();}
+ const t=mount({fetcher:async()=>({ok:true,json:async()=>p})});try{await flush();assert.equal(t.root.querySelector('[data-overview-focus=resource]').value,'time','when tokens are absent, the initial chart uses recorded wall time');const select=t.root.querySelector('[data-overview-focus=resource]');select.value='tokens';select.dispatchEvent(new t.w.Event('change'));assert.equal(t.root.querySelectorAll('.overview-point').length,0);const timeSelect=t.root.querySelector('[data-overview-focus=resource]');timeSelect.value='time';timeSelect.dispatchEvent(new t.w.Event('change'));const point=t.root.querySelector('.overview-point');assert.ok(point);assert.match(point.getAttribute('aria-label'),/-1 → 0/);assert.match(point.getAttribute('aria-label'),/failed.*partial/);point.dispatchEvent(new t.w.Event('focus'));assert.match(point.closest('.showcase-card').querySelector('.overview-chart-detail').textContent,/failed/);}finally{t.close();}
 });
 test('all system and failure counts remain present when the short table is expanded',async()=>{
  const t=mount();try{await flush();assert.equal(t.root.querySelectorAll('.overview-systems-table tbody tr').length,Math.min(6,sample.systems.length));const toggle=t.root.querySelector('.overview-systems-table .overview-table-footer button');assert.equal(toggle.getAttribute('aria-expanded'),'false');toggle.click();assert.equal(t.root.querySelectorAll('.overview-systems-table tbody tr').length,sample.systems.length);assert.equal(t.root.querySelector('.overview-systems-table .overview-table-footer button').getAttribute('aria-expanded'),'true');const errors=[...t.root.querySelectorAll('.overview-status-list>div')].find(r=>r.textContent.includes('Stopped with an error'));assert.equal(errors.querySelector('dd').textContent,String(sample.summary.failed));assert.ok(!t.root.textContent.includes('rank #'));}finally{t.close();}
@@ -83,4 +84,25 @@ test('research results remain ready and inspectable when no integration runs are
   await t.app.refresh();assert.equal(t.root.dataset.state,'ready');assert.ok(t.root.querySelector('.overview-research-results'));
   p.research=null;await t.app.refresh();assert.equal(t.root.dataset.state,'empty');assert.match(t.root.textContent,/No published results yet/);assert.equal(t.root.querySelectorAll('.overview-research-row').length,0);
  }finally{t.close();}
+});
+
+test('research leads with measured quality, explicit elapsed checkpoints and all-model distributions',async()=>{
+ const p=copy(sample),base={task_id:'oe/circle_packing',task_name:'Circle packing',metric:'sum_radii',direction:'maximize',units:'unit_square_side_length',protocol:'a'.repeat(64),models:['model-a'],state:'paused',seed_score:1,best_score:2.6,total_wall_seconds:2000,to_best_wall_seconds:120,wall_scope:'elapsed_including_pauses',tokens:null,source:'native_observer',measurement_status:'measured'};
+ p.research={source_generated_at:p.generated_at,total:5,measured:4,runs:[base,{...base,best_score:2.65,to_best_wall_seconds:1200},{...base,models:['model-b'],best_score:2.63,to_best_wall_seconds:480},{...base,models:['model-b'],best_score:null,to_best_wall_seconds:null,state:'stopped',measurement_status:'unknown'},{...base,protocol:'b'.repeat(64),best_score:99}]};
+ const t=mount({fetcher:async()=>({ok:true,json:async()=>p})});try{
+  await flush();assert.equal(t.root.querySelector('.overview-content').firstElementChild.classList.contains('overview-research-results'),true);
+  const metric=key=>t.root.querySelector(`[data-research-metric=${key}] strong`).textContent;
+  assert.equal(metric('best'),'2.65');assert.equal(metric('budget'),'2.6');assert.equal(metric('improved'),'3 / 3');assert.equal(metric('models'),'2 / 2');
+  assert.equal(t.root.querySelectorAll('.overview-research-plot').length,2);assert.equal(t.root.querySelectorAll('.overview-model-dot').length,3,'all measured runs remain visible, not only each model best');
+  const budget=t.root.querySelector('[data-overview-focus=research-budget]');budget.focus();budget.value='900';budget.dispatchEvent(new t.w.Event('change'));assert.equal(metric('budget'),'2.63');assert.equal(t.doc.activeElement.dataset.overviewFocus,'research-budget');
+  const model=t.root.querySelector('[data-overview-focus=research-model]');model.value='model-b';model.dispatchEvent(new t.w.Event('change'));assert.equal(metric('best'),'2.63');assert.equal(metric('improved'),'1 / 1');assert.equal(t.root.querySelectorAll('.overview-model-dot').length,1);
+  assert.match(t.root.querySelector('.overview-research-results').textContent,/earlier outcomes from runs with a later best are not reconstructed/);
+  assert.ok(t.root.querySelector('.overview-integrations'));assert.match(t.root.querySelector('.overview-integrations summary').textContent,/Framework integration results/);
+ }finally{t.close();}
+});
+
+test('research token labels keep total receipt usage separate from elapsed-to-best and subscription price',async()=>{
+ const p=copy(sample),row={task_id:'oe/circle_packing',task_name:'Circle packing',metric:'sum_radii',direction:'maximize',units:'unit_square_side_length',protocol:'a'.repeat(64),models:['model-a'],state:'paused',seed_score:1,best_score:2.6,total_wall_seconds:1000,to_best_wall_seconds:120,wall_scope:'elapsed_including_pauses',tokens:300,source:'native_observer',measurement_status:'measured',usage:{scope:'total_physical_receipts',billing_mode:'subscription_unpriced',prompt_tokens:200,completion_tokens:100,token_usage_complete:true,physical_llm_calls:2,unpriced_llm_calls:2}};
+ p.research={source_generated_at:p.generated_at,total:1,measured:1,runs:[row]};
+ const t=mount({fetcher:async()=>({ok:true,json:async()=>p})});try{await flush();const table=t.root.querySelector('.overview-research-table');assert.match(table.textContent,/Total recorded tokens/);assert.match(table.textContent,/300/);assert.match(table.textContent,/Subscription · USD not supplied/);assert.match(table.textContent,/Total run receipts, not tokens to best/);assert.doesNotMatch(table.textContent,/\$0/);}finally{t.close();}
 });

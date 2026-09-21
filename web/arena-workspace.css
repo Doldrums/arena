@@ -141,6 +141,47 @@ body.arena-workspace {
 .arena-workspace :is(button,a,input,select,summary,[tabindex]):focus-visible {
   outline-color: #56565d;
 }
+/* Published analytics share the overview renderer inside the existing workspace. */
+.arena-workspace #published-results-overview {
+  --dashboard-ink: #27272c;
+  --dashboard-muted: #797981;
+  --dashboard-border: #e6e6ea;
+  margin-top: 20px;
+  min-width: 0;
+}
+.arena-workspace #published-results-overview .showcase-card {
+  min-width: 0;
+  padding: 23px 24px;
+  background: #fff;
+  border: 1px solid var(--dashboard-border);
+  border-radius: 21px;
+}
+.arena-workspace #published-results-overview .showcase-card h2 {
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: -.25px;
+  color: var(--dashboard-ink);
+}
+.arena-workspace #published-results-overview .showcase-empty {
+  padding: 24px;
+  color: var(--dashboard-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.arena-workspace #published-results-overview .showcase-skeleton {
+  display: block;
+  border-radius: 7px;
+  background: #eeeef1;
+  min-height: 12px;
+}
+.arena-workspace #published-results-overview .showcase-skeleton-label { width: 58%; }
+.arena-workspace #published-results-overview .showcase-skeleton-value { width: 36%; height: 30px; margin: 15px 0; }
+.arena-workspace #published-results-overview .showcase-skeleton-note { width: 86%; }
+.arena-workspace #published-results-overview .showcase-skeleton-plot { min-height: 250px; }
+.arena-workspace #published-results-overview footer {
+  margin-top: 0;
+}
 @media (max-width: 1200px) {
   body.arena-workspace { --workspace-rail: 200px; }
   .arena-workspace .workspace-brand { padding: 0 20px; gap: 10px; }

@@ -1,3 +1,5 @@
+import {initResultsOverview} from './arena-results-overview.js';
+
 const KEY_STORAGE = 'arena.queue.session-key';
 const STATES = new Set(['queued', 'preparing', 'running', 'completed', 'failed', 'blocked', 'cancelled']);
 const finite = value => typeof value === 'number' && Number.isFinite(value);
@@ -26,6 +28,7 @@ export function initResults({doc = document, fetcher = (...args) => fetch(...arg
   const win = doc.defaultView, $ = id => doc.getElementById(id);
   let key = '', rows = [], filtered = [], payload = null, epoch = 0, pending = null, timer = null, destroyed = false;
   const listeners = [];
+  let published = null, controlAvailable = null, capabilityController = null;
   try { key = storage.getItem(KEY_STORAGE) || ''; } catch {}
   function on(node, event, callback) { node.addEventListener(event,callback); listeners.push(() => node.removeEventListener(event,callback)); }
   function element(tag, className, text) {
@@ -36,6 +39,40 @@ export function initResults({doc = document, fetcher = (...args) => fetch(...arg
   }
   function note(parent, text) { parent.append(element('small','cell-note',text)); }
   function status(text) { $('results-status').textContent = text; }
+  function access(connected) {
+    doc.body.dataset.resultsAccess = connected ? 'connected' : 'overview';
+    doc.dispatchEvent(new win.CustomEvent('arena:results-access',{detail:{connected}}));
+  }
+  function showPublished(message = 'Published results') {
+    $('private-results-content').hidden = true;
+    $('published-results-overview').hidden = false;
+    $('results-refresh').hidden = true;
+    $('results-connect').hidden = controlAvailable !== true;
+    $('results-connect').textContent = key ? 'Access key' : 'Connect with key';
+    $('results-intro').textContent = 'Recorded results across research tasks, systems and models.';
+    $('results-footer-scope').textContent = 'Published results · read only';
+    status(message); access(false);
+    if (!published) published = initResultsOverview({doc,fetcher,storage,pollMs,rootId:'published-results-overview'});
+  }
+  function showPrivate() {
+    access(true); published?.destroy(); published = null;
+    $('published-results-overview').replaceChildren(); $('published-results-overview').hidden = true;
+    $('private-results-content').hidden = false;
+    $('results-refresh').hidden = false; $('results-connect').hidden = false;
+    $('results-footer-scope').textContent = 'Private workspace · recorded results only';
+  }
+  async function discoverControl() {
+    if (destroyed || capabilityController || controlAvailable !== null) return;
+    const controller = new win.AbortController(); capabilityController = controller;
+    const timeout = win.setTimeout(() => controller.abort(),10000);
+    try {
+      const response = await fetcher('/api/health',{cache:'no-store',credentials:'same-origin',redirect:'error',signal:controller.signal});
+      const health = response.ok ? await response.json() : null;
+      if (destroyed || controller.signal.aborted || controlAvailable !== null) return;
+      controlAvailable = health?.component === 'arena' && health.mode === 'private_control' && health.capabilities?.launch === true;
+      $('results-connect').hidden = !controlAvailable;
+    } catch {} finally { win.clearTimeout(timeout); if (capabilityController === controller) capabilityController = null; }
+  }
   function configureOptions(id, values, initial) {
     const select = $(id), previous = select.value;
     select.replaceChildren(...[...initial,...values].map(([value,label]) => { const item = element('option','',label); item.value = value; return item; }));
@@ -240,35 +277,44 @@ export function initResults({doc = document, fetcher = (...args) => fetch(...arg
     $('results-matrix').replaceChildren(element('p','empty',message));
   }
   async function refresh() {
-    if (!key || destroyed || pending) return;
+    if (destroyed || pending) return;
+    if (!key || controlAvailable === false) { if (!published) showPublished(); else await published.refresh(); return; }
     const generation = epoch, token = {}; pending = token;
     const controller = new win.AbortController(); token.controller = controller;
     const timeout = win.setTimeout(() => controller.abort(),30000);
     $('results-refresh').disabled = true;
     try {
       const response = await fetcher('/api/control/results',{cache:'no-store',credentials:'same-origin',redirect:'error',signal:controller.signal,headers:{Authorization:`Bearer ${key}`}});
+      if (generation !== epoch || destroyed) return;
+      if ([404,405,501].includes(response.status)) controlAvailable = false;
+      else if (response.ok || [401,403].includes(response.status)) controlAvailable = true;
       if (!response.ok) throw new Error(response.status === 401 ? 'The access key is missing, expired or revoked.' : response.status === 403 ? 'This key does not have access to results.' : `Results could not be loaded (HTTP ${response.status}).`);
       const result = await response.json();
       if (generation !== epoch || destroyed) return;
       if (result.schema !== 'arena.results/1' || !Array.isArray(result.runs)) throw new Error('The results response has an unsupported format.');
       payload = result; rows = result.runs.filter(run => run && typeof run === 'object' && typeof run.id === 'string');
-      filterOptions(); render();
+      filterOptions(); render(); showPrivate();
       const date = finite(result.generated_at) ? new Date(result.generated_at*1000) : null;
       status(`${result.scope === 'all' ? 'All accessible runs' : 'Your runs'} · ${date && !Number.isNaN(date.valueOf()) ? `Updated ${date.toLocaleTimeString()}` : 'Recorded evidence loaded'}`);
       $('results-connect').textContent = 'Access key';
     } catch (error) {
-      if (generation === epoch && !destroyed) { clear('Results are unavailable. Refresh or reconnect with your access key.'); status(error.name === 'AbortError' ? 'The results request timed out. Try refreshing.' : error.message); }
+      if (generation === epoch && !destroyed) {
+        clear('Private results are unavailable.');
+        const reason = controlAvailable === false ? 'Published results' : error.name === 'AbortError' ? 'Private results timed out. Showing published results.' : `${error.message} Showing published results.`;
+        showPublished(reason);
+      }
     } finally {
       win.clearTimeout(timeout);
       if (pending === token) pending = null;
       if (generation === epoch && !destroyed) $('results-refresh').disabled = !key;
     }
   }
-  function disconnect() {
+  function disconnect(showOverview = true) {
     epoch++; pending?.controller.abort(); pending = null; key = '';
     try { storage.removeItem(KEY_STORAGE); } catch {}
     $('results-key').value = ''; $('results-refresh').disabled = true; $('results-connect').textContent = 'Connect with key';
-    clear('Connect to view recorded results.'); status('Disconnected. The key and displayed results have been cleared.');
+    clear('Private results cleared.');
+    if (showOverview) { showPublished('Published results · private key disconnected.'); discoverControl(); }
   }
   on($('results-connect'),'click',() => { $('results-key-error').textContent = ''; $('results-key-dialog').showModal(); $('results-key').focus(); });
   on($('results-key-close'),'click',() => $('results-key-dialog').close());
@@ -276,7 +322,7 @@ export function initResults({doc = document, fetcher = (...args) => fetch(...arg
   on($('results-key-form'),'submit',async event => {
     event.preventDefault(); const value = $('results-key').value.trim();
     if (!value || /[\r\n]/.test(value)) { $('results-key-error').textContent = 'Enter a valid access key.'; return; }
-    disconnect(); key = value;
+    disconnect(false); key = value;
     try { storage.setItem(KEY_STORAGE,key); } catch {}
     $('results-key').value = ''; $('results-key-dialog').close(); await refresh();
   });
@@ -285,9 +331,9 @@ export function initResults({doc = document, fetcher = (...args) => fetch(...arg
   on($('results-search'),'input',render); on($('results-cohort'),'change',chart);
   for (const input of doc.querySelectorAll('input[name="results-axis"]')) on(input,'change',chart);
   overview();
-  if (key) refresh();
-  if (pollMs > 0) timer = win.setInterval(() => { if (!doc.hidden && !$('results-key-dialog').open && !doc.activeElement?.closest('.run-evidence')) refresh(); },pollMs);
-  return {refresh,disconnect,destroy() { destroyed = true; epoch++; pending?.controller.abort(); if (timer) win.clearInterval(timer); for (const remove of listeners) remove(); }};
+  if (key) refresh(); else { showPublished(); discoverControl(); }
+  if (pollMs > 0) timer = win.setInterval(() => { if (key && controlAvailable !== false && !doc.hidden && !$('results-key-dialog').open && !doc.activeElement?.closest('.run-evidence')) refresh(); },pollMs);
+  return {refresh,disconnect,destroy() { destroyed = true; epoch++; pending?.controller.abort(); capabilityController?.abort(); published?.destroy(); if (timer) win.clearInterval(timer); for (const remove of listeners) remove(); }};
 }
 
 if (typeof document !== 'undefined' && document.body?.dataset.resultsApp === 'true') initResults();

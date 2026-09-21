@@ -26,6 +26,10 @@ _DISPLAY_FIELDS = {"schema", "status", "value", "label", "units", "metric_sha256
 _RUN_FIELDS = {"task_id", "task_name", "metric", "direction", "units", "protocol", "models",
                "state", "seed_score", "best_score", "total_wall_seconds", "to_best_wall_seconds",
                "wall_scope", "tokens", "source", "measurement_status"}
+_USAGE_FIELDS = {"scope", "billing_mode", "prompt_tokens", "completion_tokens",
+                 "token_usage_complete", "physical_llm_calls", "unpriced_llm_calls"}
+_EFFORT_FIELDS = {"models", "total_wall_seconds", "total_wall_scope",
+                  "to_best_wall_seconds", "to_best_wall_scope"}
 
 
 def _require(condition, message):
@@ -93,13 +97,42 @@ def _wall(value, scope):
     return value if scope == WALL_SCOPE else None
 
 
+def _usage_count(value, *, nullable=False):
+    if value is None and nullable:
+        return None
+    _require(type(value) is int and 0 <= value <= 10**12, "invalid physical usage count")
+    return value
+
+
+def _usage(value):
+    """Allow only total physical receipt counters; these are not cost-to-best."""
+    _fields(value, _USAGE_FIELDS)
+    _require(value["scope"] == "total_physical_receipts", "invalid physical usage scope")
+    _require(value["billing_mode"] in (None, "subscription_unpriced"), "invalid billing mode")
+    _require(type(value["token_usage_complete"]) is bool, "invalid token coverage")
+    checked = dict(value)
+    for key in ("prompt_tokens", "completion_tokens", "physical_llm_calls", "unpriced_llm_calls"):
+        checked[key] = _usage_count(value[key], nullable=True)
+    calls, unpriced = checked["physical_llm_calls"], checked["unpriced_llm_calls"]
+    _require(unpriced is None or calls is not None and unpriced <= calls,
+             "unpriced calls exceed observed physical calls")
+    _require(not unpriced or value["billing_mode"] == "subscription_unpriced",
+             "unpriced subscription calls lack billing scope")
+    if value["token_usage_complete"]:
+        _require(all(checked[key] is not None for key in
+                     ("prompt_tokens", "completion_tokens", "physical_llm_calls")),
+                 "complete token usage lacks recorded totals")
+    return checked
+
+
 def build_results_research(payload):
     """Project ``arena.research-observer-input/1`` into a public research section.
 
     Input rows contain only an observer identity, task/status, hash-bound native
     metric and seed/best displays, and actual-model/elapsed-time effort fields.
-    Costs and tokens are deliberately unavailable: committed journal cost is not
-    a complete provider bill, and observer effort does not supply a token ledger.
+    Optional physical receipt usage keeps subscription calls distinct from
+    missing pricing. Tokens cover the full recorded run, never time-to-best;
+    costs are not published or inferred from subscription usage.
     """
     _fields(payload, {"schema", "source_generated_at", "total", "runs"})
     _require(payload["schema"] == INPUT_SCHEMA, "unsupported observer input schema")
@@ -132,8 +165,9 @@ def build_results_research(payload):
         seed = _display(row["seed"], metric, label, units)
         best = _display(row["best"], metric, label, units)
         effort = row["effort"]
-        _fields(effort, {"models", "total_wall_seconds", "total_wall_scope",
-                         "to_best_wall_seconds", "to_best_wall_scope"})
+        _require(type(effort) is dict, "unsupported effort object")
+        _fields(effort, _EFFORT_FIELDS | ({"usage"} if "usage" in effort else set()))
+        usage = _usage(effort["usage"]) if "usage" in effort else None
         protocol = hashlib.sha256(json.dumps(
             ["arena.native-research-protocol/1", metric["task_hash"], metric["sha256"]],
             separators=(",", ":"), ensure_ascii=True).encode()).hexdigest()
@@ -145,6 +179,10 @@ def build_results_research(payload):
                 if best is not None else None,
             wall_scope="elapsed_including_pauses", tokens=None, source="native_observer",
             measurement_status=row["best"]["status"])
+        if usage is not None:
+            projected["usage"] = usage
+            if usage["token_usage_complete"]:
+                projected["tokens"] = usage["prompt_tokens"] + usage["completion_tokens"]
         result["runs"].append(projected)
         result["measured"] += best is not None
     result["runs"].sort(key=lambda row: (row["task_id"], row["protocol"], tuple(row["models"]),
@@ -162,7 +200,8 @@ def validate_results_research(value):
     observed = 0
     protocols = {}
     for row in value["runs"]:
-        _fields(row, _RUN_FIELDS)
+        _require(type(row) is dict, "unsupported published run")
+        _fields(row, _RUN_FIELDS | ({"usage"} if "usage" in row else set()))
         task = _identifier(row["task_id"])
         _require(row["task_name"] == _task_title(task), "unreviewed task title")
         _identifier(row["metric"])
@@ -186,7 +225,13 @@ def validate_results_research(value):
         _require(best is not None or best_wall is None, "time to an unmeasured best")
         if total_wall is not None and best_wall is not None:
             _require(best_wall <= total_wall, "time to best exceeds total elapsed time")
-        _require(row["wall_scope"] == "elapsed_including_pauses" and row["tokens"] is None
+        usage = _usage(row["usage"]) if "usage" in row else None
+        expected_tokens = (usage["prompt_tokens"] + usage["completion_tokens"]
+                           if usage is not None and usage["token_usage_complete"] else None)
+        _require(row["tokens"] == expected_tokens
+                 and (row["tokens"] is None or type(row["tokens"]) is int),
+                 "tokens lack a complete physical receipt ledger")
+        _require(row["wall_scope"] == "elapsed_including_pauses"
                  and row["source"] == "native_observer", "unsupported effort or evidence claim")
         observed += best is not None
     _require(observed == measured, "inconsistent measured coverage")

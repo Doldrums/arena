@@ -1,3 +1,5 @@
+import {researchSummary} from './results-research.js';
+
 const numeric = value => typeof value === 'number' && Number.isFinite(value);
 const fmt = value => numeric(value) ? new Intl.NumberFormat('en', {maximumSignificantDigits:5}).format(value) : 'Not recorded';
 const scoreNumber = value => numeric(value) ? new Intl.NumberFormat('en',{maximumSignificantDigits:10}).format(value) : 'Not recorded';
@@ -9,9 +11,9 @@ const cohortKey = c => JSON.stringify([c.cohort,c.task_id,c.metric,c.direction])
 
 // The discovery page reads only an operator-published aggregate. It never sends a
 // control credential and never falls back to private run or queue endpoints.
-export function initResultsOverview({doc=document,fetcher=(...args)=>fetch(...args),storage=sessionStorage,pollMs=60000,requestTimeoutMs=20000}={}) {
-  const root=doc.getElementById('results-overview'); if(!root) return {destroy(){}};
-  const win=doc.defaultView; let data=null,pending=null,epoch=0,destroyed=false,expanded=false,selectedCohort='',axis='tokens',enabled=true,resultTask='',resultSystem='all',resultPage=0,researchGroup='',researchAll=false,researchPage=0;
+export function initResultsOverview({doc=document,fetcher=(...args)=>fetch(...args),storage=sessionStorage,pollMs=60000,requestTimeoutMs=20000,rootId='results-overview'}={}) {
+  const root=doc.getElementById(rootId); if(!root) return {destroy(){}};
+  const win=doc.defaultView; let data=null,pending=null,epoch=0,destroyed=false,expanded=false,selectedCohort='',axis='tokens',enabled=true,resultTask='',resultSystem='all',resultPage=0,researchGroup='',researchAll=false,researchPage=0,researchModel='all',researchBudget=300,integrationOpen=false;
   enabled=doc.body.dataset.resultsAccess !== 'connected';
   const el=(tag,cls,text)=>{const n=doc.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;};
   const button=(text,callback)=>{const n=el('button','button',text);n.type='button';n.addEventListener('click',callback);return n;};
@@ -144,52 +146,127 @@ export function initResultsOverview({doc=document,fetcher=(...args)=>fetch(...ar
     panel.append(el('p','overview-results-note','Initial and result values use the same metric within each run. Native protocols stay separate; shared task names do not establish equivalent evaluation conditions.'));
     return panel;
   }
+  const modelLabel=value=>({'gpt-6-astra':'GPT-6 Astra','gpt-5.6-sol':'GPT-5.6 Sol','gpt-5.6-terra':'GPT-5.6 Terra','gpt-5.6-luna':'GPT-5.6 Luna','gpt-5.5':'GPT-5.5','anthropic/claude-opus-5':'Claude Opus 5'})[value]||value;
+  const researchModels=r=>r.models.length?r.models.map(modelLabel).join(' + '):'Model not recorded';
+  const elapsed=value=>!numeric(value)?'Not recorded':value<60?`${fmt(value)} s`:value<3600?minutes(value):`${fmt(value/3600)} h`;
+  function researchPlot(title,description){
+    const panel=el('section','overview-research-chart');panel.append(el('h3','',title),el('p','overview-note',description));
+    const svg=doc.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 620 310');svg.setAttribute('role','group');svg.setAttribute('aria-label',title);svg.classList.add('overview-research-plot');
+    const draw=(tag,attrs,text,parent=svg)=>{const n=doc.createElementNS(svg.namespaceURI,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;parent.append(n);return n;};
+    const detail=el('p','overview-chart-detail','Select a point for its measurements.');detail.setAttribute('role','status');panel.append(svg,detail);
+    const point=(attrs,row,extra='')=>{
+      const text=`${researchModels(row)} · ${scoreNumber(row.best_score)} · ${elapsed(row.to_best_wall_seconds)} to this run’s best · ${row.state}${extra}`;
+      const n=draw('circle',{...attrs,tabindex:0,role:'button','aria-label':text});draw('title',{},text,n);
+      const show=()=>{detail.textContent=text;};n.addEventListener('click',show);n.addEventListener('focus',show);n.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();show();}});return n;
+    };
+    return {panel,svg,draw,point,detail};
+  }
+  function researchTimeChart(rows,summary,context){
+    const plot=researchPlot('Quality & elapsed time','Each point is a run’s best result at its recorded elapsed time.');
+    const {panel,svg,draw,point}=plot;
+    const points=rows.filter(r=>r.measurement_status==='measured'&&numeric(r.best_score)&&numeric(r.to_best_wall_seconds)&&r.to_best_wall_seconds>=0);
+    if(!points.length){svg.remove();plot.detail.textContent='Paired result and elapsed-time measurements have not been recorded.';return panel;}
+    const values=points.map(r=>r.best_score),lo=Math.min(...values),hi=Math.max(...values),pad=(hi-lo)*.12||Math.max(Math.abs(hi)*.015,.001);
+    const maxT=Math.max(researchBudget,...points.map(r=>r.to_best_wall_seconds))*1.08||1;
+    const x=t=>77+Math.log1p(t/60)/Math.log1p(maxT/60)*508,y=v=>245-(v-lo+pad)/(hi-lo+2*pad)*204;
+    draw('rect',{x:77,y:33,width:Math.max(0,x(researchBudget)-77),height:212,class:'overview-budget-region'});
+    for(let i=0;i<5;i++){const value=lo-pad+(hi-lo+2*pad)*i/4;draw('line',{x1:77,x2:588,y1:y(value),y2:y(value),class:'overview-grid'});draw('text',{x:65,y:y(value)+4,'text-anchor':'end',class:'overview-axis'},fmt(value));}
+    for(const t of [0,60,300,900,3600,14400,86400,345600])if(t<=maxT){draw('text',{x:x(t),y:270,'text-anchor':'middle',class:'overview-axis'},t?elapsed(t):'0');}
+    draw('line',{x1:x(researchBudget),x2:x(researchBudget),y1:33,y2:245,class:'overview-budget-line'});
+    draw('text',{x:77,y:19,class:'overview-axis'},`${metricName(context.metric)} · ${context.direction==='maximize'?'higher':'lower'} is better`);
+    draw('text',{x:585,y:298,'text-anchor':'end',class:'overview-axis'},'Elapsed to best · logarithmic time axis');
+    const frontier=[...summary.frontier].sort((a,b)=>a.to_best_wall_seconds-b.to_best_wall_seconds);
+    if(frontier.length>1)draw('polyline',{points:frontier.map(r=>`${x(r.to_best_wall_seconds)},${y(r.best_score)}`).join(' '),class:'overview-frontier-line'});
+    points.forEach(r=>point({cx:x(r.to_best_wall_seconds),cy:y(r.best_score),r:summary.frontier.includes(r)?6:4.5,class:`overview-research-dot${summary.frontier.includes(r)?' on-frontier':''}`},r));
+    panel.append(el('p','overview-note',`${points.length} / ${rows.length} runs have paired values. Amber connects the observed frontier. Elapsed time includes pauses; each point is the time of that run’s final recorded best.`));return panel;
+  }
+  function researchModelChart(summary,context){
+    const plot=researchPlot('Results across models','All measured outcomes, with the median and best result for each model configuration.');
+    const {panel,svg,draw,point}=plot,groups=summary.groups;
+    const rows=groups.flatMap(g=>g.rows).filter(r=>r.measurement_status==='measured'&&numeric(r.best_score));
+    if(!rows.length){svg.remove();plot.detail.textContent='Model-level measurements have not been recorded.';return panel;}
+    const values=rows.map(r=>r.best_score),lo=Math.min(...values),hi=Math.max(...values),pad=(hi-lo)*.07||Math.max(Math.abs(hi)*.01,.001);
+    const height=Math.max(310,groups.length*48+90);svg.setAttribute('viewBox',`0 0 620 ${height}`);
+    const x=v=>167+(v-lo+pad)/(hi-lo+2*pad)*407,top=45,bottom=height-51,gap=(bottom-top)/Math.max(groups.length,1);
+    for(let i=0;i<4;i++){const value=lo-pad+(hi-lo+2*pad)*i/3;draw('line',{x1:x(value),x2:x(value),y1:top-15,y2:bottom,class:'overview-grid'});draw('text',{x:x(value),y:height-25,'text-anchor':'middle',class:'overview-axis'},fmt(value));}
+    draw('text',{x:167,y:18,class:'overview-axis'},metricName(context.metric));
+    groups.forEach((g,i)=>{
+      const y=top+gap*i+gap/2,label=g.rows[0]?researchModels(g.rows[0]):g.model;
+      draw('text',{x:153,y:y+4,'text-anchor':'end',class:'overview-model-label'},label.length>23?label.slice(0,21)+'…':label);
+      const measured=g.rows.filter(r=>r.measurement_status==='measured'&&numeric(r.best_score));
+      measured.forEach((r,j)=>point({cx:x(r.best_score),cy:y+((j%5)-2)*3,r:3.8,class:'overview-research-dot overview-model-dot'},r));
+      if(numeric(g.median))draw('line',{x1:x(g.median),x2:x(g.median),y1:y-13,y2:y+13,class:'overview-median-mark'});
+      if(g.best)point({cx:x(g.best.best_score),cy:y,r:6,class:'overview-research-dot on-frontier'},g.best,` · best of ${g.rows.length} recorded runs`);
+    });
+    panel.append(el('p','overview-note','Amber: best recorded. Black mark: median. All recorded outcomes remain in the distribution; these are observations, not estimates from independent repeated trials.'));return panel;
+  }
   function researchResults(){
     const research=data.research;if(!research?.runs?.length)return null;
-    const [panel,head]=card('SCiEL research results');panel.classList.add('overview-table-card','overview-research-results');
+    const [panel,head]=card('SCiEL · Research results');panel.classList.add('overview-table-card','overview-research-results');
     head.append(el('span','overview-note',`${research.measured} measured / ${research.total} recorded runs`));
     const groups=new Map();
     for(const r of research.runs){const key=JSON.stringify([r.task_id,r.metric,r.direction,r.protocol]);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(r);}
     if(!groups.has(researchGroup))researchGroup=[...groups].sort((a,b)=>a[1][0].task_name.localeCompare(b[1][0].task_name)||new Set(b[1].flatMap(r=>r.models)).size-new Set(a[1].flatMap(r=>r.models)).size)[0][0];
     const controls=el('div','overview-result-controls');const label=el('label','overview-select','Task / evaluator'),select=el('select');select.dataset.overviewFocus='research-task';
     for(const [key,rows] of groups){const r=rows[0],o=el('option','',`${r.task_name} · ${r.protocol.slice(0,6)} · ${rows.length} runs`);o.value=key;select.append(o);}select.value=researchGroup;
-    select.addEventListener('change',()=>{researchGroup=select.value;researchPage=0;render();});label.append(select);controls.append(label);
+    select.addEventListener('change',()=>{researchGroup=select.value;researchModel='all';researchPage=0;render();});label.append(select);controls.append(label);
+    const groupMembers=groups.get(researchGroup),modelKey=r=>r.models.join(' + ')||'Model not recorded';
+    const modelControl=el('label','overview-select','Model'),modelSelect=el('select');modelSelect.dataset.overviewFocus='research-model';
+    const modelOptions=[...new Set(groupMembers.map(modelKey))].sort();if(researchModel!=='all'&&!modelOptions.includes(researchModel))researchModel='all';
+    for(const key of ['all',...modelOptions]){const option=el('option','',key==='all'?'All models':researchModels(groupMembers.find(r=>modelKey(r)===key)));option.value=key;modelSelect.append(option);}modelSelect.value=researchModel;modelSelect.addEventListener('change',()=>{researchModel=modelSelect.value;researchPage=0;render();});modelControl.append(modelSelect);controls.append(modelControl);
+    const budgetControl=el('label','overview-select','Elapsed checkpoint'),budgetSelect=el('select');budgetSelect.dataset.overviewFocus='research-budget';
+    for(const [seconds,text] of [[300,'5 min'],[900,'15 min'],[3600,'1 hour']]){const option=el('option','',text);option.value=String(seconds);budgetSelect.append(option);}budgetSelect.value=String(researchBudget);budgetSelect.addEventListener('change',()=>{researchBudget=Number(budgetSelect.value);render();});budgetControl.append(budgetSelect);controls.append(budgetControl);
     const modeLabel=el('label','overview-select','Show'),mode=el('select');mode.dataset.overviewFocus='research-mode';
     for(const [value,text] of [['best','Best recorded per model'],['all','Every recorded run']]){const o=el('option','',text);o.value=value;mode.append(o);}mode.value=researchAll?'all':'best';mode.addEventListener('change',()=>{researchAll=mode.value==='all';researchPage=0;render();});modeLabel.append(mode);controls.append(modeLabel);panel.append(controls);
-    const members=groups.get(researchGroup),context=members[0],sign=context.direction==='minimize'?-1:1;
+    const members=groupMembers.filter(r=>researchModel==='all'||modelKey(r)===researchModel),context=members[0],sign=context.direction==='minimize'?-1:1;
     const models=r=>r.models.length?r.models.join(' + '):'Model not recorded';
     const buckets=new Map();for(const r of members){const key=models(r);if(!buckets.has(key))buckets.set(key,[]);buckets.get(key).push(r);}
     const compare=(a,b)=>numeric(a.best_score)&&numeric(b.best_score)?sign*(b.best_score-a.best_score):numeric(a.best_score)?-1:numeric(b.best_score)?1:0;
-    const representatives=[...buckets.values()].map(rows=>[...rows].sort(compare)[0]);
+    const summary=researchSummary(members,{budgetSeconds:researchBudget});
+    const representatives=summary.groups.map(g=>g.best||g.rows[0]);
     const rows=(researchAll?[...members]:representatives).sort((a,b)=>models(a).localeCompare(models(b))||compare(a,b));
-    const measured=members.filter(r=>numeric(r.best_score)),best=[...measured].sort(compare)[0];
-    const headline=el('div','overview-research-highlight');const measurement=el('div');measurement.append(el('span','overview-note',`${metricName(context.metric)} · ${context.direction==='maximize'?'higher':'lower'} is better`),el('strong','',scoreNumber(best?.best_score)),el('small','overview-note','Best observed in this evaluator group'));
-    const description=el('p','overview-note',`${members.length} recorded runs · ${buckets.size} model configurations. ${context.units.replace(/_/g,' ')}. Native observations; paused and stopped runs retain their measured outcomes.`);headline.append(measurement,description);panel.append(headline);
+    const best=summary.best,budgetBest=summary.bestWithinBudget;
+    const headline=el('div','overview-research-highlight');headline.append(el('p','overview-note',`${metricName(context.metric)} · ${context.direction==='maximize'?'higher':'lower'} is better · ${context.units.replace(/_/g,' ')}. One task and evaluator contract; ${members.length} recorded runs. Paused and stopped runs retain their measurements.`));panel.append(headline);
+    const metrics=el('div','overview-research-metrics');
+    const metric=(key,label,value,note)=>{const item=el('article','overview-research-metric');item.dataset.researchMetric=key;item.append(el('span','',label),el('strong','',value),el('small','',note));metrics.append(item);};
+    metric('best','Best recorded',scoreNumber(best?.best_score),best?`${researchModels(best)} · ${elapsed(best.to_best_wall_seconds)} to best`:'Measurement not recorded');
+    metric('budget',`Recorded within ${elapsed(researchBudget)}`,scoreNumber(budgetBest?.best_score),budgetBest?`${researchModels(budgetBest)} · ${elapsed(budgetBest.to_best_wall_seconds)} to final recorded best`:'No timed best result within this checkpoint');
+    metric('improved','Runs improving the initial solution',`${summary.improved} / ${summary.paired}`,`${summary.paired} paired initial/best measurements · ${summary.recorded} recorded runs`);
+    const improvingModels=summary.groups.filter(g=>g.improved>0&&g.rows.some(r=>r.models.length)).length;
+    metric('models','Models with recorded improvement',`${improvingModels} / ${summary.modelCount}`,'At least one improved outcome per model configuration');
+    panel.append(metrics);
+    const charts=el('div','overview-research-charts');charts.append(researchTimeChart(members,summary,context),researchModelChart(summary,context));panel.append(charts);
+    const evidenceHead=el('div','overview-research-evidence-heading');evidenceHead.append(el('h3','','Recorded outcomes'),el('p','overview-note',researchAll?'Every run in the selected group.':'Best outcome per model. Initial score and elapsed time belong to that same run.'));panel.append(evidenceHead);
     const wrap=el('div','overview-table-scroll');wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','SCiEL recorded research outcomes');const table=el('table','overview-table overview-research-table'),thead=el('thead'),tr=el('tr');
-    for(const text of ['Model','Initial','Best recorded','Change','Elapsed to best','Run status']){const th=el('th','',text);th.scope='col';tr.append(th);}thead.append(tr);table.append(thead);const body=el('tbody');researchPage=Math.min(researchPage,Math.max(0,Math.ceil(rows.length/8)-1));
+    for(const text of ['Model','Initial','Best recorded','Change','Elapsed to best','Total recorded tokens','Run status']){const th=el('th','',text);th.scope='col';tr.append(th);}thead.append(tr);table.append(thead);const body=el('tbody');researchPage=Math.min(researchPage,Math.max(0,Math.ceil(rows.length/8)-1));
     for(const r of rows.slice(researchPage*8,researchPage*8+8)){
       const row=el('tr','overview-research-row'),identity=el('th','',models(r));identity.scope='row';if(!researchAll)identity.append(el('small','',`Selected from ${buckets.get(models(r)).length} recorded runs`));row.append(identity,el('td','',scoreNumber(r.seed_score)));
       const result=el('td','overview-result-value');result.append(el('strong','',scoreNumber(r.best_score)));row.append(result);
       const delta=numeric(r.seed_score)&&numeric(r.best_score)?r.best_score-r.seed_score:null;
-      row.append(el('td',delta!==null&&delta*sign>0?'overview-result-gain':'',delta===null?'Not paired':delta===0?'Unchanged':`${delta>0?'+':''}${fmt(delta)}`),el('td','',numeric(r.to_best_wall_seconds)?minutes(r.to_best_wall_seconds):'Not recorded'),el('td','',r.state));body.append(row);
+      row.append(el('td',delta!==null&&delta*sign>0?'overview-result-gain':'',delta===null?'Not paired':delta===0?'Unchanged':`${delta>0?'+':''}${fmt(delta)}`),el('td','',numeric(r.to_best_wall_seconds)?minutes(r.to_best_wall_seconds):'Not recorded'));
+      const tokens=el('td','',numeric(r.tokens)?compact(r.tokens):'Not fully recorded');if(r.usage?.billing_mode==='subscription_unpriced')tokens.append(el('small','','Subscription · USD not supplied'));tokens.append(el('small','','Total run receipts, not tokens to best'));row.append(tokens,el('td','',r.state));body.append(row);
     }
     table.append(body);wrap.append(table);panel.append(wrap);
     const footer=el('footer','overview-table-footer');footer.append(el('span','overview-note',researchAll?`${researchPage*8+1}–${Math.min((researchPage+1)*8,rows.length)} of ${rows.length} recorded runs`:'Best outcome per model within this evaluator group; initial values and elapsed time come from that same run.'));
     if(rows.length>8){const nav=el('div','overview-result-pages');for(const [text,step,key] of [['← Previous',-1,'research-prev'],['Next →',1,'research-next']]){const b=button(text,()=>{researchPage+=step;render();});b.dataset.overviewFocus=key;b.disabled=step<0?researchPage===0:(researchPage+1)*8>=rows.length;nav.append(b);}footer.append(nav);}panel.append(footer);
-    panel.append(el('p','overview-results-note','Elapsed time includes pauses; it is not CPU time or API cost. Task and metric versions stay in separate evaluator groups.'));
+    const notes=el('details','overview-research-notes');notes.append(el('summary','','Measurement notes'));
+    notes.append(el('p','overview-note','Elapsed time includes pauses. Checkpoints select final recorded bests reached within the chosen time; earlier outcomes from runs with a later best are not reconstructed. Total run tokens cover physical receipts across the whole run, separately from time to best. Task and metric versions stay in separate evaluator groups.'));
+    if(numeric(research.source_generated_at))notes.append(el('p','overview-note','Research snapshot prepared '+new Date(research.source_generated_at*1000).toLocaleString('en-GB')+'. Imported runs are a recorded snapshot.'));
+    panel.append(notes);
     return panel;
   }
   function render(){
     const focused=content.contains(doc.activeElement)?doc.activeElement.dataset.overviewFocus:null;
     const scrolls=[...content.querySelectorAll('.overview-table-scroll')].map(n=>n.scrollLeft);
     content.replaceChildren();if(!data.summary.runs&&!data.research?.runs?.length){content.append(el('div','showcase-empty','No published results yet.'));return;}
-    if(data.summary.runs){
-      const stats=el('div','overview-stats');stats.append(stat('Integration runs',data.summary.runs,`${fmt(data.summary.completed)} completed · ${fmt(data.summary.active)} active or queued`),stat('System profiles',data.summary.systems,'Including versioned integration profiles'),stat('Models',data.summary.models,'Across all published runs'),stat('Verified programs',data.validity.unique_programs,'Distinct valid programs, including seeds'));content.append(stats);
-    }
     const research=researchResults();if(research)content.append(research);
     if(data.summary.runs){
-      const grid=el('div','overview-grid-layout');grid.append(chart(),outcomes());content.append(taskResults(),grid,table());
-      content.append(el('p','overview-note overview-scope',`Integration pilots · ${data.loaded} of ${data.total} accessible runs in this published snapshot.${data.truncated?' Older runs are outside this snapshot.':''} Scores are compared only within a shared evaluator contract.`));
+      const integration=el('details','overview-integrations');integration.open=integrationOpen||!research;integration.addEventListener('toggle',()=>{if(integration.isConnected)integrationOpen=integration.open;});
+      const toggle=el('summary');toggle.append(el('span','','Framework integration results'),el('span','overview-note',`${data.summary.systems} system profiles · ${data.summary.runs} runs`));integration.append(toggle);
+      const panels=el('div','overview-integration-content');
+      const stats=el('div','overview-stats');stats.append(stat('Integration runs',data.summary.runs,`${fmt(data.summary.completed)} completed · ${fmt(data.summary.active)} active or queued`),stat('System profiles',data.summary.systems,'Including versioned integration profiles'),stat('Models',data.summary.models,'Across all published runs'),stat('Verified programs',data.validity.unique_programs,'Distinct valid programs, including seeds'));panels.append(stats);
+      const grid=el('div','overview-grid-layout');grid.append(chart(),outcomes());panels.append(taskResults(),grid,table());
+      panels.append(el('p','overview-note overview-scope',`Integration pilots · ${data.loaded} of ${data.total} accessible runs in this published snapshot.${data.truncated?' Older runs are outside this snapshot.':''} Scores are compared only within a shared evaluator contract. Source prepared ${new Date(data.source_generated_at*1000).toLocaleString('en-GB')}.`));integration.append(panels);content.append(integration);
     }
     if(focused){const target=[...content.querySelectorAll('[data-overview-focus]')].find(n=>n.dataset.overviewFocus===focused);target?.focus({preventScroll:true});}
     [...content.querySelectorAll('.overview-table-scroll')].forEach((n,i)=>{n.scrollLeft=scrolls[i]||0;});
@@ -202,7 +279,7 @@ export function initResultsOverview({doc=document,fetcher=(...args)=>fetch(...ar
       const response=await Promise.race([fetcher('/api/results-overview',{cache:'no-store',credentials:'same-origin',redirect:'error',signal:controller.signal}),timeout]);if(!response.ok)throw new Error('unavailable');
       const next=await Promise.race([response.json(),timeout]);if(current!==epoch||destroyed||!enabled)return;
       if(next?.schema!=='arena.results-overview/1'||!next.summary||!next.validity||!Array.isArray(next.systems)||!Array.isArray(next.cohorts)||!numeric(next.generated_at))throw new Error('invalid');
-      data=next;retry.textContent='Refresh';render();const time=new Date((data.source_generated_at||data.generated_at)*1000);
+      data=next;retry.textContent='Refresh';render();const time=new Date(data.generated_at*1000);
       status.textContent=`Published snapshot · ${time.toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',timeZoneName:'short'})}`;root.dataset.state=data.summary.runs||data.research?.runs?.length?'ready':'empty';
     }catch{if(current!==epoch||destroyed||!enabled)return;root.dataset.state='error';status.textContent=data?'Update unavailable · showing the last published snapshot.':'Results overview is temporarily unavailable.';if(!data){content.replaceChildren(el('p','showcase-empty','The snapshot could not be loaded. Retry to reconnect.'));}retry.textContent='Retry';}
     finally{win.clearTimeout(timeoutId);if(current===epoch){pending=null;retry.disabled=false;root.setAttribute('aria-busy','false');}}

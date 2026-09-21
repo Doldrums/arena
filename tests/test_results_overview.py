@@ -333,3 +333,28 @@ def test_export_accepts_safe_research_section_and_rejects_raw_or_linked_input(tm
     research.symlink_to(control)
     failed = subprocess.run(command, capture_output=True, text=True)
     assert failed.returncode != 0 and target.read_bytes() == published
+
+
+def test_research_only_export_preserves_canonical_data_and_original_source_time(tmp_path):
+    root = Path(__file__).resolve().parents[1]
+    source, research, target = (tmp_path / name for name in ("existing.json", "research.json", "next.json"))
+    original = project(run())
+    source.write_text(json.dumps(original))
+    refreshed = research_section()
+    refreshed["source_generated_at"] = 200
+    research.write_text(json.dumps(refreshed))
+    command = [sys.executable, str(root / "scripts/export_results_overview.py"),
+               "--published-input", str(source), "--research-input", str(research), "--output", str(target)]
+    result = subprocess.run(command, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    published = json.loads(target.read_text())
+    assert published["research"] == refreshed
+    assert published["generated_at"] > original["generated_at"]
+    assert {k: v for k, v in published.items() if k not in {"research", "generated_at"}} == {
+        k: v for k, v in original.items() if k not in {"research", "generated_at"}}
+    assert json.loads(source.read_text()) == original
+    before = target.read_bytes()
+    refreshed["source_generated_at"] = 10**12
+    research.write_text(json.dumps(refreshed))
+    failed = subprocess.run(command, capture_output=True, text=True)
+    assert failed.returncode != 0 and target.read_bytes() == before

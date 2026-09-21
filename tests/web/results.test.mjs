@@ -4,32 +4,55 @@ import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
 
 const html = readFileSync(new URL('../../web/experiment-results.html',import.meta.url),'utf8').replace('data-results-app="true"','data-results-app="test"');
-const source = readFileSync(new URL('../../web/arena-results.js',import.meta.url),'utf8').replace(/^export /gm,'');
+const source = readFileSync(new URL('../../web/arena-results.js',import.meta.url),'utf8').replace(/^import .*$/gm,'').replace(/^export /gm,'');
+const researchSource = readFileSync(new URL('../../web/results-research.js',import.meta.url),'utf8').replace(/^export /gm,'');
+const overviewSource = readFileSync(new URL('../../web/arena-results-overview.js',import.meta.url),'utf8').replace(/^import .*$/gm,'').replace(/^export /gm,'');
+const publishedSample = JSON.parse(readFileSync(new URL('../../registry/results-overview.json',import.meta.url),'utf8'));
 const run = {
   id:'image-run',framework:'sciel-release',profile:'reference-sat',model:'model-a',state:'completed',label:'SCiEL pilot',returncode:0,
   metrics:{wall_seconds:400,canonical:{evaluations:7,valid:7,invalid:0,unique_valid_candidates:3,best_score:1,seed_score:1,score_gain:0,metric:'accuracy',direction:'maximize',task_id:'reference-sat',task_name:'Reference SAT',cohort:'a'.repeat(64),receipt_hashes:['b'.repeat(64)],status:'recorded'},native:{best_score:1,metric:'native_accuracy',direction:'maximize',task:'SAT',scope:'native'},usage:{total_tokens:5200,input_tokens:4000,output_tokens:1200,requests:6,complete:true,usd:null},budget:{generation_calls:null,evaluations:4,label:'Native search budget (B_evals)'},evidence:{artifact_count:15,issues:[]}}
 };
 const clone = value => JSON.parse(JSON.stringify(value));
 const flush = async () => { for (let i=0;i<5;i++) await new Promise(resolve => setImmediate(resolve)); };
-function mount({rows=[run],initialKey='test-private-key',responseStatus=200,responseExtra={},fetcher:customFetcher}={}) {
+function mount({rows=[run],initialKey='test-private-key',responseStatus=200,responseExtra={},fetcher:customFetcher,publicFetcher,controlEnabled=true}={}) {
   const dom = new JSDOM(html,{url:'http://arena.test/experiments/results',runScripts:'outside-only',pretendToBeVisual:true});
   const w = dom.window, doc = w.document, calls = [], stored = new Map(initialKey ? [['arena.queue.session-key',initialKey]] : []);
   const storage = {getItem:key=>stored.get(key),setItem:(key,value)=>stored.set(key,value),removeItem:key=>stored.delete(key)};
   w.HTMLDialogElement.prototype.showModal=function(){ this.setAttribute('open',''); };
   w.HTMLDialogElement.prototype.close=function(){ this.removeAttribute('open'); };
+  let privateCalls = 0;
   const fetcher = async (path,options) => {
     calls.push({path,options});
-    if (customFetcher) return customFetcher(path,options,calls.length);
+    if (path === '/api/results-overview') return publicFetcher ? publicFetcher(path,options) : {ok:true,status:200,json:async()=>clone(publishedSample)};
+    if (path === '/api/health') return {ok:true,status:200,json:async()=>({component:'arena',mode:controlEnabled?'private_control':'read_only',capabilities:{launch:controlEnabled}})};
+    privateCalls++;
+    if (customFetcher) return customFetcher(path,options,privateCalls);
     return {ok:responseStatus===200,status:responseStatus,json:async()=>({schema:'arena.results/1',generated_at:1789958000,scope:'owner',runs:rows,total:rows.length,truncated:false,notes:[],...responseExtra})};
   };
+  w.eval(`{${researchSource};window.researchSummary=researchSummary;}`);
+  w.eval(`{${overviewSource};window.initResultsOverview=initResultsOverview;}`);
   w.eval(`${source};window.mountResults=initResults;`);
   const app = w.mountResults({doc,fetcher,storage,pollMs:0});
   function change(id,value) { const node = doc.getElementById(id); node.value=value; node.dispatchEvent(new w.Event('change',{bubbles:true})); }
   return {dom,w,doc,calls,stored,app,change,close(){app.destroy();dom.window.close();}};
 }
 
-test('unauthenticated results never request data or queue work',async()=>{
-  const t=mount({initialKey:''}); try { await flush(); assert.equal(t.calls.length,0); assert.equal(t.doc.getElementById('results-refresh').disabled,true); assert.match(t.doc.getElementById('results-status').textContent,/Connect/); } finally {t.close();}
+test('without a key the workspace shows published results using only read-only public requests',async()=>{
+  const t=mount({initialKey:'',controlEnabled:false});
+  try {
+    await flush();
+    assert.deepEqual(t.calls.map(call=>call.path).sort(),['/api/health','/api/results-overview']);
+    assert.ok(t.calls.every(call=>!call.options.headers && !call.options.method));
+    const root=t.doc.getElementById('published-results-overview');
+    assert.equal(root.hidden,false); assert.equal(root.dataset.state,'ready');
+    assert.ok(root.querySelector('.overview-table')); assert.ok(root.querySelectorAll('.overview-point').length);
+    assert.equal(t.doc.getElementById('private-results-content').hidden,true);
+    assert.equal(t.doc.getElementById('results-connect').hidden,true);
+    assert.equal(t.doc.getElementById('results-refresh').hidden,true);
+    assert.match(t.doc.getElementById('results-status').textContent,/Published/);
+    assert.equal(t.doc.querySelectorAll('#results-overview').length,1);
+    assert.equal(t.doc.getElementById('results-overview').querySelector('.overview-content'),null,'public mount never replaces private summary');
+  } finally {t.close();}
 });
 test('the existing tab key reads only the same-origin results endpoint',async()=>{
   const t=mount(); try {await flush(); assert.equal(t.calls.length,1); const call=t.calls[0]; assert.equal(call.path,'/api/control/results'); assert.equal(call.options.headers.Authorization,'Bearer test-private-key'); assert.equal(call.options.redirect,'error'); assert.equal(call.options.method,undefined); assert.equal(call.options.cache,'no-store'); assert.equal(t.doc.querySelectorAll('tbody tr').length,1); assert.equal(t.doc.getElementById('results-framework').value,'sciel-release');} finally {t.close();}
@@ -82,14 +105,14 @@ test('untrusted labels, notes, metrics and issues render as text; only valid rec
   const t=mount({rows:[malicious],responseExtra:{notes:[bad]}});try{await flush();assert.equal(t.doc.querySelectorAll('img').length,0);assert.match(t.doc.querySelector('tbody').textContent,/<img/);assert.equal(t.doc.querySelector('.receipt-hashes').textContent,'b'.repeat(64));assert.equal(t.doc.getElementById('results-measurement-notes').textContent,bad);assert.equal(t.doc.getElementById('results-notices').textContent,'');assert.equal(t.doc.getElementById('results-methodology').open,false);}finally{t.close();}
 });
 test('truncation explicitly scopes totals and key entry uses session storage without key URLs',async()=>{
-  const t=mount({initialKey:'',responseExtra:{truncated:true,total:500}});try{t.doc.getElementById('results-connect').click();assert.equal(t.doc.activeElement.id,'results-key');t.doc.getElementById('results-key').value='new-private-key';t.doc.getElementById('results-key-form').dispatchEvent(new t.w.Event('submit',{bubbles:true,cancelable:true}));await flush();assert.equal(t.stored.get('arena.queue.session-key'),'new-private-key');assert.equal(t.doc.getElementById('results-key').value,'');assert.match(t.doc.getElementById('results-notices').textContent,/1 of 500/);assert.ok(t.calls.every(call=>!call.path.includes('new-private-key')));}finally{t.close();}
+  const t=mount({initialKey:'',responseExtra:{truncated:true,total:500}});try{await flush();assert.equal(t.doc.getElementById('results-connect').hidden,false);t.doc.getElementById('results-connect').click();assert.equal(t.doc.activeElement.id,'results-key');t.doc.getElementById('results-key').value='new-private-key';t.doc.getElementById('results-key-form').dispatchEvent(new t.w.Event('submit',{bubbles:true,cancelable:true}));await flush();assert.equal(t.stored.get('arena.queue.session-key'),'new-private-key');assert.equal(t.doc.getElementById('results-key').value,'');assert.match(t.doc.getElementById('results-notices').textContent,/1 of 500/);assert.ok(t.calls.every(call=>!call.path.includes('new-private-key')));}finally{t.close();}
 });
 test('disconnect clears private results and late network responses cannot repopulate them',async()=>{
   let resolve;
-  const t=mount({fetcher:()=>new Promise(done=>{resolve=done;})});try{await flush();t.app.disconnect();resolve({ok:true,status:200,json:async()=>({schema:'arena.results/1',runs:[run]})});await flush();assert.equal(t.stored.size,0);assert.equal(t.doc.querySelectorAll('tbody tr').length,0);assert.equal(t.doc.querySelectorAll('.point').length,0);assert.match(t.doc.getElementById('results-status').textContent,/Disconnected/);const count=t.calls.length;await t.app.refresh();assert.equal(t.calls.length,count);}finally{t.close();}
+  const t=mount({fetcher:()=>new Promise(done=>{resolve=done;})});try{await flush();t.app.disconnect();resolve({ok:true,status:200,json:async()=>({schema:'arena.results/1',runs:[run]})});await flush();assert.equal(t.stored.size,0);assert.equal(t.doc.querySelectorAll('#private-results-content tbody tr').length,0);assert.equal(t.doc.querySelectorAll('.point').length,0);assert.match(t.doc.getElementById('results-status').textContent,/disconnected/);assert.equal(t.doc.getElementById('private-results-content').hidden,true);const count=t.calls.filter(call=>call.path==='/api/control/results').length;await t.app.refresh();assert.equal(t.calls.filter(call=>call.path==='/api/control/results').length,count);assert.equal(t.doc.getElementById('published-results-overview').dataset.state,'ready');}finally{t.close();}
 });
 test('authorization failure removes previously displayed private data',async()=>{
-  const t=mount({fetcher:async(_path,_options,n)=>n===1?{ok:true,json:async()=>({schema:'arena.results/1',runs:[run]})}:{ok:false,status:403}});try{await flush();assert.equal(t.doc.querySelectorAll('tbody tr').length,1);await t.app.refresh();assert.equal(t.doc.querySelectorAll('tbody tr').length,0);assert.match(t.doc.getElementById('results-status').textContent,/does not have access/);}finally{t.close();}
+  const t=mount({fetcher:async(_path,_options,n)=>n===1?{ok:true,json:async()=>({schema:'arena.results/1',runs:[run]})}:{ok:false,status:403}});try{await flush();assert.equal(t.doc.querySelectorAll('tbody tr').length,1);await t.app.refresh();assert.equal(t.doc.querySelectorAll('#private-results-content tbody tr').length,0);assert.equal(t.doc.getElementById('private-results-content').hidden,true);assert.match(t.doc.getElementById('results-status').textContent,/does not have access/);}finally{t.close();}
 });
 test('expanded provenance survives an evidence refresh',async()=>{
   const t=mount();try{await flush();t.doc.querySelector('details').open=true;await t.app.refresh();assert.equal(t.doc.querySelector('details').open,true);}finally{t.close();}
@@ -117,4 +140,52 @@ test('landing and operational navigation lead to their own results pages',()=>{
     const dom=new JSDOM(readFileSync(new URL(`../../web/${name}`,import.meta.url),'utf8'));
     try{assert.ok(dom.window.document.querySelector(`nav a[href="${path}"]`),name);}finally{dom.window.close();}
   }
+});
+
+
+test('a saved key on a read-only deployment falls back without forwarding it to published endpoints',async()=>{
+  const t=mount({responseStatus:404,controlEnabled:false});
+  try {
+    await flush();
+    assert.equal(t.calls.filter(call=>call.path==='/api/control/results').length,1);
+    const published=t.calls.find(call=>call.path==='/api/results-overview');
+    assert.ok(published);assert.equal(published.options.headers,undefined);
+    assert.equal(t.doc.getElementById('published-results-overview').dataset.state,'ready');
+    assert.equal(t.doc.getElementById('private-results-content').hidden,true);
+    assert.equal(t.doc.getElementById('results-connect').hidden,true);
+    assert.doesNotMatch(t.doc.getElementById('results-status').textContent,/404|connect|key/i);
+    await t.app.refresh();
+    assert.equal(t.calls.filter(call=>call.path==='/api/control/results').length,1,'refresh reads published results without retrying an absent control endpoint');
+    assert.ok(t.calls.every(call=>!call.path.includes('test-private-key')));
+  } finally {t.close();}
+});
+
+test('late published data cannot appear underneath a successful private connection',async()=>{
+  let resolve;
+  const t=mount({initialKey:'',publicFetcher:()=>new Promise(done=>{resolve=done;})});
+  try {
+    await flush();
+    t.doc.getElementById('results-key').value='connected-key';
+    t.doc.getElementById('results-key-form').dispatchEvent(new t.w.Event('submit',{bubbles:true,cancelable:true}));
+    await flush();
+    assert.equal(t.doc.getElementById('private-results-content').hidden,false);
+    resolve({ok:true,json:async()=>clone(publishedSample)});await flush();
+    const root=t.doc.getElementById('published-results-overview');
+    assert.equal(root.hidden,true);assert.equal(root.childElementCount,0);
+    assert.equal(t.doc.querySelectorAll('#results-matrix tbody tr').length,1);
+  } finally {t.close();}
+});
+
+test('public snapshot failure offers retry without restoring unavailable private panels',async()=>{
+  let failed=true;
+  const t=mount({initialKey:'',controlEnabled:false,publicFetcher:async()=>{
+    if(failed)throw new Error('offline');return {ok:true,json:async()=>clone(publishedSample)};
+  }});
+  try {
+    await flush();const root=t.doc.getElementById('published-results-overview');
+    assert.equal(root.dataset.state,'error');assert.equal(t.doc.getElementById('private-results-content').hidden,true);
+    failed=false;root.querySelector('.overview-context button').click();await flush();
+    assert.equal(root.dataset.state,'ready');assert.equal(t.doc.getElementById('results-connect').hidden,true);
+    assert.ok(t.calls.every(call=>!call.path.startsWith('/api/control/')));
+  } finally {t.close();}
 });

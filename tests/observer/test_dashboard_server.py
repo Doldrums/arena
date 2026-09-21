@@ -116,6 +116,7 @@ class DashboardServerTests(unittest.TestCase):
                            ("/arena-workspace.css", "text/css"),
                            ("/arena-results-showcase.js", "javascript"), ("/arena-results-showcase.css", "text/css"),
                            ("/arena-results-overview.js", "javascript"), ("/arena-results-overview.css", "text/css"),
+                           ("/results-research.js", "javascript"),
                            ("/arena.js", "javascript"), ("/arena.css", "text/css"),
                            ("/arena-insights.js", "javascript"), ("/arena-insights.css", "text/css"),
                            ("/arena-atlas.js", "javascript"), ("/arena-atlas.css", "text/css"),
@@ -158,6 +159,10 @@ class DashboardServerTests(unittest.TestCase):
 
     def test_results_overview_reads_only_explicit_snapshot_without_control_key(self):
         from arena.results_overview import build_results_overview
+        class PrivateControlMustNotBeRead:
+            def authenticate(self, authorization):
+                raise AssertionError("Published results must not consult private control credentials")
+        self.server.control = PrivateControlMustNotBeRead()
         published = build_results_overview(dict(schema="arena.results/1", generated_at=100,
             total=0, truncated=False, runs=[]), generated_at=101)
         registry = self.root / "registry"
