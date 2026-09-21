@@ -6,6 +6,8 @@ import os
 from pathlib import Path
 import sys
 
+from ._tls import configure_ca
+
 
 def positive(value: str) -> int:
     result = int(value)
@@ -24,11 +26,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--samplers", type=positive, default=1)
     parser.add_argument("--evaluators", type=positive, default=1)
     parser.add_argument("--eval-timeout", type=positive, default=40)
+    parser.add_argument("--tls-ca", type=Path, help="Verified public CA bundle supplied as a hashed run input")
+    parser.add_argument("--numeric-threads", type=positive, default=1)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
+    if any(c in args.endpoint for c in "/@\r\n"):
+        parser.error("endpoint must be an HTTPS hostname, without scheme, path or credentials")
     key = os.environ.get("OPENAI_API_KEY")
     if not key:
         parser.error("OPENAI_API_KEY must be explicitly supplied in the run environment")
+    configure_ca(args.tls_ca)
+    for name in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+        os.environ[name] = str(args.numeric_threads)
     # CWD is the verified native example directory; no arbitrary module name is accepted.
     sys.path.insert(0, str(Path.cwd()))
     sys.path.insert(0, str(Path.cwd().parents[1] / "eoh" / "src"))

@@ -1,0 +1,27 @@
+[Unit]
+Description=Arena loopback TLS transport for native HTTPS clients
+After=network.target arena-provider.service
+Requires=arena-provider.service
+
+[Service]
+Type=simple
+User=arena-relay
+Group=arena-relay
+WorkingDirectory=/opt/arena/current
+Environment=PYTHONPATH=/opt/arena/current/src
+ExecStart=/opt/arena/venv/bin/python -m arena.tls_gateway --certificate /etc/arena/local-tls/server.pem --private-key /etc/arena/local-tls/server.key
+Restart=on-failure
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+RestrictAddressFamilies=AF_INET AF_UNIX
+IPAddressDeny=any
+IPAddressAllow=localhost
+MemoryMax=1G
+CPUQuota=100%
+TasksMax=80
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

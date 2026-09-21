@@ -282,6 +282,15 @@ def test_private_configuration_required_and_duplicate_fields_rejected(service):
         control._decode('{"a":1,"a":2}')
 
 
+def test_reserved_control_environment_names_are_not_credential_values(service):
+    config = copy.deepcopy(service.config)
+    config["templates"][0]["spec"]["environment_names"] = ["OPENAI_API_KEY", "ARENA_EVALUATION_CGROUP_PARENT", "ARENA_EVALUATION_RECEIPTS_DIR", "ARENA_CONTROL_RUN_ID"]
+    assert control.validate_config(config) is config
+    config["templates"][0]["spec"]["environment_names"].append("arena_this-is-a-bearer-value-123456789")
+    with pytest.raises(control.ControlError, match="variable names"):
+        control.validate_config(config)
+
+
 def stale(service, row, **kwargs):
     with service._db(write=True) as db:
         fields = {"lease_until": 0, **kwargs}

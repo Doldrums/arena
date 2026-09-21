@@ -68,6 +68,12 @@ def _digest_file(path):
     return digest.hexdigest()
 
 
+def _run_adapter(framework, request):
+    if framework == "sciel-release":
+        return get_adapter(framework, request=request)
+    return get_adapter(framework)
+
+
 def fingerprint_inputs(paths):
     """Record explicit inputs without copying config/credential contents."""
     files, size = {}, 0
@@ -114,7 +120,7 @@ def prepare_plan(spec):
     output = _absolute(spec["output_dir"], "output_dir")
     if output.exists() or output.is_relative_to(source) or source.is_relative_to(output):
         raise ValueError("output_dir must be new and outside the source checkout")
-    adapter = get_adapter(spec["framework"])
+    adapter = _run_adapter(spec["framework"], spec["request"])
     revision = verify_source(source, adapter.commit)
     command = adapter.prepare(source, spec["request"], output)
     argv = command.get("argv")
@@ -316,7 +322,7 @@ def run(spec):
         receipt.update(ended_at=time.time(), wall_seconds=round(time.monotonic() - started, 6))
         _write_json(metadata / "receipt.json", receipt)
     try:
-        native = get_adapter(plan["framework"]).read_results(output)
+        native = _run_adapter(plan["framework"], spec["request"]).read_results(output)
         _write_json(metadata / "native-result.json", native)
     except (OSError, ValueError, KeyError, TypeError) as error:
         receipt["warnings"].append(f"Native result is not yet readable ({type(error).__name__})")

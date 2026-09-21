@@ -108,6 +108,8 @@ class Config:
     cgroup_root: str = "/arena-workers"
     max_containers: int = 16
     timeout_seconds: int = 3600
+    engine_registry: Path | None = None
+    engine_staging_root: Path | None = None
 
     @classmethod
     def read(cls, path):
@@ -115,7 +117,7 @@ class Config:
         required = {"docker_socket", "socket_path", "staging_root", "tasks_root", "run_roots",
                     "images", "worker_uid", "worker_gid"}
         require(required <= data.keys() and not set(data) - required -
-                {"cgroup_root", "max_containers", "timeout_seconds"})
+                {"cgroup_root", "max_containers", "timeout_seconds", "engine_registry", "engine_staging_root"})
         for key in ("docker_socket", "socket_path", "staging_root", "tasks_root"):
             data[key] = Path(data[key])
             require(data[key].is_absolute() and ".." not in data[key].parts)
@@ -124,6 +126,11 @@ class Config:
         require(all(p.is_absolute() and len(p.parts) >= 4 and ".." not in p.parts for p in data["run_roots"]))
         require(type(data["images"]) is list and data["images"] and all(IMAGE.fullmatch(p) for p in data["images"]))
         data["images"] = tuple(data["images"])
+        require(("engine_registry" in data) == ("engine_staging_root" in data))
+        for key in ("engine_registry", "engine_staging_root"):
+            if key in data:
+                data[key] = Path(data[key])
+                require(data[key].is_absolute() and ".." not in data[key].parts)
         for key in ("worker_uid", "worker_gid"):
             require(type(data[key]) is int and data[key] > 0)
         config = cls(**data)
@@ -157,6 +164,13 @@ class Config:
                 require(info.st_uid == 0 and not info.st_mode & 0o022,
                         "Proxy and task paths must have root-owned non-writable ancestors")
         require(stat.S_IMODE(self.staging_root.stat().st_mode) == 0o700)
+        if self.engine_registry is not None:
+            for path in (self.engine_registry, self.engine_staging_root):
+                fd = directory_fd(path)
+                os.close(fd)
+                require(path.stat().st_uid == 0 and stat.S_IMODE(path.stat().st_mode) == 0o700)
+                for parent in path.parents:
+                    require(parent.stat().st_uid == 0 and not parent.stat().st_mode & 0o022)
         # The caller must not be able to mutate the reviewed task implementation.
         for base, directories, files in os.walk(self.tasks_root, followlinks=False):
             for name in directories + files:
@@ -165,7 +179,7 @@ class Config:
                         "Task checkout must be root-owned, link-free and not group/world writable")
 
 
-def peer_run(connection, config):
+def _peer_identity(connection, config):
     pid, uid, gid = struct.unpack("3i", connection.getsockopt(socket.SOL_SOCKET, socket.SO_PEERCRED, 12))
     require(uid == config.worker_uid, "Only the evaluator worker UID may connect")
     data = Path(f"/proc/{pid}/cgroup").read_text()
@@ -173,8 +187,34 @@ def peer_run(connection, config):
     matches = [line[3:] for line in data.splitlines() if line.startswith("0::")]
     require(len(matches) == 1 and matches[0].startswith(prefix))
     tail = matches[0][len(prefix):].split("/")
-    require(len(tail) >= 2 and RUN.fullmatch(tail[0]) and tail[1] == "main",
-            "Caller must be in an admitted run's main cgroup")
+    require(len(tail) >= 2 and RUN.fullmatch(tail[0]))
+    return tail
+
+
+def engine_binding(connection, config):
+    tail = _peer_identity(connection, config)
+    if tail[1] == "main":
+        return None
+    require(config.engine_registry is not None, "Caller is not an admitted native worker")
+    fd = directory_fd(config.engine_registry)
+    try:
+        raw = read_regular(fd, tail[0] + ".json", 4096, 0)
+    finally:
+        os.close(fd)
+    record = json_object(raw)
+    require(set(record) == {"schema", "run_id", "container_id", "artifact_root"}
+            and record["schema"] == "arena.engine-peer/1" and record["run_id"] == tail[0]
+            and re.fullmatch(r"[a-f0-9]{64}", record["container_id"])
+            and tail[1] == record["container_id"], "Caller does not match the registered engine container")
+    expected = config.engine_staging_root / tail[0] / "artifacts"
+    require(record["artifact_root"] == str(expected))
+    return record
+
+
+def peer_run(connection, config):
+    tail = _peer_identity(connection, config)
+    if tail[1] != "main":
+        engine_binding(connection, config)
     return tail[0]
 
 
@@ -252,7 +292,7 @@ def canonical_config(body, name, run_id, config):
                    "CapDrop": ["ALL"], "SecurityOpt": ["no-new-privileges"], "AutoRemove": True,
                    "CgroupParent": host["CgroupParent"], "CgroupnsMode": "private",
                    "Tmpfs": {"/tmp": "rw,nosuid,nodev,size=268435456"},
-                   "LogConfig": {"Type": "local", "Config": {"max-size": "1m", "max-file": "1"}},
+                   "LogConfig": {"Type": "local", "Config": {"max-size": "1m", "max-file": "1", "compress": "false"}},
                    "Mounts": []}}
     return rebuilt, candidate, result
 
@@ -285,8 +325,17 @@ class Proxy:
         finally:
             connection.close()
 
-    def create(self, body, name, run_id, version):
+    def create(self, body, name, run_id, version, binding=None):
         rebuilt, candidate, output = canonical_config(body, name, run_id, self.config)
+        if binding is not None:
+            # The body still uses its admitted logical paths. Only root-issued
+            # engine identity can map them to protected engine staging storage.
+            logical = next(root / run_id / "artifacts" for root in self.config.run_roots
+                           if candidate.is_relative_to(root / run_id / "artifacts"))
+            require(binding["run_id"] == run_id)
+            physical = Path(binding["artifact_root"])
+            require(physical == self.config.engine_staging_root / run_id / "artifacts")
+            candidate, output = physical / candidate.relative_to(logical), physical / output.relative_to(logical)
         with self.lock:
             require(len(self.records) < self.config.max_containers and name not in self.records,
                     "Evaluator container capacity reached")
@@ -300,6 +349,9 @@ class Proxy:
                 stage = self.config.staging_root / uuid.uuid4().hex
                 stage.mkdir(mode=0o755)
                 (stage / "candidate").mkdir(mode=0o755)
+                # The service's restrictive umask must not make the bind root
+                # unreadable to the non-root container user.
+                (stage / "candidate").chmod(0o755)
                 (stage / "candidate" / "program.py").write_bytes(program)
                 (stage / "candidate" / "program.py").chmod(0o444)
                 (stage / "results").mkdir(mode=0o700)
@@ -516,7 +568,9 @@ class Handler(BaseHTTPRequestHandler):
             elif action == "cgroup_info":
                 result = proxy.cgroup_info()
             elif action == "create":
-                result = proxy.create(json_object(raw), ident, run_id, version)
+                binding = (engine_binding(self.connection, proxy.config)
+                           if proxy.config.engine_registry is not None else None)
+                result = proxy.create(json_object(raw), ident, run_id, version, binding)
             else:
                 name, record = proxy.owned(ident, run_id)
                 suffix = "" if action == "delete" else "/" + action

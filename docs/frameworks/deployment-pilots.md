@@ -23,6 +23,15 @@ dependency list in `pyproject.toml`, including OpenAI, Anthropic, Google GenAI,
 NumPy, pandas, Hydra, SciPy-related scientific packages, plotting and async I/O.
 Do not combine these with historical legacy-SDK frameworks in one environment.
 
+Root-owned read-only checkouts require a Git version that honors the launcher's
+exact `-c safe.directory=/verified/source` exception. The prepared worker uses
+Git **2.55.0** in `/usr/local/bin`; its official source checksum and installed
+binary hash are recorded in `/srv/arena/build/git-2.55.0-release/environment.json`.
+Ubuntu's Git 2.34.1 security backport rejected the command-scoped exception on
+this worker. Keep `/usr/local/bin` ahead of `/usr/bin` in worker `PATH` and retain
+the pinned sources' root ownership; do not replace this with a wildcard trust
+exception.
+
 Build project wheels outside the clean source checkouts. For each framework,
 export the exact pin using `git --no-replace-objects archive`, extract into
 `/srv/arena/build/<framework>`, then use that framework's environment to run
@@ -54,7 +63,7 @@ Materialization must write to `/srv/arena/configs/<campaign>` because launch spe
 refer to that exact location. It refuses to replace existing bundles/tasks.
 
 The bundle contains two evaluation configs, `sciel.yaml`, two native run specs,
-an evidence/limits manifest and `cpu-profiles.json`. Inspect native plans before
+an evidence/limits manifest, `control-templates.json` and `cpu-profiles.json`. Inspect native plans before
 dispatching the corresponding `run` command:
 
 ```sh
@@ -64,7 +73,18 @@ dispatching the corresponding `run` command:
 
 `manifest.json` records the exact explicit `run` argv. Execute through the
 worker's admitted, bounded launch path after gateway and environment checks;
-the generator does not submit to the queue or mark a control template ready.
+the generator does not submit to the queue.
+
+To bind an already captured operator probe, pass
+`--probe-evidence /srv/arena/configs/model-probes-20260921.json`. The generator
+requires a successful generation record for the exact requested/response model,
+consistent token usage and duration. It copies that nonsensitive record into
+`provider-probe.json` and hashes its source. Only materialized bundles with this
+proof emit ready control templates; offline bundles remain blocked. This ready
+state permits admission after the operator verifies the worker/proxy services;
+it does not claim a completed native research run. The two templates allocate
+`{output_dir}` through the control service and leave trusted cgroup/receipt
+environment values to its worker. Research execution stays false in the bundle.
 
 ## Native behavior and provider boundary
 

@@ -106,7 +106,12 @@
         "core/evaluator.py": "a1f2fb297269b7c0b9f4f8d9e50cedc849cd76543d0edac20d4566325d57e8b7",
         "core/tasks.py": "92833909b4713b670260dc9fda97692952e90799d9216e44f214b0216435dd40",
         "run_base.py": "ab872bf0b01a3f350aec52e6e877f6551e4f83eec7e7a0882c51724632840cde",
-        "tasks/circle_packing/evaluator.py": "a1708613eefca455f8198dc46743a76e97b760b15f99ee6c3009d6803eda6812"
+        "tasks/circle_packing/evaluator.py": "a1708613eefca455f8198dc46743a76e97b760b15f99ee6c3009d6803eda6812",
+        "base/policies.py": "62be0c3091495b864cd4bbc4142d9c6d636e73289c3b154c91991384a05b8577",
+        "core/models.py": "8177c7f331e943e5dbc9ce5a2f3d12acdb7fb674d0bf509d97434f3dcdaae15b",
+        "core/llm.py": "765e2668dd46b5e450582ae34b4ecf7920fda9c5a9a04642f6e73fb95d89d6bc",
+        "core/greedy.py": "671fb3174063df7ef508daeb6811c171188d7ddf46cf4db4563eae06457fb9fd",
+        "core/flops.py": "45c336c6606cb36e369253e40ce4dcb1e58f7b2e7ef22af84e28e92f5ece9bb7"
       },
       "profiles": [
         {
@@ -153,6 +158,58 @@
           "limitations": [
             "Native FLOP estimates and API call counts are retained as reported; Arena does not convert them into verified spend."
           ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Small native CPU pilot through the private OpenAI-compatible gateway; exact API model identity.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.base_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "run_base.py",
+            "base/runner.py",
+            "base/arms.py",
+            "core/tasks.py",
+            "base/policies.py",
+            "core/models.py",
+            "core/llm.py",
+            "core/greedy.py",
+            "core/flops.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native BaSE live greedy arms call the task evaluator and save per-arm results and allocation trace.",
+            "evidence": [
+              "core/evaluator.py",
+              "tasks/circle_packing/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "--model exact gateway model ID; --rounds 1..8 (one child per round, two native arms)."
+          ],
+          "limitations": [
+            "Native FLOP estimates and API call counts are retained as reported; Arena does not convert them into verified spend.",
+            "Opaque API parameter counts and all FLOPs are explicitly null. Native UCB allocations and candidate scores are unchanged. Sampling seed is recorded but not provider-enforced; temperature/top_p/token limits follow gateway codex-native policy. Native retries can exceed nominal proposal calls."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
         }
       ]
     },
@@ -179,7 +236,9 @@
         "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/src/init_program.py": "a8d0e3fc3476840d45fd4c7258fec99727d9f5027492eb8ed7e06c67c263e392",
         "src/codeevolve/cli.py": "8101763b06d7c4521aa619f87b2101cb5b9279f4de90ede40185279f59774cb9",
         "src/codeevolve/evaluator.py": "d56c9c050b1b98ad27b3077a65eac30468f20f14eaee03106ad782cdeefd7724",
-        "src/codeevolve/utils/cli_setup.py": "554e9d8af7954d49ab52ab1ba7f10136919e1a5e7ebfb58a1a6dac5e55a37496"
+        "src/codeevolve/utils/cli_setup.py": "554e9d8af7954d49ab52ab1ba7f10136919e1a5e7ebfb58a1a6dac5e55a37496",
+        "src/codeevolve/lm/openai.py": "ea2816e745b1b129e8bada96036821c4e17d7f3e8acf6eaa7cafbc79d750bd99",
+        "src/codeevolve/islands/graph.py": "3bb34657380ae7fa7d2a99b723ec7490280d9afb7060b0dfaa251c1f3e431063"
       },
       "profiles": [
         {
@@ -229,6 +288,68 @@
             "Requires Python >=3.13.5 at this revision. Native templates name deployment-specific models; configure the selected endpoint before launch.",
             "Native config fixes benchmark_ratio fitness; no canonical Arena metric conversion is performed."
           ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Bounded native CPU pilot through the private OpenAI-compatible gateway; original optimizer and evaluator.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.cpu_program_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "codeevolve",
+            "--inpt_dir",
+            "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input",
+            "--cfg_path",
+            "configs/templates/config_qwen.yaml",
+            "--y"
+          ],
+          "output": {
+            "flag": "--out_dir",
+            "path": "results"
+          },
+          "required_files": [
+            "src/codeevolve/cli.py",
+            "src/codeevolve/utils/cli_setup.py",
+            "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/src/init_program.py"
+          ],
+          "config_files": [
+            "configs/templates/config_qwen.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "arena-provider-seam.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native CodeEvolve islands invoke evaluate.py with program and JSON-result paths; metrics include benchmark_ratio and eval_time.",
+            "evidence": [
+              "src/codeevolve/evaluator.py",
+              "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/evaluate.py"
+            ]
+          },
+          "argument_help": [
+            "Supply a secret-free config overlay to select models, epoch count, island count and evaluation budget.",
+            "Credentials and endpoint are native API_KEY / API_BASE environment variables."
+          ],
+          "limitations": [
+            "Requires Python >=3.13.5 at this revision. Native templates name deployment-specific models; configure the selected endpoint before launch.",
+            "Native config fixes benchmark_ratio fitness; no canonical Arena metric conversion is performed.",
+            "One native island, four epochs, two initial-population targets; individual native evaluation timeout 60 seconds. No migration occurs with one island.",
+            "Linux fork process backend required for the reviewed HTTP client extension. It validates and discards only the native user tracking field; no generation parameters or search logic are changed."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1"
+          },
+          "protected_args": [
+            "--engine"
+          ]
         }
       ]
     },
@@ -256,7 +377,8 @@
         "LICENSE": "18580b487940efb327fc42a3d005a3fc4d2cdaeb16dd9212285e038583104eb4",
         "data/oscillation_1/train.csv": "a846b36b931dee4e2335faf9fb4195a7a8d1b4e4430e915266ef45fcd2e07ee7",
         "main_run.py": "3024283a03a6a4eeda5e55668518b3a81b02545423c54df13f883da5b6fadbf4",
-        "model_config.json": "5e4d6e29d6ca6a9072962abece386ae6942713f37fcd205f70b9947b598c47c8"
+        "model_config.json": "5e4d6e29d6ca6a9072962abece386ae6942713f37fcd205f70b9947b598c47c8",
+        "CoEvo/src/coevo/core/summarizer.py": "6d407a4bc5bd1342b894314b029fde95ae7c97f1325225196c4c1735dbabf7f7"
       },
       "profiles": [
         {
@@ -308,6 +430,71 @@
           ],
           "remove_files": [
             "model_config.json"
+          ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Bounded native CPU pilot through the private OpenAI-compatible gateway; original optimizer and evaluator.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.cpu_program_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "coevo",
+            "--task",
+            "oscillation_1",
+            "--mode",
+            "coevo"
+          ],
+          "output": null,
+          "required_files": [
+            "main_run.py",
+            "CoEvo/src/coevo/core/coevo_method.py",
+            "CoEvo/src/coevo/core/coevo_interface.py",
+            "data/oscillation_1/train.csv",
+            "model_config.json"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native CoEvoMethod.run searches its multi-representation solution chains and invokes Oscillation1Task evaluation.",
+            "evidence": [
+              "CoEvo/src/coevo/tasks/oscillation_1.py",
+              "CoEvo/pyproject.toml"
+            ]
+          },
+          "argument_help": [
+            "--max_gen N --pop_size N",
+            "Configure API_URL, API_KEY and MODEL as explicit environment variables; avoid model_config.json secrets.",
+            "--model ALIAS --tls-ca PUBLIC_CA --hf-cache ABSOLUTE_CACHE --hf-manifest STAGED_MANIFEST --max_gen 1 --pop_size 2"
+          ],
+          "limitations": [
+            "Requires pinned CoEvo package and external evotoolkit dependency; native train.csv is used unchanged.",
+            "Native summarizer loads the openai-community/gpt2 tokenizer; cache/data setup must be prepared.",
+            "The evidence-hashed placeholder model_config.json is removed only from the isolated workspace before launch, so the unchanged native program uses explicit API_URL/API_KEY/MODEL environment variables.",
+            "Native evotoolkit uses verified HTTPS via the loopback TLS relay. The reviewed GPT-2 tokenizer and model weights must be cached and hash-verified offline.",
+            "The task timeout_seconds value is not enforced by native Oscillation1Task; only the outer process/cgroup wall limit stops a hung candidate. Native evaluations are sequential."
+          ],
+          "python_paths": [
+            "CoEvo/src"
+          ],
+          "remove_files": [
+            "model_config.json"
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1"
+          },
+          "protected_args": [
+            "--engine"
           ]
         }
       ]
@@ -759,7 +946,13 @@
         "funsearch/async_agents.py": "f2d1b641204001314b1dcac656f7042e291ec050d48a339767793049d24c8db3",
         "funsearch/evaluator.py": "e00ff3cb3f6164f42b4ece852ce941c0c0bb4eba214f943938deab9af958be5f",
         "funsearch/logging_stats.py": "ba0a5d45c2f40926b250817b3e2954b8e20d8b1c5b0f43c9422800407596b197",
-        "funsearch/sandbox.py": "af79a7376158c4f94d4626fb6db60f753f770dae9bb625ec58a78a2fa45f9ac1"
+        "funsearch/sandbox.py": "af79a7376158c4f94d4626fb6db60f753f770dae9bb625ec58a78a2fa45f9ac1",
+        "funsearch/models.py": "0d96b599416cb2ffecdac28f0ded63e181bd9bcb7a3d279c64f0a3cde442e989",
+        "funsearch/config.py": "3eb780da5a65b8c613cdf3aa3a9cf165323aea66a24e80d8fbf77e2e03a36879",
+        "funsearch/sampler.py": "392465793908f7ae981b0525e4db8faf5b460243434009122ff8a0f5b8d815d0",
+        "funsearch/code_manipulation.py": "ec9f773abc3d1916c2a09a804dfa6449502abc537e80a3bf4d124ca950310118",
+        "funsearch/programs_database.py": "21a1a3f2c661072689aa0735a068a8b6111be6127356e2b595cd974e4add87cf",
+        "funsearch/utilities/parse_specfile.py": "baec34a51012fc6247ecd3b04b80bc41fdab6e27c02e611edcecc723825c608e"
       },
       "profiles": [
         {
@@ -812,6 +1005,72 @@
             "--load_backup",
             "--envfile"
           ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Native kitft cap-set pipeline with the exact gateway model, a bounded sample budget and Linux namespace scorer.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.funsearch_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "reimplementation"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "funsearch/__main__.py",
+            "funsearch/async_agents.py",
+            "examples/cap_set_spec.py",
+            "funsearch/models.py",
+            "funsearch/config.py",
+            "funsearch/sampler.py",
+            "funsearch/code_manipulation.py",
+            "funsearch/programs_database.py",
+            "funsearch/utilities/parse_specfile.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.csv",
+            "results/**/*.log",
+            "data/**/*.jsonl",
+            "data/backups/**/*.pickle"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native reconstruction, scoring specification, admission and island database are unchanged; the supplied sandbox executes each reconstructed program in a credential-free network-isolated Linux namespace with a deadline.",
+            "evidence": [
+              "funsearch/evaluator.py",
+              "funsearch/sandbox.py",
+              "funsearch/logging_stats.py",
+              "examples/cap_set_spec.py"
+            ]
+          },
+          "argument_help": [
+            "--model exact gateway ID; --max-samples 1..8. A separately hashed request.executables.bubblewrap is required."
+          ],
+          "limitations": [
+            "Single sampler/evaluator, two islands. This is a small integration pilot, not reproduction of published research budgets.",
+            "Original profile uses the supplied constant-weight admissible-set specification at (9,5); kitft uses its supplied cap-set specification at n=6. These are distinct tasks and scores.",
+            "Kitft native connectivity validation is one additional actual model call; its unused runasync --iterations flag is not treated as a sample cap. Budget cancellation invokes native run_agents cleanup and drains its evaluator queue.",
+            "Namespaces isolate credentials, network and filesystem mounts; worker cgroups provide the outer CPU/memory/process envelope. Native scores remain noncanonical."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "executable_args": {
+            "bubblewrap": "--bubblewrap"
+          }
         }
       ]
     },
@@ -837,7 +1096,8 @@
         "cfg/problem/bpp_online.yaml": "248826948095d691f5f25056f295de9cbb8ff5790562c20987b7bba14adbddf1",
         "hsevo.py": "7552b14dd0ac15f87274967a84d04e3906bd30c3c66f4949a42e08654c67e592",
         "main.py": "f3ac71b5ae57809b09fa1c363c96cf5fc78a9499bf0864654048a583906517ad",
-        "problems/bpp_online/eval.py": "4fa8b4e6f74afa0715e6411d7eb75809c7f35aadaa1435027f9c5f00d1a7bac1"
+        "problems/bpp_online/eval.py": "4fa8b4e6f74afa0715e6411d7eb75809c7f35aadaa1435027f9c5f00d1a7bac1",
+        "utils/utils.py": "9655e5afca4b90f866414b934d161b38bc28782288730981ed3fa05153b1dbdc"
       },
       "profiles": [
         {
@@ -886,6 +1146,66 @@
             "--config-name",
             "--config-dir"
           ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Small native CPU pilot through the private OpenAI-compatible gateway; exact API model identity.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.cpu_heuristic_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "hsevo",
+            "--",
+            "algorithm=hsevo",
+            "problem=bpp_online"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "hsevo.py",
+            "utils/utils.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/problem/bpp_online.yaml"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt",
+            "arena-provider-seam.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "The pilot uses reviewed cfg overlays; native Hydra command line options remain native."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred.",
+            "Native max_fe is not a strict API-call cap; retries and a complete generation can overshoot. The admitted wall timeout remains authoritative. API sampling controls are recorded as unenforced by the Codex-native gateway."
+          ],
+          "protected_args": [
+            "--config-path",
+            "--config-name",
+            "--config-dir"
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "TIKTOKEN_CACHE_DIR": "{workspace}/arena-inputs/tiktoken"
+          }
         }
       ]
     },
@@ -980,7 +1300,13 @@
         "agents/math_agent/examples/packing_circle_in_unit_square/task_config.yaml": "ad914318cbe0aba5e29aa966967bd505f96e2a07eb247d1f492fa30ce6d2573a",
         "agents/math_agent/math_evolve_agent.py": "98a21a7933154b58d9bfa46fe6d55efca9addea60056a0dee9b8eefe85c1326f",
         "src/loongflow/agentsdk/models/litellm_model.py": "400de0bfb5497580b585c9a8ad7e5ab15c747d45278b6dc968d7de660f74fbd0",
-        "src/loongflow/framework/pes/base_runner.py": "960e04ea5863d17dd649ae48fb867eeba69d5917ce45a8e4dac0fb44ead213cf"
+        "src/loongflow/framework/pes/base_runner.py": "960e04ea5863d17dd649ae48fb867eeba69d5917ce45a8e4dac0fb44ead213cf",
+        "agents/math_agent/executor/execute_fuse/execute_agent_fuse.py": "d4ba3dc1aa35a71c9668d8514d2c094c187c5ec477ebb6964e56e20a6c2ef01e",
+        "agents/math_agent/planner/plan_agent.py": "97acaf1613f4e4065914380fa05bc104f48496ebc73ce58e2bfc3673fb264a10",
+        "agents/math_agent/summary/summary_agent.py": "32c260a3b714bdf4beab874c58e25c63663d39cd7a539102d33295876682a607",
+        "src/loongflow/agentsdk/models/formatter/litellm_formatter.py": "136a453b91424f18183917c1acecd6eaa418a494bef8babeb02a62a88db0d93f",
+        "src/loongflow/framework/pes/context/config.py": "d1cb38f66a42d9e3944c365646aa016a795871ebce1d9b291c598d2fa3fa8d14",
+        "src/loongflow/framework/react/components/default_actor.py": "72bed8097cc3a89152de053b34bc494e0205d32b30aa8fde1ec07aaf37d688c1"
       },
       "profiles": [
         {
@@ -1032,6 +1358,69 @@
             "The pinned example contains placeholder model credentials and endpoint; it needs an explicitly configured provider environment.",
             "Native evaluator environment and agent tooling must already be available; Arena does not install them during planning."
           ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Bounded native CPU pilot through the private OpenAI-compatible gateway; original optimizer and evaluator.",
+          "invocation": {
+            "kind": "script",
+            "target": "agents/math_agent/math_evolve_agent.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--config",
+            "agents/math_agent/examples/packing_circle_in_unit_square/task_config.yaml",
+            "--eval-file",
+            "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py",
+            "--initial-file",
+            "agents/math_agent/examples/packing_circle_in_unit_square/initial_program.py"
+          ],
+          "output": {
+            "flag": "--workspace-path",
+            "path": "results"
+          },
+          "required_files": [
+            "agents/math_agent/math_evolve_agent.py",
+            "src/loongflow/framework/pes/base_runner.py",
+            "agents/math_agent/examples/packing_circle_in_unit_square/initial_program.py"
+          ],
+          "config_files": [
+            "agents/math_agent/examples/packing_circle_in_unit_square/task_config.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.log",
+            "output-circle-packing/**/*.json",
+            "output-circle-packing/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native MathPESAgent executes its planner/executor/summary loop and evaluates generated programs with the pinned math task.",
+            "evidence": [
+              "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py",
+              "src/loongflow/agentsdk/models/litellm_model.py"
+            ]
+          },
+          "argument_help": [
+            "--max-iterations N --log-level INFO",
+            "Supply a secret-free task config overlay replacing placeholder URL/model; api_key may be null for a provider using environment credentials."
+          ],
+          "limitations": [
+            "The pinned example contains placeholder model credentials and endpoint; it needs an explicitly configured provider environment.",
+            "Native evaluator environment and agent tooling must already be available; Arena does not install them during planning.",
+            "Pilot uses native concurrency=1, executor max_rounds=1, and existing SequenceActor; four PES iterations with bounded ReAct steps. Native package-install tools may fail against the read-only shared environment."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "MPLCONFIGDIR": "{output}/.arena/matplotlib",
+            "LITELLM_LOCAL_MODEL_COST_MAP": "True",
+            "LITELLM_TELEMETRY": "False",
+            "DO_NOT_TRACK": "1"
+          }
         }
       ]
     },
@@ -1058,7 +1447,13 @@
         "cfg/problem/bpp_online.yaml": "248826948095d691f5f25056f295de9cbb8ff5790562c20987b7bba14adbddf1",
         "main.py": "3b7d820cac801da0d31914147bdde28035bc1f071ebb7afab8c53c9f244516a1",
         "problems/bpp_online/eval.py": "507cfc8cfebba2dfa20ad926df222eb3a473353e528a1c6ea15711d6d7bc58fc",
-        "source/mcts_ahd.py": "70122ce89fcae1c7c39d18db676fd874b79e9000b32d91abc2154e5a3eacf51d"
+        "source/mcts_ahd.py": "70122ce89fcae1c7c39d18db676fd874b79e9000b32d91abc2154e5a3eacf51d",
+        "utils/utils.py": "0b9cfa62adcde5046d1b90808e6477928940ef1462602b82685296831285a0b9",
+        "utils/llm_client/openai.py": "e4c84e1db20fa8f907b2df3b3a4949d79e527ec6729379d4ca993a704dc093cb",
+        "utils/llm_client/base.py": "5503fdcd65e15ad8aab0c1546521f5e63a1f3218aaa1e7432aeca697884b2ef3",
+        "source/interface_LLM.py": "556300f6fe49f0afc0c5398f7f351c784d3d868a1bb7b95b16ff5a91712ef243",
+        "source/evolution_interface.py": "7bc8661d5b7200dbb15290f8225b7fb4eec49ca3dbc946d3e563bcf116e56135",
+        "ahd_adapter.py": "a6ee7526d19f38e868124a7d9ff31f82cc60a9cfe3103bbc717d0fc58ed27cc9"
       },
       "profiles": [
         {
@@ -1109,6 +1504,72 @@
             "--config-name",
             "--config-dir"
           ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Small native CPU pilot through the private OpenAI-compatible gateway; exact API model identity.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.cpu_heuristic_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "mcts-ahd",
+            "--",
+            "algorithm=mcts_ahd",
+            "problem=bpp_online"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "source/mcts_ahd.py",
+            "utils/utils.py",
+            "utils/llm_client/openai.py",
+            "utils/llm_client/base.py",
+            "source/interface_LLM.py",
+            "source/evolution_interface.py",
+            "ahd_adapter.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/problem/bpp_online.yaml",
+            "cfg/llm_client/openai.yaml"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt",
+            "arena-provider-seam.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "The pilot uses reviewed cfg overlays; native Hydra command line options remain native."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred.",
+            "The pinned OpenAI YAML has a placeholder credential. Supply a secret-free config overlay using ${oc.env:OPENAI_API_KEY}; do not put credentials in JSON specs or config files.",
+            "Native max_fe is not a strict API-call cap; retries and a complete generation can overshoot. The admitted wall timeout remains authoritative. API sampling controls are recorded as unenforced by the Codex-native gateway."
+          ],
+          "protected_args": [
+            "--config-path",
+            "--config-name",
+            "--config-dir"
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
         }
       ]
     },
@@ -1278,7 +1739,10 @@
         "cfg/problem/bpp_online.yaml": "248826948095d691f5f25056f295de9cbb8ff5790562c20987b7bba14adbddf1",
         "main.py": "5c187e1a34a34a106d1ed675628ae74a872b6200d6c4d0960e92719868ccde30",
         "problems/bpp_online/eval.py": "4fa8b4e6f74afa0715e6411d7eb75809c7f35aadaa1435027f9c5f00d1a7bac1",
-        "reevo.py": "9530188250e1731358e2ac1c23a5ab67daca3f6dd1f888fcccc28da29c555118"
+        "reevo.py": "9530188250e1731358e2ac1c23a5ab67daca3f6dd1f888fcccc28da29c555118",
+        "utils/utils.py": "392d1642f63eb2a64e09a43bc649a8abe3d35fcb68df0ea5b658843524dbc74f",
+        "utils/llm_client/openai.py": "e4c84e1db20fa8f907b2df3b3a4949d79e527ec6729379d4ca993a704dc093cb",
+        "utils/llm_client/base.py": "5503fdcd65e15ad8aab0c1546521f5e63a1f3218aaa1e7432aeca697884b2ef3"
       },
       "profiles": [
         {
@@ -1328,6 +1792,69 @@
             "--config-name",
             "--config-dir"
           ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Small native CPU pilot through the private OpenAI-compatible gateway; exact API model identity.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.cpu_heuristic_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "reevo",
+            "--",
+            "algorithm=reevo",
+            "problem=bpp_online"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "reevo.py",
+            "utils/utils.py",
+            "utils/llm_client/openai.py",
+            "utils/llm_client/base.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/problem/bpp_online.yaml",
+            "cfg/llm_client/openai.yaml"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt",
+            "arena-provider-seam.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "The pilot uses reviewed cfg overlays; native Hydra command line options remain native."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred.",
+            "Native max_fe is not a strict API-call cap; retries and a complete generation can overshoot. The admitted wall timeout remains authoritative. API sampling controls are recorded as unenforced by the Codex-native gateway.",
+            "The native OpenAIClient transport expands n choices into ordered sequential n=1 requests; native reflection/selection/mutation/evaluation remain unchanged."
+          ],
+          "protected_args": [
+            "--config-path",
+            "--config-name",
+            "--config-dir"
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
         }
       ]
     },

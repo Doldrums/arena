@@ -23,10 +23,72 @@ from .runtime import _absolute, _digest_file, _write_json, _Capture, _stop, veri
 
 _CGROUP_MOUNT = Path("/sys/fs/cgroup")
 _PROCESS_CGROUP = Path("/proc/self/cgroup")
+_BROKER_CONTEXT = Path("/run/arena-engine/context.json")
+
+
+def _broker_context_bytes(path):
+    """Read only the root broker's immutable, bounded mount; never worker JSON."""
+    if path.resolve() != path or os.geteuid() == 0:
+        raise ValueError("Engine context requires a non-root process and an unlinked fixed mount")
+    for parent in path.parents:
+        info = parent.lstat()
+        if (not stat.S_ISDIR(info.st_mode) or info.st_uid != 0
+                or stat.S_IMODE(info.st_mode) & 0o022):
+            raise ValueError("Engine context ancestors must be root-owned and not worker-writable")
+    descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    try:
+        before = os.fstat(descriptor)
+        if (not stat.S_ISREG(before.st_mode) or before.st_uid != 0 or before.st_gid != 0
+                or stat.S_IMODE(before.st_mode) != 0o444 or before.st_nlink != 1 or before.st_size > 4096):
+            raise ValueError("Engine context must be a root-owned mode0444 bounded regular file")
+        raw = os.read(descriptor, 4097)
+        after = os.fstat(descriptor)
+        current = path.lstat()
+        fields = ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")
+        if (len(raw) > 4096 or any(getattr(before, name) != getattr(after, name)
+                                 or getattr(before, name) != getattr(current, name) for name in fields)):
+            raise ValueError("Engine context changed while being read")
+        return raw
+    finally:
+        os.close(descriptor)
+
+
+def _broker_context():
+    """Private cgroup namespace metadata; the proxy authenticates host membership."""
+    if os.environ.get("ARENA_EVALUATION_BROKER_CONTEXT") != str(_BROKER_CONTEXT):
+        raise ValueError("Engine context must use the fixed broker mount")
+    if os.environ.get("DOCKER_HOST") != "unix:///run/arena-evaluator/docker.sock":
+        raise ValueError("Engine evaluation requires the restricted canonical proxy")
+    memberships = [line[3:] for line in _PROCESS_CGROUP.read_text().splitlines() if line.startswith("0::")]
+    if memberships != ["/"]:
+        raise ValueError("Engine context requires the broker's private cgroup namespace")
+    def unique_keys(pairs):
+        value = {}
+        for key, item in pairs:
+            if key in value:
+                raise ValueError("Duplicate engine context key")
+            value[key] = item
+        return value
+    context = json.loads(_broker_context_bytes(_BROKER_CONTEXT), object_pairs_hook=unique_keys)
+    fields = {"schema", "run_id", "container_id", "cgroup_parent", "receipts_dir"}
+    if (type(context) is not dict or set(context) != fields
+            or any(type(value) is not str for value in context.values())
+            or context["schema"] != "arena.engine-context/1"
+            or not re.fullmatch(r"[0-9a-f]{32}", context["run_id"])
+            or not re.fullmatch(r"[0-9a-f]{64}", context["container_id"])):
+        raise ValueError("Invalid engine context identity")
+    ident = context["run_id"]
+    if (context["cgroup_parent"] != f"/arena-workers/arena-control-{ident}"
+            or context["receipts_dir"] != f"/srv/arena/control/runs/{ident}/artifacts/canonical-evaluations"
+            or Path(context["receipts_dir"]).resolve() != Path(context["receipts_dir"])):
+        raise ValueError("Engine context cgroup and receipts must identify the same admitted run")
+    return {name: context[name] for name in fields - {"schema"}} | {"authorization": "engine_broker"}
 
 
 def _control_context():
     """Bind Docker children to this admitted process's cgroup and artifact root."""
+    if "ARENA_EVALUATION_BROKER_CONTEXT" in os.environ:
+        return _broker_context()
     raw = os.environ.get("ARENA_EVALUATION_CGROUP_PARENT", "")
     parent = Path(raw)
     if (not raw or not parent.is_absolute() or parent.resolve() != parent

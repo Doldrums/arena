@@ -4,10 +4,10 @@ Arena can bind a public system/version reference to a worker-only Git commit and
 container image digest. Registration records the binding; it never downloads
 source, starts an image, evaluates a candidate or publishes a release.
 
-This is a local release contract and resolver. Private image execution, cloud
-orchestration, CI attestation verification and a RunSpec dispatcher that resolves
-release references are not implemented by this module. The existing native
-framework runners remain a separate interface.
+This module is the local release contract and resolver. Reviewed SCiEL image
+execution is implemented separately by the
+[private deployment and broker workflow](private-release-deployment.md).
+Registration alone neither starts that workflow nor verifies a CI attestation.
 
 ## Public reference and private binding
 
@@ -76,8 +76,9 @@ there is no fallback to a branch, latest image or public repository.
 4. A separately authorized worker operation resolves the reviewed reference and
    validates an explicit RunSpec with task/profile, runtime limits, model/key
    environment names and budget. The worker keeps the private binding and
-   credential values out of public plans and results. That image-running and
-   orchestration step still needs an implementation.
+   credential values out of public plans and results. The SCiEL private-image
+   adapter delegates execution to the root-owned broker, which verifies the
+   approved manifest and actual image before running it.
 
 Do not use this resolver in a public HTTP route. `resolve_release()` and the
 `resolve` CLI deliberately return private pointers and are worker-only APIs.

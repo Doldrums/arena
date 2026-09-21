@@ -235,6 +235,10 @@ def _diagnostic(directory, stage, error, values):
 
 def _spec_no_secrets(value, name="spec"):
     """Refuse credential fields and inline code; environment names are references."""
+    if name == "environment_names":
+        if type(value) is not list or any(not isinstance(item, str) or re.fullmatch(r"[A-Z][A-Z0-9_]{0,127}", item) is None for item in value):
+            raise ControlError("environment_names must contain variable names, never values")
+        return
     if isinstance(value, dict):
         for key, child in value.items():
             if SECRET_KEY.search(key) or key in {"code", "program", "source_code", "env", "environment"}:

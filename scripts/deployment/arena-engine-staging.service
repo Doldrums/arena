@@ -1,0 +1,11 @@
+[Unit]
+Description=Empira bounded private engine staging
+Before=arena-engine-broker.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/arena/current/scripts/deployment/setup-engine-staging.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

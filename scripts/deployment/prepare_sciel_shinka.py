@@ -185,6 +185,10 @@ def control_templates(bundle):
     rows = []
     for framework in ("sciel", "shinka"):
         native = {**bundle[framework + ".run.json"], "output_dir": "{output_dir}"}
+        # The control worker injects these names and their trusted values after
+        # admission; operators cannot choose their values in a template.
+        native["environment_names"] = [name for name in native["environment_names"]
+                                       if not name.startswith("ARENA_EVALUATION_")]
         rows.append({"id": manifest["campaign"] + "-" + framework,
                      "name": framework.upper() if framework == "sciel" else "Shinka",
                      "framework": framework, "profile": "canonical-native-pilot",

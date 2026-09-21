@@ -9,8 +9,9 @@ The supported source revision is
 `9912af12d423504b8d580f4179fd15f5f88b8c50` of
 [SakanaAI/ShinkaEvolve](https://github.com/SakanaAI/ShinkaEvolve/tree/9912af12d423504b8d580f4179fd15f5f88b8c50).
 The shared runner verifies this revision and a clean source checkout before
-launching. No live model calls or native search run were used to validate this
-adapter; its tests use inert task files and SQLite fixtures.
+launching. Local tests use inert task files and SQLite fixtures. The later
+operator-admitted pilots and their read-only inspection are recorded separately
+in [the reader diagnosis](../../reports/shinka-reader-pilot-20260921.md).
 
 ## Request
 
@@ -124,7 +125,10 @@ checkpoint before inspecting. The reader itself never checkpoints or mutates
 the source. Database changes during inspection also withhold the records.
 
 Inspection is bounded to a 256 MiB artifact, 500 newest records and 16,384
-characters per JSON field, with a SQLite query deadline. Truncation, malformed
+characters per exported JSON field, with a SQLite query deadline. Native
+metadata has a separate 128 KiB parse bound because upstream stores full model
+traces alongside the three copy-origin keys; only those three keys are exported.
+Truncation, malformed
 JSON, non-finite numbers, invalid native booleans, missing schema and corruption
 are explicit in `status`, `warnings` or per-record `issues`. A missing database
 returns `missing`, not a successful empty run. The original SQLite hash remains

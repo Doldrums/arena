@@ -9,7 +9,7 @@ import sys
 
 import pytest
 
-from arena.frameworks.shinka import COMMIT, MAX_FIELD_CHARS, MAX_RECORDS, ShinkaAdapter
+from arena.frameworks.shinka import COMMIT, MAX_FIELD_CHARS, MAX_METADATA_CHARS, MAX_RECORDS, ShinkaAdapter
 
 
 # shinka/database/dbase.py:_create_tables at 9912af12. Includes unselected native
@@ -279,3 +279,41 @@ def test_reader_bounds_rows_and_reports_omitted_or_malformed_fields(adapter, tmp
     assert latest["public_metrics"] is None and latest["private_metrics"] is None
     assert len(latest["issues"]) == 3
     json.dumps(result, allow_nan=False)
+
+
+def test_reader_keeps_copy_identity_when_native_metadata_contains_large_model_trace(adapter, tmp_path):
+    # Pinned native runs put full LLM responses, patch descriptions and timings
+    # beside copy-origin flags. Real pilot metadata reached45,708 characters.
+    metadata = {"llm_result": {"content": "unexported-model-trace" * 2200},
+                "patch_description": "native patch explanation", "sampling_seconds": 12.5,
+                "evaluation_seconds": 3.4, "source_generation": 3,
+                "_is_island_copy": True, "_spawned_island": False, "_original_program_id": "source-program"}
+    raw = json.dumps(metadata)
+    assert MAX_FIELD_CHARS < len(raw) < MAX_METADATA_CHARS
+    path = database(tmp_path, [{"id": "copy", "metadata": raw, "combined_score": -1.25, "correct": 0}])
+    before = path.read_bytes()
+    result = adapter.read_results(tmp_path); record = result["native"]["records"][0]
+    assert result["status"] == "recorded" and record["issues"] == []
+    assert record["copy_metadata"] == {key: metadata[key] for key in
+                                       ("_is_island_copy", "_spawned_island", "_original_program_id")}
+    assert record["is_island_copy"] is True and record["validity"] is False
+    assert record["combined_score"] == -1.25 and result["canonical_evaluation"] is False
+    assert "llm_result" not in json.dumps(result) and "unexported-model-trace" not in json.dumps(result)
+    assert any("not been canonically re-evaluated" in warning for warning in result["warnings"])
+    assert path.read_bytes() == before
+
+
+@pytest.mark.parametrize("metadata", [
+    '{"llm_result":"' + 'x' * MAX_METADATA_CHARS + '"}',
+    '{"llm_result":' + 'x' * MAX_FIELD_CHARS,
+    '{"_is_island_copy":true,"llm_result":{"cost":NaN}}',
+])
+def test_reader_still_reports_oversized_or_malformed_metadata(adapter, tmp_path, metadata):
+    path = database(tmp_path, [{"metadata": metadata, "combined_score": 0.9, "correct": 1}])
+    before = path.read_bytes()
+    result = adapter.read_results(tmp_path); record = result["native"]["records"][0]
+    assert result["status"] == "partial" and record["copy_metadata"] is None
+    assert any(issue.startswith("metadata omitted:") for issue in record["issues"])
+    assert record["validity"] is True and record["combined_score"] == 0.9
+    assert any("Some native fields" in warning for warning in result["warnings"])
+    assert path.read_bytes() == before

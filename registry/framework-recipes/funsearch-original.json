@@ -78,6 +78,70 @@
             "The original 2023 Nature paper is distinct from the corpus participant funsearch-re-implementation (Ellenberg et al., 2025); participant_ids is deliberately empty.",
             "Factory code is trusted executable research code. Stage all factory dependencies/data through request inputs for provenance; use a real isolated sandbox rather than in-process execution of generated candidates."
           ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Native original-author admissible-set pipeline with the exact gateway model, a bounded sample budget and Linux namespace scorer.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.funsearch_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "original"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "implementation/funsearch.py",
+            "implementation/sampler.py",
+            "implementation/evaluator.py",
+            "implementation/programs_database.py",
+            "implementation/config.py",
+            "implementation/code_manipulation.py",
+            "implementation/specification_nonsymmetric_admissible_set.txt"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.csv",
+            "results/**/*.log",
+            "data/**/*.jsonl",
+            "data/backups/**/*.pickle"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native reconstruction, scoring specification, admission and island database are unchanged; the supplied sandbox executes each reconstructed program in a credential-free network-isolated Linux namespace with a deadline.",
+            "evidence": [
+              "implementation/evaluator.py",
+              "implementation/programs_database.py",
+              "implementation/funsearch.py",
+              "implementation/specification_nonsymmetric_admissible_set.txt"
+            ]
+          },
+          "argument_help": [
+            "--model exact gateway ID; --max-samples 1..8. A separately hashed request.executables.bubblewrap is required."
+          ],
+          "limitations": [
+            "Single sampler/evaluator, two islands. This is a small integration pilot, not reproduction of published research budgets.",
+            "Original profile uses the supplied constant-weight admissible-set specification at (9,5); kitft uses its supplied cap-set specification at n=6. These are distinct tasks and scores.",
+            "Kitft native connectivity validation is one additional actual model call; its unused runasync --iterations flag is not treated as a sample cap. Budget cancellation invokes native run_agents cleanup and drains its evaluator queue.",
+            "Namespaces isolate credentials, network and filesystem mounts; worker cgroups provide the outer CPU/memory/process envelope. Native scores remain noncanonical."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "executable_args": {
+            "bubblewrap": "--bubblewrap"
+          }
         }
       ]
     }

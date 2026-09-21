@@ -310,6 +310,99 @@ def test_controlled_evaluation_fails_before_container_launch_if_admission_is_not
     assert not any(argv[:2] == ["docker", "run"] for argv, _ in calls)
 
 
+def broker_context_fixture(tmp_path, monkeypatch):
+    ident = "c" * 32
+    context = {"schema": "arena.engine-context/1", "run_id": ident, "container_id": "d" * 64,
+               "cgroup_parent": "/arena-workers/arena-control-" + ident,
+               "receipts_dir": f"/srv/arena/control/runs/{ident}/artifacts/canonical-evaluations"}
+    membership = tmp_path / "self-cgroup"
+    membership.write_text("0::/\n")
+    monkeypatch.setattr(evaluation, "_PROCESS_CGROUP", membership)
+    monkeypatch.setenv("ARENA_EVALUATION_BROKER_CONTEXT", "/run/arena-engine/context.json")
+    monkeypatch.setenv("DOCKER_HOST", "unix:///run/arena-evaluator/docker.sock")
+    monkeypatch.setattr(evaluation, "_broker_context_bytes", lambda path: json.dumps(context).encode())
+    return context, membership
+
+
+def test_private_namespace_uses_exact_broker_binding_not_mutable_worker_environment(tmp_path, monkeypatch):
+    context, _ = broker_context_fixture(tmp_path, monkeypatch)
+    monkeypatch.setenv("ARENA_EVALUATION_CGROUP_PARENT", "/not-mounted-inside-container")
+    monkeypatch.setenv("ARENA_EVALUATION_RECEIPTS_DIR", "/attacker-controlled")
+    observed = evaluation._control_context()
+    assert observed["authorization"] == "engine_broker"
+    assert observed["container_id"] == context["container_id"]
+    assert observed["run_id"] == context["run_id"]
+    assert evaluation.receipt_root({"execution": {"require_control_cgroup": True}}, "/ignored") == Path(context["receipts_dir"])
+
+
+@pytest.mark.parametrize("damage", ["alternate-file", "real-docker", "host-namespace", "foreign-receipts",
+                                     "foreign-cgroup", "bad-container", "extra-field", "duplicate-key"])
+def test_broker_binding_rejects_confused_identity_and_untrusted_routes(tmp_path, monkeypatch, damage):
+    context, membership = broker_context_fixture(tmp_path, monkeypatch)
+    if damage == "alternate-file":
+        monkeypatch.setenv("ARENA_EVALUATION_BROKER_CONTEXT", "/tmp/context.json")
+    elif damage == "real-docker":
+        monkeypatch.setenv("DOCKER_HOST", "unix:///var/run/docker.sock")
+    elif damage == "host-namespace":
+        membership.write_text("0::" + context["cgroup_parent"] + "/main\n")
+    elif damage == "foreign-receipts":
+        context["receipts_dir"] = context["receipts_dir"].replace("c" * 32, "e" * 32)
+    elif damage == "foreign-cgroup":
+        context["cgroup_parent"] += "-other"
+    elif damage == "bad-container":
+        context["container_id"] = "not-a-container-id"
+    elif damage == "extra-field":
+        context["trusted"] = "yes"
+    else:
+        raw = json.dumps(context).replace('"schema":', '"run_id":"' + "e" * 32 + '","schema":', 1)
+        monkeypatch.setattr(evaluation, "_broker_context_bytes", lambda path: raw.encode())
+    with pytest.raises(ValueError):
+        evaluation._control_context()
+
+
+@pytest.mark.parametrize("damage", [None, "worker-owner", "writable-file", "writable-parent", "worker-parent", "hardlink", "oversize", "symlink"])
+def test_engine_context_mount_permissions_are_checked(tmp_path, monkeypatch, damage):
+    import stat
+    from types import SimpleNamespace
+    path = tmp_path / "engine/context.json"
+    path.parent.mkdir()
+    path.write_bytes(b'{"test":true}')
+    path.chmod(0o444)
+    if damage == "oversize":
+        path.chmod(0o644)
+        path.write_bytes(b" " * 4097)
+        path.chmod(0o444)
+    if damage == "symlink":
+        target = path.with_name("target.json")
+        path.rename(target)
+        path.symlink_to(target)
+    real_fstat, real_lstat = os.fstat, Path.lstat
+    identity = path.stat().st_ino
+    fields = ("st_mode", "st_uid", "st_gid", "st_nlink", "st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")
+    def metadata(info, current):
+        values = {name: getattr(info, name) for name in fields}
+        values.update(st_uid=0, st_gid=0)
+        if current == path:
+            if damage == "worker-owner": values["st_uid"] = 998
+            if damage == "writable-file": values["st_mode"] = stat.S_IFREG | 0o644
+            if damage == "hardlink": values["st_nlink"] = 2
+        else:
+            values["st_mode"] = stat.S_IFDIR | 0o755
+            if current == path.parent and damage == "writable-parent": values["st_mode"] |= 0o002
+            if current == path.parent and damage == "worker-parent": values["st_uid"] = 998
+        return SimpleNamespace(**values)
+    monkeypatch.setattr(evaluation.os, "geteuid", lambda: 998)
+    monkeypatch.setattr(Path, "lstat", lambda current: metadata(real_lstat(current), current)
+                        if current == path or current in path.parents else real_lstat(current))
+    monkeypatch.setattr(evaluation.os, "fstat", lambda fd: metadata(real_fstat(fd), path)
+                        if real_fstat(fd).st_ino == identity else real_fstat(fd))
+    if damage is None:
+        assert evaluation._broker_context_bytes(path) == b'{"test":true}'
+    else:
+        with pytest.raises(ValueError):
+            evaluation._broker_context_bytes(path)
+
+
 def test_docker_timeout_and_failed_cleanup_still_write_receipt(evaluation_inputs, monkeypatch):
     config, candidate, output, _ = evaluation_inputs
     config["execution"] = {"kind": "docker", "image": "sha256:" + "b" * 64, "python": "python"}

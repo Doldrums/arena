@@ -18,6 +18,9 @@ from urllib.parse import parse_qsl, urlsplit
 COMMIT = "9912af12d423504b8d580f4179fd15f5f88b8c50"
 MAX_RECORDS = 500
 MAX_FIELD_CHARS = 16_384
+# Native metadata includes model replies/diffs that are not exported. Bound
+# parsing separately so ordinary traces do not erase small copy-origin fields.
+MAX_METADATA_CHARS = 128 * 1024
 MAX_DATABASE_BYTES = 256 * 1024 * 1024
 INITIAL_EXTENSIONS = {".py", ".jl", ".go", ".sv", ".rs", ".swift", ".cpp", ".cc", ".cxx", ".cu", ".json", ".f90", ".f95", ".f03", ".f08"}
 _SCALARS = ("id", "parent_id", "language", "generation", "timestamp", "island_idx", "combined_score", "correct")
@@ -141,7 +144,8 @@ def _version(stat):
 def _json_field(value, field, issues):
     if value is None:
         return None
-    if not isinstance(value, str) or len(value) > MAX_FIELD_CHARS:
+    maximum = MAX_METADATA_CHARS if field == "metadata" else MAX_FIELD_CHARS
+    if not isinstance(value, str) or len(value) > maximum:
         issues.append(f"{field} omitted: oversized or non-text native JSON")
         return None
     try:
@@ -240,7 +244,9 @@ class ShinkaAdapter:
             if not set(_SCALARS + _JSON_FIELDS) <= columns:
                 raise ValueError("Native programs table lacks required pinned-schema columns")
             native["total_program_rows"] = connection.execute("SELECT COUNT(*) FROM programs").fetchone()[0]
-            selected = list(_SCALARS) + [f"substr({field},1,{MAX_FIELD_CHARS + 1}) AS {field}" for field in _JSON_FIELDS]
+            selected = list(_SCALARS) + [
+                f"substr({field},1,{(MAX_METADATA_CHARS if field == 'metadata' else MAX_FIELD_CHARS) + 1}) AS {field}"
+                for field in _JSON_FIELDS]
             rows = connection.execute("SELECT " + ",".join(selected) + " FROM programs ORDER BY timestamp DESC, id DESC LIMIT ?", (MAX_RECORDS + 1,)).fetchall()
             native["truncated"] = len(rows) > MAX_RECORDS
             for row in rows[:MAX_RECORDS]:

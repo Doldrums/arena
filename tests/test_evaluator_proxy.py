@@ -1,5 +1,6 @@
 """No Docker daemon, candidate execution, model call or privilege is required."""
 from copy import deepcopy
+from dataclasses import replace
 import http.client
 import http.server
 import json
@@ -52,10 +53,54 @@ def test_actual_cli_shape_is_rebuilt_not_forwarded(setup):
     checked, cpath, opath = ep.canonical_config(body, NAME, RUN, config)
     assert cpath == candidate and opath == output
     assert checked["HostConfig"]["MemorySwap"] == checked["HostConfig"]["Memory"]
-    assert checked["HostConfig"]["LogConfig"] == {"Type": "local", "Config": {"max-size": "1m", "max-file": "1"}}
+    assert checked["HostConfig"]["LogConfig"] == {"Type": "local", "Config": {"max-size": "1m", "max-file": "1", "compress": "false"}}
     assert checked["Entrypoint"] == [] and checked["HostConfig"]["CgroupnsMode"] == "private"
     assert "Binds" not in checked["HostConfig"] and "NetworkingConfig" not in checked
     assert checked["HostConfig"]["Mounts"] == []  # rewritten only after safe snapshot
+
+
+def test_registered_engine_identity_requires_actual_container_cgroup(setup, monkeypatch):
+    config, *_ = setup
+    registry = config.staging_root.parent / "engine-registry"; registry.mkdir()
+    engine_stage = config.staging_root.parent / "engine-staging"; engine_stage.mkdir()
+    config = replace(config, engine_registry=registry, engine_staging_root=engine_stage)
+    record = {"schema": "arena.engine-peer/1", "run_id": RUN, "container_id": IDENT,
+              "artifact_root": str(engine_stage / RUN / "artifacts")}
+    (registry / (RUN + ".json")).write_text(json.dumps(record))
+    actual_read = ep.read_regular
+    monkeypatch.setattr(ep, "read_regular", lambda fd, name, limit, owner=None: actual_read(fd, name, limit, os.getuid()))
+    monkeypatch.setattr(ep, "_peer_identity", lambda *a: [RUN, IDENT])
+    assert ep.engine_binding(None, config) == record
+    assert ep.peer_run(None, config) == RUN
+    monkeypatch.setattr(ep, "_peer_identity", lambda *a: [RUN, "e" * 64])
+    with pytest.raises(ep.Denied): ep.engine_binding(None, config)
+    monkeypatch.setattr(ep, "_peer_identity", lambda *a: [RUN, "main"])
+    assert ep.engine_binding(None, config) is None
+
+
+def test_engine_candidate_and_results_are_mapped_only_to_root_registered_stage(setup, monkeypatch):
+    config, body, candidate, output = setup
+    engine_stage = config.staging_root.parent / "engine-staging"; engine_stage.mkdir()
+    config = replace(config, engine_staging_root=engine_stage)
+    physical = engine_stage / RUN / "artifacts"
+    logical = config.run_roots[0] / RUN / "artifacts"
+    actual_candidate = physical / candidate.relative_to(logical)
+    actual_output = physical / output.relative_to(logical)
+    actual_candidate.mkdir(parents=True); actual_output.mkdir()
+    (actual_candidate / "program.py").write_text("# private image candidate\n")
+    proxy = ep.Proxy(config); captures = []; fake_create(proxy, captures)
+    monkeypatch.setattr(ep.os, "chown", lambda *a: None)
+    monkeypatch.setattr(ep.os, "fchown", lambda *a: None)
+    binding = {"run_id": RUN, "artifact_root": str(physical)}
+    proxy.create(body, NAME, RUN, "", binding)
+    record = proxy.records[NAME]
+    assert (record["stage"] / "candidate/program.py").read_text() == "# private image candidate\n"
+    (record["stage"] / "results/native.json").write_text('{"valid":true}')
+    proxy.publish(record)
+    assert (actual_output / "native.json").is_file() and not (output / "native.json").exists()
+    proxy.remove(NAME, record)
+    with pytest.raises(ep.Denied):
+        proxy.create(body, NAME, RUN, "", {"run_id": RUN, "artifact_root": str(config.tasks_root)})
 
 
 @pytest.mark.parametrize("location,key,value", [
@@ -119,6 +164,21 @@ def test_mutable_paths_are_snapshotted_and_output_uses_held_directory(setup, mon
     proxy.publish(record)
     assert json.loads((relocated / "native.json").read_text()) == {"status": "completed"}
     assert not (config.tasks_root / "native.json").exists()
+    proxy.remove(NAME, record)
+
+
+def test_private_service_umask_keeps_candidate_mount_readable(setup, monkeypatch):
+    config, body, *_ = setup
+    proxy = ep.Proxy(config); fake_create(proxy, [])
+    monkeypatch.setattr(ep.os, "chown", lambda *args: None)
+    previous = os.umask(0o077)
+    try:
+        proxy.create(body, NAME, RUN, "")
+    finally:
+        os.umask(previous)
+    record = proxy.records[NAME]
+    assert (record["stage"] / "candidate").stat().st_mode & 0o777 == 0o755
+    assert (record["stage"] / "candidate/program.py").stat().st_mode & 0o777 == 0o444
     proxy.remove(NAME, record)
 
 

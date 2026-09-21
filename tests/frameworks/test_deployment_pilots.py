@@ -101,3 +101,42 @@ def test_inventory_covers_all_source_verified_profiles_without_claiming_readines
                for row in inventory["profiles"])
     evolcaf = next(row for row in inventory["profiles"] if row["engine"] == "evolcaf")
     assert any("20 joblib workers" in text for text in evolcaf["limitations"])
+
+
+def test_provider_binding_preserves_exact_model_and_cannot_mark_offline_templates_ready(tmp_path):
+    record = {"model": "gpt-5.6-sol", "response_model": "gpt-5.6-sol", "status": "generation_verified",
+              "seconds": 1.2, "usage": {"prompt_tokens": 13, "completion_tokens": 5, "total_tokens": 18}}
+    proof = tmp_path / "probe.json"
+    proof.write_text(json.dumps([record]))
+    bundle = pilot.build_bundle(Path("/srv/arena"), "pilot", IMAGE)
+    destination = tmp_path / "prepared"
+    manifest = pilot.write_bundle(destination, bundle, root=Path("/srv/arena"), campaign="pilot", probe_evidence=proof)
+    assert manifest["models_generation_verified"] is True
+    assert manifest["research_executed"] is False
+    binding = json.loads((destination / "provider-probe.json").read_text())
+    assert binding["source_sha256"] == hashlib.sha256(proof.read_bytes()).hexdigest()
+    assert binding["record"] == record
+    templates = json.loads((destination / "control-templates.json").read_text())
+    assert len(templates) == 2 and all(row["status"] == "blocked" for row in templates)
+    bundle["manifest.json"].update(source_verification="verified_clean_pins", models_generation_verified=True)
+    ready = pilot.control_templates(bundle)
+    from arena.control import validate_config
+    example = json.loads((ROOT / "docs/control.example.json").read_text())
+    example["templates"] = ready
+    validate_config(example)
+    assert all(row["status"] == "ready" and row["spec"]["output_dir"] == "{output_dir}" for row in ready)
+
+
+@pytest.mark.parametrize("change", [
+    {"response_model": "other-model"}, {"status": "discovery_only"}, {"seconds": float("nan")},
+    {"api_key": "not-a-real-key"}, {"usage": {"prompt_tokens": 13, "completion_tokens": 0, "total_tokens": 13}},
+])
+def test_bad_provider_evidence_is_rejected_before_bundle_creation(tmp_path, change):
+    record = {"model": "gpt-5.6-sol", "response_model": "gpt-5.6-sol", "status": "generation_verified",
+              "seconds": 1.2, "usage": {"prompt_tokens": 13, "completion_tokens": 5, "total_tokens": 18}, **change}
+    proof = tmp_path / "probe.json"
+    proof.write_text(json.dumps([record]))
+    bundle = pilot.build_bundle(Path("/srv/arena"), "pilot", IMAGE)
+    with pytest.raises(ValueError):
+        pilot.write_bundle(tmp_path / "absent", bundle, root=Path("/srv/arena"), campaign="pilot", probe_evidence=proof)
+    assert not (tmp_path / "absent").exists()

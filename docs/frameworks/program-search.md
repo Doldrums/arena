@@ -81,3 +81,55 @@ Root licenses are recorded from pinned files. LLM-LEx has no root license file a
 Deliberate Evolution publishes an announcement only at the reviewed pin. The Station publishes a real implementation, but its supported startup path provisions and daemonizes a persistent multi-service deployment. It needs a managed initialize/start/stop/collect adapter before a bounded native launch can be claimed. These are specific integration gaps, not claims that either paper lacks scientific value.
 
 Offline tests validate complete record coverage, fixed algorithm identity, source-tamper rejection, isolated/inert preparation, driver delegation and preservation of native scores and formula strings. They do not certify runtime performance or reproduce paper results.
+
+## Prepared private CPU gateway pilots
+
+The `gateway-cpu-pilot` profiles for BaSE, ReEvo, HSEvo and MCTS-AHD use the
+same pinned source and native evaluator as their original profiles. The
+operator script `scripts/deployment/prepare_cpu_heuristics.py` verifies those
+pins, hashes configuration inputs, and writes seven-model templates without
+calling a model or evaluating a candidate. Each pilot requests four CPUs,
+8 GiB RAM, 512 processes and a 2,400-second outer timeout. BLAS, OpenMP and NumExpr are configured for one thread. ReEvo/HSEvo reserve two evaluator slots; BaSE/MCTS-AHD reserve
+one. These are conservative admission envelopes, not measured throughput.
+
+BaSE's API profile calls the native `LiveGreedyArm`, `GreedyRunner`,
+`base.runner.run_base` and UCB policy: two arms, one child per selected round,
+four rounds. FLOPs do not drive that policy. Proprietary API parameter counts
+are unknown, so the exported parameter/FLOPs fields are `null`; internal absent
+accountant logging zeros are never published as measurements. The native
+sampling seeds remain in trajectory records, but the transport omits the API
+sampling seed and vLLM template control because this gateway does not implement
+them. Exact requested model IDs remain unchanged.
+
+ReEvo uses a subclass of its native OpenAI client. A request for `n` choices is
+expanded to `n` sequential requests with `n=1`, preserving every response in
+order. The SDK timeout is 180 seconds, with SDK retries disabled; the native
+outer retry policy remains in place. Reflection, crossover, mutation, selection
+and evaluation are unchanged. Initialization and population sizes are two,
+mutation rate is 0.5, and `max_fe=6` targets one evolutionary iteration after
+initialization.
+
+HSEvo uses its native LiteLLM route `openai/<exact model ID>` and the existing
+`OPENAI_API_BASE` interface. Its `enable_thinking=false` prevents unsupported
+vLLM request extensions. Population/init sizes are two, mutation rate is 0.5,
+`max_fe=6`; the native harmony phase remains enabled with memory size two and
+one refinement iteration. The bundled `cl100k_base` tokenizer cache is copied
+as a hashed input. Native token estimates use that encoding, not a measured
+model-specific tokenizer.
+
+MCTS-AHD uses its native OpenAI client with exact model ID and `base_url`.
+Initialization/population sizes are two and `max_fe=4`. Its native
+`Problem.batch_evaluate` waits for each candidate subprocess, so evaluator
+orchestration is serial. Duplicate-objective and invalid-code retries remain
+native.
+
+The native `max_fe` fields are progress targets checked outside complete
+iterations, and native API retries can produce more calls than the nominal
+proposal count. The controller's outer timeout is authoritative. The
+`codex-native` gateway records temperature, top-p and token limits as
+unenforced; these values are not provider compute caps. Source/configuration
+checks do not establish research success or cross-framework score equivalence.
+The generated Python in these native profiles runs as the admitted worker
+under CPU/memory/process cgroup limits, rather than through the canonical
+Docker evaluator. Native evaluation scores and final validation artifacts
+remain explicitly noncanonical.

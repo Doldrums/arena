@@ -67,11 +67,11 @@ def _inert_source(tmp_path, recipe):
     return recipe, source
 
 
-@pytest.mark.parametrize("identity", [r["id"] for r in RECIPES if r["profiles"]])
-def test_recipe_preparation_is_inert_and_targets_an_isolated_workspace(tmp_path, identity):
+@pytest.mark.parametrize("identity,profile_id", [(r["id"], p["id"]) for r in RECIPES for p in r["profiles"]])
+def test_recipe_preparation_is_inert_and_targets_an_isolated_workspace(tmp_path, identity, profile_id):
     recipe, source = _inert_source(tmp_path, BY_ID[identity])
     output = tmp_path / "run"
-    profile = recipe["profiles"][0]
+    profile = next(p for p in recipe["profiles"] if p["id"] == profile_id)
     command = RecipeAdapter(recipe).prepare(source, {"python": sys.executable, "profile": profile["id"],
                                             "executables": {name: sys.executable for name in profile.get("executable_args", {})}}, output)
     assert command["workspace_copy"] is True
@@ -87,7 +87,7 @@ def test_source_tampering_fails_before_any_launch(tmp_path):
     recipe, source = _inert_source(tmp_path, BY_ID["base"])
     (source / "run_base.py").write_text("print('changed')")
     with pytest.raises(ValueError, match="evidence mismatch"):
-        RecipeAdapter(recipe).prepare(source, {"python": sys.executable}, tmp_path / "out")
+        RecipeAdapter(recipe).prepare(source, {"python": sys.executable, "profile": "circle-packing"}, tmp_path / "out")
 
 
 def test_recipe_cannot_silently_change_the_registered_search_algorithm(tmp_path):
@@ -119,7 +119,7 @@ def test_eoh_driver_delegates_once_with_native_problem_and_explicit_budgets(tmp_
     _module(monkeypatch, "prob", BPONLINE=lambda **kw: {"native_problem": kw})
     old_path = sys.path[:]
     try:
-        assert eoh.main(["--endpoint", "https://example.invalid/v1", "--model", "test-model",
+        assert eoh.main(["--endpoint", "example.invalid", "--model", "test-model",
                          "--population", "4", "--generations", "2", "--samples", "8",
                          "--output", str(tmp_path / "result")]) == 0
     finally:
@@ -144,13 +144,50 @@ def test_meoh_driver_preserves_two_objective_evaluator(tmp_path, monkeypatch):
     for name in ("llm4ad", "llm4ad.task", "llm4ad.task.optimization", "llm4ad.tools", "llm4ad.tools.llm", "llm4ad.method"):
         _module(monkeypatch, name)
     _module(monkeypatch, "llm4ad.task.optimization.online_bin_packing_2O", OBP_2O_Evaluation=lambda **kw: native_eval)
-    _module(monkeypatch, "llm4ad.tools.llm.llm_api_https", HttpsApi=lambda **kw: kw)
+    class HttpsApi:
+        def __init__(self, **kw):
+            self._key = kw.pop("key")
+            self.__dict__.update(kw)
+
+    _module(monkeypatch, "llm4ad.tools.llm.llm_api_https", HttpsApi=HttpsApi)
     _module(monkeypatch, "llm4ad.method.meoh", MEoH=method, MEoHProfiler=lambda **kw: kw)
     assert meoh.main(["--host", "example.invalid", "--model", "test-model", "--population", "4",
                       "--generations", "2", "--samples", "8", "--output", str(tmp_path / "result")]) == 0
     assert calls["ran"] and calls["evaluation"] is native_eval and calls["num_objs"] == 2
     assert calls["max_generations"] == 2 and calls["max_sample_nums"] == 8
     assert calls["profiler"]["num_objs"] == 2
+    assert calls["llm"]._key == "unit-test-key"
+    assert "unit-test-key" not in str(calls["llm"].__dict__)
+
+
+def test_meoh_provider_credentials_are_not_serialized_by_native_profiler(monkeypatch):
+    from arena.frameworks.drivers.meoh import environment_key_provider
+    monkeypatch.setenv("OPENAI_API_KEY", "secret-fixture-only")
+
+    class NativeProvider:
+        def __init__(self, key):
+            self._key = key
+            self._model = "test-model"
+
+        def authorization(self):
+            return "Bearer " + self._key
+
+    provider = environment_key_provider(NativeProvider)(key="secret-fixture-only")
+    assert provider.authorization() == "Bearer secret-fixture-only"
+    assert provider.__dict__ == {"_model": "test-model"}
+    assert provider.authorization.__func__ is NativeProvider.authorization
+    monkeypatch.setenv("OPENAI_API_KEY", "rotated-fixture-only")
+    assert provider.authorization() == "Bearer rotated-fixture-only"
+    with pytest.raises(ValueError):
+        environment_key_provider(NativeProvider)(key="unrelated-key")
+
+
+@pytest.mark.parametrize("endpoint", ["https://example.invalid", "user@example.invalid", "example.invalid/path"])
+def test_eoh_endpoint_matches_native_https_host_interface(endpoint, tmp_path):
+    from arena.frameworks.drivers.eoh import main
+    with pytest.raises(SystemExit):
+        main(["--endpoint", endpoint, "--model", "test", "--population", "4", "--generations", "2",
+              "--samples", "8", "--output", str(tmp_path / "out")])
 
 
 @pytest.mark.parametrize("data", [{"x": [0, 1], "y": [1]}, {"x": [False, 1], "y": [1, 2]},

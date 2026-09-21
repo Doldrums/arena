@@ -13,7 +13,10 @@ FRAMEWORKS = {
 }
 
 
-def get_adapter(framework):
+def get_adapter(framework, *, request=None):
+    if framework == "sciel-release":
+        from .sciel_release import SCiELReleaseAdapter
+        return SCiELReleaseAdapter(request=request)
     if framework not in FRAMEWORKS:
         from .recipes import RecipeAdapter, load_recipes
         recipes = load_recipes()
