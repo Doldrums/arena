@@ -1,22 +1,25 @@
 {
   "id": "shinka",
   "name": "ShinkaEvolve",
-  "description": "Sakana AI's evolutionary program-search framework. Integration is planned around its native whole-run loop and a canonical evaluator callback.",
+  "description": "Sakana AI's evolutionary program-search framework. Arena provides a native whole-run driver, saved-result reader and a task-suite evaluation bridge.",
   "repository": {
     "url": "https://github.com/SakanaAI/ShinkaEvolve",
     "commit": "9912af12d423504b8d580f4179fd15f5f88b8c50"
   },
   "registration_status": "planned",
-  "adapter_status": "not_implemented",
+  "adapter_status": "native_cli",
   "capabilities": {
-    "native_run": false,
+    "native_run": true,
     "canonical_evaluation": false,
     "pause": false,
     "resume": false
   },
   "supported_protocols": [],
   "limitations": [
-    "The source revision is registered; no Arena native runner or evaluation adapter is implemented.",
-    "Task compatibility and runtime readiness have not been measured by Arena."
-  ]
+    "A local native CLI driver, SQLite result reader and Arena suite evaluator bridge are implemented at this source pin.",
+    "The bridge preserves raw score, objective direction and explicit validity; task dependencies and per-task conformance must still be checked.",
+    "The native environment and a full model-driven run have not been verified. Pause, resume and end-to-end canonical comparison remain separate integration work."
+  ],
+  "runtime_readiness": "not_verified",
+  "adapter_validation": "source_and_fixture_tests"
 }

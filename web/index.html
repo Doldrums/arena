@@ -13,9 +13,11 @@
   <link rel="stylesheet" href="/arena-insights.css">
   <link rel="stylesheet" href="/arena-atlas.css">
   <link rel="stylesheet" href="/arena-theme.css">
+  <link rel="stylesheet" href="/arena-contribute.css">
   <script type="module" src="/arena.js"></script>
+  <script type="module" src="/arena-contribute.js"></script>
 </head>
-<body class="arena-shell" data-arena-app="true">
+<body class="arena-shell" data-arena-app="true" data-arena-access-email="arina.kharlamova@mbzuai.ac.ae">
   <a class="skip" href="#main">Skip to content</a>
   <header class="arena-masthead">
     <a class="arena-brand" href="/" aria-label="Empira home">
@@ -26,10 +28,11 @@
       <a href="/" data-arena-view="tasks" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="2"/><rect x="14" y="4" width="6" height="6" rx="2"/><rect x="4" y="14" width="6" height="6" rx="2"/><rect x="14" y="14" width="6" height="6" rx="2"/></svg>Tasks<span id="nav-task-count"></span></a>
       <a href="/?view=participants" data-arena-view="participants"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 4v2"/></svg>Participants<span id="nav-participant-count"></span></a>
       <a href="/experiments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16h16M7 15l4-5 4 3 5-7"/></svg>Experiments<small aria-hidden="true">↗</small></a>
+      <a href="/queue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h1M3 12h1M3 18h1"/></svg>Queue</a>
     </nav>
     <div class="arena-header-actions">
       <span class="arena-live-status"><span class="connection-dot" id="arena-connection-dot"></span><span id="arena-connection" role="status" aria-live="polite">Loading registry…</span></span>
-      <a id="arena-contribute" class="button primary" href="https://github.com/Doldrums/arena/compare" target="_blank" rel="noopener noreferrer">Add a task ↗</a>
+      <button id="arena-contribute" class="button primary" type="button" data-arena-contribution="task" aria-haspopup="dialog" aria-controls="arena-contribution-dialog">Submit a task +</button>
     </div>
   </header>
   <main id="main" class="arena-canvas" tabindex="-1">
@@ -82,12 +85,12 @@
             <div class="arena-evidence-copy"><h3>Evidence you can inspect</h3><p>Follow the code, candidates, failures and artifacts behind an experiment. Native SCiEL records are available in the local board.</p><a class="arena-text-action" href="/experiments">Open experiments <span aria-hidden="true">↗</span></a></div>
           </article>
           <div class="arena-difference-rows">
-            <article class="arena-difference-row"><span class="arena-difference-icon is-revision" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M30 13a13 13 0 1 0 2 14M30 5v9h-9"/><path d="M15 21h11m-4-4 4 4-4 4"/></svg></span><div><h3>RSI as the research target</h3><p>Study changes to the system’s own code, search procedures and learning mechanisms through subsequent experiments.</p></div></article>
-            <article class="arena-difference-row"><span class="arena-difference-icon is-code" aria-hidden="true"><svg viewBox="0 0 40 40"><rect x="9" y="6" width="22" height="27" rx="4"/><path d="M6 13v19a5 5 0 0 0 5 5h15M15 14h10M15 20h10M15 26h6"/></svg></span><div><h3>Tasks and systems keep evolving</h3><p>Reviewed contributions add tasks and system versions. Continuous discovery of both is in development.</p><span class="arena-status-upcoming">Discovery in development</span></div></article>
-            <article class="arena-difference-row"><span class="arena-difference-icon is-search" aria-hidden="true"><svg viewBox="0 0 40 40"><rect x="5" y="7" width="11" height="11" rx="3"/><rect x="24" y="7" width="11" height="11" rx="3"/><rect x="14" y="26" width="12" height="10" rx="3"/><path d="M10 18v5h20v-5M20 23v3"/></svg></span><div><h3>Frameworks keep their own methods</h3><p>SCiEL, ShinkaEvolve and DGM remain independent. Each keeps its own search, memory and learning code.</p></div></article>
+            <article class="arena-difference-row" data-tone="amber"><header class="arena-difference-card-heading"><span class="arena-difference-icon is-revision" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M30 13a13 13 0 1 0 2 14M30 5v9h-9"/><path d="M15 21h11m-4-4 4 4-4 4"/></svg></span><h3>RSI as the research target</h3></header><div class="arena-difference-body"><p>Study changes to the system’s own code, search procedures and learning mechanisms through subsequent experiments.</p></div></article>
+            <article class="arena-difference-row" data-tone="lilac"><header class="arena-difference-card-heading"><span class="arena-difference-icon is-code" aria-hidden="true"><svg viewBox="0 0 40 40"><rect x="9" y="6" width="22" height="27" rx="4"/><path d="M6 13v19a5 5 0 0 0 5 5h15M15 14h10M15 20h10M15 26h6"/></svg></span><h3>Tasks and systems keep evolving</h3></header><div class="arena-difference-body"><p>Reviewed contributions add tasks and system versions. Continuous discovery of both is in development.</p><span class="arena-status-upcoming">Discovery in development</span></div></article>
+            <article class="arena-difference-row" data-tone="blue"><header class="arena-difference-card-heading"><span class="arena-difference-icon is-search" aria-hidden="true"><svg viewBox="0 0 40 40"><rect x="5" y="7" width="11" height="11" rx="3"/><rect x="24" y="7" width="11" height="11" rx="3"/><rect x="14" y="26" width="12" height="10" rx="3"/><path d="M10 18v5h20v-5M20 23v3"/></svg></span><h3>Frameworks keep their own methods</h3></header><div class="arena-difference-body"><p>SCiEL, ShinkaEvolve and DGM remain independent. Each keeps its own search, memory and learning code.</p></div></article>
           </div>
         </div>
-        <div id="arena-growth" class="arena-growth"><div><h3>Contribute through GitHub</h3><p>Tasks and systems enter through team-reviewed pull requests.</p></div><div class="arena-contribution-actions"><a class="button" href="https://github.com/Doldrums/arena/compare?expand=1&amp;template=task.md" target="_blank" rel="noopener noreferrer">Submit a task <span aria-hidden="true">+</span></a><a class="button" href="https://github.com/Doldrums/arena/compare?expand=1&amp;template=participant.md" target="_blank" rel="noopener noreferrer">Submit a system <span aria-hidden="true">+</span></a></div></div>
+        <div id="arena-growth" class="arena-growth"><div><h3>Contribute through GitHub</h3><p>Tasks and systems enter through team-reviewed pull requests.</p></div><div class="arena-contribution-actions"><button class="button" type="button" data-arena-contribution="task" aria-haspopup="dialog" aria-controls="arena-contribution-dialog">Submit a task <span aria-hidden="true">+</span></button><button class="button" type="button" data-arena-contribution="system" aria-haspopup="dialog" aria-controls="arena-contribution-dialog">Submit a system <span aria-hidden="true">+</span></button></div></div>
       </section>
       <section id="arena-faq" class="arena-faq" aria-labelledby="arena-faq-title">
         <div class="arena-faq-heading"><span class="arena-faq-kicker">For researchers</span><h2 id="arena-faq-title">Q / A</h2><p>Evaluation, integration<br> and collaboration.</p><a href="https://github.com/Doldrums/arena/blob/main/docs/arena-integration-architecture.md" target="_blank" rel="noopener noreferrer">Read the protocol design <span aria-hidden="true">↗</span></a></div>
@@ -101,7 +104,10 @@
         </div>
       </section>
       <p id="arena-scope" class="arena-scope" hidden></p>
-      <footer class="page-footer arena-page-footer"><span id="arena-source-note">Versioned task definitions and participant registrations.</span><a href="/experiments">Open experiment board ↗</a></footer>
+      <footer class="page-footer arena-page-footer">
+        <span id="arena-source-note" class="arena-attribution"><span>Made by</span> <a href="https://cpil-lab.github.io/" target="_blank" rel="noopener noreferrer"><img src="/brand/cpil.png" width="24" height="24" alt="">CPIL Research Group</a> <span>@</span> <a href="https://mbzuai.ac.ae/" target="_blank" rel="noopener noreferrer"><img src="/brand/mbzuai.png" width="28" height="28" alt="">MBZUAI</a></span>
+        <a href="/experiments">Open experiment board ↗</a>
+      </footer>
       <noscript><p class="arena-scope">JavaScript is needed to load the catalog. <a href="https://github.com/Doldrums/arena">Browse the repository</a>.</p></noscript>
   </main>
 </body>

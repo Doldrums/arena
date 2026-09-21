@@ -1,0 +1,85 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "funsearch-original",
+      "name": "FunSearch \u2014 original author implementation (Google DeepMind, 2023)",
+      "participant_ids": [],
+      "repository": {
+        "url": "https://github.com/google-deepmind/funsearch",
+        "commit": "cc53f274237d7ab05c19df939edbc1f9616a7c19"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0 (software); CC-BY-4.0 (other materials)",
+      "setup": [
+        "Prepare an isolated Python environment with the source imports: absl-py, numpy and scipy; add dependencies required by the supplied model and sandbox providers. Arena does not install them or call a model during planning.",
+        "Stage a factory with draw_sample(prompt), sandbox_factory(), inputs, and optional native programs_database configuration. Supply authentication through explicit runtime environment_names.",
+        "Stage a FunSearch specification containing exactly one @funsearch.run function and one @funsearch.evolve function. The native sandbox provider must execute generated code safely and honor its timeout."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "8dd2284a81d1d32ae44c74b75a7050856d06e9cc2b786a8705ce5dbd8dfca7e6",
+        "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "implementation/funsearch.py": "a5b9aa2e562e98d1843dd51de28758df3b51432e3244aadf99686db995d4c922",
+        "implementation/sampler.py": "7139b27a312065d53e7f17e5feada17b98107fdb39d71b0b47acd42f9f8a38ac",
+        "implementation/evaluator.py": "81647818f5f12d9af535959d9042c62ffcb687385ac7d5b2ffbf01a6401542c1",
+        "implementation/programs_database.py": "b2bef312d04861f467f304f65788efe959f0493818976b052c46b4703151affc",
+        "implementation/config.py": "bd118e9579e7230d8b1c969a0fc4e10fadcbfa116993c7aadfb988ac4fb500a6",
+        "implementation/code_manipulation.py": "8538521e64b0f92a95ee88d0617dd499129a1de19d9502aacba3f109b77f7b3b",
+        "implementation/specification_nonsymmetric_admissible_set.txt": "8d5b3db525032b082f7f4e3bc8d36671a26452fd227f2a008d5d06ce7601390e"
+      },
+      "profiles": [
+        {
+          "id": "single-threaded-native",
+          "description": "Original 2023 author implementation: native main, evaluator and island database with explicit LLM/sandbox providers and a bounded generated-sample budget.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.funsearch_original"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "implementation/funsearch.py",
+            "implementation/sampler.py",
+            "implementation/evaluator.py",
+            "implementation/programs_database.py",
+            "implementation/config.py",
+            "implementation/code_manipulation.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/native-trace.jsonl",
+            "results/native-result.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native evaluator reconstructs candidates, calls the supplied Sandbox.run on the supplied inputs, rejects ancestor references and admits numeric successful scores to the native island database. Native reduction uses the last recorded input score; partial-input success can be registered. The caller supplies actual task scoring and execution isolation. No canonical Arena score or uniform validity is inferred.",
+            "evidence": [
+              "implementation/evaluator.py",
+              "implementation/programs_database.py",
+              "implementation/funsearch.py"
+            ]
+          },
+          "argument_help": [
+            "--factory inputs/factory.py:build (staged trusted Python factory; imported only during explicit execution)",
+            "--specification inputs/specification.py (staged native decorated specification, at most 1 MiB)",
+            "--max-samples N (required upper bound on model continuation calls; final partial batch is evaluated)",
+            "--samples-per-prompt N (default 4); --trace-mib N (1\u2013256, default 32)"
+          ],
+          "limitations": [
+            "The original repository intentionally omits the model, sandbox and distributed infrastructure; a complete prepared provider factory is required. This is a supported native single-threaded execution seam, not the authors\u2019 distributed deployment.",
+            "One sampler and one evaluator are used because the published main executes the first sampler indefinitely. All island evolution, prompt construction, code manipulation and evaluation admission remain upstream.",
+            "Initial seed evaluation is additional to the generated-sample budget. Native per-candidate evaluation uses a 30-second timeout argument that the supplied sandbox must enforce; the outer runtime timeout bounds the driver process group, not external services.",
+            "Trace capacity exhaustion stops the driver with a nonzero exit and a trace_limit_reached native result. Native observations and bounded island leaders are recorded, without inventing scores or claims of canonical validity.",
+            "The original 2023 Nature paper is distinct from the corpus participant funsearch-re-implementation (Ellenberg et al., 2025); participant_ids is deliberately empty.",
+            "Factory code is trusted executable research code. Stage all factory dependencies/data through request inputs for provenance; use a real isolated sandbox rather than in-process execution of generated candidates."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -5,8 +5,11 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import io
 import json
+import math
 from pathlib import Path
+import re
 import subprocess
 import sys
 
@@ -15,7 +18,6 @@ sys.path.insert(0, str(ROOT / "src"))
 from arena.registry import get_catalog
 from arena.references import summarize, validate_references
 
-PIN = "995768fc462b8e327f90e6762846cc6ccb06cc2c"
 REPOSITORY = "https://github.com/IMRUNya/autoresearch-tasks"
 LABELS = {
     "circle_packing_square": "Sum of circle radii in the unit square",
@@ -34,6 +36,7 @@ LABELS = {
     "uncertainty_laguerre": "C4 upper bound: largest positive sign-changing root / (2π)",
     "erdos_minimum_overlap": "C5 upper bound: 2 max(correlate(h,1-h)) / N",
     "sums_differences": "C6 lower bound from finite-set difference / sum cardinalities",
+    "science_lj_cluster": "Total Lennard-Jones energy: 4 Σ(r⁻¹² − r⁻⁶), reduced units",
 }
 RAW_LABELS = {**LABELS,
     "llmsr_equation": "NMSE on the in-distribution test split",
@@ -50,28 +53,92 @@ PARAMETERS = {
 
 
 def build(source: Path, catalog: dict) -> dict:
-    revision = subprocess.check_output(["git", "-C", str(source), "rev-parse", "HEAD"], text=True).strip()
-    if revision != PIN:
-        raise ValueError(f"Expected task revision {PIN}, got {revision}")
-    if subprocess.check_output(["git", "-C", str(source), "status", "--porcelain", "--untracked-files=no"], text=True).strip():
-        raise ValueError("Tracked source files are modified; pinned evidence must be clean")
     binding = next(item for item in catalog["sources"] if item["id"] == "autoresearch-tasks")
-    if binding["repository"] != {"url": REPOSITORY, "commit": PIN}:
-        raise ValueError("Catalog source does not match the pinned reference source")
+    pin = binding["repository"]["commit"]
+    if binding["repository"]["url"] != REPOSITORY or not re.fullmatch(r"[0-9a-f]{40}", pin):
+        raise ValueError("Catalog source does not identify a pinned reference source")
+    # refs/replace can otherwise substitute a blob/tree while HEAD and status
+    # still appear pinned and clean. All provenance reads must use real objects.
+    git = ["git", "--no-replace-objects", "-C", str(source)]
+    revision = subprocess.check_output([*git, "rev-parse", "HEAD"], text=True).strip()
+    if revision != pin:
+        raise ValueError(f"Expected task revision {pin}, got {revision}")
+    if subprocess.check_output([*git, "status", "--porcelain", "--untracked-files=no"], text=True).strip():
+        raise ValueError("Tracked source files are modified; pinned evidence must be clean")
+    # Read immutable blobs, not ignored or untracked files in a checkout. This
+    # also keeps source hashes stable if another process switches its HEAD.
+    tracked = set(subprocess.check_output(
+        [*git, "ls-tree", "-r", "--name-only", pin], text=True).splitlines())
+    blobs = {}
+
+    def contents(path):
+        if path not in tracked:
+            raise ValueError(f"Evidence file is not tracked at the source revision: {path}")
+        if path not in blobs:
+            blobs[path] = subprocess.check_output([*git, "show", f"{pin}:{path}"])
+        return blobs[path]
 
     def read(path):
-        return json.loads((source / path).read_text())
+        return json.loads(contents(path))
 
     def evidence(path, locator):
-        return {"path": path, "url": f"{REPOSITORY}/blob/{PIN}/{path}",
-                "sha256": hashlib.sha256((source / path).read_bytes()).hexdigest(), "locator": locator}
+        return {"path": path, "url": f"{REPOSITORY}/blob/{pin}/{path}",
+                "sha256": hashlib.sha256(contents(path)).hexdigest(), "locator": locator}
 
     for key in ("catalog", "index"):
         if evidence(binding[f"{key}_path"], "#")["sha256"] != binding[f"{key}_sha256"]:
             raise ValueError(f"Source {key} digest does not match catalog")
     report_path = "validation/suite-report.json"
     report = read(report_path)
-    smoke = {item["id"]: (index, item) for index, item in enumerate(report["tasks"])}
+    def indexed(rows, label):
+        result = {}
+        for index, item in enumerate(rows):
+            if item["id"] in result:
+                raise ValueError(f"Duplicate {label} task: {item['id']}")
+            result[item["id"]] = (index, item)
+        return result
+
+    smoke = indexed(report["tasks"], "suite receipt")
+    science_path = "validation/science-expansion-report.json"
+    science_report = read(science_path) if science_path in tracked else None
+    if science_report is not None and science_report.get("mode") != "science_expansion_validation":
+        raise ValueError("Unrecognized science execution report mode")
+    science = indexed(science_report["tasks"], "science receipt") if science_report else {}
+
+    def science_receipt(row, task, evaluator_source):
+        """Bind upstream execution claims to code blobs, without executing them.
+
+        Downloaded data are deliberately not read or fetched. Their recorded
+        hashes stay source assertions; only tracked code can be checked here.
+        """
+        task_id = task["id"]
+        result = row.get("result", {})
+        if (row.get("protocol") != task["protocol"] or row.get("source_execution") is not True
+                or row.get("fixture_only") is not False or row.get("valid") is not True
+                or result.get("valid") is not True or result.get("fixture_validation") is True
+                or result.get("direction") != task["direction"] or result.get("error") is not None):
+            raise ValueError(f"Science receipt identity or execution claim mismatch: {task_id}")
+        if (type(row.get("score")) not in (int, float) or not math.isfinite(row["score"])
+                or type(result.get("score")) not in (int, float) or row["score"] != result["score"]):
+            raise ValueError(f"Science receipt score mismatch: {task_id}")
+        candidate = evidence(f"suite/{task_id}/initial_program.py", "recorded seed candidate")
+        hashes = row.get("file_sha256", {})
+        for key, artifact in (("candidate_sha256", candidate), ("evaluator_sha256", evaluator_source)):
+            if row.get(key) != artifact["sha256"] or hashes.get(artifact["path"]) != artifact["sha256"]:
+                raise ValueError(f"Science receipt {key} digest mismatch: {task_id}")
+        for path, digest in hashes.items():
+            if (not re.fullmatch(r"[0-9a-f]{64}", digest) or path.startswith("/")
+                    or ".." in path.split("/") or "\\" in path):
+                raise ValueError(f"Invalid science artifact identity: {task_id}")
+            if path in tracked and hashlib.sha256(contents(path)).hexdigest() != digest:
+                raise ValueError(f"Science receipt tracked artifact digest mismatch: {task_id}: {path}")
+            if path.endswith(".py") and path not in tracked:
+                raise ValueError(f"Science receipt code is not tracked: {task_id}: {path}")
+        return {
+            "source_execution": True, "fixture_only": False,
+            "candidate_sha256": candidate["sha256"], "evaluator_sha256": evaluator_source["sha256"],
+            "candidate_source": candidate, "evaluator_source": evaluator_source,
+        }
     notebook_path = "validation/alphaevolve-notebook-reference.json"
     notebook = read(notebook_path)
     notebook_rows = {"alphaevolve-" + item["slug"]: (index, item)
@@ -80,10 +147,16 @@ def build(source: Path, catalog: dict) -> dict:
     tensors = {tuple(item["dimensions"]): (index, item)
                for index, item in enumerate(read(tensor_path)["published_decompositions"])}
     tasks = []
+    llm_samples = None
     for task in catalog["tasks"]:
         task_id = task["id"]
         problem_path = f"suite/{task_id}/problem.json"
         problem = read(problem_path)
+        if evidence(problem_path, "#")["sha256"] != task["contract_source"]["sha256"]:
+            raise ValueError(f"Source problem digest does not match catalog: {task_id}")
+        identity_fields = ("family", "protocol") if task["protocol"] == "unsupported" else ("family", "protocol", "direction")
+        if any(problem.get(key) != task.get(key) for key in identity_fields):
+            raise ValueError(f"Source problem identity does not match catalog: {task_id}")
         p = problem.get("parameters", {})
         family = problem.get("family")
         evaluation = {
@@ -107,14 +180,21 @@ def build(source: Path, catalog: dict) -> dict:
             elif family == "ode_integrator":
                 evaluation.update(case_count=1, case_count_kind="named_initial_value_problem")
             if family == "llm_benchmark":
-                evaluation.update(case_count=10, case_count_kind="configured_default")
-                evaluation["source"] = evidence("suite/_lib/autoresearch_suite/llm.py", "SAMPLES / ARTASK_LLM_SAMPLES")
+                llm_path = "suite/_lib/autoresearch_suite/llm.py"
+                if llm_samples is None:
+                    match = re.search(r'^SAMPLES = int\(os\.environ\.get\("ARTASK_LLM_SAMPLES", "([0-9]+)"\)\)$',
+                                      contents(llm_path).decode(), re.MULTILINE)
+                    if match is None or int(match[1]) <= 0:
+                        raise ValueError("Unreviewed LLM sample default declaration")
+                    llm_samples = int(match[1])
+                evaluation.update(case_count=llm_samples, case_count_kind="configured_default")
+                evaluation["source"] = evidence(llm_path, "SAMPLES / ARTASK_LLM_SAMPLES")
                 evaluation["notes"].append("Default only: ARTASK_LLM_SAMPLES can override it; requires dataset and model. Historical seed smoke used five items.")
             if family == "llmsr_equation":
                 splits = {}
                 for split in ("train", "test_id", "test_ood"):
                     path = f"suite/_lib/autoresearch_suite/data/llmsr/{p['dataset']}/{split}.csv"
-                    with (source / path).open(newline="") as handle:
+                    with io.StringIO(contents(path).decode(), newline="") as handle:
                         count = max(0, sum(1 for _ in csv.reader(handle)) - 1)
                     splits[split] = {"row_count": count, "source": evidence(path, "data rows, excluding header")}
                 evaluation.update(case_count=splits["test_id"]["row_count"], case_count_kind="test_id_rows", splits=splits)
@@ -146,6 +226,8 @@ def build(source: Path, catalog: dict) -> dict:
                 anchor["notes"].append("Matches notebook abs(max(convolution)), not max(abs(convolution)); the signed-absolute variant is a separate task/reference.")
             if family.startswith("circle_packing"):
                 anchor["notes"].append("Local geometry checks are strict; do not compare directly to a normalized SCiEL fitness or a verifier with relaxed overlap tolerances.")
+            if family == "science_lj_cluster":
+                anchor["notes"].append("Cambridge Cluster Database putative minimum for the stated atom count; not a proven optimum. The pinned evaluator requires pair separation ≥ 0.5 in reduced units.")
             reproduction = None
             if task_id in notebook_rows:
                 index, row = notebook_rows[task_id]
@@ -163,8 +245,30 @@ def build(source: Path, catalog: dict) -> dict:
                 anchor["notes"].append("Upstream repository contains a reference-artifact check receipt; Arena has not rerun it or reproduced the paper's search campaign.")
             anchors.append(anchor)
 
-        index, row = smoke[task_id]
-        if row["status"] == "ok" and isinstance(row.get("score"), (int, float)):
+        receipt = smoke.get(task_id)
+        identity = None
+        receipt_path, recorded_at = report_path, report["generated"]
+        if task_id in science:
+            # The newer expansion includes changed configurations under old IDs.
+            # Even a blocked expansion row supersedes any older suite score.
+            index, row = science[task_id]
+            receipt = None
+            if row["status"] == "ok":
+                identity = science_receipt(row, task, evaluation["evaluator_source"])
+                receipt = (index, {**row, "direction": row["result"]["direction"],
+                                   "combined_score": row["result"].get("combined_score")})
+                receipt_path, recorded_at = science_path, row.get("finished_at", science_report["created_at"])
+            else:
+                evaluation["notes"].append("The science expansion report records no successful source execution for this configuration; an older suite score is not carried forward.")
+        elif receipt is None:
+            evaluation["notes"].append("The pinned suite smoke report has no row for this task; no seed score is inferred from another package.")
+        elif any(receipt[1].get(key) != problem.get(key) for key in ("family", "protocol", "direction")):
+            evaluation["notes"].append("The pinned suite smoke row describes a different task family, protocol or direction and is not used as a baseline for this configuration.")
+            receipt = None
+        if receipt is not None and receipt[1]["status"] == "ok":
+            index, row = receipt
+            if type(row.get("score")) not in (int, float) or not math.isfinite(row["score"]):
+                raise ValueError(f"Invalid successful smoke score: {task_id}")
             anchor = {
                 "id": task_id + ":seed", "label": "Recorded seed smoke baseline",
                 "kind": "recorded_seed_baseline", "value": row["score"],
@@ -174,9 +278,9 @@ def build(source: Path, catalog: dict) -> dict:
                 "scope": "Historical seed-program smoke test in the source repository; not an Arena participant result or a paper benchmark result.",
                 "comparison": "historical_smoke_only", "automatic_comparison": False,
                 "reproduction": "not_recorded", "current_sota": "not_assessed", "validity": row.get("valid"),
-                "recorded_status": row["status"], "recorded_at": report["generated"],
+                "recorded_status": row["status"], "recorded_at": recorded_at,
                 "reported_combined_score": row.get("combined_score"),
-                "source": evidence(report_path, f"#/tasks/{index}"), "primary_sources": [],
+                "source": evidence(receipt_path, f"#/tasks/{index}"), "primary_sources": [],
                 "evaluation": {"case_count": None, "case_count_kind": "not_recorded"},
                 "notes": ["Recorded score may be raw task score or wrapper-selected fitness; the report alone does not establish paper-metric equivalence.",
                           "Smoke receipts do not include complete environment, exact evaluated item IDs, repeat trials or uncertainty estimates."],
@@ -185,6 +289,13 @@ def build(source: Path, catalog: dict) -> dict:
                 anchor["notes"].append("status=ok means the evaluator returned a usable score; the report provides no explicit validity signal.")
             if family in RAW_LABELS:
                 anchor["notes"][0] = "The pinned task evaluator exposes this raw metric. Compare only after matching the complete protocol and execution conditions."
+            if identity is not None:
+                anchor["execution_identity"] = identity
+                anchor["notes"] = [
+                    "The expansion report records source execution, not a fixture-only test. Candidate, evaluator and recorded tracked-code hashes match the pinned files.",
+                    "Downloaded data hashes and execution outcomes are upstream declarations; this metadata build does not fetch data or rerun candidates.",
+                    "The report concerns this local task adaptation, not the source paper's full benchmark or an Arena participant run.",
+                ]
             if family == "adrs_cloudcast":
                 anchor["metric_label"] = "Wrapper fitness (combined_score); not raw transfer cost"
                 anchor["notes"].append("Do not compare this maximizing wrapper score with the paper's cross-cloud transfer cost.")
@@ -198,20 +309,24 @@ def build(source: Path, catalog: dict) -> dict:
                       "metric": task["metric"], "direction": task["direction"], "protocol": task["protocol"],
                       "evaluation": evaluation, "anchors": anchors})
     result = {
-        "schema": "arena.references/1", "as_of": "2026-09-20", "catalog_binding": binding,
+        "schema": "arena.references/1", "as_of": subprocess.check_output(
+            [*git, "show", "-s", "--format=%cs", pin], text=True).strip(), "catalog_binding": binding,
         "summary": summarize(tasks), "tasks": tasks,
         "highlights": [
             {"task_id": "alphaevolve-circle-packing-in-unit-square", "reason": "A published geometric construction bound, with the number of circles and strict verifier scope."},
             {"task_id": "alphaevolve-matrix-multiplication-4-4-4", "reason": "Published rank 48 with a recorded exact-check receipt; Gaussian half-integers, not unrestricted real rank."},
             {"task_id": "coevo-oscillation-1", "reason": "Scientific symbolic regression: separate train, test-ID and OOD data; recorded seed, no extracted published numeric reference."},
-            {"task_id": "a2dept-ode-integration-van-der-pol-oscillator", "reason": "Numerical integration: local error/work trade-off score; recorded seed is not a paper reproduction."},
+            {"task_id": "dga2d-ode-solver-van-der-pol", "reason": "Numerical integration: local error/work trade-off score; recorded seed is not a paper reproduction."},
             {"task_id": "reference-sat", "reason": "Generated algorithmic test suite with an explicit instance count and seed."},
             {"task_id": "promptbreeder-gsm8k", "reason": "A model-evaluation example where sample size matters: historical five-item smoke versus configurable ten-item default."},
         ],
         "notes": ["Reference coverage counts task packages, not independent scientific problems or papers.",
                   "Current world-best results have not been assessed. Missing means no numeric anchor extracted from the pinned metadata/report, not that no literature result exists.",
+                  "Science expansion receipts supersede older suite rows for the same task ID, including blocked configurations. Unmatched suite identities never supply a baseline.",
                   "All execution and reproduction evidence is recorded upstream; this snapshot build runs no evaluator, candidate, model, or benchmark."],
     }
+    known_tasks = {task["id"] for task in catalog["tasks"]}
+    result["highlights"] = [item for item in result["highlights"] if item["task_id"] in known_tasks]
     validate_references(result, catalog)
     return result
 
@@ -220,9 +335,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path, help="Clean checkout of the pinned task repository")
     parser.add_argument("--registry", type=Path, default=ROOT / "registry")
+    parser.add_argument("--check", action="store_true", help="Fail if the committed snapshot differs; do not write files")
     args = parser.parse_args()
     data = build(args.source.resolve(), get_catalog(args.registry))
-    (args.registry / "references.json").write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+    output = args.registry / "references.json"
+    if args.check:
+        if not output.is_file() or json.loads(output.read_text()) != data:
+            parser.exit(1, "Reference snapshot is stale; rebuild it from the pinned source checkout.\n")
+    else:
+        output.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
     print(json.dumps(data["summary"], indent=2))
 
 

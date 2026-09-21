@@ -12,7 +12,8 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from arena.registry import RegistryError, _json, resolve_registry_root
-from arena.search_families import build_search_families, get_search_families, validate_sources
+from arena.search_families import (SUPPLEMENT_FAMILIES, build_search_families,
+                                   get_search_families, validate_sources)
 
 
 def capture_sources(checkout, catalog):
@@ -35,14 +36,20 @@ def capture_sources(checkout, catalog):
     records = []
     for paper in captured["papers"]:
         ident = paper["id"]
-        if ident != "sciel-supplement":
+        if ident in SUPPLEMENT_FAMILIES:
+            if ident in corpus or paper.get("family") != SUPPLEMENT_FAMILIES[ident]:
+                raise RegistryError("Supplement identity or family differs from reviewed source")
+        else:
             if ident not in corpus or paper.get("family") != corpus[ident].get("family"):
                 raise RegistryError("Source corpus/papers family labels disagree")
         records.append({"id": ident, "name": paper["name"], "title": paper["title"],
                         "declared_family": paper.get("family"), "paper_url": paper.get("paper_url"),
                         "corpus_url": paper.get("corpus_url"),
-                        "source_kind": "supplement" if ident == "sciel-supplement" else "corpus_paper",
-                        "declared_task_ids": sorted(paper["task_ids"])})
+                        "source_kind": "supplement" if ident in SUPPLEMENT_FAMILIES else "corpus_paper",
+                        # Several source rows can merge into one canonical task.
+                        "declared_task_ids": sorted(set(paper["task_ids"]))})
+    if {paper["id"] for paper in records if paper["source_kind"] == "corpus_paper"} != set(corpus):
+        raise RegistryError("Source papers do not cover the corpus exactly")
     result = {"schema": "arena.search-family-sources/1", "catalog_binding": binding,
               "files": files, "papers": sorted(records, key=lambda paper: paper["id"])}
     validate_sources(result, catalog)

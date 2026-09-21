@@ -45,7 +45,12 @@ def default_timing_cache_dir(roots):
 class DashboardServer(ThreadingHTTPServer):
     daemon_threads = True
 
-    def __init__(self, address, roots, *, timing_cache_dir=None, registry_root=None):
+    def __init__(self, address, roots, *, timing_cache_dir=None, registry_root=None, control=None):
+        if control is not None:
+            import ipaddress
+            if not ipaddress.ip_address(address[0]).is_loopback:
+                raise ValueError("Private control must bind to a loopback address")
+        self.control = control
         self.registry_root = registry_root
         roots = [Path(root) for root in roots]
         self.store = RunStore(roots, timing_cache_dir=observer_cache_dir(roots, timing_cache_dir))
@@ -113,16 +118,28 @@ class Handler(BaseHTTPRequestHandler):
             # Do not expose filesystem paths, config values or tracebacks over HTTP.
             self.reply({"error": "Unable to read data. Please try again."}, 500)
 
+    def do_POST(self):
+        if self.server.control is not None:
+            from .control import dispatch_http
+            if dispatch_http(self, self.server.control):
+                return
+        self.close_connection = True
+        self.reply({"error": "Page not found."}, 404)
+
     def route(self):
+        if self.server.control is not None:
+            from .control import dispatch_http
+            if dispatch_http(self, self.server.control):
+                return
         parsed = urlsplit(self.path)
         parts = [unquote(part) for part in parsed.path.strip("/").split("/") if part]
         if parts == ["api", "health"]:
             from . import __version__
             self.reply({"status": "ok", "component": "arena", "version": __version__,
-                        "mode": "read_only", "observer": "sciel",
+                        "mode": "read_only" if self.server.control is None else "private_control", "observer": "sciel",
                         "capabilities": {"catalog": True, "participants": True, "insights": True,
                                          "references": True, "search_families": True,
-                                         "run_observation": True, "launch": False}})
+                                         "run_observation": True, "launch": self.server.control is not None}})
             return
         if parts == ["api", "catalog"]:
             self.reply(get_catalog(self.server.registry_root))
@@ -215,9 +232,14 @@ class Handler(BaseHTTPRequestHandler):
             file = STATIC / "index.html"
         elif parts in (["experiments"], ["experiment.html"]):
             file = STATIC / "experiment.html"
+        elif parts in (["queue"], ["queue.html"]):
+            file = STATIC / "queue.html"
         elif len(parts) == 1 and parts[0] in {"arena.js", "arena.css", "arena-insights.js", "arena-insights.css",
-                                             "arena-atlas.js", "arena-atlas.css", "arena-theme.css"}:
+                                             "arena-atlas.js", "arena-atlas.css", "arena-theme.css",
+                                             "arena-contribute.js", "arena-contribute.css", "arena-queue.js", "arena-queue.css"}:
             file = STATIC / parts[0]
+        elif len(parts) == 2 and parts[0] == "brand" and parts[1] in {"cpil.png", "mbzuai.png"}:
+            file = STATIC / "brand" / parts[1]
         elif len(parts) == 1 and parts[0] in {"app.js", "style.css", "effort.js", "effort.css", "chart.js", "learning.js", "llm_calls.js", "llm_calls.css", "architecture.js", "architecture.css", "population.js", "population.css", "storage-view.js", "population-preview.js", "population-preview.css", "methods.js", "methods.css", "methods_progress.js", "methods_progress.css", "methods_atlas.js", "methods_atlas.css", "research_tools.js", "research_tools.css", "research_cells.js", "research_cells.css", "workflow.js", "workflow.css", "packings.js", "packings.css", "favicon.svg"}:
             file = STATIC / parts[0]
         else:

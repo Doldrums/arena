@@ -10,15 +10,17 @@ The board keeps the native SCiEL experiment views inside an independent Arena sh
 
 ## Working now
 
-- Task catalog: **1,138 task packages**, searchable by name/content and filterable by family and protocol. Task details expose available source input/output contracts, metrics, requirements and pinned provenance; missing contracts remain explicit.
+- Task catalog: **959 task packages**, searchable by name/content and filterable by family and protocol. Task details expose available source input/output contracts, metrics, requirements and pinned provenance; missing contracts remain explicit.
 - Research landscape: one point per task, with a **Search methods / Task families** switch, hover isolation, pinned selection and catalog drill-down. Search-method groups reflect source-paper associations, not measured framework compatibility or solved results. See [the source mapping](registry/SEARCH_FAMILIES.md).
 - Scientific overview: equal-size research-direction cards with questions and real task examples; exact domain shares and evaluator coverage have a separate **Catalog statistics** disclosure below the domains. Task-type distributions and source-bound reference/seed evidence remain in the catalog disclosure. Charts drill down into the task catalog. See [what the statistics mean](docs/task-overview.md).
 - GitHub registry: **three participant declarations** (SCiEL, ShinkaEvolve, DGM), immutable source revisions, JSON schemas, offline validation and PR templates.
 - Research library: **98 works** from the supplied corpus, with paper links, concise mechanism descriptions, method families and scoped source links. Together with SCiEL these make **99 participant records**; DGM and ShinkaEvolve link to their existing registrations. Bibliographic entries and executable framework integrations are distinct. See [corpus provenance and regeneration](registry/PARTICIPANTS.md).
 - Independent SCiEL observer: existing experiment, source/diff, population, workflow, LLM accounting, research cells/tools and packing views. It reads saved journals and live heartbeat files; it does not import SCiEL Engine.
+- Local launch/evaluation interfaces for source-verified implementations across the research library, with exact source pins, explicit native profiles and bounded artifact readers. SCiEL and Shinka additionally have scoped Arena task-evaluation bridges. See [commands and verification limits](docs/frameworks/README.md) and the [complete participant coverage audit](reports/framework-coverage-20260921.md).
+- Private engine release bindings: a public system/version PR resolves to worker-only source/image pins. Registration is immutable and does not execute a run. [Workflow and current deployment limits](docs/private-releases.md).
 - Cloudflare Worker: the same catalog and static UI, with verified Cloudflare Access tokens required in production. Local development is available without cloud credentials.
 
-**710 packages declare an executable evaluation protocol; 428 await an evaluation definition.** The interface calls the latter **Evaluator to be added** and preserves the upstream `unsupported` value in source records. These are catalog declarations, not Arena conformance results or a claim that evaluator implementation is already assigned. No framework launch adapter is integrated yet. This milestone cannot start paid experiments. The cloud Worker does not yet ingest native runs; its experiments API reports that limitation explicitly.
+**689 packages declare an executable evaluation protocol; 270 await an evaluation definition.** The interface calls the latter **Evaluator to be added** and preserves the upstream `unsupported` value in source records. These are catalog declarations, not Arena conformance results or a claim that evaluator implementation is already assigned. Native drivers require an explicit local run command and prepared environments; full model-driven conformance and broad task compatibility are not yet established. The read-only board and registry never start experiments. The cloud Worker does not yet ingest native runs; its experiments API reports that limitation explicitly.
 
 ## Run the board locally
 
@@ -100,8 +102,8 @@ The tests use synthetic fixtures, saved protocol evidence and static metadata, w
 
 1. D1 run state and leases, R2 immutable artifact manifests, authenticated ingestion.
 2. Vast VM supervisor with pull/heartbeat/cancel, durable spool and bounded resource policies.
-3. SCiEL native runner adapter and canonical evaluation for a small conformance task set.
-4. ShinkaEvolve native runner adapter on the same tasks and budgets.
+3. End-to-end SCiEL native conformance and expansion beyond the initial SAT evaluator profile.
+4. End-to-end ShinkaEvolve conformance on the same tasks and budgets.
 5. Canonical comparison board, then a separate DGM agent-bundle/episode protocol.
 
 These are planned work, not present capabilities. The accepted system boundary and UML sources are in [the architecture RFC](docs/arena-integration-architecture.md).

@@ -10,7 +10,8 @@ const textValue = value => value == null || value === '' ? 'Not specified' :
   typeof value === 'object' ? JSON.stringify(value) : String(value);
 const words = value => textValue(value).replaceAll('_', ' ');
 const participantKind = item => item.record_kind === 'research_work' ? 'Research work' : item.repository?.commit ? 'Source pinned' : words(item.registration_status);
-const adapterLabel = item => ({not_implemented: 'Integration open', planned: 'Integration planned', integrated: 'Adapter integrated'}[item.adapter_status] || words(item.adapter_status));
+const linkedNativeAdapters = item => (item.native_adapters || []).filter(adapter => adapter.evaluation === 'native' && adapter.runtime_readiness === 'not_verified' && adapter.profiles?.length && adapter.repository?.commit);
+const adapterLabel = item => linkedNativeAdapters(item).length ? 'Local adapter' : ({not_implemented: 'Integration open', native_cli: 'Local adapter', planned: 'Integration planned', integrated: 'Adapter integrated'}[item.adapter_status] || words(item.adapter_status));
 
 function canonicalJSON(value) {
   if (Array.isArray(value)) return `[${value.map(canonicalJSON).join(',')}]`;
@@ -190,7 +191,8 @@ export function createArenaApp({document: doc = document, window: win = window,
     const container = $('arena-summary'); container.replaceChildren();
     const tasks = state.catalog?.tasks;
     const counts = tasks ? [tasks.length, tasks.filter(task => task.executable).length] : ['—', '—'];
-    const metrics = locationState().view === 'tasks' ? [
+    const isTaskView = locationState().view === 'tasks';
+    const metrics = isTaskView ? [
       ['Task packages', counts[0], `${typeof counts[1] === 'number' ? counts[1].toLocaleString('en-US') : '—'} with evaluation definitions`],
       ['Research domains', state.insights ? state.insights.domains.filter(item => item.id !== 'unknown').length : '—', state.insights?.summary?.unknown_domain_count != null ? `${state.insights.summary.unknown_domain_count} packages unclassified` : 'Primary scientific context'],
       ['Task families', tasks ? new Set(tasks.map(task => task.family).filter(Boolean)).size : '—', 'Packing, equations, algorithms & more'],
@@ -200,7 +202,7 @@ export function createArenaApp({document: doc = document, window: win = window,
       ['Method families', state.participants ? new Set(state.participants.participants.map(item => item.search_family?.id).filter(Boolean)).size : '—', 'Explore related research approaches'],
       ['Source-pinned systems', state.participants?.summary?.pinned_registration_count ?? state.participants?.participants.filter(item => item.repository?.commit).length ?? '—', 'Versioned framework registrations'],
     ];
-    container.classList.toggle('arena-task-metrics', locationState().view === 'tasks');
+    container.classList.toggle('arena-task-metrics', isTaskView);
     for (const [index, [label, value, note]] of metrics.entries()) {
       const metric = element('article', 'metric');
       const caption = element('div', 'metric-label');
@@ -208,11 +210,16 @@ export function createArenaApp({document: doc = document, window: win = window,
       const svg = doc.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('viewBox', '0 0 24 24');
       const path = doc.createElementNS(svg.namespaceURI, 'path');
       path.setAttribute('d', ['M4 4h6v6H4z M14 4h6v6h-6z M4 14h6v6H4z M14 14h6v6h-6z', 'M12 3v18 M3 12h18 M5.6 5.6l12.8 12.8 M5.6 18.4 18.4 5.6', 'M6 5h12 M6 12h12 M6 19h12 M12 5v14 M4 3h4v4H4z M16 10h4v4h-4z M4 17h4v4H4z', 'M4 4h7l1 2 1-2h7v15h-7l-1 2-1-2H4z M12 6v13'][index % 4]);
-      svg.append(path); icon.append(svg); caption.append(element('span', '', label), icon);
-      metric.append(caption,
+      svg.append(path); icon.append(svg);
+      if (isTaskView) caption.append(icon, element('span', '', label));
+      else caption.append(element('span', '', label), icon);
+      const body = isTaskView ? element('div', 'arena-metric-body') : metric;
+      metric.append(caption);
+      body.append(
         element('div', 'metric-value', typeof value === 'number' ? value.toLocaleString('en-US') : value),
         element('div', 'metric-foot', note));
-      if (index === 0) { const glow = element('span', 'arena-curious-glow'); glow.setAttribute('aria-hidden', 'true'); glow.append(element('span', 'arena-curious-eye'), element('span', 'arena-curious-eye')); metric.append(glow); }
+      if (index === 0) { const glow = element('span', 'arena-curious-glow'); glow.setAttribute('aria-hidden', 'true'); glow.append(element('span', 'arena-curious-eye'), element('span', 'arena-curious-eye')); body.append(glow); }
+      if (isTaskView) metric.append(body);
       container.append(metric);
     }
     $('nav-task-count').textContent = tasks?.length.toLocaleString('en-US') ?? '';
@@ -302,6 +309,8 @@ export function createArenaApp({document: doc = document, window: win = window,
     const facts = element('dl', 'arena-detail-facts');
     if (participant.search_family?.label) fact(facts, 'Method family', participant.search_family.label);
     fact(facts, 'Arena integration', adapterLabel(participant));
+    const adapters = linkedNativeAdapters(participant);
+    if (participant.adapter_status === 'native_cli' || adapters.length) fact(facts, 'Validation', 'Source and fixture checks · native environment to be verified');
     if (participant.repository?.commit) {
       fact(facts, 'Source revision', participant.repository.commit);
       for (const [label, key] of [['Native execution', 'native_run'], ['Canonical evaluation', 'canonical_evaluation'], ['Pause', 'pause'], ['Resume', 'resume']]) {
@@ -309,6 +318,18 @@ export function createArenaApp({document: doc = document, window: win = window,
       }
     }
     holder.append(facts);
+    if (adapters.length) {
+      const integration = section(holder, 'Local native adapters');
+      integration.append(element('p', '', 'These adapters use the implementation’s native evaluation. They do not establish canonical task compatibility or a verified runtime.'));
+      for (const adapter of adapters) {
+        const details = element('dl', 'arena-detail-facts');
+        fact(details, 'Engine', `${adapter.name} (${adapter.engine})`);
+        fact(details, 'Profiles', adapter.profiles.join(', '));
+        fact(details, 'Pinned source', adapter.repository.commit);
+        integration.append(details);
+        externalLinks(integration, [[`${adapter.name} pinned source`, `${adapter.repository.url}/tree/${adapter.repository.commit}`]]);
+      }
+    }
     externalLinks(holder, participantSourceLinks(participant).concat([['Propose an integration', `${REPOSITORY}/compare?expand=1&template=participant.md`]]));
     if (participant.provenance?.filename) {
       const provenance = section(holder, 'Research provenance');
@@ -425,8 +446,8 @@ export function createArenaApp({document: doc = document, window: win = window,
     doc.title = `Empira · ${viewName}`;
     $('arena-title').textContent = viewName; $('arena-breadcrumb').textContent = viewName;
     $('arena-subtitle').textContent = isTasks ? 'Versioned scientific tasks and evaluation definitions.' : 'Research systems, their papers and the methods they build on.';
-    $('arena-contribute').textContent = isTasks ? 'Add a task ↗' : 'Add a participant ↗';
-    $('arena-contribute').href = `${REPOSITORY}/compare?expand=1&template=${isTasks ? 'task' : 'participant'}.md`;
+    $('arena-contribute').textContent = isTasks ? 'Submit a task +' : 'Submit a system +';
+    $('arena-contribute').dataset.arenaContribution = isTasks ? 'task' : 'system';
     const showIntroduction = isTasks && !selected;
     for (const id of ['arena-intro', 'arena-positioning', 'arena-growth', 'arena-faq']) if ($(id)) $(id).hidden = !showIntroduction;
     $('arena-page-heading').hidden = showIntroduction;
@@ -491,8 +512,6 @@ export function createArenaApp({document: doc = document, window: win = window,
       if (isTasks) taskDetail(dataset.tasks.find(item => item.id === selected));
       else participantDetail(dataset.participants.find(item => item.id === selected));
     } else if (isTasks) taskResults(current); else participantResults(current);
-    const sourceCount = state.catalog?.sources?.length;
-    $('arena-source-note').textContent = sourceCount ? `Catalog records from ${sourceCount} pinned source${sourceCount === 1 ? '' : 's'}. Inspect a task for provenance.` : 'Versioned task definitions and participant registrations.';
     finishCatalogHashNavigation();
   }
   function populateFamilies() {

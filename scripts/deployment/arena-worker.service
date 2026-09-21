@@ -1,0 +1,33 @@
+[Unit]
+Description=Empira resource-admitted research worker
+After=arena-cgroups.service arena-provider.service
+Requires=arena-cgroups.service
+Wants=arena-provider.service
+
+[Service]
+Type=simple
+User=arena
+Group=arena
+ExecStart=+/usr/bin/python3 -I /usr/local/lib/arena/start-worker.py
+EnvironmentFile=/etc/arena/worker.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=OMP_NUM_THREADS=1
+Environment=OPENBLAS_NUM_THREADS=1
+Environment=MKL_NUM_THREADS=1
+Environment=NUMEXPR_NUM_THREADS=1
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ReadWritePaths=/srv/arena/control /srv/arena/runs /srv/arena/configs /srv/arena/.cache /sys/fs/cgroup/arena-workers
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+TasksMax=infinity
+KillMode=process
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

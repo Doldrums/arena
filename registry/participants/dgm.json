@@ -7,17 +7,20 @@
     "commit": "a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2"
   },
   "registration_status": "planned",
-  "adapter_status": "not_implemented",
+  "adapter_status": "native_cli",
   "capabilities": {
-    "native_run": false,
+    "native_run": true,
     "canonical_evaluation": false,
     "pause": false,
     "resume": false
   },
   "supported_protocols": [],
   "limitations": [
-    "The source revision is registered; no Arena native runner or evaluation adapter is implemented.",
-    "An agent-bundle and coding-episode evaluation protocol is required before native DGM comparisons.",
-    "Registration does not make DGM compatible with all task-library problems."
-  ]
+    "A local native CLI driver and JSON result reader are implemented for the pinned SWE-bench and Polyglot interfaces.",
+    "Native runs use an isolated checkout and the framework's own coding-episode evaluation. Cached initial scores remain identified as upstream baselines.",
+    "An Arena task-library agent-bundle/episode evaluator is not yet implemented. Native benchmark support does not imply compatibility with all Arena tasks.",
+    "The native environment and a full model-driven run have not been verified. Docker resources need framework-specific cleanup."
+  ],
+  "runtime_readiness": "not_verified",
+  "adapter_validation": "source_and_fixture_tests"
 }

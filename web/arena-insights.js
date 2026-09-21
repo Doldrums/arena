@@ -105,17 +105,17 @@ function coverage(root, insights, catalog) {
 
 const FIELD_STORIES = {
   physics: {tone:'amber', symbol:'orbit', question:'Which equations capture physical behavior?', topics:'Oscillation · heat flow · dynamical systems', examples:['coevo-oscillation-1','a2dept-ode-integration-discretized-heat-equation-n-20']},
-  'chemistry-materials': {tone:'lilac', symbol:'bonds', question:'How do reactions and materials behave?', topics:'Reaction kinetics · materials · stress & strain', examples:['a2dept-ode-integration-robertson-kinetics','coevo-stress-strain']},
+  'chemistry-materials': {tone:'lilac', symbol:'bonds', question:'How do reactions and materials behave?', topics:'Reaction kinetics · materials · stress & strain', examples:['dga2d-ode-solver-robertson','coevo-stress-strain']},
   'biology-health': {tone:'green', symbol:'life', question:'How can we model living systems?', topics:'Growth · populations · biological data', examples:['coevo-e-coli-growth','dga2d-ode-solver-lotka-volterra']},
   mathematics: {tone:'blue', symbol:'construction', question:'Can a construction improve a bound?', topics:'Geometry · algebra · mathematical bounds', examples:['alphaevolve-circle-packing-in-unit-square','alphaevolve-matrix-multiplication-4-4-4']},
   'earth-environment': {tone:'green', symbol:'earth', question:'What can environmental observations predict?', topics:'Volcanic sensors · forest-cover observations', examples:['loongflow-predict-volcanic-eruptions-ingv-oe','loongflow-tabular-playground-series-dec-2021']},
-  'robotics-control': {tone:'lilac', symbol:'control', question:'Which feedback makes a system behave reliably?', topics:'Controllers · rewards · learned movement', examples:['a2dept-feedback-control-cartpole-stabilization','text2reward-button-press-v2']},
-  'operations-research': {tone:'amber', symbol:'routes', question:'How should limited resources be allocated?', topics:'Routing · packing · scheduling', examples:['a2dept-capacitated-electric-vehicle-routing-with-time-windows','reference-online-bin-packing']},
-  'computer-systems': {tone:'blue', symbol:'systems', question:'Can the same workload use fewer resources?', topics:'Compute · placement · infrastructure', examples:['adaevolve-expert-placement-load-balancing','pairwise-validator-txn-scheduling']},
-  'machine-learning': {tone:'lilac', symbol:'intelligence', question:'What improves reasoning and generalization?', topics:'Learning · prompts · reasoning · retrieval', examples:['adaevolve-arc-agi-2','promptbreeder-gsm8k']},
+  'robotics-control': {tone:'lilac', symbol:'control', question:'Which feedback makes a system behave reliably?', topics:'Controllers · rewards · learned movement', examples:['dga2d-feedback-control-cart-pole','text2reward-button-press-v2']},
+  'operations-research': {tone:'amber', symbol:'routes', question:'How should limited resources be allocated?', topics:'Routing · packing · scheduling', examples:['a2dept-capacitated-electric-vehicle-routing-with-time-windows','eoh-online-bin-packing']},
+  'computer-systems': {tone:'blue', symbol:'systems', question:'Can the same workload use fewer resources?', topics:'Compute · placement · infrastructure', examples:['coral-expert-placement-load-balancing','coral-transaction-scheduling']},
+  'machine-learning': {tone:'lilac', symbol:'intelligence', question:'What improves reasoning and generalization?', topics:'Learning · prompts · reasoning · retrieval', examples:['aevo-arc-agi-2','promptbreeder-gsm8k']},
   'software-engineering': {tone:'green', symbol:'software', question:'Does generated software meet its contract?', topics:'Program synthesis · behavior · correctness', examples:['sciel-bench-kattis-alphabet','sciel-bench-web-scraper-api-docs']},
   'finance-economics': {tone:'blue', symbol:'decisions', question:'How do policies balance return and risk?', topics:'Allocation · trading policies · risk', examples:['ael-harness-d-full-portfolio-allocation','algoevolve-numin-intraday-equity-trading']},
-  unknown: {tone:'neutral', symbol:'mixed', question:'Which scientific target does this task define?', topics:'Mixed suites · open classification', examples:['deliberate-evolution-lsr-transform','adaevolve-frontier-cs']},
+  unknown: {tone:'neutral', symbol:'mixed', question:'Which scientific target does this task define?', topics:'Mixed suites · open classification', examples:['deliberate-evolution-lsr-transform','evox-frontier-cs']},
 };
 // Editorial context for the exact task examples, checked against the primary sources below.
 // Historical references describe source results, not an Arena result or a claim of optimality.
@@ -132,7 +132,7 @@ const TASK_CONTEXT = {
     "source_locator": "Appendix G.1, printed pp. 38–39, Experimental Setup and Table 17",
     "evidence_note": "Appendix G.1 specifies N=20, an accuracy–computation score and fixed-step stability challenges. Spatial geometry and boundary conditions are unspecified; no runnable reproduction is claimed."
   },
-  "a2dept-ode-integration-robertson-kinetics": {
+  "dga2d-ode-solver-robertson": {
     "summary": "Develop a solver for a chemical reaction model with fast and slow changes occurring together. This stiffness can make time stepping unstable; the scientific challenge is accurate, stable simulation without excessive computation.",
     "source_url": "https://arxiv.org/pdf/2604.24043",
     "source_locator": "Appendix G.1, printed pp. 38–39, Robertson Kinetics and Table 17",
@@ -180,7 +180,7 @@ const TASK_CONTEXT = {
     "source_locator": "Archived competition description, lines 12, 16–19 and Dataset Description, lines 41–48",
     "evidence_note": "The official competition text preserved by MLE-bench explicitly says the data were generated by a GAN trained on Forest Cover Type Prediction data, with relationships potentially differing from the original. Target Cover_Type and multiclass accuracy are recorded."
   },
-  "a2dept-feedback-control-cartpole-stabilization": {
+  "dga2d-feedback-control-cart-pole": {
     "summary": "Design a feedback rule that moves a cart to keep an upright pole balanced. Maintaining stability over a long simulation while limiting tracking error and control effort studies a basic challenge shared by robots and other controlled machines.",
     "source_url": "https://arxiv.org/pdf/2604.24043",
     "source_locator": "Appendix G.3 and Table 19, printed p. 40",
@@ -198,25 +198,25 @@ const TASK_CONTEXT = {
     "source_locator": "Appendix A.4.5, pp.21–22; Appendix D.1.2, Table 5",
     "evidence_note": "The formulation minimizes travel cost with cargo, battery, recharge and time-window constraints. The reported benchmark uses ESOGU-CEVRPTW instances. No historical open-problem claim is made."
   },
-  "reference-online-bin-packing": {
+  "eoh-online-bin-packing": {
     "summary": "Place incoming items into fixed-capacity bins without seeing future arrivals, using as few bins as possible. This isolates online heuristic design: each local placement changes the space available for later items.",
-    "source_url": "https://github.com/IMRUNya/autoresearch-tasks/blob/995768fc462b8e327f90e6762846cc6ccb06cc2c/suite/reference-online-bin-packing/problem.json",
+    "source_url": "https://github.com/IMRUNya/autoresearch-tasks/blob/5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935/suite/eoh-online-bin-packing/problem.json",
     "source_locator": "#/contract, #/parameters, #/protocol_description; sibling evaluator.py: task()",
-    "evidence_note": "Verified in local checkout at the cited commit: generated fixed-seed instances, capacity 100, priority-based placement, and excess-bin scoring. This is the native recreated task, not a published experimental reproduction; unauthenticated source URL returned 404."
+    "evidence_note": "Read the pinned canonical task declaration and evaluator source: five generated fixed-seed instances, 1,000 items, capacity 100, priority-based placement, and excess-bin scoring. The source merged reference-online-bin-packing into this recreated task; scores are not comparable with published experimental results. No evaluator was run."
   },
-  "adaevolve-expert-placement-load-balancing": {
+  "coral-expert-placement-load-balancing": {
     "summary": "Rearrange and replicate a mixture-of-experts model’s experts across GPUs to balance their workload. The benchmark evaluates both load balance and the speed of the placement algorithm, exposing the cost of computing a better assignment.",
     "source_url": "https://github.com/skydiscover-ai/skydiscover/blob/0d932b690670a7e544388ad362e9876c8bd256a0/benchmarks/ADRS/eplb/README.md",
     "source_locator": "Opening task definition and Files table",
     "evidence_note": "Fetched the pinned upstream README directly. It explicitly describes rearrangement and replication across GPUs, with evaluator scores for load-balance quality and execution speed; also corroborated by AdaEvolve Appendix B, Table 6."
   },
-  "pairwise-validator-txn-scheduling": {
+  "coral-transaction-scheduling": {
     "summary": "Order database transactions to shorten the time needed to finish a workload, accounting for conflicts between reads and writes. It tests scheduling heuristics whose choices affect how much work can proceed concurrently.",
     "source_url": "https://arxiv.org/pdf/2607.14408v1",
     "source_locator": "Section 5.4, Table 5; pp.24–27, ADRS code-evolution outputs: get_best_schedule",
     "evidence_note": "The paper identifies the ADRS txn_scheduling task and includes a candidate scheduler with read/write conflict checks, transaction durations and minimum-makespan objective. Purpose statement describes this scheduling problem, not a reproduced result."
   },
-  "adaevolve-arc-agi-2": {
+  "aevo-arc-agi-2": {
     "summary": "Infer a transformation from example pairs of colored grids and apply it to a new input. These tasks test how a solver combines visual relations, contextual rules and multiple reasoning steps from a small set of examples.",
     "source_url": "https://github.com/arcprize/ARC-AGI-2",
     "source_locator": "README: Task success criterion and Task file format; AdaEvolve Appendix C, Table 8",
@@ -258,7 +258,7 @@ const TASK_CONTEXT = {
     "source_locator": "Appendix E.1 Benchmark Details, Table 6; Section 4, Table 1",
     "evidence_note": "Appendix E.1 defines the transform subset by changing existing equation representations; Table 6 names LSR-Transform and Table 1 evaluates normalized MSE. The purpose is framed as benchmark design, not proof that memorization is eliminated; conflicting total dataset counts are omitted."
   },
-  "adaevolve-frontier-cs": {
+  "evox-frontier-cs": {
     "summary": "Generate executable solutions for a suite of 172 computer-science problems spanning algorithm design and systems optimization. This provides varied, task-specific feedback for studying program search where solution quality matters beyond whether code merely runs.",
     "source_url": "https://arxiv.org/pdf/2602.20133v1",
     "source_locator": "Section 4.4 Frontier-CS, Table 3",
@@ -298,14 +298,17 @@ function scientificFields(root, insights, catalog, current, onFilter, exploredDo
     card.setAttribute('aria-expanded',String(selectedId===domain.id));
     card.setAttribute('aria-controls','arena-domain-preview');
     card.setAttribute('aria-label',`${domain.label}: ${number(domain.total)} tasks; ${number(domain.executable)} executable definitions, ${number(domain.unsupported)} awaiting an evaluator. ${story.question} Explore research direction.`);
-    const copy=make('span','field-copy'),meta=make('span','field-meta');
-    meta.append(make('span','field-topics',story.topics),make('span','field-count',`${number(domain.total)} tasks`));
-    copy.append(meta,make('span','field-title',domain.label),make('span','field-question',story.question));
-    const visual=make('span','field-visual');visual.setAttribute('aria-hidden','true');
+    const heading=make('span','field-heading'),icon=make('span','field-icon');icon.setAttribute('aria-hidden','true');
     const svg=root.ownerDocument.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 96 96');svg.setAttribute('class',`field-symbol field-symbol-${story.symbol}`);
-    const path=root.ownerDocument.createElementNS(svg.namespaceURI,'path');path.setAttribute('d',FIELD_SYMBOLS[story.symbol] || FIELD_SYMBOLS.mixed);svg.append(path);visual.append(svg);
-    visual.append(make('span','field-explore',selectedId===domain.id?'Close direction':'Explore direction'),make('span','field-arrow',selectedId===domain.id?'−':'↗'));
-    card.append(copy,visual);card.addEventListener('click',()=>explore(selectedId===domain.id?null:domain.id));grid.append(card);
+    const path=root.ownerDocument.createElementNS(svg.namespaceURI,'path');path.setAttribute('d',FIELD_SYMBOLS[story.symbol] || FIELD_SYMBOLS.mixed);svg.append(path);icon.append(svg);
+    heading.append(icon,make('span','field-title',domain.label));
+    const copy=make('span','field-copy'),meta=make('span','field-meta');
+    const toggle=make('span','field-arrow');toggle.setAttribute('aria-hidden','true');
+    const arrow=root.ownerDocument.createElementNS(svg.namespaceURI,'svg');arrow.setAttribute('viewBox','0 0 24 24');
+    const arrowPath=root.ownerDocument.createElementNS(svg.namespaceURI,'path');arrowPath.setAttribute('d','M7 17 17 7M7 7h10v10');arrow.append(arrowPath);toggle.append(arrow);
+    meta.append(make('span','field-count',`${number(domain.total)} tasks`),toggle);
+    copy.append(meta,make('span','field-question',story.question),make('span','field-topics',story.topics));
+    card.append(heading,copy);card.addEventListener('click',()=>explore(selectedId===domain.id?null:domain.id));grid.append(card);
   }
   section.append(grid);
   const selected=insights.domains.find(domain=>domain.id===selectedId);

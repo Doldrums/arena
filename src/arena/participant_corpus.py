@@ -167,15 +167,53 @@ def _apply_attributions(records, attributions):
             records[ident]["attribution"] = deepcopy(validate_attribution(attribution))
 
 
-def build_participant_catalog(declarations, corpus=None, descriptions=None, bibliography=None, attributions=None):
+def _apply_native_adapters(records, native_recipes):
+    if native_recipes is None:
+        return
+    from arena.frameworks.recipes import validate_recipe
+    seen = set()
+    for recipe in sorted(native_recipes, key=lambda item: item["id"]):
+        validate_recipe(recipe)
+        _require(recipe["id"] not in seen, "Duplicate participant native engine")
+        seen.add(recipe["id"])
+        identities = {ALIASES.get(ident, ident) for ident in recipe["participant_ids"]}
+        _require(identities <= set(records), "Native recipe names an unknown participant")
+        # Artifact evaluation profiles do not advertise a research optimizer.
+        if recipe["status"] != "source_verified" or not recipe["profiles"]:
+            continue
+        adapter = {"engine": recipe["id"], "name": recipe["name"],
+                   "repository": deepcopy(recipe["repository"]),
+                   "profiles": [profile["id"] for profile in recipe["profiles"]],
+                   "evaluation": "native", "runtime_readiness": "not_verified"}
+        for ident in sorted(identities):
+            records[ident].setdefault("native_adapters", []).append(deepcopy(adapter))
+
+
+def native_recipes_for_participants(root):
+    """Load reviewed local metadata only, never external source or native code."""
+    from arena.frameworks.recipes import load_recipes
+    recipes = load_recipes(root)
+    snapshot = root / "participants.json"
+    if snapshot.exists():
+        previous = {adapter["engine"] for item in _json(snapshot).get("participants", [])
+                    for adapter in item.get("native_adapters", [])}
+        _require(previous <= set(recipes), "Missing native recipe sources; refusing to drop adapter links")
+    return list(recipes.values())
+
+
+def build_participant_catalog(declarations, corpus=None, descriptions=None, bibliography=None, attributions=None,
+                              native_recipes=None):
     records = {}
     for declaration in declarations:
+        _require("native_adapters" not in declaration,
+                 "Native adapter links are derived exclusively from reviewed recipes, not participant declarations")
         validate_participant(declaration)
         _require(declaration["repository"] is not None, "Pinned declarations require an immutable repository")
         _require(declaration["id"] not in records, "Duplicate participant declaration")
         records[declaration["id"]] = deepcopy(declaration)
     if corpus is None:
         _apply_attributions(records, attributions)
+        _apply_native_adapters(records, native_recipes)
         return validate_participants(participant_view(sorted(records.values(), key=lambda p: p["id"])))
     validate_corpus(corpus, bibliography)
     _object(descriptions, ("schema", "descriptions"), "participant descriptions")
@@ -214,11 +252,13 @@ def build_participant_catalog(declarations, corpus=None, descriptions=None, bibl
                                                        else "Arena editorial summary of the source mechanism; not an execution result."})
         records[ident] = record
     _apply_attributions(records, attributions)
+    _apply_native_adapters(records, native_recipes)
     return validate_participants(participant_view(sorted(records.values(), key=lambda p: (p["name"].casefold(), p["id"]))))
 
 
 def expected_participants(root):
     declarations = [_json(path) for path in sorted((root / "participants").glob("*.json"))]
+    native_recipes = native_recipes_for_participants(root)
     attribution_path = root / ATTRIBUTIONS_FILE
     if not attribution_path.exists() and (root / "participants.json").exists():
         _require(not any(item.get("attribution") for item in _json(root / "participants.json").get("participants", [])),
@@ -228,6 +268,8 @@ def expected_participants(root):
             old = _json(root / "participants.json")
             _require(not any(item.get("papers") or item.get("record_kind") == "research_work" for item in old.get("participants", [])),
                      "Missing corpus capture; refusing to drop scholarly participant entries")
-        return build_participant_catalog(declarations, attributions=_json(attribution_path) if attribution_path.exists() else None)
+        return build_participant_catalog(declarations, attributions=_json(attribution_path) if attribution_path.exists() else None,
+                                         native_recipes=native_recipes)
     return build_participant_catalog(declarations, _json(root / SOURCE_FILE), _json(root / DESCRIPTIONS_FILE),
-                                     _json(root / "search-family-sources.json"), _json(attribution_path) if attribution_path.exists() else None)
+                                     _json(root / "search-family-sources.json"), _json(attribution_path) if attribution_path.exists() else None,
+                                     native_recipes=native_recipes)

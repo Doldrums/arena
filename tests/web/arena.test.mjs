@@ -619,7 +619,7 @@ test('scientific direction cards retain exact corpus counts and open real chemis
       assert.match(bar.getAttribute('aria-label'),new RegExp(`${domain.total.toLocaleString('en-US')} tasks`));
       assert.ok(bar.textContent.includes(`${domain.percentage.toFixed(1)}%`));
     }
-    assert.ok(composition.querySelector('[role="img"]').getAttribute('aria-label').includes('Evaluator to be added: 428'));
+    assert.ok(composition.querySelector('[role="img"]').getAttribute('aria-label').includes('Evaluator to be added: 270'));
     composition.querySelector('summary').click();
     assert.equal(composition.open,true);
     const chemistry=doc.querySelector('[data-domain-card="chemistry-materials"]');chemistry.focus();chemistry.click();
@@ -731,6 +731,45 @@ test('research works expose paper provenance and safe source links without imply
     assert.ok(detail.querySelector('.arena-participant-papers.is-detail'));
     assert.match(detail.textContent,/research-corpus.md, lines 12–30/);
     assert.doesNotMatch(detail.textContent,/Native executionAvailable/);
+  } finally {dom.window.close();}
+});
+
+test('research adapter links show native engines and exact pins without granting registration capabilities', async () => {
+  const record={id:'method-x',name:'Method X',record_kind:'research_work',registration_status:'literature',
+    repository:null,adapter_status:'not_implemented',capabilities:{native_run:false,canonical_evaluation:false,pause:false,resume:false},
+    native_adapters:[{engine:'method-engine',name:'Native <script>literal</script>',
+      repository:{url:'https://github.com/example/method',commit:'a'.repeat(40)},profiles:['native-search','native-evaluate'],
+      evaluation:'native',runtime_readiness:'not_verified'}]};
+  const {dom,doc}=await mount({url:'http://arena.test/?view=participants',participantRecords:{participants:[record]}});
+  try {
+    const card=doc.querySelector('.arena-participant');
+    assert.match(card.textContent,/Research work/);assert.match(card.textContent,/Local adapter/);
+    assert.doesNotMatch(card.textContent,/Source pinned|Adapter integrated/);
+    card.querySelector('.arena-task-link').click();
+    const detail=doc.getElementById('arena-detail');
+    assert.match(detail.textContent,/Source and fixture checks · native environment to be verified/);
+    assert.match(detail.textContent,/method-engine/);assert.match(detail.textContent,/native-search, native-evaluate/);
+    assert.match(detail.textContent,/native evaluation/);
+    assert.match(detail.textContent,/do not establish canonical task compatibility or a verified runtime/);
+    assert.doesNotMatch(detail.textContent,/Native executionAvailable|Canonical evaluationAvailable/);
+    assert.equal(detail.querySelector('script'),null);
+    const source=detail.querySelector(`a[href="https://github.com/example/method/tree/${'a'.repeat(40)}"]`);
+    assert.ok(source);assert.equal(source.target,'_blank');assert.match(source.rel,/noopener/);
+    assert.equal(record.registration_status,'literature');assert.equal(record.capabilities.native_run,false);
+  } finally {dom.window.close();}
+});
+
+test('blocked and artifact-only works do not acquire runnable badges from the current snapshot', async () => {
+  const snapshot=JSON.parse(readFileSync(new URL('../../registry/participants.json',import.meta.url),'utf8'));
+  const records=snapshot.participants.filter(item=>['meta-harness','evoflow','aevo','adas'].includes(item.id));
+  assert.equal(records.length,4);
+  const {dom,doc}=await mount({url:'http://arena.test/?view=participants',participantRecords:{participants:records}});
+  try {
+    for(const id of ['meta-harness','evoflow','aevo']) {
+      const card=doc.querySelector(`[data-participant="${id}"].arena-participant`);
+      assert.match(card.textContent,/Integration open/);assert.doesNotMatch(card.textContent,/Local adapter/);
+    }
+    assert.match(doc.querySelector('[data-participant="adas"].arena-participant').textContent,/Local adapter/);
   } finally {dom.window.close();}
 });
 

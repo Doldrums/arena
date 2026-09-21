@@ -4,7 +4,7 @@ The Tasks page combines a catalog with an overview of the research problems it c
 
 ## What the counts mean
 
-A count is a **task package**. Parameter variants and paper-specific copies count separately; a package is not necessarily a unique scientific problem. The imported library has 1,138 packages and 73 named executable evaluator families. Its paper identifiers contain 98 corpus papers plus the SCiEL supplement; the supplement is not an additional academic paper.
+A count is a **task package**. Parameter variants and paper-specific copies count separately; a package is not necessarily a unique scientific problem. The imported library has 959 packages and 151 named evaluator families. Its paper identifiers contain 98 corpus papers plus 15 supplementary source groups (SCiEL, scientific collections and a community task); supplements are not additional academic papers.
 
 Domain and task type are separate dimensions. A domain describes the application or scientific subject; a task type describes what a candidate program does. Each package has one primary assignment in each dimension so the percentages have a clear denominator. Taxonomy rules and their rationale are reviewed in Git under `registry/taxonomy.json`. This is Arena's editorial classification of source metadata, not an assertion that the source paper assigned these labels.
 

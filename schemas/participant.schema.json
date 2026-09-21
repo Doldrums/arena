@@ -31,13 +31,16 @@
       ]
     },
     "adapter_status": {
-      "const": "not_implemented"
+      "enum": [
+        "not_implemented",
+        "native_cli"
+      ]
     },
     "capabilities": {
       "type": "object",
       "properties": {
         "native_run": {
-          "const": false
+          "type": "boolean"
         },
         "canonical_evaluation": {
           "const": false
@@ -342,6 +345,54 @@
           }
         }
       ]
+    },
+    "runtime_readiness": {
+      "const": "not_verified"
+    },
+    "adapter_validation": {
+      "const": "source_and_fixture_tests"
+    },
+    "native_adapters": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "engine": {
+            "$ref": "common.schema.json#/$defs/identifier"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "repository": {
+            "$ref": "common.schema.json#/$defs/repository"
+          },
+          "profiles": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "common.schema.json#/$defs/identifier"
+            }
+          },
+          "evaluation": {
+            "const": "native"
+          },
+          "runtime_readiness": {
+            "const": "not_verified"
+          }
+        },
+        "required": [
+          "engine",
+          "name",
+          "repository",
+          "profiles",
+          "evaluation",
+          "runtime_readiness"
+        ],
+        "additionalProperties": false
+      }
     }
   },
   "required": [
@@ -398,6 +449,64 @@
           "registration_status": {
             "const": "planned"
           }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "adapter_status": {
+            "const": "native_cli"
+          }
+        },
+        "required": [
+          "adapter_status"
+        ]
+      },
+      "then": {
+        "required": [
+          "runtime_readiness",
+          "adapter_validation"
+        ],
+        "properties": {
+          "record_kind": {
+            "const": "system_registration"
+          },
+          "repository": {
+            "$ref": "common.schema.json#/$defs/repository"
+          },
+          "capabilities": {
+            "properties": {
+              "native_run": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "capabilities": {
+            "properties": {
+              "native_run": {
+                "const": false
+              }
+            }
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "runtime_readiness"
+              ]
+            },
+            {
+              "required": [
+                "adapter_validation"
+              ]
+            }
+          ]
         }
       }
     }

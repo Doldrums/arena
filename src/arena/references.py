@@ -121,7 +121,24 @@ def validate_references(data, catalog):
             else:
                 _require(anchor["comparison"] == "historical_smoke_only", "seed smoke cannot authorize benchmark comparisons")
                 _require(anchor.get("recorded_status") == "ok", "seed baseline: successful recorded execution required")
-                _require(anchor["source"]["path"] == "validation/suite-report.json", "baseline requires the pinned execution report")
+                report_path = anchor["source"]["path"]
+                _require(report_path in {"validation/suite-report.json", "validation/science-expansion-report.json"}, "baseline requires a reviewed pinned execution report")
+                if report_path == "validation/science-expansion-report.json":
+                    identity = anchor.get("execution_identity", {})
+                    _require(type(identity) is dict, "science baseline requires an execution identity object")
+                    _require(identity.get("source_execution") is True and identity.get("fixture_only") is False,
+                             "science baseline requires source execution, not fixture-only validation")
+                    _require(anchor["validity"] is True, "science baseline requires explicit validity")
+                    for key, filename in (("candidate", "initial_program.py"), ("evaluator", "evaluator.py")):
+                        source = identity.get(f"{key}_source")
+                        _evidence(source, binding)
+                        _hash(identity.get(f"{key}_sha256"), _SHA256, f"science baseline {key} digest")
+                        _require(source["path"] == f"suite/{task_id}/{filename}" and source["sha256"] == identity[f"{key}_sha256"],
+                                 f"science baseline {key} evidence mismatch")
+                    _require(identity["evaluator_source"] == task["evaluation"]["evaluator_source"],
+                             "science baseline evaluator differs from current task evaluator")
+                else:
+                    _require("execution_identity" not in anchor, "legacy suite report cannot claim checked expansion execution identity")
                 if anchor.get("reported_combined_score") is not None:
                     _finite(anchor["reported_combined_score"], "anchor.reported_combined_score")
         _require(task.get("status") == ("source_reference" if task["anchors"] else "missing"), "reference status and anchors disagree")

@@ -1,0 +1,1467 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "adaevolve",
+      "name": "AdaEvolve",
+      "participant_ids": [
+        "adaevolve"
+      ],
+      "repository": {
+        "url": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare Python >=3.10,<3.14 and install this pinned project with math dependencies."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "d7830a145285bd62b4290381f64feae143e18364fd519ad590b6dbbe87702c54",
+        "benchmarks/math/circle_packing/config.yaml": "77ab10ca87b92f6997807f808257b74a4d9ef0b1e3767e376b291acb044af226",
+        "benchmarks/math/circle_packing/evaluator.py": "672e8f36b18855d721ae3d7adc53883bb97050f2174b95793d306c1c8fbdd6f9",
+        "benchmarks/math/circle_packing/initial_program.py": "d432ec2da7c307180a4dafff1be1ca47cf37be07c40b12c5fedae69417fd639e",
+        "skydiscover/__main__.py": "00b54e379d5463becc7d8dec3fb475b4e595e7a8472ca1b2b03d39873a6d5914",
+        "skydiscover/main.py": "9073262c74e7bbe659f325e60d4c1ba426c5b57e8cf1745235d715466a2e28d8",
+        "skydiscover/optimize/cli.py": "d35724413ea3cbc02cf97300967a4a403763892b997b0433e89e10defcce8f97",
+        "skydiscover/optimize/evaluation/evaluator.py": "84471c1312e1789ccce2101d622ba0ccdb86ed4d765738de754158371b266dfa"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "Native SkyDiscover optimization calls the pinned circle-packing evaluator and records its native metrics.",
+          "invocation": {
+            "kind": "module",
+            "target": "skydiscover"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "optimize",
+            "benchmarks/math/circle_packing/initial_program.py",
+            "benchmarks/math/circle_packing/evaluator.py",
+            "--search",
+            "adaevolve"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "skydiscover/__main__.py",
+            "skydiscover/main.py",
+            "skydiscover/optimize/cli.py",
+            "benchmarks/math/circle_packing/initial_program.py"
+          ],
+          "config_files": [
+            "benchmarks/math/circle_packing/config.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native SkyDiscover optimization calls the pinned circle-packing evaluator and records its native metrics.",
+            "evidence": [
+              "benchmarks/math/circle_packing/evaluator.py",
+              "skydiscover/optimize/evaluation/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "--model MODEL --iterations N",
+            "Credentials: OPENAI_API_KEY in explicit environment_names."
+          ],
+          "limitations": [
+            "Profile fixes the selected search algorithm and the native 26-circle task. No Arena task equivalence or canonical receipt is inferred."
+          ],
+          "protected_args": [
+            "-s",
+            "-o",
+            "--checkpoint"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "base",
+      "name": "BaSE",
+      "participant_ids": [
+        "base"
+      ],
+      "repository": {
+        "url": "https://github.com/keruiwu/self-evolving-allocation",
+        "commit": "ae7b5da1db39c0fd826adda7893c99d5bda5ac1b"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install pinned requirements.txt in a dedicated environment; configure the selected model endpoint through its native environment variables."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "9f1abe28a25b5f6f95c58a81a647de3fa72ff6388d228c59bddd079255709989",
+        "base/arms.py": "2a13ea34ec3f50e1df16d32dc4eac4b0e7a967bbe23eb3b3fddff851856ea4b2",
+        "base/runner.py": "7bfaad8ce4404089fb93d9de48603d47c09b9bdea70dc85deb9cd47b419b4167",
+        "core/evaluator.py": "a1f2fb297269b7c0b9f4f8d9e50cedc849cd76543d0edac20d4566325d57e8b7",
+        "core/tasks.py": "92833909b4713b670260dc9fda97692952e90799d9216e44f214b0216435dd40",
+        "run_base.py": "ab872bf0b01a3f350aec52e6e877f6551e4f83eec7e7a0882c51724632840cde",
+        "tasks/circle_packing/evaluator.py": "a1708613eefca455f8198dc46743a76e97b760b15f99ee6c3009d6803eda6812"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "Native BaSE live greedy arms call the task evaluator and save per-arm results and allocation trace.",
+          "invocation": {
+            "kind": "script",
+            "target": "run_base.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--task",
+            "cp",
+            "--algo",
+            "ucb"
+          ],
+          "output": {
+            "flag": "--out-dir",
+            "path": "results"
+          },
+          "required_files": [
+            "run_base.py",
+            "base/runner.py",
+            "base/arms.py",
+            "core/tasks.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native BaSE live greedy arms call the task evaluator and save per-arm results and allocation trace.",
+            "evidence": [
+              "core/evaluator.py",
+              "tasks/circle_packing/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "Required: --model MODEL --T ROUNDS --N CHILDREN",
+            "Optional: --n-arms N --bandit-seed N; model names are those in core/models.py."
+          ],
+          "limitations": [
+            "Native FLOP estimates and API call counts are retained as reported; Arena does not convert them into verified spend."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "codeevolve",
+      "name": "CodeEvolve",
+      "participant_ids": [
+        "codeevolve"
+      ],
+      "repository": {
+        "url": "https://github.com/inter-co/science-codeevolve",
+        "commit": "c077959e1ab24b060aaa6d4c563bca2e9cbe8617"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare the pinned environment.yml / pyproject.toml environment; Linux is needed for full CPU-affinity support."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "configs/templates/config_qwen.yaml": "7e5dd68a3bcf44df97b82fc301555021b0bcae3390af0f714e6f96f71f19da93",
+        "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/evaluate.py": "384364d3e858d03d1a26c008667760f340ca4dc966e602a3f2346fd1f2ad5591",
+        "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/src/init_program.py": "a8d0e3fc3476840d45fd4c7258fec99727d9f5027492eb8ed7e06c67c263e392",
+        "src/codeevolve/cli.py": "8101763b06d7c4521aa619f87b2101cb5b9279f4de90ede40185279f59774cb9",
+        "src/codeevolve/evaluator.py": "d56c9c050b1b98ad27b3077a65eac30468f20f14eaee03106ad782cdeefd7724",
+        "src/codeevolve/utils/cli_setup.py": "554e9d8af7954d49ab52ab1ba7f10136919e1a5e7ebfb58a1a6dac5e55a37496"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "Native CodeEvolve islands invoke evaluate.py with program and JSON-result paths; metrics include benchmark_ratio and eval_time.",
+          "invocation": {
+            "kind": "module",
+            "target": "codeevolve.cli"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--inpt_dir",
+            "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input",
+            "--cfg_path",
+            "configs/templates/config_qwen.yaml",
+            "--y"
+          ],
+          "output": {
+            "flag": "--out_dir",
+            "path": "results"
+          },
+          "required_files": [
+            "src/codeevolve/cli.py",
+            "src/codeevolve/utils/cli_setup.py",
+            "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/src/init_program.py"
+          ],
+          "config_files": [
+            "configs/templates/config_qwen.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native CodeEvolve islands invoke evaluate.py with program and JSON-result paths; metrics include benchmark_ratio and eval_time.",
+            "evidence": [
+              "src/codeevolve/evaluator.py",
+              "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/evaluate.py"
+            ]
+          },
+          "argument_help": [
+            "Supply a secret-free config overlay to select models, epoch count, island count and evaluation budget.",
+            "Credentials and endpoint are native API_KEY / API_BASE environment variables."
+          ],
+          "limitations": [
+            "Requires Python >=3.13.5 at this revision. Native templates name deployment-specific models; configure the selected endpoint before launch.",
+            "Native config fixes benchmark_ratio fitness; no canonical Arena metric conversion is performed."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "coevo",
+      "name": "CoEvo",
+      "participant_ids": [
+        "coevo"
+      ],
+      "repository": {
+        "url": "https://github.com/pgg3/CoEvo",
+        "commit": "dcad65e9799961cf67cf29865ff41dda2902a808"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install from pinned CoEvo/ package root with its declared evotoolkit dependency; prepare tokenizer cache."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "CoEvo/pyproject.toml": "6478b50b447129b7f3600556d43a20430355ce73f12221fbae5b43bfef9dfd0b",
+        "CoEvo/src/coevo/core/coevo_interface.py": "f91d41e1eec2eea1d3ea1492a4202b353ad9b37f54ada34dcadc61ed64fbd4f5",
+        "CoEvo/src/coevo/core/coevo_method.py": "41482e7245bbc1b210bbb1eb1649d8d391e1e51a4eec5cd54dd1de35402b8872",
+        "CoEvo/src/coevo/tasks/oscillation_1.py": "06eebc3983918402990c3d0ec31ffec35736b4451c94a0f3bf0a0bbd4bd341fe",
+        "LICENSE": "18580b487940efb327fc42a3d005a3fc4d2cdaeb16dd9212285e038583104eb4",
+        "data/oscillation_1/train.csv": "a846b36b931dee4e2335faf9fb4195a7a8d1b4e4430e915266ef45fcd2e07ee7",
+        "main_run.py": "3024283a03a6a4eeda5e55668518b3a81b02545423c54df13f883da5b6fadbf4",
+        "model_config.json": "5e4d6e29d6ca6a9072962abece386ae6942713f37fcd205f70b9947b598c47c8"
+      },
+      "profiles": [
+        {
+          "id": "oscillation",
+          "description": "Native CoEvoMethod.run searches its multi-representation solution chains and invokes Oscillation1Task evaluation.",
+          "invocation": {
+            "kind": "script",
+            "target": "main_run.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--task",
+            "oscillation_1",
+            "--mode",
+            "coevo"
+          ],
+          "output": null,
+          "required_files": [
+            "main_run.py",
+            "CoEvo/src/coevo/core/coevo_method.py",
+            "CoEvo/src/coevo/core/coevo_interface.py",
+            "data/oscillation_1/train.csv",
+            "model_config.json"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native CoEvoMethod.run searches its multi-representation solution chains and invokes Oscillation1Task evaluation.",
+            "evidence": [
+              "CoEvo/src/coevo/tasks/oscillation_1.py",
+              "CoEvo/pyproject.toml"
+            ]
+          },
+          "argument_help": [
+            "--max_gen N --pop_size N",
+            "Configure API_URL, API_KEY and MODEL as explicit environment variables; avoid model_config.json secrets."
+          ],
+          "limitations": [
+            "Requires pinned CoEvo package and external evotoolkit dependency; native train.csv is used unchanged.",
+            "Native summarizer loads the openai-community/gpt2 tokenizer; cache/data setup must be prepared.",
+            "The evidence-hashed placeholder model_config.json is removed only from the isolated workspace before launch, so the unchanged native program uses explicit API_URL/API_KEY/MODEL environment variables."
+          ],
+          "python_paths": [
+            "CoEvo/src"
+          ],
+          "remove_files": [
+            "model_config.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "coral",
+      "name": "CORAL",
+      "participant_ids": [
+        "coral"
+      ],
+      "repository": {
+        "url": "https://github.com/Human-Agent-Society/CORAL",
+        "commit": "0123dfb939b35228cf2c1fde224cd0561e727408"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Install pinned CORAL and prepare its configured CLI agent, circle-packing seed environment and grader package."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "322e5f2d0b507c80445050afae5bcc4824150ae2a5eca9cb8c3dc8e0cace44c6",
+        "coral/agent/manager.py": "62abaf9c7525de70ab770d0769def3fd2aa435723cba984dae99cd0a4d724931",
+        "coral/cli/__init__.py": "cb2a8a247161fac5a110a2565102cb4ccc1f103cce910acf7f45b865ca3f91e4",
+        "coral/cli/__main__.py": "33dcbddbcd6d962b276f0cc193bfe7e963a5f4d5fc48bfdcbef20f303ef5f7f4",
+        "coral/cli/start.py": "f6fddc0a72ed991a7085117257724e7c9dd04966e8c298967c5fcc1daa4c92be",
+        "coral/config.py": "deb88add858f8d04f591911cadbeadbb23aaccfd791dbb8b74f606e079e3c4eb",
+        "examples/math/circle_packing/grader/src/circle_packing_grader/grader.py": "fe410f41114ffe3bcd6439356f4cab3f5d0e71a28bc79c7ea03658f729f32654",
+        "examples/math/circle_packing/seed/initial_program.py": "ec7ceb3075e8174b67ecf582e0511d850133080493a1a879f72a2598311fe44a",
+        "examples/math/circle_packing/task.yaml": "5eac077ad815ca1021bbb4ab3d0e8b4582f1eec55681c124455e538d62cbe531"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "CORAL runs its native agent manager in the foreground and grades attempts through the configured circle-packing Grader.",
+          "invocation": {
+            "kind": "module",
+            "target": "coral.cli"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "start",
+            "--config",
+            "examples/math/circle_packing/task.yaml",
+            "run.session=local"
+          ],
+          "output": null,
+          "required_files": [
+            "coral/cli/__main__.py",
+            "coral/cli/__init__.py",
+            "coral/cli/start.py",
+            "examples/math/circle_packing/seed/initial_program.py"
+          ],
+          "config_files": [
+            "examples/math/circle_packing/task.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.db",
+            "results/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "CORAL runs its native agent manager in the foreground and grades attempts through the configured circle-packing Grader.",
+            "evidence": [
+              "coral/config.py",
+              "coral/agent/manager.py",
+              "examples/math/circle_packing/grader/src/circle_packing_grader/grader.py"
+            ]
+          },
+          "argument_help": [
+            "Native dotlist overrides include agents.model=MODEL agents.count=N and run.stop settings.",
+            "Configure the native CLI agent and explicit environment credentials before launch."
+          ],
+          "limitations": [
+            "Foreground run.session=local is fixed so launch does not detach into tmux.",
+            "Native workspace setup and grader setup may invoke uv during an explicitly launched run. Prepare dependencies before using the profile.",
+            "Default native results are results/<task>/<timestamp> with hidden .coral state."
+          ],
+          "protected_args": [
+            "-c",
+            "workspace.results_dir",
+            "workspace.run_dir"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "deliberate-evolution",
+      "name": "Deliberate Evolution",
+      "participant_ids": [
+        "deliberate-evolution"
+      ],
+      "repository": {
+        "url": "https://github.com/Xinyu-Pang/Deliberate-Evolution",
+        "commit": "18ae1f1c33a0dfa3c81298bba035036d3b23ecaf"
+      },
+      "status": "blocked",
+      "license": null,
+      "setup": [],
+      "blocked_reason": "The pinned repository contains only README.md and states that code, benchmarks and reproduction instructions will be added later. No implementation entrypoint is available.",
+      "evidence": {
+        "README.md": "aa1334ef0f19bb16a25e02bb149d0c7a4e556963962dcc1b2e06f6519395bd99"
+      },
+      "profiles": []
+    },
+    {
+      "id": "eoh",
+      "name": "EoH",
+      "participant_ids": [
+        "eoh"
+      ],
+      "repository": {
+        "url": "https://github.com/FeiLiu36/EoH",
+        "commit": "472545785c936dcfc863d2bc0d6109cf23c7ce62"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the pinned eoh/ Python package and its online-bin-packing dependencies."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "1126322e2cc8d165adc4c792eeb195717de2bcc7b39be1ce77959d78e87ef685",
+        "eoh/src/eoh/config.py": "a8efc2b362d13e8f439776e99b3ec2fb753f5d54c7a731eebfaf70e0fc581e50",
+        "eoh/src/eoh/eoh/eoh.py": "c257afe3aacbc5b37dd2c25e5fe037bc0df4af21f6e319b5662234cd7870f7fd",
+        "eoh/src/eoh/run.py": "3d1813a00cc9ae15d1a842dc050e8ca05de98b59dfb9d4b177a242be3c50fa11",
+        "examples/bp_online/get_instance.py": "a42983866e16cf13073b17277d4b53afba3a5a543be58240bdd71963f789975d",
+        "examples/bp_online/prob.py": "5ad146c68768f6d710f8928fc2b1c80cd83e12c31a58d106a06848655c3a1181",
+        "examples/bp_online/runEoH.py": "6012eae228b3e2b6c2fcb63be52537572837814761949e98817a6ad1bebdde12"
+      },
+      "profiles": [
+        {
+          "id": "online-bin-packing",
+          "description": "Native EoH.run uses BPONLINE.evaluate_program; the driver only supplies parameters and environment credentials.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.eoh"
+          },
+          "cwd": "examples/bp_online",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "eoh/src/eoh/run.py",
+            "eoh/src/eoh/config.py",
+            "examples/bp_online/runEoH.py",
+            "examples/bp_online/prob.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native EoH.run uses BPONLINE.evaluate_program; the driver only supplies parameters and environment credentials.",
+            "evidence": [
+              "examples/bp_online/prob.py",
+              "examples/bp_online/get_instance.py",
+              "eoh/src/eoh/eoh/eoh.py"
+            ]
+          },
+          "argument_help": [
+            "Required: --endpoint ENDPOINT --model MODEL --population N --generations N --samples N",
+            "Optional: --samplers N --evaluators N --eval-timeout SECONDS; OPENAI_API_KEY is environment-only."
+          ],
+          "limitations": [
+            "This is the current pinned EoH online-bin-packing implementation, not the absent original EvolCAF example."
+          ],
+          "python_paths": [
+            "eoh/src",
+            "examples/bp_online"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eurekagent",
+      "name": "EurekAgent",
+      "participant_ids": [
+        "eurekagent"
+      ],
+      "repository": {
+        "url": "https://github.com/THU-Team-Eureka/EurekAgent",
+        "commit": "fb96df897dfb99797a77623aa0dd9ee178fe89d2"
+      },
+      "status": "source_verified",
+      "license": "AGPL-3.0",
+      "setup": [
+        "Prepare Python >=3.12.12, native dependencies, Claude CLI and documented Docker agent image."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "4df3c306dddaaf4baffdff5ca820cc679ac8cd6dc263c6a74517783e42fa7a3b",
+        "examples/circle_packing/INSTRUCTION.md": "9b4e251ce2151768513679b9a5101af4351a30ffd0161d5085fdaef4c9600b92",
+        "examples/circle_packing/SUBMISSION_FORMAT.md": "fd60f9162f9bcacc473382ee621cc6af7d894ddb05f0e1b0b4b7807476ea3436",
+        "examples/circle_packing/hidden_eval_dir/evaluate.py": "f417007dd60c9781bb48a40468baa3552e3127ac0f447601f645a34da8d48fcd",
+        "examples/circle_packing/initial.py": "c6f80c89d5baa8ecb14711fd7cd274ad1b9cc7f38f2e6881e69b9417a8afd1c8",
+        "examples/circle_packing/run.sh": "63c4ab519a593afe7339958c3a0188db8db8bd8ddddaa47ee2273dea3604fad0",
+        "src/__main__.py": "56e9f3d9f1bba6b01e621f415ca6d8a3e4b6ebad61dc7a15e0cf3bc8dbf3d2b3",
+        "src/eval_grader/client.py": "97ee0ab194d9c8a9ce7894ae9f5131339cbf3cb25becab409f18126777ac3d18",
+        "src/pipeline.py": "59d4008b9ddc3909b9364752ba1a280fce54f638005561533952e9d9701f8fdc"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "The native research pipeline uses the private grader grade_submission and is_better contract in a separate Docker grader.",
+          "invocation": {
+            "kind": "module",
+            "target": "src"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--problem",
+            "examples/circle_packing/INSTRUCTION.md",
+            "--hidden-eval-dir",
+            "examples/circle_packing/hidden_eval_dir",
+            "--submission-format",
+            "examples/circle_packing/SUBMISSION_FORMAT.md",
+            "--initial-code",
+            "examples/circle_packing/initial.py",
+            "--no-monitor",
+            "--no-tui"
+          ],
+          "output": {
+            "flag": "--runs-dir",
+            "path": "results"
+          },
+          "required_files": [
+            "src/__main__.py",
+            "examples/circle_packing/run.sh",
+            "examples/circle_packing/INSTRUCTION.md",
+            "examples/circle_packing/SUBMISSION_FORMAT.md",
+            "examples/circle_packing/initial.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "The native research pipeline uses the private grader grade_submission and is_better contract in a separate Docker grader.",
+            "evidence": [
+              "examples/circle_packing/hidden_eval_dir/evaluate.py",
+              "src/eval_grader/client.py",
+              "src/pipeline.py"
+            ]
+          },
+          "argument_help": [
+            "Required native settings: --model MODEL --propose-time-limit-per-session DURATION --implement-time-limit-per-session DURATION",
+            "Set --max-loops N --max-num-approaches N --cost-limit USD and --gpus none for CPU-only math."
+          ],
+          "limitations": [
+            "Requires the native CLI agent, prepared Docker image and container environment. No Docker build or provider setup occurs during Arena planning.",
+            "Native nested Docker and agent processes require worker/container lifecycle supervision beyond a Python exit code."
+          ],
+          "protected_args": [
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evolcaf",
+      "name": "EvolCAF",
+      "participant_ids": [
+        "evolcaf"
+      ],
+      "repository": {
+        "url": "https://github.com/FeiLiu36/EoH",
+        "commit": "4b2338fc2317c743cec50c5c7a2e4684707af973"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the eoh/ package from this historical recipe pin and BoTorch 0.9.2 with compatible PyTorch dependencies."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "7720014ff3c9115b87cad0113ceb2560298537f02ff6088b5a491cd59b683b79",
+        "eoh/src/eoh/eoh.py": "1cecd82098e8a68163788d462586889a379ef4465cf31867dba08bbd7dcf3111",
+        "eoh/src/eoh/methods/eoh/eoh.py": "01ba40a258f61202dc8d736ba76c92a17ab05d98ac3ea1fbaf8efc67f1792ccb",
+        "eoh/src/eoh/utils/getParas.py": "53ea7487d279e509d1e22ced0365d31854662afd93af0a367ccba1261b0ba73e",
+        "examples/user_bo_caf/instance/botorch_problem.pkl": "abaf980aa41d81385e77ba014c53a419d3486f419486d7bfe51b849c3728470d",
+        "examples/user_bo_caf/prob.py": "d9d4d989d467dc2f477bbf52cb8e5c4c181a8c9b866259736381549970fbfc7c",
+        "examples/user_bo_caf/prompts.py": "0c455edc72641b2279db11de082d44008577a130f7f79c608c2a3aaf1a819aa8",
+        "examples/user_bo_caf/readme.md": "8de68e850e6a3ccf04b5e040ffe75f907ad98ec41eaa864b509fdbe4c5a3c45a",
+        "examples/user_bo_caf/runEoH.py": "9e11218045576dab3bf389da5c2c6665437d6ee670998d9667c6db88652e222f"
+      },
+      "profiles": [
+        {
+          "id": "cost-aware-bo",
+          "description": "Authentic historical EvolCAF evolves cost-aware acquisition functions through eoh.EVOL and Evaluation.evaluate; the native objective is mean BO optimality gap (lower is better).",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.evolcaf"
+          },
+          "cwd": "examples/user_bo_caf",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "examples/user_bo_caf/runEoH.py",
+            "examples/user_bo_caf/prob.py",
+            "examples/user_bo_caf/prompts.py",
+            "examples/user_bo_caf/instance/botorch_problem.pkl",
+            "eoh/src/eoh/eoh.py",
+            "eoh/src/eoh/utils/getParas.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Authentic historical EvolCAF evolves cost-aware acquisition functions through eoh.EVOL and Evaluation.evaluate; the native objective is mean BO optimality gap (lower is better).",
+            "evidence": [
+              "examples/user_bo_caf/readme.md",
+              "examples/user_bo_caf/prob.py",
+              "eoh/src/eoh/methods/eoh/eoh.py"
+            ]
+          },
+          "argument_help": [
+            "Required: --endpoint HOST --model MODEL --population N --generations N",
+            "OPENAI_API_KEY is environment-only; --processes controls the outer native evolution worker count."
+          ],
+          "limitations": [
+            "Recipe intentionally pins 4b2338fc, the last parent before a8861e55 removed examples/user_bo_caf. The corpus metadata pin remains 47254578; these identities are recorded separately.",
+            "Native evaluation loads the pinned BoTorch problem pickle only during explicit execution. Arena planning and readers never unpickle it.",
+            "The native inner evaluator fixes 10 trials, 20 joblib workers and a 60-second BO-loop timeout; --processes does not change those inner settings."
+          ],
+          "python_paths": [
+            "eoh/src",
+            "examples/user_bo_caf"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evox",
+      "name": "EvoX",
+      "participant_ids": [
+        "evox"
+      ],
+      "repository": {
+        "url": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare Python >=3.10,<3.14 and install this pinned project with math dependencies."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "d7830a145285bd62b4290381f64feae143e18364fd519ad590b6dbbe87702c54",
+        "benchmarks/math/circle_packing/config.yaml": "77ab10ca87b92f6997807f808257b74a4d9ef0b1e3767e376b291acb044af226",
+        "benchmarks/math/circle_packing/evaluator.py": "672e8f36b18855d721ae3d7adc53883bb97050f2174b95793d306c1c8fbdd6f9",
+        "benchmarks/math/circle_packing/initial_program.py": "d432ec2da7c307180a4dafff1be1ca47cf37be07c40b12c5fedae69417fd639e",
+        "skydiscover/__main__.py": "00b54e379d5463becc7d8dec3fb475b4e595e7a8472ca1b2b03d39873a6d5914",
+        "skydiscover/main.py": "9073262c74e7bbe659f325e60d4c1ba426c5b57e8cf1745235d715466a2e28d8",
+        "skydiscover/optimize/cli.py": "d35724413ea3cbc02cf97300967a4a403763892b997b0433e89e10defcce8f97",
+        "skydiscover/optimize/evaluation/evaluator.py": "84471c1312e1789ccce2101d622ba0ccdb86ed4d765738de754158371b266dfa"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "Native SkyDiscover optimization calls the pinned circle-packing evaluator and records its native metrics.",
+          "invocation": {
+            "kind": "module",
+            "target": "skydiscover"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "optimize",
+            "benchmarks/math/circle_packing/initial_program.py",
+            "benchmarks/math/circle_packing/evaluator.py",
+            "--search",
+            "evox"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "skydiscover/__main__.py",
+            "skydiscover/main.py",
+            "skydiscover/optimize/cli.py",
+            "benchmarks/math/circle_packing/initial_program.py"
+          ],
+          "config_files": [
+            "benchmarks/math/circle_packing/config.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native SkyDiscover optimization calls the pinned circle-packing evaluator and records its native metrics.",
+            "evidence": [
+              "benchmarks/math/circle_packing/evaluator.py",
+              "skydiscover/optimize/evaluation/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "--model MODEL --iterations N",
+            "Credentials: OPENAI_API_KEY in explicit environment_names."
+          ],
+          "limitations": [
+            "Profile fixes the selected search algorithm and the native 26-circle task. No Arena task equivalence or canonical receipt is inferred."
+          ],
+          "protected_args": [
+            "-s",
+            "-o",
+            "--checkpoint"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "funsearch-re-implementation",
+      "name": "FunSearch re-implementation",
+      "participant_ids": [
+        "funsearch-re-implementation"
+      ],
+      "repository": {
+        "url": "https://github.com/kitft/funsearch",
+        "commit": "cec37d84b474ea6bbd66f6defad8f5b5758449ff"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Install the pinned Python project and prepare its chosen native sandbox dependencies; Docker is needed for Docker sandbox profiles."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "8c6db340475136df3c1201d458fa5755698eace76e510471ecc9d857d6083dac",
+        "examples/cap_set_spec.py": "9fcaa7871b7c1df860eed724a375a95a264245d1c154672edf75bda27e47128a",
+        "funsearch/__main__.py": "27bc72fdf59bd115d661bbe53a3317a40eb163b6a34143984a4a7b37d94ad007",
+        "funsearch/async_agents.py": "f2d1b641204001314b1dcac656f7042e291ec050d48a339767793049d24c8db3",
+        "funsearch/evaluator.py": "e00ff3cb3f6164f42b4ece852ce941c0c0bb4eba214f943938deab9af958be5f",
+        "funsearch/logging_stats.py": "ba0a5d45c2f40926b250817b3e2954b8e20d8b1c5b0f43c9422800407596b197",
+        "funsearch/sandbox.py": "af79a7376158c4f94d4626fb6db60f753f770dae9bb625ec58a78a2fa45f9ac1"
+      },
+      "profiles": [
+        {
+          "id": "cap-set",
+          "description": "The kitft re-implementation runs its own async FunSearch samplers and sandbox evaluator on a cap-set specification.",
+          "invocation": {
+            "kind": "module",
+            "target": "funsearch"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "runasync",
+            "examples/cap_set_spec.py",
+            "8"
+          ],
+          "output": {
+            "flag": "--output_path",
+            "path": "results"
+          },
+          "required_files": [
+            "funsearch/__main__.py",
+            "funsearch/async_agents.py",
+            "examples/cap_set_spec.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "data/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "The kitft re-implementation runs its own async FunSearch samplers and sandbox evaluator on a cap-set specification.",
+            "evidence": [
+              "funsearch/evaluator.py",
+              "funsearch/sandbox.py",
+              "funsearch/logging_stats.py"
+            ]
+          },
+          "argument_help": [
+            "--model MODEL --iterations N --duration SECONDS --samplers N --evaluators N",
+            "Explicit provider environment variables; WANDB_MODE=offline is available for local logging."
+          ],
+          "limitations": [
+            "This is kitft/funsearch, not a claim to run the unreleased original DeepMind training setup.",
+            "Native backup pickle files are never deserialized by Arena artifact readers.",
+            "Native usage logs also default to data/usage; they are inventoried separately."
+          ],
+          "protected_args": [
+            "--load_backup",
+            "--envfile"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hsevo",
+      "name": "HSEvo",
+      "participant_ids": [
+        "hsevo"
+      ],
+      "repository": {
+        "url": "https://github.com/datphamvn/HSEvo",
+        "commit": "f3afffabc2b458fddf70a42a8678758039671297"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the pinned requirements.txt and native task dependencies; provide explicitly allowed provider credentials."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c60b4146b281dd6cb730a00b2cc6a7c56c966f52a16e60a47f5ee4caa3c68f80",
+        "cfg/config.yaml": "016b30c508504bed3e78303020706a0b85bd75eee9f09e07df89ace85a4054d4",
+        "cfg/problem/bpp_online.yaml": "248826948095d691f5f25056f295de9cbb8ff5790562c20987b7bba14adbddf1",
+        "hsevo.py": "7552b14dd0ac15f87274967a84d04e3906bd30c3c66f4949a42e08654c67e592",
+        "main.py": "f3ac71b5ae57809b09fa1c363c96cf5fc78a9499bf0864654048a583906517ad",
+        "problems/bpp_online/eval.py": "4fa8b4e6f74afa0715e6411d7eb75809c7f35aadaa1435027f9c5f00d1a7bac1"
+      },
+      "profiles": [
+        {
+          "id": "online-bin-packing",
+          "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+          "invocation": {
+            "kind": "script",
+            "target": "main.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "algorithm=hsevo",
+            "problem=bpp_online"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "hsevo.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/problem/bpp_online.yaml"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "Hydra overrides: max_fe=N pop_size=N init_pop_size=N timeout=N",
+            "Choose a native model via model=... (HSEvo) or llm_client.model=... (ReEvo/MCTS-AHD)."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred."
+          ],
+          "protected_args": [
+            "--config-path",
+            "--config-name",
+            "--config-dir"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "llm-lex",
+      "name": "LLM-LEx",
+      "participant_ids": [
+        "llm-lex"
+      ],
+      "repository": {
+        "url": "https://github.com/harveyThomas4692/llmlex",
+        "commit": "9f02b58c5efb6d3c973c2ad2552ecc3a57998f81"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Install the pinned llmlex package and declared dependencies; prepare the supplied data JSON."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "llmlex/fit.py": "d6ac28fbd86a20416b533883e0148da8f72722bd084e77f5bfb39dd108950929",
+        "llmlex/images.py": "5e2ac2e38cdecf1a439f9e47761c19ced23e49a082550b6938c9a6f224868701",
+        "llmlex/llmlex.py": "26111b441b132e6dab1c0a682ec2025b050a6b4da5d80036e05329081a6f216f",
+        "readme.md": "f011a41efc1b862f94c31903cf051fb328d0a3ffb82025aeff7d36b458514fb7"
+      },
+      "profiles": [
+        {
+          "id": "symbolic-regression",
+          "description": "Native llmlex.run_genetic proposes and fits expressions; returned populations retain native negative normalized chi-squared scores.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.llm_lex"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "llmlex/llmlex.py",
+            "llmlex/images.py",
+            "llmlex/fit.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native llmlex.run_genetic proposes and fits expressions; returned populations retain native negative normalized chi-squared scores.",
+            "evidence": [
+              "llmlex/llmlex.py",
+              "llmlex/fit.py",
+              "readme.md"
+            ]
+          },
+          "argument_help": [
+            "Required: --data inputs/data.json --model MODEL --population N --generations N",
+            "Add inputs/data.json through request.inputs; it contains numeric arrays x and y.",
+            "Explicit OPENAI_API_KEY and optional OPENAI_BASE_URL; default endpoint is the upstream example OpenRouter API."
+          ],
+          "limitations": [
+            "The library has no native search CLI; this driver calls its public genetic loop without changing selection or fitting.",
+            "The data are fitted by the native loop. This profile does not add held-out evaluation.",
+            "No root license file was found at the pinned revision."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "loongflow",
+      "name": "LoongFlow",
+      "participant_ids": [
+        "loongflow"
+      ],
+      "repository": {
+        "url": "https://github.com/baidu-baige/LoongFlow",
+        "commit": "945c78bc1554f8281aac40320b3599bd68d528d7"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare Python >=3.12; install pinned project and example requirements."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py": "b4b3ea2574adebf66d019f822d8c50c25301fc1555dc47057717311fa73d07da",
+        "agents/math_agent/examples/packing_circle_in_unit_square/initial_program.py": "8978ed67815d71153825a3a252493fae8476416c8c93143d532bba745c089130",
+        "agents/math_agent/examples/packing_circle_in_unit_square/task_config.yaml": "ad914318cbe0aba5e29aa966967bd505f96e2a07eb247d1f492fa30ce6d2573a",
+        "agents/math_agent/math_evolve_agent.py": "98a21a7933154b58d9bfa46fe6d55efca9addea60056a0dee9b8eefe85c1326f",
+        "src/loongflow/agentsdk/models/litellm_model.py": "400de0bfb5497580b585c9a8ad7e5ab15c747d45278b6dc968d7de660f74fbd0",
+        "src/loongflow/framework/pes/base_runner.py": "960e04ea5863d17dd649ae48fb867eeba69d5917ce45a8e4dac0fb44ead213cf"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "Native MathPESAgent executes its planner/executor/summary loop and evaluates generated programs with the pinned math task.",
+          "invocation": {
+            "kind": "script",
+            "target": "agents/math_agent/math_evolve_agent.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--config",
+            "agents/math_agent/examples/packing_circle_in_unit_square/task_config.yaml",
+            "--eval-file",
+            "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py",
+            "--initial-file",
+            "agents/math_agent/examples/packing_circle_in_unit_square/initial_program.py"
+          ],
+          "output": {
+            "flag": "--workspace-path",
+            "path": "results"
+          },
+          "required_files": [
+            "agents/math_agent/math_evolve_agent.py",
+            "src/loongflow/framework/pes/base_runner.py",
+            "agents/math_agent/examples/packing_circle_in_unit_square/initial_program.py"
+          ],
+          "config_files": [
+            "agents/math_agent/examples/packing_circle_in_unit_square/task_config.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native MathPESAgent executes its planner/executor/summary loop and evaluates generated programs with the pinned math task.",
+            "evidence": [
+              "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py",
+              "src/loongflow/agentsdk/models/litellm_model.py"
+            ]
+          },
+          "argument_help": [
+            "--max-iterations N --log-level INFO",
+            "Supply a secret-free task config overlay replacing placeholder URL/model; api_key may be null for a provider using environment credentials."
+          ],
+          "limitations": [
+            "The pinned example contains placeholder model credentials and endpoint; it needs an explicitly configured provider environment.",
+            "Native evaluator environment and agent tooling must already be available; Arena does not install them during planning."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mcts-ahd",
+      "name": "MCTS-AHD",
+      "participant_ids": [
+        "mcts-ahd"
+      ],
+      "repository": {
+        "url": "https://github.com/zz1358m/MCTS-AHD-master",
+        "commit": "ee9c4f424503c65a5fd2b899e6620ce86079fedb"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the pinned requirements.txt and native task dependencies; provide explicitly allowed provider credentials."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "f5560dc0c076b07104774f13f5543d9af309dbb23eab3c44b04260974f0e4da7",
+        "cfg/config.yaml": "e255bc4a781d8db9e1edb5db033ee7a820f42c6e2959936554ecb56d5c0b8e2a",
+        "cfg/llm_client/openai.yaml": "bf0fcdb1c94fc125e62d18a2e5f08debf9af3145231b543c94a737cf3f8f76b6",
+        "cfg/problem/bpp_online.yaml": "248826948095d691f5f25056f295de9cbb8ff5790562c20987b7bba14adbddf1",
+        "main.py": "3b7d820cac801da0d31914147bdde28035bc1f071ebb7afab8c53c9f244516a1",
+        "problems/bpp_online/eval.py": "507cfc8cfebba2dfa20ad926df222eb3a473353e528a1c6ea15711d6d7bc58fc",
+        "source/mcts_ahd.py": "70122ce89fcae1c7c39d18db676fd874b79e9000b32d91abc2154e5a3eacf51d"
+      },
+      "profiles": [
+        {
+          "id": "online-bin-packing",
+          "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+          "invocation": {
+            "kind": "script",
+            "target": "main.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "algorithm=mcts_ahd",
+            "problem=bpp_online"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "source/mcts_ahd.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/problem/bpp_online.yaml",
+            "cfg/llm_client/openai.yaml"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "Hydra overrides: max_fe=N pop_size=N init_pop_size=N timeout=N",
+            "Choose a native model via model=... (HSEvo) or llm_client.model=... (ReEvo/MCTS-AHD)."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred.",
+            "The pinned OpenAI YAML has a placeholder credential. Supply a secret-free config overlay using ${oc.env:OPENAI_API_KEY}; do not put credentials in JSON specs or config files."
+          ],
+          "protected_args": [
+            "--config-path",
+            "--config-name",
+            "--config-dir"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "meoh",
+      "name": "MEoH",
+      "participant_ids": [
+        "meoh"
+      ],
+      "repository": {
+        "url": "https://github.com/Optima-CityU/LLM4AD",
+        "commit": "ffb6acf64497be93932c98d25369352efd3865cf"
+      },
+      "status": "source_verified",
+      "license": "BSD-2-Clause; module research-use notice",
+      "setup": [
+        "Install the pinned LLM4AD project and its online-bin-packing dependencies."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "66d37674abb627f800e3a034cf0353785e9ef2e5dc1d6736bbe31ae0a3e96857",
+        "example/methods/meoh/run_meoh_obp.py": "af3759b1a430938df30391c7175a43f19e6e5e97de5232c20782a66efdd2f0da",
+        "llm4ad/method/meoh/meoh.py": "498d0f76f89b588ebf4986f28d768381db9a52d6302a136358293a1d69397e9b",
+        "llm4ad/method/meoh/profiler.py": "c9c691fb6eb31eb4a6478878ccf91c6b76e51e16a682fe8f59a19e94d24c871d",
+        "llm4ad/task/optimization/online_bin_packing/generate_weibull_instances.py": "ee98f2916e85b06d5d9d79a541c4cdf1df33e185a21bf8ceef70ce8a4422cab6",
+        "llm4ad/task/optimization/online_bin_packing_2O/evaluation.py": "a09ceccbd508d891732d6b50f8e12edf26175f64ac8a641991e7eb43be1d1567",
+        "llm4ad/tools/llm/llm_api_https.py": "f4683d7bbc713b420957de78d85b6968c475e021fd64e022104cd2f118fe2d12"
+      },
+      "profiles": [
+        {
+          "id": "online-bin-packing-two-objectives",
+          "description": "Native MEoH.run preserves the two-objective OBP evaluator: negative mean bin count and negative evaluation time.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.meoh"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "example/methods/meoh/run_meoh_obp.py",
+            "llm4ad/method/meoh/meoh.py",
+            "llm4ad/method/meoh/profiler.py",
+            "llm4ad/tools/llm/llm_api_https.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native MEoH.run preserves the two-objective OBP evaluator: negative mean bin count and negative evaluation time.",
+            "evidence": [
+              "llm4ad/task/optimization/online_bin_packing_2O/evaluation.py",
+              "llm4ad/task/optimization/online_bin_packing/generate_weibull_instances.py"
+            ]
+          },
+          "argument_help": [
+            "Required: --host HOST --model MODEL --population N --generations N --samples N",
+            "OPENAI_API_KEY is environment-only; --host accepts a hostname without https://."
+          ],
+          "limitations": [
+            "Source root LICENSE is BSD-2-Clause; MEoH source headers also contain a research-use notice. This metadata does not resolve that discrepancy.",
+            "Native task generates its Weibull data and uses wall-clock timing as an objective."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rankevolve",
+      "name": "RankEvolve",
+      "participant_ids": [
+        "rankevolve"
+      ],
+      "repository": {
+        "url": "https://github.com/fangchenli/ranking-evolved",
+        "commit": "8f664bcd5123bac2397f0c1bfbdb347ca3233483"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare Python >=3.11, pinned project dependencies, retrieval datasets and evaluator system prerequisites."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "aa65ead545f8467f5bf6d71a07da62429fa17d5fec5381d33205c05cd9ea89d3",
+        "src/ranking_evolved/cli.py": "5f65e0fbbf8969c52ab6a0e6001b9dddcf0bd9015e0f67cc831aeaaa35d362da",
+        "src/ranking_evolved/core/controller.py": "c12e7e56239b0eac76ce13041ecd31547fe25de8ee05976945065218c2afbd1c",
+        "tasks/bm25/configs/freeform_latency_aware.yaml": "d71b1408dbe4ab6f81fa5e97a192e01b1c3e6b5d0406461b58e973254cfbffdf",
+        "tasks/bm25/evaluator.py": "c63a3aa45265b18edbbc705eeb929a4f2a28cee88b316fe1f963be198c596c4b",
+        "tasks/bm25/seeds/freeform.py": "423084a12afd49b21b558848b47de6fe8475f8493c9dfe4f1a707d08ceeca473"
+      },
+      "profiles": [
+        {
+          "id": "bm25-latency",
+          "description": "Native RankEvolve uses its configured BM25 evaluator and stores run.db, trace.jsonl and experiment summaries.",
+          "invocation": {
+            "kind": "module",
+            "target": "ranking_evolved.cli"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "run",
+            "--config",
+            "tasks/bm25/configs/freeform_latency_aware.yaml"
+          ],
+          "output": null,
+          "required_files": [
+            "src/ranking_evolved/cli.py",
+            "tasks/bm25/seeds/freeform.py"
+          ],
+          "config_files": [
+            "tasks/bm25/configs/freeform_latency_aware.yaml"
+          ],
+          "result_globs": [
+            "output/**/*.json",
+            "output/**/*.jsonl",
+            "output/**/*.db"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native RankEvolve uses its configured BM25 evaluator and stores run.db, trace.jsonl and experiment summaries.",
+            "evidence": [
+              "tasks/bm25/evaluator.py",
+              "src/ranking_evolved/core/controller.py"
+            ]
+          },
+          "argument_help": [
+            "--max-iterations N --replay",
+            "Provide OPENAI_API_KEY explicitly; native EVAL_* variables control dataset selection and evaluator resources."
+          ],
+          "limitations": [
+            "BRIGHT/BEIR/TREC inputs and Java/Lucene dependencies must be provisioned. Native data downloads may occur during an explicit run.",
+            "The pinned repository points to a newer upstream repository, but this recipe deliberately retains the registered historical source pin.",
+            "No resume profile or reuse of committed output directories is claimed."
+          ],
+          "protected_args": [
+            "--resume"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reevo",
+      "name": "ReEvo",
+      "participant_ids": [
+        "reevo"
+      ],
+      "repository": {
+        "url": "https://github.com/ai4co/reevo",
+        "commit": "6dce18257da5e11db2d138e417a2fffc5c72d05f"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the pinned requirements.txt and native task dependencies; provide explicitly allowed provider credentials."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "6e9394ee2d42f54bb6cb88a8695e7dca34de2788897a182ceea907844f25667c",
+        "cfg/config.yaml": "bdc3fc9afbe187d8dc741cebc0a32894eb128cbf6dd67c6189e36c9b3be2e888",
+        "cfg/llm_client/openai.yaml": "f15143c217cc9cc755b6a3952b157779acc8589ea0bbf9c3eace6ad7b449ef43",
+        "cfg/problem/bpp_online.yaml": "248826948095d691f5f25056f295de9cbb8ff5790562c20987b7bba14adbddf1",
+        "main.py": "5c187e1a34a34a106d1ed675628ae74a872b6200d6c4d0960e92719868ccde30",
+        "problems/bpp_online/eval.py": "4fa8b4e6f74afa0715e6411d7eb75809c7f35aadaa1435027f9c5f00d1a7bac1",
+        "reevo.py": "9530188250e1731358e2ac1c23a5ab67daca3f6dd1f888fcccc28da29c555118"
+      },
+      "profiles": [
+        {
+          "id": "online-bin-packing",
+          "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+          "invocation": {
+            "kind": "script",
+            "target": "main.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "algorithm=reevo",
+            "problem=bpp_online"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "reevo.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/problem/bpp_online.yaml",
+            "cfg/llm_client/openai.yaml"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "Hydra overrides: max_fe=N pop_size=N init_pop_size=N timeout=N",
+            "Choose a native model via model=... (HSEvo) or llm_client.model=... (ReEvo/MCTS-AHD)."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred."
+          ],
+          "protected_args": [
+            "--config-path",
+            "--config-name",
+            "--config-dir"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-station",
+      "name": "The Station",
+      "participant_ids": [
+        "the-station"
+      ],
+      "repository": {
+        "url": "https://github.com/dualverse-ai/station",
+        "commit": "782088e561998bf357d95a838a0566a8229425d9"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Linux worker with a dedicated writable cgroup v2 child under /sys/fs/cgroup, cpu/memory/pids controllers delegated and cgroup.kill available. No host cgroup configuration is changed automatically.",
+        "Prepared Station Python environment with its pinned requirements and task dependencies; named conda evaluation environment, explicit Codex executable and authenticated Codex state. No install, authentication or deployment runs during preparation.",
+        "OPENAI_API_KEY and any required Codex authentication are provided explicitly through inherited environment names or worker-owned CLI state; model and coder-model plus all resource/session bounds are required."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "ac7c91145158935971c68da4f6deb6afacd666680429c3221a16df01ad993966",
+        "README.md": "8e9bb643533a9d7ca3549bb59193e46e891c241f0edf6cdd1ecbbf445a96c1b7",
+        "example/research_alpha_evolve/circle_n32/README.md": "91846faa84ce0fa04dd8588394ff6f357d8cbc5b377ad082519709afe24b3564",
+        "example/research_alpha_evolve/circle_n32/constant_config.yaml": "caf1a1f06e90b2af95ac66ffce51ba969c473799346c1fae1abd9113b0a45d1d",
+        "example/research_alpha_evolve/circle_n32/research/baseline.yamll": "917e2884636be15d0e5fa6c73a314615d76e7defde5c57f7eede2db0f9b3c7a8",
+        "example/research_alpha_evolve/circle_n32/research/evaluators/evaluator.py": "2d066542e7dfa1ee51384b035a26e056b61336f3b51f91d611b289aee71adbee",
+        "example/research_alpha_evolve/circle_n32/research/research_task.md": "ab23bf07a68811bdba1cd0f8f6a93cba3edfa1f444df00112a6e6a0db6d901d6",
+        "example/station/default/codex.md": "3e34378a5576159affe6182446fb1aa6f2cd36cb4cae66aa525c3e54eabf5ca6",
+        "example/station/default/holiday_prompts.yaml": "21846832694027c5ef6cb92e701b378ab232354f2928f1cbd6e54eff4e0ea6d2",
+        "example/station/default/init_agents.yaml": "ea1729681fcea49f9fde1920a55921dfedb32f5342fae95eaa5b49e8e517ab92",
+        "example/station/default/init_role_def.yaml": "16aa40b02f8cc40edf2d16cc53de00084f11882c67afe4bd7c041ea580815aee",
+        "example/station/default/meta_prompts.yaml": "5af322a85f6c8904f56a5d6997f2b45995ca5371d0cd7d2baa253b808cf52770",
+        "example/station/default/random_prompts.yaml": "b0befd462800d4a954f2d35f440c781d26b1794fad7edfb0cff5b9c7681dc913",
+        "example/station/default/rooms/research/storage/architect/password.txt": "c02e60c6eab565d769bf85f01c6f003d3bba454b4729316c9d0aba0f75c9f658",
+        "requirements.txt": "e986756ff2f6256f452c24adca7ee52ddf5887de74e31194f15f45d7dd42d865",
+        "station/constants.py": "a92d7ab6c4377a986b0c6bded7940d6cd287c3da3252e6b3458ef772eb497e3b",
+        "station/eval_research/auto_evaluator.py": "e299c95e34854d257954c86cdc877f22591f05dc5f1ad5a8c2147579f7c7993d",
+        "station/eval_research/evaluation_helpers.py": "ca1541bbb20b5ee84161dcd49bd6d960fad45db245f1a32bef2adfb48ab48622",
+        "station/eval_research/evaluation_manager.py": "9f9438286e44b47763fd3c6d8bc246236e571ab9c6ae1937a99fb7aa921e5d0b",
+        "station/eval_research/executor_sandbox.py": "1b48cbf4f2066011f4468c17bb1ce17fff2aab8567eb5f298f18b737ca536a4d",
+        "station/eval_research/runtime_paths.py": "c09e395c63352fad98a73e93c6aef7f32ef5e3284550ffa90d42ec0470084150",
+        "station/llm_connectors/factory.py": "a1915f784a5868ff01a40183a17f00b15dde0c0aea985cf76e11c0519f04d721",
+        "station/startup_overrides.py": "12f4c80fc48856326643e6c9129d4aaaaec9ffe7221cc00fa17fc47e3a6e858d",
+        "station/station.py": "e3a2eb6de6bc0ae551eca781273c9ae73cac814244b7beffe1169a41041d5da0",
+        "station/station_runner.py": "1a9c2c21c30516799312550fd5e2885d222f999358a642855047c9b7008d769a",
+        "station/workers/job_manager.py": "731112fda1b4c79ed019fe7f41238e8df3eb974a5a6a1be6e49640e922e4d6e3",
+        "station_tools/commands/init.py": "dc0445e51e2b9e5f70efb9cf330c27f359e80801eb9d2e43468cdbf89ee27397"
+      },
+      "profiles": [
+        {
+          "id": "circle-n32",
+          "description": "Foreground native Station research ecosystem and automatic evaluator for the pinned 32-circle packing task; native tick limit with evaluation draining.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.station"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "run",
+            "--task",
+            "example/research_alpha_evolve/circle_n32"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "native"
+          },
+          "required_files": [
+            "LICENSE",
+            "README.md",
+            "example/research_alpha_evolve/circle_n32/README.md",
+            "example/research_alpha_evolve/circle_n32/constant_config.yaml",
+            "example/research_alpha_evolve/circle_n32/research/baseline.yamll",
+            "example/research_alpha_evolve/circle_n32/research/evaluators/evaluator.py",
+            "example/research_alpha_evolve/circle_n32/research/research_task.md",
+            "example/station/default/codex.md",
+            "example/station/default/holiday_prompts.yaml",
+            "example/station/default/init_agents.yaml",
+            "example/station/default/init_role_def.yaml",
+            "example/station/default/meta_prompts.yaml",
+            "example/station/default/random_prompts.yaml",
+            "example/station/default/rooms/research/storage/architect/password.txt",
+            "requirements.txt",
+            "station/constants.py",
+            "station/eval_research/auto_evaluator.py",
+            "station/eval_research/evaluation_helpers.py",
+            "station/eval_research/evaluation_manager.py",
+            "station/eval_research/executor_sandbox.py",
+            "station/eval_research/runtime_paths.py",
+            "station/llm_connectors/factory.py",
+            "station/startup_overrides.py",
+            "station/station.py",
+            "station/station_runner.py",
+            "station/workers/job_manager.py",
+            "station_tools/commands/init.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/session.json",
+            "native/native-session.json",
+            "native/station_data/rooms/research/**/*.yaml",
+            "native/station_data/rooms/research/**/*.json",
+            "native/station_data/rooms/research/**/*.jsonl",
+            "native/station_data/rooms/research/**/*.log",
+            "native/station_data/rooms/research/internal/packings/*.npz"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Station AutoResearchEvaluator runs the native Research Center coder/submission lifecycle and circle_n32 Task1Evaluator; validity and sum-of-radii scores remain native records, never canonical Arena receipts. Session completion requires the requested tick boundary and drained native evaluation queues.",
+            "evidence": [
+              "station/station_runner.py",
+              "station/eval_research/auto_evaluator.py",
+              "station/eval_research/executor_sandbox.py",
+              "example/research_alpha_evolve/circle_n32/research/evaluators/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "Required: --model MODEL --coder-model MODEL --agents N --ticks N --context-tokens N --response-tokens N --wall-seconds N --eval-seconds N --eval-workers N --cpus N --memory-gib N --max-processes N --conda-env NAME --cgroup-root /sys/fs/cgroup/DELEGATED_ROOT",
+            "Provide request.executables.codex as an absolute prepared executable; the shared driver fingerprints it and supplies --codex-binary.",
+            "Set outer timeout_seconds above wall-seconds plus cleanup allowance; pass OPENAI_API_KEY through environment_names. Native model/provider/runtime readiness remains unverified."
+          ],
+          "limitations": [
+            "Source and inert fixture checks only; no paid/native research session has run.",
+            "Linux cgroup v2 lifecycle/resource containment is required because native Codex and evaluation children start separate sessions; this is not a security sandbox or a cloud/Docker dispatcher. Use a dedicated worker with no sensitive host data.",
+            "This profile uses the native circle_n32 task and OpenAI agent/reviewer/reflection connectors plus Codex coder/surveyor. It does not register canonical task-library support.",
+            "Model context/output limits and native ticks are not a monetary API budget. Native evaluations may remain incomplete when the wall limit cancels the entire cgroup.",
+            "The public dashboard/start.sh deployment and multistart branches are not launched; native single-station research/evaluation behavior is otherwise delegated to the pinned implementation."
+          ],
+          "executable_args": {
+            "codex": "--codex-binary"
+          }
+        }
+      ]
+    }
+  ]
+}

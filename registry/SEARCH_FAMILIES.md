@@ -1,8 +1,8 @@
 # Source research families → task packages
 
 `search-families.json` powers the method-family view of the task atlas. It
-preserves the eight labels declared in the pinned source's
-[`catalog/papers.json`](https://github.com/IMRUNya/autoresearch-tasks/blob/995768fc462b8e327f90e6762846cc6ccb06cc2c/catalog/papers.json):
+preserves the ten labels declared in the pinned source's
+[`catalog/papers.json`](https://github.com/IMRUNya/autoresearch-tasks/blob/5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935/catalog/papers.json):
 
 | Source label | Corpus papers | Additional source groups |
 | --- | ---: | ---: |
@@ -14,36 +14,46 @@ preserves the eight labels declared in the pinned source's
 | Promptbreeder / EvoPrompt | 13 | 0 |
 | Other | 24 | 0 |
 | SCiEL supplement | 0 | 1 |
+| Science supplement | 0 | 13 |
+| Community supplement | 0 | 1 |
 
 These are the source corpus curator's labels, not a new Arena taxonomy or a
 claim of identical algorithms within a group. **Other** remains the source's
-mixed bucket. **SCiEL supplement** is an additional example collection, not a
-research-paper method family. Short descriptions are editorial navigation text.
+mixed bucket. The **SCiEL**, **Science** and **Community supplements** are
+additional task collections, not research-paper method families. Short
+descriptions are editorial navigation text.
 
 The source metadata was checked in all three committed files:
-`catalog/papers.json` (99 source groups), `catalog/corpus.json` (98 corpus papers)
+`catalog/papers.json` (113 source groups), `catalog/corpus.json` (98 corpus papers)
 and `catalog/research.json` (98 investigated paper IDs). Papers/corpus family
-labels agree. `search-family-sources.json` preserves an allowlisted capture of
+labels agree. The 15 supplementary collection IDs and their family labels are
+explicitly reviewed; an unknown ID or supplement-looking label cannot bypass
+corpus membership verification. `search-family-sources.json` preserves an allowlisted capture of
 the paper names, titles, family labels, public links and declared task IDs, plus
 the source revision and SHA256 hashes of the original committed files. It does
 not import runtime configuration, credentials, code, commands or run results.
+Declared task associations are deduplicated after upstream merges: the source
+FunBO inventory repeats three canonical IDs for former in/out-of-distribution
+packages. The captured file hash still identifies the original source bytes.
 
 ## Meaning and counting
 
-A graph edge means **the catalog associates this task package with a paper in
-this family**. It does not mean a registered participant solved the task, has
-run it, or supports its runtime or adapter. The 710 executable and 428 unsupported
-statuses are unchanged.
+A graph edge means **the catalog associates this task package with a paper or
+supplementary collection in this family**. It does not mean a registered
+participant solved the task, has run it, or supports its runtime or adapter.
+The snapshot has 689 executable definitions and 270 unsupported definitions.
 
 For a readable nonoverlapping layout, each task is placed under the family of
 the first entry in its catalog `paper_ids`. This is a deterministic display
 convention, not scientific priority. Every task retains all paper IDs and all
-related source-family IDs. The 1,138 `task_ids` across groups form an exact
-partition; variants and repeated benchmark packages remain separate.
+related source-family IDs. The 959 `task_ids` across groups form an exact
+partition. The source merged 254 duplicate IDs into 145 retained task packages;
+parameter variants remain separate where the source retains them.
 
-There is one current cross-family link: `reference-online-bin-packing` links
-FunSearch / EoH papers and LLaMEA-HPO, which the source labels Other. Its primary
-placement is FunSearch / EoH, and its secondary association with Other is kept.
+There are 26 cross-family task packages. For example, `eoh-online-bin-packing`
+links eight source papers across FunSearch / EoH, AlphaEvolve / OpenEvolve and
+Other. Its primary placement is FunSearch / EoH, and both secondary family
+associations are kept after merging the former task aliases.
 `addressed_task_ids` includes all paper associations and therefore overlaps;
 never sum this field to report unique catalog coverage.
 

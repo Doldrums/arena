@@ -1,0 +1,1698 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "adas",
+      "name": "ADAS",
+      "participant_ids": [
+        "adas"
+      ],
+      "repository": {
+        "url": "https://github.com/ShengranHu/ADAS",
+        "commit": "2702bee8fefda42255efc5be9f60e3bd3db96ae4"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Install requirements.txt in the selected environment; configure OPENAI_API_KEY through explicit environment_names.",
+        "Provide native dataset/ files; GPQA access and each benchmark license remain separate."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "2591bb5c650dc96c48e4244d52c7bc179ff904e3129d65dcb9180bc726a4b3ad",
+        "README.md": "0e57018546d045e1452ba90e0b61c37da0c964a451ee4dcc82cbbb53fd046b96",
+        "_arc/arc_prompt.py": "744fdc6a3c60b3afdb5bf75b9b7e140ee79f2a777d567d32da52d059c0f44cac",
+        "_arc/search.py": "bee294342dc70774818c144e073b773a582ec545f44ac83244a2a131bebb1fa1",
+        "_arc/utils.py": "4cd764fcae3df036f25f397d4c86a11fefa9b711eda61eee800e7ab1afd79392",
+        "_drop/drop_prompt.py": "118153ed337e17c9379d57cb057c4dd6ba68c7754820ecb12c6f674dede435d1",
+        "_drop/search.py": "2541df225858917255afb5ae7947eb2c58f6239e7af1287600179e9a70f0de44",
+        "_drop/utils.py": "a44914ed0d12949dc12ce9089c23a819de7cda1ddd7089de339c5607def1e678",
+        "_gpqa/gpqa_prompt.py": "06349a3a96d625c931198107eafc7b425031d419d141b6730adb423ca54064de",
+        "_gpqa/search.py": "ff3dd9dac40791db3fb583820e93524af2c924583315c80b781f49d8ae85d745",
+        "_gpqa/utils.py": "3438ce5872bdfa9fa768d4b5267700a5563fb261e1eb9f2cdefbd1c2957b88ee",
+        "_mgsm/mgsm_prompt.py": "6512b4a3d01ca80171f749981361c19edfbc6863b4de8ca70fa9aee6a6960f2b",
+        "_mgsm/search.py": "1d75318e452e1cdca455d9cd073749b9b43e3c49d2f00d85a1faa9d10585e920",
+        "_mgsm/utils.py": "b294dc54f685fe14704154356da47b69bda7c254b8a1e06c4297d3169379ba2c",
+        "_mmlu/mmlu_prompt.py": "60ff5bfe049fc011d1345dc715e89ccdde017f58d44734f528a7f7b1487fa368",
+        "_mmlu/search.py": "749503b4454f97e105eed7e96fb5d402ef26fd0905b80f91a5d29a6045957228",
+        "_mmlu/utils.py": "179d20ab07b4e2d4a08a2e001cd9ce9e09602d79b5e743d3425ece1ea6bd2146"
+      },
+      "profiles": [
+        {
+          "id": "arc",
+          "description": "ADAS ARC agent-program search and native held-out evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "_arc/search.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--val_data_path",
+            "dataset/sampled_arc_val_data.pkl",
+            "--test_data_path",
+            "dataset/sampled_arc_test_data.pkl"
+          ],
+          "output": {
+            "flag": "--save_dir",
+            "path": "native/arc"
+          },
+          "required_files": [
+            "_arc/search.py",
+            "_arc/arc_prompt.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/arc/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "ADAS ARC agent-program search and native held-out evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "_arc/search.py",
+              "_arc/utils.py"
+            ]
+          },
+          "argument_help": [
+            "--n_generation N --max_workers N --model MODEL",
+            "Native benchmark data paths and split sizes are configured by the matching search.py parser."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Generated agent code executes in native Python; prepare the benchmark dataset and trusted isolation first."
+          ]
+        },
+        {
+          "id": "drop",
+          "description": "ADAS DROP agent-program search and native held-out evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "_drop/search.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--save_dir",
+            "path": "native/drop"
+          },
+          "required_files": [
+            "_drop/search.py",
+            "_drop/drop_prompt.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/drop/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "ADAS DROP agent-program search and native held-out evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "_drop/search.py",
+              "_drop/utils.py"
+            ]
+          },
+          "argument_help": [
+            "--n_generation N --max_workers N --model MODEL",
+            "Native benchmark data paths and split sizes are configured by the matching search.py parser."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Generated agent code executes in native Python; prepare the benchmark dataset and trusted isolation first."
+          ]
+        },
+        {
+          "id": "mgsm",
+          "description": "ADAS MGSM agent-program search and native held-out evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "_mgsm/search.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--save_dir",
+            "path": "native/mgsm"
+          },
+          "required_files": [
+            "_mgsm/search.py",
+            "_mgsm/mgsm_prompt.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/mgsm/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "ADAS MGSM agent-program search and native held-out evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "_mgsm/search.py",
+              "_mgsm/utils.py"
+            ]
+          },
+          "argument_help": [
+            "--n_generation N --max_workers N --model MODEL",
+            "Native benchmark data paths and split sizes are configured by the matching search.py parser."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Generated agent code executes in native Python; prepare the benchmark dataset and trusted isolation first."
+          ]
+        },
+        {
+          "id": "mmlu",
+          "description": "ADAS MMLU agent-program search and native held-out evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "_mmlu/search.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--save_dir",
+            "path": "native/mmlu"
+          },
+          "required_files": [
+            "_mmlu/search.py",
+            "_mmlu/mmlu_prompt.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/mmlu/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "ADAS MMLU agent-program search and native held-out evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "_mmlu/search.py",
+              "_mmlu/utils.py"
+            ]
+          },
+          "argument_help": [
+            "--n_generation N --max_workers N --model MODEL",
+            "Native benchmark data paths and split sizes are configured by the matching search.py parser."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Generated agent code executes in native Python; prepare the benchmark dataset and trusted isolation first."
+          ]
+        },
+        {
+          "id": "gpqa",
+          "description": "ADAS GPQA agent-program search and native held-out evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "_gpqa/search.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--save_dir",
+            "path": "native/gpqa"
+          },
+          "required_files": [
+            "_gpqa/search.py",
+            "_gpqa/gpqa_prompt.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/gpqa/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "ADAS GPQA agent-program search and native held-out evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "_gpqa/search.py",
+              "_gpqa/utils.py"
+            ]
+          },
+          "argument_help": [
+            "--n_generation N --max_workers N --model MODEL",
+            "Native benchmark data paths and split sizes are configured by the matching search.py parser."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Generated agent code executes in native Python; prepare the benchmark dataset and trusted isolation first."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ael-harness",
+      "name": "AEL-harness",
+      "participant_ids": [
+        "ael-harness"
+      ],
+      "repository": {
+        "url": "https://github.com/WujiangXu/AEL",
+        "commit": "c95f5f961667e7df4bdddf750b22332158951bf2"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install requirements.txt and the native package in the chosen environment; use the released local financial data and an explicitly chosen model."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "1d0dde41ece0f9620937f1a81a67e295ace0eae180c009d862006e8f3b288458",
+        "README.md": "b83143fb0f78cfbfc3edad0a02f9d681434792c3b64c470758f1856e0305c6ad",
+        "ael/benchmarks/portfolio_runner.py": "41e05d5a9b9535b85197a3dc8c2ee87c8a09c53403f52d3c9c80f494d62bba13",
+        "experiments/configs/incremental/step3_tool_memory_reflect.yaml": "14fadbbead59bfb51bfc34645ee2043e7b7855ce80317007a05b9d1d53d21468",
+        "experiments/run_experiment.py": "2b31271a8f8b960f3609a6815d4da45152cdc3df7023431c99b31b6f3fa6d9a6",
+        "experiments/run_portfolio.py": "d528310cf07d8825fa84e38380b70cd83e46f278ed9bff89004d16a2f96bf807"
+      },
+      "profiles": [
+        {
+          "id": "portfolio",
+          "description": "AEL portfolio allocation with native evolution and backtest return/Sharpe/drawdown metrics",
+          "invocation": {
+            "kind": "script",
+            "target": "experiments/run_portfolio.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--config",
+            "experiments/configs/incremental/step3_tool_memory_reflect.yaml"
+          ],
+          "output": null,
+          "required_files": [
+            "experiments/run_portfolio.py",
+            "experiments/run_experiment.py",
+            "experiments/configs/incremental/step3_tool_memory_reflect.yaml"
+          ],
+          "config_files": [
+            "experiments/configs/incremental/step3_tool_memory_reflect.yaml"
+          ],
+          "result_globs": [
+            "logs/**/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "AEL portfolio allocation with native evolution and backtest return/Sharpe/drawdown metrics Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "ael/benchmarks/portfolio_runner.py"
+            ]
+          },
+          "argument_help": [
+            "--seed N --model PROVIDER/MODEL --max-episodes N",
+            "This pinned parser has no --dataset flag despite the catalog command example."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Precomputed source logs are not new evaluations; compare against the initial workspace artifact baseline.",
+            "Only the released portfolio runner is covered; paper support-ticket/bandit/classification tasks are not implied."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aevo",
+      "name": "AEvo",
+      "participant_ids": [
+        "aevo"
+      ],
+      "repository": {
+        "url": "https://github.com/FoundationAgents/Harnessing-Agentic-Evolution",
+        "commit": "87e2fefce6e99922c736f0250060b082babd5578"
+      },
+      "status": "blocked",
+      "license": "MIT",
+      "setup": [
+        "A released native implementation is required; the official source currently contains only README.md and LICENSE."
+      ],
+      "blocked_reason": "Official Harnessing-Agentic-Evolution at the verified pin contains only README.md and LICENSE; no native code or entrypoint exists. The additional official FoundationAgents/AEvo repository returned no refs, including HEAD, on inspection. No optimizer can be connected from these placeholders.",
+      "evidence": {
+        "README.md": "cd36131fd938ec7eb230239bf65fa4f4947e35bc3767cd2a8a42887d987749e4",
+        "LICENSE": "94da8419f6469e4666a33c1563607f9e1f6919571b741bbbcfc87a26a5751e8b"
+      },
+      "profiles": []
+    },
+    {
+      "id": "aflow",
+      "name": "AFlow",
+      "participant_ids": [
+        "aflow"
+      ],
+      "repository": {
+        "url": "https://github.com/FoundationAgents/AFlow",
+        "commit": "3f457218fc716093fe53f6df8a5d5e6379d66346"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install requirements.txt; stage credential-free config/config2.yaml through config_overlays; credentials must remain environment references."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "bce279a8f86499db0f9b1962884544108e4f81705d7c966ad59c66917b1131e5",
+        "README.md": "33845595c1f3f7a102cd31f171a11045415802972487beab8ce6e05e2c24cd46",
+        "config/config2.example.yaml": "32de9e0f212426a8bc53b85cf89f3e1eba99e091fb84c514d2a1eaab87cb2eb6",
+        "run.py": "ac106a27bc83d6022f349fc363fcc591b889cea01f02345c0c9370fc9f236873",
+        "scripts/evaluator.py": "5d115ac921b69f9d5055300cf52969c5e0b4474ab2f5daad13b8af988218616e",
+        "scripts/optimizer.py": "26cc9ac8f99177ed670c75fd6a265294c1dbaf1518e41f383eaf1d980b3968e5"
+      },
+      "profiles": [
+        {
+          "id": "workflow-search",
+          "description": "AFlow workflow optimization over its native MATH/GSM8K/HumanEval/MBPP/HotpotQA/DROP benchmark selection",
+          "invocation": {
+            "kind": "script",
+            "target": "run.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--optimized_path",
+            "path": "native"
+          },
+          "required_files": [
+            "run.py",
+            "scripts/optimizer.py",
+            "scripts/evaluator.py"
+          ],
+          "config_files": [
+            "config/config2.yaml"
+          ],
+          "result_globs": [
+            "native/**/*.json",
+            "native/**/*.jsonl",
+            "native/**/*.csv"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "AFlow workflow optimization over its native MATH/GSM8K/HumanEval/MBPP/HotpotQA/DROP benchmark selection Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "scripts/optimizer.py",
+              "scripts/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "--dataset MATH --max_rounds N --sample N --opt_model_name MODEL --exec_model_name MODEL"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "config/config2.yaml must be supplied from the pinned example; placeholders and model/provider choices must be configured.",
+            "The upstream CLI and benchmark code may download data; no downloads occur during Arena planning."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agentic-optimization",
+      "name": "Agentic Optimization",
+      "participant_ids": [
+        "agentic-optimization"
+      ],
+      "repository": {
+        "url": "https://github.com/Junye-Pan/AgenticOptimization",
+        "commit": "712b2fd4888c4b57fc08c1d2bdf4b1ca4c4517fb"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Prepare Flask and native task dependencies plus an authenticated Codex CLI; use a private execution environment and explicit credential environment names."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "48fa0fbfd2a876b99c53f31ce94972e72b1329ad0c041120a2f5dd63812a750c",
+        "src/agentic_opt/control_plane/evaluation.py": "5ab6e3790d114df8747917911f0160381399e8755cc9814adcb1b10102ede318",
+        "src/agentic_opt/web/app.py": "5e582ae6f7114e88a8e7f85b3bde019319d50fd556b49f430ce8b46b77394145",
+        "src/agentic_opt/web/routes_control_plane.py": "ded9afa86b3d585c7694b33fd8865160c6e43fed72560e5fe627e0867bd59445",
+        "src/agentic_opt/web/workers.py": "f12425123f525aa3767d538cf6227751b0fdc4e4d3b85a35caf5451acaa699ff"
+      },
+      "profiles": [
+        {
+          "id": "native-worker-search",
+          "description": "AgenticOptimization native control plane and one bounded Codex worker search assignment",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.agentic_optimization"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--state-root",
+            "path": "native"
+          },
+          "required_files": [
+            "src/agentic_opt/web/app.py",
+            "src/agentic_opt/web/workers.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/arena-native.json",
+            "native/control.sqlite3",
+            "native/worker_logs/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "AgenticOptimization native control plane and one bounded Codex worker search assignment Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "src/agentic_opt/web/app.py",
+              "src/agentic_opt/web/routes_control_plane.py",
+              "src/agentic_opt/web/workers.py",
+              "src/agentic_opt/control_plane/evaluation.py"
+            ]
+          },
+          "argument_help": [
+            "--task-id TASK --max-evaluator-runs N --worker-seconds N --wall-seconds N [--codex-binary /absolute/codex]"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Native task packages and Codex CLI/backend must be prepared; no dependency manifest or root license is supplied at this pin.",
+            "The driver creates a loopback-only control service and delegates assignment continuation/evaluation to native WorkerManager.",
+            "Native process completion does not establish canonical Arena fitness or a successful scientific result."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agentsquare",
+      "name": "AgentSquare",
+      "participant_ids": [
+        "agentsquare"
+      ],
+      "repository": {
+        "url": "https://github.com/tsinghua-fib-lab/AgentSquare",
+        "commit": "8f5b3fe5d8a32f9b59d20370823bef2a2c86928c"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Install requirements.txt and prepare ALFWorld game data/environment.",
+        "Configure native model environment; fixed native models and iteration policy are not replaced by Arena."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "4413c5306b686c9a1ae48364c9b61e2c7a610e6420ce0461c11c1eb95c65fba9",
+        "search/agent_search.py": "9a0f7929be37fcfc48cc39104ecd69db74a41be03d7459a09e12dd2dd80b7f54",
+        "search/alfworld/alfworld_run.py": "f86b66c7700ee38937a6da0e5df9d7ac6982e9d397487c96dcc0d6b74980b30d",
+        "search/memory_modules.json": "9cfa68c228748d3c33ac2b117aa3b935231603f13c8c03365fa72a7ef1a5e09d",
+        "search/planning_modules.json": "d4010f2f922d10f4b111d3ebd551e185f519a366eba3c97f573f9f766a0680a4",
+        "search/reasoning_modules.json": "bd49e6d65700ef8c97f376e70d830bbde59b12de0aba95eb42c1b0d25b23ac02",
+        "search/tooluse_modules.json": "442cefbcb49601cce7ec0193546f7a31bbbd64f8789aaa9366e0ae989678f895"
+      },
+      "profiles": [
+        {
+          "id": "alfworld-search",
+          "description": "AgentSquare module evolution, recombination and ALFWorld native benchmarking",
+          "invocation": {
+            "kind": "script",
+            "target": "search/agent_search.py"
+          },
+          "cwd": "search",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "search/agent_search.py",
+            "search/planning_modules.json",
+            "search/reasoning_modules.json",
+            "search/tooluse_modules.json",
+            "search/memory_modules.json"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "search/*_final.json",
+            "search/*_iteration_*.json",
+            "search/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "AgentSquare module evolution, recombination and ALFWorld native benchmarking Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "search/agent_search.py",
+              "search/alfworld/alfworld_run.py"
+            ]
+          },
+          "argument_help": [
+            "The pinned entrypoint has no CLI options; native iteration/model choices are source-defined."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Native search edits module files; it must run in the isolated workspace.",
+            "Pinned search.py catches exceptions and can exit zero after failure; process completion is not successful optimization."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ahe",
+      "name": "AHE",
+      "participant_ids": [
+        "ahe"
+      ],
+      "repository": {
+        "url": "https://github.com/china-qijizhifeng/agentic-harness-engineering",
+        "commit": "8b2a55d97590363fe50c3cc6b5e833b020a4bb4c"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare Python >=3.13 and pyproject.toml dependencies; configure E2B/model environment names explicitly.",
+        "Overlay configs/base.yaml with actual dataset/template paths and bounded max_iterations/timeouts; source defaults contain placeholders."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "d1404dcdb97e84a6f990ed3d205226d481d2bbb857b13f00585c3b863e217d35",
+        "README.md": "cf1706a1e0e2f1f0212a6155d6f40522a3f89e9dc86a6e693bee3dfb2ad8d787",
+        "configs/base.yaml": "78df5645ab0305635706e07a2245ad4eff75a5efbfb2b5cb83dbba48908dbb94",
+        "evolve.py": "68a1b3cef899f0939d0c62023958b9bff26bee671c345b79da95cf7883122a32"
+      },
+      "profiles": [
+        {
+          "id": "harness-evolution",
+          "description": "AHE evaluate/analyze/improve harness loop with Harbor verifier rewards",
+          "invocation": {
+            "kind": "script",
+            "target": "evolve.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--config",
+            "configs/base.yaml"
+          ],
+          "output": null,
+          "required_files": [
+            "evolve.py",
+            "configs/base.yaml"
+          ],
+          "config_files": [
+            "configs/base.yaml"
+          ],
+          "result_globs": [
+            "experiments/**/*.json",
+            "experiments/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "AHE evaluate/analyze/improve harness loop with Harbor verifier rewards Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "evolve.py"
+            ]
+          },
+          "argument_help": [
+            "--config configs/base.yaml; configure datasets, model, iteration and time budgets in the staged YAML."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Requires prebuilt E2B templates, Harbor datasets and native NexAU dependencies.",
+            "Optional webhook notifications must be disabled unless separately authorized."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "darwinian-evolver",
+      "name": "Darwinian Evolver",
+      "participant_ids": [
+        "darwinian-evolver"
+      ],
+      "repository": {
+        "url": "https://github.com/imbue-ai/darwinian_evolver",
+        "commit": "7f12365d2059c47e29068a5a6f498a293148d2a9"
+      },
+      "status": "source_verified",
+      "license": "AGPL-3.0",
+      "setup": [
+        "Prepare the pyproject.toml environment and the selected problem/model dependencies; the parrot example does not establish ARC or coding-task conformance."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+        "README.md": "c236340f2c4de9e23e92d477e67901916cb32d482269516ff534b87c20627404",
+        "darwinian_evolver/__main__.py": "149f8126677503982b7970c3c5ff0663292dcc84820b0f1f41c73c1c1231585c",
+        "darwinian_evolver/evolve_problem_loop.py": "668952f5950d1695b946fdf1e150250d26ab46a3848efc34001156692c6e6af2",
+        "darwinian_evolver/problems/circle_packing.py": "a95d3137e531ee75e00d9456c167b9c98959991bbae272bf1c27e20ea602ec4d",
+        "darwinian_evolver/problems/multiplication_verifier.py": "d0b3ce8ee1b8bcb7f5143965bc8aebfa482ab935278b0222be98f57273af50be",
+        "darwinian_evolver/problems/parrot.py": "f594d1285e02b2b0dd7a5fb266f91f8a1419034acc00c2f753b2a7c930543aac",
+        "darwinian_evolver/problems/registry.py": "f7bb04e3e587264865db1f23769b35a18fcc5352fbbf0c770962797f96a42a12"
+      },
+      "profiles": [
+        {
+          "id": "parrot",
+          "description": "Darwinian Evolver parrot native organism mutation/evaluation loop",
+          "invocation": {
+            "kind": "module",
+            "target": "darwinian_evolver"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "parrot"
+          ],
+          "output": {
+            "flag": "--output_dir",
+            "path": "native"
+          },
+          "required_files": [
+            "darwinian_evolver/__main__.py",
+            "darwinian_evolver/problems/registry.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/results.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Darwinian Evolver parrot native organism mutation/evaluation loop Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "darwinian_evolver/evolve_problem_loop.py",
+              "darwinian_evolver/problems/parrot.py"
+            ]
+          },
+          "argument_help": [
+            "--num_iterations N --mutator_concurrency N --evaluator_concurrency N"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Pickle snapshots remain native opaque artifacts and are never deserialized by Arena.",
+            "S3 upload is not part of this local profile."
+          ]
+        },
+        {
+          "id": "circle-packing",
+          "description": "Darwinian Evolver circle_packing native organism mutation/evaluation loop",
+          "invocation": {
+            "kind": "module",
+            "target": "darwinian_evolver"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "circle_packing"
+          ],
+          "output": {
+            "flag": "--output_dir",
+            "path": "native"
+          },
+          "required_files": [
+            "darwinian_evolver/__main__.py",
+            "darwinian_evolver/problems/registry.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/results.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Darwinian Evolver circle_packing native organism mutation/evaluation loop Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "darwinian_evolver/evolve_problem_loop.py",
+              "darwinian_evolver/problems/circle_packing.py"
+            ]
+          },
+          "argument_help": [
+            "--num_iterations N --mutator_concurrency N --evaluator_concurrency N"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Pickle snapshots remain native opaque artifacts and are never deserialized by Arena.",
+            "S3 upload is not part of this local profile."
+          ]
+        },
+        {
+          "id": "multiplication-verifier",
+          "description": "Darwinian Evolver multiplication_verifier native organism mutation/evaluation loop",
+          "invocation": {
+            "kind": "module",
+            "target": "darwinian_evolver"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "multiplication_verifier"
+          ],
+          "output": {
+            "flag": "--output_dir",
+            "path": "native"
+          },
+          "required_files": [
+            "darwinian_evolver/__main__.py",
+            "darwinian_evolver/problems/registry.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/results.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Darwinian Evolver multiplication_verifier native organism mutation/evaluation loop Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "darwinian_evolver/evolve_problem_loop.py",
+              "darwinian_evolver/problems/multiplication_verifier.py"
+            ]
+          },
+          "argument_help": [
+            "--num_iterations N --mutator_concurrency N --evaluator_concurrency N"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Pickle snapshots remain native opaque artifacts and are never deserialized by Arena.",
+            "S3 upload is not part of this local profile."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evoflow",
+      "name": "EvoFlow",
+      "participant_ids": [
+        "evoflow"
+      ],
+      "repository": null,
+      "status": "blocked",
+      "license": null,
+      "setup": [
+        "A public implementation URL and immutable source revision are required."
+      ],
+      "blocked_reason": "The catalog provides no immutable implementation pin. The paper-cited https://github.com/bingreeky/EvoFlow.git returned Repository not found on the explicit fetch retry; no runnable adapter can be tied to verified source.",
+      "evidence": {},
+      "profiles": []
+    },
+    {
+      "id": "evoskill",
+      "name": "EvoSkill",
+      "participant_ids": [
+        "evoskill"
+      ],
+      "repository": {
+        "url": "https://github.com/sentient-agi/EvoSkill",
+        "commit": "36f6f04952293d7054145550c2b9f0b0411bff1c"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare Python >=3.12 and native dependencies. Configure OfficeQA data and the required model/agent CLI.",
+        "Use the pinned example project and credential-free TOML overlays; explicitly select native local/Docker/remote mode."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "README.md": "47fc136a6ff491a5d2d0a2979ac2ae70e65bbeb5be4b1b4136462b9b33f32217",
+        "examples/officeqa/.evoskill/config.toml": "4bb8e50a163e38adb7b241ae2810445a4b2cb9cc69c9134d946dc3426c489777",
+        "examples/officeqa/.evoskill/task.md": "a46d9dfde6c5905d5edc57e43478c9e3fccc4a4196845c698bf157523c739c1f",
+        "pyproject.toml": "2d4f329ba9251a35889c895a7bc144d98489a67ca96017403b39e5f0b49ebd0f",
+        "src/cli/commands/run.py": "907fd9a3f2311fdafd5cedf523bcf1d199baafa67df2026c0eadb57928496d59",
+        "src/cli/main.py": "46fe798e1c1d99a4f21d6a82b16b76143b2d7ff83d33700cd33f6aa1be12cfee",
+        "src/evaluation/evaluate.py": "e8588158181777d56209807c2b01dcf9a573cc5cc0d47a05b1a99cbde9ee0280",
+        "src/loop/runner.py": "59e9546d57bdaac79ac7d4b9c75a2069b908280fbad5234ab9a48897ecb268d6"
+      },
+      "profiles": [
+        {
+          "id": "officeqa-skill-loop",
+          "description": "EvoSkill OfficeQA self-improvement loop through the real Click run command",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.evoskill"
+          },
+          "cwd": "examples/officeqa",
+          "fixed_args": [
+            "run"
+          ],
+          "output": null,
+          "required_files": [
+            "src/cli/main.py",
+            "examples/officeqa/.evoskill/config.toml",
+            "examples/officeqa/.evoskill/task.md"
+          ],
+          "config_files": [
+            "examples/officeqa/.evoskill/config.toml"
+          ],
+          "result_globs": [
+            "examples/officeqa/.evoskill/loop_checkpoint.json",
+            "examples/officeqa/.evoskill/**/*.json",
+            "examples/officeqa/.evoskill/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "EvoSkill OfficeQA self-improvement loop through the real Click run command Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "src/cli/commands/run.py",
+              "src/loop/runner.py",
+              "src/evaluation/evaluate.py"
+            ]
+          },
+          "argument_help": [
+            "--config PATH --verbose; local execution, loop/model limits and dataset choices come from the TOML."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "The native project registry writes Git branches/tags and needs prepared OfficeQA data plus the chosen agent CLI.",
+            "This profile delegates the full native loop; no synthetic skill search is introduced."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "g-del-agent",
+      "name": "Gödel Agent",
+      "participant_ids": [
+        "g-del-agent"
+      ],
+      "repository": {
+        "url": "https://github.com/Arvid-pku/Godel_Agent",
+        "commit": "bbb508796be31c7140cdfc7106efd830a1324242"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare requirements.txt and MGSM data; explicitly allow OPENAI_API_KEY in environment_names."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "d4070ba091149475b67735e20e47871db3979799b9bc70c2d67c611b5f131d65",
+        "README.md": "b50291960a251832fe82e9b069159dbc43fd5f08201bb5981a2eb321df6bf00a",
+        "src/agent_module.py": "e1607b421951860652c8f394f417874e2a15112ffa8de565ff2efb474f41c0cf",
+        "src/goal_prompt.md": "b94b2abfed9db9d99532b3a583e17decff81a50b2cbf5dfed3e1b0bcf74a6e0f",
+        "src/main.py": "c8a73835068bf4259f5dba0e1059bd80457c12c19d3bf07f7c3b49c9e2a8b4f3",
+        "src/task_mgsm.py": "085de0c567a02f55dc87b5966cee883f7c62b53c4b3da244b54c5b373a418fe8"
+      },
+      "profiles": [
+        {
+          "id": "mgsm-self-evolution",
+          "description": "Gödel Agent native MGSM self-referential evolution loop",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.godel_agent"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "src/main.py",
+            "src/agent_module.py",
+            "src/goal_prompt.md"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "**/*.json",
+            "**/*.jsonl",
+            "**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Gödel Agent native MGSM self-referential evolution loop Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "src/main.py",
+              "src/agent_module.py",
+              "src/task_mgsm.py"
+            ]
+          },
+          "argument_help": [
+            "No native CLI options; model, goal and MGSM task are fixed by this pinned implementation."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Driver creates a temporary 0600 src/key.env from explicitly inherited OPENAI_API_KEY, never reports/hashes it, and removes it after normal/error/signal exit.",
+            "SIGKILL or host failure can prevent secret-file cleanup; use a private disposable workspace.",
+            "Self-modifying code executes under the native framework; the profile is MGSM-specific, not every task in the paper."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gea",
+      "name": "GEA",
+      "participant_ids": [
+        "gea"
+      ],
+      "repository": {
+        "url": "https://github.com/UCSB-AI/GEA",
+        "commit": "d185edffd1f9fbd2297f4de8c6c9f94547448b6d"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Install requirements.txt; prepare Docker and the pinned SWE-bench/Polyglot data and harness described by README.",
+        "Native OPENAI_API_KEY/ANTHROPIC_API_KEY names must be explicitly allowed."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "GEA_outer.py": "fbb7c72f528a244c2eba97ee02b7216aa510b9d1d1e58d1594a88ff27ce81db0",
+        "LICENSE": "84b7504ce8dda1f37f592cdf67ad21371864583720d79ea289b0b0c75bfcdb17",
+        "README.md": "6b1bc47a227e9d9a93f943d91db11984fe52abdb17e44a90beeff828302fb83c",
+        "self_improve_step.py": "f9ad17a153382d9ab62678dd956e4ef40ae86f17bba3cf0c3329af23c9a7e158"
+      },
+      "profiles": [
+        {
+          "id": "swe-bench",
+          "description": "GEA group/self-improvement search with native swe-bench coding-episode evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "GEA_outer.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "GEA_outer.py",
+            "self_improve_step.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "output_dgm/**/dgm_metadata.jsonl",
+            "output_dgm/**/metadata.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "GEA group/self-improvement search with native swe-bench coding-episode evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "GEA_outer.py",
+              "self_improve_step.py"
+            ]
+          },
+          "argument_help": [
+            "--max_generation N --selfimprove_size N --selfimprove_workers N --coding_agent MODEL"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Initial cached scores are upstream baselines, not evaluation receipts from this run.",
+            "Docker workloads require native cleanup; neither benchmark is a canonical Arena suite evaluator."
+          ]
+        },
+        {
+          "id": "polyglot",
+          "description": "GEA group/self-improvement search with native polyglot coding-episode evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "GEA_outer.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--polyglot"
+          ],
+          "output": null,
+          "required_files": [
+            "GEA_outer.py",
+            "self_improve_step.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "output_dgm/**/dgm_metadata.jsonl",
+            "output_dgm/**/metadata.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "GEA group/self-improvement search with native polyglot coding-episode evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "GEA_outer.py",
+              "self_improve_step.py"
+            ]
+          },
+          "argument_help": [
+            "--max_generation N --selfimprove_size N --selfimprove_workers N --coding_agent MODEL"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Initial cached scores are upstream baselines, not evaluation receipts from this run.",
+            "Docker workloads require native cleanup; neither benchmark is a canonical Arena suite evaluator."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hsi",
+      "name": "HSI",
+      "participant_ids": [
+        "hsi"
+      ],
+      "repository": {
+        "url": "https://github.com/TailinZhou/hsi",
+        "commit": "97a022b9a9c260c0498806fc9826ebf22e753ed9"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Install requirements.txt, prepare BALROG data, and explicitly pass OPENAI_API_KEY/OPENAI_API_BASE environment names.",
+        "Provide bounded config overlays for the chosen benchmark; no game data or environments are installed by the adapter."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "29945faf0e98343a0b9458a6b00adc5b7369939bc5408957a66a19507dbb661a",
+        "benchmark_config_goal/balrog_babyai/config.yaml": "10257fe173b4a93c58abbe9d32f35ed2aaab4f8ae698ce7a6176aa2d32b474ec",
+        "main.py": "a2eb07e1af5f09e6cabcd23570a8e36d63d9f8629a447bd27fc634598dbdfbf9",
+        "src/benchmark/balrog/evaluator.py": "14dd7567e58589106e42e0ab2e6be589c4b448ee0d858c22b81981721590fa30"
+      },
+      "profiles": [
+        {
+          "id": "balrog-harness",
+          "description": "HSI hierarchical harness/meta-harness evolution with native BALROG benchmark evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "main.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "benchmark_config_goal/balrog_babyai/config.yaml"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "benchmark_config_goal/balrog_babyai/config.yaml"
+          ],
+          "config_files": [
+            "benchmark_config_goal/balrog_babyai/config.yaml",
+            "benchmark_config_goal/balrog_textworld/config.yaml",
+            "benchmark_config_goal/balrog_crafter/config.yaml",
+            "benchmark_config_goal/balrog_minihack/config.yaml",
+            "benchmark_config_goal/balrog_nle/config.yaml",
+            "benchmark_config_goal/balrog_babaisai_breakstop/config.yaml",
+            "benchmark_config_goal/balrog_babaisai_goto/config.yaml",
+            "benchmark_config_goal/balrog_babaisai_make/config.yaml"
+          ],
+          "result_globs": [
+            "evolution_results/**/*.json",
+            "evolution_results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "HSI hierarchical harness/meta-harness evolution with native BALROG benchmark evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "main.py",
+              "src/benchmark/balrog/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "--config benchmark_config_goal/SELECTED/config.yaml overrides the default BabyAI profile; budgets/model are in the config."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Source tracks .env; Arena removes only that file from the isolated workspace and never reads or hashes its contents.",
+            "Native benchmark runtime/data, game engines and initial harness repositories must be prepared. Unknown source license remains explicit."
+          ],
+          "remove_files": [
+            ".env"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hyperagents",
+      "name": "HyperAgents",
+      "participant_ids": [
+        "hyperagents"
+      ],
+      "repository": {
+        "url": "https://github.com/facebookresearch/Hyperagents",
+        "commit": "59a68f672dfb92c74aeb7e61535d776fb36e172d"
+      },
+      "status": "source_verified",
+      "license": "CC-BY-NC-SA-4.0",
+      "setup": [
+        "Prepare requirements.txt, native Docker image, setup_initial.sh artifacts and each selected domain as documented; no setup command is run automatically."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE.md": "047d2259741a3ebb30d8c8a43d4ba79b5b229a069acd1d2bea49f22b297d8e98",
+        "README.md": "d4b72ab8e622f58d963cc8b93cc71246dcfe50c7d798d835a042c4c847e1e9fa",
+        "generate_loop.py": "dc9951becd15661fb454d42035f997b4d29ad38d1bb94592c58e0fe1635bec68",
+        "run_meta_agent.py": "ccd3bf349d8ef76333db4c81c0d7eaa6ce425c8ef1f32d3af5c29c46777888d7",
+        "run_task_agent.py": "7bf2ed899e0f1690bdb9a73de25b8307cf72cc1214880cc942b502f822a48c7a"
+      },
+      "profiles": [
+        {
+          "id": "multi-domain",
+          "description": "HyperAgents native task-agent/meta-agent evolution across explicitly selected domains",
+          "invocation": {
+            "kind": "script",
+            "target": "generate_loop.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output_dir_parent",
+            "path": "native"
+          },
+          "required_files": [
+            "generate_loop.py",
+            "run_meta_agent.py",
+            "run_task_agent.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/**/archive.jsonl",
+            "native/**/metadata.json",
+            "native/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "HyperAgents native task-agent/meta-agent evolution across explicitly selected domains Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "generate_loop.py",
+              "run_meta_agent.py",
+              "run_task_agent.py"
+            ]
+          },
+          "argument_help": [
+            "--domains DOMAIN [DOMAIN ...] --max_generation N --eval_workers N",
+            "Use only domain choices admitted by pinned generate_loop.py; domain-specific setup remains required."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Requires Docker image and initialized domain agents; robot/genesis domains add hardware/simulator dependencies.",
+            "Upstream license is CC-BY-NC-SA-4.0; no general redistribution or commercial-use permission is implied."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "limen",
+      "name": "LIMEN",
+      "participant_ids": [
+        "limen"
+      ],
+      "repository": {
+        "url": "https://github.com/Lossfunk/LIMEN",
+        "commit": "cf0b44da37f7e7ee038920c860a8cb00c610c9af"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare the native Python/CUDA/JAX environment and selected simulator; configure model/provider environment explicitly."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "1682fe81bc5b1f1b26be3fbf221ef0088f6de523866143810b5846b738f1fc1e",
+        "README.md": "c40de4e174088442e417ac516766f7c0dff21c208b66d389040539a20274e3ba",
+        "configs/easy_pickup.yaml": "0a2585ee71b8a91024df1d760add0181a6b14aa622591f7987ca50f9200f130a",
+        "limen/evaluator.py": "afa19e180381b67ed2d10f1371dea8dae943171ff94e741984670a8ef22caecd",
+        "run.py": "32d92bac53425b1746dfb21a5d3f9e6bf523fa3f64799d598f208b1644636976"
+      },
+      "profiles": [
+        {
+          "id": "rl-interface-search",
+          "description": "LIMEN observation/reward interface evolution using native RL training and fitness",
+          "invocation": {
+            "kind": "script",
+            "target": "run.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--run-dir",
+            "path": "native"
+          },
+          "required_files": [
+            "run.py",
+            "limen/evaluator.py",
+            "configs/easy_pickup.yaml"
+          ],
+          "config_files": [
+            "configs/brax_ant.yaml",
+            "configs/brax_humanoid.yaml",
+            "configs/easy_pickup.yaml",
+            "configs/go1_push_recovery.yaml",
+            "configs/hard_rule_chain.yaml",
+            "configs/medium_place_near.yaml",
+            "configs/panda_pick_and_track.yaml"
+          ],
+          "result_globs": [
+            "native/**/*.json",
+            "native/**/*.jsonl",
+            "native/**/*.log",
+            "native/**/*.csv"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "LIMEN observation/reward interface evolution using native RL training and fitness Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "run.py",
+              "limen/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "--task DESCRIPTION --config configs/PROFILE.yaml --iterations N --timesteps N --timesteps-full N --model MODEL",
+            "Credentials must use inherited OPENAI_API_KEY, never --api-key."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "CUDA/JAX, simulator/task data and the selected RL runtime are native prerequisites.",
+            "Native training returns are not automatically comparable across environments."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mce",
+      "name": "MCE",
+      "participant_ids": [
+        "mce"
+      ],
+      "repository": {
+        "url": "https://github.com/metaevo-ai/meta-context-engineering",
+        "commit": "c4b7a7c2ce3ffc4bf4a74c52d2dd8a9a8fb14c30"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare pyproject.toml dependencies and the selected env data; configure native model credentials only through explicit environment names."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "d788eaa578b8355d0155039fa5e0e4f46ab795393872b974d9c3ee5f45129aea",
+        "README.md": "e09ab145cf60be305bccc14288febfd65fa670f196a6e5917c95151bca94dd67",
+        "mce/eval.py": "20ed30d4271ac01ff56318ea89b1b55cc19f5ff8ffbc45361f6a86541ea6fe57",
+        "mce/main.py": "769b9ea180ea468530c38893ad15178422d4ba0bbb23ff183d96bde86fdd8ffe"
+      },
+      "profiles": [
+        {
+          "id": "skill-evolution",
+          "description": "MCE native meta-context/skill evolution with train/validation feedback",
+          "invocation": {
+            "kind": "module",
+            "target": "mce.main"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--workspace",
+            "path": "native"
+          },
+          "required_files": [
+            "mce/main.py",
+            "mce/eval.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/**/*.json",
+            "native/**/*.jsonl",
+            "logs/**/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "MCE native meta-context/skill evolution with train/validation feedback Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "mce/main.py",
+              "mce/eval.py"
+            ]
+          },
+          "argument_help": [
+            "--env NAME --train-data PATH --val-data PATH --iterations N --model MODEL",
+            "Stage explicit dataset inputs; each supported environment has its own native metric."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "The artifact repository and primary framework are distinct pins; evaluation/task coverage follows that exact tree.",
+            "Native E2B mode requires separate prepared service credentials."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mce-artifact",
+      "name": "MCE artifact profiles",
+      "participant_ids": [
+        "mce"
+      ],
+      "repository": {
+        "url": "https://github.com/metaevo-ai/mce-artifact",
+        "commit": "c63300daef93404e22e2569b3d08e72843e7123b"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Prepare pyproject.toml dependencies and the selected env data; configure native model credentials only through explicit environment names."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "0eba48d2842f057b126a57e7e06ede090d50aa4b45ba179e5f3bdba337a85237",
+        "mce/eval.py": "e14f20ffbe38b94e11ffca3f0fcde30ef7d537a478eb2ef9e67c5685da61c2f1",
+        "mce/main.py": "38b5fc6b06b12ee57fb57779a22d9c2c8ae10fb3b245110387a09dc8d912d05b",
+        "mce/main_online.py": "c651d0288225da6520bb5eb63707e07bf4492d9f6a3514f3e12800c5aa1635e5"
+      },
+      "profiles": [
+        {
+          "id": "skill-evolution",
+          "description": "MCE native meta-context/skill evolution with train/validation feedback",
+          "invocation": {
+            "kind": "module",
+            "target": "mce.main"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--workspace",
+            "path": "native"
+          },
+          "required_files": [
+            "mce/main.py",
+            "mce/eval.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/**/*.json",
+            "native/**/*.jsonl",
+            "logs/**/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "MCE native meta-context/skill evolution with train/validation feedback Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "mce/main.py",
+              "mce/eval.py"
+            ]
+          },
+          "argument_help": [
+            "--env NAME --train-data PATH --val-data PATH --iterations N --model MODEL",
+            "Stage explicit dataset inputs; each supported environment has its own native metric."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "The artifact repository and primary framework are distinct pins; evaluation/task coverage follows that exact tree.",
+            "Native E2B mode requires separate prepared service credentials."
+          ]
+        },
+        {
+          "id": "online-adaptation",
+          "description": "MCE artifact online adaptation over an explicitly supplied test stream",
+          "invocation": {
+            "kind": "module",
+            "target": "mce.main_online"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--workspace",
+            "path": "native"
+          },
+          "required_files": [
+            "mce/main_online.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/**/*.json",
+            "native/**/*.jsonl",
+            "logs/**/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "MCE artifact online adaptation over an explicitly supplied test stream Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "mce/main_online.py",
+              "mce/eval.py"
+            ]
+          },
+          "argument_help": [
+            "--env NAME --test-data PATH --test-limit N --model MODEL"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "This is explicitly online learning on the supplied test stream; it is not an untouched held-out evaluation."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "meta-harness",
+      "name": "Meta-Harness",
+      "participant_ids": [
+        "meta-harness"
+      ],
+      "repository": {
+        "url": "https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact",
+        "commit": "57fefdb2ff84af3fd81b69d67814acbe69bd0743"
+      },
+      "status": "artifact_only",
+      "license": null,
+      "setup": [
+        "Prepare Python >=3.12, pyproject.toml dependencies, a compatible Harbor installation and Terminal-Bench backend.",
+        "Configure ANTHROPIC_API_KEY or the selected model environment explicitly; no commercial inference is performed during planning."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "9d3cfad1978ef25c9569beb917ba15c66080f3ca0eb160d7b256236cd21444de",
+        "agent.py": "2afb292271e06ba25afa26ae729e56294c8d3822c846614ab944c0ba9e37e271",
+        "anthropic_caching.py": "fbc08f6e93569ce8dc144d765be6c24f28be139e630983aea9f0b741a464d56c",
+        "pyproject.toml": "9770b769eab9fc692d76a75815402c497f1e28913e37c673cacaab71ed8e9589"
+      },
+      "profiles": [
+        {
+          "id": "terminal-bench-artifact",
+          "description": "Frozen Meta-Harness AgentHarness evaluated by the installed native Harbor command",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.meta_harness"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "run",
+            "--agent-import-path",
+            "agent:AgentHarness",
+            "-d",
+            "terminal-bench@2.0"
+          ],
+          "output": null,
+          "required_files": [
+            "agent.py",
+            "anthropic_caching.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "jobs/**/*.json",
+            "jobs/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Frozen Meta-Harness AgentHarness evaluated by the installed native Harbor command Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "agent.py",
+              "anthropic_caching.py"
+            ]
+          },
+          "argument_help": [
+            "-m MODEL -e BACKEND -n CONCURRENCY --n-attempts N, following the installed Harbor CLI."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "This repository publishes the discovered agent artifact, not the harness-optimization process.",
+            "Harbor is an external installed dependency; its entrypoint/version and result schema are not pinned by this source revision."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "meta-ttl",
+      "name": "META-TTL",
+      "participant_ids": [
+        "meta-ttl"
+      ],
+      "repository": {
+        "url": "https://github.com/zzzlou/meta-ttl",
+        "commit": "b72db4b77e9ae01aec1cbfd36ae0edae902b6468"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Prepare requirements.txt, benchmark environments and explicit OpenRouter/OpenAI environment names.",
+        "No tau2-bench profile is claimed because this pinned public tree exposes Jericho/WebArena implementations."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "d92dd49d68f2e75d5832bc98ab19e85cf0d5ac2adba8d9339e686be0cd8c0f3f",
+        "jericho_meta_training/jericho_adapter.py": "03435d29a34113a6e1cd48e06523ca66bf78e7121826a6cc1b386c10f679b583",
+        "jericho_meta_training/train_meta_agent.py": "77e3e4e041cdf611e3043908f09b0ca9bbe213827a657bef649b493a406cdf33",
+        "webarena_meta_training/train_meta_agent.py": "605a145758dd63e88e987537fa7c1827f6e9408055fdbd8e2685fcc71a7a22c6",
+        "webarena_meta_training/webarena_adapter.py": "86a6e563d80f5b1a0cfa8a877b299ea03a4d5bedb489ce7311517a7371882f43"
+      },
+      "profiles": [
+        {
+          "id": "jericho",
+          "description": "META-TTL native jericho GEPA meta-policy optimization",
+          "invocation": {
+            "kind": "script",
+            "target": "jericho_meta_training/train_meta_agent.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "jericho_meta_training/train_meta_agent.py",
+            "jericho_meta_training/jericho_adapter.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "train_results/**/*.json",
+            "train_results/**/*.jsonl",
+            "train_results/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "META-TTL native jericho GEPA meta-policy optimization Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "jericho_meta_training/train_meta_agent.py",
+              "jericho_meta_training/jericho_adapter.py"
+            ]
+          },
+          "argument_help": [
+            "WebArena supports --meta_model MODEL --max_metric_calls N --max_concurrent N; Jericho settings are fixed in the native entrypoint."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Native train/validation split semantics and fixed model choices are retained.",
+            "Jericho ROMs or hosted WebArena sites/browser runtime must be provisioned; saved pickles are not loaded by Arena."
+          ]
+        },
+        {
+          "id": "webarena",
+          "description": "META-TTL native webarena GEPA meta-policy optimization",
+          "invocation": {
+            "kind": "script",
+            "target": "webarena_meta_training/train_meta_agent.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "webarena_meta_training/train_meta_agent.py",
+            "webarena_meta_training/webarena_adapter.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "train_results_webarena/**/*.json",
+            "train_results_webarena/**/*.jsonl",
+            "train_results_webarena/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "META-TTL native webarena GEPA meta-policy optimization Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "webarena_meta_training/train_meta_agent.py",
+              "webarena_meta_training/webarena_adapter.py"
+            ]
+          },
+          "argument_help": [
+            "WebArena supports --meta_model MODEL --max_metric_calls N --max_concurrent N; Jericho settings are fixed in the native entrypoint."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Native train/validation split semantics and fixed model choices are retained.",
+            "Jericho ROMs or hosted WebArena sites/browser runtime must be provisioned; saved pickles are not loaded by Arena."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "omni-epic",
+      "name": "OMNI-EPIC",
+      "participant_ids": [
+        "omni-epic"
+      ],
+      "repository": {
+        "url": "https://github.com/maxencefaldor/omni-epic",
+        "commit": "af2a3c64f40bc48178c08e1beb76a0aafdd2a167"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare requirements.txt and native Apptainer/simulator/GPU setup described by README; all external resources remain user-provisioned."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "0dbca49f46eae5f8e960f1006fdc91c32f942a67795c289893a35d6a00cee2e9",
+        "README.md": "62885bd3d7f713b34108cc9d55efee61f92516bad21e133590e81f9f16d0d713",
+        "configs/omni_epic.yaml": "e75c3fd5150698f4bea0c9b12be859348531107ec0bc46196fb3446b301d6b7e",
+        "main_dreamer.py": "ec809b460a0312e13c465adfe1501bd8c576a53b11c5194e32a2f7c2fc706b62",
+        "main_omni_epic.py": "1b77c8dc5046e8571786b43ed7193f26f6ad03fe226ea313e904ac6257ba3212"
+      },
+      "profiles": [
+        {
+          "id": "open-ended-generation",
+          "description": "OMNI-EPIC native environment generation, simulator execution and Dreamer training",
+          "invocation": {
+            "kind": "script",
+            "target": "main_omni_epic.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "main_omni_epic.py",
+            "main_dreamer.py",
+            "configs/omni_epic.yaml"
+          ],
+          "config_files": [
+            "configs/omni_epic.yaml"
+          ],
+          "result_globs": [
+            "output/omni_epic/**/archive.jsonl",
+            "output/omni_epic/**/metadata.json",
+            "output/omni_epic/**/metrics.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "OMNI-EPIC native environment generation, simulator execution and Dreamer training Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "main_omni_epic.py",
+              "main_dreamer.py"
+            ]
+          },
+          "argument_help": [
+            "Native Hydra overrides such as iterations=N and robot=NAME; keep hydra.run.dir inside the isolated workspace."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Requires prepared simulator/GPU/Apptainer and model environment; generation metrics are not a fixed Arena task score.",
+            "Hydra changes native working directory and preserves the upstream output/archive layout."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sica",
+      "name": "SICA",
+      "participant_ids": [
+        "sica"
+      ],
+      "repository": {
+        "url": "https://github.com/MaximeRobeyns/self_improving_coding_agent",
+        "commit": "ed8275dca4d3c5dbf77229964351fe9b424797dc"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare base_agent/requirements.txt and native Docker/benchmark dependencies; supply credentials through native environment names."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "2d78355384623d154356c299d0acecae66fe44a03066ecdd08e13f07175768a1",
+        "README.md": "8d750c0a93c48b45a1cd629ea56089e19fc0ca12d55e5cac9171b271e754e712",
+        "base_agent/src/benchmarks/base.py": "f3fc93daa6eed83957dc4e98c92e210f35d83cc5e327c7f2851f64d21d80550f",
+        "runner.py": "bc1dcc8fe3d73268e33eac9684ac549a70b88a1264387d6d98ab0ba2b2d6176e"
+      },
+      "profiles": [
+        {
+          "id": "self-improvement",
+          "description": "SICA native coding-agent benchmark evaluation and self-improvement cycles",
+          "invocation": {
+            "kind": "script",
+            "target": "runner.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "runner.py",
+            "base_agent/src/benchmarks/base.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/metadata.json",
+            "results/**/perf.json",
+            "results/**/results.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "SICA native coding-agent benchmark evaluation and self-improvement cycles Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "runner.py",
+              "base_agent/src/benchmarks/base.py"
+            ]
+          },
+          "argument_help": [
+            "--iterations N --workers N; omit the test subcommand to run self-improvement."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Native model and benchmark choices reside in source config; Arena does not replace the search with a single benchmark run.",
+            "Prepared Docker/SWE-bench and each selected benchmark dependency remain required."
+          ]
+        }
+      ]
+    }
+  ]
+}

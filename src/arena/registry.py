@@ -141,7 +141,10 @@ def validate_task(task, source_ids):
     _require(type(task["executable"]) is bool and task["executable"] == (protocol != "unsupported"),
              "task.executable contradicts declared protocol")
     _require(task["declared_status"] in ("ready", "blocked", "requires_setup"), "invalid declared status")
-    _require((task["declared_status"] == "ready") == task["executable"], "task declared status contradicts executable route")
+    # An evaluator can exist while its datasets or environment still need setup.
+    # Keep this source declaration separate from Arena runtime verification.
+    allowed_statuses = ("ready", "requires_setup") if task["executable"] else ("blocked", "requires_setup")
+    _require(task["declared_status"] in allowed_statuses, "task declared status contradicts executable route")
     _require(task["runtime_readiness"] == "not_verified", "snapshot cannot attest runtime readiness")
     _require(task["direction"] in ("maximize", "minimize", None), "invalid objective direction")
     _require(not task["executable"] or task["direction"] is not None, "executable task needs objective direction")
@@ -208,7 +211,8 @@ def validate_catalog(value):
 def validate_participant(value):
     _object(value, ("id", "name", "description", "repository", "registration_status", "adapter_status",
                    "capabilities", "supported_protocols", "limitations"), "participant",
-            optional=("record_kind", "papers", "search_family", "code_links", "provenance", "attribution"))
+            optional=("record_kind", "papers", "search_family", "code_links", "provenance", "attribution",
+                      "runtime_readiness", "adapter_validation", "native_adapters"))
     _identifier(value["id"], "participant.id")
     for key in ("name", "description"):
         _text(value[key], key)
@@ -222,14 +226,45 @@ def validate_participant(value):
                  "Research work metadata is not a pinned execution registration")
         _require(all(key in value for key in ("papers", "search_family", "code_links", "provenance"))
                  and value["papers"] and value["provenance"], "Research work needs bibliography and corpus provenance")
-    _require(value["adapter_status"] == "not_implemented", "native adapters are not implemented in registry v1")
     _object(value["capabilities"], CAPABILITIES, "capabilities")
-    _require(all(value["capabilities"][key] is False for key in CAPABILITIES), "unimplemented adapter cannot advertise capabilities")
+    _require(all(type(value["capabilities"][key]) is bool for key in CAPABILITIES),
+             "Participant capabilities must be JSON booleans")
+    if value["adapter_status"] == "native_cli":
+        _require(kind == "system_registration", "Literature metadata cannot advertise a native adapter")
+        _require(value.get("runtime_readiness") == "not_verified"
+                 and value.get("adapter_validation") == "source_and_fixture_tests",
+                 "Native CLI adapters require explicit verification limits")
+        _require(value["capabilities"] == {"native_run": True, "canonical_evaluation": False,
+                                          "pause": False, "resume": False},
+                 "Native CLI driver cannot advertise unverified end-to-end evaluation or lifecycle capabilities")
+    else:
+        _require(value["adapter_status"] == "not_implemented", "Unknown participant adapter status")
+        _require(all(value["capabilities"][key] is False for key in CAPABILITIES), "unimplemented adapter cannot advertise capabilities")
+        _require("runtime_readiness" not in value and "adapter_validation" not in value,
+                 "Unimplemented adapter cannot claim adapter verification")
     _strings(value["supported_protocols"], "supported_protocols", unique=True)
-    _require(not value["supported_protocols"], "unimplemented adapter cannot advertise compatible task protocols")
+    _require(not value["supported_protocols"], "Native CLI or unimplemented adapter cannot advertise full task-protocol conformance")
     _strings(value["limitations"], "limitations")
     if "attribution" in value:
         validate_attribution(value["attribution"])
+    if "native_adapters" in value:
+        _require(type(value["native_adapters"]) is list and value["native_adapters"],
+                 "Participant native_adapters must be a nonempty list")
+        engines = set()
+        for adapter in value["native_adapters"]:
+            _object(adapter, ("engine", "name", "repository", "profiles", "evaluation", "runtime_readiness"),
+                    "participant native adapter")
+            _identifier(adapter["engine"], "native adapter engine")
+            _require(adapter["engine"] not in engines, "Duplicate participant native adapter")
+            engines.add(adapter["engine"])
+            _text(adapter["name"], "native adapter name")
+            _repository(adapter["repository"])
+            _strings(adapter["profiles"], "native adapter profiles", unique=True)
+            _require(bool(adapter["profiles"]), "Native adapter needs an executable profile")
+            for profile in adapter["profiles"]:
+                _identifier(profile, "native adapter profile")
+            _require(adapter["evaluation"] == "native" and adapter["runtime_readiness"] == "not_verified",
+                     "Linked native adapter cannot claim canonical evaluation or runtime verification")
     if "papers" in value:
         _require(type(value["papers"]) is list, "participant papers must be a list")
         paper_ids = set()
@@ -346,7 +381,9 @@ def get_participants(registry_root=None):
     value = validate_participants(_json(root / "participants.json"))
     _require(not any(item.get("papers") or item.get("record_kind") == "research_work" for item in value["participants"])
              or (root / "participant-corpus.json").exists(), "Participant corpus capture is required for scholarly entries")
-    if (root / "participant-corpus.json").exists() or (root / "participant-attributions.json").exists() or any(p.get("attribution") for p in value["participants"]):
+    if ((root / "participant-corpus.json").exists() or (root / "participant-attributions.json").exists()
+            or (root / "framework-recipes").exists()
+            or any(p.get("attribution") or p.get("native_adapters") for p in value["participants"])):
         from arena.participant_corpus import expected_participants
         _require(value == expected_participants(root), "Participant snapshot differs from the reviewed corpus or pinned declarations")
     return deepcopy(value)
@@ -373,7 +410,8 @@ def validate_registry(root=None):
     _require(sorted(declarations, key=lambda p: p["id"]) == sorted(registered, key=lambda p: p["id"]),
              "participant declarations and aggregate differ")
     return {"valid": True, "catalog": catalog["summary"], "participants": participants["summary"],
-            "remote_refresh": "not_implemented", "native_runners": "not_implemented"}
+            "remote_refresh": "not_implemented",
+            "native_runners": {item["id"]: item["adapter_status"] for item in declarations}}
 
 
 def sanitized_text(value):

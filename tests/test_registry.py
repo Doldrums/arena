@@ -22,10 +22,10 @@ def catalog():
 
 def test_pinned_catalog_is_available_without_runtime_or_frameworks(catalog):
     assert catalog["summary"] == {
-        "task_count": 1138, "executable_count": 710, "unsupported_count": 428,
-        "protocol_counts": {"original": 134, "recreated_verified": 122, "recreated": 454, "unsupported": 428},
+        "task_count": 959, "executable_count": 689, "unsupported_count": 270,
+        "protocol_counts": {"original": 130, "recreated_verified": 81, "recreated": 478, "unsupported": 270},
         "runtime_readiness": "not_verified"}
-    assert catalog["sources"][0]["repository"]["commit"] == "995768fc462b8e327f90e6762846cc6ccb06cc2c"
+    assert catalog["sources"][0]["repository"]["commit"] == "5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935"
     assert all(task["runtime_readiness"] == "not_verified" for task in catalog["tasks"])
     assert validate_registry()["valid"] is True
 
@@ -35,7 +35,7 @@ def test_pinned_catalog_is_available_without_runtime_or_frameworks(catalog):
     lambda c: c["tasks"][0].update(direction=None),
     lambda c: c["tasks"][0].update(source_id="missing-source"),
     lambda c: c["tasks"].append(deepcopy(c["tasks"][0])),
-    lambda c: c["summary"].update(executable_count=1138),
+    lambda c: c["summary"].update(executable_count=959),
     lambda c: c["sources"][0]["repository"].update(commit="main"),
 ])
 def test_invalid_catalog_rejected(catalog, mutate):
@@ -55,20 +55,34 @@ def test_unsupported_evaluator_stub_does_not_become_executable(catalog):
         validate_catalog(catalog)
 
 
-def test_alternate_dependency_declarations_are_preserved(catalog):
+def test_current_source_dependency_declarations_agree(catalog):
     affected = [task for task in catalog["tasks"] if task["provenance"]["index_requirements"] is not None]
-    assert len(affected) == 6
-    for task in affected:
-        assert "network:openrouter" in task["requirements"]
-        assert "service:llm_api" in task["provenance"]["index_requirements"]
-        assert task["provenance"]["metadata_notes"]
-        assert task["runtime_readiness"] == "not_verified"
+    assert affected == []
+
+
+def test_evaluator_definition_can_require_setup_without_claiming_runtime_readiness(catalog):
+    pending = [task for task in catalog["tasks"] if task["executable"] and task["declared_status"] == "requires_setup"]
+    assert len(pending) == 15
+    assert all(task["runtime_readiness"] == "not_verified" for task in pending)
+    assert validate_catalog(catalog) is catalog
+    pending[0]["declared_status"] = "blocked"
+    with pytest.raises(RegistryError, match="declared status contradicts"):
+        validate_catalog(catalog)
+
+
+def test_missing_evaluator_cannot_claim_ready(catalog):
+    task = next(task for task in catalog["tasks"] if not task["executable"])
+    task["declared_status"] = "requires_setup"
+    validate_catalog(catalog)
+    task["declared_status"] = "ready"
+    with pytest.raises(RegistryError, match="declared status contradicts"):
+        validate_catalog(catalog)
 
 
 def test_get_catalog_returns_detached_values():
     first = get_catalog()
     first["tasks"].clear()
-    assert len(get_catalog()["tasks"]) == 1138
+    assert len(get_catalog()["tasks"]) == 959
 
 
 def test_input_output_contracts_are_bound_to_pinned_problem_files(catalog):
@@ -78,28 +92,44 @@ def test_input_output_contracts_are_bound_to_pinned_problem_files(catalog):
     assert "(n, 3)" in task["contract"]
     source = task["contract_source"]
     assert source["path"] == "suite/alphaevolve-circle-packing-in-unit-square/problem.json"
-    assert "/blob/995768fc462b8e327f90e6762846cc6ccb06cc2c/" in source["url"]
+    assert "/blob/5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935/" in source["url"]
     assert len(source["sha256"]) == 64
     assert all(t["contract_source"] for t in tasks.values())
-    source["url"] = source["url"].replace("995768fc462b8e327f90e6762846cc6ccb06cc2c", "main")
+    source["url"] = source["url"].replace("5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935", "main")
     with pytest.raises(RegistryError, match="pinned repository"):
         validate_catalog(catalog)
 
 
-def test_participants_are_pinned_but_native_adapters_are_not_claimed():
+def test_local_native_drivers_do_not_claim_end_to_end_conformance():
     view = get_participants()
     assert view["summary"] == {"participant_count": 99, "integrated_count": 0, "research_work_count": 98,
                                "pinned_registration_count": 3, "literature_only_count": 96}
     pinned = [p for p in view["participants"] if p["record_kind"] == "system_registration"]
     assert {p["id"] for p in pinned} == {"sciel", "shinka", "dgm"}
     for participant in view["participants"]:
-        assert participant["adapter_status"] == "not_implemented"
-        assert not any(participant["capabilities"].values())
+        native = participant["record_kind"] == "system_registration"
+        assert participant["adapter_status"] == ("native_cli" if native else "not_implemented")
+        assert participant["capabilities"]["native_run"] is native
+        assert all(not value for key, value in participant["capabilities"].items() if key != "native_run")
+        if native:
+            assert participant["runtime_readiness"] == "not_verified"
+            assert participant["adapter_validation"] == "source_and_fixture_tests"
         assert participant["supported_protocols"] == []
         changed = deepcopy(participant)
-        changed["capabilities"]["native_run"] = True
+        changed["capabilities"]["canonical_evaluation" if native else "native_run"] = True
         with pytest.raises(RegistryError, match="cannot advertise"):
             validate_participant(changed)
+
+
+def test_native_capabilities_reject_json_numbers_as_booleans():
+    participant = json.loads((ROOT / "registry/participants/sciel.json").read_text())
+    participant["capabilities"]["native_run"] = 1
+    with pytest.raises(RegistryError, match="booleans"):
+        validate_participant(participant)
+
+
+def test_registry_reports_the_actual_native_driver_stage():
+    assert validate_registry()["native_runners"] == dict.fromkeys(("sciel", "shinka", "dgm"), "native_cli")
 
 
 @pytest.fixture
@@ -223,7 +253,7 @@ def test_snapshot_tool_reads_committed_objects_not_dirty_checkout(tmp_path):
         "evaluation": {"metric": "loss", "direction": "minimize"},
         "validation": {"level": "paper_inventory", "upstream_reproduction": False},
         "execution": {"suite": {"protocol": "recreated", "family": "fixture", "requires": ["py:numpy"]}}}
-    index = {"count": 1, "tasks": [{"id": "fixture-task", "protocol": "recreated", "family": "fixture", "requires": ["py:numpy"]}]}
+    index = {"count": 1, "tasks": [{"id": "fixture-task", "protocol": "recreated", "family": "fixture", "requires": ["py:scipy"]}]}
     for name, value in (("catalog/tasks.json", [task]), ("suite/index.json", index)):
         path = checkout / name
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -249,6 +279,9 @@ def test_snapshot_tool_reads_committed_objects_not_dirty_checkout(tmp_path):
     assert imported["tasks"][0]["description"] == "Committed description"
     assert imported["tasks"][0]["contract"] is None
     assert imported["tasks"][0]["contract_source"] is None
+    assert imported["tasks"][0]["requirements"] == ["py:numpy"]
+    assert imported["tasks"][0]["provenance"]["index_requirements"] == ["py:scipy"]
+    assert imported["tasks"][0]["provenance"]["metadata_notes"]
     committed_bytes = subprocess.check_output(["git", "-C", str(checkout), "show", f"{commit}:catalog/tasks.json"])
     assert imported["sources"][0]["catalog_sha256"] == hashlib.sha256(committed_bytes).hexdigest()
 

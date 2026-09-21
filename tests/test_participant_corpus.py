@@ -10,7 +10,8 @@ import sys
 import pytest
 
 from arena.participant_corpus import (capture_corpus, validate_corpus, expected_participants,
-                                     build_participant_catalog, code_links, ATTRIBUTIONS_FILE)
+                                     build_participant_catalog, code_links, ATTRIBUTIONS_FILE,
+                                     native_recipes_for_participants)
 from arena.registry import RegistryError, get_participants, validate_participant, validate_registry
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,7 +40,7 @@ def test_every_corpus_work_has_one_scholarly_entry_and_exact_paper_link():
         assert entry["provenance"]["sha256"] == corpus["source"]["sha256"]
         assert entry["provenance"]["section_sha256"] == work["section_sha256"]
         assert entry["provenance"]["line_start"] == work["line_start"]
-        assert "/blob/995768fc462b8e327f90e6762846cc6ccb06cc2c/" in entry["provenance"]["metadata_source"]["url"]
+        assert "/blob/5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935/" in entry["provenance"]["metadata_source"]["url"]
     assert {paper["id"] for _, paper in linked if paper["kind"] == "technical_report"} == {"agentic-optimization", "darwinian-evolver"}
 
 
@@ -305,3 +306,105 @@ def test_initial_participant_build_without_attribution_or_prior_snapshot_still_w
     built = get_participants(copied)
     assert built["summary"]["research_work_count"] == 98
     assert all("attribution" not in entry for entry in built["participants"])
+
+
+def test_native_links_preserve_all_99_records_bibliography_and_registration_capabilities():
+    baseline = build_with_attributions(read(ATTRIBUTIONS_FILE))
+    view = get_participants()
+    assert view["summary"] == baseline["summary"]
+    assert len(view["participants"]) == 99
+    assert [{k: v for k, v in item.items() if k != "native_adapters"}
+            for item in view["participants"]] == baseline["participants"]
+    recipes = native_recipes_for_participants(REGISTRY)
+    expected = {recipe["id"]: recipe for recipe in recipes
+                if recipe["status"] == "source_verified" and recipe["profiles"] and recipe["participant_ids"]}
+    links = [(item, adapter) for item in view["participants"] for adapter in item.get("native_adapters", [])]
+    assert {adapter["engine"] for _, adapter in links} == set(expected)
+    for participant, adapter in links:
+        recipe = expected[adapter["engine"]]
+        assert participant["id"] in recipe["participant_ids"]
+        assert adapter == {"engine": recipe["id"], "name": recipe["name"],
+                           "repository": recipe["repository"], "profiles": [p["id"] for p in recipe["profiles"]],
+                           "evaluation": "native", "runtime_readiness": "not_verified"}
+        if participant["record_kind"] == "research_work":
+            assert participant["repository"] is None
+            assert participant["registration_status"] == "literature"
+            assert participant["adapter_status"] == "not_implemented"
+            assert not any(participant["capabilities"].values())
+    entries = {p["id"]: p for p in view["participants"]}
+    assert [a["engine"] for a in entries["mce"]["native_adapters"]] == ["mce", "mce-artifact"]
+    assert "native_adapters" not in entries["meta-harness"]
+    assert "native_adapters" not in entries["evoflow"]
+    assert "native_adapters" not in entries["aevo"]
+
+
+def test_native_recipe_metadata_is_detached_and_unknown_or_duplicate_engines_fail():
+    declarations = [read(f"participants/{ident}.json") for ident in ("sciel", "shinka", "dgm")]
+    recipe = next(r for r in native_recipes_for_participants(REGISTRY) if r["id"] == "adas")
+    original = deepcopy(recipe)
+    def build(recipes):
+        return build_participant_catalog(declarations, read("participant-corpus.json"),
+                                         read("participant-descriptions.json"), read("search-family-sources.json"),
+                                         native_recipes=recipes)
+    result = build([recipe])
+    linked = next(p for p in result["participants"] if p["id"] == "adas")
+    linked["native_adapters"][0]["profiles"].clear()
+    assert recipe == original
+    with pytest.raises(RegistryError, match="Duplicate participant native engine"):
+        build([recipe, recipe])
+    recipe["participant_ids"] = ["unknown-work"]
+    with pytest.raises(RegistryError, match="unknown participant"):
+        build([recipe])
+    artifact = {**original, "status": "artifact_only"}
+    assert all("native_adapters" not in p for p in build([artifact])["participants"])
+
+
+@pytest.mark.parametrize("with_recipes", [False, True])
+def test_declarations_cannot_supply_unreviewed_adapter_associations(with_recipes):
+    declaration = read("participants/sciel.json")
+    declaration["native_adapters"] = [{"engine": "aevo", "name": "Unreviewed declaration link",
+                                      "repository": {"url": "https://github.com/example/aevo", "commit": "a" * 40},
+                                      "profiles": ["nonexistent-profile"], "evaluation": "native",
+                                      "runtime_readiness": "not_verified"}]
+    recipes = [] if with_recipes else None
+    with pytest.raises(RegistryError, match="derived exclusively from reviewed recipes"):
+        build_participant_catalog([declaration], native_recipes=recipes)
+
+
+@pytest.mark.parametrize("damage", ["pin", "profiles", "verification", "canonical", "duplicate", "secret"])
+def test_linked_adapter_metadata_has_strict_pins_profiles_and_verification_limits(damage):
+    participant = next(p for p in get_participants()["participants"] if p["id"] == "adas")
+    adapter = participant["native_adapters"][0]
+    if damage == "pin":
+        adapter["repository"]["commit"] = "main"
+    elif damage == "profiles":
+        adapter["profiles"] = []
+    elif damage == "verification":
+        adapter["runtime_readiness"] = "verified"
+    elif damage == "canonical":
+        adapter["evaluation"] = "canonical"
+    elif damage == "duplicate":
+        participant["native_adapters"].append(deepcopy(adapter))
+    else:
+        adapter["token"] = "not-public"
+    with pytest.raises(RegistryError):
+        validate_participant(participant)
+
+
+def test_native_adapter_snapshot_requires_its_reviewed_recipe_sources(tmp_path):
+    root = tmp_path / "registry"
+    shutil.copytree(REGISTRY, root)
+    snapshot_path = root / "participants.json"
+    snapshot = read("participants.json")
+    next(p for p in snapshot["participants"] if p["id"] == "adas")["native_adapters"][0]["repository"]["commit"] = "a" * 40
+    snapshot_path.write_text(json.dumps(snapshot))
+    with pytest.raises(RegistryError, match="differs from the reviewed corpus"):
+        get_participants(root)
+    shutil.rmtree(root / "framework-recipes")
+    with pytest.raises(RegistryError, match="Missing native recipe sources"):
+        expected_participants(root)
+    before = snapshot_path.read_bytes()
+    result = subprocess.run([sys.executable, str(ROOT / "scripts/build_participants.py"), "--registry-root", str(root)],
+                            capture_output=True, text=True)
+    assert result.returncode == 1 and "Missing native recipe sources" in result.stderr
+    assert snapshot_path.read_bytes() == before

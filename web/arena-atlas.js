@@ -305,7 +305,7 @@ export function renderArenaAtlas(root, options = {}) {
   const footer=make('footer','atlas-footer');
   const hint=make('p','','Select a cluster to keep it highlighted. Use arrow keys to move between clusters; Escape clears the selection.');
   const note=make('details','atlas-note');note.append(make('summary','','About this map'),make('p','','One dot is one task package, including definitions awaiting an evaluator. Color identifies a group; cluster size reflects package count. Dot sizes, positions, trails and motion are decorative, not dependencies, performance or solved results.'));
-  if(session.mode==='methods')note.append(make('p','','Method groups follow the source paper-family labels. A task with several paper associations uses its recorded primary group for this map.'));
+  if(session.mode==='methods')note.append(make('p','','Method groups follow the source paper-family labels and include separately labeled supplementary task collections. A task with several source associations uses its recorded primary group for this map.'));
   else note.append(make('p','','Task families use the evaluator-family field in the catalog. Packages without that field remain in the Unspecified group.'));
   footer.append(hint,note);card.append(footer);
   card.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();session.selected=null;session.preview=null;session.update();}});
@@ -351,7 +351,7 @@ export function renderArenaAtlas(root, options = {}) {
     if(!session.model.domainsAvailable)domains.append(make('p','atlas-domain-unavailable','Domain data unavailable'));
     for(const domain of active.domains.slice(0,2))domains.append(make('span','',`${domain.label} · ${format(domain.count)}`));
     if(active.domains.length>2){const more=make('span','',`+${active.domains.length-2} more`);more.title=active.domains.slice(2).map(domain=>`${domain.label}: ${format(domain.count)}`).join(' · ');domains.append(more);}details.append(domains);
-    if(active.why_it_matters){const why=make('details','atlas-context-why');why.append(make('summary','','About this method group'),make('p','',active.why_it_matters));details.append(why);}
+    if(active.why_it_matters){const why=make('details','atlas-context-why');why.append(make('summary','',active.classification_basis==='source_supplement'?'About this task collection':'About this method group'),make('p','',active.why_it_matters));details.append(why);}
     const examples=make('div','atlas-examples');examples.append(make('h4','','A few starting points'));
     const ids=[...new Set([...active.representative_task_ids,...active.task_ids])].slice(0,2);
     for(const id of ids){const task=active.tasks.find(item=>item.id===id),link=make('a','atlas-task-link',task.name||task.id);link.href=`/?task=${encodeURIComponent(id)}`;link.addEventListener('click',event=>{if(session.options.onTask&&event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();session.options.onTask(id);}});examples.append(link);}

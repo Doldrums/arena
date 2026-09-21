@@ -1,0 +1,29 @@
+{
+  "schema": "arena.control/1",
+  "state_dir": "/srv/arena-private/control",
+  "cgroup_root": "/sys/fs/cgroup/arena-workers",
+  "limits": {
+    "cpus": 96,
+    "memory_mb": 307200,
+    "evaluation_slots": 32,
+    "max_active": 8,
+    "max_queued": 500,
+    "max_runs_per_key": 1000,
+    "max_reserved_seconds_per_key": 604800
+  },
+  "templates": [
+    {
+      "id": "operator-review-required",
+      "name": "Example awaiting a verified native profile and model",
+      "framework": "example",
+      "profile": "example",
+      "model": "example-model",
+      "status": "blocked",
+      "blocked_reason": "Replace this example with an operator-reviewed pinned native run spec, verified evaluation concurrency, and prepared dependencies.",
+      "resources": {"cpus": 32, "memory_mb": 65536, "evaluation_slots": 32, "pids": 512},
+      "containment": "cgroup-v2",
+      "evaluation_concurrency_verified": false,
+      "spec": null
+    }
+  ]
+}
