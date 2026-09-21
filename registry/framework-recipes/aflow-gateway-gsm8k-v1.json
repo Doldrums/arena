@@ -1,0 +1,134 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "aflow-gateway-gsm8k-v1",
+      "name": "AFlow \u00b7 GSM8K graph-search pilot",
+      "participant_ids": [
+        "aflow"
+      ],
+      "repository": {
+        "url": "https://github.com/FoundationAgents/AFlow",
+        "commit": "3f457218fc716093fe53f6df8a5d5e6379d66346"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the exact upstream requirements into an isolated Python3.11 environment; native source remains clean.",
+        "Supply the immutable official GSM8K subset bundle and scoped OPENAI_API_KEY environment reference."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "bce279a8f86499db0f9b1962884544108e4f81705d7c966ad59c66917b1131e5",
+        "requirements.txt": "21bc64388dfe2306df72edb3579c1336d6447eebd8378fb79f4711d8c0ab103f",
+        "run.py": "ac106a27bc83d6022f349fc363fcc591b889cea01f02345c0c9370fc9f236873",
+        "scripts/async_llm.py": "4c8b40f13c84385ba7c20e26816436818fb5a143ed6543f501ccfa8d39b72184",
+        "scripts/formatter.py": "b383f3bd209ac14d90d30b47e507918194000c920b161ec7f217176dcbcc16bf",
+        "scripts/optimizer.py": "26cc9ac8f99177ed670c75fd6a265294c1dbaf1518e41f383eaf1d980b3968e5",
+        "scripts/evaluator.py": "5d115ac921b69f9d5055300cf52969c5e0b4474ab2f5daad13b8af988218616e",
+        "scripts/optimizer_utils/data_utils.py": "7db8befbc1ffd6fd41d2889077d692c56ea8d6de367a4d1c955c715c2f66e49c",
+        "scripts/optimizer_utils/graph_utils.py": "8155699387123b1655712300bdb741c6a534401ddb37d2ca927e422107b7178d",
+        "scripts/optimizer_utils/experience_utils.py": "b0fc7e5a93bb92efb154f241d7eb819bdf70fd1cf7754b3d849593eafd7daf9f",
+        "scripts/optimizer_utils/evaluation_utils.py": "de5807e97e9a6a6203ee1a94c754d18c580af2546340129ad4f681ca1d8b0048",
+        "scripts/prompts/optimize_prompt.py": "653613391da1cf4b3cca074c276fcf2a957c3374829448305e203f7f2348a6bd",
+        "scripts/operators.py": "7cba75a1c5e7cb430c26fc1a7d1d561319790a8be7844cc516719931f7c188a4",
+        "benchmarks/gsm8k.py": "c2f5ce790cf162fc987e88fd3a6a17a37358f3a63f153c3dbcaa20e41ca2568c",
+        "benchmarks/benchmark.py": "f84ad22e452965ea15b0849ceffde436b619f6ade51abafa6725755fa2801de5",
+        "workspace/GSM8K/workflows/round_1/graph.py": "a92febff3c94d065812af510f97b06a070dd2603e4daa9b27fdc11f24ab9e4fe",
+        "workspace/GSM8K/workflows/round_1/prompt.py": "89758a63470c31c0a5d9613cd97d88d07c1c4fde8793f165fa8de5773892e5cf",
+        "workspace/GSM8K/workflows/template/operator.py": "8326a28806af0eca6c0090ee71f2bfaf8172cc6ffc8b480ad56be589eb3407d7",
+        "workspace/GSM8K/workflows/template/operator.json": "35182bb00a4a152b31eef3a67f623e1ad4cd17b32d20c92c415c646d97359591",
+        "workspace/GSM8K/workflows/template/operator_an.py": "d7c6015d35021585f9794aa496c55004098cbd5f308ff91a39000c550848c05d",
+        "workspace/GSM8K/workflows/template/op_prompt.py": "21a5276dcce3ebeb6a531b34be36c7b6fb62c035eba040a77284f6069b97da81",
+        "workspace/GSM8K/workflows/results.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "workspace/GSM8K/workflows/processed_experience.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "workspace/GSM8K/workflows/round_1/log.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "profiles": [
+        {
+          "id": "gsm8k-graph-pilot-v1",
+          "description": "Two native AFlow graph optimization rounds after a fresh seed evaluation, then a frozen validation-selected workflow and seed on a disjoint heldout.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.aflow_gateway_pilot"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--dataset",
+            "arena-inputs/gsm8k-prompt-pilot-v1.json"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "LICENSE",
+            "requirements.txt",
+            "run.py",
+            "scripts/async_llm.py",
+            "scripts/formatter.py",
+            "scripts/optimizer.py",
+            "scripts/evaluator.py",
+            "scripts/optimizer_utils/data_utils.py",
+            "scripts/optimizer_utils/graph_utils.py",
+            "scripts/optimizer_utils/experience_utils.py",
+            "scripts/optimizer_utils/evaluation_utils.py",
+            "scripts/prompts/optimize_prompt.py",
+            "scripts/operators.py",
+            "benchmarks/gsm8k.py",
+            "benchmarks/benchmark.py",
+            "workspace/GSM8K/workflows/round_1/graph.py",
+            "workspace/GSM8K/workflows/round_1/prompt.py",
+            "workspace/GSM8K/workflows/template/operator.py",
+            "workspace/GSM8K/workflows/template/operator.json",
+            "workspace/GSM8K/workflows/template/operator_an.py",
+            "workspace/GSM8K/workflows/template/op_prompt.py",
+            "workspace/GSM8K/workflows/results.json",
+            "workspace/GSM8K/workflows/processed_experience.json",
+            "workspace/GSM8K/workflows/round_1/log.json"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.csv",
+            "workspace/GSM8K/workflows/**/*.json",
+            "workspace/GSM8K/workflows/**/*.csv",
+            "workspace/GSM8K/workflows/**/*.py",
+            "logs/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Unchanged AFlow GSM8KBenchmark extracts the last number and compares floats within1e-6. Native graph/operators/validation ranking remain; heldout is evaluated only after selection.",
+            "evidence": [
+              "benchmarks/gsm8k.py",
+              "benchmarks/benchmark.py",
+              "scripts/evaluator.py",
+              "scripts/optimizer.py",
+              "scripts/optimizer_utils/data_utils.py"
+            ]
+          },
+          "argument_help": [
+            "--model exact gateway model ID; supply immutable GSM8K bundle through request.inputs."
+          ],
+          "limitations": [
+            "Eight optimization validation examples and eight separate official-test heldout examples form a small integration pilot, not an AFlow paper replication. The existing bundle train split is unused.",
+            "Native graph code and operator execution require trusted worker containment; the native Programmer import filter is not a security sandbox.",
+            "Two native rounds, one validation repetition,40 problem evaluation admissions,192 SDK request admissions, one concurrent evaluation and2400-second outer deadline. A native incomplete round or budget stop is recorded separately from completion.",
+            "All model roles use the exact same selected gateway ID; native XML/text/code formatting is preserved without JSON response-mode translation.",
+            "The SDK transport serializes requests and disables SDK retries; native evaluator/parser retries remain within the shared request cap. Temperature/top_p are recorded but not enforced by the gateway.",
+            "Unknown native model prices default to zero upstream. Arena cost_usd remains null; native prices are not measured costs.",
+            "Native Test mode hardcodes round1. This profile instead freezes DataUtils validation selection and calls the same native Evaluator with is_test=True; seed and selected are assessed once each, or once total if identical."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONUNBUFFERED": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

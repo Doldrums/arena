@@ -101,6 +101,23 @@ def test_scopes_ownership_and_readonly_shared_overview(service):
     assert service.cancel(admin, run["id"])["run"]["state"] == "cancelled"
 
 
+def test_results_are_owner_scoped_and_do_not_submit_or_launch(service):
+    from arena.results import results
+    alice, _ = principal(service)
+    bob, _ = principal(service, "bob")
+    admin, _ = principal(service, "admin", ("admin",))
+    no_read, _ = principal(service, "submitter", ("submit",))
+    run = submit(service, alice)
+    before = service.queue(admin)
+    assert [row['id'] for row in results(service, alice)['runs']] == [run['id']]
+    assert results(service, bob)['runs'] == []
+    assert results(service, admin)['total'] == 1
+    with pytest.raises(control.ControlError) as caught:
+        results(service, no_read)
+    assert caught.value.status == 403
+    assert service.queue(admin) == before
+
+
 def test_idempotency_is_atomic_and_cannot_rebind(service):
     user, _ = principal(service)
     def enqueue(_):
@@ -475,6 +492,18 @@ def test_http_same_port_authentication_submission_read_and_cancel(service, http)
     assert request(http + "/api/queue/" + run_id + "/logs", token=key["token"])[1]["policy"] == "safe_control_events"
     assert request(http + "/api/queue/" + run_id + "/cancel", token=key["token"], body={})[1]["run"]["state"] == "cancelled"
     assert request(http + "/api/runs", token=key["token"], body={})[0] == 404
+
+
+def test_results_http_requires_auth_and_preserves_owner_boundaries(service, http):
+    alice, alice_key = principal(service)
+    _, bob_key = principal(service, 'bob')
+    run = submit(service, alice)
+    assert request(http + '/api/control/results')[0] == 401
+    code, value = request(http + '/api/control/results', token=alice_key['token'])
+    assert code == 200 and value['schema'] == 'arena.results/1'
+    assert [row['id'] for row in value['runs']] == [run['id']]
+    assert request(http + '/api/control/results', token=bob_key['token'])[1]['runs'] == []
+    assert request(http + '/api/control/results', token=alice_key['token'], body={})[0] == 404
 
 
 def test_control_server_refuses_nonloopback_binding(service):

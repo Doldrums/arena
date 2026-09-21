@@ -993,6 +993,9 @@ def dispatch_http(handler, service):
         method = handler.command
         if method == "GET" and parts == ["api", "control", "templates"]:
             value = service.templates(principal)
+        elif method == "GET" and parts == ["api", "control", "results"]:
+            from .results import results
+            value = results(service, principal)
         elif method == "GET" and parts == ["api", "queue"]:
             query = parse_qs(parsed.query)
             value = service.queue(principal, limit=int(query.get("limit", ["200"])[0]), offset=int(query.get("offset", ["0"])[0]))

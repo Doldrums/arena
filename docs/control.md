@@ -162,6 +162,7 @@ All control requests require `Authorization: Bearer <key>`:
 | --- | --- |
 | `GET /api/control/templates` | Reviewed template IDs, framework/profile/model, status, resources, revision and limits |
 | `GET /api/queue?limit=200&offset=0` | Shared sanitized overview, state counts and reserved/global capacity |
+| `GET /api/control/results` | Bounded scalar results for own runs; admin can inspect all runs |
 | `POST /api/queue` | Submit one reviewed cell or, for an admin, record a blocked cell |
 | `GET /api/queue/{id}` | Own run detail, or any run for admin |
 | `GET /api/queue/{id}/logs` | Own bounded lifecycle log; native diagnostics require extra scope |

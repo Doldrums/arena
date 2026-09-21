@@ -2,7 +2,7 @@
 
 This is a source/interface inventory, not a leaderboard or a statement that research runs have completed. All joins use explicit participant IDs. A task evaluator, baseline repository, result notebook and search engine are different artifacts.
 
-The registry contains **99 participant records** and **98 distinct paper IDs**. It has **3 direct adapters** and **109 recipe records** (including explicit blockers and artifact interfaces). Multiple recipe records can belong to one work.
+The registry contains **99 participant records** and **98 distinct paper IDs**. It has **3 direct adapters** and **114 recipe records** (including explicit blockers and artifact interfaces). Multiple recipe records can belong to one work.
 
 | Participant coverage | Count |
 | --- | ---: |
@@ -28,11 +28,11 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 | [A2DEPT](https://arxiv.org/pdf/2604.24043) (`a2dept`) | Recorded implementation/integration blocker | `a2dept`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
 | [AccelOpt](https://arxiv.org/pdf/2511.15915) (`accelopt`) | Native source interface present | [`accelopt`](https://github.com/zhang677/AccelOpt/tree/47e29a7c24704e3c3e534b5bcbf39cfac3f831e3) (source_verified; 1 profile(s)) |
 | [AdaEvolve](https://arxiv.org/pdf/2602.20133) (`adaevolve`) | Native source interface present | [`adaevolve`](https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0) (source_verified; 1 profile(s)) |
-| [ADAS](https://arxiv.org/pdf/2408.08435) (`adas`) | Native source interface present | [`adas`](https://github.com/ShengranHu/ADAS/tree/2702bee8fefda42255efc5be9f60e3bd3db96ae4) (source_verified; 5 profile(s)) |
+| [ADAS](https://arxiv.org/pdf/2408.08435) (`adas`) | Native source interface present | [`adas`](https://github.com/ShengranHu/ADAS/tree/2702bee8fefda42255efc5be9f60e3bd3db96ae4) (source_verified; 5 profile(s)); [`adas-gateway-mgsm-v1`](https://github.com/ShengranHu/ADAS/tree/2702bee8fefda42255efc5be9f60e3bd3db96ae4) (source_verified; 1 profile(s)) |
 | [AEL](https://arxiv.org/pdf/2311.15249) (`ael`) | Recorded implementation/integration blocker | `ael`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
-| [AEL-harness](https://arxiv.org/pdf/2604.21725) (`ael-harness`) | Native source interface present | [`ael-harness`](https://github.com/WujiangXu/AEL/tree/c95f5f961667e7df4bdddf750b22332158951bf2) (source_verified; 1 profile(s)) |
+| [AEL-harness](https://arxiv.org/pdf/2604.21725) (`ael-harness`) | Native source interface present | [`ael-harness`](https://github.com/WujiangXu/AEL/tree/c95f5f961667e7df4bdddf750b22332158951bf2) (source_verified; 1 profile(s)); [`ael-portfolio-gateway`](https://github.com/WujiangXu/AEL/tree/c95f5f961667e7df4bdddf750b22332158951bf2) (source_verified; 1 profile(s)) |
 | [AEvo](https://arxiv.org/pdf/2605.13821) (`aevo`) | Recorded implementation/integration blocker | [`aevo`](https://github.com/FoundationAgents/Harnessing-Agentic-Evolution/tree/87e2fefce6e99922c736f0250060b082babd5578): Official Harnessing-Agentic-Evolution at the verified pin contains only README.md and LICENSE; no native code or entrypoint exists. The additional official FoundationAgents/AEvo repository returned no refs, including HEAD, on inspection. No optimizer can be connected from these placeholders. |
-| [AFlow](https://arxiv.org/pdf/2410.10762) (`aflow`) | Native source interface present | [`aflow`](https://github.com/FoundationAgents/AFlow/tree/3f457218fc716093fe53f6df8a5d5e6379d66346) (source_verified; 1 profile(s)) |
+| [AFlow](https://arxiv.org/pdf/2410.10762) (`aflow`) | Native source interface present | [`aflow`](https://github.com/FoundationAgents/AFlow/tree/3f457218fc716093fe53f6df8a5d5e6379d66346) (source_verified; 1 profile(s)); [`aflow-gateway-gsm8k-v1`](https://github.com/FoundationAgents/AFlow/tree/3f457218fc716093fe53f6df8a5d5e6379d66346) (source_verified; 1 profile(s)) |
 | [Agentic Optimization](https://junye-pan.github.io/posts/agentic-optimization/assets/report.pdf) (`agentic-optimization`) | Native source interface present | [`agentic-optimization`](https://github.com/Junye-Pan/AgenticOptimization/tree/712b2fd4888c4b57fc08c1d2bdf4b1ca4c4517fb) (source_verified; 1 profile(s)) |
 | [AgentSquare](https://arxiv.org/pdf/2410.06153) (`agentsquare`) | Native source interface present | [`agentsquare`](https://github.com/tsinghua-fib-lab/AgentSquare/tree/8f5b3fe5d8a32f9b59d20370823bef2a2c86928c) (source_verified; 1 profile(s)) |
 | [AHE](https://arxiv.org/pdf/2604.25850) (`ahe`) | Native source interface present | [`ahe`](https://github.com/china-qijizhifeng/agentic-harness-engineering/tree/8b2a55d97590363fe50c3cc6b5e833b020a4bb4c) (source_verified; 1 profile(s)) |
@@ -106,10 +106,10 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 | [PDR](https://arxiv.org/pdf/2607.28268) (`pdr`) | Recorded implementation/integration blocker | `pdr`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
 | [PhaseEvo](https://arxiv.org/pdf/2402.11347) (`phaseevo`) | Recorded implementation/integration blocker | `phaseevo`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
 | [Polymath](https://arxiv.org/pdf/2508.02959) (`polymath`) | Recorded implementation/integration blocker | `polymath`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
-| [PromptAgent](https://arxiv.org/pdf/2310.16427) (`promptagent`) | Native source interface present | [`promptagent`](https://github.com/XinyuanWangCS/PromptAgent/tree/2edfc9e4462a6af97dc973442d074de9b3e876b2) (source_verified; 1 profile(s)) |
+| [PromptAgent](https://arxiv.org/pdf/2310.16427) (`promptagent`) | Native source interface present | [`promptagent`](https://github.com/XinyuanWangCS/PromptAgent/tree/2edfc9e4462a6af97dc973442d074de9b3e876b2) (source_verified; 1 profile(s)); [`promptagent-penguins-gateway`](https://github.com/XinyuanWangCS/PromptAgent/tree/2edfc9e4462a6af97dc973442d074de9b3e876b2) (source_verified; 1 profile(s)) |
 | [Promptbreeder](https://arxiv.org/pdf/2309.16797) (`promptbreeder`) | Recorded implementation/integration blocker | `promptbreeder`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
 | [ProTeGi](https://arxiv.org/pdf/2305.03495) (`protegi`) | Native source interface present | [`protegi`](https://github.com/microsoft/LMOps/tree/6f53ef41c951de0962bbf27fe3f5819eabc8ce0e) (source_verified; 1 profile(s)) |
-| [QDAIF](https://arxiv.org/pdf/2310.13032) (`qdaif`) | Native source interface present | [`qdaif`](https://github.com/CarperAI/OpenELM/tree/c844e149e3f59fef546e0bc55f4e12e0f192feb9) (source_verified; 1 profile(s)); [`qdaif-artifact`](https://github.com/qdaif/qdaif_scripts_data/tree/9836aaf1a7703fdafb9560bd7a304ac1df4572fd): Companion analysis scripts and external paper result data; no single released end-to-end QDAIF method entrypoint. |
+| [QDAIF](https://arxiv.org/pdf/2310.13032) (`qdaif`) | Native source interface present | [`qdaif`](https://github.com/CarperAI/OpenELM/tree/c844e149e3f59fef546e0bc55f4e12e0f192feb9) (source_verified; 1 profile(s)); [`qdaif-artifact`](https://github.com/qdaif/qdaif_scripts_data/tree/9836aaf1a7703fdafb9560bd7a304ac1df4572fd): Companion analysis scripts and external paper result data; no single released end-to-end QDAIF method entrypoint.; [`qdaif-poetry-gateway`](https://github.com/CarperAI/OpenELM/tree/c844e149e3f59fef546e0bc55f4e12e0f192feb9) (source_verified; 1 profile(s)) |
 | [RankEvolve](https://arxiv.org/pdf/2602.16932) (`rankevolve`) | Native source interface present | [`rankevolve`](https://github.com/fangchenli/ranking-evolved/tree/8f664bcd5123bac2397f0c1bfbdb347ca3233483) (source_verified; 1 profile(s)) |
 | [READY](https://arxiv.org/pdf/2601.21847) (`ready`) | Recorded implementation/integration blocker | `ready`: The paper links https://anonymous.4open.science/r/ICML_READY-747F, but this audit could not retrieve and pin its implementation. An anonymous project link is not an executable source revision. |
 | [RedAHD](https://arxiv.org/pdf/2505.20242) (`redahd`) | Recorded implementation/integration blocker | `redahd`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. The additional arXiv HTML retrieval failed; the earlier pinned paper metadata remains the available evidence. |
@@ -136,8 +136,11 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 
 Snapshot bindings:
 
-- `registry/participants.json`: `19cb7cecbd41652149c48b05b0c9027440398183b906c0c6c8c4216c23078f56`
+- `registry/participants.json`: `90436591d932929a68fa3a1e45db4bf25e2606a474642be8550af4da650b162a`
+- `registry/framework-recipes/adas-gateway-mgsm-v1.json`: `73877e1dff0000febcae43d63fc4dfcb7e15f270d25e6e1b0e67258089482c77`
 - `registry/framework-recipes/additional.json`: `c6e50ba51ab3415abcd7a553fe8eb1641e655f7e3d1d0c01bbc22e6b447309d0`
+- `registry/framework-recipes/ael-portfolio-gateway.json`: `ef20e8d0b08714c9a1b1324e28a6601e80add86ddb653a529113b90a22968467`
+- `registry/framework-recipes/aflow-gateway-gsm8k-v1.json`: `ca47004f88bbf63e471a0f43b604e525f4a75b91bcd5c31fdfc2d0cf4760daeb`
 - `registry/framework-recipes/agent-systems.json`: `fd3b88aada8ff990030cf4c8f10951a828cd7bc26a149de6c8894daf112efce9`
 - `registry/framework-recipes/coevo-observed-v2.json`: `1bbe5359406607369cd76248b77e82b29ba20d24044f4475d889faf0743833ff`
 - `registry/framework-recipes/community.json`: `e29e8fadfd1addacdd6accf955accb5c5ae0bf3c762ea432f955e1cca95f2c79`
@@ -149,5 +152,7 @@ Snapshot bindings:
 - `registry/framework-recipes/mcts-ahd-gateway-v2.json`: `0dd35584bd030f2c453e7e9cb8428ca7d2ca53a6cbad8ec2b8e6f8f4f46c90cc`
 - `registry/framework-recipes/miprov2-gateway-gsm8k.json`: `9413c460d4265cdf7e53952cd429db011a5b96d4712d08dff8805d4b5e4e5e39`
 - `registry/framework-recipes/program-search.json`: `9ab7bee1603dcb95692a2fd169b39ba9e5e3d0ca9f5528e53b787d0774a5f95b`
+- `registry/framework-recipes/promptagent-penguins-gateway.json`: `8dcd558b9fcdd50cfd94dd637f8dbdb99f87bd3f2cb73421997a7dba994e7cfb`
+- `registry/framework-recipes/qdaif-poetry-gateway.json`: `5a00de6f2d38ffde95b36f9fc22831f916843e5d5e51b661b23792a3bb51db78`
 - `registry/framework-recipes/specialized.json`: `07c51f6dae2b37520ce51ed9e72745ab6ada06d12a9bae07d946e22f17d8d737`
 - `registry/framework-recipes/unavailable.json`: `38671bfbde81c4b7420b0e5cd6e19d9593e51ed60c5942e8c784490e79b14ee0`

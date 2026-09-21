@@ -234,9 +234,12 @@ class Handler(BaseHTTPRequestHandler):
             file = STATIC / "experiment.html"
         elif parts in (["queue"], ["queue.html"]):
             file = STATIC / "queue.html"
+        elif parts in (["results"], ["results.html"]):
+            file = STATIC / "results.html"
         elif len(parts) == 1 and parts[0] in {"arena.js", "arena.css", "arena-insights.js", "arena-insights.css",
                                              "arena-atlas.js", "arena-atlas.css", "arena-theme.css",
-                                             "arena-contribute.js", "arena-contribute.css", "arena-queue.js", "arena-queue.css"}:
+                                             "arena-contribute.js", "arena-contribute.css", "arena-queue.js", "arena-queue.css",
+                                             "arena-results.js", "arena-results.css"}:
             file = STATIC / parts[0]
         elif len(parts) == 2 and parts[0] == "brand" and parts[1] in {"cpil.png", "mbzuai.png"}:
             file = STATIC / "brand" / parts[1]
