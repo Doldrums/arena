@@ -1,8 +1,9 @@
 # Recorded results
 
 The landing Results tab at `/results` opens a compact published overview without
-an experiment access key: four measurement cards, a score/resource chart within
-one evaluator cohort, experiment coverage and a short expandable system table.
+an experiment access key. Numeric tables show SCiEL research observations and
+integration outcomes, followed by a score/resource chart within one evaluator
+cohort, experiment coverage and a short expandable system table.
 The timestamp explicitly identifies the published snapshot; this is not a live
 queue. The existing “Follow the research behind the numbers” panel leads to the
 full experiment workspace. Production Cloudflare team Access still applies.
@@ -18,16 +19,27 @@ An operator refreshes the snapshot from an authenticated results response saved
 outside the repository:
 
 ```sh
-python3 scripts/export_results_overview.py --input /private/results.json --output registry/results-overview.json
+python3 scripts/export_results_overview.py --input /private/results.json --research-input /private/research-section.json --output registry/results-overview.json
 ```
 
 Review and deploy the aggregate with the catalog. Never commit the private input
 or its access key. The export is offline and performs no model calls or launches.
 
+The optional research input is a validated public-safe projection produced by
+`arena.results_research.build_results_research` from native observer records.
+It contains no code, prompts, private run identifiers or paths. Research protocols
+remain separate from each other and from the integration evaluator cohorts.
+The best-per-model view shows the selected run's own initial score, best score,
+status and elapsed time, alongside the number of recorded runs for that model.
+Elapsed time includes pauses; it is not compute time or a billing measurement.
+The alternative view lists every recorded research run. Native integration
+metrics retain their scoring conventions and paired multi-objective values.
+
 The experiment workspace retains its left sidebar: Experiments at `/experiments`,
 detailed Results at `/experiments/results`, and Queue at `/experiments/queue`.
-`/queue` remains an alias. Connecting a key on landing Results opens the existing
-owner-scoped detailed view; disconnecting returns to the published overview.
+`/queue` remains an alias. Landing Results always shows the published overview,
+including when a key is saved locally. “Open experiment board” leads to the
+owner-scoped detailed workspace, where the experiment key is used.
 Opening pages, changing filters or refreshing never submits work.
 
 `GET /api/control/results` requires `read` scope. Ordinary keys see their owner's

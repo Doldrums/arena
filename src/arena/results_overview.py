@@ -7,6 +7,7 @@ already published snapshot and never launches, scans or imports experiments.
 from __future__ import annotations
 
 from collections import Counter
+from copy import deepcopy
 import math
 import re
 from statistics import median
@@ -28,6 +29,7 @@ NOTES = [
     "Failed and cancelled runs retain their recorded evidence. Missing measurements are not zero scores.",
     "Tokens describe ended runs with complete recorded provider ledgers; they are not billed cost. Wall time is elapsed run time.",
     "Distinct valid programs are deduplicated by source identity and include seeds; only the count is published.",
+    "Native results retain each framework's task and metric. They are not canonical evaluator scores or a ranking across systems or protocols.",
 ]
 
 
@@ -74,7 +76,63 @@ def state_counts(states):
                 cancelled=counts["cancelled"], other=counts["blocked"])
 
 
-def build_results_overview(payload, *, generated_at=None):
+def native_measurement(native, *, system, model, state, wall, tokens, token_complete):
+    """Publish scalar or paired outcomes only after the native API's integrity gate.
+
+    The API verifies artifact bytes. Its nonempty digest inventory is required
+    here as evidence that the explicit native projector ran; digests themselves
+    are private publication input and are never copied into the snapshot.
+    """
+    if native is None:
+        return None
+    require(type(native) is dict, "invalid native projection")
+    if native.get("status") not in {"recorded", "partial"}:
+        return None
+    best = number(native.get("best_score"), nullable=True)
+    population = native.get("population_objectives", [])
+    require(type(population) is list, "invalid native population")
+    if best is None and not population:
+        # Partial failed integrity checks deliberately clear measured outcomes.
+        return None
+    require(native.get("scope") == "native", "native scope not recorded")
+    hashes = native.get("evidence_hashes")
+    require(type(hashes) is list and 0 < len(hashes) <= 256
+            and all(type(value) is str and _HASH.fullmatch(value) for value in hashes)
+            and len({value.lower() for value in hashes}) == len(hashes), "native evidence identity not recorded")
+    task = identifier(native.get("task"))
+    metric = identifier(native.get("metric"), metric=True)
+    seed = number(native.get("seed_score"), nullable=True)
+    objectives = native.get("objectives", [])
+    require(type(objectives) is list, "invalid native objectives")
+    public_objectives, public_population = [], []
+    if population:
+        require(best is None and seed is None and native.get("direction") is None,
+                "paired native objectives must not invent a scalar score")
+        require(2 <= len(objectives) <= 8 and 0 < len(population) <= 1000, "invalid paired native bound")
+        for objective in objectives:
+            require(type(objective) is dict, "invalid native objective")
+            name = identifier(objective.get("metric"), metric=True)
+            direction = objective.get("direction")
+            require(direction in {"maximize", "minimize"}, "invalid native objective direction")
+            public_objectives.append(dict(metric=name, direction=direction))
+        names = [objective["metric"] for objective in public_objectives]
+        require(len(set(names)) == len(names), "duplicate native objective")
+        for candidate in population:
+            require(type(candidate) is dict and set(names) <= set(candidate), "unpaired native objectives")
+            public_population.append({name: number(candidate[name]) for name in names})
+        direction = None
+    else:
+        require(best is not None and not objectives, "missing native scalar result")
+        direction = native.get("direction")
+        require(direction in {"maximize", "minimize"}, "invalid native score direction")
+    return dict(system=system, model=model, state=state, task_id=task, task_name=task_title(task),
+                metric=metric, direction=direction, seed_score=seed, best_score=best,
+                wall_seconds=wall, total_tokens=tokens, usage_complete=token_complete,
+                evidence_partial=native["status"] == "partial", objectives=public_objectives,
+                population_objectives=public_population)
+
+
+def build_results_overview(payload, *, generated_at=None, research=None):
     require(type(payload) is dict and payload.get("schema") == "arena.results/1", "unsupported source schema")
     rows = payload.get("runs")
     require(type(rows) is list and len(rows) <= MAX_RUNS, "invalid source run bound")
@@ -85,6 +143,7 @@ def build_results_overview(payload, *, generated_at=None):
     published_time = number(time.time() if generated_at is None else generated_at, nonnegative=True)
     require(source_time > 0 and published_time >= source_time, "invalid publication time")
     systems, cohorts, known_ids, hashes = {}, {}, set(), set()
+    native_results = []
     all_states, all_models, complete_tokens = [], set(), []
     validity = dict(evaluations=0, valid=0, invalid=0, unknown=0, unique_programs=0, hash_coverage_runs=0)
     wall_count = 0
@@ -123,6 +182,10 @@ def build_results_overview(payload, *, generated_at=None):
             complete_tokens.append(tokens)
         else:
             tokens = None
+        published_native = native_measurement(metrics.get("native"), system=system, model=model,
+            state=state, wall=wall, tokens=tokens, token_complete=token_complete)
+        if published_native is not None:
+            native_results.append(published_native)
         bucket = systems.setdefault(system, dict(states=[], models=set(), canonical_runs=0,
                                                 valid=0, invalid=0, unknown=0, tokens=[]))
         bucket["states"].append(state)
@@ -155,7 +218,8 @@ def build_results_overview(payload, *, generated_at=None):
                   summary={**state_counts(all_states), "systems": len(systems), "models": len(all_models)},
                   validity=validity, resources=dict(complete_token_runs=len(complete_tokens),
                   median_tokens=median(complete_tokens) if complete_tokens else None, wall_time_runs=wall_count),
-                  systems=[], cohorts=[], notes=list(NOTES))
+                  systems=[], cohorts=[], native_results=native_results,
+                  research=deepcopy(research), notes=list(NOTES))
     for system, bucket in sorted(systems.items()):
         result["systems"].append(dict(system=system, **state_counts(bucket["states"]),
             models=sorted(bucket["models"]), canonical_runs=bucket["canonical_runs"],
@@ -170,7 +234,7 @@ def build_results_overview(payload, *, generated_at=None):
 
 def validate_results_overview(value):
     """Reject unreviewed fields rather than making a private payload publishable."""
-    object_fields(value, ("schema", "generated_at", "source_generated_at", "total", "loaded", "truncated", "summary", "validity", "resources", "systems", "cohorts", "notes"))
+    object_fields(value, ("schema", "generated_at", "source_generated_at", "total", "loaded", "truncated", "summary", "validity", "resources", "systems", "cohorts", "native_results", "research", "notes"))
     require(value["schema"] == SCHEMA, "unsupported published schema")
     require(number(value["generated_at"]) >= number(value["source_generated_at"]) > 0, "invalid publication time")
     require(integer(value["total"]) >= integer(value["loaded"]) <= MAX_RUNS, "invalid published coverage")
@@ -236,6 +300,52 @@ def validate_results_overview(value):
                     and point["usage_complete"] == (point["total_tokens"] is not None), "invalid point coverage")
             point_count += 1
     require(point_count <= summary["runs"], "too many published points")
+    require(type(value["native_results"]) is list and len(value["native_results"]) <= summary["runs"], "invalid native result bound")
+    model_sets = {system["system"]: set(system["models"]) for system in value["systems"]}
+    native_system_counts = Counter()
+    for native in value["native_results"]:
+        object_fields(native, ("system", "model", "state", "task_id", "task_name", "metric", "direction", "seed_score", "best_score",
+                              "wall_seconds", "total_tokens", "usage_complete", "evidence_partial", "objectives", "population_objectives"))
+        require(type(native["system"]) is str and native["system"] in model_sets
+                and type(native["model"]) is str and native["model"] in model_sets[native["system"]]
+                and type(native["state"]) is str and native["state"] in STATES, "invalid native public identity")
+        identifier(native["task_id"])
+        identifier(native["metric"], metric=True)
+        require(native["task_name"] == task_title(native["task_id"]), "unreviewed native task label")
+        for field in ("seed_score", "best_score", "wall_seconds"):
+            number(native[field], nullable=True, nonnegative=field == "wall_seconds")
+        if native["total_tokens"] is not None:
+            integer(native["total_tokens"])
+        require(type(native["usage_complete"]) is bool and type(native["evidence_partial"]) is bool
+                and native["usage_complete"] == (native["total_tokens"] is not None)
+                and (not native["usage_complete"] or native["state"] in {"completed", "failed", "cancelled"}), "invalid native resource coverage")
+        objectives, population = native["objectives"], native["population_objectives"]
+        require(type(objectives) is list and type(population) is list, "invalid native objective arrays")
+        if population:
+            require(2 <= len(objectives) <= 8 and len(population) <= 1000
+                    and native["best_score"] is None and native["seed_score"] is None and native["direction"] is None,
+                    "invalid paired native measurement")
+            names = []
+            for objective in objectives:
+                object_fields(objective, ("metric", "direction"))
+                names.append(identifier(objective["metric"], metric=True))
+                require(objective["direction"] in {"maximize", "minimize"}, "invalid published objective direction")
+            require(len(set(names)) == len(names), "duplicate published native objective")
+            for candidate in population:
+                object_fields(candidate, names)
+                for measurement in candidate.values():
+                    number(measurement)
+        else:
+            require(not objectives and native["best_score"] is not None and native["direction"] in {"maximize", "minimize"},
+                    "invalid native scalar measurement")
+        native_system_counts[native["system"]] += 1
+    require(all(native_system_counts[system["system"]] <= system["runs"] for system in value["systems"]), "too many native system results")
+    if value["research"] is not None:
+        # Independently published observer measurements. These are never added
+        # to control counts, native pilot results or canonical evaluator cohorts.
+        from .results_research import validate_results_research
+        validate_results_research(value["research"])
+        require(value["research"]["source_generated_at"] <= value["generated_at"], "research snapshot is newer than publication")
     require(value["notes"] == NOTES, "unreviewed notes")
     return value
 

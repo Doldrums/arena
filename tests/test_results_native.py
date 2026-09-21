@@ -242,3 +242,176 @@ def test_darwinian_uses_native_validation_marker_never_pickle():
 def test_darwinian_is_viable_does_not_mean_packing_is_valid():
     evidence,native = darwinian_fixture(valid_marker=False)
     assert project_native(evidence,'darwinian-evolver-gateway',native)['best_score'] is None
+
+
+def prompt_gsm8k_values(framework):
+    from arena.results_native import GSM8K_DATASET, GSM8K_METRIC
+
+    def report(correct):
+        records = [{'source_split': 'test', 'source_index_zero_based': i,
+            'question_sha256': hashlib.sha256(str(i).encode()).hexdigest(),
+            'prediction': 'PRIVATE #### ' + ('2' if i < correct else '3'),
+            'extracted_prediction': '2' if i < correct else '3', 'gold': '2', 'correct': i < correct}
+            for i in range(8)]
+        return {'correct': correct, 'total': 8, 'accuracy': correct / 8, 'records': records}
+    seed, selected = report(8), report(7)
+    values = {
+        'results/protocol.json': {'schema': 'arena.prompt-pilot-protocol/1', 'framework': framework,
+            'canonical_evaluation': False, 'dataset_sha256': GSM8K_DATASET,
+            'split_sizes': {'train': 8, 'validation': 8, 'heldout': 8},
+            'metric': {'source_sha256': GSM8K_METRIC, 'functions': ['extract_answer', 'is_correct']}},
+        'results/heldout.json': {'schema': 'arena.prompt-pilot-heldout/1', 'canonical_evaluation': False,
+            'selection_split': 'validation', 'reports': {'seed': seed, 'selected': selected}},
+        'results/heldout-seed.json': {'status': 'completed', **seed},
+        'results/heldout-selected.json': {'status': 'completed', **selected},
+    }
+    if framework == 'gepa-gateway-gsm8k':
+        values['results/gepa-result.json'] = {'val_aggregate_scores': [.5, 1.0], 'best_idx': 1}
+    else:
+        values['results/native-summary.json'] = {'native_optimizer': 'MIPROv2', 'validation_score_percent': 100.0}
+    return values
+
+
+@pytest.mark.parametrize('framework', ['gepa-gateway-gsm8k', 'miprov2-gateway-gsm8k'])
+def test_prompt_pilot_selected_heldout_score_can_be_worse_than_seed(framework):
+    evidence, native = fixture(framework, prompt_gsm8k_values(framework))
+    result = project_native(evidence, framework, native)
+    assert result['status'] == 'recorded' and not evidence.issues
+    assert result['metric'] == 'heldout_accuracy' and result['scope'] == 'native'
+    assert result['best_score'] == .875 and result['seed_score'] == 1.0
+    assert result['heldout_total'] == 8 and result['heldout_correct'] == 7
+    assert result['selection_split'] == 'validation' and result['evaluation_split'] == 'heldout'
+    assert result['named_metrics'] == {'selection_accuracy': 1.0}
+    assert result['evaluations'] is None and result['candidates'] is None
+    assert 'PRIVATE' not in json.dumps(result)
+
+
+@pytest.mark.parametrize('tamper', ['metric', 'selection_split', 'partial', 'score', 'record', 'different_questions', 'best_idx', 'hash'])
+def test_prompt_pilot_rejects_wrong_metric_selection_partial_and_inconsistent_evidence(tamper):
+    framework = 'gepa-gateway-gsm8k'
+    values = prompt_gsm8k_values(framework)
+    if tamper == 'metric': values['results/protocol.json']['metric']['source_sha256'] = '0' * 64
+    if tamper == 'selection_split': values['results/heldout.json']['selection_split'] = 'heldout'
+    if tamper == 'partial': values['results/heldout-selected.json']['status'] = 'partial'
+    if tamper == 'score':
+        values['results/heldout-selected.json']['accuracy'] = 1.0
+        values['results/heldout.json']['reports']['selected']['accuracy'] = 1.0
+    if tamper == 'record':
+        values['results/heldout-selected.json']['records'][0]['prediction'] = 'PRIVATE #### 9'
+    if tamper == 'different_questions':
+        values['results/heldout-selected.json']['records'][0]['question_sha256'] = '0' * 64
+    if tamper == 'best_idx': values['results/gepa-result.json']['best_idx'] = 0
+    evidence, native = fixture(framework, values)
+    if tamper == 'hash': native['artifacts'][0]['sha256'] = '0' * 64
+    result = project_native(evidence, framework, native)
+    assert result['status'] == 'partial' and result['best_score'] is None and result['seed_score'] is None
+    assert evidence.issues and 'PRIVATE' not in json.dumps(result)
+
+
+def aflow_values():
+    from arena.results_native import GSM8K_DATASET
+
+    def csv_rows(split, correct):
+        return ('question,prediction,expected_output,score,cost\n' + ''.join(
+            f'{split}-{i},PRIVATE,2,{1.0 if i < correct else 0.0},0.0\n' for i in range(8))).encode()
+    prefix = 'workspace/aflow-gateway-gsm8k-v1/workspace/GSM8K/workflows/'
+    values = {
+        'results/pilot.json': {'schema': 'arena.aflow-gsm8k-pilot/1', 'canonical_evaluation': False,
+            'source_commit': '3f457218fc716093fe53f6df8a5d5e6379d66346',
+            'dataset_sha256': GSM8K_DATASET, 'native_completed': True, 'heldout_completed': True,
+            'selected_round': 2, 'validation_data': {'count': 8, 'sha256': '1' * 64},
+            'heldout_data': {'count': 8, 'sha256': '2' * 64},
+            'heldout': {'1': {'score': 1.0}, '2': {'score': .875}}},
+        'results/selection.json': {'round': 2, 'validation_score': 1.0, 'heldout_seen': False},
+        prefix + 'results.json': [{'round': 1, 'score': .875}, {'round': 2, 'score': 1.0}, {'round': 3, 'score': .875}],
+        'results/heldout-round-1/1.00000_20260921_010000.csv': csv_rows('test', 8),
+        'results/heldout-round-2/0.87500_20260921_010001.csv': csv_rows('test', 7),
+    }
+    for number, correct in [(1, 7), (2, 8), (3, 7)]:
+        values[prefix + f'round_{number}/1.00000_20260921_010000.csv'] = csv_rows('validation', correct)
+    return values
+
+
+def test_aflow_heldout_preserves_validation_selection_and_does_not_publish_zero_native_cost():
+    framework = 'aflow-gateway-gsm8k-v1'
+    evidence, native = fixture(framework, aflow_values())
+    result = project_native(evidence, framework, native)
+    assert result['status'] == 'recorded' and not evidence.issues
+    assert result['best_score'] == .875 and result['seed_score'] == 1
+    assert result['heldout_correct'] == 7 and result['heldout_total'] == 8
+    assert 'tolerance' in result['metric_definition']
+    assert 'cost' not in result and result['evaluations'] is None
+    assert 'PRIVATE' not in json.dumps(result)
+
+
+@pytest.mark.parametrize('tamper', ['overlap', 'metric_mismatch', 'partial', 'selection', 'missing_csv'])
+def test_aflow_requires_complete_disjoint_correctly_selected_measurements(tamper):
+    values = aflow_values()
+    path = 'results/heldout-round-2/0.87500_20260921_010001.csv'
+    if tamper == 'overlap': values[path] = values[path].replace(b'test-', b'validation-')
+    if tamper == 'metric_mismatch': values['results/pilot.json']['heldout']['2']['score'] = 1
+    if tamper == 'partial': values['results/pilot.json']['heldout_completed'] = False
+    if tamper == 'selection': values['results/selection.json']['heldout_seen'] = True
+    if tamper == 'missing_csv': del values[path]
+    evidence, native = fixture('aflow-gateway-gsm8k-v1', values)
+    result = project_native(evidence, 'aflow-gateway-gsm8k-v1', native)
+    assert result['status'] == 'partial' and result['best_score'] is None and evidence.issues
+
+
+def promptagent_values():
+    from arena.results_native import PENGUINS_DATASET
+    prefix = 'promptagent-pilot/'
+    root = {'id': 0, 'parent': -1, 'depth': 0, 'prompt': 'PRIVATE ROOT', 'reward': .5, 'test_metric': 1.0}
+    child = {'id': 1, 'parent': 0, 'depth': 1, 'prompt': 'PRIVATE CHILD', 'reward': 1.0, 'test_metric': .75}
+    splits = {'schema': 'arena.promptagent-native-splits/1', 'dataset_sha256': PENGUINS_DATASET, 'disjoint': True,
+        'record_hashes': {name: [hashlib.sha256(f'{name}-{i}'.encode()).hexdigest() for i in range(count)]
+                          for name, count in [('train', 8), ('eval', 4), ('test', 4)]}}
+    frozen = [{**{k: v for k, v in row.items() if k != 'test_metric'}, 'cum_rewards': [1.0]} for row in [root, child]]
+    receipt = {'schema': 'arena.promptagent-pilot/1', 'framework': 'promptagent-penguins-gateway',
+        'source_commit': '2edfc9e4462a6af97dc973442d074de9b3e876b2',
+        'canonical_evaluation': False, 'heldout_frozen': True, 'native_nodes': 2, 'iterations_completed': 2,
+        'selected_node': {'id': 1, 'reward': 1.0, 'heldout_accuracy': .75},
+        'splits_sha256': hashlib.sha256(json.dumps(splits).encode()).hexdigest(),
+        'frozen_state_sha256': hashlib.sha256(json.dumps(frozen).encode()).hexdigest()}
+    return {prefix + 'pilot-receipt.json': receipt, prefix + 'native-splits.json': splits,
+        prefix + 'frozen-search-state.json': frozen,
+        prefix + 'native-result.json': {'all_nodes': [root, child], 'best_reward_path': [root, child],
+                                       'best_reward_path_selected_node': [child]}}
+
+
+def test_promptagent_uses_frozen_reward_selection_not_best_test_metric():
+    evidence, native = fixture('promptagent-penguins-gateway', promptagent_values())
+    result = project_native(evidence, 'promptagent-penguins-gateway', native)
+    assert result['status'] == 'recorded' and not evidence.issues
+    assert result['seed_score'] == 1 and result['best_score'] == .75
+    assert result['heldout_total'] == 4 and result['heldout_correct'] == 3
+    assert result['selection_split'] == 'reward' and result['evaluations'] is None
+    assert result['iterations'] == 2 and result['candidates'] == 2
+    assert 'PRIVATE' not in json.dumps(result)
+
+
+@pytest.mark.parametrize('tamper', ['state_changed', 'overlap', 'fraction', 'hash', 'freeze'])
+def test_promptagent_does_not_export_unverified_native_heldout(tamper):
+    values = promptagent_values()
+    prefix = 'promptagent-pilot/'
+    if tamper == 'state_changed': values[prefix + 'native-result.json']['all_nodes'][0]['prompt'] = 'CHANGED'
+    if tamper == 'overlap':
+        splits = values[prefix + 'native-splits.json']
+        splits['record_hashes']['test'][0] = splits['record_hashes']['train'][0]
+        values[prefix + 'pilot-receipt.json']['splits_sha256'] = hashlib.sha256(json.dumps(splits).encode()).hexdigest()
+    if tamper == 'fraction':
+        values[prefix + 'native-result.json']['all_nodes'][1]['test_metric'] = .99
+        values[prefix + 'pilot-receipt.json']['selected_node']['heldout_accuracy'] = .99
+    if tamper == 'hash': values[prefix + 'pilot-receipt.json']['frozen_state_sha256'] = '0' * 64
+    if tamper == 'freeze': values[prefix + 'pilot-receipt.json']['heldout_frozen'] = False
+    evidence, native = fixture('promptagent-penguins-gateway', values)
+    result = project_native(evidence, 'promptagent-penguins-gateway', native)
+    assert result['status'] == 'partial' and result['best_score'] is None and evidence.issues
+
+
+def test_complete_native_heldout_remains_visible_when_overall_native_record_is_partial():
+    evidence, native = fixture('gepa-gateway-gsm8k', prompt_gsm8k_values('gepa-gateway-gsm8k'))
+    native['status'] = 'partial'
+    result = project_native(evidence, 'gepa-gateway-gsm8k', native)
+    assert result['status'] == 'partial' and result['best_score'] == .875
+    assert result['heldout_total'] == 8 and not evidence.issues

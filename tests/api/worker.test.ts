@@ -30,7 +30,11 @@ test('published results overview is read-only and does not expose private contro
   const check = (value: unknown): void => {
     if (Array.isArray(value)) value.forEach(check);
     else if (value && typeof value === 'object') for (const [key, child] of Object.entries(value)) {
-      assert.equal(forbidden.has(key), false, `private field: ${key}`);
+      if (key === 'source') {
+        assert.equal(child, 'native_observer', 'only the fixed research provenance marker may be published');
+      } else {
+        assert.equal(forbidden.has(key), false, `private field: ${key}`);
+      }
       check(child);
     }
   };

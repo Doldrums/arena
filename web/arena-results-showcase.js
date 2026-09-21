@@ -29,7 +29,7 @@ const validity = run => {
 
 // Read-only projections. Canonical comparisons never mix evaluator contracts;
 // native outcomes and partial measurements remain inspectable in the run table.
-export function initResultsShowcase({doc = document, fetcher = (...args) => fetch(...args), storage = sessionStorage, pollMs = 30000, requestTimeoutMs = 30000} = {}) {
+export function initResultsShowcase({doc = document, fetcher = (...args) => fetch(...args), storage = sessionStorage, pollMs = 30000, requestTimeoutMs = 30000, autoConnect = true} = {}) {
   const win = doc.defaultView, $ = id => doc.getElementById(id), listeners = [];
   let key = '', payload = null, groups = new Map(), selected = [], epoch = 0, pending = null, timer = null, destroyed = false, page = 0, loadState = 'disconnected';
   try { key = storage.getItem(STORAGE_KEY) || ''; } catch {}
@@ -83,12 +83,13 @@ export function initResultsShowcase({doc = document, fetcher = (...args) => fetc
     }
   }
   function setAccess() {
-    const access = key ? 'connected' : 'overview';
+    const access = key && payload ? 'connected' : 'overview';
     if (doc.body.dataset.resultsAccess !== access) {
       doc.body.dataset.resultsAccess = access;
-      doc.dispatchEvent(new win.CustomEvent('arena:results-access', {detail:{connected:!!key}}));
+      doc.dispatchEvent(new win.CustomEvent('arena:results-access', {detail:{connected:access === 'connected'}}));
     }
-    $('showcase-connect').textContent = key ? 'Access key' : 'Connect with key';
+    $('showcase-connect').textContent = !autoConnect ? 'Open experiment board ↗' : key ? 'Access key' : 'Connect with key';
+    if (!autoConnect) { $('showcase-connect').removeAttribute('aria-haspopup'); $('showcase-connect').removeAttribute('aria-controls'); }
     $('showcase-refresh').disabled = !key || !!pending;
     $('showcase-empty-connect').hidden = !!key;
   }
@@ -336,7 +337,7 @@ export function initResultsShowcase({doc = document, fetcher = (...args) => fetc
     setLoadState(loadState === 'refreshing' ? 'refreshing' : selected.length ? 'ready' : 'empty');
   }
   async function refresh() {
-    if (!key || destroyed || pending) return;
+    if (!autoConnect || !key || destroyed || pending) return;
     const current = ++epoch, controller = new win.AbortController();
     pending = {controller,current,timeout:null}; setAccess();
     setLoadState(payload ? 'refreshing' : 'loading');
@@ -368,7 +369,7 @@ export function initResultsShowcase({doc = document, fetcher = (...args) => fetc
       failedLoad(error?.name === 'TimeoutError');
     } finally { if (current === epoch) { win.clearTimeout(pending?.timeout); pending = null; setAccess(); } }
   }
-  function showKey() { $('showcase-key').value = ''; $('showcase-key-dialog').showModal(); $('showcase-key').focus(); }
+  function showKey() { if (!autoConnect) { win.location.assign('/experiments/results'); return; } $('showcase-key').value = ''; $('showcase-key-dialog').showModal(); $('showcase-key').focus(); }
   function disconnect() {
     epoch++; stopPending(); key = '';
     try { storage.removeItem(STORAGE_KEY); } catch {}
@@ -401,4 +402,4 @@ export function initResultsShowcase({doc = document, fetcher = (...args) => fetc
   return {refresh,disconnect,destroy() { destroyed = true; epoch++; stopPending(); $('main').setAttribute('aria-busy','false'); $('showcase-loading').hidden = true; if (timer) win.clearInterval(timer); for (const remove of listeners) remove(); }};
 }
 
-if (typeof document !== 'undefined' && document.body?.dataset.resultsShowcase === 'true') initResultsShowcase();
+if (typeof document !== 'undefined' && document.body?.dataset.resultsShowcase === 'true') initResultsShowcase({autoConnect:false});
