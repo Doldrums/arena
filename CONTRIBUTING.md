@@ -60,15 +60,15 @@ For a code change, run the relevant checks from [Checks](#checks). Tests should 
 
 ## Tasks
 
-A task collection registration belongs in `registry/task-sources/` and pins a full source commit. Task code and datasets stay upstream. Catalog records retain the original source path, hash, contract, metric direction and requirements.
+A task collection registration belongs in `registry/task-sources/` and pins a full source commit. Generated task metadata is committed in `registry/catalog.json`. Catalog records retain the original source path, hash, contract, metric direction and requirements.
 
-For the existing autoresearch collection, rebuild from an available source checkout:
+To update the collection, rebuild from the source checkout matching its registration:
 
 ```sh
-python scripts/sync_task_catalog.py /path/to/autoresearch-tasks
+python scripts/sync_task_catalog.py /path/to/task-source
 python scripts/build_insights.py
 python scripts/build_search_families.py
-python scripts/build_references.py /path/to/autoresearch-tasks
+python scripts/build_references.py /path/to/task-source
 python -m arena.registry validate
 python -m arena.references validate
 ```

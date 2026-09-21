@@ -34,11 +34,11 @@ Our contribution is turning research problems into task packages with a shared e
 | Research tasks awaiting evaluation integration | 270 | 28.15% |
 | **Total** | **959** | **100.00%** |
 
-Evaluator definitions cover **71.85%** of the catalog. The source library labels **81** of the adapted definitions as verified reconstructions. Recorded numeric seed baselines are available for **667 packages (69.55%)**; **75 (7.82%)** include published numeric references.
+Evaluator definitions cover **71.85%** of the catalog. **81** adapted definitions are recorded as verified reconstructions. Recorded numeric seed baselines are available for **667 packages (69.55%)**; **75 (7.82%)** include published numeric references.
 
 Counts refer to task packages, including distinct parameter settings and protocols. The split describes evaluator implementation; validation and runtime requirements are recorded separately for each task.
 
-Snapshot: [`autoresearch-tasks@5729caa7`](https://github.com/IMRUNya/autoresearch-tasks/blob/5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935/README.md). Counts: [task catalog](registry/catalog.json), [research domains](registry/insights.json), [reference evidence](registry/references.json). The source library defines the [implementation categories](https://github.com/IMRUNya/autoresearch-tasks/blob/5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935/docs/SCIENCE_EXPANSION_IMPLEMENTATION.md#L134).
+Release data: [task catalog](registry/catalog.json), [research domains](registry/insights.json), [reference evidence](registry/references.json).
 
 ## Inside the arena
 
