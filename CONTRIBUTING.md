@@ -82,3 +82,75 @@ Keep native logs and evidence immutable outside the repository. Inspect them wit
 Results should expose scores, budgets, elapsed time, measured calls and recorded changes to research cells or tools where available. Report the denominator and evidence source. Do not fill missing measurements, combine incompatible protocols or turn an observed association into a causal RSI claim.
 
 Changes to published snapshots and deployments require review independently of engine version registration.
+
+## Running the services
+
+The local read-only board starts with `python -m arena`. It defaults to `outputs/` and `autoresearch/`; repeat `--root` to select other archive directories. The service binds to loopback. Installed wheels include the interface, registry and schemas.
+
+### Private control and workers
+
+`examples/control.json` describes the configuration shape. Replace its placeholders in a private configuration file outside the repository.
+
+```sh
+python -m arena.control check --config /srv/arena/control.json
+python -m arena.control serve --config /srv/arena/control.json
+python -m arena.control worker --config /srv/arena/control.json --concurrency 4
+```
+
+The worker command executes authorized queue entries. Provision Linux isolation, cgroups, root-owned brokers, model credentials and resource limits before starting it. Choose concurrency according to evaluator CPU/RAM requirements and provider quotas. Deployment units and setup commands are in `scripts/deployment/`.
+
+Use `python -m arena.control create-key --help` for scoped credentials and quotas. Treat its output as a secret. Execution access is separate from Cloudflare sign-in; request it through the board or [arina.kharlamova@mbzuai.ac.ae](mailto:arina.kharlamova@mbzuai.ac.ae).
+
+### Cloudflare development and deployment
+
+Requires Node 22.12+:
+
+```sh
+npm ci
+npm run dev:cloudflare
+```
+
+The local Worker listens at <http://127.0.0.1:8788>. Production uses `api/src/index.ts` and verifies Cloudflare Access identities before serving assets or API responses. `ACCESS_TEAM_DOMAIN` and `ACCESS_AUD` must match the Access application. The configured login policy allows `mbzuai.ac.ae` addresses and explicitly approved users.
+
+`OBSERVER` is an optional VPC Service binding to a private loopback observer. Only allowlisted GET/HEAD routes and bounded event streams are forwarded. Queue/control APIs and mutations are unavailable through this Worker. Without the binding, native experiment routes report unavailability.
+
+```sh
+npm run check:cloudflare
+npx wrangler deploy --keep-vars
+```
+
+The first command builds without deploying. Verify the Access application and observer binding before deployment; preserve existing Access variables and keep preview URLs disabled.
+
+The deployed observer can use a separately pinned release through the `arena-board.service` systemd `PYTHONPATH` override. Update that override when upgrading the board. An observer-only release does not require restarting the experiment worker. Keep run archives, imported snapshots and private release bindings outside static publication roots.
+
+### Publishing results
+
+The discovery Results page reads `registry/results-overview.json`; refresh reloads that published snapshot. Publish new measurements with an explicit export, review and deployment. The workspace uses the published overview when its private control API is unavailable.
+
+```sh
+python scripts/export_results_overview.py --help
+```
+
+The exporter accepts a private results response, optionally with a validated research section. Updating an existing published snapshot requires a separate validated research section. It does not collect credentials or launch runs. Review the exported evidence, evaluator groups and accounting coverage before deployment.
+
+## Checks
+
+After installing the development dependencies from [README](README.md#validation):
+
+```sh
+python scripts/check_repository_policy.py
+python -m arena.registry validate
+python scripts/check_releases.py
+python scripts/audit_framework_coverage.py --check
+python scripts/build_insights.py --check
+python scripts/build_search_families.py --check
+python -m arena.references validate
+python -m pytest -q
+npm run test:web
+npm run test:api
+npm run typecheck
+npm run check:cloudflare
+python -m pip wheel . --no-deps -w dist
+```
+
+These default checks do not launch paid model calls or research runs. Linux VM conformance requires an explicitly enabled environment; fixture tests do not establish deployment readiness.

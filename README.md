@@ -1,114 +1,102 @@
 # Empira
 
-Empira is a research arena for systems that improve their own search, code or learning procedures. It brings together scientific task definitions, framework registrations, recorded experiments and resource accounting. Research-cell and tool activity are observable process measurements; they do not by themselves establish recursive improvement.
+**An arena for research on recursive self-improvement.**
 
-The Python package and operational commands use the name `arena`.
+Empira connects scientific tasks, research systems and experiment records to study a specific question: **when do changes to a system’s research methods improve its ability to make further improvements?**
 
-## Architecture
+Researchers can inspect the problems a system works on, follow changes to its code and research process, and examine results alongside the resources used to obtain them. Frameworks keep their own search algorithms, memory and learning mechanisms.
 
-| Component | Responsibility |
+Built by the [CPIL Research Group](https://cpil-lab.github.io/) at [MBZUAI](https://mbzuai.ac.ae/).
+
+[Research board](https://research-arena.small-pine-3af7.workers.dev) · [Contributing](CONTRIBUTING.md) · [Local setup](#quick-start)
+
+## Inside the arena
+
+| View | What you can investigate |
 | --- | --- |
-| `web/` | Task catalog, participants, results and the experiment workspace |
-| `api/` | Cloudflare Access verification, published snapshots and private observer routing |
-| `src/arena/observers/sciel/` | Read-only journal, checkpoint and heartbeat interpretation |
-| `src/arena/frameworks/` | Pinned framework profiles and explicit launch interfaces |
-| `src/arena/control*` | Authenticated queue, quotas, worker leases and cancellation |
-| `src/arena/*proxy*`, `engine_broker*` | Private execution boundaries and bounded evaluator access |
-| `registry/`, `schemas/` | Versioned task, participant, release and comparison contracts |
+| **Tasks** | Explore research domains and the task atlas; inspect problem descriptions, evaluator contracts and pinned source evidence. |
+| **Participants** | Find research systems, their authors and papers, implementation revisions and available launch profiles. |
+| **Experiments** | Follow native SCiEL runs through source changes, candidate lineages, research cells, authored tools, model calls and recorded artifacts. |
+| **Results** | Examine solution quality, recorded effort and research activity, with comparisons grouped by evaluator contract and model. |
 
-Frameworks retain their own search algorithms and state. The observer does not import the SCiEL engine or execute code from a run archive. A page load, registry update or PR cannot start an experiment.
+Results connect back to the experiment evidence. Research-cell creation, code revisions and tool use describe how a run developed; demonstrating recursive improvement also requires evaluating what those changes enable in subsequent experiments.
 
-A registered paper, a source-verified launch interface, a prepared environment and a successful evaluation are separate states. Recipe metadata records their scope and remaining requirements. Continuous task/system discovery is a separate integration under development.
+The catalog includes both research works and executable integrations. A paper entry, a prepared launch environment and a completed evaluation each have their own status. Framework profiles record the supported interface and its requirements.
 
-## Local board
+## Working with Empira
 
-Requires Python 3.11+:
+1. **Choose a task.** Review its scientific context, candidate interface and evaluation contract.
+2. **Select a system version.** Use a pinned implementation or a private engine release, with a prepared environment and an explicit budget.
+3. **Run through an authorized worker.** The worker executes approved queue entries and records their artifacts.
+4. **Inspect and compare.** Follow the experiment in the workspace and publish reviewed measurements to Results.
+
+Tasks and system versions enter through GitHub PRs. Run access is granted separately; request a key through the board or contact [arina.kharlamova@mbzuai.ac.ae](mailto:arina.kharlamova@mbzuai.ac.ae). An engine’s repository and container image can remain private: its Arena PR can contain only the system name and version. See [private engine releases](CONTRIBUTING.md#private-engine-releases).
+
+## Quick start
+
+Requires **Python 3.11+**. From the repository root:
 
 ```sh
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -e '.[dev]'
-python -m arena --root /absolute/path/to/run-archives
+python -m pip install -e .
+python -m arena
 ```
 
-The server listens at <http://127.0.0.1:8787>. Repeat `--root` to observe multiple directories. Without this option, it checks local `outputs/` and `autoresearch/`. No SCiEL installation is needed to inspect saved runs.
+Open <http://127.0.0.1:8787>. The local board serves the catalog and published results without model credentials. Native experiment views read existing archives; they do not require the SCiEL engine to be installed.
 
-| Route | View |
+To inspect your own runs, provide their directories:
+
+```sh
+python -m arena --root /path/to/outputs --root /path/to/other-runs
+```
+
+| URL | View |
 | --- | --- |
-| `/` | Task atlas, research domains and catalog |
-| `/?view=participants` | Research systems, authors and source papers |
-| `/results` | Published research results |
-| `/experiments` | Native experiment details |
-| `/experiments/results` | Results within the workspace sidebar |
-| `/experiments/queue` | Queue, when connected to an authorized private control API |
+| `/` | Tasks and research domains |
+| `/?view=participants` | Participants and papers |
+| `/results` | Published results |
+| `/experiments` | Experiment workspace |
 
-Results group runs by evaluator contract and model. Published references, measured runs and integration checks remain distinct. Missing accounting stays missing; activity counts and best observed results are not evidence of causal improvement or an unmeasured speedup.
+The workspace retains its own Results and Queue pages. Queue operations require a configured private control service and a scoped key.
 
-## Cloudflare
+## Architecture
 
-Requires Node 22.12+:
+The discovery board and experiment workspace share task, system and result contracts. A Python observer reads native journals, checkpoints and heartbeat files. Execution belongs to a separate Linux worker with bounded resources and private engine/evaluator services.
 
-```sh
-npm ci
-npm run dev:cloudflare
-```
+| Layer | Implementation |
+| --- | --- |
+| Interface | JavaScript ES modules, HTML and CSS in `web/` |
+| Observer and execution services | Python in `src/arena/`; NumPy for numerical projections |
+| Edge API | TypeScript on Cloudflare Workers, with Cloudflare Access authentication |
+| Registry | Versioned JSON snapshots and schemas in `registry/` and `schemas/` |
+| Private queue | SQLite-backed control service, worker leases, quotas and cancellation |
 
-The local Worker listens at <http://127.0.0.1:8788>. Production uses `api/src/index.ts`; every asset and API request requires a verified Cloudflare Access identity. `ACCESS_TEAM_DOMAIN` and `ACCESS_AUD` must match the Access application. The current sign-in policy allows `mbzuai.ac.ae` addresses and explicitly approved users.
+The cloud board serves published result snapshots and connects to the private observer through a Cloudflare VPC Service. Experiment views read native run state; published Results change through an explicit export and deployment. The public Worker exposes read-only routes; execution credentials stay on the private side.
 
-`OBSERVER` is an optional VPC Service binding to a private loopback observer. Only allowlisted GET/HEAD routes and bounded event streams are forwarded. Queue/control APIs and mutations are not exposed through this Worker. Without the binding, native experiment routes report unavailability.
-
-The discovery results page reads `registry/results-overview.json`; refresh reloads that published snapshot. Publishing new measurements requires an explicit snapshot export and deployment. Use `python scripts/export_results_overview.py --help` for source and filtering options.
-
-```sh
-npm run check:cloudflare
-npx wrangler deploy --keep-vars
-```
-
-The first command builds without deploying. Before a production deployment, verify Access configuration and the observer binding. Preserve existing Access variables and keep preview URLs disabled. Deployment units and VM setup commands are in `scripts/deployment/`.
-
-The deployed observer can use a separately pinned release through the `arena-board.service` systemd `PYTHONPATH` override. Update that override when upgrading the board; restarting the experiment worker is unnecessary for an observer-only change. Keep run archives, imported snapshots, credentials and private release bindings outside static publication roots.
-
-## Private execution
-
-`examples/control.json` describes the configuration shape. Replace its placeholders in a private configuration file; it is not a ready-to-run deployment.
-
-```sh
-python -m arena.control check --config /srv/arena/control.json
-python -m arena.control serve --config /srv/arena/control.json
-python -m arena.control worker --config /srv/arena/control.json --concurrency 4
-```
-
-The worker command executes authorized queue entries. Provision the Linux isolation, cgroups, root-owned brokers, model credentials and resource limits before starting it. Concurrency must fit evaluator CPU/RAM requirements and provider quotas; a launch profile alone does not prove capacity.
-
-Use `python -m arena.control create-key --help` for scoped credentials and quotas. Treat its output as a secret. The board's request form contacts [arina.kharlamova@mbzuai.ac.ae](mailto:arina.kharlamova@mbzuai.ac.ae) for access; this is separate from Cloudflare sign-in.
-
-Private engines can remain in private repositories and images. A public version reference resolves to immutable worker-only source/image pins; see [contributing](CONTRIBUTING.md#private-engine-releases).
+The Python package and CLI use the name `arena`. See [running the services](CONTRIBUTING.md#running-the-services) for worker configuration and Cloudflare deployment.
 
 ## Validation
 
+For development, install the test dependencies and use **Node 22.12+**:
+
 ```sh
-python scripts/check_repository_policy.py
-python -m arena.registry validate
-python scripts/check_releases.py
-python scripts/audit_framework_coverage.py --check
-python scripts/build_insights.py --check
-python scripts/build_search_families.py --check
-python -m arena.references validate
-python -m pytest -q
+python -m pip install -e '.[dev]'
+npm ci
 npm ci --prefix tests/web
+python scripts/check_repository_policy.py
+python -m pytest -q
 npm run test:web
 npm run test:api
 npm run typecheck
-npm run check:cloudflare
-python -m pip wheel . --no-deps -w dist
 ```
 
-Default checks use fixtures and local transports. They do not launch paid model calls or research runs. Linux VM conformance requires its explicit opt-in environment; passing local tests does not certify that deployment. Wheels bundle the UI, registry and schemas.
+CI also checks generated registry snapshots and package/Worker builds. See the [complete check list](CONTRIBUTING.md#checks). Default tests use fixtures and local transports; Linux execution conformance has separate opt-in checks.
 
 ## Attribution and licensing
 
-The observer and experiment UI originate from the private `Doldrums/sciel` repository. Baseline file hashes are preserved in `registry/provenance/sciel-extraction.json`. This repository grants no new open-source license to that material.
+The observer and experiment UI originate from the private `Doldrums/sciel` repository. Baseline hashes are preserved in `registry/provenance/sciel-extraction.json`; this repository grants no new open-source license to that material.
 
-Task metadata derives from `IMRUNya/autoresearch-tasks` at the immutable revision in `registry/task-sources/autoresearch-tasks.json`. External implementations, datasets and evaluators retain their original terms. A participant declaration does not relicense its source code.
+Task metadata derives from `IMRUNya/autoresearch-tasks` at the revision recorded in `registry/task-sources/autoresearch-tasks.json`. External implementations, datasets and evaluators retain their original terms.
 
-The [CPIL mark](https://cpil-lab.github.io/images/brand/cpil-lab-concept.png) and the MBZUAI avatar from its [official media package](https://staticcdn.mbzuai.ac.ae/mbzuaiwpprd01/2026/02/MBZUAI-Avatars.zip) were retrieved unchanged on 2026-09-21. The marks belong to their respective organizations. SF Pro resolves from local installation; no font binaries are distributed.
+The [CPIL mark](https://cpil-lab.github.io/images/brand/cpil-lab-concept.png) and the MBZUAI avatar from its [official media package](https://staticcdn.mbzuai.ac.ae/mbzuaiwpprd01/2026/02/MBZUAI-Avatars.zip) were retrieved unchanged on 2026-09-21 and belong to their respective organizations. SF Pro resolves from local installation; no font binaries are distributed.
