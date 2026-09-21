@@ -55,3 +55,31 @@ with about 424 MB peak RSS; warm discovery took 3.9 seconds. Warm the VM observe
 directly before sending Cloudflare traffic, whose upstream header deadline is
 10 seconds. Imported files are observation snapshots, not remote execution or
 proof that a Mac process is running on the VM.
+
+## Deployment verification
+
+Code commit: `3225c8b8f2dbd14f6548f09aa8d5be731c1caf77`. The observer runs
+from `/opt/arena/observer-releases/3225c8b8`; the experiment worker keeps its
+previous release and PID. The verified import contains **203 runs and 129,585
+files**. Every extracted file matched its captured size and SHA-256 before the
+snapshot directory was published read-only to the board.
+
+The server now exposes **217 runs**: 203 imported records plus its existing 14.
+Cold warmup took 45.18 seconds on the VM; a subsequent full run-list request took
+2.34 seconds. The board used approximately 359 MB at the postdeployment check.
+Board, worker and private tunnel services are active; worker PID `25447` did not
+change. The local Arena observer was also reloaded, preserving its four
+additional local records for a total of 207.
+
+Cloudflare deployments:
+
+- Main Worker: `cad03042-4e2d-466f-969f-bc267780f2c7`.
+- Existing expiring debug Worker: `a66b602f-a9e8-44f6-8c9e-1d6b5dd04344`.
+
+Authenticated Chromium verification rendered all 217 rows, opened a v16 circle
+packing run, displayed its recorded metric `2.623714` and `Subscription` cost
+status, fetched saved program source with private/no-store headers, and observed
+two SSE snapshots across reconnection without browser errors. Unauthenticated
+and logged-out observer requests returned 401; writes returned 405 and control
+routes remained unavailable. The main hostname retained its university Access
+sign-in gate. No CSS or HTML files changed in this migration.

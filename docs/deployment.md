@@ -68,6 +68,30 @@ deployed on both Workers as of 21 September 2026. Service
 See the official [Workers VPC setup](https://developers.cloudflare.com/workers-vpc/get-started/)
 and [connector requirements](https://developers.cloudflare.com/workers-vpc/configuration/tunnel/).
 
+### Observer-only updates and imported history
+
+The September 21 observer update uses a separate code release at
+`/opt/arena/observer-releases/3225c8b8`. The board's systemd drop-in,
+`/etc/systemd/system/arena-board.service.d/80-observer-snapshot.conf`, selects its
+`src` directory through `PYTHONPATH`. This leaves the worker's existing
+`/opt/arena/current` release and running experiments unchanged. Future board
+updates must update this drop-in to the reviewed observer release and restart
+only `arena-board.service`; updating `/opt/arena/current` alone will not update
+this separately pinned observer.
+
+The board observes both `/srv/arena/control/runs` and
+`/srv/arena/observer-imports/mac-20260921`. The latter is a verified, read-only
+snapshot of 203 Mac-local run archives, including their evidence and receipts.
+It is not a continuous synchronization or a source of runnable queue entries.
+The existing 14 server runs remain separate. Keep import snapshots outside
+static assets and preserve content-addressed files byte for byte.
+
+Before making a newly imported archive available, verify its file manifest and
+hashes, publish the completed directory, then restart and warm the observer
+directly through loopback. Cold discovery can exceed the Cloudflare proxy's
+10-second header deadline. The observer changes and validation are recorded in
+the [parity migration report](../reports/observer-parity-migration-20260921.md).
+
 For local inspection, `python -m arena --root ...` reads native journals and
 heartbeat files. `npm run dev:cloudflare` uses a separate loopback-only Worker
 entrypoint with the same registry routes and Cloudflare backend limitations.
