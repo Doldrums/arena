@@ -46,8 +46,15 @@ class Transport:
 @contextmanager
 def gateway(transport=None, **kwargs):
     audits = []
-    bridge = ProviderBridge(transport or Transport(), audit=audits.append, **kwargs)
+    audit_condition = threading.Condition()
+    def audit(record):
+        with audit_condition:
+            audits.append(record)
+            audit_condition.notify_all()
+    bridge = ProviderBridge(transport or Transport(), audit=audit, **kwargs)
     server = GatewayServer(("127.0.0.1", 0), bridge, KEY)
+    server.fixture_audits = audits
+    server.fixture_audit_condition = audit_condition
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
@@ -62,10 +69,19 @@ def call(server, path="/v1/chat/completions", body=None, key=KEY, headers=None):
     conn = http.client.HTTPConnection(*server.server_address, timeout=3)
     kwargs = {"Authorization": "Bearer " + key, "Content-Type": "application/json", **(headers or {})}
     raw = None if body is None else json.dumps(body)
+    with server.fixture_audit_condition:
+        previous_audits = len(server.fixture_audits)
     conn.request("GET" if body is None else "POST", path, raw, kwargs)
     response = conn.getresponse()
     result = response.status, dict(response.headers), response.read()
     conn.close()
+    if body is not None:
+        # Response bytes can reach the client before the handler's finally
+        # block appends its audit. Synchronize on that event, not scheduling.
+        with server.fixture_audit_condition:
+            assert server.fixture_audit_condition.wait_for(
+                lambda: len(server.fixture_audits) > previous_audits, timeout=3
+            ), "POST handler did not publish its final audit record"
     return result
 
 
