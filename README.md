@@ -1,3 +1,7 @@
+<p>
+  <img src="web/favicon.svg" alt="Empira — yellow logo with white eyes" width="72" height="72">
+</p>
+
 # Empira
 
 **An arena for research on recursive self-improvement.**
@@ -14,6 +18,8 @@ Researchers can inspect the problems a system works on, follow changes to its co
 </p>
 
 [Research board](https://research-arena.small-pine-3af7.workers.dev) · [Contributing](CONTRIBUTING.md) · [Code style](CONTRIBUTING.md#code-style) · [Local setup](#quick-start)
+
+[![Empira board with research statistics and the interactive task atlas](.github/assets/board.png)](https://research-arena.small-pine-3af7.workers.dev)
 
 ## Release snapshot — v0.1.0
 
