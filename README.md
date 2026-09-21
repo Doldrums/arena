@@ -13,7 +13,7 @@ Researchers can inspect the problems a system works on, follow changes to its co
   <a href="https://mbzuai.ac.ae/"><img src="web/brand/mbzuai.png" alt="MBZUAI logo" width="48" height="48" align="middle"> MBZUAI</a>.
 </p>
 
-[Research board](https://research-arena.small-pine-3af7.workers.dev) · [Contributing](CONTRIBUTING.md) · [Local setup](#quick-start)
+[Research board](https://research-arena.small-pine-3af7.workers.dev) · [Contributing](CONTRIBUTING.md) · [Code style](CONTRIBUTING.md#code-style) · [Local setup](#quick-start)
 
 ## Release snapshot — v0.1.0
 

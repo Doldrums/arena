@@ -1,5 +1,7 @@
 # Contributing
 
+[Code style](#code-style) · [Tasks](#tasks) · [Participants](#participants) · [Private releases](#private-engine-releases) · [Checks](#checks)
+
 Use a branch and a pull request against `main`. Existing collaborators can push a branch to this repository; external contributors can use a fork. Include the concrete behavior changed and the relevant validation. Use concise Conventional Commits, for example `fix: preserve evaluator provenance`.
 
 Opening or merging a PR does not authorize an experiment. Execution requires a separately approved run configuration and a scoped worker key.
@@ -14,6 +16,47 @@ Opening or merging a PR does not authorize an experiment. Execution requires a s
 - Compare results only within compatible evaluator contracts and budgets. Retain model identity, provenance and missing values in the underlying records.
 
 Run the relevant checks listed in [README](README.md#validation). Changes to a shared boundary require its integration tests. Do not replace execution evidence with source inspection or fixture-only results.
+
+## Code style
+
+Apply these rules to new and changed code. Keep formatting changes scoped to the code being edited.
+
+### Structure and readability
+
+- Keep source, test and configuration files within **500 physical lines**. Extract modules by responsibility; keep normal whitespace and readable expressions.
+- Prefer named functions and explicit imports. Put shared contracts in a dependency that both callers can import without a cycle.
+- Preserve public APIs and CLI entry points when splitting modules. Use explicit re-exports where compatibility is needed.
+- Name values for what they represent. Include units in resource and timing names, such as `elapsed_seconds` or `max_bytes`.
+- Comments explain a constraint, decision or non-obvious behavior. Keep task history, progress notes and commented-out implementations out of source files.
+
+### Python
+
+- Use four spaces, `snake_case` for functions and variables, `PascalCase` for classes and `UPPER_SNAKE_CASE` for constants.
+- Separate standard-library, third-party and project imports. Avoid wildcard imports and import-time filesystem, network or process work.
+- Annotate new public interfaces, including return values. Keep serialization and validation at explicit boundaries.
+- Catch the errors the caller can handle. Preserve unexpected failures for diagnosis; HTTP errors must not expose secrets, raw subprocess output or private paths.
+- Use context managers for files and locks, and explicit cleanup for subprocesses, timers and subscriptions.
+
+### JavaScript and TypeScript
+
+- Use ES modules, two spaces, semicolons, `camelCase` for functions and variables, and `PascalCase` for types and classes. Match the surrounding file's quote style and preserve existing API field names.
+- Prefer `const`; use `let` when reassignment is required. Validate external JSON before treating it as an application type.
+- Keep TypeScript strict checks enabled. Use `unknown` and narrowing at untrusted boundaries rather than suppressing errors with `any`.
+- Make UI state ownership explicit. Dispose listeners, streams and timers when their view is destroyed; ignore stale responses after navigation.
+- Use `textContent` for plain text and the existing escaping helpers when constructing HTML from data.
+
+### HTML, CSS and data
+
+- Use semantic elements, labelled controls and visible keyboard focus. Preserve loading, empty, error and reduced-motion states.
+- Use the existing CSS variables and feature stylesheets. Keep selectors scoped and preserve cascade order when extracting styles.
+- Write readable CSS with one declaration per line. Use two-space indentation for CSS, JSON and YAML.
+- Edit source metadata and regenerate derived catalogs with the existing scripts. Preserve source revisions, metric directions and missing values.
+
+### Review and enforcement
+
+CI enforces the repository layout, file-size policy, TypeScript checks, tests and builds. Formatting and module boundaries are reviewed manually; this repository has no configured Ruff, Black, ESLint or Prettier gate.
+
+For a code change, run the relevant checks from [Checks](#checks). Tests should exercise observable behavior and meaningful failure cases. Refactors must preserve existing behavior; new performance caches need invalidation coverage. UI changes need a visual check at desktop and mobile widths.
 
 ## Tasks
 
