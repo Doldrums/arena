@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#f5f5f6">
-  <meta name="description" content="SCiEL research results: valid programs, scores and the resources behind them.">
+  <meta name="description" content="Research results across systems and models: evaluation outcomes, score progression, recorded resources and run evidence.">
   <title>Empira · Results</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/style.css">
@@ -27,16 +27,55 @@
     <div class="arena-header-actions"><button id="showcase-connect" class="button" type="button" aria-haspopup="dialog" aria-controls="showcase-key-dialog">Connect with key</button></div>
   </header>
   <main id="main" class="arena-canvas showcase-canvas" tabindex="-1">
-    <section class="showcase-intro" aria-labelledby="showcase-title"><div><p class="eyebrow">RESULTS · SCIEL</p><h1 id="showcase-title">SCiEL in the arena.</h1><p class="showcase-deck">The programs it produces.<br>The resources it takes.</p></div><div class="showcase-intro-aside"><p>Explore results across models, with the task, starting point and search budget in view.</p><a class="button primary" href="/experiments/results">Open experiment board <span aria-hidden="true">↗</span></a></div></section>
-    <div class="showcase-context"><div><span id="showcase-status" role="status" aria-live="polite">Connect to explore recorded results.</span><button id="showcase-refresh" type="button" disabled aria-label="Refresh results">↻</button></div><label id="showcase-cohort-label" hidden>Study<select id="showcase-cohort" aria-label="Task and evaluator cohort"></select></label></div>
-    <section id="showcase-highlights" class="showcase-highlights" aria-label="SCiEL result highlights"></section>
+    <header class="showcase-heading">
+      <h1 id="showcase-title">Results</h1>
+      <div class="showcase-context"><span id="showcase-status" role="status" aria-live="polite">Connect to explore recorded results.</span><button id="showcase-refresh" type="button" disabled aria-label="Refresh results">↻</button></div>
+    </header>
+    <section class="showcase-toolbar" aria-label="Filter results">
+      <label>System<select id="showcase-framework"><option value="sciel-release">SCiEL</option></select></label>
+      <label>Model<select id="showcase-model"><option value="all">All models</option></select></label>
+      <label>Status<select id="showcase-state"><option value="all">All statuses</option><option value="completed">Completed</option><option value="active">Active</option><option value="attention">Needs attention</option><option value="cancelled">Cancelled</option></select></label>
+      <label>Budget<select id="showcase-budget"><option value="all">All budgets</option></select></label>
+      <label class="showcase-search-label">Search<input id="showcase-search" type="search" placeholder="Search runs, tasks or models" autocomplete="off"></label>
+    </section>
+    <section id="showcase-highlights" class="showcase-highlights" aria-label="Result overview"></section>
     <p id="showcase-basis" class="showcase-basis"></p>
-    <section id="showcase-empty" class="showcase-empty"><span class="showcase-empty-icon" aria-hidden="true">↗</span><h2>The evidence, all in one place.</h2><p id="showcase-empty-copy">Connect with your Arena key to see SCiEL’s recorded scores, valid programs and resource use.</p><button id="showcase-empty-connect" class="button primary" type="button">Connect to results</button></section>
+    <section id="showcase-empty" class="showcase-empty"><h2>Connect to results</h2><p id="showcase-empty-copy">Use your Arena key to inspect recorded scores, evaluation outcomes and resources across runs.</p><button id="showcase-empty-connect" class="button primary" type="button">Connect with key</button></section>
     <div id="showcase-content" class="showcase-content" hidden>
-      <section class="showcase-scores showcase-card" aria-labelledby="showcase-model-title"><header><div><p class="eyebrow">ACROSS MODELS</p><h2 id="showcase-model-title">Results, model by model.</h2><p id="showcase-score-context"></p></div><span class="showcase-round-mark" aria-hidden="true">↗</span></header><div class="showcase-row-legend"><span>Model / process</span><span>Seed → best score</span></div><div id="showcase-models"></div><p id="showcase-seed-note" class="showcase-card-note"></p></section>
-      <aside class="showcase-resources" aria-label="Search and resources"><article class="showcase-budget-card"><p class="eyebrow">THE SEARCH BUDGET</p><div id="showcase-budget-value" class="showcase-budget-value">—</div><h2 id="showcase-budget-title">Native search budget</h2><p id="showcase-budget-note"></p><div class="showcase-budget-art" aria-hidden="true"><span></span><span></span><span></span><span></span></div></article><article class="showcase-card showcase-token-card"><p class="eyebrow">RECORDED RESOURCES</p><h2>Tokens behind the result.</h2><p id="showcase-token-context"></p><div id="showcase-tokens"></div><p class="showcase-card-note">Counts from recorded provider receipts. Hatched bars have partial token coverage.</p></article></aside>
+      <div class="showcase-chart-grid">
+        <section class="showcase-card showcase-chart-card" aria-labelledby="showcase-efficiency-title">
+          <header class="showcase-card-heading"><h2 id="showcase-efficiency-title">Score &amp; resources</h2><label class="showcase-inline-control">Resource<select id="showcase-axis"><option value="tokens">Tokens</option><option value="time">Wall time</option></select></label></header>
+          <label id="showcase-cohort-label" class="showcase-study-control" hidden>Task / evaluator<select id="showcase-cohort" aria-label="Task and evaluator cohort"></select></label>
+          <div id="showcase-efficiency" class="showcase-plot"></div>
+          <p id="showcase-efficiency-note" class="showcase-card-note"></p>
+        </section>
+        <section class="showcase-card showcase-chart-card" aria-labelledby="showcase-progress-title">
+          <header class="showcase-card-heading"><h2 id="showcase-progress-title">Seed → best</h2><span class="showcase-chart-key"><span class="showcase-key-seed" aria-hidden="true"></span>Seed<span class="showcase-key-best" aria-hidden="true"></span>Best</span></header>
+          <p id="showcase-score-context" class="showcase-card-context"></p>
+          <div id="showcase-progress" class="showcase-plot"></div>
+          <p id="showcase-seed-note" class="showcase-card-note"></p>
+        </section>
+        <section class="showcase-card" aria-labelledby="showcase-validity-title">
+          <header class="showcase-card-heading"><h2 id="showcase-validity-title">Evaluation outcomes</h2></header>
+          <div id="showcase-validity" class="showcase-measures"></div>
+          <p id="showcase-validity-note" class="showcase-card-note"></p>
+        </section>
+        <section class="showcase-card" aria-labelledby="showcase-tokens-title">
+          <header class="showcase-card-heading"><h2 id="showcase-tokens-title">Recorded resources</h2></header>
+          <p id="showcase-token-context" class="showcase-card-context"></p>
+          <div id="showcase-tokens" class="showcase-measures"></div>
+        </section>
+      </div>
+      <section class="showcase-card showcase-table-card" aria-labelledby="showcase-model-title">
+        <header class="showcase-card-heading"><div class="showcase-table-title"><h2 id="showcase-model-title">Run comparison</h2><span id="showcase-run-count"></span></div><label class="showcase-inline-control">Sort<select id="showcase-sort"><option value="model">System / model</option><option value="score">Best score</option><option value="tokens">Fewest tokens</option><option value="time">Shortest time</option><option value="created">Most recent</option></select></label></header>
+        <div class="showcase-table-scroll" tabindex="0" role="region" aria-label="Run comparison table, scroll horizontally for all columns">
+          <table class="showcase-table"><thead><tr><th scope="col">System / model</th><th scope="col">Status</th><th scope="col">Seed → best</th><th scope="col">Valid / evaluated</th><th scope="col">Tokens</th><th scope="col">Wall time</th><th scope="col">Details</th></tr></thead><tbody id="showcase-models"></tbody></table>
+        </div>
+        <footer class="showcase-table-pagination"><span id="showcase-table-page"></span><div><button id="showcase-page-prev" class="button" type="button" disabled>← Previous</button><button id="showcase-page-next" class="button" type="button" disabled>Next →</button></div></footer>
+      </section>
+      <section class="showcase-card showcase-coverage-card" aria-labelledby="showcase-coverage-title"><header class="showcase-card-heading"><h2 id="showcase-coverage-title">Measurement coverage</h2></header><div id="showcase-coverage"></div><p id="showcase-coverage-note" class="showcase-card-note"></p></section>
+      <details id="showcase-methodology" class="showcase-methodology" hidden><summary><span>Measurement notes</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div id="showcase-methodology-body"></div></details>
     </div>
-    <details id="showcase-methodology" class="showcase-methodology" hidden><summary><span>What these results measure</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div id="showcase-methodology-body"></div></details>
     <section class="showcase-next"><div><h2>Follow the research behind the numbers.</h2><p>Explore individual runs, candidate evidence and recorded resources in the experiment board.</p></div><a class="showcase-next-link" href="/experiments/results" aria-label="Open experiment board"><span aria-hidden="true">↗</span></a></section>
     <footer class="page-footer arena-page-footer showcase-footer"><span class="showcase-attribution"><span>Made by</span> <a href="https://cpil-lab.github.io/" target="_blank" rel="noopener noreferrer"><img src="/brand/cpil.png" width="24" height="24" alt="">CPIL Research Group</a> <span>@</span> <a href="https://mbzuai.ac.ae/" target="_blank" rel="noopener noreferrer"><img src="/brand/mbzuai.png" width="28" height="28" alt="">MBZUAI</a></span><a href="/?view=participants">Explore participating systems ↗</a></footer>
   </main>
