@@ -14,8 +14,14 @@ without a custom domain.
 The account had no existing Arena Worker or Access organization. Deployment
 created the Worker, the Empira Access organization, an email one-time-PIN login
 provider and a Worker-level Access application. The policy permits only the
-two configured owner identities; it does not grant access to an entire email
-domain or alter other Workers. No paid subscription or experiment was started.
+`mbzuai.ac.ae` email domain and the existing explicit external owner address,
+following the user's request to enable university-wide login. The domain rule
+has no wildcard or additional domains. Other Workers are unchanged. No paid
+subscription or experiment was started.
+
+The organization's login header now reads: "Sign in with your @mbzuai.ac.ae
+email. We'll send you a one-time code." Email one-time PIN remains the
+application's only allowed identity provider.
 
 The committed Wrangler configuration now pins the account, enables this
 `workers.dev` address and sets the non-secret Access issuer and audience.
@@ -32,6 +38,13 @@ All static assets still run through the production JWT-verifying Worker.
   configured Access login host, with the correct application audience.
 - Chromium reached the Empira login form and found the email input. No login
   code was requested or consumed by the agent.
+- Remote policy readback confirms exactly the university email-domain rule and
+  the existing external owner address. The application's Worker destination,
+  identity provider, session duration and other settings are preserved.
+- Fresh HTTP and Chromium sessions reached the Access login page. Chromium
+  confirmed the university email guidance and email input are visible; the
+  screenshot was inspected. Other organization settings are preserved; the API
+  omitted an empty `trusted_accounts` array.
 - Nine Worker API tests passed after configuration changes. The application
   content had already passed desktop/mobile and numeric-results verification
   before upload.

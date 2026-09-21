@@ -9,7 +9,7 @@ const fixture={catalog:{tasks:[
   {id:'tensor-1',name:'Tensor decomposition',family:'matmul_tensor',executable:true},
   {id:'circle-2',name:'Second packing task',family:'circle_packing_square',executable:true},
   {id:'unavailable',name:'Unspecified definition',family:null,executable:false},
-]},insights:{domains:[{id:'math',label:'Mathematics'},{id:'physics',label:'Physics'}],task_annotations:{'circle-1':{domain_id:'math'},'circle-2':{domain_id:'math'},'tensor-1':{domain_id:'math'},unavailable:{domain_id:'physics'}}},
+]},insights:{domains:[{id:'math',label:'Mathematics'},{id:'physics',label:'Physics',description:'Physical systems and their dynamics.',why_it_matters:'Model and measure physical systems.',representative_task_ids:['unavailable']}],task_annotations:{'circle-1':{domain_id:'math'},'circle-2':{domain_id:'math'},'tensor-1':{domain_id:'math'},unavailable:{domain_id:'physics'}}},
 searchFamilies:{groups:[{id:'evolution',label:'Evolutionary methods',description:'Search over programs.',task_ids:['circle-1','tensor-1'],representative_task_ids:['tensor-1']},
 {id:'other',label:'Other source methods',description:'Other methods.',task_ids:['circle-2','unavailable']}]}};
 function mount(options={}) {
@@ -24,7 +24,7 @@ test('atlas represents each actual task once and ignores foreign or duplicate me
   const points=[...root.querySelectorAll('[data-task-id]')].map(x=>x.dataset.taskId);
   assert.equal(points.length,4);assert.equal(new Set(points).size,4);assert.ok(!points.includes('foreign'));
   const model=w.buildAtlasModel({...fixture,mode:'families'});
-  assert.equal(model.groups.length,3);assert.equal(model.groups.find(g=>g.id==='__unspecified__').count,1);
+  assert.equal(model.groups.length,2);assert.equal(model.groups.find(g=>g.id==='physics').count,1);
   assert.equal(model.groups.reduce((n,g)=>n+g.count,0),fixture.catalog.tasks.length);
  }finally{dom.window.close();}
 });
@@ -60,28 +60,62 @@ test('keyboard navigation, task links and browse action address actual selected 
  }finally{dom.window.close();}
 });
 
-test('mode switch groups by literal task families, supports unspecified and notifies URL owner',()=>{
+test('Task families groups by scientific domain metadata and browses the domain filter',()=>{
  const modes=[],calls=[];const {dom,w,root}=mount({onModeChange:mode=>modes.push(mode),onFilter:(...args)=>calls.push(args)});
  try {
   root.querySelector('[data-atlas-mode="families"]').click();assert.deepEqual(modes,['families']);
   assert.equal(root.querySelector('[data-atlas-mode="families"]').getAttribute('aria-pressed'),'true');
-  assert.equal(root.querySelectorAll('[data-atlas-cluster]').length,3);assert.equal(root.querySelectorAll('[data-task-id]').length,4);
-  const select=root.querySelector('select');select.value='__unspecified__';select.dispatchEvent(new w.Event('change'));
-  root.querySelector('.atlas-browse').click();assert.deepEqual(calls[0],['family','__unspecified__']);
-  assert.match(root.querySelector('.atlas-context').textContent,/no recorded evaluator-family label/);
+  assert.equal(root.querySelectorAll('[data-atlas-cluster]').length,2);assert.equal(root.querySelectorAll('[data-task-id]').length,4);
+  assert.equal(root.querySelector('[data-atlas-cluster="circle_packing_square"]'),null);
+  const select=root.querySelector('select');select.value='physics';select.dispatchEvent(new w.Event('change'));
+  assert.equal(root.querySelector('.atlas-details h3').textContent,'Physics');
+  assert.equal(root.querySelector('.atlas-context-description').textContent,fixture.insights.domains[1].description);
+  assert.match(root.querySelector('.atlas-context-why').textContent,/Model and measure physical systems/);
+  assert.equal(root.querySelector('.atlas-stats dd').textContent,'1');
+  assert.equal(new URL(root.querySelector('.atlas-task-link').href).searchParams.get('task'),'unavailable');
+  root.querySelector('.atlas-browse').click();assert.deepEqual(calls[0],['domain','physics']);
  }finally{dom.window.close();}
 });
 
-test('family search narrows the selector without dropping task particles or inventing a group',()=>{
+test('family search finds scientific domains without dropping task particles or inventing a group',()=>{
  const {dom,w,root}=mount({current:{atlasMode:'families'}});
  try {
-  const search=root.querySelector('.atlas-family-search');search.value='matmul';search.dispatchEvent(new w.Event('input'));
+  const search=root.querySelector('.atlas-family-search');search.value='physics';search.dispatchEvent(new w.Event('input'));
   assert.equal(root.querySelectorAll('select option').length,2);
-  assert.equal(root.querySelector('select option:last-child').value,'matmul_tensor');
+  assert.equal(root.querySelector('select option:last-child').value,'physics');
   assert.equal(root.querySelectorAll('[data-task-id]').length,4);
   search.value='no such family';search.dispatchEvent(new w.Event('input'));
   assert.equal(root.querySelector('select option:last-child').textContent,'No matching families');
   assert.equal(root.querySelector('select option:last-child').disabled,true);
+ }finally{dom.window.close();}
+});
+
+test('domain partitions use annotations, retain every unique catalog task and preserve unknown metadata',()=>{
+ const unknown={id:'unknown',label:'Mixed / unclassified',description:'Classification is not recorded.',why_it_matters:'Keep missing classifications visible.',representative_task_ids:['missing','foreign']};
+ const catalog={tasks:[...fixture.catalog.tasks,{id:'missing',family:'Physics'},{id:'invalid',family:'Physics'},{id:'explicit-unknown',family:'Physics'},fixture.catalog.tasks[0]]};
+ const insights={domains:[...fixture.insights.domains,unknown],task_annotations:{...fixture.insights.task_annotations,invalid:{domain_id:'not-a-domain'},'explicit-unknown':{domain_id:'unknown'},foreign:{domain_id:'physics'}}};
+ const {dom,w}=mount();
+ try {
+  const model=w.buildAtlasModel({catalog,insights,mode:'families'});
+  assert.deepEqual(Array.from(model.groups,group=>group.id).sort(),['math','physics','unknown']);
+  const ids=model.groups.flatMap(group=>Array.from(group.task_ids));
+  assert.equal(ids.length,7);assert.equal(new Set(ids).size,7);assert.ok(!ids.includes('foreign'));
+  assert.deepEqual(Array.from(model.groups.find(group=>group.id==='math').task_ids),['circle-1','circle-2','tensor-1']);
+  assert.deepEqual(Array.from(model.groups.find(group=>group.id==='physics').task_ids),['unavailable']);
+  const unclassified=model.groups.find(group=>group.id==='unknown');
+  assert.deepEqual(Array.from(unclassified.task_ids),['explicit-unknown','invalid','missing']);
+  for(const key of ['label','description','why_it_matters'])assert.equal(unclassified[key],unknown[key]);
+  assert.deepEqual(Array.from(unclassified.representative_task_ids),['missing']);
+  for(const group of model.groups){assert.equal(group.filter_kind,'domain');assert.equal(group.filter_value,group.id);}
+ }finally{dom.window.close();}
+});
+
+test('families selects the URL domain independently of the evaluator-family filter',()=>{
+ const {dom,root}=mount({current:{atlasMode:'families',domain:'physics',family:'circle_packing_square'}});
+ try {
+  assert.equal(root.querySelector('[data-atlas-cluster="physics"]').getAttribute('aria-pressed'),'true');
+  assert.equal(root.querySelector('select').value,'physics');
+  assert.equal(root.querySelector('.atlas-details h3').textContent,'Physics');
  }finally{dom.window.close();}
 });
 
@@ -95,7 +129,23 @@ test('missing method API is unavailable rather than an unclassified claim and fa
   assert.doesNotMatch(root.textContent,/Unclassified methods/);
   root.querySelector('.atlas-unavailable button').click();
   assert.equal(root.querySelectorAll('[data-task-id]').length,4);
-  assert.equal(root.querySelectorAll('[data-atlas-cluster]').length,3);
+  assert.equal(root.querySelectorAll('[data-atlas-cluster]').length,2);
+ }finally{dom.window.close();}
+});
+
+test('families distinguishes unavailable and loading domain assignments from an unknown classification',()=>{
+ const {dom,w,root}=mount({insights:null,loading:true,current:{atlasMode:'families'}});
+ try {
+  assert.match(root.querySelector('.atlas-unavailable').textContent,/loading/i);
+  assert.equal(root.querySelectorAll('[data-atlas-cluster],[data-task-id]').length,0);
+  assert.equal(w.buildAtlasModel({...fixture,insights:null,mode:'families'}).groups.length,0);
+  w.renderArenaAtlas(root,{...fixture,insights:null,loading:false,errors:{insights:'Offline'},current:{atlasMode:'families'}});
+  assert.match(root.querySelector('.atlas-unavailable').textContent,/unavailable/i);
+  assert.doesNotMatch(root.querySelector('.atlas-unavailable').textContent,/Unclassified methods|Mixed \/ unclassified/);
+  assert.equal(root.querySelectorAll('[data-atlas-cluster],[data-task-id]').length,0);
+  w.renderArenaAtlas(root,{...fixture,current:{atlasMode:'families'}});
+  assert.equal(root.querySelector('.atlas-unavailable'),null);
+  assert.equal(root.querySelectorAll('[data-task-id]').length,4);
  }finally{dom.window.close();}
 });
 
@@ -153,7 +203,15 @@ test('real catalog layouts contain all 959 task particles in both exact partitio
   for(const mode of ['methods','families']) {
    const model=w.buildAtlasModel({catalog,insights,searchFamilies,mode}),layout=w.layoutAtlasGroups(model.groups),points=layout.flatMap(g=>g.points);
    assert.equal(model.total,959);assert.equal(points.length,959);assert.equal(new Set(points.map(p=>p.id)).size,959);
-   assert.equal(model.groups.length,mode==='methods'?10:152);
+   assert.equal(model.groups.length,mode==='methods'?10:insights.domains.length);
+   if(mode==='families')for(const domain of insights.domains){
+    const group=model.groups.find(group=>group.id===domain.id);
+    assert.ok(group,`Missing research domain ${domain.id}`);
+    assert.equal(group.label,domain.label);assert.equal(group.count,domain.total);
+    const expected=catalog.tasks.filter(task=>insights.task_annotations[task.id]?.domain_id===domain.id).map(task=>task.id).sort();
+    assert.deepEqual(Array.from(group.task_ids),expected);
+    assert.equal(group.filter_kind,'domain');assert.equal(group.filter_value,domain.id);
+   }
    for(const point of points){assert.ok(Number.isFinite(point.x)&&Number.isFinite(point.y));assert.ok(point.x>0&&point.x<900&&point.y>0&&point.y<680,`${mode} ${point.id} is outside map`);}
    assert.equal(model.groups.reduce((n,g)=>n+g.count,0),959);
   }

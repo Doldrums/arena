@@ -1,16 +1,18 @@
 // Every particle represents one catalog task. Coordinates only arrange the groups.
 const atlasSessions = new WeakMap();
 const SVG = 'http://www.w3.org/2000/svg';
-const UNSPECIFIED = '__unspecified__';
+const DOMAIN_TONES = {physics:'amber','chemistry-materials':'lilac','biology-health':'green',mathematics:'blue','earth-environment':'green','robotics-control':'lilac','operations-research':'amber','computer-systems':'blue','machine-learning':'lilac','software-engineering':'green','finance-economics':'blue',unknown:'neutral'};
+const DOMAIN_COLORS = {amber:'var(--field-amber, #e9ad48)',lilac:'var(--field-lilac, #842bd9)',green:'var(--field-green, #3aaf76)',blue:'var(--field-blue, #2875f0)',neutral:'#8f96a2'};
 const format = value => Number(value).toLocaleString('en-US');
 const hash = value => { let n = 2166136261; for (const character of String(value)) n = Math.imul(n ^ character.charCodeAt(0), 16777619); return n >>> 0; };
-const prettyFamily = value => ({matmul_tensor:'Matrix multiplication',circle_packing_square:'Circle packing · square',circle_packing_rectangle:'Circle packing · rectangle',llm_benchmark:'Language model benchmarks',llmsr_equation:'LLM-SR equations',lsr_equation:'Symbolic regression equations',ode_integrator:'ODE integration',online_bin_packing:'Online bin packing',sciel_copy:'SCiEL task copies'}[value] || value.replaceAll('_', ' ').replace(/^./, letter => letter.toUpperCase()));
 
 /** Normalize an exact, disjoint partition of the supplied catalog. Missing labels stay explicit. */
 export function buildAtlasModel({catalog, insights, searchFamilies, mode = 'methods'}) {
   const tasks = [...new Map((catalog?.tasks || []).filter(task => typeof task.id === 'string').map(task => [task.id, task])).values()];
   const byId = new Map(tasks.map(task => [task.id, task]));
   const domainsAvailable = Boolean(insights?.task_annotations && Array.isArray(insights?.domains));
+  const domainDefinitions = new Map((insights?.domains || []).map(domain=>[domain.id,domain]));
+  const domainFor = id => {const recorded=insights?.task_annotations?.[id]?.domain_id;return domainDefinitions.has(recorded)?recorded:'unknown';};
   const claimed = new Set(), groups = [];
   const append = (source, ids) => {
     const members = [...new Set(ids)].filter(id => byId.has(id) && !claimed.has(id)).sort();
@@ -18,8 +20,8 @@ export function buildAtlasModel({catalog, insights, searchFamilies, mode = 'meth
     members.forEach(id => claimed.add(id));
     const domains = new Map();
     for (const id of domainsAvailable ? members : []) {
-      const domainId = insights?.task_annotations?.[id]?.domain_id || 'unknown';
-      const domain = insights?.domains?.find(item => item.id === domainId);
+      const domainId = domainFor(id);
+      const domain = domainDefinitions.get(domainId);
       const entry = domains.get(domainId) || {id:domainId,label:domain?.label || 'Unclassified',count:0}; entry.count++; domains.set(domainId,entry);
     }
     groups.push({...source, tasks:members.map(id=>byId.get(id)), task_ids:members, count:members.length,
@@ -28,12 +30,14 @@ export function buildAtlasModel({catalog, insights, searchFamilies, mode = 'meth
       representative_task_ids:(source.representative_task_ids || []).filter(id=>members.includes(id))});
   };
   if (mode === 'families') {
-    const families = new Map();
-    for (const task of tasks) { const id = task.family || UNSPECIFIED; if (!families.has(id)) families.set(id,[]); families.get(id).push(task.id); }
-    for (const [id,ids] of families) append({id,label:id === UNSPECIFIED ? 'Unspecified task family' : prettyFamily(id),
-      raw_label:id === UNSPECIFIED ? null : id,
-      description:id === UNSPECIFIED ? 'These task packages have no recorded evaluator-family label.' : `Tasks sharing the source evaluator-family label “${id}”. Explore their contracts and scientific domains below.`,
-      filter_kind:'family',filter_value:id}, ids);
+    if (domainsAvailable) {
+      const families = new Map();
+      for (const task of tasks) { const id=domainFor(task.id);if(!families.has(id))families.set(id,[]);families.get(id).push(task.id); }
+      for (const [id,ids] of families) {
+        const domain=domainDefinitions.get(id) || {id,label:'Mixed / unclassified',description:'The available metadata does not identify one primary research domain.'};
+        append({...domain,filter_kind:'domain',filter_value:id},ids);
+      }
+    }
   } else {
     for (const source of searchFamilies?.groups || []) {
       const ids = source.task_ids || tasks.filter(task=>searchFamilies.task_annotations?.[task.id]?.search_family_id === source.id).map(task=>task.id);
@@ -181,10 +185,10 @@ export function renderArenaAtlas(root, options = {}) {
   if (['methods','families'].includes(options.current?.atlasMode) && options.current.atlasMode!==session.mode) {
     session.mode=options.current.atlasMode;session.selected=null;session.preview=null;
   }
-  const key=[options.catalog,options.insights,options.searchFamilies,session.mode,options.errors?.searchFamilies,options.errors?.catalog,options.loading];
+  const key=[options.catalog,options.insights,options.searchFamilies,session.mode,options.errors?.searchFamilies,options.errors?.insights,options.errors?.catalog,options.loading];
   const changed=!session.key || key.some((value,index)=>value!==session.key[index]);
   if(changed){session.model=buildAtlasModel({...options,mode:session.mode});session.layout=layoutAtlasGroups(session.model.groups);session.key=key;}
-  const requested=options.current?.[session.mode === 'methods' ? 'search_family' : 'family'];
+  const requested=options.current?.[session.mode === 'methods' ? 'search_family' : 'domain'];
   if(requested && session.model.groups.some(group=>group.id===requested)) session.selected=requested;
   if(session.selected && !session.model.groups.some(group=>group.id===session.selected)) session.selected=null;
   if (session.built && !changed) { session.update(); return; }
@@ -197,7 +201,7 @@ export function renderArenaAtlas(root, options = {}) {
   const button=(label,cls,action)=>{const node=make('button',cls,label);node.type='button';node.addEventListener('click',action);return node;};
   const card=make('section','atlas-card');card.setAttribute('aria-label','Interactive task atlas');
   const header=make('header','atlas-header'),heading=make('div','atlas-heading');
-  heading.append(make('span','atlas-eyebrow','CATALOG MAP'),make('h2','','Task atlas'),make('p','atlas-intro','Every dot is a task. Group by search method or task family.'));
+  heading.append(make('span','atlas-eyebrow','CATALOG MAP'),make('h2','','Task atlas'),make('p','atlas-intro','Every dot is a task. Explore search methods or research domains.'));
   const modeControl=make('div','atlas-modes');modeControl.setAttribute('role','group');modeControl.setAttribute('aria-label','Group tasks by');
   for(const[mode,label]of[['methods','Search methods'],['families','Task families']]) {
     const control=button(label,'atlas-mode',()=>{
@@ -222,7 +226,13 @@ export function renderArenaAtlas(root, options = {}) {
       button('Explore task families →','atlas-browse',()=>modeControl.querySelector('[data-atlas-mode="families"]').click()));
     card.append(missing);root.replaceChildren(card);session.update=()=>{};return;
   }
-  const body=make('div','atlas-body'),canvas=make('div','atlas-canvas'),map=svgNode('svg',{viewBox:'0 0 900 680',class:'atlas-map',role:'group','aria-label':`${session.mode==='methods'?'Search method':'Task family'} clusters. Select a cluster to explore its tasks.`});
+  if (session.mode === 'families' && !session.model.domainsAvailable) {
+    const missing=make('div','atlas-unavailable'),isLoading=options.loading && !options.errors?.insights;
+    missing.append(make('span','atlas-unavailable-mark','◌'),make('h3','',isLoading?'The research domain atlas is loading…':'Research domain atlas unavailable'),
+      make('p','','Task families use the same scientific domains as the Research domains cards. Their classification data is not available yet.'));
+    card.append(missing);root.replaceChildren(card);session.update=()=>{};return;
+  }
+  const body=make('div','atlas-body'),canvas=make('div','atlas-canvas'),map=svgNode('svg',{viewBox:'0 0 900 680',class:'atlas-map',role:'group','aria-label':`${session.mode==='methods'?'Search method':'Research domain'} clusters. Select a cluster to explore its tasks.`});
   const mapTitle=svgNode('title');mapTitle.textContent='Task atlas: one dot per catalog task';map.append(mapTitle);
   // The faint decorative paths converge on the total; the text keeps a clear halo.
   const defs=svgNode('defs'),fade=svgNode('radialGradient',{id:'atlas-center-fade'});
@@ -238,7 +248,7 @@ export function renderArenaAtlas(root, options = {}) {
   const palette=['#927ad5','#88a397','#42b5b1','#6c99da','#cd8bb5','#6ab394','#c9a656','#8f9dc8'];
   const choose=id=>{session.selected=session.selected===id?null:id;session.preview=null;session.update();};
   for(const[groupIndex,group]of session.layout.entries()) {
-    const color=palette[groupIndex%palette.length],seed=hash(group.id);
+    const color=session.mode==='families'?DOMAIN_COLORS[DOMAIN_TONES[group.id]||'blue']:palette[groupIndex%palette.length],seed=hash(group.id);
     const dx=450-group.x,dy=338-group.y,distance=Math.hypot(dx,dy)||1,ux=dx/distance,uy=dy/distance;
     const startX=group.x+ux*group.radius*.28,startY=group.y+uy*group.radius*.28,bend=30+seed%35;
     const path=`M ${startX} ${startY} C ${startX+dx*.28-uy*bend} ${startY+dy*.28+ux*bend} ${450-dx*.3-uy*bend*.6} ${338-dy*.3+ux*bend*.6} 450 338`;
@@ -279,7 +289,7 @@ export function renderArenaAtlas(root, options = {}) {
     clusters.set(group.id,cluster);map.append(cluster);
   }
   canvas.append(map);
-  const legend=make('div','atlas-map-legend');legend.append(make('span','atlas-key-dot'),make('span','',`${format(session.model.total)} task packages · ${format(session.model.groups.length)} ${session.mode==='methods'?'method groups':'task-family groups'}`));
+  const legend=make('div','atlas-map-legend');legend.append(make('span','atlas-key-dot'),make('span','',`${format(session.model.total)} task packages · ${format(session.model.groups.length)} ${session.mode==='methods'?'method groups':'research domains'}`));
   const motionToggle=button('Ⅱ Pause motion','atlas-motion-toggle',()=>{
     if(map.dataset.motion==='reduced'){session.motionEnabled=true;session.motionPaused=false;}
     else session.motionPaused=!session.motionPaused;
@@ -296,7 +306,7 @@ export function renderArenaAtlas(root, options = {}) {
     select.value=session.selected||'';
   };
   if(session.mode==='families'){
-    const search=make('input','atlas-family-search');search.type='search';search.placeholder=`Search ${session.model.groups.length} families…`;search.setAttribute('aria-label','Search atlas task families');search.value=session.search;
+    const search=make('input','atlas-family-search');search.type='search';search.placeholder='Find Physics, Biology…';search.setAttribute('aria-label','Search atlas task families');search.value=session.search;
     search.addEventListener('input',()=>{session.search=search.value;fillOptions();});pickerLabel.append(search);
   }
   fillOptions();
@@ -306,7 +316,7 @@ export function renderArenaAtlas(root, options = {}) {
   const hint=make('p','','Select a cluster to keep it highlighted. Use arrow keys to move between clusters; Escape clears the selection.');
   const note=make('details','atlas-note');note.append(make('summary','','About this map'),make('p','','One dot is one task package, including definitions awaiting an evaluator. Color identifies a group; cluster size reflects package count. Dot sizes, positions, trails and motion are decorative, not dependencies, performance or solved results.'));
   if(session.mode==='methods')note.append(make('p','','Method groups follow the source paper-family labels and include separately labeled supplementary task collections. A task with several source associations uses its recorded primary group for this map.'));
-  else note.append(make('p','','Task families use the evaluator-family field in the catalog. Packages without that field remain in the Unspecified group.'));
+  else note.append(make('p','','Task families follow the same primary scientific domains as the Research domains cards below. Each task belongs to one domain; mixed or unclassified packages remain visible as their own group.'));
   footer.append(hint,note);card.append(footer);
   card.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();session.selected=null;session.preview=null;session.update();}});
   root.replaceChildren(card);
@@ -331,8 +341,8 @@ export function renderArenaAtlas(root, options = {}) {
     const panelKey=activeId+'|'+session.selected;
     if(details.dataset.panelKey===panelKey)return;details.dataset.panelKey=panelKey;details.replaceChildren();
     if(!active){
-      details.append(make('span','atlas-context-kicker','TASK GROUPS'),make('h3','','Methods and task families'),
-        make('p','atlas-context-description','Select a group to see its scientific domains, evaluation definitions and example tasks.'));
+      details.append(make('span','atlas-context-kicker','TASK GROUPS'),make('h3','',session.mode==='families'?'Research domains':'Search methods'),
+        make('p','atlas-context-description',session.mode==='families'?'Physics, biology, mathematics and the other research directions shown below. Select a domain to explore its tasks.':'Select a method to see its scientific domains, evaluation definitions and example tasks.'));
       const list=make('div','atlas-starting-points');
       for(const group of session.model.groups.slice(0,4)){
         const item=button('','atlas-starting-point',()=>{session.selected=group.id;session.preview=null;session.update();});item.append(make('span','',group.label),make('span','',`${format(group.count)} ↗`));list.append(item);
@@ -343,7 +353,8 @@ export function renderArenaAtlas(root, options = {}) {
     if(session.selected){const clear=button('Clear','atlas-clear',()=>{session.selected=null;session.preview=null;session.update();});clear.setAttribute('aria-label','Clear atlas selection');status.append(clear);}
     details.append(status,make('h3','',active.label),make('p','atlas-context-description',active.description||'Explore the tasks recorded in this source group.'));
     const stats=make('dl','atlas-stats');
-    for(const[label,value]of[['Tasks',active.count],['Domains',session.model.domainsAvailable?active.domains.filter(domain=>domain.id!=='unknown').length:null],['Executable definitions',active.executable]]){
+    const middleStat=session.mode==='families'?['Evaluator families',new Set(active.tasks.map(task=>task.family).filter(Boolean)).size]:['Domains',session.model.domainsAvailable?active.domains.filter(domain=>domain.id!=='unknown').length:null];
+    for(const[label,value]of[['Tasks',active.count],middleStat,['Executable definitions',active.executable]]){
       const item=make('div');item.append(make('dt','',label),make('dd','',value==null?'—':format(value)));stats.append(item);
     }
     details.append(stats);
@@ -351,7 +362,7 @@ export function renderArenaAtlas(root, options = {}) {
     if(!session.model.domainsAvailable)domains.append(make('p','atlas-domain-unavailable','Domain data unavailable'));
     for(const domain of active.domains.slice(0,2))domains.append(make('span','',`${domain.label} · ${format(domain.count)}`));
     if(active.domains.length>2){const more=make('span','',`+${active.domains.length-2} more`);more.title=active.domains.slice(2).map(domain=>`${domain.label}: ${format(domain.count)}`).join(' · ');domains.append(more);}details.append(domains);
-    if(active.why_it_matters){const why=make('details','atlas-context-why');why.append(make('summary','',active.classification_basis==='source_supplement'?'About this task collection':'About this method group'),make('p','',active.why_it_matters));details.append(why);}
+    if(active.why_it_matters){const why=make('details','atlas-context-why');why.append(make('summary','',session.mode==='families'?'Why this domain matters':active.classification_basis==='source_supplement'?'About this task collection':'About this method group'),make('p','',active.why_it_matters));details.append(why);}
     const examples=make('div','atlas-examples');examples.append(make('h4','','A few starting points'));
     const ids=[...new Set([...active.representative_task_ids,...active.task_ids])].slice(0,2);
     for(const id of ids){const task=active.tasks.find(item=>item.id===id),link=make('a','atlas-task-link',task.name||task.id);link.href=`/?task=${encodeURIComponent(id)}`;link.addEventListener('click',event=>{if(session.options.onTask&&event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){event.preventDefault();session.options.onTask(id);}});examples.append(link);}

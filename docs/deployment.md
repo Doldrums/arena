@@ -35,8 +35,11 @@ entrypoint with the same registry routes and Cloudflare backend limitations.
 
 The Worker is `research-arena`. Its Access organization is
 `empira-research.cloudflareaccess.com`; a Worker-level policy protects all
-traffic and allows the configured owner identities. One-time PIN login is
-enabled. The `workers.dev` hostname is enabled; preview URLs remain disabled.
+traffic and allows all email addresses at the exact `mbzuai.ac.ae` domain, plus
+the existing explicitly approved owner address. One-time PIN login is enabled.
+The login page says: "Sign in with your @mbzuai.ac.ae email. We'll send you a
+one-time code." The `workers.dev` hostname is enabled; preview URLs remain
+disabled.
 
 `ACCESS_TEAM_DOMAIN` is `https://empira-research.cloudflareaccess.com`.
 `ACCESS_AUD` must match the Access application's audience tag, not its application
@@ -67,7 +70,8 @@ documentation.
    503/404 responses for unavailable experiment and control APIs. Confirm the
    discovery results page makes no private control request.
 4. Confirm the Worker-level Access policy still applies and preview URLs remain
-   disabled.
+   disabled. Check that its allow rules contain only the `mbzuai.ac.ae` email
+   domain and the explicit owner address, and that the login guidance is visible.
 
 Deployments, registry updates, page loads and validation must never launch an
 experiment. Billable runs require a separate authorized submission to the
