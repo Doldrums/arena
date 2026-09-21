@@ -68,6 +68,43 @@ The catalog includes both research works and executable integrations. A paper en
 
 Tasks and system versions enter through GitHub PRs. Run access is granted separately; request a key through the board or contact [arina.kharlamova@mbzuai.ac.ae](mailto:arina.kharlamova@mbzuai.ac.ae). An engine’s repository and container image can remain private: its Arena PR can contain only the system name and version. See [private engine releases](CONTRIBUTING.md#private-engine-releases).
 
+### Catalog campaigns
+
+On a provisioned Linux worker, campaigns move through four stages: **pin the release → check seeds → prepare private templates → admit bounded batches**. The inventory retains all **959 tasks**. Currently **350** match the declared CPU dependency profile; only successful seed receipts for the exact task library and evaluator image make a task eligible for preparation. Prepared templates still require their first native run to establish runtime conformance.
+
+1. **Pin the engine and environment.** Build the private SCiEL image with [`build_sciel_engine.py`](scripts/deployment/build_sciel_engine.py), selecting an immutable source commit and a new Arena version. The current catalog preparer targets `0.2.0+arena.a6c0d215.worker1`. Register and approve its private deployment, and pin the evaluator image by digest. [`build_catalog_cpu_image.py`](scripts/deployment/build_catalog_cpu_image.py) prepares the extended CPU dependencies with a hashed wheel lock.
+2. **Check the seeds.** Run the preflight below. It evaluates candidates without calling a model and retains tasks awaiting environment or evaluator integration in its manifest.
+3. **Prepare the campaign.** Select an available model from the private Codex gateway’s authenticated `/v1/models` endpoint and verify it with a small live probe. Pass that exact ID with `--model`; model availability is not guaranteed by a script default. Preparation checks seed receipts and creates private configurations, native task packages, templates and a complete campaign inventory without submitting runs.
+4. **Admit the batches.** Install the generated templates in the private control configuration, set `max_active` to at most **4**, and reload the control service. Preview admission before adding `--admit`.
+
+Use new absolute output directories. In this example, set `ARENA_CPU_IMAGE`, `ARENA_DEPLOYMENT`, `ARENA_APPROVAL`, `ARENA_MODEL` and `ARENA_WORKER_PYTHON` to the reviewed image digest, deployment file, approval file, model ID and worker interpreter. The task root must match the evaluator broker’s approved mount.
+
+```sh
+python scripts/deployment/sciel_catalog_preflight.py \
+  --tasks-root /srv/arena/sources/arena-tasks \
+  --image "$ARENA_CPU_IMAGE" --output /srv/arena/preflight/catalog-001 \
+  --workers 4 --execute-seeds
+
+python scripts/deployment/prepare_sciel_catalog_campaign.py \
+  --tasks-root /srv/arena/sources/arena-tasks \
+  --preflight-manifest /srv/arena/preflight/catalog-001/manifest.json \
+  --deployment "$ARENA_DEPLOYMENT" --approval "$ARENA_APPROVAL" \
+  --config-destination /srv/arena/configs/catalog-001 \
+  --native-tasks /srv/arena/tasks/catalog-001 \
+  --campaign catalog-001 --model "$ARENA_MODEL" --python "$ARENA_WORKER_PYTHON"
+
+python scripts/deployment/submit_sciel_catalog.py \
+  --templates /srv/arena/configs/catalog-001/templates.json \
+  --control-config /srv/arena/control/config.json \
+  --key-file /srv/arena/control/catalog-key.json \
+  --campaign catalog-001 --status /srv/arena/control/catalog-001-status.json \
+  --batch-size 16
+```
+
+The last command previews; repeat with `--admit` to enqueue. Each wave finishes before the next is admitted. Admission pauses when at least 25% of a completed wave fails, native completion evidence reports a stop, or the control configuration changes. It does not cancel runs already admitted. Resume with the same templates, campaign, batch size, status path and control revision; existing run IDs are reused.
+
+Each template specifies a **16 full-evaluation search budget**, 32 iterations, one evaluator slot, 4 CPUs, 8 GiB RAM and a one-hour wall limit. Confirmation uses three samples; research and confirmation activity are recorded separately. Raw task metrics, their direction and canonical signed fitness remain in evaluation receipts. SCiEL’s search score applies an explicit arctangent transform with a seed-receipt-bound scale; this search score is not a cross-task benchmark result.
+
 ## Quick start
 
 Requires **Python 3.11+**. From the repository root:

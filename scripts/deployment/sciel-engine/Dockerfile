@@ -5,7 +5,8 @@ COPY requirements.lock /requirements.lock
 RUN python -m venv /opt/venv && \
     /opt/venv/bin/python -m pip install --no-index --find-links=/wheelhouse --require-hashes -r /requirements.lock
 COPY sciel/ /build/sciel/
-RUN /opt/venv/bin/python -m pip install --no-index --no-build-isolation --no-deps /build/sciel
+RUN /opt/venv/bin/python -m pip install --no-index --no-build-isolation --no-deps /build/sciel && \
+    /opt/venv/bin/python -m pip check
 
 FROM ${BASE_IMAGE}
 ARG SCIEL_COMMIT
@@ -33,6 +34,7 @@ RUN mkdir -p /run/arena-engine /arena-input /srv/arena/sources /srv/arena/contro
     chmod 0755 /run/arena-engine /arena-input /srv/arena/sources /srv/arena/control/runs && \
     git config --system --add safe.directory /opt/sciel && \
     /opt/venv/bin/python -c "import sciel, arena.frameworks.evaluation, torch; assert torch.__version__ == '2.14.0+cpu'" && \
+    /opt/venv/bin/python -c "from arena.registry import get_catalog; from arena.task_library import resolve_task_root, verify_task_library; [verify_task_library(resolve_task_root(source=s), s) for s in get_catalog()['sources']]" && \
     git --version && docker --version
 WORKDIR /opt/sciel
 USER 998:998

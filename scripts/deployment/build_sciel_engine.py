@@ -18,10 +18,30 @@ import shutil
 import subprocess
 import sys
 import tarfile
+import tomllib
 import zipfile
 
-PIN = "0d67f813dd4ac21dee304f2b0de0b0ce59bf4157"
-VERSION = "0.1.0+arena.0d67f813.worker1"
+PIN = "a6c0d215b61ee52dae608a6390c9f2c6d2f2554d"
+VERSION = "0.2.0+arena.a6c0d215.worker1"
+
+
+def release_identity(source_commit, version):
+    """Explicit source and release identities, without resolving mutable refs."""
+    from arena.releases import validate_public_release
+    if not isinstance(source_commit, str) or not re.fullmatch(r"[0-9a-f]{40}", source_commit):
+        raise ValueError("Engine source must use a full immutable Git commit")
+    return validate_public_release({"schema": "arena.release/1", "system": "sciel", "version": version})
+
+
+def source_package_version(source, version):
+    """Refuse a version label that would misrepresent the installed package."""
+    path = Path(source) / "pyproject.toml"
+    if path.is_symlink() or not path.is_file():
+        raise ValueError("Pinned SCiEL source requires a regular pyproject.toml")
+    project = tomllib.loads(path.read_text()).get("project", {})
+    if project.get("name") != "sciel" or project.get("version") != version.split("+", 1)[0]:
+        raise ValueError("Engine release version differs from the pinned SCiEL package")
+    return project["version"]
 
 
 def digest(path):
@@ -88,11 +108,40 @@ def snapshot_files(root):
     return hashlib.sha256(encoded).hexdigest(), records
 
 
-def validate_image_config(identity, version):
+def snapshot_arena(app, destination, bridge_file=None):
+    """Copy a complete Arena runtime, checking task identity before and after."""
+    from arena.registry import get_catalog
+    from arena.task_library import resolve_task_root, verify_task_library
+    app, destination = Path(app), Path(destination)
+    source = next((row for row in get_catalog(app / "registry")["sources"]
+                   if row.get("id") == "arena-tasks"), None)
+    if source is None or source.get("kind") != "bundled" or source.get("root_path") != "tasks":
+        raise ValueError("Engine image requires the registered bundled tasks library")
+    tasks = resolve_task_root(source=source, registry_root=app / "registry")
+    identity = verify_task_library(tasks, source, registry_root=app / "registry")
+    for relative in ("src/arena", "registry", "schemas", "tasks"):
+        shutil.copytree(app / relative, destination / relative, symlinks=True,
+                        ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".env", ".env.*"))
+    copied_source = next(row for row in get_catalog(destination / "registry")["sources"]
+                         if row.get("id") == "arena-tasks")
+    if (copied_source != source
+            or verify_task_library(destination / "tasks", copied_source,
+                                   registry_root=destination / "registry") != identity
+            or verify_task_library(tasks, source, registry_root=app / "registry") != identity):
+        raise ValueError("Bundled task identity changed while preparing the engine image")
+    if bridge_file is not None:
+        if not bridge_file.is_absolute() or bridge_file.is_symlink() or not bridge_file.is_file():
+            raise ValueError("Bridge input must be an explicit absolute regular file")
+        shutil.copyfile(bridge_file, destination / "src/arena/frameworks/evaluation.py")
+    return identity
+
+
+def validate_image_config(identity, version, source_commit=PIN):
     """Fail before publishing when the image violates the release contract."""
     from arena.release_deployment import CONTRACT, ENTRYPOINT
     config = identity.get("Config", {})
-    required = {"org.opencontainers.image.revision": PIN,
+    release_identity(source_commit, version)
+    required = {"org.opencontainers.image.revision": source_commit,
                 "org.opencontainers.image.source": "https://github.com/Doldrums/sciel",
                 "org.opencontainers.image.version": version,
                 "io.arena.sciel.contract": CONTRACT}
@@ -110,13 +159,21 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--app", type=Path, default=Path("/opt/arena/current"))
     parser.add_argument("--source", type=Path, default=Path("/srv/arena/sources/sciel"))
+    parser.add_argument("--source-commit", default=PIN, help="Full immutable SCiEL Git commit")
+    parser.add_argument("--version", default=VERSION, help="New immutable Arena engine release version")
     parser.add_argument("--freeze", type=Path, default=Path("/srv/arena/build/sciel-freeze.txt"))
     parser.add_argument("--bridge-file", type=Path, help="Explicit reviewed evaluation.py for the image snapshot; does not modify the live app")
     parser.add_argument("--base-image", required=True)
     parser.add_argument("--destination", type=Path, required=True)
-    parser.add_argument("--tag", default="127.0.0.1:5000/empira/sciel:0.1.0-arena.0d67f813.worker1")
+    parser.add_argument("--tag", help="Private loopback tag; defaults to the explicit release version")
     parser.add_argument("--push", action="store_true")
     args = parser.parse_args(argv)
+    sys.path.insert(0, str(args.app / "src"))
+    try:
+        reference = release_identity(args.source_commit, args.version)
+    except ValueError:
+        parser.error("Use a full Git commit and a valid semantic engine release version")
+    args.tag = args.tag or "127.0.0.1:5000/empira/sciel:" + args.version.replace("+", "-")
     if not re.fullmatch(r"127\.0\.0\.1:5000/[a-z0-9._/-]+@sha256:[0-9a-f]{64}", args.base_image):
         parser.error("Use the immutable base digest in the private loopback registry")
     if not re.fullmatch(r"127\.0\.0\.1:5000/[a-z0-9._/-]+:[a-zA-Z0-9._-]+", args.tag):
@@ -124,9 +181,9 @@ def main(argv=None):
     destination = args.destination
     if not destination.is_absolute() or destination.exists() or destination.is_symlink():
         parser.error("Build destination must be a new absolute directory")
-    sys.path.insert(0, str(args.app / "src"))
     from arena.frameworks.runtime import verify_source
-    source = verify_source(args.source, PIN)
+    source = verify_source(args.source, args.source_commit)
+    package_version = source_package_version(args.source, args.version)
     requirements = pinned_requirements(args.freeze.read_text())
     destination.mkdir(parents=True, mode=0o700)
     context = destination / "context"
@@ -136,7 +193,7 @@ def main(argv=None):
         return subprocess.run(argv, check=True, stdout=log, stderr=subprocess.STDOUT, **kwargs)
     source_archive = destination / "sciel-source.tar"
     with source_archive.open("wb") as output:
-        subprocess.run(["git", "--no-replace-objects", "-C", str(args.source), "archive", PIN], stdout=output, check=True)
+        subprocess.run(["git", "--no-replace-objects", "-C", str(args.source), "archive", args.source_commit], stdout=output, check=True)
     sciel = context / "sciel"
     sciel.mkdir()
     with tarfile.open(source_archive) as archive:
@@ -149,19 +206,16 @@ def main(argv=None):
     gitdir = sciel / ".git"
     gitdir.mkdir()
     shutil.copytree(args.source / ".git/objects", gitdir / "objects")
-    for name in ("HEAD", "index", "shallow"):
+    # The archive is an exact commit, independent of a checkout's branch refs.
+    # No refs or packed-refs from the operator's checkout enter the image.
+    (gitdir / "HEAD").write_text(args.source_commit + "\n")
+    for name in ("index", "shallow"):
         path = args.source / ".git" / name
         if path.exists(): shutil.copyfile(path, gitdir / name)
     (gitdir / "config").write_text("[core]\n\trepositoryformatversion = 0\n\tbare = false\n\tfilemode = true\n")
     (gitdir / "refs").mkdir()
     arena = context / "arena"
-    for relative in ("src/arena", "registry", "schemas"):
-        shutil.copytree(args.app / relative, arena / relative,
-                        symlinks=True, ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".env", ".env.*"))
-    if args.bridge_file is not None:
-        if not args.bridge_file.is_absolute() or args.bridge_file.is_symlink() or not args.bridge_file.is_file():
-            raise ValueError("Bridge input must be an explicit absolute regular file")
-        shutil.copyfile(args.bridge_file, arena / "src/arena/frameworks/evaluation.py")
+    task_identity = snapshot_arena(args.app, arena, args.bridge_file)
     arena_digest, arena_files = snapshot_files(arena)
     python = Path(sys.executable)
     downloader = destination / "download-venv"
@@ -180,7 +234,11 @@ def main(argv=None):
     git_source = Path("/srv/arena/build/git-2.55.0-release")
     shutil.copyfile(git_source / "git-2.55.0/COPYING", context / "git-COPYING")
     shutil.copyfile(Path(__file__).with_name("sciel-engine") / "Dockerfile", context / "Dockerfile")
-    inputs = {"schema": "arena.sciel-engine-inputs/1", "version": VERSION, "source": source,
+    inputs = {"schema": "arena.sciel-engine-inputs/1", "version": args.version, "release": reference,
+              "source": source, "package_version": package_version, "task_source": task_identity,
+              "learned_artifacts": {"policy": "explicit_configuration_only_no_fallback",
+                  "included_source_paths": sorted(path.relative_to(sciel).as_posix()
+                      for path in (sciel / "models").rglob("*") if path.is_file())},
               "source_archive_sha256": digest(source_archive), "arena_snapshot_sha256": arena_digest,
               "arena_files": arena_files, "base_image": args.base_image, "wheels": wheels,
               "git_build": json.loads((git_source / "environment.json").read_text()),
@@ -191,15 +249,16 @@ def main(argv=None):
     (context / "build-inputs.json").write_text(json.dumps(inputs, indent=2, sort_keys=True) + "\n")
     env = {**os.environ, "DOCKER_BUILDKIT": "0"}
     call(["docker", "build", "--network=none", "--cpu-quota=200000", "--cpu-period=100000", "--memory=8g",
-          "--build-arg", "BASE_IMAGE=" + args.base_image, "--build-arg", "SCIEL_COMMIT=" + PIN,
-          "--build-arg", "ENGINE_VERSION=" + VERSION, "--build-arg", "ARENA_SNAPSHOT_SHA256=" + arena_digest,
+          "--build-arg", "BASE_IMAGE=" + args.base_image, "--build-arg", "SCIEL_COMMIT=" + args.source_commit,
+          "--build-arg", "ENGINE_VERSION=" + args.version, "--build-arg", "ARENA_SNAPSHOT_SHA256=" + arena_digest,
           "--tag", args.tag, str(context)], env=env)
     identity = json.loads(subprocess.check_output(["docker", "image", "inspect", args.tag], text=True))[0]
-    labels = validate_image_config(identity, VERSION)
+    labels = validate_image_config(identity, args.version, args.source_commit)
     if args.push:
         call(["docker", "push", args.tag])
         identity = json.loads(subprocess.check_output(["docker", "image", "inspect", args.tag], text=True))[0]
-    report = {"schema": "arena.sciel-engine-build/1", "version": VERSION, "tag": args.tag,
+    report = {"schema": "arena.sciel-engine-build/1", "version": args.version, "tag": args.tag,
+              "release": reference, "package_version": package_version,
               "image_id": identity["Id"], "repo_digests": identity.get("RepoDigests", []),
               "architecture": identity["Architecture"], "labels": labels, "user": identity["Config"]["User"],
               "entrypoint": identity["Config"]["Entrypoint"], "inputs_sha256": digest(context / "build-inputs.json"),
