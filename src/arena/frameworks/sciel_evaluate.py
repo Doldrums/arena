@@ -54,6 +54,9 @@ def _verified_source(config):
 
 def create_task(config: dict, destination: Path) -> dict:
     """Write one native task package, after read-only source/config verification."""
+    if type(config) is dict and config.get("schema") == "arena.sciel-catalog-config/1":
+        from .sciel_catalog_evaluate import create_task as create_catalog_task
+        return create_catalog_task(config, destination)
     receipts = _profile(config)
     verified = _verified_source(config)
     config = verified["config"]
