@@ -717,6 +717,7 @@ class GatewayHandler(BaseHTTPRequestHandler):
         request_id = uuid.uuid4().hex
         model, observed, status, streaming = None, {}, 500, False
         compatibility = None
+        error_code = None
         try:
             self._authenticate()
             if self.path not in {"/v1/chat/completions", "/v1/responses", "/v1/messages"}:
@@ -818,6 +819,7 @@ class GatewayHandler(BaseHTTPRequestHandler):
                 status = 200
         except ProviderError as exc:
             status = exc.status
+            error_code = exc.code
             data = {"error": {"type": exc.code, "code": exc.code, "message": exc.message}}
             try:
                 if streaming:
@@ -828,8 +830,10 @@ class GatewayHandler(BaseHTTPRequestHandler):
                 pass
         except (BrokenPipeError, ConnectionResetError, TimeoutError):
             status = 499
+            error_code = "client_disconnected"
         except Exception:
             status = 500
+            error_code = "gateway_error"
             data = {"error": {"code": "gateway_error", "message": "The private gateway could not complete this request."}}
             try:
                 if streaming:
@@ -840,7 +844,10 @@ class GatewayHandler(BaseHTTPRequestHandler):
                 pass
         finally:
             # No body, headers, token claims, errors or input/output text are logged.
-            self.server.bridge.audit({"request_id": request_id, "model": model, "usage": observed, "status": status})
+            record = {"request_id": request_id, "model": model, "usage": observed, "status": status}
+            if error_code is not None:
+                record["error_code"] = error_code
+            self.server.bridge.audit(record)
 
     @staticmethod
     def _chunk(request_id, model, delta, *, finish=None, compatibility=None):

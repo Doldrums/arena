@@ -298,6 +298,16 @@ def test_concurrency_and_rate_limits_reject_without_hidden_retry():
         status,headers,body=call(server,body=chat())
         assert status==429 and int(headers["Retry-After"])>0
         assert bridge.transport.seen==[]
+        assert [row["error_code"] for row in audits] == ["gateway_busy", "gateway_rate_limit"]
+
+
+def test_upstream_rate_limit_is_distinguished_without_logging_private_details():
+    transport = Transport([ProviderError(429, "upstream_rate_limit", "private upstream diagnostic", 5)])
+    with gateway(transport) as (server, bridge, audits):
+        assert call(server, body=chat())[0] == 429
+    assert audits[0]["error_code"] == "upstream_rate_limit"
+    assert "private upstream diagnostic" not in json.dumps(audits)
+    assert KEY not in json.dumps(audits)
 
 
 def test_anthropic_messages_text_tools_and_local_api_key():

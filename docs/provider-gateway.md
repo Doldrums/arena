@@ -174,7 +174,10 @@ No automatic probe or fallback is made to test alternate controls/models.
 ## Logging and verification
 
 Each POST log contains only a generated request ID, validated model ID, observed
-token counters and numeric status. Upstream HTTP bodies/errors, authorization
+token counters and numeric status, plus a fixed error code on failure. The code
+distinguishes local concurrency (`gateway_busy`), local request rate
+(`gateway_rate_limit`) and account rate limits (`upstream_rate_limit`). It does
+not include the upstream error message. Upstream HTTP bodies/errors, authorization
 headers, decoded account claims and prompts are never included. Streaming
 request content is returned only to the authenticated caller. The service sets
 `Cache-Control:no-store`, refuses browser-origin requests and follows no
