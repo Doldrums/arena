@@ -14,6 +14,8 @@ from pathlib import Path
 import re
 from urllib.parse import parse_qsl, urlsplit
 
+from .task_sources import source_url, registration_source
+
 
 PROTOCOLS = ("original", "recreated_verified", "recreated", "unsupported")
 CAPABILITIES = ("native_run", "canonical_evaluation", "pause", "resume")
@@ -109,13 +111,8 @@ def resolve_registry_root(root=None):
 
 
 def validate_source(source):
-    _object(source, ("id", "repository", "catalog_path", "catalog_sha256", "index_path", "index_sha256"), "source")
-    _identifier(source["id"], "source.id")
-    _repository(source["repository"])
-    for key in ("catalog_path", "index_path"):
-        _relative(source[key], key)
-    for key in ("catalog_sha256", "index_sha256"):
-        _hash(source[key], _SHA256, key)
+    from .task_sources import validate_source as validate
+    return validate(source)
 
 
 def validate_task(task, source_ids):
@@ -199,7 +196,7 @@ def validate_catalog(value):
         if task["contract_source"] is not None:
             source = next(s for s in value["sources"] if s["id"] == task["source_id"])
             expected_path = f"suite/{task['id']}/problem.json"
-            expected_url = f"{source['repository']['url']}/blob/{source['repository']['commit']}/{expected_path}"
+            expected_url = source_url(source, expected_path)
             _require(task["contract_source"]["path"] == expected_path and task["contract_source"]["url"] == expected_url,
                      "contract source must match task and pinned repository version")
         _require(task["id"] not in task_ids, "duplicate task id")
@@ -356,19 +353,8 @@ def validate_participants(value):
 
 
 def validate_registration(value):
-    _object(value, ("schema", "id", "kind", "repository", "manifest_path", "tracked_ref", "access",
-                   "admission", "refresh", "snapshot_source_id"), "registration")
-    _require(value["schema"] == "arena.registration/1", "unsupported registration schema")
-    _identifier(value["id"], "registration.id")
-    _require(value["kind"] == "task_collection", "unsupported registration kind")
-    _repository(value["repository"])
-    _relative(value["manifest_path"], "manifest_path")
-    _text(value["tracked_ref"], "tracked_ref")
-    _require(value["access"] in ("github_app_private", "github_app_public"), "invalid repository access mode")
-    _require(value["admission"] == "team_registry_pr", "registration requires team registry PR")
-    _require(value["refresh"] == "manual_pinned_snapshot", "remote refresh/build is not implemented")
-    _identifier(value["snapshot_source_id"], "snapshot_source_id")
-    return value
+    from .task_sources import validate_registration as validate
+    return validate(value)
 
 
 def get_catalog(registry_root=None):
@@ -399,7 +385,8 @@ def validate_registry(root=None):
     _require({r["snapshot_source_id"] for r in registrations} == source_ids, "source registrations and catalog differ")
     for registration in registrations:
         source = next(s for s in catalog["sources"] if s["id"] == registration["snapshot_source_id"])
-        _require(registration["repository"] == source["repository"] and registration["manifest_path"] == source["catalog_path"],
+        expected = registration_source(registration)
+        _require(all(source.get(key) == value for key, value in expected.items()),
                  "source registration revision/path differs from snapshot")
     declarations = [_json(path) for path in sorted((root / "participants").glob("*.json"))]
     for participant in declarations:
@@ -448,13 +435,13 @@ def build_catalog(records, index, source, problem_files=None):
         contract, contract_source = None, None
         problem_bytes = (problem_files or {}).get(tid)
         if problem_bytes is not None:
-            _require(type(problem_bytes) is bytes, "problem source must be bytes from pinned Git objects")
+            _require(type(problem_bytes) is bytes, "problem source must be verified source bytes")
             problem = json.loads(problem_bytes)
             _require(type(problem) is dict and problem.get("id") == tid, "problem file task identity differs")
             _require(problem.get("protocol") == suite["protocol"], "problem file protocol differs")
             contract = sanitized_text(problem.get("contract"))
             path = f"suite/{tid}/problem.json"
-            contract_source = {"url": f"{source['repository']['url']}/blob/{source['repository']['commit']}/{path}",
+            contract_source = {"url": source_url(source, path),
                                "path": path, "sha256": hashlib.sha256(problem_bytes).hexdigest()}
         tasks.append({
             "id": tid, "name": sanitized_text(record["name"]), "description": sanitized_text(record["description"]),

@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "description": "Community-sourced tasks (competitions and public challenges) added on request; each record is a complete task manifest and the supplemental_paper record is their source collection.",
+  "supplemental_paper": {
+    "id": "kaggle-santa-2025",
+    "name": "Kaggle Santa 2025",
+    "title": "Santa 2025 - Christmas Tree Packing Challenge (Kaggle competition)",
+    "year": 2025,
+    "authors": "Kaggle competition organisers (metric and getting-started notebook)",
+    "family": "Community supplement",
+    "categories": [
+      "Packing",
+      "Combinatorial Optimisation",
+      "Math Discovery"
+    ],
+    "paper_url": "https://www.kaggle.com/competitions/santa-2025",
+    "corpus_url": null,
+    "supplemental": true,
+    "access_status": "competition pages read; metric and starter code taken from a public mirror pinned below",
+    "repositories": [
+      {
+        "url": "https://github.com/jsebdev/kaggle_santa_challenge_2025",
+        "commit": "9f0fff6e53fb653dc067214ff19bcb647ee54311",
+        "license": null,
+        "evidence_url": "https://github.com/jsebdev/kaggle_santa_challenge_2025/blob/9f0fff6e53fb653dc067214ff19bcb647ee54311/santa-2025-metric.py",
+        "readme_path": null,
+        "setup_commands": [],
+        "run_commands": [],
+        "notes": "Public mirror of the competition's metric notebook (santa-2025-metric.py), getting-started notebook (santa-2025-getting-started.py) and sample submission; used only to read the metric and to cross-check the reimplementation."
+      }
+    ],
+    "limitations": [
+      "User-requested community supplement, outside the original 98-entry corpus; the source is a Kaggle competition, not a paper.",
+      "The competition pages are rendered client-side, so the metric was taken from a public mirror of the competition's metric notebook and cross-checked numerically against it.",
+      "Leaderboard values are not reproduced here; the reference value is the getting-started sample submission scored with the official metric."
+    ]
+  },
+  "tasks": [
+    {
+      "schema_version": "1.0",
+      "id": "kaggle-santa-2025-christmas-tree-packing",
+      "name": "Santa 2025: Christmas tree packing (n = 1..200)",
+      "description": "For every n from 1 to 200 place n copies of the competition's fixed 15-vertex tree polygon (rotations allowed, no overlaps, coordinates within [-100, 100]) so that the bounding square of each configuration is as small as possible; the score is the sum over n of (bounding-square area / n), lower is better.",
+      "paper_ids": [
+        "kaggle-santa-2025"
+      ],
+      "kind": "native",
+      "status": "ready",
+      "sources": [
+        {
+          "url": "https://www.kaggle.com/competitions/santa-2025",
+          "type": "benchmark",
+          "locator": "Competition overview and evaluation page (task statement, metric definition, submission format)"
+        },
+        {
+          "url": "https://www.kaggle.com/code/inversion/santa-2025-getting-started",
+          "type": "benchmark",
+          "locator": "Getting-started notebook (tree geometry, collision rule, greedy sample submission)"
+        },
+        {
+          "url": "https://github.com/jsebdev/kaggle_santa_challenge_2025/tree/9f0fff6e53fb653dc067214ff19bcb647ee54311",
+          "type": "repository",
+          "locator": "santa-2025-metric.py (official metric, shapely 2.1.2), sample_submission.csv"
+        }
+      ],
+      "requirements": {
+        "python": ">=3.10",
+        "hardware": "CPU",
+        "dependencies": [
+          "numpy",
+          "shapely>=2.0"
+        ],
+        "environment_variables": [],
+        "datasets": "None: the tree polygon is fixed and every configuration is constructed by the candidate."
+      },
+      "evaluation": {
+        "metric": "score",
+        "direction": "minimize",
+        "aggregation": "sum",
+        "protocol": "paper_reimplementation",
+        "benchmark": "Kaggle Santa 2025 - Christmas Tree Packing Challenge",
+        "paper_metric": "sum over n of bounding-square area / n",
+        "paper_direction": "minimize",
+        "profiles": [
+          "smoke",
+          "evaluation"
+        ]
+      },
+      "execution": {
+        "native_kind": "tree-packing",
+        "parameters": {
+          "n_min": 1,
+          "n_max": 200
+        },
+        "interface": "construct(n) -> array of shape (n, 3): rows (x, y, deg) for the n-tree configuration; called for every n in 1..200"
+      },
+      "limitations": [
+        "The evaluator is an independent reimplementation of the competition metric (same polygon, scaling factor, overlap rule and bounding-square formula) and reproduces the official code's doctest value and the sample submission's score exactly; it is not the Kaggle scoring service.",
+        "No leaderboard value is embedded; the reference value is the getting-started sample submission (176.60550959158516)."
+      ],
+      "validation": {
+        "level": "automated_tests",
+        "upstream_reproduction": false,
+        "metric_cross_checks": {
+          "official_doctest": 0.877038143325303,
+          "getting_started_sample_submission": 176.60550959158516,
+          "sample_submission_sha256": "e363f9006ba207409bd93e13b3a9f437b812b1de54ca8f4e43757bd855768e87"
+        }
+      }
+    }
+  ]
+}

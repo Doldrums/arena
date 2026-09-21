@@ -1,0 +1,72 @@
+[
+  {
+    "id": "science-chemistry-lennard-jones-38",
+    "name": "Lennard-Jones cluster global minimum, 38 atoms",
+    "description": "Place 38 atoms interacting through the Lennard-Jones potential (reduced units) to minimise the total energy. LJ38 is the classic hard case of cluster optimisation: the global minimum is a face-centred-cubic truncated octahedron (energy -173.928427, Cambridge Cluster Database) while the icosahedral funnel traps local searches. The evaluator computes the energy exactly; the seed is a cubic lattice fragment.",
+    "family": "science_lj_cluster",
+    "parameters": {
+      "n": 38,
+      "published": -173.928427
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1021/jp970984n",
+        "type": "paper",
+        "locator": "Wales and Doye 1997, Global optimization by basin-hopping and the lowest energy structures of Lennard-Jones clusters containing up to 110 atoms."
+      },
+      {
+        "url": "https://www-wales.ch.cam.ac.uk/CCD.html",
+        "type": "benchmark",
+        "locator": "Cambridge Cluster Database (LJ global minima table, doye.chem.ox.ac.uk/jon/structures/LJ/tables.150.html): N=38, point group Oh, energy -173.928427; inspected 2026-09-20."
+      }
+    ],
+    "limitations": [
+      "The database values are putative global minima found by extensive searches, not proven optima; the reference is reproduced in tests by constructing the fcc truncated octahedron and relaxing it.",
+      "Reaching -173.928427 reproduces a known structure; a lower energy would be a new putative minimum and must be verified independently."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "natural_science",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value",
+      "area": "chemistry"
+    }
+  },
+  {
+    "id": "science-chemistry-lennard-jones-55",
+    "name": "Lennard-Jones cluster global minimum, 55 atoms",
+    "description": "Place 55 atoms interacting through the Lennard-Jones potential to minimise the total energy. The global minimum is the complete two-shell Mackay icosahedron (energy -279.248470, Cambridge Cluster Database). The evaluator computes the energy exactly; the seed is a cubic lattice fragment.",
+    "family": "science_lj_cluster",
+    "parameters": {
+      "n": 55,
+      "published": -279.24847
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1021/jp970984n",
+        "type": "paper",
+        "locator": "Wales and Doye 1997, basin-hopping global optimisation of Lennard-Jones clusters."
+      },
+      {
+        "url": "https://www-wales.ch.cam.ac.uk/CCD.html",
+        "type": "benchmark",
+        "locator": "Cambridge Cluster Database (LJ table): N=55, point group Ih, energy -279.248470; inspected 2026-09-20."
+      }
+    ],
+    "limitations": [
+      "Putative global minimum, reproduced in tests from the Mackay icosahedron construction plus local relaxation.",
+      "Reaching the database value reproduces a known structure; a lower energy would need independent verification."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "natural_science",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value",
+      "area": "chemistry"
+    }
+  }
+]

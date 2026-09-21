@@ -1,0 +1,72 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "dataset:JAHS-Bench-201"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "dataset",
+  "unsupported_reason": "JAHS-Bench-201 hyperparameter tasks need the JAHS surrogate tables (multi-GB download).",
+  "protocol_description": "Not executable in this suite: JAHS-Bench-201 hyperparameter tasks need the JAHS surrogate tables (multi-GB download).",
+  "id": "evolcaf-cifar-10-hyperparameter-optimization",
+  "name": "CIFAR-10 hyperparameter optimization",
+  "paper_ids": [
+    "evolcaf"
+  ],
+  "description": "CIFAR-10 hyperparameter optimization: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "benchmark": "JAHS-Bench-201",
+  "paper_metric": "validation accuracy under runtime budget",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2404.16906",
+      "type": "paper",
+      "locator": "Section 4.3 Table 3"
+    },
+    {
+      "url": "https://github.com/FeiLiu36/EoH/tree/472545785c936dcfc863d2bc0d6109cf23c7ce62",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "The paper links examples/user_bo_caf in EoH, which is absent from the current pinned tree. New examples/bo_acquisition is not assumed equivalent to the original cost-aware task suite.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "evolcaf",
+      "title": "Evolve Cost-aware Acquisition Functions Using Large Language Models",
+      "url": "https://arxiv.org/pdf/2404.16906"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

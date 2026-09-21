@@ -1,0 +1,60 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in extremal combinatorics and hypergraph Turan theory. You study the hypergraph Turan number of the tetrahedron K4^(3): as n grows, the largest constant C such that there exists a 3-uniform hypergraph on n vertices with at least (C - o(1)) * binom(n, 3) edges that contains no copy of the complete 3-uniform hypergraph on 4 vertices (the tetrahedron). The long-standing conjecture (Turan) is C = 5/9.
+
+    PROBLEM SPECIFICATION:
+    Design and implement a constructor function that returns a weighted, blow-up 3-uniform hypergraph PATTERN: a vector of non-negative vertex weights (shape (V,), interpreted after sum-normalization) and a multiset of size-3 edges (an integer array of shape (E, 3), each row a multiset of vertex indices in [0, V-1], repeats allowed). The blow-up of this pattern must be tetrahedron-free: no four blow-up vertices (parts chosen with repetition) may have all four of their size-3 sub-multisets present as edges. Subject to that constraint, maximize the resulting Turan density lower bound.
+
+    The Turan density contributed by an edge {a, b, c} over the normalized weights w is:
+      - 6 * w[a] * w[b] * w[c]        if a, b, c are all distinct,
+      - 3 * w[dup]^2 * w[other]       if exactly two of the three indices coincide,
+      - w[a]^3                        if a == b == c,
+    and the total density C is the sum over all (distinct) edges.
+
+    PERFORMANCE METRICS:
+    1. **turan_density**: The Turan density lower bound C of your tetrahedron-free construction (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: turan_density / (5/9) (BENCHMARK COMPARISON - maximize toward 1.0, where 5/9 ~= 0.5556 is the classical record / conjectured optimal lower bound for K4^(3))
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Feasibility**: The blow-up pattern MUST be tetrahedron-free; infeasible constructions score 0.
+    - **Determinism**: Use fixed random seeds if employing stochastic search methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

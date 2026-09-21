@@ -15,7 +15,7 @@ import sys
 MAX_LINES = 500
 MARKDOWN = frozenset({"README.md", "CONTRIBUTING.md"})
 ROOT_DIRECTORIES = frozenset({
-    ".github", "src", "api", "web", "registry", "schemas", "scripts", "examples", "tests",
+    ".github", "src", "api", "web", "registry", "schemas", "scripts", "examples", "tests", "tasks",
 })
 ROOT_FILES = MARKDOWN | frozenset({
     ".gitignore", ".env.example", "pyproject.toml", "package.json", "package-lock.json",
@@ -29,13 +29,14 @@ REGISTRY_DATA = frozenset({
     "registry/search-families.json", "registry/search-family-sources.json",
     "registry/taxonomy.json", "registry/results-overview.json",
     "registry/provenance/sciel-extraction.json",
+    "registry/task-library-manifest.json",
 })
 SOURCE_SUFFIXES = frozenset({
     ".py", ".pyi", ".js", ".mjs", ".cjs", ".jsx", ".ts", ".tsx",
     ".css", ".scss", ".sass", ".less", ".html", ".htm", ".sh", ".bash",
     ".zsh", ".fish", ".ps1", ".json", ".jsonc", ".yaml", ".yml", ".toml",
     ".ini", ".cfg", ".conf", ".sql", ".puml", ".graphql", ".proto", ".xml",
-    ".service", ".socket", ".timer", ".svg",
+    ".service", ".socket", ".timer", ".svg", ".cpp", ".cc", ".h", ".hpp", ".rs", ".jl", ".r", ".mlir",
 })
 SOURCE_NAMES = frozenset({
     "Dockerfile", "Makefile", "Justfile", "Procfile", ".gitignore", ".dockerignore", ".env.example",
@@ -56,8 +57,18 @@ def fixture_data(path: PurePosixPath) -> bool:
 def data_exception(path: PurePosixPath) -> bool:
     """Data exceptions never exempt executable fixture scripts or schemas."""
     name = path.as_posix()
-    return (name in LOCKFILES or name in REGISTRY_DATA or fixture_data(path)
+    return (name in LOCKFILES or name in REGISTRY_DATA or fixture_data(path) or task_data(path)
         or path.parts[:2] == ("registry", "datasets") and path.suffix.lower() in DATA_SUFFIXES)
+
+
+def task_data(path: PurePosixPath) -> bool:
+    """Task definitions, source receipts and benchmark records are inert data."""
+    if path.parts[:1] != ("tasks",) or path.suffix.lower() not in DATA_SUFFIXES:
+        return False
+    return (path.parts[1:2] in (("catalog",), ("validation",), ("data",))
+        or path.as_posix() in {"tasks/import-receipt.json", "tasks/suite/index.json",
+                              "tasks/adapters/recovered/seeds/eurekagent_ac1.json"}
+        or path.parts[1:2] == ("suite",) and path.name in {"task.json", "problem.json"})
 
 
 def transient_reason(path: PurePosixPath) -> str | None:

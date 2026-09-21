@@ -1,0 +1,270 @@
+[
+  {
+    "id": "science-tcs-sorting-network-16",
+    "name": "Size-efficient sorting networks on 16 wires",
+    "description": "Construct a fixed compare-exchange network that sorts all 16-input sequences using as few comparators as possible. Correctness is certified by the zero-one principle over all 65,536 Boolean inputs. Parallel depth is reported separately. A verified 60-comparator construction is the reference; the initial odd-even transposition network uses 120 comparators.",
+    "family": "science_sorting_network",
+    "parameters": {
+      "n": 16,
+      "max_comparators": 4096,
+      "reference": 60
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1507.01428",
+        "type": "paper",
+        "locator": "Codish et al., Sorting Networks: to the End and Back Again (2015/2016): comparator-network definitions, zero-one verification, and the optimal size/depth construction problem."
+      },
+      {
+        "url": "https://bertdobbelaere.github.io/sorting_networks.html#N16L60D10",
+        "type": "benchmark",
+        "locator": "Author-maintained sorting-network list, 16 inputs / 60 compare-exchanges / 10 layers; inspected 2026-09-20. Comparator topology is preserved as an independently verified test fixture."
+      }
+    ],
+    "limitations": [
+      "This is an independently recreated construction benchmark, not a reproduction of the paper's SAT search, experimental budget, or optimality proof.",
+      "The size objective is identical to the finite sorting-network problem. Depth is diagnostic only, and the 4096-comparator cap is a generous benchmark resource limit.",
+      "The 60-comparator reference is a verified feasible upper bound. The inspected source lists size bounds 57..60; this package does not prove the minimum or promise that the online record will remain current.",
+      "Improving the 120-comparator seed or recovering a published network is not a new research result. A claimed record requires a separately reviewed construction and comparison against current literature."
+    ],
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value",
+      "area": "theoretical_computer_science"
+    }
+  },
+  {
+    "id": "science-tcs-binary-code-18-6",
+    "name": "Binary error-correcting codes of length 18 and distance 6",
+    "description": "Construct the largest possible collection of 18-bit words with pairwise Hamming distance at least 6, the extremal quantity A_2(18,6). Both linear and nonlinear codes are allowed. Every pair is checked exactly using integer XOR and population count. The initial Reed-Muller construction has 32 words; a 512-word extended quadratic-residue construction is independently verified as a reference.",
+    "family": "science_binary_code",
+    "parameters": {
+      "n": 18,
+      "minimum_distance": 6,
+      "reference": 512
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1005.4959",
+        "type": "paper",
+        "locator": "Gijswijt, Mittelmann and Schrijver, Semidefinite code bounds based on quadruple distances (2012): definition of A(n,d), and the upper bound A(18,6) <= 673."
+      },
+      {
+        "url": "https://aeb.win.tue.nl/codes/binary-1.html",
+        "type": "benchmark",
+        "locator": "Brouwer's table of general binary codes, row n=18 and column d=6, lists 512..673; inspected 2026-09-20. Used as dated research context, not as an evaluator-enforced bound."
+      },
+      {
+        "url": "https://www.etsi.org/deliver/etsi_TS/102300_102399/10236101/02.03.01_60/ts_10236101v020301p.pdf",
+        "type": "benchmark",
+        "locator": "ETSI TS 102 361-1 V2.3.1, Annex B.3.2, printed page 132, equation (B.2): primitive (17,9,5) quadratic-residue generator g(x)=x^8+x^5+x^4+x^3+1. Tests use all nine message bits and append even parity to obtain a verified (18,512,6) reference, rather than the standard's shortened (16,7,6) code."
+      }
+    ],
+    "limitations": [
+      "The source paper derives upper bounds with semidefinite programming. This task recreates its finite code-construction question and objective, not its SDP algorithm or experiments.",
+      "The reference is reconstructed from a published quadratic-residue generator and verified over every pair; the encoder is a local implementation and is extended to 18 bits rather than shortened as in the ETSI example.",
+      "The 512..673 interval is dated source context, not a claim of an optimum or a permanently current record. The evaluator assumes only the elementary Hamming bound, derived directly from disjoint Hamming balls.",
+      "Improving the 32-word seed or reaching 512 words does not settle the open extremal problem. Any proposed new record needs separate comparison with current constructions and upper bounds."
+    ],
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value",
+      "area": "theoretical_computer_science"
+    }
+  },
+  {
+    "id": "science-tcs-sorting-network-17",
+    "name": "Size-efficient sorting networks on 17 wires",
+    "description": "Construct a compare-exchange network that sorts all 17-input sequences with as few comparators as possible; correctness is certified over all 131,072 Boolean inputs (zero-one principle). The best known network has 71 comparators (depth 12); the proven lower bound is 63, so the optimal size is open. The seed odd-even transposition network uses 136 comparators.",
+    "family": "science_sorting_network",
+    "parameters": {
+      "n": 17,
+      "max_comparators": 4096,
+      "reference": 71
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1507.01428",
+        "type": "paper",
+        "locator": "Codish et al.: comparator networks, zero-one verification and the size/depth optimisation problem for 17 to 20 inputs."
+      },
+      {
+        "url": "https://bertdobbelaere.github.io/sorting_networks.html#N17L71D12",
+        "type": "benchmark",
+        "locator": "Author-maintained list, 17 inputs: best known 71 compare-exchanges (depth 12), size bounds 63..71, inspected 2026-09-20."
+      }
+    ],
+    "limitations": [
+      "Independently recreated construction benchmark; the 71-comparator reference value is taken from the list and is not embedded as a verified fixture.",
+      "Reaching 71 reproduces a known network; only fewer than 71 comparators would be a new bound and must be checked against current literature.",
+      "Depth is diagnostic only."
+    ],
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "theoretical_computer_science"
+    }
+  },
+  {
+    "id": "science-tcs-sorting-network-18",
+    "name": "Size-efficient sorting networks on 18 wires",
+    "description": "Construct a compare-exchange network that sorts all 18-input sequences with as few comparators as possible; correctness is certified over all 262,144 Boolean inputs. The best known network has 77 comparators; the lower bound is 68, so the optimal size is open. The seed odd-even transposition network uses 153 comparators.",
+    "family": "science_sorting_network",
+    "parameters": {
+      "n": 18,
+      "max_comparators": 4096,
+      "reference": 77
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1507.01428",
+        "type": "paper",
+        "locator": "Codish et al.: comparator networks and the size/depth optimisation problem for 17 to 20 inputs."
+      },
+      {
+        "url": "https://bertdobbelaere.github.io/sorting_networks.html#N18L77D12",
+        "type": "benchmark",
+        "locator": "Author-maintained list, 18 inputs: best known 77 compare-exchanges (depth 12), size bounds 68..77, inspected 2026-09-20."
+      }
+    ],
+    "limitations": [
+      "Independently recreated construction benchmark; the 77-comparator reference is a list value, not an embedded fixture.",
+      "Only fewer than 77 comparators would be a new bound.",
+      "Depth is diagnostic only."
+    ],
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "theoretical_computer_science"
+    }
+  },
+  {
+    "id": "science-tcs-binary-code-17-6",
+    "name": "Binary error-correcting codes of length 17 and distance 6",
+    "description": "Construct the largest set of 17-bit words with pairwise Hamming distance at least 6, the extremal quantity A_2(17,6). Brouwer's table lists 258..340: the lower bound is Milshtein's 2019 nonlinear code, the upper bound comes from semidefinite programming. The 256-word linear reference is the [18,9,6] extended quadratic-residue code shortened by one coordinate; the seed has 32 words.",
+    "family": "science_binary_code",
+    "parameters": {
+      "n": 17,
+      "minimum_distance": 6,
+      "reference": 256
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1005.4959",
+        "type": "paper",
+        "locator": "Gijswijt, Mittelmann and Schrijver: definition of A(n,d) and semidefinite upper bounds."
+      },
+      {
+        "url": "https://aeb.win.tue.nl/codes/binary-1.html",
+        "type": "benchmark",
+        "locator": "Brouwer's table, n=17, d=6: 258..340 (lower bound Milshtein 2019), inspected 2026-09-20."
+      }
+    ],
+    "limitations": [
+      "The 256-word reference is verified in tests by shortening the extended quadratic-residue code; the 258-word record is not reproduced here.",
+      "A code larger than 258 words would be a new lower bound and needs independent verification against current tables."
+    ],
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value",
+      "area": "theoretical_computer_science"
+    }
+  },
+  {
+    "id": "science-tcs-snake-in-the-box-9",
+    "name": "Snake-in-the-box in the 9-dimensional hypercube",
+    "description": "Construct the longest induced path (snake) in the hypercube Q_9: a sequence of distinct 9-bit vertices in which consecutive vertices differ in one bit and non-consecutive vertices differ in at least two bits. The exact maximum is known only up to dimension 8 (98 in Q_8); in dimension 9 the best known snakes had length 190 before 2026 and were improved in arXiv:2607.15270, so the problem is open. The seed is a greedy snake of length 104.",
+    "family": "science_snake",
+    "parameters": {
+      "n": 9
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1603.05119",
+        "type": "paper",
+        "locator": "Allison and Paulusma, New bounds for the snake-in-the-box problem: definitions, exact values up to dimension 8 (a(8)=98) and lower bounds."
+      },
+      {
+        "url": "https://arxiv.org/abs/2607.15270",
+        "type": "paper",
+        "locator": "A census of new snake-in-the-box records (2026): longer snakes in dimensions 9 to 13 than previously known."
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Snake-in-the-box",
+        "type": "benchmark",
+        "locator": "Summary of known snake and coil lengths by dimension, inspected 2026-09-20."
+      }
+    ],
+    "limitations": [
+      "The evaluator checks the snake property exactly; it does not embed a record construction, so the reference label is none.",
+      "A snake longer than the current published record would be a new result and must be compared with the 2026 census."
+    ],
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "theoretical_computer_science"
+    }
+  },
+  {
+    "id": "science-tcs-ramsey-5-5",
+    "name": "Ramsey graphs for R(5,5): large graphs with no K5 and no independent 5-set",
+    "description": "Construct a graph on as many vertices as possible with no clique of size 5 and no independent set of size 5. Every such graph on n vertices proves R(5,5) > n. The best known construction is Exoo's 42-vertex graph (R(5,5) >= 43) and Angeltveit and McKay proved R(5,5) <= 46, so the exact value is open. The seed is the Paley graph on 37 vertices, verified (5,5)-free by the evaluator.",
+    "family": "science_ramsey",
+    "parameters": {
+      "clique": 5,
+      "independent": 5,
+      "max_vertices": 45
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2409.15709",
+        "type": "paper",
+        "locator": "Angeltveit and McKay, R(5,5) <= 46: the current upper bound and a summary of the lower bound 43 (Exoo 1989)."
+      },
+      {
+        "url": "https://www.cs.rit.edu/~spr/ElJC/sur.pdf",
+        "type": "benchmark",
+        "locator": "Radziszowski, Small Ramsey Numbers (dynamic survey): R(5,5) bounds 43..46."
+      }
+    ],
+    "limitations": [
+      "Exoo's 42-vertex graph is not embedded; the evaluator only certifies candidate graphs, so the reference label is none.",
+      "A valid graph on 43 or more vertices would refute the conjecture R(5,5) = 43 and must be independently verified."
+    ],
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "theoretical_computer_science"
+    },
+    "proposal_id": "T02",
+    "status": "ready"
+  }
+]

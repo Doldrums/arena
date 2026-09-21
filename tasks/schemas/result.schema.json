@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evaluation result",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_id",
+    "mode",
+    "status",
+    "score",
+    "valid"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "native_reference",
+        "upstream",
+        "native_task"
+      ]
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "completed",
+        "success",
+        "failed",
+        "timeout"
+      ]
+    },
+    "score": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "valid": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    }
+  }
+}

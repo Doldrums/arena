@@ -1,0 +1,100 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "py:numpy",
+    "py:orjson",
+    "py:threadpoolctl",
+    "py:yaml",
+    "vendor:algotune"
+  ],
+  "timeout": 600,
+  "notes": [
+    "The SCiEL evaluator (kept verbatim as evaluator_sciel.py) expects an AlgoTune checkout at fixed paths; evaluator.py loads it with the byte-verified vendored subset in suite/_lib/vendor/algotune (see SOURCES.json) and injects TASK_REGISTRY, leaving the scoring code unchanged.",
+    "Imports openevolve.evaluation_result; suite/_lib/openevolve is a verbatim shim of that module."
+  ],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "speedup_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/algotune/psd_cone_projection",
+    "files_sha256": {
+      "config.yaml": "c801c458acadaa7b15a95729d6c007ce28f7c873022a61474a9ae5fea1c43b2d",
+      "evaluator.py": "0f25585ebd7ff236d8657fea0f73962145d0e761168e7ddd9b384034627fc7df",
+      "initial_program.py": "25108ba45452374c28c2da7fec059192bd7a8ffcc9a0c426265305423d85b4aa"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/algotune/psd_cone_projection` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-math-algotune-psd-cone-projection",
+  "name": "SCiEL: AlgoTune positive semidefinite projection",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Project a matrix onto the positive semidefinite cone and maximize measured reference-relative speedup.",
+  "benchmark": "SCiEL source example algotune/psd_cone_projection",
+  "paper_metric": "speedup_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/algotune/psd_cone_projection/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/algotune/psd_cone_projection/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/oripress/AlgoTune/blob/dff9914c10800c7a031c9e8c3d4d1c8cd1b38906/AlgoTuneTasks/psd_cone_projection/psd_cone_projection.py",
+      "type": "repository",
+      "locator": "Recovered official task generator/solver dependency; immutable additional pin"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The evaluator checks candidate.Class().is_solution(), so candidate code controls the correctness predicate. SCiEL did not pin its external AlgoTune registry; this recovery supplies an explicit additional revision. Reported correctness and speedup do not provide independent verification.",
+    "Timing includes Python thread dispatch and measures short numerical operations; noise and environment changes can dominate speedup.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "numerical_computing",
+    "area": "scientific_computing",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

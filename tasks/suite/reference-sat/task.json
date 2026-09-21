@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "id": "reference-sat",
+  "name": "Satisfiable 3-CNF solving",
+  "description": "Return {\"assignment\": [booleans]}; score 1 iff every clause is satisfied. Literal k refers to assignment[abs(k)-1], negated when k < 0.",
+  "paper_ids": [
+    "satlution"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2509.07367",
+      "type": "paper",
+      "locator": "Problem family; original benchmark protocol is not claimed."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Generated locally with documented seed."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "aggregation": "mean",
+    "protocol": "portable_reference",
+    "instance_generation": "src/autoresearch_tasks/native.py",
+    "profiles": [
+      "smoke",
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "sat",
+    "parameters": {
+      "n": 16
+    },
+    "interface": "Return {\"assignment\": [booleans]}; score 1 iff every clause is satisfied. Literal k refers to assignment[abs(k)-1], negated when k < 0.",
+    "suite": {
+      "protocol": "recreated",
+      "family": "sat_solver",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Portable reference implementation, not a reproduction of the original paper experiment.",
+    "Generated deterministic instances are not the paper datasets. Scores are not comparable to published results."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

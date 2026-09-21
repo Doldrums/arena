@@ -1,0 +1,73 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "dataset:RNA sequence modeling",
+    "hardware:gpu"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "dataset",
+  "unsupported_reason": "The Station's research tasks need large scientific datasets (single-cell atlases, ZAPBench, RNA benchmarks) or RL training.",
+  "protocol_description": "Not executable in this suite: The Station's research tasks need large scientific datasets (single-cell atlases, ZAPBench, RNA benchmarks) or RL training.",
+  "id": "the-station-rna-sequence-modeling",
+  "name": "RNA sequence modeling",
+  "paper_ids": [
+    "the-station"
+  ],
+  "description": "RNA sequence modeling: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "benchmark": "RNA sequence modeling",
+  "paper_metric": "mean validation metric over seven datasets",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2511.06309",
+      "type": "paper",
+      "locator": "Sections 3.2–3.5 and Appendix B"
+    },
+    {
+      "url": "https://github.com/dualverse-ai/station/tree/782088e561998bf357d95a838a0566a8229425d9",
+      "type": "repository",
+      "locator": "example/research_misc/rna/misc/eval.py"
+    }
+  ],
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "the-station",
+      "title": "The Station: An Open-World Environment for AI-Driven Discovery",
+      "url": "https://arxiv.org/pdf/2511.06309"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "discovery",
+    "science_tier": 1,
+    "artifact": "program",
+    "domain": "natural_science",
+    "area": "biology",
+    "data": "real_measurements",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "gpu",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

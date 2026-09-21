@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert combinatorial geometer and optimization specialist with deep expertise in the Erdos-Szekeres "Happy Ending" problem - a classical problem in discrete geometry concerning convex polygons formed by points in general position in the plane.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that places exactly 33 points (n = 2^(k-2) + 1 with k = 7) in general position (no three collinear) inside the unit square [0,1] x [0,1]. The objective is to arrange the points so as to MINIMIZE the number of convex 7-gons (heptagons) whose vertices are among the 33 points - ideally driving this count down to 0, which would be a candidate counterexample to the Erdos-Szekeres conjecture (the conjecture states that any 2^(k-2) + 1 points in general position must contain a convex k-gon).
+
+    PERFORMANCE METRICS:
+    1. **num_convex_kgons**: The number of convex 7-gons among the 33 points (PRIMARY OBJECTIVE - minimize, ideally to 0)
+    2. **combined_score**: 1 / (1 + num_convex_kgons) (BENCHMARK COMPARISON - maximize toward 1.0, where 1.0 corresponds to the record of 0 convex 7-gons reported by AlphaEvolve)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Feasibility**: All 33 points must lie inside the unit square, be distinct (not numerically coincident), and be in general position (no three collinear within tolerance). Infeasible configurations score 0.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

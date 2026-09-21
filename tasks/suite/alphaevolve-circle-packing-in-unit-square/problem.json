@@ -1,0 +1,259 @@
+{
+  "protocol": "recreated_verified",
+  "family": "circle_packing_square",
+  "direction": "maximize",
+  "contract": "construct() -> array of shape (n, 3): rows (x, y, radius) of n disjoint circles inside the unit square",
+  "parameters": {
+    "n": 26,
+    "published": 2.6358627564136983
+  },
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 120,
+  "notes": [
+    "Verification reimplemented from the AlphaEvolve mathematical_results notebook; the published construction reproduces the published value exactly with this evaluator (see tests/test_suite.py).",
+    "Independent implementation of the AlphaEvolve verification; reproduces the notebook's published values exactly."
+  ],
+  "protocol_description": "Reimplemented in this repository and cross-checked against the paper's published constructions/values.",
+  "id": "alphaevolve-circle-packing-in-unit-square",
+  "name": "Circle packing in unit square",
+  "paper_ids": [
+    "alphaevolve",
+    "adaevolve",
+    "aevo",
+    "agentic-optimization",
+    "base",
+    "codeevolve",
+    "coral",
+    "eurekagent",
+    "evox",
+    "loongflow",
+    "pairwise-validator",
+    "shinkaevolve",
+    "the-station"
+  ],
+  "description": "Pack 26 circles with disjoint interiors inside [0,1]^2 and maximize the sum of their radii.",
+  "benchmark": "Circle packing in unit square",
+  "paper_metric": "sum of circle radii",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2506.13131",
+      "type": "paper",
+      "locator": "Appendix B.12"
+    },
+    {
+      "url": "https://github.com/google-deepmind/alphaevolve_results/tree/4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+      "type": "repository",
+      "locator": "mathematical_results.ipynb"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Math results and task-definition appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/math/circle_packing"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2605.13821",
+      "type": "paper",
+      "locator": "Section 5.1; Appendix C.1"
+    },
+    {
+      "url": "https://junye-pan.github.io/posts/agentic-optimization/assets/report.pdf",
+      "type": "paper",
+      "locator": "Report Section 5.1"
+    },
+    {
+      "url": "https://github.com/Junye-Pan/AgenticOptimization/tree/712b2fd4888c4b57fc08c1d2bdf4b1ca4c4517fb",
+      "type": "repository",
+      "locator": "tasks/circle_packing_26"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2605.29268",
+      "type": "paper",
+      "locator": "Section 4"
+    },
+    {
+      "url": "https://github.com/keruiwu/self-evolving-allocation/tree/ae7b5da1db39c0fd826adda7893c99d5bda5ac1b",
+      "type": "repository",
+      "locator": "tasks/circle_packing"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2510.14150",
+      "type": "paper",
+      "locator": "Appendix A.1"
+    },
+    {
+      "url": "https://github.com/inter-co/science-codeevolve/tree/c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+      "type": "repository",
+      "locator": "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1, Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/math/circle_packing"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2606.13662",
+      "type": "paper",
+      "locator": "Sections 4.1–4.2"
+    },
+    {
+      "url": "https://github.com/THU-Team-Eureka/EurekAgent/blob/fb96df897dfb99797a77623aa0dd9ee178fe89d2/examples/circle_packing/SUBMISSION_FORMAT.md",
+      "type": "repository",
+      "locator": "Exact JSON submission contract used for recovered seed"
+    },
+    {
+      "url": "https://github.com/THU-Team-Eureka/EurekAgent/tree/fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+      "type": "repository",
+      "locator": "examples/circle_packing"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Math results and task-definition appendix"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2512.24077",
+      "type": "paper",
+      "locator": "Table 1"
+    },
+    {
+      "url": "https://github.com/baidu-baige/LoongFlow/tree/945c78bc1554f8281aac40320b3599bd68d528d7",
+      "type": "repository",
+      "locator": "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2607.14408",
+      "type": "paper",
+      "locator": "Section 5.4, Table 5"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2509.19349",
+      "type": "paper",
+      "locator": "Problem family; original benchmark protocol is not claimed."
+    },
+    {
+      "url": "https://github.com/SakanaAI/ShinkaEvolve/tree/9912af12d423504b8d580f4179fd15f5f88b8c50",
+      "type": "repository",
+      "locator": "examples/circle_packing/evaluate.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2511.06309",
+      "type": "paper",
+      "locator": "Section 3.1"
+    },
+    {
+      "url": "https://github.com/dualverse-ai/station/tree/782088e561998bf357d95a838a0566a8229425d9",
+      "type": "repository",
+      "locator": "example/research_alpha_evolve/circle_n26"
+    }
+  ],
+  "limitations": [
+    "Paper reports over 50 mathematical problems but explicitly details 13 families in Appendix B. Unpublished full task inventory and internal Google assets prevent a complete runnable reproduction.",
+    "Official result notebook provides mathematical constructions and verification, but no AlphaEvolve search implementation. It publishes a subset of all evaluated problems; the full >50 mathematical problem inventory is not disclosed.",
+    "Paper Appendix B.3 writes max(abs(autoconvolution)); notebook B.3 reported 1.4557 construction computes abs(max(autoconvolution)). The notebook separately verifies the max(abs(...)) variant at 1.4688. These are not interchangeable metrics.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "alphaevolve",
+      "title": "AlphaEvolve: A coding agent for scientific and algorithmic discovery",
+      "url": "https://arxiv.org/pdf/2506.13131"
+    },
+    {
+      "id": "adaevolve",
+      "title": "AdaEvolve: Adaptive LLM Driven Zeroth-Order Optimization",
+      "url": "https://arxiv.org/pdf/2602.20133"
+    },
+    {
+      "id": "aevo",
+      "title": "Harnessing Agentic Evolution",
+      "url": "https://arxiv.org/pdf/2605.13821"
+    },
+    {
+      "id": "agentic-optimization",
+      "title": "Agentic Optimization: A Framework for Autonomous Coding-Agent Search",
+      "url": "https://junye-pan.github.io/posts/agentic-optimization/assets/report.pdf"
+    },
+    {
+      "id": "base",
+      "title": "Compute Allocation in Evolutionary Search: From Depth–Breadth to Multi-Armed Bandits",
+      "url": "https://arxiv.org/pdf/2605.29268"
+    },
+    {
+      "id": "codeevolve",
+      "title": "CodeEvolve: an open-source evolutionary framework for algorithmic discovery and optimization",
+      "url": "https://arxiv.org/pdf/2510.14150"
+    },
+    {
+      "id": "coral",
+      "title": "CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery",
+      "url": "https://arxiv.org/pdf/2604.01658"
+    },
+    {
+      "id": "eurekagent",
+      "title": "EurekAgent: Agent Environment Engineering is All You Need For Autonomous Scientific Discovery",
+      "url": "https://arxiv.org/pdf/2606.13662"
+    },
+    {
+      "id": "evox",
+      "title": "EvoX: Meta-Evolution for Automated Discovery",
+      "url": "https://arxiv.org/pdf/2602.23413"
+    },
+    {
+      "id": "loongflow",
+      "title": "LoongFlow: Directed Evolutionary Search via a Cognitive Plan-Execute-Summarize Paradigm",
+      "url": "https://arxiv.org/pdf/2512.24077"
+    },
+    {
+      "id": "pairwise-validator",
+      "title": "Reward-Free Evolving Agents via Pairwise Validator",
+      "url": "https://arxiv.org/pdf/2607.14408"
+    },
+    {
+      "id": "shinkaevolve",
+      "title": "ShinkaEvolve: Towards Open-Ended And Sample-Efficient Program Evolution",
+      "url": "https://arxiv.org/pdf/2509.19349"
+    },
+    {
+      "id": "the-station",
+      "title": "The Station: An Open-World Environment for AI-Driven Discovery",
+      "url": "https://arxiv.org/pdf/2511.06309"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

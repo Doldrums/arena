@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert computational geometer and optimization specialist working on the "equidistant points in convex polygons" problem. It concerns the conjecture: "Every convex polygon has at least one vertex v such that no 4 other vertices are equidistant from v." The aim is to find a counterexample, or get as close as possible: a convex polygon in which EVERY vertex has (at least) 4 other vertices that are approximately equidistant from it.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that generates a strictly convex polygon with exactly 20 vertices (returned as a (20, 2) array of x,y coordinates in convex order). For each vertex v, consider the sorted distances from v to the other 19 vertices, locate the smallest gap between consecutive sorted distances, and measure how nearly equal the four distances bracketing that gap are. Each vertex earns a score in [0, 1] (1.0 when those four distances are identical). The polygon's score is the MINIMUM of the per-vertex scores, so all vertices must simultaneously have four near-equidistant neighbors. The score is invariant to translation, rotation, and uniform scaling.
+
+    PERFORMANCE METRICS:
+    1. **polygon_score**: Minimum over all vertices of the per-vertex equidistance score, in [0, 1] (PRIMARY OBJECTIVE - maximize). Non-convex or malformed polygons score 0.
+    2. **combined_score**: polygon_score / 0.9994822977347143 (BENCHMARK COMPARISON - maximize toward 1.0, where 0.9994822977347143 is the best minimum-vertex score found by AlphaEvolve for 20 vertices, very close to a perfect counterexample).
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Convexity**: The returned polygon must be strictly convex (vertices in order, no collinear or coincident points); otherwise it scores 0.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

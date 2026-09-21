@@ -1,0 +1,132 @@
+{
+  "schema_version": "1.0",
+  "id": "hyperagents-conference-paper-acceptance-prediction",
+  "name": "Conference paper acceptance prediction",
+  "description": "Conference paper acceptance prediction",
+  "paper_ids": [
+    "hyperagents"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2603.19461",
+      "type": "paper",
+      "locator": "Section 4 and Appendix C"
+    },
+    {
+      "url": "https://github.com/facebookresearch/Hyperagents/tree/59a68f672dfb92c74aeb7e61535d776fb36e172d",
+      "type": "repository",
+      "locator": "domains/paper_review"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "Docker",
+      "LLM credentials"
+    ]
+  },
+  "evaluation": {
+    "metric": "binary accuracy",
+    "paper_metric": "binary accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Section 4 and Appendix C"
+  },
+  "execution": {
+    "repository": "https://github.com/facebookresearch/Hyperagents",
+    "commit": "59a68f672dfb92c74aeb7e61535d776fb36e172d",
+    "upstream_path": "domains/paper_review",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "python -m pip install -r requirements.txt",
+      "docker build --network=host -t hyperagents .",
+      "bash setup_initial.sh"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "python -m pip install -r requirements.txt",
+      "docker build --network=host -t hyperagents .",
+      "bash setup_initial.sh"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "dataset:Conference paper acceptance prediction"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "dataset",
+      "unsupported_reason": "Fitness requires the Conference paper acceptance prediction data and training pipeline, which are not redistributed with the suite."
+    }
+  },
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Conference paper acceptance prediction",
+    "slug": "conference-paper-acceptance-prediction",
+    "description": "Conference paper acceptance prediction",
+    "benchmark": null,
+    "dataset": null,
+    "metric": "binary accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2603.19461",
+    "source_locator": "Section 4 and Appendix C",
+    "upstream_path": "domains/paper_review",
+    "requirements": [
+      "Docker",
+      "LLM credentials"
+    ],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified.",
+    "upstream_evaluator_paths": [],
+    "upstream_seed_paths": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "model",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,392 @@
+{
+  "schema_version": "1.0",
+  "id": "redahd-0-1-knapsack",
+  "name": "0/1 knapsack",
+  "description": "0/1 knapsack: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "redahd",
+    "mcts-ahd",
+    "a2dept",
+    "reevo"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2505.20242",
+      "type": "paper",
+      "locator": "Section 5.1 and Appendix C"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2501.08603",
+      "type": "paper",
+      "locator": "Section 4; Appendices B-D and F"
+    },
+    {
+      "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+      "type": "repository",
+      "locator": "problems/kp_constructive/eval.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2604.24043",
+      "type": "paper",
+      "locator": "Problem family; original benchmark protocol is not claimed."
+    },
+    {
+      "url": "https://arxiv.org/pdf/2402.01145",
+      "type": "paper",
+      "locator": "Problem family; original benchmark protocol is not claimed."
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "MCTS-AHD evaluation datasets",
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "objective value / gap to optimum (problem dependent)",
+    "paper_direction": null,
+    "direction": "maximize",
+    "benchmark": "MCTS-AHD evaluation datasets",
+    "protocol": "specified_only",
+    "source_locator": "Section 5.1 and Appendix C"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "The paper links MCTS-AHD data, not an official RedAHD repository."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "knapsack_constructive",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No official runnable repository was verified from the paper/project sources examined.",
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "0/1 knapsack",
+    "slug": "0-1-knapsack",
+    "description": "0/1 knapsack: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "MCTS-AHD evaluation datasets",
+    "dataset": "MCTS-AHD evaluation datasets",
+    "metric": "objective value / gap to optimum (problem dependent)",
+    "direction": null,
+    "source_url": "https://arxiv.org/pdf/2505.20242",
+    "source_locator": "Section 5.1 and Appendix C",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [
+      "The paper links MCTS-AHD data, not an official RedAHD repository."
+    ],
+    "implementation_status": "paper_inventory_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "mcts-ahd-kp-constructive",
+      "paper_ids": [
+        "mcts-ahd"
+      ],
+      "name": "kp_constructive",
+      "description": "kp_constructive task evaluated in Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2501.08603",
+          "type": "paper",
+          "locator": "Section 4; Appendices B-D and F"
+        },
+        {
+          "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+          "type": "repository",
+          "locator": "problems/kp_constructive/eval.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy",
+          "torch"
+        ],
+        "environment_variables": [],
+        "datasets": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+        "notes": [
+          "CPU Python with NumPy",
+          "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+        ],
+        "required_files": [
+          "problems/kp_constructive/eval.py",
+          "problems/kp_constructive/gen_inst.py",
+          "utils/utils.py",
+          "problems/kp_constructive/dataset/train100_dataset.npy"
+        ],
+        "required_file_hashes": {
+          "problems/kp_constructive/eval.py": "315b185216338b82cf9fb24678ed8d0878396c3417f62349ffe16bdccf32bd7d",
+          "problems/kp_constructive/gen_inst.py": "80c003a2353969aae112e85396be281144a64231ed043020bff63b9beae33ee7",
+          "utils/utils.py": "0b9cfa62adcde5046d1b90808e6477928940ef1462602b82685296831285a0b9",
+          "problems/kp_constructive/dataset/train100_dataset.npy": "5d322c52542fc643d88c2e163f54384d66062713e248cf093c7258a2a6a11b6b"
+        }
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "mean total value",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "kp_constructive",
+        "protocol": "upstream",
+        "source_locator": "Section 4; Appendices B-D and F"
+      },
+      "execution": {
+        "repository": "https://github.com/zz1358m/MCTS-AHD-master",
+        "commit": "ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+        "upstream_path": "problems/kp_constructive/eval.py",
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "main.py",
+              "problem=kp_constructive"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/main.py",
+            "notes": "Hydra task override derived from inspected @hydra.main configuration and verified cfg/problem file; not executed."
+          }
+        ],
+        "evaluator_adapter": {
+          "evaluator_scope": "repository",
+          "evaluator_path": "adapters/recovered/optimization_original.py",
+          "baseline_scope": "repository",
+          "baseline_path": "adapters/recovered/seeds/optimization_mcts-ahd_kp_constructive.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": ".",
+          "score_key": "score",
+          "score_direction": "maximize",
+          "validity_key": "validity",
+          "return_style": "dict",
+          "kwargs": {
+            "checkout": "{checkout}",
+            "problem": "kp_constructive",
+            "max_instances": 2,
+            "iterations": 5,
+            "ants": 10,
+            "random_seed": 1234,
+            "black_box": false
+          },
+          "dependencies": [
+            "numpy",
+            "scipy",
+            "torch"
+          ],
+          "implementation_label": "bounded_original_protocol_recreated_seed",
+          "repository_files": {
+            "adapters/recovered/seeds/optimization_mcts-ahd_kp_constructive.py": "9f4abe7f2a5334263bc3b264c5069ac5bdec7219f847913ef1fd48274268e3f9",
+            "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3"
+          },
+          "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "seconds": 0.77,
+            "metrics": {
+              "score": 38.64886634641611,
+              "validity": null,
+              "instances": 2,
+              "instance_size": 100,
+              "candidate_calls": 125,
+              "instance_objectives": [
+                39.288869144743614,
+                38.00886354808862
+              ],
+              "profile": "bounded_original_training",
+              "iterations": 5,
+              "ants": 10,
+              "black_box": false,
+              "random_seed": 1234,
+              "dataset_origin": "released_training_data",
+              "dataset_sha256": "5d322c52542fc643d88c2e163f54384d66062713e248cf093c7258a2a6a11b6b",
+              "validation_scope": "finite original solver objective; no independent solution certificate"
+            },
+            "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+          }
+        },
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Use cfg/problem/kp_constructive.yaml. Set max_fe=2000 for online BPP and init_pop_size=10 for black-box ACO as README instructs.",
+          "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+          "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "seconds": 0.77,
+          "metrics": {
+            "score": 38.64886634641611,
+            "validity": null,
+            "instances": 2,
+            "instance_size": 100,
+            "candidate_calls": 125,
+            "instance_objectives": [
+              39.288869144743614,
+              38.00886354808862
+            ],
+            "profile": "bounded_original_training",
+            "iterations": 5,
+            "ants": 10,
+            "black_box": false,
+            "random_seed": 1234,
+            "dataset_origin": "released_training_data",
+            "dataset_sha256": "5d322c52542fc643d88c2e163f54384d66062713e248cf093c7258a2a6a11b6b",
+            "validation_scope": "finite original solver objective; no independent solution certificate"
+          },
+          "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+        }
+      }
+    },
+    {
+      "id": "reference-knapsack",
+      "paper_ids": [
+        "a2dept",
+        "reevo"
+      ],
+      "name": "Zero-one knapsack",
+      "description": "Return {\"selected\": [item indices]} with total weight at most capacity; maximize total value.",
+      "kind": "native",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2604.24043",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        },
+        {
+          "url": "https://arxiv.org/pdf/2402.01145",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        }
+      ],
+      "requirements": {
+        "python": ">=3.10",
+        "hardware": "CPU",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "Generated locally with documented seed."
+      },
+      "evaluation": {
+        "metric": "score",
+        "direction": "maximize",
+        "aggregation": "mean",
+        "protocol": "portable_reference",
+        "instance_generation": "src/autoresearch_tasks/native.py",
+        "profiles": [
+          "smoke",
+          "evaluation"
+        ]
+      },
+      "execution": {
+        "native_kind": "knapsack",
+        "parameters": {
+          "n": 35
+        },
+        "interface": "Return {\"selected\": [item indices]} with total weight at most capacity; maximize total value."
+      },
+      "limitations": [
+        "Portable reference implementation, not a reproduction of the original paper experiment.",
+        "Generated deterministic instances are not the paper datasets. Scores are not comparable to published results."
+      ],
+      "validation": {
+        "level": "automated_tests",
+        "upstream_reproduction": false
+      }
+    }
+  ]
+}

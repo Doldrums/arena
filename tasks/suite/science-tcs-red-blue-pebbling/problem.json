@@ -1,0 +1,77 @@
+{
+  "protocol": "recreated",
+  "family": "science_tcs_expansion_pebbling",
+  "direction": "minimize",
+  "contract": "pebble(dag, fast_memory_budget) -> list of [operation, vertex], with operations load/store/compute/delete. dag has topologically ordered parents and output vertices. Inputs start blue, all outputs must finish blue; every red value consumes one fast-memory slot, including newly computed results. Recomputations allowed; at most20000 operations. Score mean transfers / naive schedule on three layered DAGs; exact state-machine verification.",
+  "parameters": {},
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 60,
+  "notes": [
+    "Native bounded research instances derived from the cited mathematical model, not an upstream benchmark-score reproduction. Public seeds are development instances; freeze candidates and use new graph/stream/matrix families for independent generalization."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-tcs-red-blue-pebbling",
+  "name": "Theoretical computer science: Communication-minimizing DAG pebbling",
+  "paper_ids": [
+    "science-tcs_expansion"
+  ],
+  "description": "Communication-minimizing DAG pebbling under a bounded candidate interface with independent verification; generated mathematical instances, no external dataset.",
+  "benchmark": "Theoretical computer science: Communication-minimizing DAG pebbling",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://www.eecs.harvard.edu/~htk/publication/1981-stoc-hong-kung.pdf",
+      "type": "paper",
+      "locator": "Hong and Kung: red-blue pebble game, dependency and transfer rules."
+    }
+  ],
+  "limitations": [
+    "This is a bounded native adaptation, not the paper's experimental score or an asymptotic guarantee.",
+    "Public development generators can be inspected; independent generalization requires fresh instances after freezing the candidate."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-tcs_expansion",
+      "title": "Algorithms and theoretical computer science: source-based research tasks",
+      "url": "https://www.nist.gov/publications/new-combinational-logic-minimization-technique-applications-cryptology"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "I/O Complexity: The Red-Blue Pebble Game",
+        "url": "https://www.eecs.harvard.edu/~htk/publication/1981-stoc-hong-kung.pdf",
+        "task_relation": "The local task constructs legal bounded-memory schedules for finite DAGs and counts loads and stores. Its instance family and verifier rules are a restricted scheduling adaptation and do not reproduce asymptotic bounds for matrix multiplication or FFT.",
+        "primary_goal": "Characterize and bound the input/output cost of computations with limited fast memory using pebble games.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Minimize data movement when evaluating a dependency graph with limited fast memory.",
+    "importance_rationale": "Communication cost under memory constraints is the explicit computational-complexity problem introduced by the source.",
+    "reason": "The scientific target is communication-efficient computation itself, rather than incidental scoring of a planning agent.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "mathematics",
+    "area": "theoretical_computer_science",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-math-rudin-problem",
+  "name": "SCiEL: Degree-ten spherical harmonic L4/L2 ratio",
+  "description": "Choose 21 real degree-ten spherical harmonic coefficients minimizing the L4/L2 ratio approximated by 70×130 spherical quadrature.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "construction_math",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/rudin_problem/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/rudin_problem/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example rudin_problem",
+    "paper_metric": null,
+    "source_locator": "examples/alphaevolve_math_problems/rudin_problem/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/alphaevolve_math_problems/rudin_problem",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/alphaevolve_math_problems/rudin_problem/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": "examples/alphaevolve_math_problems/rudin_problem/initial_program.py",
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply mathematical validity; preserve unknown validity unless the original evaluator exposes an explicit signal."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The score uses finite discretization, sampling or numerical approximation; it does not prove a continuous mathematical bound.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "The score uses finite discretization, sampling or numerical approximation; it does not prove a continuous mathematical bound."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/alphaevolve_math_problems/rudin_problem/evaluator.py": "8a0f731fd32b38c99e97822153798c3fc00011545756960e80f53648dd12fa8e",
+    "examples/alphaevolve_math_problems/rudin_problem/config.yaml": "fdb816963c90e36fea0fcb217424e7d9d159e834dd18bff0691cd48f6c2d3bfb",
+    "examples/alphaevolve_math_problems/rudin_problem/requirements.txt": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc",
+    "examples/alphaevolve_math_problems/rudin_problem/initial_program.py": "2ee05faf48196c7881dfcf2d41ef9523f83ada758983baf2c5fbd53dbfc10087"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/alphaevolve_math_problems/rudin_problem/evaluator.py",
+      "signature": "program_path: str",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.rudin_problem10()"
+    ],
+    "baseline_path": "examples/alphaevolve_math_problems/rudin_problem/initial_program.py",
+    "baseline_functions": {
+      "rudin_problem10": {
+        "signature": "",
+        "docstring": "Rudin problem for polynomials on the 2-sphere. Find the real coefficients\n(c_m) for m = -k..k of a real degree-k spherical harmonic\n\n    f = sum_{m=-k}^{k} c_m Y_k^m\n\non the round unit sphere S^2 that MINIMIZE the norm ratio\n\n    ||f||_{L^4(S^2)} / ||f||_{L^2(S^2)}\n\n(norms taken with the standard surface measure dOmega of total mass 4*pi).\nHere the degree is fixed to k = 10, so the returned vector has length\n2*k + 1 = 21.\n\nThis baseline returns the all-ones coefficient vector (the same simple,\nnon-degenerate construction used in the upstream notebook's verification\ncell); evolution should reshape these coefficients to flatten |f| and drive\nthe L^4/L^2 ratio down.\n\nReturns:\n    coeffs: np.ndarray of shape (21,) with the real coefficients\n        c_m, ordered m = -10, -9, ..., 0, ..., 9, 10.",
+        "returns": "np.ndarray"
+      }
+    },
+    "parameters": {
+      "DEGREE": 10,
+      "NUM_COEFFS": "2 * DEGREE + 1",
+      "N_THETA": "6 * DEGREE + 10",
+      "N_PHI": "12 * DEGREE + 10",
+      "BENCHMARK": 0.7331274141614718,
+      "MIN_COEFF_SCALE": 0.001,
+      "MAX_COEFF_SCALE": 100000.0
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "score_expressions": [
+      "combined_score = BENCHMARK / ratio",
+      "combined_score = 0.0"
+    ],
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 173,
+        "expression": "{'l4_l2_ratio': float(ratio), 'combined_score': float(combined_score), 'eval_time': float(eval_time)}"
+      },
+      {
+        "function": "evaluate",
+        "line": 179,
+        "expression": "{'combined_score': 0.0, 'error': str(e)}"
+      }
+    ],
+    "metric_assignments": [],
+    "validity_key": null,
+    "validity_semantics": "No independent boolean validity field; zero score, success rate and absence of error do not establish validity.",
+    "error_key": "error",
+    "rng_calls": [],
+    "declared_requirements": [
+      "numpy"
+    ],
+    "evaluator_imports": [
+      "importlib",
+      "math",
+      "numpy",
+      "os",
+      "sys",
+      "time"
+    ],
+    "baseline_imports": [
+      "numpy"
+    ],
+    "source_config_path": "examples/alphaevolve_math_problems/rudin_problem/config.yaml",
+    "baseline_constants": {},
+    "baseline_rng_calls": [],
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Some branches return score zero without error; some omit the primary score. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 200,
+      "evaluator": {
+        "timeout": 360,
+        "max_retries": 3
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "cpu",
+    "recommended_smoke_outer_timeout_seconds": 15
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

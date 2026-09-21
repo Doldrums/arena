@@ -1,0 +1,114 @@
+{
+  "protocol": "original",
+  "family": "adrs_cloudcast",
+  "direction": "maximize",
+  "contract": "search_algorithm(src, dsts, G, num_partitions) -> BroadCastTopology (cross-cloud broadcast paths per destination and partition); score = combined_score from the upstream cost/throughput simulator",
+  "parameters": {},
+  "requires": [
+    "py:numpy",
+    "py:networkx",
+    "py:pandas"
+  ],
+  "timeout": 900,
+  "notes": [],
+  "origin": {
+    "repository": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+    "path": "examples/ADRS/cloudcast",
+    "files_sha256": {
+      "broadcast.py": "882ce3221bf490fabd2380545fe1be50f530fb664946ab2119d16dfde65e76c8",
+      "evaluator.py": "7db622237f2294413b0e679b13016439f7d4d56c090e40e29fc95db6ba48ef06",
+      "examples/config/inter_agz.json": "e6f7de15894c79bca94907d0776c17414785e7395e0d369743022146bbc42df4",
+      "examples/config/inter_gaz2.json": "b40631902a840d17c8089ff93356e7b2542ca1c34e32d11c227eb8176e9bd0f9",
+      "examples/config/intra_aws.json": "986e7d1f1b7d7186398ac13c1c4fe499a48a164d84a4a7ca8ff17cde3198be42",
+      "examples/config/intra_azure.json": "ac1d872c8f90b2496bf750b1c8a2b8500b2c74b3b1d2675dc9cc25413541a49f",
+      "examples/config/intra_gcp.json": "a4f3293f3e973b5c682f270dca8c008a485cecd9bc440d41e4364c196211cfae",
+      "profiles/cost.csv": "b0f97b744b8f0ba464f1098975a25232f168ff8a2c12bfc09efb1c35e4453eac",
+      "profiles/throughput.csv": "e45ee4f0b4101bee184966aedf8efb1e83add7cb3737e172f8729eac00b19e27",
+      "simulator.py": "00c77241082306a6d72b159b205c36a642fa489004b600245d1626f03468a7b4",
+      "utils.py": "a7d4bb52ab9e4951b427d9743997ded5291c98aa47a2e3c0b42a19d929b5370e"
+    }
+  },
+  "protocol_description": "Verbatim copy of the CORAL ADRS task evaluator (the same code the paper's ADRS benchmark uses); only a thin loader normalises the result.",
+  "id": "coral-cloudcast",
+  "name": "Cloudcast",
+  "paper_ids": [
+    "coral",
+    "adaevolve",
+    "evox"
+  ],
+  "description": "Cloudcast",
+  "benchmark": "ADRS",
+  "paper_metric": "cross-cloud transfer cost",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1 and Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/ADRS/cloudcast"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/ADRS/cloudcast"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    }
+  ],
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "coral",
+      "title": "CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery",
+      "url": "https://arxiv.org/pdf/2604.01658"
+    },
+    {
+      "id": "adaevolve",
+      "title": "AdaEvolve: Adaptive LLM Driven Zeroth-Order Optimization",
+      "url": "https://arxiv.org/pdf/2602.20133"
+    },
+    {
+      "id": "evox",
+      "title": "EvoX: Meta-Evolution for Automated Discovery",
+      "url": "https://arxiv.org/pdf/2602.23413"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

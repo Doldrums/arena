@@ -1,0 +1,104 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 600,
+  "notes": [],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "combined_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/alphaevolve_math_problems/sums_diffs_finite_sets",
+    "files_sha256": {
+      "config.yaml": "ca46fc47d202e41989f815953ef4443914338bb50e682e937eaa33d7a658b048",
+      "evaluator.py": "bf3c4ff0e11abe294b8f5d8c54090e2c701c9da25c52e693057c60f25aa96661",
+      "initial_program.py": "65c98e3167fdb2ba82ee470efb65332ac24959207bd3a2351bcf9eef09f57e70",
+      "requirements.txt": "af902634ec0c0bb998bee552f78fbbd77aef7b26d3d94226a60c512b70a6b541"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/alphaevolve_math_problems/sums_diffs_finite_sets` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-math-sums-diffs-finite-sets",
+  "name": "SCiEL: Finite-set sum and difference ratio",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Construct a finite set of integers maximizing the sum/difference inequality constant c6 checked by the evaluator.",
+  "benchmark": "SCiEL source example sums_diffs_finite_sets",
+  "paper_metric": "combined_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/sums_diffs_finite_sets/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/sums_diffs_finite_sets/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/google-deepmind/alphaevolve_results/blob/4226acbf237ff9ad10ba7673a2af127a2d8a5971/mathematical_results.ipynb",
+      "type": "repository",
+      "locator": "B.6, Data cell81, solution_1: original2003element publishedconstruction usedasexplicitwarmstart"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified.",
+    "The bounded seed is a known published AlphaEvolve construction, not the original SCiEL simulated-annealing seed. Its score is not a newly discovered result; the source JAX search remains archived and was not reproduced."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "medium",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Construct integer sets that improve extremal bounds relating sumset and difference-set cardinalities.",
+    "importance_rationale": "These constructions determine limits in additive combinatorics. Their significance is a stronger mathematical inequality or counterexample, rather than a general-purpose model score.",
+    "papers": [
+      {
+        "title": "Sums and Differences of Finite Sets",
+        "url": "https://gyarmatikati.web.elte.hu/publ/sumdiffv.pdf",
+        "task_relation": "The paper derives the construction exponent 1 + log(|U−U|/|U+U|)/log(2 max U + 1) from a finite nonnegative integer set U containing zero. This is the local construction objective used by SCiEL: Finite-set sum and difference ratio.",
+        "primary_goal": "Establish sharp relationships and constructive bounds for sizes of finite sumsets and difference sets.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

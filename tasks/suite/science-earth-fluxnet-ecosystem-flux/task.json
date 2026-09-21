@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0",
+  "id": "science-earth-fluxnet-ecosystem-flux",
+  "name": "Earth and environment: Measured ecosystem carbon-flux reconstruction",
+  "description": "Predict half-hourly net ecosystem carbon exchange from meteorology and ecosystem metadata, scoring quality-controlled measured targets rather than gap-filled products.",
+  "paper_ids": [
+    "science-earth_data"
+  ],
+  "kind": "native",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1038/s41597-020-0534-3",
+      "type": "paper",
+      "locator": "FLUXNET2015/ONEFlux data processing, flux-variable definitions, quality flags and measurement uncertainty."
+    },
+    {
+      "url": "https://fluxnet.org/data/fluxnet2015-dataset/",
+      "type": "benchmark",
+      "locator": "Official source data/evaluation reference; evaluator and seed independently written."
+    },
+    {
+      "url": "https://www.sciencedirect.com/science/article/pii/S016819232400100X",
+      "type": "paper",
+      "title": "Modeling net ecosystem exchange of CO2 with gated recurrent unit neural networks",
+      "locator": "Trains and evaluates half-hourly net ecosystem carbon-exchange prediction from environmental inputs. This establishes the prediction task family; the local FLUXNET sites, measured-target quality filters and site/year holdouts are separate protocol choices."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "SHA256-locked source bundle E02.json in .cache/science-earth-data. Official FLUXNET download endpoint returnedHTTP403. Source half-hourly tower measurements, QC flags, site metadata and reviewed site/year holdout bundle are not yet staged.",
+    "preparation_dependencies": [
+      "netCDF4",
+      "numcodecs==0.16.3"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Earth and environment: Measured ecosystem carbon-flux reconstruction",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_earth_e02",
+    "science_family": "science_earth_e02",
+    "parameters": {},
+    "interface": "fit_flux(training_sites) -> model.predict_flux(meteorology,ecosystem_metadata,history). Half-hourly FLUXNET columns[air_temperature_C,shortwave_Wm2,...]; net ecosystem CO2 exchange target in source units, can be negative. Only targetQC0 measured points score; no gap-filled values. Minimize site-macro RMSE divided by training-target standard deviation; complete sites/year blocks held out.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "equation",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "earth_and_environment"
+    },
+    "proposal_id": "E02",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "requires_setup",
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_code_used": false,
+      "note": "Local evaluator, candidate interface and seed recreated from scientific specifications; official benchmark data are reused."
+    },
+    "additional_requires": [
+      "file:../../.cache/science-earth-data/E02.json",
+      "file:../../.cache/science-earth-data/E02.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_earth_e02",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-earth-data/E02.json",
+        "file:../../.cache/science-earth-data/E02.manifest.json"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Requires source half-hourly tower files and site/year splits; only QC0 measured targets score. Net carbon exchange is distinct from derivedGPP/respiration. Official download endpoint returnedHTTP403 during staging.",
+    "Source data remain local caches with immutable revisions/content hashes and no evaluator network access. Public subsets are development-visible; freeze candidates before wider generalization tests.",
+    "Improved source benchmark performance is a scientific-method contribution, not alone a new discovery or operational forecast validation."
+  ],
+  "validation": {
+    "level": "unit_tests_only",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "benchmark_validated": false,
+    "fixture_tests_are_benchmark_validation": false,
+    "evidence": "docs/EARTH_DATA.md",
+    "tests": "tests/test_science_earth_data.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "equation",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "earth_and_environment",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Estimate net ecosystem carbon-dioxide exchange from meteorology and ecosystem conditions.",
+    "importance_rationale": "Ecosystem carbon exchange is needed to understand terrestrial contributions to the carbon cycle.",
+    "papers": [
+      {
+        "title": "Modeling net ecosystem exchange of CO2 with gated recurrent unit neural networks",
+        "url": "https://www.sciencedirect.com/science/article/pii/S016819232400100X",
+        "primary_goal": "Predict measured net ecosystem CO2 exchange in bioenergy-crop systems.",
+        "task_relation": "The paper directly predicts half-hourly ecosystem exchange. The local task generalizes that target to a separately prepared FLUXNET site subset; it does not reproduce the study's Michigan crop sites or establish a global carbon budget.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited primary paper develops or applies a solution to the stated scientific problem; its task is not merely an agent or general-purpose framework evaluation. Support concerns the scientific problem family, not a claim of new discovery or full-paper reproduction by this local task.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "id": "science-tcs-snake-in-the-box-9",
+  "name": "Snake-in-the-box in the 9-dimensional hypercube",
+  "description": "Construct the longest induced path (snake) in the hypercube Q_9: a sequence of distinct 9-bit vertices in which consecutive vertices differ in one bit and non-consecutive vertices differ in at least two bits. The exact maximum is known only up to dimension 8 (98 in Q_8); in dimension 9 the best known snakes had length 190 before 2026 and were improved in arXiv:2607.15270, so the problem is open. The seed is a greedy snake of length 104.",
+  "paper_ids": [
+    "science-tcs"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1603.05119",
+      "type": "paper",
+      "locator": "Allison and Paulusma, New bounds for the snake-in-the-box problem: definitions, exact values up to dimension 8 (a(8)=98) and lower bounds."
+    },
+    {
+      "url": "https://arxiv.org/abs/2607.15270",
+      "type": "paper",
+      "locator": "A census of new snake-in-the-box records (2026): longer snakes in dimensions 9 to 13 than previously known."
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Snake-in-the-box",
+      "type": "benchmark",
+      "locator": "Summary of known snake and coil lengths by dimension, inspected 2026-09-20."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "None downloaded; mathematical constructions or locally generated synthetic instances."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Snake-in-the-box in the 9-dimensional hypercube",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_snake",
+    "science_family": "science_snake",
+    "parameters": {
+      "n": 9
+    },
+    "interface": "construct() -> list of distinct integers in [0, 2**N): the vertices of an induced path in the hypercube Q_N in order. Consecutive vertices differ in exactly one bit; non-consecutive vertices differ in at least two bits. Score: number of edges, maximized.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "theoretical_computer_science"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_snake",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "The evaluator checks the snake property exactly; it does not embed a record construction, so the reference label is none.",
+    "A snake longer than the current published record would be a new result and must be compared with the 2026 census."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "evidence": "validation/science-report.json",
+    "tests": "tests/test_science_tcs.py"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "theoretical_computer_science",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "A Census of New Snake-in-the-Box Records",
+        "url": "https://arxiv.org/abs/2607.15270",
+        "task_relation": "The local task is the same dimension-nine induced-path problem with an exact verifier. Its stored baseline and evaluation budget are local choices and should not be interpreted as the latest record or a proof of optimality.",
+        "primary_goal": "Construct and verify longer induced paths in hypercubes across dimensions nine through thirteen.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Construct the longest possible induced path in the nine-dimensional hypercube.",
+    "importance_rationale": "Extending induced hypercube paths, including dimension nine, is the direct mathematical construction goal of the paper.",
+    "reason": "The reported scientific product is improved mathematical constructions, rather than simply an agent-performance comparison.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "protocol": "recreated",
+  "family": "science_physics_lhco_control_region_anomalies",
+  "direction": "maximize",
+  "contract": "fit(control_features) -> object with score(events). Input consists of pinned physics features derived from official LHCO Pythia/Delphes events; candidate never receives signal truth. Independent training, test and no-signal source event blocks. Score SIC at 5 percent background divided by one plus mass-sculpting chi-square. Report no-signal acceptance and AUROC; no discovery p value.",
+  "parameters": {
+    "proposal_id": "P06"
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "py:sklearn",
+    "file:data/physics-expansion/P06/manifest.json",
+    "file:data/physics-expansion/P06/benchmark.npz"
+  ],
+  "timeout": 300,
+  "notes": [
+    "Independent SCIEL scientific adaptation. Required source packs never fall back to toy data. Fixture tests are distinct from source-data execution. See docs/PHYSICS_EXPANSION.md."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-particle-collider-anomaly-ranking",
+  "name": "LHCO control-region collider anomalies",
+  "paper_ids": [
+    "science-particle",
+    "science-physics_expansion"
+  ],
+  "description": "fit(control_features) -> object with score(events). Input consists of pinned physics features derived from official LHCO Pythia/Delphes events; candidate never receives signal truth. Independent training, test and no-signal source event blocks. Score SIC at 5 percent background divided by one plus mass-sculpting chi-square. Report no-signal acceptance and AUROC; no discovery p value.",
+  "benchmark": "LHCO control-region collider anomalies",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2101.08320",
+      "type": "paper",
+      "locator": "The LHC Olympics 2020: A Community Challenge for Anomaly Detection in High Energy Physics; section 2 (challenge), section 3.2.2 and figure 9 (ROC and signal/background efficiencies)."
+    },
+    {
+      "url": "https://ep-news.web.cern.ch/machine-learning-ushers-new-paradigm-particle-searches-lhc",
+      "type": "benchmark",
+      "locator": "CERN EP newsletter, LHC Olympics 2020 Challenge: reference background, predominantly background black boxes, and localized overdensity searches."
+    },
+    {
+      "url": "https://arxiv.org/abs/2101.08320",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: LHCO control-region collider anomalies"
+    },
+    {
+      "url": "https://zenodo.org/records/2629073",
+      "type": "archive",
+      "locator": "events_anomalydetection.h5; source Pythia/Delphes constituents and R&D truth."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Bounded first50,000 author-shuffled R&D source events. Training retains actual source signal contamination; no detector-observation discovery or cross-generator generalization claim.",
+    "Retrieved byte ranges and normalized pack are SHA256-verified. Full-source advertised MD5 is preserved but not claimed verified after partial download."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-particle",
+      "title": "Particle physics: source-based research tasks",
+      "url": "https://arxiv.org/abs/1904.06778v3"
+    },
+    {
+      "id": "science-physics_expansion",
+      "title": "Physics and astrophysics research: source-based research tasks",
+      "url": "https://arxiv.org/abs/1904.06778v3"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Classifying anomalies through outer density estimation",
+        "url": "https://doi.org/10.1103/PhysRevD.106.055006",
+        "task_relation": "The local task uses LHCO events, unlabeled control-region training, and significance improvement with a mass-sculpting penalty. Its fixed features and scoring are narrower than the published method and do not constitute an experimental discovery search.",
+        "primary_goal": "Improve resonant anomaly searches through data-driven background estimation using sidebands.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Identify possible new-physics resonances without requiring a specific signal model or sculpting a false mass peak.",
+    "importance_rationale": "Model-independent collider searches are the central physics-search objective of the cited anomaly-detection method.",
+    "reason": "The paper proposes a solution to a specific new-physics search problem, beyond documenting an anomaly benchmark.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "particle_physics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

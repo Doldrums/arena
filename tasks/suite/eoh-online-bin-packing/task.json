@@ -1,0 +1,1299 @@
+{
+  "schema_version": "1.0",
+  "id": "eoh-online-bin-packing",
+  "name": "Online bin packing",
+  "description": "Online bin packing: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "eoh",
+    "codeevolve",
+    "eoh-s",
+    "hsevo",
+    "llamea-hpo",
+    "mcts-ahd",
+    "meoh",
+    "redahd"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2401.02051",
+      "type": "paper",
+      "locator": "Section 4 and Appendices B–D"
+    },
+    {
+      "url": "https://github.com/FeiLiu36/EoH/tree/472545785c936dcfc863d2bc0d6109cf23c7ce62",
+      "type": "repository",
+      "locator": "examples/bp_online/evaluation/runEval.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2510.14150",
+      "type": "paper",
+      "locator": "Appendix A.2"
+    },
+    {
+      "url": "https://github.com/inter-co/science-codeevolve/tree/c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+      "type": "repository",
+      "locator": "problems/eoh-problems/bp_online/input"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2508.03082",
+      "type": "paper",
+      "locator": "Section 4, Tables 1-3"
+    },
+    {
+      "url": "https://github.com/FeiLiu36/EoH-S/tree/8310b056ab0d4ea83d194f1d9e8c7873c0a3b892",
+      "type": "repository",
+      "locator": null
+    },
+    {
+      "url": "https://arxiv.org/pdf/2412.14995",
+      "type": "paper",
+      "locator": "Section 5.1 and Appendix A"
+    },
+    {
+      "url": "https://github.com/datphamvn/HSEvo/tree/f3afffabc2b458fddf70a42a8678758039671297",
+      "type": "repository",
+      "locator": "problems/bpp_online"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2410.16309",
+      "type": "paper",
+      "locator": "Sections 4.1–4.3"
+    },
+    {
+      "url": "https://zenodo.org/api/records/14917719/files/LLaMEA-HPO.zip/content",
+      "type": "archive",
+      "locator": "run_BP_HPO.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2501.08603",
+      "type": "paper",
+      "locator": "Section 4; Appendices B-D and F"
+    },
+    {
+      "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+      "type": "repository",
+      "locator": "problems/bpp_online/eval.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2409.16867",
+      "type": "paper",
+      "locator": "Section 4"
+    },
+    {
+      "url": "https://github.com/Optima-CityU/LLM4AD/tree/ffb6acf64497be93932c98d25369352efd3865cf",
+      "type": "repository",
+      "locator": "llm4ad/task/optimization/online_bin_packing/evaluation.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2505.20242",
+      "type": "paper",
+      "locator": "Section 5.1 and Appendix C"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+    "notes": [
+      "CPU Python with NumPy"
+    ],
+    "required_files": [
+      "examples/bp_online/prob.py",
+      "examples/bp_online/get_instance.py",
+      "eoh/src/eoh/problem.py"
+    ],
+    "required_file_hashes": {
+      "examples/bp_online/prob.py": "5ad146c68768f6d710f8928fc2b1c80cd83e12c31a58d106a06848655c3a1181",
+      "examples/bp_online/get_instance.py": "a42983866e16cf13073b17277d4b53afba3a5a543be58240bdd71963f789975d",
+      "eoh/src/eoh/problem.py": "876b7c67fde9ca3bb595e724787dae3ccfc78f84a6e902f63de5bd655c557c88"
+    }
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "mean excess over L1 lower bound (fraction)",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "Online bin packing",
+    "protocol": "upstream",
+    "source_locator": "Section 4 and Appendices B–D"
+  },
+  "execution": {
+    "repository": "https://github.com/FeiLiu36/EoH",
+    "commit": "472545785c936dcfc863d2bc0d6109cf23c7ce62",
+    "upstream_path": "examples/bp_online/evaluation/runEval.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "runEval.py"
+        ],
+        "cwd": "examples/bp_online/evaluation",
+        "kind": "evaluation",
+        "requirements": [
+          "EoH Python package and task dependencies"
+        ],
+        "evidence_path": "examples/bp_online/evaluation/runEval.py",
+        "verification": "source_inspected_not_executed",
+        "source_url": "https://arxiv.org/pdf/2401.02051"
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_eoh.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_eoh_bp_online.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "bp_online",
+        "max_instances": 1,
+        "iterations": 2,
+        "seconds_per_instance": 10.0
+      },
+      "dependencies": [
+        "numpy"
+      ],
+      "implementation_label": "bounded_original_protocol_extracted_seed",
+      "repository_files": {
+        "adapters/recovered/optimization_eoh.py": "a79a0cf88e03458d82ac4b2274681597ceeecf3d98f7f3095e5e21c7bf88613e",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+        "adapters/recovered/seeds/optimization_eoh_bp_online.py": "0ccad19b33022b8abe625b5da179de71390c2e5032c1bd43fd05c06d007c8b8e"
+      },
+      "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 0.132,
+        "metrics": {
+          "score": 1.485089463220676,
+          "validity": null,
+          "instances": 1,
+          "candidate_calls": 5000,
+          "iterations": 2,
+          "seconds_per_instance": 10.0,
+          "profile": "bounded_original_training",
+          "dataset_origin": "released_training_data",
+          "dataset_files": {
+            "examples/bp_online/get_instance.py": "a42983866e16cf13073b17277d4b53afba3a5a543be58240bdd71963f789975d"
+          },
+          "validation_scope": "finite original solver objective; no independent solution certificate"
+        },
+        "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+      }
+    },
+    "setup_instructions": [
+      "pip install ."
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install ."
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "."
+        ],
+        "cwd": "eoh"
+      }
+    ],
+    "notes": [
+      "Pinned current repository evaluator may use a smaller/default subset than paper experiment.",
+      "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+      "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json.",
+      "EoH Python package and task dependencies",
+      "Upstream operation: evaluation"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "online_bin_packing",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Online bin packing",
+    "slug": "online-bin-packing",
+    "description": "Online bin packing: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "Online bin packing",
+    "dataset": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+    "metric": "mean excess over L1 lower bound (fraction)",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2401.02051",
+    "source_locator": "Section 4 and Appendices B–D",
+    "upstream_path": "examples/bp_online/evaluation/runEval.py",
+    "requirements": [
+      "CPU Python with NumPy"
+    ],
+    "execution_notes": [
+      "Pinned current repository evaluator may use a smaller/default subset than paper experiment.",
+      "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+      "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json.",
+      "EoH Python package and task dependencies",
+      "Upstream operation: evaluation"
+    ],
+    "execution": {
+      "argv": [
+        "python",
+        "runEval.py"
+      ],
+      "cwd": "examples/bp_online/evaluation",
+      "kind": "evaluation",
+      "requirements": [
+        "EoH Python package and task dependencies"
+      ],
+      "evidence_path": "examples/bp_online/evaluation/runEval.py",
+      "verification": "source_inspected_not_executed"
+    },
+    "implementation_status": "recovered_direct_evaluator_tested",
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_eoh.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_eoh_bp_online.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "bp_online",
+        "max_instances": 1,
+        "iterations": 2,
+        "seconds_per_instance": 10.0
+      },
+      "dependencies": [
+        "numpy"
+      ],
+      "implementation_label": "bounded_original_protocol_extracted_seed",
+      "repository_files": {
+        "adapters/recovered/optimization_eoh.py": "a79a0cf88e03458d82ac4b2274681597ceeecf3d98f7f3095e5e21c7bf88613e",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+        "adapters/recovered/seeds/optimization_eoh_bp_online.py": "0ccad19b33022b8abe625b5da179de71390c2e5032c1bd43fd05c06d007c8b8e"
+      },
+      "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 0.132,
+        "metrics": {
+          "score": 1.485089463220676,
+          "validity": null,
+          "instances": 1,
+          "candidate_calls": 5000,
+          "iterations": 2,
+          "seconds_per_instance": 10.0,
+          "profile": "bounded_original_training",
+          "dataset_origin": "released_training_data",
+          "dataset_files": {
+            "examples/bp_online/get_instance.py": "a42983866e16cf13073b17277d4b53afba3a5a543be58240bdd71963f789975d"
+          },
+          "validation_scope": "finite original solver objective; no independent solution certificate"
+        },
+        "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+      }
+    },
+    "required_files": [
+      "examples/bp_online/prob.py",
+      "examples/bp_online/get_instance.py",
+      "eoh/src/eoh/problem.py"
+    ],
+    "required_file_hashes": {
+      "examples/bp_online/prob.py": "5ad146c68768f6d710f8928fc2b1c80cd83e12c31a58d106a06848655c3a1181",
+      "examples/bp_online/get_instance.py": "a42983866e16cf13073b17277d4b53afba3a5a543be58240bdd71963f789975d",
+      "eoh/src/eoh/problem.py": "876b7c67fde9ca3bb595e724787dae3ccfc78f84a6e902f63de5bd655c557c88"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "baseline_execution",
+      "passed": true,
+      "seconds": 0.132,
+      "metrics": {
+        "score": 1.485089463220676,
+        "validity": null,
+        "instances": 1,
+        "candidate_calls": 5000,
+        "iterations": 2,
+        "seconds_per_instance": 10.0,
+        "profile": "bounded_original_training",
+        "dataset_origin": "released_training_data",
+        "dataset_files": {
+          "examples/bp_online/get_instance.py": "a42983866e16cf13073b17277d4b53afba3a5a543be58240bdd71963f789975d"
+        },
+        "validation_scope": "finite original solver objective; no independent solution certificate"
+      },
+      "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+    }
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "codeevolve-online-bin-packing",
+      "paper_ids": [
+        "codeevolve"
+      ],
+      "name": "Online bin packing",
+      "description": "Online bin packing",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2510.14150",
+          "type": "paper",
+          "locator": "Appendix A.2"
+        },
+        {
+          "url": "https://github.com/inter-co/science-codeevolve/tree/c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+          "type": "repository",
+          "locator": "problems/eoh-problems/bp_online/input"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python",
+          "benchmark data"
+        ]
+      },
+      "evaluation": {
+        "metric": "fitness",
+        "paper_metric": "theoretical minimum bins / used bins",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "EoH",
+        "protocol": "upstream",
+        "source_locator": "Appendix A.2"
+      },
+      "execution": {
+        "repository": "https://github.com/inter-co/science-codeevolve",
+        "commit": "c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+        "upstream_path": "problems/eoh-problems/bp_online/input",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "problems/eoh-problems/bp_online/input/evaluate.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "problems/eoh-problems/bp_online/input",
+          "score_key": "fitness",
+          "score_direction": "maximize",
+          "baseline_path": "problems/eoh-problems/bp_online/input/src/init_program.py",
+          "dependencies": [
+            "numpy",
+            "scipy"
+          ],
+          "return_style": "json_file",
+          "output_argument": "positional",
+          "notes": "Official evaluate(program_path, results_path) writes JSON and raises on rejected construction; no separate validity field. baseline_path is repository-relative."
+        },
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Direct evaluator signature and normalized maximizing score verified in pinned source. Baseline may be an intentionally weak or infeasible starting construction; check reported evaluator errors."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": null,
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": -0.03984304255961367
+          }
+        ]
+      }
+    },
+    {
+      "id": "eoh-s-online-bin-packing",
+      "paper_ids": [
+        "eoh-s"
+      ],
+      "name": "Online bin packing",
+      "description": "Online bin packing task evaluated in EoH-S: Evolution of Heuristic Set using LLMs for Automated Heuristic Design.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2508.03082",
+          "type": "paper",
+          "locator": "Section 4, Tables 1-3"
+        },
+        {
+          "url": "https://github.com/FeiLiu36/EoH-S/tree/8310b056ab0d4ea83d194f1d9e8c7873c0a3b892",
+          "type": "repository",
+          "locator": null
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "complementary performance index / gap to lower bound",
+        "paper_metric": "complementary performance index / gap to lower bound",
+        "paper_direction": "minimize",
+        "direction": "minimize",
+        "benchmark": "BPPLib / TSPLIB / CVRPLIB",
+        "protocol": "upstream",
+        "source_locator": "Section 4, Tables 1-3"
+      },
+      "execution": {
+        "repository": "https://github.com/FeiLiu36/EoH-S",
+        "commit": "8310b056ab0d4ea83d194f1d9e8c7873c0a3b892",
+        "upstream_path": null,
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "obp_set/run_eohs.py"
+            ],
+            "cwd": "examples/training",
+            "notes": "EoH-S heuristic-set evolution on the bundled Weibull training set (dataset_100_2k_128_5_80_training.pkl). Model-driven search: requires LLM API credentials and incurs cost; never run by seed checks.",
+            "source_url": "https://github.com/FeiLiu36/EoH-S/blob/8310b056ab0d4ea83d194f1d9e8c7873c0a3b892/README.md"
+          }
+        ],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "cd code && pip install . (bundled LLM4AD platform)",
+          "Set the HttpsApi host/key/model in the run script"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "cd code && pip install . (bundled LLM4AD platform)",
+          "Set the HttpsApi host/key/model in the run script"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Source pinned on 2026-09-19; see docs/TASKS.md."
+        ]
+      },
+      "limitations": [
+        "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+        "Official EoH-S release pinned (MIT); the set-evaluation classes live in the bundled LLM4AD fork and the search needs an LLM endpoint.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "hsevo-online-bin-packing",
+      "paper_ids": [
+        "hsevo"
+      ],
+      "name": "Online bin packing",
+      "description": "Online bin packing: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2412.14995",
+          "type": "paper",
+          "locator": "Section 5.1 and Appendix A"
+        },
+        {
+          "url": "https://github.com/datphamvn/HSEvo/tree/f3afffabc2b458fddf70a42a8678758039671297",
+          "type": "repository",
+          "locator": "problems/bpp_online"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy",
+          "torch"
+        ],
+        "environment_variables": [],
+        "datasets": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+        "notes": [
+          "CPU Python with NumPy",
+          "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+        ],
+        "required_files": [
+          "problems/bpp_online/eval.py",
+          "problems/bpp_online/gen_inst.py",
+          "utils/utils.py",
+          "problems/bpp_online/dataset/weibull_5k_train.pickle"
+        ],
+        "required_file_hashes": {
+          "problems/bpp_online/eval.py": "4fa8b4e6f74afa0715e6411d7eb75809c7f35aadaa1435027f9c5f00d1a7bac1",
+          "problems/bpp_online/gen_inst.py": "3306c87ce1c3904ee09729456b29bb852944544cbef5010dc056cc2b7552872a",
+          "utils/utils.py": "9655e5afca4b90f866414b934d161b38bc28782288730981ed3fa05153b1dbdc",
+          "problems/bpp_online/dataset/weibull_5k_train.pickle": "cec7aaf9e4730b4eb2fbeb675b6d544ae6c7385ab8346b10124b67a521cc8bb8"
+        }
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "mean excess over L1 lower bound (%)",
+        "paper_direction": "minimize",
+        "direction": "minimize",
+        "benchmark": "Online bin packing",
+        "protocol": "upstream",
+        "source_locator": "Section 5.1 and Appendix A"
+      },
+      "execution": {
+        "repository": "https://github.com/datphamvn/HSEvo",
+        "commit": "f3afffabc2b458fddf70a42a8678758039671297",
+        "upstream_path": "problems/bpp_online",
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "main.py",
+              "algorithm=hsevo",
+              "model=openai/gpt-4o-mini-2024-07-18",
+              "problem=bpp_online"
+            ],
+            "cwd": ".",
+            "kind": "search_and_evaluation",
+            "requirements": [
+              "Python dependencies",
+              "OpenAI API key"
+            ],
+            "evidence_path": "README.md and cfg/problem/bpp_online.yaml",
+            "verification": "source_inspected_not_executed",
+            "source_url": "https://arxiv.org/pdf/2412.14995"
+          }
+        ],
+        "evaluator_adapter": {
+          "evaluator_scope": "repository",
+          "evaluator_path": "adapters/recovered/optimization_original.py",
+          "baseline_scope": "repository",
+          "baseline_path": "adapters/recovered/seeds/optimization_hsevo_bpp_online.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": ".",
+          "score_key": "score",
+          "score_direction": "minimize",
+          "validity_key": "validity",
+          "return_style": "dict",
+          "kwargs": {
+            "checkout": "{checkout}",
+            "problem": "bpp_online",
+            "max_instances": 2,
+            "iterations": 5,
+            "ants": 10,
+            "random_seed": 1234,
+            "black_box": false
+          },
+          "dependencies": [
+            "numpy",
+            "scipy",
+            "torch"
+          ],
+          "implementation_label": "bounded_original_protocol_extracted_seed",
+          "repository_files": {
+            "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+            "adapters/recovered/seeds/optimization_hsevo_bpp_online.py": "f960a7dc347060ab62a65be52d9025512a79035e34423e4abb49f81e5539e212"
+          },
+          "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "seconds": 0.922,
+            "metrics": {
+              "score": 149.81264051961028,
+              "validity": true,
+              "instances": 2,
+              "instance_size": 5000,
+              "candidate_calls": 10000,
+              "instance_objectives": [
+                149.81264051961028
+              ],
+              "profile": "bounded_original_training",
+              "iterations": 5,
+              "ants": 10,
+              "black_box": false,
+              "random_seed": 1234,
+              "dataset_origin": "released_training_data",
+              "dataset_sha256": "cec7aaf9e4730b4eb2fbeb675b6d544ae6c7385ab8346b10124b67a521cc8bb8",
+              "validation_scope": "official feasible construction checks"
+            },
+            "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+          }
+        },
+        "setup_instructions": [
+          "pip install -r requirements.txt"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "pip install -r requirements.txt"
+        ],
+        "setup_steps": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": "."
+          }
+        ],
+        "notes": [
+          "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+          "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json.",
+          "Python dependencies",
+          "OpenAI API key",
+          "Upstream operation: search_and_evaluation"
+        ]
+      },
+      "limitations": [
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "seconds": 0.922,
+          "metrics": {
+            "score": 149.81264051961028,
+            "validity": true,
+            "instances": 2,
+            "instance_size": 5000,
+            "candidate_calls": 10000,
+            "instance_objectives": [
+              149.81264051961028
+            ],
+            "profile": "bounded_original_training",
+            "iterations": 5,
+            "ants": 10,
+            "black_box": false,
+            "random_seed": 1234,
+            "dataset_origin": "released_training_data",
+            "dataset_sha256": "cec7aaf9e4730b4eb2fbeb675b6d544ae6c7385ab8346b10124b67a521cc8bb8",
+            "validation_scope": "official feasible construction checks"
+          },
+          "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+        }
+      }
+    },
+    {
+      "id": "llamea-hpo-online-bin-packing",
+      "paper_ids": [
+        "llamea-hpo"
+      ],
+      "name": "Online bin packing",
+      "description": "Online bin packing: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2410.16309",
+          "type": "paper",
+          "locator": "Sections 4.1–4.3"
+        },
+        {
+          "url": "https://zenodo.org/api/records/14917719/files/LLaMEA-HPO.zip/content",
+          "type": "archive",
+          "locator": "run_BP_HPO.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "5 Weibull instances with 5000 items each and bin capacity 100 during search",
+        "notes": [
+          "Python3.10",
+          "Poetry1.7.1 or newer",
+          "Dependencies installed from archived pyproject.toml and poetry.lock",
+          "OPENAI_API_KEY",
+          "Access to the default gpt-4o-2024-05-13 model, or an explicitly configured compatible model"
+        ]
+      },
+      "evaluation": {
+        "metric": "relative bin excess over the L1 lower bound (fraction)",
+        "paper_metric": "mean lower-bound-to-used-bin ratio (dimensionless)",
+        "paper_direction": "maximize",
+        "direction": "minimize",
+        "benchmark": "Online bin packing",
+        "protocol": "upstream",
+        "source_locator": "Sections 4.1–4.3"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": "run_BP_HPO.py",
+        "commands": [
+          {
+            "argv": [
+              "poetry",
+              "run",
+              "python",
+              "run_BP_HPO.py"
+            ],
+            "cwd": ".",
+            "kind": "search_and_hyperparameter_optimization",
+            "source_url": "https://zenodo.org/records/14917719",
+            "evidence_path": "README.md and run_BP_HPO.py",
+            "verification": "source_inspected_not_executed",
+            "notes": "Run only in the extracted, SHA256-verified paper archive. Full API-funded search and SMAC HPO, not a smoke test."
+          }
+        ],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "poetry install"
+        ],
+        "task_setup_instructions": [
+          "poetry install"
+        ],
+        "framework_setup_instructions": [],
+        "setup_steps": [
+          {
+            "argv": [
+              "poetry",
+              "install"
+            ],
+            "cwd": "."
+          }
+        ],
+        "notes": [
+          "This task selects the frozen paper reproduction archive at Zenodo 14917719. The later GitHub implementation is retained only as a source reference.",
+          "The paper Zenodo archive was downloaded, its published MD5 verified, and source inspected. It provides the exact run_BP_HPO.py script and frozen library; see archive_execution. Commands run in the extracted paper archive; the current GitHub checkout is a separate, later implementation.",
+          "Archive README specifies Poetry1.7.1+ and Python3.10. Run poetry install, configure OPENAI_API_KEY, then poetry run python run_BP_HPO.py. Default model is gpt-4o-2024-05-13; verify availability before running.",
+          "The archived full search incurs API calls and substantial SMAC/benchmark compute. It creates experiment logs/results; paper result plotting is also available as plot_BP.py.",
+          "Source is pinned by the archive SHA256. Archived scripts start the full experiment immediately when invoked; use the command preview to inspect settings before executing.",
+          "Archived BP raw evaluator returns (mean bins used - mean L1 lower bound) / mean L1 lower bound: a dimensionless excess fraction to minimize, with no multiplication by 100. run_BP_HPO.py negates this value for maximization.",
+          "Paper Section4.1 instead defines mean_i(lb_i / n_i), a ratio to maximize. This differs from the archived score in formula and scale; both definitions are preserved separately."
+        ],
+        "archive_source": {
+          "url": "https://zenodo.org/api/records/14917719/files/LLaMEA-HPO.zip/content",
+          "sha256": "3eed0623a74c498fa9c7bf064ca7aa5efe219dcd0743561eff3ae7118ee8d806",
+          "strip_prefix": "",
+          "license": "CC-BY-4.0"
+        }
+      },
+      "limitations": [
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "Exact paper archive, three entrypoint scripts and lockfile were inspected; API-funded searches and benchmark outcomes were not executed or reproduced.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "mcts-ahd-bpp-online",
+      "paper_ids": [
+        "mcts-ahd"
+      ],
+      "name": "bpp_online",
+      "description": "bpp_online task evaluated in Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2501.08603",
+          "type": "paper",
+          "locator": "Section 4; Appendices B-D and F"
+        },
+        {
+          "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+          "type": "repository",
+          "locator": "problems/bpp_online/eval.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy",
+          "torch"
+        ],
+        "environment_variables": [],
+        "datasets": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+        "notes": [
+          "CPU Python with NumPy",
+          "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+        ],
+        "required_files": [
+          "problems/bpp_online/eval.py",
+          "problems/bpp_online/gen_inst.py",
+          "utils/utils.py",
+          "problems/bpp_online/dataset/weibull_5k_train.pickle"
+        ],
+        "required_file_hashes": {
+          "problems/bpp_online/eval.py": "507cfc8cfebba2dfa20ad926df222eb3a473353e528a1c6ea15711d6d7bc58fc",
+          "problems/bpp_online/gen_inst.py": "813934b2ff527287c1bc939df67381890c65d3bc96775b9fcc67049ef8450a03",
+          "utils/utils.py": "0b9cfa62adcde5046d1b90808e6477928940ef1462602b82685296831285a0b9",
+          "problems/bpp_online/dataset/weibull_5k_train.pickle": "261927b05335a79d1fc75e9fd83c3df7cc315a90da35e84c4966cb3a5edc579c"
+        }
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "mean excess over L1 lower bound (%)",
+        "paper_direction": "minimize",
+        "direction": "minimize",
+        "benchmark": "bpp_online",
+        "protocol": "upstream",
+        "source_locator": "Section 4; Appendices B-D and F"
+      },
+      "execution": {
+        "repository": "https://github.com/zz1358m/MCTS-AHD-master",
+        "commit": "ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+        "upstream_path": "problems/bpp_online/eval.py",
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "main.py",
+              "problem=bpp_online",
+              "max_fe=2000"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/main.py",
+            "notes": "Hydra task override derived from inspected @hydra.main configuration and verified cfg/problem file; not executed."
+          }
+        ],
+        "evaluator_adapter": {
+          "evaluator_scope": "repository",
+          "evaluator_path": "adapters/recovered/optimization_original.py",
+          "baseline_scope": "repository",
+          "baseline_path": "adapters/recovered/seeds/optimization_mcts-ahd_bpp_online.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": ".",
+          "score_key": "score",
+          "score_direction": "minimize",
+          "validity_key": "validity",
+          "return_style": "dict",
+          "kwargs": {
+            "checkout": "{checkout}",
+            "problem": "bpp_online",
+            "max_instances": 2,
+            "iterations": 5,
+            "ants": 10,
+            "random_seed": 1234,
+            "black_box": false
+          },
+          "dependencies": [
+            "numpy",
+            "scipy",
+            "torch"
+          ],
+          "implementation_label": "bounded_original_protocol_extracted_seed",
+          "repository_files": {
+            "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+            "adapters/recovered/seeds/optimization_mcts-ahd_bpp_online.py": "0afa00025b224644fc621177c80439909e633bfd51f154cb131b56db01262a61"
+          },
+          "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "seconds": 1.983,
+            "metrics": {
+              "score": 4.3478260869565215,
+              "validity": true,
+              "instances": 2,
+              "instance_size": 5000,
+              "candidate_calls": 10000,
+              "instance_objectives": [
+                4.3478260869565215
+              ],
+              "profile": "bounded_original_training",
+              "iterations": 5,
+              "ants": 10,
+              "black_box": false,
+              "random_seed": 1234,
+              "dataset_origin": "released_training_data",
+              "dataset_sha256": "261927b05335a79d1fc75e9fd83c3df7cc315a90da35e84c4966cb3a5edc579c",
+              "validation_scope": "official feasible construction checks"
+            },
+            "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+          }
+        },
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Use cfg/problem/bpp_online.yaml. Set max_fe=2000 for online BPP and init_pop_size=10 for black-box ACO as README instructs.",
+          "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+          "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "seconds": 1.983,
+          "metrics": {
+            "score": 4.3478260869565215,
+            "validity": true,
+            "instances": 2,
+            "instance_size": 5000,
+            "candidate_calls": 10000,
+            "instance_objectives": [
+              4.3478260869565215
+            ],
+            "profile": "bounded_original_training",
+            "iterations": 5,
+            "ants": 10,
+            "black_box": false,
+            "random_seed": 1234,
+            "dataset_origin": "released_training_data",
+            "dataset_sha256": "261927b05335a79d1fc75e9fd83c3df7cc315a90da35e84c4966cb3a5edc579c",
+            "validation_scope": "official feasible construction checks"
+          },
+          "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+        }
+      }
+    },
+    {
+      "id": "meoh-online-bin-packing",
+      "paper_ids": [
+        "meoh"
+      ],
+      "name": "Online bin packing",
+      "description": "Online bin packing task evaluated in Multi-objective Evolution of Heuristic Using Large Language Model.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2409.16867",
+          "type": "paper",
+          "locator": "Section 4"
+        },
+        {
+          "url": "https://github.com/Optima-CityU/LLM4AD/tree/ffb6acf64497be93932c98d25369352efd3865cf",
+          "type": "repository",
+          "locator": "llm4ad/task/optimization/online_bin_packing/evaluation.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "matplotlib"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "optimality gap and runtime",
+        "paper_direction": "minimize",
+        "direction": "maximize",
+        "benchmark": "Online bin packing",
+        "protocol": "upstream",
+        "source_locator": "Section 4"
+      },
+      "execution": {
+        "repository": "https://github.com/Optima-CityU/LLM4AD",
+        "commit": "ffb6acf64497be93932c98d25369352efd3865cf",
+        "upstream_path": "llm4ad/task/optimization/online_bin_packing/evaluation.py",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "adapters/recovered/llm4ad_meoh/evaluator.py",
+          "evaluator_scope": "repository",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": ".",
+          "kwargs": {
+            "checkout": "{checkout}",
+            "task": "online_bin_packing",
+            "expected_evaluator_sha256": "d6ce1d7811b2255efa1973a26b4cbedfe2ceac792c3fa4f235fd718cb3f04fcf"
+          },
+          "score_key": "score",
+          "score_direction": "maximize",
+          "validity_key": "valid",
+          "error_key": "error",
+          "baseline_path": "adapters/recovered/llm4ad_meoh/seeds/online_bin_packing.py",
+          "baseline_scope": "repository",
+          "dependencies": [
+            "numpy",
+            "matplotlib"
+          ],
+          "implementation_label": "Original pinned LLM4AD task evaluator; MEoH's second objective (evaluation time) recorded but not optimized; original template program as seed",
+          "repository_files": {
+            "adapters/recovered/llm4ad_meoh/seeds/online_bin_packing.py": "6017fa7a58adcfbacfc9ecb3c82705d34abbc204396ba256037a4541fea4dbd2"
+          },
+          "notes": [
+            "The platform score is the negated mean cost (bins used, or tour length) over the evaluator's generated instances; higher is better.",
+            "MEoH ranks candidates on two objectives (score and evaluation time). The scalar score here is the first objective; evaluation_seconds is retained in the result for the second.",
+            "Instances are generated at evaluator construction with the platform's fixed seeds; they are not the paper's exact test instances."
+          ]
+        },
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "."
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/Optima-CityU/LLM4AD/blob/ffb6acf64497be93932c98d25369352efd3865cf/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "."
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/Optima-CityU/LLM4AD/blob/ffb6acf64497be93932c98d25369352efd3865cf/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Multi-objective optimization; preserve both objectives. Official paper links LLM4AD framework, whose current version may differ from original experiments.",
+          "Recovered on 2026-09-19; see docs/TASKS.md."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "redahd-online-bin-packing",
+      "paper_ids": [
+        "redahd"
+      ],
+      "name": "Online bin packing",
+      "description": "Online bin packing: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2505.20242",
+          "type": "paper",
+          "locator": "Section 5.1 and Appendix C"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "MCTS-AHD evaluation datasets",
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "objective value / gap to optimum (problem dependent)",
+        "paper_metric": "objective value / gap to optimum (problem dependent)",
+        "paper_direction": null,
+        "direction": null,
+        "benchmark": "MCTS-AHD evaluation datasets",
+        "protocol": "specified_only",
+        "source_locator": "Section 5.1 and Appendix C"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "The paper links MCTS-AHD data, not an official RedAHD repository."
+        ]
+      },
+      "limitations": [
+        "No official runnable repository was verified from the paper/project sources examined.",
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "reference-online-bin-packing",
+      "paper_ids": [
+        "eoh",
+        "eoh-s",
+        "meoh",
+        "hsevo",
+        "llamea-hpo"
+      ],
+      "name": "Online one-dimensional bin packing",
+      "description": "solve(state) receives only item, capacity and remaining bin capacities, never future items. Return a bin index; len(remaining) opens a new bin.",
+      "kind": "native",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2401.02051",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        },
+        {
+          "url": "https://arxiv.org/pdf/2508.03082",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        },
+        {
+          "url": "https://arxiv.org/pdf/2409.16867",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        },
+        {
+          "url": "https://arxiv.org/pdf/2412.14995",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        },
+        {
+          "url": "https://arxiv.org/pdf/2410.16309",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        }
+      ],
+      "requirements": {
+        "python": ">=3.10",
+        "hardware": "CPU",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "Generated locally with documented seed."
+      },
+      "evaluation": {
+        "metric": "score",
+        "direction": "minimize",
+        "aggregation": "mean",
+        "protocol": "portable_reference",
+        "instance_generation": "src/autoresearch_tasks/native.py",
+        "profiles": [
+          "smoke",
+          "evaluation"
+        ]
+      },
+      "execution": {
+        "native_kind": "online-bin-packing",
+        "parameters": {
+          "n": 100
+        },
+        "interface": "solve(state) receives only item, capacity and remaining bin capacities, never future items. Return a bin index; len(remaining) opens a new bin."
+      },
+      "limitations": [
+        "Portable reference implementation, not a reproduction of the original paper experiment.",
+        "Generated deterministic instances are not the paper datasets. Scores are not comparable to published results."
+      ],
+      "validation": {
+        "level": "automated_tests",
+        "upstream_reproduction": false
+      }
+    }
+  ]
+}

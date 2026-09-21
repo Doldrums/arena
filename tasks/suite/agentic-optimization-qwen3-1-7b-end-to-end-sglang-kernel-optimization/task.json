@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0",
+  "id": "agentic-optimization-qwen3-1-7b-end-to-end-sglang-kernel-optimization",
+  "name": "Qwen3-1.7B end-to-end SGLang kernel optimization",
+  "description": "Qwen3-1.7B end-to-end SGLang kernel optimization",
+  "paper_ids": [
+    "agentic-optimization"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://junye-pan.github.io/posts/agentic-optimization/assets/report.pdf",
+      "type": "paper",
+      "locator": "Report Section 5.2"
+    },
+    {
+      "url": "https://github.com/Junye-Pan/AgenticOptimization/tree/712b2fd4888c4b57fc08c1d2bdf4b1ca4c4517fb",
+      "type": "repository",
+      "locator": "tasks/llm_inference_qwen3_1_7b_sglang_4090"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "GPU",
+      "SGLang",
+      "Qwen3-1.7B model"
+    ]
+  },
+  "evaluation": {
+    "metric": "serving latency score subject to output-quality hard gates",
+    "paper_metric": "serving latency score subject to output-quality hard gates",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Report Section 5.2"
+  },
+  "execution": {
+    "repository": "https://github.com/Junye-Pan/AgenticOptimization",
+    "commit": "712b2fd4888c4b57fc08c1d2bdf4b1ca4c4517fb",
+    "upstream_path": "tasks/llm_inference_qwen3_1_7b_sglang_4090",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "hardware:gpu",
+        "dataset:Qwen3-1.7B end-to-end SGLang kernel optimization"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "gpu",
+      "unsupported_reason": "Fitness is accelerator wall-clock or model training on GPU hardware (Qwen3-1.7B end-to-end SGLang kernel optimization); it cannot be measured on a CPU-only suite."
+    }
+  },
+  "limitations": [
+    "No root license or dependency manifest found in inspected repository; README mentions design.md but file is absent at pinned commit.",
+    "Requires an NVIDIA RTX 4090 with SGLang/CUDA kernels; the pinned task packages contain server-side evaluators for that hardware only.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Qwen3-1.7B end-to-end SGLang kernel optimization",
+    "slug": "qwen3-1-7b-end-to-end-sglang-kernel-optimization",
+    "description": "Qwen3-1.7B end-to-end SGLang kernel optimization",
+    "benchmark": null,
+    "dataset": null,
+    "metric": "serving latency score subject to output-quality hard gates",
+    "direction": "maximize",
+    "source_url": "https://junye-pan.github.io/posts/agentic-optimization/assets/report.pdf",
+    "source_locator": "Report Section 5.2",
+    "upstream_path": "tasks/llm_inference_qwen3_1_7b_sglang_4090",
+    "requirements": [
+      "GPU",
+      "SGLang",
+      "Qwen3-1.7B model"
+    ],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified.",
+    "execution_blocked_reason": "Requires an NVIDIA RTX 4090 with SGLang/CUDA kernels; the pinned task packages contain server-side evaluators for that hardware only."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "kernel",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "synthetic",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "gpu",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

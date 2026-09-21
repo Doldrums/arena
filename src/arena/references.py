@@ -5,6 +5,8 @@ evaluation result. All current-SOTA fields intentionally remain not_assessed.
 """
 from __future__ import annotations
 
+from .task_sources import source_url
+
 import argparse
 from collections import Counter
 import json
@@ -44,7 +46,7 @@ def _evidence(source, binding):
     _relative(source["path"], "source.path")
     _hash(source["sha256"], _SHA256, "source.sha256")
     _text(source["locator"], "source.locator")
-    expected = f"{binding['repository']['url']}/blob/{binding['repository']['commit']}/{source['path']}"
+    expected = source_url(binding, source["path"])
     _require(source["url"] == expected, "reference source: URL must bind the same repository revision and path")
 
 
@@ -94,6 +96,12 @@ def validate_references(data, catalog):
             anchor_ids.add(anchor_id)
             kind = anchor.get("kind")
             _require(kind in {"published_reference", "recorded_seed_baseline"} and kind not in kinds, "anchor: invalid or repeated kind")
+            _require(anchor.get("code_verification") in (None, "historical_code_changed"),
+                     "reference code verification cannot claim current execution")
+            _require("historical_code" not in anchor or anchor.get("code_verification") == "historical_code_changed",
+                     "historical code evidence requires an explicit verification state")
+            _require(anchor.get("code_verification") is None or kind == "recorded_seed_baseline",
+                     "historical code state applies only to recorded execution")
             kinds.add(kind)
             _finite(anchor.get("value"), "anchor.value")
             _require(anchor.get("metric") == "score", "anchor.metric: expected source report score, not combined_score or paper metric")
@@ -123,7 +131,26 @@ def validate_references(data, catalog):
                 _require(anchor.get("recorded_status") == "ok", "seed baseline: successful recorded execution required")
                 report_path = anchor["source"]["path"]
                 _require(report_path in {"validation/suite-report.json", "validation/science-expansion-report.json"}, "baseline requires a reviewed pinned execution report")
-                if report_path == "validation/science-expansion-report.json":
+                historical = anchor.get("code_verification") == "historical_code_changed"
+                if historical:
+                    _require(binding.get("kind") == "bundled" and report_path == "validation/science-expansion-report.json",
+                             "changed historical code must identify an imported science receipt")
+                    _require("execution_identity" not in anchor, "changed historical code cannot claim current execution identity")
+                    old = anchor.get("historical_code", {})
+                    _require(type(old) is dict, "historical code requires an identity object")
+                    _require(old.get("code_verification") == "historical_code_changed"
+                             and type(old.get("changed_paths")) is list and old["changed_paths"],
+                             "changed historical code requires the affected artifact paths")
+                    for path in old["changed_paths"]:
+                        _relative(path, "historical artifact")
+                    for key in ("candidate_sha256", "evaluator_sha256"):
+                        _hash(old.get(key), _SHA256, key)
+                    _evidence(old.get("import_source"), binding)
+                    _require(old["import_source"]["path"] == "import-receipt.json"
+                             and old["import_source"]["locator"] == "#/upstream_hashes",
+                             "changed historical code requires the preserved import identities")
+                    _require(anchor["validity"] is True, "science baseline requires explicit historical validity")
+                elif report_path == "validation/science-expansion-report.json":
                     identity = anchor.get("execution_identity", {})
                     _require(type(identity) is dict, "science baseline requires an execution identity object")
                     _require(identity.get("source_execution") is True and identity.get("fixture_only") is False,

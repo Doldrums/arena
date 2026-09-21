@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0",
+  "id": "evoskill-officeqa",
+  "name": "OfficeQA",
+  "description": "OfficeQA",
+  "paper_ids": [
+    "evoskill"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2603.02766",
+      "type": "paper",
+      "locator": "Section 3.1–3.3"
+    },
+    {
+      "url": "https://github.com/sentient-agi/EvoSkill/tree/36f6f04952293d7054145550c2b9f0b0411bff1c",
+      "type": "repository",
+      "locator": "examples/officeqa"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "246 questions over approximately 89000 Treasury Bulletin pages",
+    "notes": [
+      "Claude Code",
+      "LLM credentials",
+      "document corpus or web access"
+    ]
+  },
+  "evaluation": {
+    "metric": "answer accuracy",
+    "paper_metric": "answer accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "OfficeQA",
+    "protocol": "specified_only",
+    "source_locator": "Section 3.1–3.3"
+  },
+  "execution": {
+    "repository": "https://github.com/sentient-agi/EvoSkill",
+    "commit": "36f6f04952293d7054145550c2b9f0b0411bff1c",
+    "upstream_path": "examples/officeqa",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "uv sync"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "uv sync"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "environment:OfficeQA"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_agent_env",
+      "unsupported_reason": "Candidates are LLM agents scored inside the OfficeQA environment (tools, web, games or code sandboxes); the environment and model access are external."
+    }
+  },
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "OfficeQA",
+    "slug": "officeqa",
+    "description": "OfficeQA",
+    "benchmark": "OfficeQA",
+    "dataset": "246 questions over approximately 89000 Treasury Bulletin pages",
+    "metric": "answer accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2603.02766",
+    "source_locator": "Section 3.1–3.3",
+    "upstream_path": "examples/officeqa",
+    "requirements": [
+      "Claude Code",
+      "LLM credentials",
+      "document corpus or web access"
+    ],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified.",
+    "upstream_evaluator_paths": [],
+    "upstream_seed_paths": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

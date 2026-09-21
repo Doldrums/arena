@@ -1,0 +1,72 @@
+{
+  "protocol": "recreated",
+  "family": "moo_optimizer",
+  "direction": "maximize",
+  "contract": "class Optimizer: __init__(self, budget, dim, n_obj); __call__(self, problem, bounds) evaluates problem(x) -> objectives (minimize all) at most budget times. Score: hypervolume of the evaluated points normalized by the known Pareto front's hypervolume",
+  "parameters": {
+    "problem": "zdt1",
+    "budget": 200
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 300,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "llamea-mobo-zdt1",
+  "name": "ZDT1",
+  "paper_ids": [
+    "llamea-mobo"
+  ],
+  "description": "ZDT1 task evaluated in LLM-Driven Evolutionary Generation of Multi-Objective Bayesian Optimization Algorithms.",
+  "benchmark": "pymoo ZDT/DTLZ/WFG and RE engineering suites",
+  "paper_metric": "normalized hypervolume",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2607.08791",
+      "type": "paper",
+      "locator": "Section IV.2 and Table 1"
+    },
+    {
+      "url": "https://github.com/glatq/LLaMEA-MOO/tree/18861aa47f17905c28aa33c5a9f33df3a893d191",
+      "type": "repository",
+      "locator": "benchmark_best_codes.py"
+    }
+  ],
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "llamea-mobo",
+      "title": "LLM-Driven Evolutionary Generation of Multi-Objective Bayesian Optimization Algorithms",
+      "url": "https://arxiv.org/pdf/2607.08791"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

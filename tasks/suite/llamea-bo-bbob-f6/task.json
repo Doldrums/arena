@@ -1,0 +1,470 @@
+{
+  "schema_version": "1.0",
+  "id": "llamea-bo-bbob-f6",
+  "name": "BBOB f6",
+  "description": "BBOB f6 task evaluated in LLaMEA-BO: A Large Language Model Evolutionary Algorithm for Automatically Generating Bayesian Optimization Algorithms.",
+  "paper_ids": [
+    "llamea-bo"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2505.21034",
+      "type": "paper",
+      "locator": "Section 4, generalization benchmarks"
+    },
+    {
+      "url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/llamevol/evaluator/evaluator_result.py",
+      "type": "repository",
+      "locator": "ConvergenceCurveAnalyzer.calculate_aoc; EvaluatorBasicResult.update_aoc"
+    },
+    {
+      "url": "https://pypi.org/project/ioh/0.3.18/",
+      "type": "benchmark",
+      "locator": "Pinned IOH BBOB objective implementation"
+    },
+    {
+      "url": "https://github.com/Ewendawi/LLaMEA-BO/tree/938b4d780aa0cbf9f7c941ebab61dadfa9157185",
+      "type": "repository",
+      "locator": "llamevol/evaluator/ioh_evaluator.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "ioh==0.3.18"
+    ],
+    "environment_variables": [],
+    "datasets": "BBOB function 6",
+    "notes": [
+      "CPU Python with numpy, scipy, ioh==0.3.18; no provider credentials",
+      "Pinned LLaMEA-BO source required for the original scoring implementation"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "mean normalized area over log convergence curve",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "COCO BBOB",
+    "protocol": "upstream",
+    "source_locator": "Section 4, generalization benchmarks"
+  },
+  "execution": {
+    "repository": "https://github.com/Ewendawi/LLaMEA-BO",
+    "commit": "938b4d780aa0cbf9f7c941ebab61dadfa9157185",
+    "upstream_path": "llamevol/evaluator/ioh_evaluator.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from pathlib import Path; import json; from llamevol.evaluator.ioh_evaluator import IOHEvaluator; e=IOHEvaluator(dim=5,budget=100,problems=[6],instances=[[4,5,6]],repeat=5); e.ignore_over_budget=True; e.timeout=1800; e.max_eval_workers=0; r=e.evaluate(code=Path('Experiments/generated_algorithms/ATRBO.py').read_text(),cls_name='ATRBO'); print(json.dumps({'score':float(r.score),'metric':'mean normalized area over log convergence curve','direction':'maximize','valid':r.error is None,'error':str(r.error) if r.error is not None else None})); raise SystemExit(0 if r.error is None else 1)"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/llamevol/evaluator/ioh_evaluator.py",
+        "notes": "Source-composed call to original IOHEvaluator, selecting only f6, dimension5, instances4/5/6, five repetitions and original ATRBO algorithm. Constructor and evaluate signatures inspected; command compiled but expensive optimization not executed."
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from pathlib import Path; import json; from llamevol.evaluator.ioh_evaluator import IOHEvaluator; e=IOHEvaluator(dim=10,budget=150,problems=[6],instances=[[4,5,6]],repeat=5); e.ignore_over_budget=True; e.timeout=1800; e.max_eval_workers=0; r=e.evaluate(code=Path('Experiments/generated_algorithms/ATRBO.py').read_text(),cls_name='ATRBO'); print(json.dumps({'score':float(r.score),'metric':'mean normalized area over log convergence curve','direction':'maximize','valid':r.error is None,'error':str(r.error) if r.error is not None else None})); raise SystemExit(0 if r.error is None else 1)"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/llamevol/evaluator/ioh_evaluator.py",
+        "notes": "Source-composed call to original IOHEvaluator, selecting only f6, dimension10, instances4/5/6, five repetitions and original ATRBO algorithm. Constructor and evaluate signatures inspected; command compiled but expensive optimization not executed."
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from pathlib import Path; import json; from llamevol.evaluator.ioh_evaluator import IOHEvaluator; e=IOHEvaluator(dim=20,budget=250,problems=[6],instances=[[4,5,6]],repeat=5); e.ignore_over_budget=True; e.timeout=1800; e.max_eval_workers=0; r=e.evaluate(code=Path('Experiments/generated_algorithms/ATRBO.py').read_text(),cls_name='ATRBO'); print(json.dumps({'score':float(r.score),'metric':'mean normalized area over log convergence curve','direction':'maximize','valid':r.error is None,'error':str(r.error) if r.error is not None else None})); raise SystemExit(0 if r.error is None else 1)"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/llamevol/evaluator/ioh_evaluator.py",
+        "notes": "Source-composed call to original IOHEvaluator, selecting only f6, dimension20, instances4/5/6, five repetitions and original ATRBO algorithm. Constructor and evaluate signatures inspected; command compiled but expensive optimization not executed."
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from pathlib import Path; import json; from llamevol.evaluator.ioh_evaluator import IOHEvaluator; e=IOHEvaluator(dim=40,budget=450,problems=[6],instances=[[4,5,6]],repeat=5); e.ignore_over_budget=True; e.timeout=1800; e.max_eval_workers=0; r=e.evaluate(code=Path('Experiments/generated_algorithms/ATRBO.py').read_text(),cls_name='ATRBO'); print(json.dumps({'score':float(r.score),'metric':'mean normalized area over log convergence curve','direction':'maximize','valid':r.error is None,'error':str(r.error) if r.error is not None else None})); raise SystemExit(0 if r.error is None else 1)"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/llamevol/evaluator/ioh_evaluator.py",
+        "notes": "Source-composed call to original IOHEvaluator, selecting only f6, dimension40, instances4/5/6, five repetitions and original ATRBO algorithm. Constructor and evaluate signatures inspected; command compiled but expensive optimization not executed."
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "adapters/recovered/source_llamea_bo.py",
+      "evaluator_scope": "repository",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem_id": 6,
+        "dimension": 5,
+        "budget": 100,
+        "instance": 4,
+        "random_seed": 0
+      },
+      "score_key": "normalized_log_gap_AOCC",
+      "score_direction": "maximize",
+      "baseline_path": "adapters/recovered/seeds/source_llamea_bo.py",
+      "baseline_scope": "repository",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "ioh==0.3.18"
+      ],
+      "environment": {
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "return_style": "dict",
+      "validity_key": "validity",
+      "implementation_label": "original IOH objective and released scoring class with repository bounded harness",
+      "notes": "Original ConvergenceCurveAnalyzer is compiled unmodified from the pinned source with a NumPy trapz compatibility alias. Repository harness enforces exactly100 finite in-bounds objective evaluations and verifies the returned observed best. Seed is a new lightweight GP/EI optimizer, not published ATRBO.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "runtime": {
+          "python": "3.12.14",
+          "numpy": "2.5.3",
+          "scipy": "1.18.1",
+          "ioh": "0.3.18"
+        },
+        "metrics": {
+          "score": 0.022360029836342887,
+          "normalized_log_gap_AOCC": 0.022360029836342887,
+          "validity": true,
+          "metric": "normalized_log_gap_AOCC",
+          "direction": "maximize",
+          "problem_id": 6,
+          "dimension": 5,
+          "instance": 4,
+          "budget": 100,
+          "candidate_calls": 100,
+          "best_objective": 3830.795106986721,
+          "optimum": 131.92,
+          "final_gap": 3698.8751069867208,
+          "objective_package": "ioh==0.3.18",
+          "random_seed": 0,
+          "objective_trace_sha256": "0cf62d4d5bb0d61b3fd1e7462f9dbf64d2898168690a6304c84c702a156ad8b2",
+          "scoring_source_sha256": "9b637d556e52f23798020b57a0992a114f5314be680750df675c83f66e2bfb12",
+          "profile": "bounded_original_objective_and_metric",
+          "validation_scope": "finite in-domain budget-complete trace and observed returned optimum; no paper reproduction"
+        },
+        "seconds": 0.0277,
+        "upstream_reproduction": false
+      }
+    },
+    "setup_instructions": [
+      {
+        "argv": [
+          "python",
+          "-m",
+          "pip",
+          "install",
+          "numpy",
+          "scipy",
+          "ioh==0.3.18"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/pyproject.toml",
+        "notes": "Minimal dependency subset for this adapter; avoids optional provider, Botorch, embedding and plotting frameworks."
+      }
+    ],
+    "task_setup_instructions": [
+      {
+        "argv": [
+          "python",
+          "-m",
+          "pip",
+          "install",
+          "numpy",
+          "scipy",
+          "ioh==0.3.18"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/pyproject.toml",
+        "notes": "Minimal dependency subset for this adapter; avoids optional provider, Botorch, embedding and plotting frameworks."
+      }
+    ],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "poetry"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/README.md",
+        "notes": ""
+      },
+      {
+        "argv": [
+          "poetry",
+          "install"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Default direct-evaluation profile: official IOH BBOB function 6, dimension5, held-out instance4, exactly100 calls, one run, seed0.",
+      "Full paper evaluation: dimensions5/10/20/40, held-out instances4/5/6, budget10*d+50, five repetitions. Original broader commands are retained separately; the default adapter does not reproduce that complete experiment.",
+      "The released primary `.score` uses normalized trapezoidal area over log10 best-objective gaps clipped to [1e-8,1e4] at d5 (upper1e9 above d5). The separate IOH logger metric is not substituted.",
+      "Original class interface preserved: Optimizer(dim,budget)(func) returns(best_y,best_x). A new small GP/EI baseline keeps evaluation CPU-cheap. Strict complete-budget/finite/domain checks are added by this repository harness."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "bbob_optimizer",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "BBOB f6",
+    "slug": "bbob-f6",
+    "description": "BBOB f6 task evaluated in LLaMEA-BO: A Large Language Model Evolutionary Algorithm for Automatically Generating Bayesian Optimization Algorithms.",
+    "benchmark": "COCO BBOB",
+    "dataset": "BBOB function 6",
+    "metric": "normalized_log_gap_AOCC",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2505.21034",
+    "source_locator": "Section 4, generalization benchmarks",
+    "upstream_path": "llamevol/evaluator/ioh_evaluator.py",
+    "requirements": [
+      "CPU Python with numpy, scipy, ioh==0.3.18; no provider credentials",
+      "Pinned LLaMEA-BO source required for the original scoring implementation"
+    ],
+    "execution_notes": [
+      "Default direct-evaluation profile: official IOH BBOB function 6, dimension5, held-out instance4, exactly100 calls, one run, seed0.",
+      "Full paper evaluation: dimensions5/10/20/40, held-out instances4/5/6, budget10*d+50, five repetitions. Original broader commands are retained separately; the default adapter does not reproduce that complete experiment.",
+      "The released primary `.score` uses normalized trapezoidal area over log10 best-objective gaps clipped to [1e-8,1e4] at d5 (upper1e9 above d5). The separate IOH logger metric is not substituted.",
+      "Original class interface preserved: Optimizer(dim,budget)(func) returns(best_y,best_x). A new small GP/EI baseline keeps evaluation CPU-cheap. Strict complete-budget/finite/domain checks are added by this repository harness."
+    ],
+    "setup_commands": [
+      {
+        "argv": [
+          "python",
+          "-m",
+          "pip",
+          "install",
+          "numpy",
+          "scipy",
+          "ioh==0.3.18"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/pyproject.toml",
+        "notes": "Minimal dependency subset for this adapter; avoids optional provider, Botorch, embedding and plotting frameworks."
+      }
+    ],
+    "run_commands": [
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from pathlib import Path; import json; from llamevol.evaluator.ioh_evaluator import IOHEvaluator; e=IOHEvaluator(dim=5,budget=100,problems=[6],instances=[[4,5,6]],repeat=5); e.ignore_over_budget=True; e.timeout=1800; e.max_eval_workers=0; r=e.evaluate(code=Path('Experiments/generated_algorithms/ATRBO.py').read_text(),cls_name='ATRBO'); print(json.dumps({'score':float(r.score),'metric':'mean normalized area over log convergence curve','direction':'maximize','valid':r.error is None,'error':str(r.error) if r.error is not None else None})); raise SystemExit(0 if r.error is None else 1)"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/llamevol/evaluator/ioh_evaluator.py",
+        "notes": "Source-composed call to original IOHEvaluator, selecting only f6, dimension5, instances4/5/6, five repetitions and original ATRBO algorithm. Constructor and evaluate signatures inspected; command compiled but expensive optimization not executed."
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from pathlib import Path; import json; from llamevol.evaluator.ioh_evaluator import IOHEvaluator; e=IOHEvaluator(dim=10,budget=150,problems=[6],instances=[[4,5,6]],repeat=5); e.ignore_over_budget=True; e.timeout=1800; e.max_eval_workers=0; r=e.evaluate(code=Path('Experiments/generated_algorithms/ATRBO.py').read_text(),cls_name='ATRBO'); print(json.dumps({'score':float(r.score),'metric':'mean normalized area over log convergence curve','direction':'maximize','valid':r.error is None,'error':str(r.error) if r.error is not None else None})); raise SystemExit(0 if r.error is None else 1)"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/llamevol/evaluator/ioh_evaluator.py",
+        "notes": "Source-composed call to original IOHEvaluator, selecting only f6, dimension10, instances4/5/6, five repetitions and original ATRBO algorithm. Constructor and evaluate signatures inspected; command compiled but expensive optimization not executed."
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from pathlib import Path; import json; from llamevol.evaluator.ioh_evaluator import IOHEvaluator; e=IOHEvaluator(dim=20,budget=250,problems=[6],instances=[[4,5,6]],repeat=5); e.ignore_over_budget=True; e.timeout=1800; e.max_eval_workers=0; r=e.evaluate(code=Path('Experiments/generated_algorithms/ATRBO.py').read_text(),cls_name='ATRBO'); print(json.dumps({'score':float(r.score),'metric':'mean normalized area over log convergence curve','direction':'maximize','valid':r.error is None,'error':str(r.error) if r.error is not None else None})); raise SystemExit(0 if r.error is None else 1)"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/llamevol/evaluator/ioh_evaluator.py",
+        "notes": "Source-composed call to original IOHEvaluator, selecting only f6, dimension20, instances4/5/6, five repetitions and original ATRBO algorithm. Constructor and evaluate signatures inspected; command compiled but expensive optimization not executed."
+      },
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from pathlib import Path; import json; from llamevol.evaluator.ioh_evaluator import IOHEvaluator; e=IOHEvaluator(dim=40,budget=450,problems=[6],instances=[[4,5,6]],repeat=5); e.ignore_over_budget=True; e.timeout=1800; e.max_eval_workers=0; r=e.evaluate(code=Path('Experiments/generated_algorithms/ATRBO.py').read_text(),cls_name='ATRBO'); print(json.dumps({'score':float(r.score),'metric':'mean normalized area over log convergence curve','direction':'maximize','valid':r.error is None,'error':str(r.error) if r.error is not None else None})); raise SystemExit(0 if r.error is None else 1)"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/llamevol/evaluator/ioh_evaluator.py",
+        "notes": "Source-composed call to original IOHEvaluator, selecting only f6, dimension40, instances4/5/6, five repetitions and original ATRBO algorithm. Constructor and evaluate signatures inspected; command compiled but expensive optimization not executed."
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "adapters/recovered/source_llamea_bo.py",
+      "evaluator_scope": "repository",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem_id": 6,
+        "dimension": 5,
+        "budget": 100,
+        "instance": 4,
+        "random_seed": 0
+      },
+      "score_key": "normalized_log_gap_AOCC",
+      "score_direction": "maximize",
+      "baseline_path": "adapters/recovered/seeds/source_llamea_bo.py",
+      "baseline_scope": "repository",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "ioh==0.3.18"
+      ],
+      "environment": {
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "return_style": "dict",
+      "validity_key": "validity",
+      "implementation_label": "original IOH objective and released scoring class with repository bounded harness",
+      "notes": "Original ConvergenceCurveAnalyzer is compiled unmodified from the pinned source with a NumPy trapz compatibility alias. Repository harness enforces exactly100 finite in-bounds objective evaluations and verifies the returned observed best. Seed is a new lightweight GP/EI optimizer, not published ATRBO.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "runtime": {
+          "python": "3.12.14",
+          "numpy": "2.5.3",
+          "scipy": "1.18.1",
+          "ioh": "0.3.18"
+        },
+        "metrics": {
+          "score": 0.022360029836342887,
+          "normalized_log_gap_AOCC": 0.022360029836342887,
+          "validity": true,
+          "metric": "normalized_log_gap_AOCC",
+          "direction": "maximize",
+          "problem_id": 6,
+          "dimension": 5,
+          "instance": 4,
+          "budget": 100,
+          "candidate_calls": 100,
+          "best_objective": 3830.795106986721,
+          "optimum": 131.92,
+          "final_gap": 3698.8751069867208,
+          "objective_package": "ioh==0.3.18",
+          "random_seed": 0,
+          "objective_trace_sha256": "0cf62d4d5bb0d61b3fd1e7462f9dbf64d2898168690a6304c84c702a156ad8b2",
+          "scoring_source_sha256": "9b637d556e52f23798020b57a0992a114f5314be680750df675c83f66e2bfb12",
+          "profile": "bounded_original_objective_and_metric",
+          "validation_scope": "finite in-domain budget-complete trace and observed returned optimum; no paper reproduction"
+        },
+        "seconds": 0.0277,
+        "upstream_reproduction": false
+      }
+    },
+    "paper_metric": "mean normalized area over log convergence curve",
+    "paper_direction": "maximize",
+    "implementation_status": "direct_evaluator",
+    "additional_sources": [
+      {
+        "url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/llamevol/evaluator/evaluator_result.py",
+        "type": "repository",
+        "locator": "ConvergenceCurveAnalyzer.calculate_aoc; EvaluatorBasicResult.update_aoc"
+      },
+      {
+        "url": "https://pypi.org/project/ioh/0.3.18/",
+        "type": "benchmark",
+        "locator": "Pinned IOH BBOB objective implementation"
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "baseline_execution",
+      "passed": true,
+      "runtime": {
+        "python": "3.12.14",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "ioh": "0.3.18"
+      },
+      "metrics": {
+        "score": 0.022360029836342887,
+        "normalized_log_gap_AOCC": 0.022360029836342887,
+        "validity": true,
+        "metric": "normalized_log_gap_AOCC",
+        "direction": "maximize",
+        "problem_id": 6,
+        "dimension": 5,
+        "instance": 4,
+        "budget": 100,
+        "candidate_calls": 100,
+        "best_objective": 3830.795106986721,
+        "optimum": 131.92,
+        "final_gap": 3698.8751069867208,
+        "objective_package": "ioh==0.3.18",
+        "random_seed": 0,
+        "objective_trace_sha256": "0cf62d4d5bb0d61b3fd1e7462f9dbf64d2898168690a6304c84c702a156ad8b2",
+        "scoring_source_sha256": "9b637d556e52f23798020b57a0992a114f5314be680750df675c83f66e2bfb12",
+        "profile": "bounded_original_objective_and_metric",
+        "validation_scope": "finite in-domain budget-complete trace and observed returned optimum; no paper reproduction"
+      },
+      "seconds": 0.0277,
+      "upstream_reproduction": false
+    }
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

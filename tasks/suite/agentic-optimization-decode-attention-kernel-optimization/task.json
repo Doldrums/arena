@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "id": "agentic-optimization-decode-attention-kernel-optimization",
+  "name": "Decode-attention kernel optimization",
+  "description": "Decode-attention kernel optimization",
+  "paper_ids": [
+    "agentic-optimization"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://junye-pan.github.io/posts/agentic-optimization/assets/report.pdf",
+      "type": "paper",
+      "locator": "Report Section 5.3"
+    },
+    {
+      "url": "https://github.com/Junye-Pan/AgenticOptimization/tree/712b2fd4888c4b57fc08c1d2bdf4b1ca4c4517fb",
+      "type": "repository",
+      "locator": "tasks/llm_inference_qwen3_1_7b_decode_attention_4090"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "GPU",
+      "kernel timing harness"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "geometric mean kernel speedup",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Report Section 5.3"
+  },
+  "execution": {
+    "repository": "https://github.com/Junye-Pan/AgenticOptimization",
+    "commit": "712b2fd4888c4b57fc08c1d2bdf4b1ca4c4517fb",
+    "upstream_path": "tasks/llm_inference_qwen3_1_7b_decode_attention_4090",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "kernel_cpu",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:torch"
+      ],
+      "timeout": 1800,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No root license or dependency manifest found in inspected repository; README mentions design.md but file is absent at pinned commit.",
+    "Requires an NVIDIA RTX 4090 with SGLang/CUDA kernels; the pinned task packages contain server-side evaluators for that hardware only.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Decode-attention kernel optimization",
+    "slug": "decode-attention-kernel-optimization",
+    "description": "Decode-attention kernel optimization",
+    "benchmark": null,
+    "dataset": null,
+    "metric": "geometric mean kernel speedup",
+    "direction": "maximize",
+    "source_url": "https://junye-pan.github.io/posts/agentic-optimization/assets/report.pdf",
+    "source_locator": "Report Section 5.3",
+    "upstream_path": "tasks/llm_inference_qwen3_1_7b_decode_attention_4090",
+    "requirements": [
+      "GPU",
+      "kernel timing harness"
+    ],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified.",
+    "execution_blocked_reason": "Requires an NVIDIA RTX 4090 with SGLang/CUDA kernels; the pinned task packages contain server-side evaluators for that hardware only."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "kernel",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

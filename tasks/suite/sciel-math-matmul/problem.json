@@ -1,0 +1,102 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "py:jax",
+    "py:numpy",
+    "py:optax",
+    "py:tqdm"
+  ],
+  "timeout": 600,
+  "notes": [],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "combined_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/alphaevolve_math_problems/matmul",
+    "files_sha256": {
+      "config.yaml": "c7d3efb2ccaab0efb1aa07935fe133fd0e967b941fccabdc5e107d39fa4e7e17",
+      "evaluator.py": "9fd059997380c4240c6eef3cdf502581f29c731963dc3b0448bca2416122c086",
+      "initial_program.py": "750484ef3f6179c098a44e88f9a63f33eabcf932acf4acf62e4f52241015dd4d",
+      "requirements.txt": "af902634ec0c0bb998bee552f78fbbd77aef7b26d3d94226a60c512b70a6b541"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/alphaevolve_math_problems/matmul` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-math-matmul",
+  "name": "SCiEL: Matrix multiplication rank, intended shape ⟨2,4,5⟩",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Construct tensor factors for rectangular matrix multiplication and minimize the reported rank. The original evaluator trusts candidate dimensions and can skip verification on empty arrays.",
+  "benchmark": "SCiEL source example matmul",
+  "paper_metric": "combined_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/matmul/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/matmul/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The verifier returns before tensor verification if any factor array is empty. Candidate-returned n,m,p and rank determine checks/score instead of enforcing the intended fixed shape ⟨2,4,5⟩. A positive score is not evidence of a valid algorithm.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Find exact low-rank bilinear decompositions of a matrix-multiplication tensor.",
+    "importance_rationale": "Matrix-multiplication complexity is a substantive algebraic research problem with consequences for scientific computation. The local SCiEL instance is a restricted construction search, and its implementation status is separate from that motivation.",
+    "papers": [
+      {
+        "title": "Fast Matrix Multiplication Without Tears: A Constraint Programming Approach",
+        "url": "https://arxiv.org/abs/2306.01097",
+        "task_relation": "The paper directly solves correctness-constrained low-rank matrix multiplication. The local task targets the intended rectangular tensor shape ⟨2,4,5⟩; the cited work studies the same formulation and does not certify this local evaluator or claim to report this exact instance.",
+        "primary_goal": "Find fast bilinear matrix-multiplication algorithms and certify infeasibility of proposed ranks.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

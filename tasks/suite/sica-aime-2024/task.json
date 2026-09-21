@@ -1,0 +1,307 @@
+{
+  "schema_version": "1.0",
+  "id": "sica-aime-2024",
+  "name": "AIME 2024",
+  "description": "AIME 2024: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "sica",
+    "pairwise-validator",
+    "shinkaevolve"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2504.15228",
+      "type": "paper",
+      "locator": "Sections 4 and 4.1"
+    },
+    {
+      "url": "https://github.com/MaximeRobeyns/self_improving_coding_agent/tree/ed8275dca4d3c5dbf77229964351fe9b424797dc",
+      "type": "repository",
+      "locator": "base_agent/src/benchmarks/aime.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2607.14408",
+      "type": "paper",
+      "locator": "Section 5, Table 1 task inventory"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2509.19349",
+      "type": "paper",
+      "locator": "Section 3.2 and Appendix C.2"
+    },
+    {
+      "url": "https://github.com/SakanaAI/ShinkaEvolve/tree/9912af12d423504b8d580f4179fd15f5f88b8c50",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "AIME 2024",
+    "notes": [
+      "Model API credentials",
+      "Docker for SWE-bench"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "benchmark score; time and API cost enter combined utility",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "AIME 2024",
+    "protocol": "specified_only",
+    "source_locator": "Sections 4 and 4.1"
+  },
+  "execution": {
+    "repository": "https://github.com/MaximeRobeyns/self_improving_coding_agent",
+    "commit": "ed8275dca4d3c5dbf77229964351fe9b424797dc",
+    "upstream_path": "base_agent/src/benchmarks/aime.py",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "pip install -r base_agent/requirements.txt",
+      "pip install swebench"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -r base_agent/requirements.txt",
+      "pip install swebench"
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "base_agent/requirements.txt"
+        ],
+        "cwd": "."
+      },
+      {
+        "argv": [
+          "pip",
+          "install",
+          "swebench"
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [
+      "Paper uses fixed random subsets of 50 SWE-bench and 50 LiveCodeBench instances. runner.py performs meta-improvement, not a standalone task evaluator."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "AIME 2024",
+    "slug": "aime-2024",
+    "description": "AIME 2024: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "AIME 2024",
+    "dataset": "AIME 2024",
+    "metric": "benchmark score; time and API cost enter combined utility",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2504.15228",
+    "source_locator": "Sections 4 and 4.1",
+    "upstream_path": "base_agent/src/benchmarks/aime.py",
+    "requirements": [
+      "Model API credentials",
+      "Docker for SWE-bench"
+    ],
+    "execution_notes": [
+      "Paper uses fixed random subsets of 50 SWE-bench and 50 LiveCodeBench instances. runner.py performs meta-improvement, not a standalone task evaluator."
+    ],
+    "implementation_status": "source_path_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "pairwise-validator-aime",
+      "paper_ids": [
+        "pairwise-validator"
+      ],
+      "name": "AIME",
+      "description": "AIME task evaluated in Reward-Free Evolving Agents via Pairwise Validator.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2607.14408",
+          "type": "paper",
+          "locator": "Section 5, Table 1 task inventory"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "GEPA",
+          "Task data",
+          "LLM credentials"
+        ]
+      },
+      "evaluation": {
+        "metric": "benchmark-specific test score",
+        "paper_metric": "benchmark-specific test score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "AIME",
+        "protocol": "specified_only",
+        "source_locator": "Section 5, Table 1 task inventory"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": []
+      },
+      "limitations": [
+        "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "shinkaevolve-aime-2024-scaffold-design",
+      "paper_ids": [
+        "shinkaevolve"
+      ],
+      "name": "AIME 2024 scaffold design",
+      "description": "AIME 2024 scaffold design: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2509.19349",
+          "type": "paper",
+          "locator": "Section 3.2 and Appendix C.2"
+        },
+        {
+          "url": "https://github.com/SakanaAI/ShinkaEvolve/tree/9912af12d423504b8d580f4179fd15f5f88b8c50",
+          "type": "repository",
+          "locator": null
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "AIME 2024 scaffold design",
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "answer accuracy",
+        "paper_metric": "answer accuracy",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "AIME 2024 scaffold design",
+        "protocol": "specified_only",
+        "source_locator": "Section 3.2 and Appendix C.2"
+      },
+      "execution": {
+        "repository": "https://github.com/SakanaAI/ShinkaEvolve",
+        "commit": "9912af12d423504b8d580f4179fd15f5f88b8c50",
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "uv pip install -e ."
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "uv pip install -e ."
+        ],
+        "setup_steps": [
+          {
+            "argv": [
+              "uv",
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": "."
+          }
+        ],
+        "notes": [
+          "Current repository examples do not contain the paper AIME evaluator."
+        ]
+      },
+      "limitations": [
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "Current public examples retain circle packing but do not include verified AIME, ALE-Bench LITE, or MoE experiment drivers. Later added examples are not included as paper evaluations.",
+        "Original public release v0.0.1 (commit23decc6bf118d783ddff5a3c03d2269cbf149971) was also inspected: its example directories are circle_packing, game_2048, julia_prime_counting and novelty_generator, with no released AIME, ALE or MoE evaluator.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

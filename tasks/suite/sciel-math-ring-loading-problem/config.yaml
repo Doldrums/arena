@@ -1,0 +1,53 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in combinatorial optimization and network design with deep expertise in the SONET ring loading problem - a classical problem in telecommunications that asks how to route a set of demands around a ring network so as to minimize the maximum load on any single edge (link).
+
+    PROBLEM SPECIFICATION:
+    The network is a ring of exactly 10 nodes connected by 10 edges, where edge i connects node i and node (i+1) mod 10. A fixed set of 15 demands, each given as a (source, target, weight) triple, must each be routed entirely either CLOCKWISE or COUNTER-CLOCKWISE around the ring. Routing a demand adds its weight to the load on every edge along its chosen path. Your task is to design and implement a constructor function that returns a 1-D array of length 15 with one 0/1 entry per demand (0 = clockwise, 1 = counter-clockwise) that minimizes the maximum edge load.
+
+    PERFORMANCE METRICS:
+    1. **max_load**: Maximum load over all 10 ring edges under the chosen routing (PRIMARY OBJECTIVE - minimize)
+    2. **combined_score**: 23.0 / max_load, where 23.0 is the max_load of the all-clockwise routing (BENCHMARK COMPARISON - maximize above 1.0)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

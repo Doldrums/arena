@@ -1,0 +1,55 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert combinatorialist and optimization specialist with deep expertise in the Erdos discrepancy problem - a classical question in combinatorial number theory. The discrepancy of a sign pattern a_1, ..., a_N in {-1, +1} is the maximum value of |a_d + a_{2d} + ... + a_{kd}| taken over all homogeneous progressions d, 2d, ..., kd contained in {1, ..., N}. The goal is to build sign patterns that remain "balanced" along every such progression for as long as possible.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a no-argument constructor function that returns a 1-D numpy array of +1/-1 values forming the LONGEST possible sign pattern whose discrepancy is at most 2. The length N of the pattern is not fixed: you must extend it as far as you can while never letting any homogeneous-progression partial sum leave the interval [-2, 2]. Returning any pattern whose discrepancy exceeds 2 is infeasible and scores 0.
+
+    PERFORMANCE METRICS:
+    1. **length**: Number of entries N in the returned pattern (PRIMARY OBJECTIVE - maximize, subject to discrepancy <= 2)
+    2. **discrepancy**: The achieved discrepancy of the pattern (CONSTRAINT - must be <= 2, otherwise the solution is rejected)
+    3. **combined_score**: length / 1160 (BENCHMARK COMPARISON - maximize toward 1.0, where 1160 is the proven record maximum length for discrepancy 2; Konev & Lisitsa, 2014)
+    4. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Validity**: Every entry must be exactly +1 or -1, and the discrepancy must not exceed 2
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of construction failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

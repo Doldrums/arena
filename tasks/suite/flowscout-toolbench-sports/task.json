@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.0",
+  "id": "flowscout-toolbench-sports",
+  "name": "ToolBench Sports",
+  "description": "ToolBench Sports",
+  "paper_ids": [
+    "flowscout"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2608.10039",
+      "type": "paper",
+      "locator": "Section IV.A and Table I"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Paper-specific seen/unseen tool splits; 5:2:3 optimization/validation/test",
+    "notes": [
+      "available remote API tools",
+      "LLM credentials",
+      "paper-specific split"
+    ]
+  },
+  "evaluation": {
+    "metric": "task completion and execution success",
+    "paper_metric": "task completion and execution success",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "ToolBench",
+    "protocol": "specified_only",
+    "source_locator": "Section IV.A and Table I"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "environment:ToolBench"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_agent_env",
+      "unsupported_reason": "Candidates are LLM agents scored inside the ToolBench environment (tools, web, games or code sandboxes); the environment and model access are external."
+    }
+  },
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Paper-provided anonymous code URL https://anonymous.4open.science/r/xxxx/ could not be read: web tool inaccessible; direct HTTPS connection reset. No downloadable artifact verified.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "ToolBench Sports",
+    "slug": "toolbench-sports",
+    "description": "ToolBench Sports",
+    "benchmark": "ToolBench",
+    "dataset": "Paper-specific seen/unseen tool splits; 5:2:3 optimization/validation/test",
+    "metric": "task completion and execution success",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2608.10039",
+    "source_locator": "Section IV.A and Table I",
+    "upstream_path": null,
+    "requirements": [
+      "available remote API tools",
+      "LLM credentials",
+      "paper-specific split"
+    ],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

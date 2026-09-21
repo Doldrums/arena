@@ -1,0 +1,216 @@
+{
+  "schema_version": "1.0",
+  "id": "evoprompt-mr",
+  "name": "MR",
+  "description": "MR task evaluated in EvoPrompt: Connecting LLMs with Evolutionary Algorithms Yields Powerful Prompt Optimizers.",
+  "paper_ids": [
+    "evoprompt"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2309.08532",
+      "type": "paper",
+      "locator": "Section 4.2"
+    },
+    {
+      "url": "https://github.com/beeevita/EvoPrompt/tree/94caff336555df99acc5c338c7930c40cc550ad9",
+      "type": "repository",
+      "locator": "infer.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "requirements.txt dependencies",
+      "Alpaca weights chavinlo/alpaca-native and compatible GPU/8-bit bitsandbytes environment",
+      "auth.yaml configuration initialized by evaluator",
+      "Classification test files from README LM-BFF dataset download where not present"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "MR",
+    "protocol": "upstream",
+    "source_locator": "Section 4.2"
+  },
+  "execution": {
+    "repository": "https://github.com/beeevita/EvoPrompt",
+    "commit": "94caff336555df99acc5c338c7930c40cc550ad9",
+    "upstream_path": "infer.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "infer.py",
+          "--dataset",
+          "mr",
+          "--task",
+          "cls",
+          "--seed",
+          "5",
+          "--position",
+          "demon",
+          "--batch-size",
+          "16",
+          "--prompt-num",
+          "0",
+          "--language_model",
+          "alpaca",
+          "--output",
+          "outputs/cls/mr/catalog-baseline",
+          "--content",
+          "Please perform Sentiment Classification task. Given the sentence, assign a sentiment label from ['negative', 'positive']. Return label only without any other text.",
+          "--test_file",
+          "data/cls/mr/seed5/test.txt",
+          "--dev_file",
+          "data/cls/mr/seed5/dev.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/beeevita/EvoPrompt/blob/94caff336555df99acc5c338c7930c40cc550ad9/infer.py",
+        "notes": "Source-composed inference command using official scripts/args and published manual baseline prompt. Explicit classification test path fixes mismatch between README download location and evaluator default. Requires setup; not executed."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/beeevita/EvoPrompt/blob/94caff336555df99acc5c338c7930c40cc550ad9/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/beeevita/EvoPrompt/blob/94caff336555df99acc5c338c7930c40cc550ad9/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "BBH scripts exist under BBH/scripts after the README cd BBH. Actual blocking defect: BBH/args.py registers --content twice, raising argparse.ArgumentError before execution; observed locally with parse_args(). Remove the duplicate declaration in a documented modified checkout before running BBH.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "MR",
+    "slug": "mr",
+    "description": "MR task evaluated in EvoPrompt: Connecting LLMs with Evolutionary Algorithms Yields Powerful Prompt Optimizers.",
+    "benchmark": "MR",
+    "dataset": null,
+    "metric": "accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2309.08532",
+    "source_locator": "Section 4.2",
+    "upstream_path": "infer.py",
+    "requirements": [
+      "requirements.txt dependencies",
+      "Alpaca weights chavinlo/alpaca-native and compatible GPU/8-bit bitsandbytes environment",
+      "auth.yaml configuration initialized by evaluator",
+      "Classification test files from README LM-BFF dataset download where not present"
+    ],
+    "execution_notes": [],
+    "setup_commands": [],
+    "run_commands": [
+      {
+        "argv": [
+          "python",
+          "infer.py",
+          "--dataset",
+          "mr",
+          "--task",
+          "cls",
+          "--seed",
+          "5",
+          "--position",
+          "demon",
+          "--batch-size",
+          "16",
+          "--prompt-num",
+          "0",
+          "--language_model",
+          "alpaca",
+          "--output",
+          "outputs/cls/mr/catalog-baseline",
+          "--content",
+          "Please perform Sentiment Classification task. Given the sentence, assign a sentiment label from ['negative', 'positive']. Return label only without any other text.",
+          "--test_file",
+          "data/cls/mr/seed5/test.txt",
+          "--dev_file",
+          "data/cls/mr/seed5/dev.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/beeevita/EvoPrompt/blob/94caff336555df99acc5c338c7930c40cc550ad9/infer.py",
+        "notes": "Source-composed inference command using official scripts/args and published manual baseline prompt. Explicit classification test path fixes mismatch between README download location and evaluator default. Requires setup; not executed."
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

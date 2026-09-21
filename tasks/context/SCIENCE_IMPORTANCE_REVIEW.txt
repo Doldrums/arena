@@ -1,0 +1,32 @@
+# Scientific importance: primary research goal review
+
+A task qualifies when it addresses a substantive scientific or real-world problem and a cited paper's **main objective** is to solve that problem or advance understanding of it. The record must explain why the problem matters and how the local task represents it.
+
+Using a task to evaluate a general agent/framework, or citing only a benchmark, dataset, or tool, is insufficient. A domain-specific AI solution can qualify when the actual scientific problem is its central objective. Mathematics and computational problems can qualify for their contribution to understanding or practical capabilities.
+
+## Reclassification
+
+| Status | Tasks |
+|---|---:|
+| Supported by primary-problem research | 144 |
+| Evidence not established under this rule | 815 |
+| Total canonical tasks | 959 |
+
+The supported share is **15.0%**. This replaces the earlier 878/959 classification, which automatically counted task locators from agent papers. Every positive label now requires a curated review. There are 158 explicit decisions, including 14 explicit unreviewed decisions, and 73 distinct qualifying paper URLs. All other tasks default to unreviewed. This is an evidence classification, not a claim that unreviewed problems lack scientific value.
+
+## Examples
+
+- **Methane emission inversion qualifies:** [the Permian Basin methane study](https://pmc.ncbi.nlm.nih.gov/articles/PMC7176423/) aims to quantify actual emissions using satellite observations and atmospheric inversion. The task records differences between its local protocol and that study.
+- **Matrix multiplication qualifies:** [the AlphaTensor paper](https://doi.org/10.1038/s41586-022-05172-4) aims to discover faster, correct matrix-multiplication algorithms. Its central object is the mathematical/computational problem, and each local task specifies its restricted tensor size and coefficient domain.
+- **A2DEPT two-dimensional root finding remains unreviewed:** its five synthetic systems were used in framework evaluation. That citation does not establish a substantive task-specific research objective.
+- **Lorenz-96 and the small QAOA/VQE demos remain unreviewed:** a scientific-looking model or a general method paper does not by itself substantiate these local protocols under the main-goal rule.
+
+## Stored evidence and checks
+
+Each supported record in [the evidence registry](../scripts/science_evidence_overrides.json) includes `scientific_problem`, `importance_rationale`, and paper `title`, `url`, `primary_goal`, `task_relation`, and `evidence_role: primary_problem`. The generator sets `criterion: primary_research_goal` and propagates the decision to task/problem manifests, READMEs, the catalog, filters, and statistics.
+
+The schema, registry and statistics reject legacy or incomplete positive claims. The task detail and statistics pages expose the main objective and rationale beside the linked paper. Paper abstracts and task-relevant text were reviewed against local contracts; this does not claim independent reproduction of every paper.
+
+Verification: **33 evidence/statistics/registry tests and 13 dashboard tests passed**, no skips; all **959 manifests** pass registry and JSON Schema checks. [Targeted checks](../validation/science-primary-goal-tests.txt) · [Dashboard checks](../validation/science-primary-goal-dashboard-tests.txt).
+
+Repeat generation left **4,779 files unchanged**; all **1,945 task Python files** match their hashes from the start of this metadata revision. [Regeneration receipt](../validation/science-primary-goal-regeneration.json). Fresh direct and SCiEL execution checks each report **45 passes and 15 documented blockers**, with no failures or stale receipts. The live dashboard was restarted and visually checked: it shows 144/959 supported, the root-finding example is unreviewed, and paper search exposes the scientific objective and rationale.

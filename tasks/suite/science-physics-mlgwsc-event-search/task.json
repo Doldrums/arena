@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "id": "science-physics-mlgwsc-event-search",
+  "name": "MLGWSC gravitational-wave event search",
+  "description": "search(h1, l1, metadata) -> N x 2 GPS time/ranking statistic array. Independent source observing blocks and source injections; triggers clustered and uniquely associated. Score sensitive distance at fixed FAR. At least 10 expected false alarms at the declared FAR must fit in the background duration; tiny noise clips cannot establish rare-event performance.",
+  "paper_ids": [
+    "science-physics_expansion"
+  ],
+  "kind": "native",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2209.11146",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: MLGWSC gravitational-wave event search"
+    },
+    {
+      "url": "https://github.com/gwastro/ml-mock-data-challenge-1",
+      "type": "archive",
+      "locator": "MLGWSC-1 Dataset 4 source real-noise foreground/background; evaluation sensitive distance."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; source-data preparation may require substantial disk space",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Prepare source MLGWSC foreground/background with actual injection volume weights and long background; short clips cannot resolve declared FAR."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "MLGWSC gravitational-wave event search",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_physics_mlgwsc_event_search",
+    "science_family": "science_physics_mlgwsc_event_search",
+    "parameters": {
+      "proposal_id": "P02"
+    },
+    "interface": "search(h1, l1, metadata) -> N x 2 GPS time/ranking statistic array. Independent source observing blocks and source injections; triggers clustered and uniquely associated. Score sensitive distance at fixed FAR. At least 10 expected false alarms at the declared FAR must fit in the background duration; tiny noise clips cannot establish rare-event performance.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "cosmology_and_astrophysics"
+    },
+    "proposal_id": "P02",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "requires_setup",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_physics_mlgwsc_event_search",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:data/physics-expansion/P02/manifest.json",
+        "file:data/physics-expansion/P02/benchmark.npz"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Prepare source MLGWSC foreground/background with actual injection volume weights and long background; short clips cannot resolve declared FAR."
+  ],
+  "validation": {
+    "level": "adapter_unit_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_physics_expansion.py",
+    "evidence": "validation/physics-expansion-report.json",
+    "benchmark_verified": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "cosmology_and_astrophysics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Detecting and denoising gravitational wave signals from binary black holes using deep learning",
+        "url": "https://journals.aps.org/prd/abstract/10.1103/PhysRevD.108.043024",
+        "task_relation": "The local event search uses MLGWSC source blocks and a sensitive-distance objective at fixed false-alarm rate. It pursues the same detection problem but uses a different data selection, search interface, and scoring protocol from this paper.",
+        "primary_goal": "Develop a detection and denoising method for binary-black-hole gravitational waves and test recovery of observed signals.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Detect gravitational waves from merging binary black holes in noisy interferometer observations.",
+    "importance_rationale": "Recovering astrophysical merger signals from detector noise is the paper's central physical detection problem.",
+    "reason": "The evidence is a domain-specific attempt to recover physical signals, not merely the announcement of a challenge dataset.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0",
+  "id": "funbo-adaboost-hyperparameter-optimization",
+  "name": "AdaBoost hyperparameter optimization",
+  "description": "AdaBoost hyperparameter optimization: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "funbo"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2406.04824",
+      "type": "paper",
+      "locator": "Section 4 and Appendices C.3–C.5"
+    },
+    {
+      "url": "https://github.com/boschresearch/MetaBO/tree/3f458bd32db340fbe2d5f072a92cfd782072342c",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "AdaBoost hyperparameter optimization",
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "simple regret",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "AdaBoost hyperparameter optimization",
+    "protocol": "specified_only",
+    "source_locator": "Section 4 and Appendices C.3–C.5"
+  },
+  "execution": {
+    "repository": "https://github.com/boschresearch/MetaBO",
+    "commit": "3f458bd32db340fbe2d5f072a92cfd782072342c",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "bo_hpo",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:sklearn",
+        "py:scipy"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No dedicated official FunBO evaluator repository was verified. The nine OOD adapters are explicitly attributed paper-guided reconstructions using the paper-cited MetaBO objective source.",
+    "Exact original Sobol points and some standard-objective internal parameters are unavailable; assumptions and fingerprints are documented per task.",
+    "No full FunSearch discovery or complete paper experiment has been reproduced.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "AdaBoost hyperparameter optimization",
+    "slug": "adaboost-hyperparameter-optimization",
+    "description": "AdaBoost hyperparameter optimization: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "AdaBoost hyperparameter optimization",
+    "dataset": "AdaBoost hyperparameter optimization",
+    "metric": "simple regret",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2406.04824",
+    "source_locator": "Section 4 and Appendices C.3–C.5",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [],
+    "implementation_status": "paper_inventory_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

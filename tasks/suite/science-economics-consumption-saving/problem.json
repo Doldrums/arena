@@ -1,0 +1,84 @@
+{
+  "protocol": "recreated",
+  "family": "science_economics_consumption",
+  "direction": "minimize",
+  "contract": "solve_consumption(model, resource_grid, budget) -> consumption[t,income_state,resource_index]. Six periods, two Markov income states, CRRA utility, no borrowing. Terminal consumption equals resources. Score independently recomputed mean normalized one-step Bellman improvement on finer off-grid states. The truncated-grid finite-horizon model is declared; no infinite-horizon or empirical-household claim.",
+  "parameters": {},
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 120,
+  "notes": [
+    "Candidate outputs are independently re-evaluated. Baselines may call named public numerical helpers, but cannot supply their own objective. These bounded research-model adaptations do not establish empirical economic predictions or trading returns."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-economics-consumption-saving",
+  "name": "Economics: Consumption-saving policy accuracy",
+  "paper_ids": [
+    "science-economics_expansion"
+  ],
+  "description": "Consumption-saving policy accuracy with an explicit candidate API, independently recomputed objective and fixed model/data assumptions.",
+  "benchmark": "Economics: Consumption-saving policy accuracy",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://www.nber.org/papers/t0309",
+      "type": "paper",
+      "locator": "Carroll endogenous-grid paper: household budget, income uncertainty and policy solution."
+    },
+    {
+      "url": "https://github.com/econ-ark/HARK",
+      "type": "repository",
+      "locator": "Reference algorithms and source documentation; local evaluator is independently authored."
+    }
+  ],
+  "limitations": [
+    "Bounded adaptation specified in the candidate contract; no claim to reproduce full-paper scores.",
+    "Model/simulation scores do not establish empirical policy validity or market returns.",
+    "Public fixed evaluation inputs support development only; freeze candidates and run new cases for generalization."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-economics_expansion",
+      "title": "Economics and quantitative finance: source-based research tasks",
+      "url": "https://www.nber.org/papers/t0309"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Buffer-Stock Saving and the Life Cycle/Permanent Income Hypothesis",
+        "url": "https://www.nber.org/papers/w5788",
+        "task_relation": "The local task solves a six-period consumption-saving policy problem and measures decision residuals. This short numerical model is a restricted version of the policy problem and does not reproduce the paper's empirical explanations or full life-cycle analysis.",
+        "primary_goal": "Explain household consumption and wealth patterns using a buffer-stock saving model with uncertain income.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Determine optimal household consumption and saving when future income is uncertain.",
+    "importance_rationale": "Explaining precautionary saving and consumption patterns under income uncertainty is the paper's primary economic question.",
+    "reason": "The evidence is a paper whose target is household saving behaviour, rather than relying only on a numerical-method or software citation.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "policy",
+    "domain": "finance",
+    "area": "finance",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

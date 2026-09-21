@@ -1,0 +1,84 @@
+{
+  "protocol": "recreated",
+  "family": "science_materials_cantera_mechanism_reduction",
+  "direction": "maximize",
+  "contract": "reduce_mechanism(full_mechanism, training_conditions, tolerance) -> {'species': unique species-name list, 'reaction_indices': unique integer list}. Full mechanism provides canonical Cantera 3.2 h2o2 YAML, species, reaction equations, and required_species. Retain only original species thermochemistry and original reactions; independent Cantera validates balance. Three withheld temperature/pressure/equivalence-ratio cases compare temperature, H2/O2/H2O/OH histories and sampled ignition delay. Worst normalized error must be <=0.05. Score 1 - 0.5*(retained species fraction + retained reaction fraction). This is reference-mechanism agreement, not experimental validation.",
+  "parameters": {
+    "proposal_id": "C09"
+  },
+  "requires": [
+    "py:numpy",
+    "py:cantera"
+  ],
+  "timeout": 600,
+  "notes": [
+    "Independently implemented SCIEL adaptation. Source bundles are required except the specified PFHub and Cantera simulations; no generated replacement data. See docs/MATERIALS_EXPANSION.md for provenance, exact setup blockers and validation scope."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-materials-cantera-mechanism-reduction",
+  "name": "Cantera chemical-mechanism reduction",
+  "paper_ids": [
+    "science-materials_expansion"
+  ],
+  "description": "reduce_mechanism(full_mechanism, training_conditions, tolerance) -> {'species': unique species-name list, 'reaction_indices': unique integer list}. Full mechanism provides canonical Cantera 3.2 h2o2 YAML, species, reaction equations, and required_species. Retain only original species thermochemistry and original reactions; independent Cantera validates balance. Three withheld temperature/pressure/equivalence-ratio cases compare temperature, H2/O2/H2O/OH histories and sampled ignition delay. Worst normalized error must be <=0.05. Score 1 - 0.5*(retained species fraction + retained reaction fraction). This is reference-mechanism agreement, not experimental validation.",
+  "benchmark": "Cantera chemical-mechanism reduction",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://joss.theoj.org/papers/10.21105/joss.01543",
+      "type": "paper",
+      "locator": "pyMARS chemical kinetic mechanism reduction."
+    },
+    {
+      "url": "https://github.com/Niemeyer-Research-Group/pyMARS",
+      "type": "repository",
+      "locator": "Author reduction algorithms and examples, reference only; no source evaluator code copied."
+    },
+    {
+      "url": "https://cantera.org/3.2/examples/python/kinetics/mechanism_reduction.html",
+      "type": "benchmark",
+      "locator": "Cantera official mechanism-reduction construction. Local compact h2o2.yaml model, Cantera 3.2.x, is an explicit SCIEL adaptation."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation of a cited scientific problem; no claim to reproduce author leaderboard scores.",
+    "Candidate and evaluator run in one Python process; data access is separated by API, not an OS sandbox. Isolate evaluator data for adversarial or held-out evaluation.",
+    "Compact hydrogen/oxygen h2o2.yaml model replaces the large pyMARS example mechanism explicitly; physical ODE model is solved with actual Cantera. Agreement with the reference model does not establish experimental adequacy."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-materials_expansion",
+      "title": "Chemistry and materials research: source-based research tasks",
+      "url": "https://doi.org/10.1021/jacs.2c08592"
+    }
+  ],
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Reduce chemical reaction mechanisms while preserving ignition and concentration predictions.",
+    "importance_rationale": "Smaller faithful reaction models can make combustion simulation more practical.",
+    "papers": [],
+    "reason": "The current task compresses the compact built-in h2o2 mechanism. pyMARS is a software paper, while the inspected problem-focused DRGEPSA study reduces much larger hydrocarbon-fuel mechanisms. That establishes the broader research area but not scientific usefulness of this particular compact teaching-model reduction and its three withheld cases. No qualifying primary-goal evidence is established for this local task in this review; this is not a finding that the broader subject is unimportant.",
+    "verification_basis": "Local task contract and cited source purpose reviewed; background or benchmark citations were not promoted to primary-problem evidence.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "optimizer",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "area": "chemistry",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  }
+}

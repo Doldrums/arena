@@ -1,0 +1,86 @@
+# Results
+
+The 2026-09-20 science supplement (eighteen tasks, [science tasks](SCIENCE_TASKS.md)) and the 115 tasks unblocked later that day (section 8) are included in the counts below. A separate science expansion (biology, materials, Earth, physics, economics; [roadmap](SCIENTIFIC_DATASET_EXPANSION.md)) was still being added when these numbers were taken and keeps its own evidence files (`validation/science-expansion-report.json`).
+
+All numbers were measured on this repository on 2026-09-20 (macOS 15 on Apple silicon, Python 3.12, SCiEL commit `da80706f`, Docker through colima). Raw evidence is in `validation/` and, for model runs, in the git-ignored `runs/` directory.
+
+## 1. Suite execution test (every task)
+
+Counts in this section are for the 903 tasks after duplicate merging, the science supplement and the recreations of section 8 (`docs/TASKS.md`, section 1b); the execution report was pruned to them, which loses nothing because every removed task shared its evaluator with a kept one.
+
+`scripts/test_suite.py` ran every `suite/<id>/evaluator.py` on its own seed program in a fresh interpreter with the task's timeout, the OpenRouter key exported, run-time downloads allowed and five-item samples for model-driven tasks ([full table](SUITE_REPORT.md), [JSON](../validation/suite-report.json)).
+
+| Outcome | Tasks |
+|---|---:|
+| evaluator ran and scored the seed | **625** |
+| runnable but a local requirement is missing | 3 |
+| evaluator ran and rejected its seed | 4 |
+| crashed or timed out | 0 |
+| documented unsupported (stub confirms it) | 270 |
+
+By protocol: original 124 of 130 ran, recreated_verified 81 of 81, recreated 420 of 422. The three requirement-blocked tasks are the GPQA benchmark (one task after merging; the dataset is gated on Hugging Face and needs `HF_TOKEN`), the Kattis online-judge example (needs an account) and the lm-eval example (a command-line driver with no `evaluate()`). The four seed rejections are one ALE-Bench contest whose EvoX seed program fails a public case under the judge's time limit (`evox-ahc027`; the same seed passes in a second run, so the limit is tight), the SCiEL MLIR example whose pinned module no longer compiles with Homebrew LLVM 21, and two SCiEL prompt-optimisation examples whose upstream code loads script-based Hugging Face datasets that the current `datasets` package refuses (HotpotQA, HoVer).
+
+What changed on 2026-09-20 compared with the first execution test (462 ran, 663 unsupported, counted before duplicate merging): 235 formerly unsupported records now execute. By family, counted after merging:
+
+| Family | Tasks | Ran | How |
+|---|---:|---:|---|
+| model-driven benchmarks (`llm_benchmark`) | 121 | 120 | `solve(question, llm)` scored on public datasets through the budgeted OpenRouter client; the whole test used 482 model requests costing **$0.45** with Gemini 2.5 Flash; median accuracy of the zero-shot seed 0.76 on five items |
+| ALE-Bench contests (`alebench`) | 10 | 9 | EvoX evaluators verbatim, ALE-Bench judge in Docker; 1 to 4 minutes per evaluation |
+| RL algorithm design (`rl_algorithm`) | 10 | 10 | Gymnasium classic control, LunarLander and MuJoCo with a REINFORCE seed; under a minute each |
+| reward design (`reward_design`) | 10 | 10 | MetaWorld v3 tasks, CEM-trained linear policy, seed success rate 0.2 to 1.0 |
+| LLM-SRBench (`lsr_equation`) | 8 | 8 | public mirror of LSR-Transform / LSR-Synth |
+| ARC (`arc_solver`) | 2 | 2 | public ARC-AGI-1/2 data; the single-prompt seed solves 0 of the sampled tasks, as expected |
+| upstream routes (RankEvolve 15 including the twelve BRIGHT splits, ReEvo 5, ShinkaEvolve Julia 1) | 21 | 21 | the papers' pinned evaluators (BEIR corpora, DevFormer simulator, POMO/LEHD checkpoints, Julia) |
+| SCiEL examples newly executable | 5 | 3 | Rust sort (cargo), R regression (Rscript), MLX kernel (Apple silicon, downloads Qwen3-0.6B), GSM8K prompt optimisation through OpenRouter; MLIR and two prompt tasks fail as described above |
+| Kaggle Santa 2025 tree packing (`tree_packing`, added 2026-09-20) | 1 | 1 | reimplemented competition metric with shapely; the grid seed scores 162.58 (lower is better; the competition's getting-started submission scores 176.61) in 1.8 s |
+
+Median evaluation time is under a second for the offline families; the slowest are the ALE-Bench contests (67 to 223 s), the MLX kernel example (248 s, first run downloads the model), the SCiEL prompt-optimisation example (130 s, 200 model calls), the SCiEL sums/differences example (64 s), the LLM-SQL copies (about 50 s) and the SLDBench copies (20 to 36 s).
+
+## 2. Verified reimplementations
+
+`tests/test_suite.py` executes the pinned AlphaEvolve notebook's data cells and checks the suite's reimplemented verifiers against the published values; all 18 match to machine precision (circle packings 2.6358627564136983 / 2.937944526205518 / 2.3658321334167627, Heilbronn triangle 0.036529889880030156, Heilbronn convex 0.030936889034895648 / 0.02783557145848214, distance ratios 12.88926611203463 / 4.1658497672256525, kissing number 593, hexagon packings 3.930092 / 3.9419123, C1 1.5052939684401607, C2 0.8962799441554086, C3 1.4556427953745406, signed C3 1.4687620697410226, C4 0.35209910442252773 and 0.3215872333529007, C5 0.38092303510845016, C6 1.1479888965092757). The 15 literal matrix-multiplication decompositions published in the AlphaEvolve notebook, including the complex 4×4 rank-48 one, pass the exact integer checker ([recheck](../validation/published-tensor-recheck.json)). The Santa 2025 metric reimplementation reproduces the official metric's doctest value (0.877038143325303) and the getting-started sample submission's score (176.60550959158516) exactly, and rejects the same overlaps ([cross-check](../validation/santa-2025-crosscheck.json)).
+
+## 3. Preflight and seed campaign
+
+`run.py preflight` over the current tree (959 tasks including the expansion in progress) reports 667 tasks ready and 292 blocked (270 unsupported, 20 waiting for data files of the expansion, 1 waiting for `HF_TOKEN`, 1 external service) with the OpenRouter key exported and run-time downloads allowed. The earlier seed campaign through SCiEL's own `Evaluator` over the pinned upstream adapters (309 executed, 160 with an explicit validity signal; [before](../validation/audit-2026-09-19-before.json), [after](../validation/audit-2026-09-19-after.json)) remains available through `run.py evaluate <id> --route upstream`; the suite evaluators supersede it for the question "does the evaluator run".
+
+## 4. Runs with a real model (OpenRouter, Gemini 2.5 Flash)
+
+These are wiring checks under a dollar ceiling, not benchmark results.
+
+- **Live smoke over the whole catalog** (`run.py live-smoke --all`, one SCiEL iteration per usable seed, ceiling $1.00): 177 model requests, verified cost **$0.32**; 69 changed programs evaluated with validity, 86 scored without a validity signal, 22 failed, 939 blocked at that snapshot (`runs/sciel-live-20260919/`).
+- **Budgeted experiments** (`run.py experiment`): 2 iterations on `alphaevolve-circle-packing-in-unit-square` (both mutations rejected as overlapping circles, $0.0021), 1 iteration on `reference-circle-packing-26` from the dashboard ($0.0010; that task is now merged into `alphaevolve-circle-packing-in-unit-square`), and 2 iterations on `eoh-online-bin-packing` through its recreated evaluator (two valid mutations, no improvement, $0.0024). None improved on its seed; all confirm the controller, the budget proxy and the evaluators are wired correctly.
+- **Model-driven evaluations** in section 1 cost $0.45 in total (482 requests, 86k prompt and 171k completion tokens); responses are cached so re-running the test is free.
+
+No experiment in this repository reproduces a paper's reported result; the seeds are weak baselines and the iteration counts are tiny.
+
+## 5. Repository checks
+
+- `python3 -m unittest discover -s tests`: 222 tests pass (18 optional skips), including invalid-candidate tests, tensor exactness, subprocess isolation, archive safety, budget-proxy accounting with a fake provider, and the suite structure and published-value tests.
+- `python3 run.py validate` and `python3 scripts/check_schema.py`: all manifests (903, plus the expansion's) conform to `schemas/task.schema.json` (including the `labels` and `merged_from` blocks) and are consistent with the catalog; `python3 scripts/task_labels.py --check` confirms every task is labelled.
+
+## 7. Labels
+
+`docs/LABELS.md` classifies the 903 tasks by what an improved score would mean: 143 open mathematical problems (all executable here, 78 with an exact published value), 13 discovery tasks on real measurements (10 executable: the eight SLDBench scaling laws, the stress-strain regression and the Pantheon+ supernova fit), 21 rediscovery tasks, 264 method tasks (228 executable), 249 engineering tasks (92 executable) and 213 model benchmarks (139 executable). By coarse `area` the largest groups are language and agents, optimization, mathematics and machine learning.
+
+## 6. What remains unsupported (428)
+
+By reason (after merging): GPU or accelerator hardware 81, simulators that do not run on this machine 66 (Isaac Gym, ManiSkill2, AirSim and RL pipelines with pinned commands only), model-driven benchmarks without a public source 59, LLM agents in environments 46, undistributed datasets 90, external toolchains 34 (MATLAB Stateflow, CSPLib, LLVM/XLA, Frontier-CS judge), special hardware 22 (Trainium, robots), proprietary systems 12. Unsupported means the problem is catalogued (manifest, README, requirements, the paper's protocol and, for 116 of them, the paper's pinned code and commands) but its evaluator cannot run in this suite; the stub evaluator returns `unsupported: true` instead of a score. `docs/NEXT_STEPS.md` lists what would unblock each group.
+
+## 8. Unblocking the remaining groups (2026-09-20, later the same day)
+
+115 formerly unsupported tasks were given executable evaluators by recreating the problem on the CPU or by finding a public source for the data, and all 115 seeds ran (`validation/suite-report.json`, merged the same day). None crashed.
+
+| Group | Tasks | How | Seed result |
+|---|---:|---|---|
+| CPU kernels: AVO attention configurations | 24 | the paper's exact shapes (32,768 tokens, head dim 128, MHA and GQA, causal and not) in float32 PyTorch on the CPU, scored in TFLOPS against `scaled_dot_product_attention` | the naive full-score-matrix seed reaches 0.20 to 0.75 TFLOPS (the reference reaches about 0.9); 12 s to 275 s per evaluation |
+| CPU kernels: KernelPro KernelBench levels and Triton kernels, AccelOpt NKIBench, EurekAgent TriMul, decode attention | 27 | one PyTorch function per operator, scored by geometric-mean speedup against the reference after an exact correctness check | the plain-composition seed scores 0.28 to 1.7 (timing noise around 1.0); under 13 s each |
+| FunL2O optimisation families | 19 | locally generated DC3/FSNet QP, QCQP, SOCP and LP/MILP instances; gap to Clarabel, HiGHS or a multistart reference | the SLSQP seed is optimal on the convex QPs and set cover, gap 0.05 to 1.0 elsewhere; MILP rounding gap 0.37 to 0.93 |
+| Text games (Jericho 6, TextWorld 1) | 7 | `act(observation, valid_actions, history, llm)` for 40 commands; game files fetched by `scripts/prepare_game_data.py` | zero-shot Gemini 2.5 Flash scores 0.03 to 0.29 of the maximum (Zork III 0.29, Temple 0.23); 5 s to 48 s |
+| MNIST-1D architecture search | 1 | `mnist1d` package, Adam, 1,500 steps | seed MLP: test error 0.43 plus size penalty |
+| Gym reward design (Eureka, DrEureka, STRIDE, REvolve, HyperAgents, Text2Reward Gym tasks) | 11 | Gymnasium MuJoCo analogues with CEM-trained linear policies and task-specific fitness | forward-velocity seed: Hopper 1.24, Humanoid 0.14, Ant -0.13; under 5 s each |
+| Model-driven benchmarks with newly found public sources | 26 | AIME 2023 to 2025, NL4Opt, IndustryOR, MAMO, BWOR, MT-Bench (judged), QDAIF creative writing (judged), epistemic reasoning, IMO-AnswerBench, LawBench charge prediction, Natural Plan trip planning, BIOSSES, NCBI disease, ASSET (SARI), Banking77 and Financial PhraseBank (MTEB mirrors), heart disease | five-item samples: judged writing 0.5 to 0.8, epistemic reasoning 0.9, financial phrasebank 0.9, OR word problems 0.0 to 0.1 (the zero-shot seed's answers are truncated before the final number), AIME and IMO 0.0; 25 s to 100 s |
+| RankEvolve BRIGHT splits | 12 | the pinned evaluator downloads each split from the Hub (`network:` requirement) | BM25 seed 0.09 to 0.55 combined score; 19 s to 258 s |
+| Science supplement additions | 8 | sorting networks on 17 and 18 wires, A(17,6), snake-in-the-box in Q_9, Ramsey R(5,5), Pantheon+ fit, LJ38 and LJ55 | seeds: 136 and 153 comparators, 32 words, snake 104, Paley graph 37, chi-squared 1386.4 (LambdaCDM, Omega_m 0.33), energies -111.8 and -177.4 |
+
+The stress-strain regression of Deliberate Evolution turned out to be the LLM-SR dataset already embedded and now runs (merged into `coevo-stress-strain`). What still cannot run and why is listed in `docs/NEXT_STEPS.md`, section 3.

@@ -1,0 +1,49 @@
+# Earth process task implementations: E07–E12
+
+These are independent implementations of bounded research protocols from the [expansion roadmap](SCIENTIFIC_DATASET_EXPANSION.md). Candidate interfaces, seeds, evaluators, labels and setup metadata are generated through the existing suite tooling. E01–E06 are documented separately in `EARTH_DATA.md`.
+
+| Proposal | Implemented evaluation | Source execution / scope |
+|---|---|---|
+| E07 | Country-macro RMSE of nonnegative wildfire spread rates, with bias diagnostics | Anderson 2015 measured shrubland fires through the official SJSU FireBench release. Hold out complete countries; five measured inputs, exclude missing values, convert km/h to m/s and m/min to m/s. Wind measurement height is an explicit input. No unmeasured slope correction or substituted fuel model. This empirical-law adaptation does not claim the exact published Rothermel/Balbi comparison. |
+| E08 | Area-weighted Brier score and symmetric ice-edge distance | Six actual NOAA/NSIDC monthly satellite forecasts from G02202 v02r00: July–December 2013/2014 histories predict January, March and June of the following year. Native 448×304, 25 km northern grid; score valid Arctic ocean cells north of 60°N. Ellipsoidal cell areas, concentration threshold 0.15, projected distances in km, and no future covariates. This historical NOAA source adaptation does not reproduce the IceNet OSISAF dataset or published scores. |
+| E09 | Snow-water-equivalent RMSE, timing and independent mass balance | Four complete measured site-winters from ESM-SnowMIP: Col de Porte and Sodankyla, 2008/09 and 2010/11. Hourly forcing, 31-day warm-up, missing SWE observations masked. Solid storage with immediate melt drainage; the seed is a fixed 3 mm/degree-day law. This initial protocol does not reproduce FSM2 energy accounting or its forest canopy model. |
+| E10 | Mean dry wheat yield subject to daily and seasonal water budgets | Actual AquaCrop-OSPy 3.0.12, bundled Tunis weather, three complete seasons, two soils. Candidate sees previous weather and current soil state. Simulator independently checks applied water. No field-yield improvement, salinity, fertility or weed-stress claim. |
+| E11 | Held-out-head predictive log density, interval coverage/width, water balance | Actual source MODFLOW 6.7.0/Freyberg teaching model. Three conductivity multipliers and one recharge multiplier; two synthetic parameter settings. Gaussian 0.1 m observation noise. First and midpoint stress periods train; final period tests. Eight search calls plus up to eight independently repeated verification calls. This is a bounded inversion, not the full PEST++ uncertainty workflow. |
+| E12 | Held-out satellite-column predictive log density under frozen transport | Evaluator and linear Bayesian seed implemented; source IMI operator bundle still required. Orbit-level separation, explicit background, retrieval kernels and quality screening. Nonnegative emission samples. Real emission maps are not treated as exact truth; full nonlinear transport validation and simulation-based calibration remain outside this bounded adapter. |
+
+## Setup and reproducibility
+
+Use the repository environment, then prepare only the requested source bundles:
+
+```sh
+.cache/sciel-env/bin/python -m pip install numpy scipy pandas netCDF4 pyproj==3.7.2 aquacrop==3.0.12 flopy==3.9.5
+.cache/sciel-env/bin/python scripts/prepare_earth_expansion.py --proposal E07
+.cache/sciel-env/bin/python scripts/prepare_earth_expansion.py --proposal E08
+.cache/sciel-env/bin/python scripts/prepare_earth_expansion.py --proposal E09
+.cache/sciel-env/bin/python scripts/prepare_earth_expansion.py --proposal E10
+.cache/sciel-env/bin/python scripts/prepare_earth_expansion.py --proposal E11
+```
+
+E11 builds the tagged USGS Fortran source with `make` and `gfortran` if its local executable is absent. The source archive, every model input and the built binary are hashed. Source downloads and prepared bundles live in `.cache/science-earth`; tracked receipts are in `validation/source-manifests`. Loaders verify prepared bundle checksums before evaluation, and E11 checks model/binary hashes again. `SCIEL_EARTH_DATA` can change the library data root, but the normal suite preflight uses the declared default cache paths.
+
+For E12, the JSON schema is the explicit set of fields consumed by `methane_score` in the shared evaluator. A bundle must contain `schema_version: 1`, its `proposal_id`, a non-fixture `source_kind`, attributed HTTPS sources with SHA256, a split description and nonempty cases. Store the adjacent `<proposal>.manifest.json` with `bundle_sha256`. Actual upstream-data curation is required; passing the metric fixture tests alone never counts as a source benchmark run.
+
+### E08 sea-ice source protocol
+
+The 18 source NetCDF files total about 67 MB and are pinned in `data/science/earth_expansion/seaice_sources.json`. The approximately 61 MB prepared JSON retains full native maps and contains six cases. Raw CDR codes 251–255 identify pole holes, lakes, coast, land or missing data; these and near-coast QA cells are excluded before scaling concentrations. A history mask uses only the six past months. Zeros outside that mask are explicit serialization placeholders, and the evaluator excludes them. Target validity affects scoring only. All six cases currently evaluate 20,406 Arctic ocean cells, approximately 12.90 million km² each.
+
+The source grid uses the Hughes 1980 ellipsoid and EPSG:3411 polar stereographic projection. Preparation transforms cell corners and computes ellipsoidal polygon areas rather than assuming every nominal 25 km cell covers 625 km². Edge distances are explicitly projected distances, not ellipsoidal great-circle distances. Tests cross-check areas against an independent projection-Jacobian calculation, exercise categorical flags, verify lead-calendar consistency and check that candidate mutations cannot alter held-out data.
+
+Data attribution: Meier, Fetterer, Savoie, Mallory, Duerr and Stroeve (2013), [NOAA/NSIDC Climate Data Record of Passive Microwave Sea Ice Concentration, Version 2](https://nsidc.org/data/g02202/versions/2), DOI [10.7265/N55M63M1](https://doi.org/10.7265/N55M63M1); [Peng et al. (2013)](https://essd.copernicus.org/articles/5/311/2013/). Sources were obtained from the official NOAA NCEI archive on 2026-09-20. Files declare no constraints on access or use; NOAA and NSIDC attribution is retained. Version 2 is a historical, superseded product selected for this reproducible development subset, not a current operational ice forecast. Retrieval uncertainty, including summer melt effects, remains part of its limitations.
+
+The persistence seed completed all six actual source cases with mean Brier **0.04942579139582648**. Evidence is `validation/seaice-source-run.json`; preparation receipt is `validation/source-manifests/E08.json`. These fixed public years establish execution, not generalization or a full IceNet reproduction.
+
+Source references: [Anderson paper](https://doi.org/10.1071/WF14130), [FireBench specification](https://firebench.readthedocs.io/en/develop/benchmarks/fire_submodels/rate_of_spread/Anderson_2015_Validation/index.html), [IceNet](https://www.nature.com/articles/s41467-021-25257-4), [ESM-SnowMIP data](https://doi.pangaea.de/10.1594/PANGAEA.897575), [AquaCrop-OSPy](https://github.com/aquacropos/aquacrop), [Freyberg workflow](https://github.com/pypest/pyemu_pestpp_workflow), [IMI](https://gmd.copernicus.org/articles/15/5787/2022/).
+
+The SnowMIP dataset is CC-BY-NC 4.0, attributed to Menard and Essery (2019). FireBench documents publisher permission for commercial use of the Anderson data. Source data stay in the local cache; these implementations do not grant redistribution or commercial rights to underlying data.
+
+## Verification
+
+`tests/test_science_earth_expansion.py` checks analytic scores, invalid outputs, conservation, information timing, source hashes, orbit leakage, likelihood normalization, simulator budgets and an actual crop season. Final generated-package source executions are recorded separately in `validation/science-expansion-report.json`. The report, rather than a fixture test or a catalog flag, establishes which seeds ran on this machine.
+
+`tests/test_science_seaice_source.py` adds four E08 preparation and calendar tests. All four and the 13 Earth-process tests passed after the measured E08 source subset was staged.

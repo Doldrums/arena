@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "id": "llamea-bo-bayesmark-iris-adaboost",
+  "name": "Bayesmark iris AdaBoost",
+  "description": "Bayesmark iris AdaBoost task evaluated in LLaMEA-BO: A Large Language Model Evolutionary Algorithm for Automatically Generating Bayesian Optimization Algorithms.",
+  "paper_ids": [
+    "llamea-bo"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2505.21034",
+      "type": "paper",
+      "locator": "Appendix A.2.2-A.2.3; official Benchmarks/run_bayesmark.py dataset/model loops"
+    },
+    {
+      "url": "https://github.com/Ewendawi/LLaMEA-BO/tree/938b4d780aa0cbf9f7c941ebab61dadfa9157185",
+      "type": "repository",
+      "locator": "Benchmarks/run_bayesmark.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "iris",
+    "notes": [
+      "poetry install",
+      "Additional LLAMBO checkout under Benchmarks/LLAMBO",
+      "Prepared dataset pickle in LLAMBO/bayesmark/data or LLAMBO/custom_dataset",
+      "LLAMBO hyperparameter config JSON",
+      "Botorch/PyTorch/scikit-learn scientific dependencies"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "normalized regret",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "Bayesmark",
+    "protocol": "upstream",
+    "source_locator": "Appendix A.2.2-A.2.3; official Benchmarks/run_bayesmark.py dataset/model loops"
+  },
+  "execution": {
+    "repository": "https://github.com/Ewendawi/LLaMEA-BO",
+    "commit": "938b4d780aa0cbf9f7c941ebab61dadfa9157185",
+    "upstream_path": "Benchmarks/run_bayesmark.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from Benchmarks.run_bayesmark import _run_bayesmark_exp,bayesmarkBO_wrapper; from Experiments.generated_algorithms.ATRBO import ATRBO; _run_bayesmark_exp(bayesmarkBO_wrapper(ATRBO,is_profile=False),'iris','AdaBoost',num_seeds=5,budget=30,n_initial_samples=5,use_log=False,is_profile=False)"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/Benchmarks/run_bayesmark.py",
+        "notes": "Source-composed invocation of original function and wrapper selecting exactly this dataset/model with released ATRBO, five seeds, budget30 and five initial samples. Writes raw optimization histories; subsequent published normalization is needed for aggregate regret plots. Not executed."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "poetry"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/README.md",
+        "notes": ""
+      },
+      {
+        "argv": [
+          "poetry",
+          "install"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "poetry"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/README.md",
+        "notes": ""
+      },
+      {
+        "argv": [
+          "poetry",
+          "install"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Original main has empty bo_cls_list and runs no experiments until edited. This direct original-function invocation selects the task without that edit. Requires LLAMBO checkout, dataset pickle and hp_configurations/bayesmark.json exactly as documented; no model API needed."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "bayesmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:sklearn",
+        "py:scipy"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Bayesmark iris AdaBoost",
+    "slug": "bayesmark-iris-adaboost",
+    "description": "Bayesmark iris AdaBoost task evaluated in LLaMEA-BO: A Large Language Model Evolutionary Algorithm for Automatically Generating Bayesian Optimization Algorithms.",
+    "benchmark": "Bayesmark",
+    "dataset": "iris",
+    "metric": "normalized regret",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2505.21034",
+    "source_locator": "Appendix A.2.2-A.2.3; official Benchmarks/run_bayesmark.py dataset/model loops",
+    "upstream_path": "Benchmarks/run_bayesmark.py",
+    "requirements": [
+      "poetry install",
+      "Additional LLAMBO checkout under Benchmarks/LLAMBO",
+      "Prepared dataset pickle in LLAMBO/bayesmark/data or LLAMBO/custom_dataset",
+      "LLAMBO hyperparameter config JSON",
+      "Botorch/PyTorch/scikit-learn scientific dependencies"
+    ],
+    "execution_notes": [
+      "Original main has empty bo_cls_list and runs no experiments until edited. This direct original-function invocation selects the task without that edit. Requires LLAMBO checkout, dataset pickle and hp_configurations/bayesmark.json exactly as documented; no model API needed."
+    ],
+    "setup_commands": [],
+    "run_commands": [
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from Benchmarks.run_bayesmark import _run_bayesmark_exp,bayesmarkBO_wrapper; from Experiments.generated_algorithms.ATRBO import ATRBO; _run_bayesmark_exp(bayesmarkBO_wrapper(ATRBO,is_profile=False),'iris','AdaBoost',num_seeds=5,budget=30,n_initial_samples=5,use_log=False,is_profile=False)"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/Benchmarks/run_bayesmark.py",
+        "notes": "Source-composed invocation of original function and wrapper selecting exactly this dataset/model with released ATRBO, five seeds, budget30 and five initial samples. Writes raw optimization histories; subsequent published normalization is needed for aggregate regret plots. Not executed."
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

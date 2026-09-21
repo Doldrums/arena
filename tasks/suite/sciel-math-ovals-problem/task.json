@@ -1,0 +1,211 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-math-ovals-problem",
+  "name": "SCiEL: Ovals Rayleigh quotient",
+  "description": "Construct a closed positively curved plane curve and periodic test function from 20 control values, minimizing a numerically integrated Rayleigh quotient.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "construction_math",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/ovals_problem/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/ovals_problem/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example ovals_problem",
+    "paper_metric": null,
+    "source_locator": "examples/alphaevolve_math_problems/ovals_problem/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/alphaevolve_math_problems/ovals_problem",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/alphaevolve_math_problems/ovals_problem/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": "examples/alphaevolve_math_problems/ovals_problem/initial_program.py",
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply mathematical validity; preserve unknown validity unless the original evaluator exposes an explicit signal."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The score uses finite discretization, sampling or numerical approximation; it does not prove a continuous mathematical bound.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "The score uses finite discretization, sampling or numerical approximation; it does not prove a continuous mathematical bound."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/alphaevolve_math_problems/ovals_problem/evaluator.py": "f98c497a1a645f87d1f3d7e21c4e0d20bbbf7420f1c4b62cd65b68bbaa1d9436",
+    "examples/alphaevolve_math_problems/ovals_problem/config.yaml": "58c92e84b859f6969866b78dbe66574dbe9a3f18fe1976b5491d06a99f38b089",
+    "examples/alphaevolve_math_problems/ovals_problem/requirements.txt": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc",
+    "examples/alphaevolve_math_problems/ovals_problem/initial_program.py": "7161e5c6f99bd6d4de8f3401bf87bd3d19d1516bfd4f29e0b5de57508b00e470"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/alphaevolve_math_problems/ovals_problem/evaluator.py",
+      "signature": "program_path: str",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.ovals_problem20()"
+    ],
+    "baseline_path": "examples/alphaevolve_math_problems/ovals_problem/initial_program.py",
+    "baseline_functions": {
+      "ovals_problem20": {
+        "signature": "",
+        "docstring": "The Ovals problem. For a fixed n, propose three real 1D arrays x, y and phi\n(each of length n, viewed as samples at the equally spaced parameters\nt_k = 2*pi*k/n, k = 0..n-1). Interpolating these periodically yields smooth\nperiodic functions f, g, h on [0, 2*pi]. Consider the planar curve\nt -> (f(t), g(t)), reparametrized by arc-length s, with curvature kappa(s).\nThe objective is the Rayleigh quotient\n\n    I(f, g, h) = integral_0^{2*pi} [ h'(s)^2 + (kappa(s) * h(s))^2 ] ds\n                 / integral_0^{2*pi} h(s)^2 ds\n\nwhich must be made AS SMALL AS POSSIBLE, subject to the curve being convex\n(the signed curvature must stay strictly positive everywhere). Here n = 20.\n\nBaseline construction: the unit circle with a constant weight, i.e.\nx_k = cos(t_k), y_k = sin(t_k), phi_k = 1. For the circle the arc-length\ncurvature is identically 1 and h is constant, so I = 1 exactly.\n\nReturns:\n    (x, y, phi): a tuple of three np.ndarray each of shape (20,) giving the\n        sampled values of the x-coordinate, y-coordinate and weight function.",
+        "returns": null
+      }
+    },
+    "parameters": {
+      "BENCHMARK": 1.0,
+      "NUM_SAMPLES": 2000,
+      "SPEED_DEGENERACY_THRESHOLD": 0.0001,
+      "PHI_DEGENERACY_THRESHOLD": 0.001,
+      "MAX_VALUE": 1000000.0
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "score_expressions": [
+      "combined_score = BENCHMARK / rayleigh_quotient",
+      "combined_score = 0.0"
+    ],
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 168,
+        "expression": "{'rayleigh_quotient': float(rayleigh_quotient), 'combined_score': float(combined_score), 'eval_time': float(eval_time)}"
+      },
+      {
+        "function": "evaluate",
+        "line": 174,
+        "expression": "{'combined_score': 0.0, 'error': str(e)}"
+      }
+    ],
+    "metric_assignments": [],
+    "validity_key": null,
+    "validity_semantics": "No independent boolean validity field; zero score, success rate and absence of error do not establish validity.",
+    "error_key": "error",
+    "rng_calls": [],
+    "declared_requirements": [
+      "numpy"
+    ],
+    "evaluator_imports": [
+      "importlib",
+      "numpy",
+      "os",
+      "sys",
+      "time"
+    ],
+    "baseline_imports": [
+      "numpy"
+    ],
+    "source_config_path": "examples/alphaevolve_math_problems/ovals_problem/config.yaml",
+    "baseline_constants": {},
+    "baseline_rng_calls": [],
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Some branches return score zero without error; some omit the primary score. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 200,
+      "evaluator": {
+        "timeout": 360,
+        "max_retries": 3
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "cpu",
+    "recommended_smoke_outer_timeout_seconds": 15
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

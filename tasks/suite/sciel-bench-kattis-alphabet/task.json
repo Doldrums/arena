@@ -1,0 +1,234 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-bench-kattis-alphabet",
+  "name": "SCiEL: Kattis 'Alphabet' online-judge problem",
+  "description": "Write a Python program that reads a lowercase string and prints the minimum number of letters to insert so that a..z appears as a subsequence (Kattis problem 'alphabet'). The pinned evaluator submits the candidate to open.kattis.com and reports the fraction of accepted test cases as combined_score.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "competitive_programming",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/online_judge_programming/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/online_judge_programming/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/online_judge_programming/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU with network access to open.kattis.com.",
+    "dependencies": [
+      "lxml",
+      "requests"
+    ],
+    "environment_variables": [],
+    "datasets": "Hidden Kattis test data; not distributed.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Create ~/.kattisrc from example.kattisrc with a personal Kattis username and token. Submissions count against the personal account and are subject to Kattis terms."
+    ],
+    "executables": [
+      "python"
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example online_judge_programming",
+    "paper_metric": null,
+    "source_locator": "examples/online_judge_programming/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/online_judge_programming",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/online_judge_programming/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/online_judge_programming",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "examples/online_judge_programming/initial_program.py",
+      "dependencies": [
+        "requests",
+        "lxml"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply task validity; preserve unknown validity unless the original evaluator exposes an explicit signal.",
+        "Each evaluation is a live submission to open.kattis.com through submit.py using the ~/.kattisrc credential file; there is no offline judge.",
+        "The evaluator invokes the executable named python from PATH; make the evaluation interpreter first on PATH."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Create ~/.kattisrc from example.kattisrc with a personal Kattis username and token. Submissions count against the personal account and are subject to Kattis terms."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "external_service": "open.kattis.com",
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "py:lxml",
+        "py:numpy",
+        "py:requests",
+        "service:open.kattis.com"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "Evaluation depends on a third-party online judge and a personal account; it is not reproducible offline and the judge's test data can change."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "Submission or network failure returns combined_score 0.0 without an error field.",
+      "The judge verdict is parsed from submit.py's textual summary with a regular expression; any format change breaks scoring."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/online_judge_programming/README.md": "e71897bc928ad8e368be7a00855cfdd79ed2f3fbb9e91dc93caec6a390d63fbb",
+    "examples/online_judge_programming/config.yaml": "76f3436538413d30bca16329efc90eedd3a337b2078f6b54e8a7778a57499849",
+    "examples/online_judge_programming/evaluator.py": "fe2a2b18fc8991a7d7ec10b779d791b088306c37a14d19c640c13a68f22e39a9",
+    "examples/online_judge_programming/example.kattisrc": "1a730ad659e42f07292fa7997c7c969cb8fb9d72e6029977bfcaed0670cf0895",
+    "examples/online_judge_programming/initial_program.py": "446a161b4c3bf925a2b6b1a2dfe93fae9a7a17860df95d5ae237cd0efc8cc6ad",
+    "examples/online_judge_programming/requirements.txt": "9398dcda291a01380dee9778a29be762f2a2268d4fd66109df2afe69f5f6e7a6",
+    "examples/online_judge_programming/submit.py": "a1ffa2887f60fd7cc107a7666d71fc5fbe4e582a13253a9c6d40dfacf83e1cbe"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/online_judge_programming/evaluator.py",
+      "signature": "program_path",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "python program reading stdin and writing stdout, submitted with submit.py -p alphabet -l 'Python 3' -f"
+    ],
+    "baseline_path": "examples/online_judge_programming/initial_program.py",
+    "baseline_functions": {},
+    "parameters": {
+      "problem": "alphabet",
+      "language": "Python 3",
+      "submission_timeout_seconds": 60
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 83,
+        "expression": "{ \"score\": score, \"done\": done, \"correct\": correct, \"total\": total, \"eval_time\": eval_time, \"combined_score\": float(combined_score), }"
+      },
+      {
+        "function": "evaluate",
+        "line": 95,
+        "expression": "{ \"score\": 0, \"done\": 0, \"correct\": 0, \"total\": 0, \"eval_time\": 0.0, \"combined_score\": 0.0, }"
+      }
+    ],
+    "validity_key": null,
+    "validity_semantics": "No explicit validity signal; the failure branch returns all-zero metrics without an error field, so a zero score cannot be distinguished from a failed submission.",
+    "error_key": null,
+    "declared_requirements": [
+      "lxml",
+      "requests"
+    ],
+    "evaluator_imports": [
+      "re",
+      "subprocess",
+      "time",
+      "traceback"
+    ],
+    "baseline_imports": [
+      "sys"
+    ],
+    "source_config_path": "examples/online_judge_programming/config.yaml",
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 20,
+      "checkpoint_interval": 1,
+      "diff_based_evolution": true,
+      "evaluator": {
+        "timeout": 60,
+        "cascade_evaluation": false,
+        "cascade_thresholds": [
+          1.0
+        ],
+        "parallel_evaluations": 4
+      },
+      "database": {
+        "population_size": 50,
+        "num_islands": 3,
+        "archive_size": 20
+      },
+      "llm": {
+        "api_base": "https://generativelanguage.googleapis.com/v1beta/openai/",
+        "models": [
+          "gemini-2.0-flash",
+          "gemini-2.5-flash-preview-05-20"
+        ],
+        "timeout": null
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "external_service",
+    "recommended_smoke_outer_timeout_seconds": 90
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "public_benchmark",
+    "verification": "external",
+    "reference": "none",
+    "resources": [
+      "account"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

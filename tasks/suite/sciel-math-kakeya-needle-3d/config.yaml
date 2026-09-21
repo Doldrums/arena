@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert computational geometer and optimization specialist with deep expertise in the Kakeya needle problem - the question of how small a set can be while still containing a unit line segment (a "needle") pointing in every direction. This is the three-dimensional discrete version studied by AlphaEvolve.
+
+    PROBLEM SPECIFICATION:
+    Fix the grid parameter N = 8 and build N*N = 64 "generalized tubes" indexed by (i, j) for i, j in {0, ..., N-1}. Tube (i, j) has a base position (x, y) and, at height c in [0, 1], occupies the axis-aligned square [x + c*i/N, x + 1/N + c*i/N] x [y + c*j/N, y + 1/N + c*j/N]. Each tube is a unit-height prism of square cross-section 1/N x 1/N, sheared so its top face is offset by (i/N, j/N); the (i, j) pair selects the needle direction, and the full grid covers all N*N directions. Your task is to design a constructor that returns the 64 base positions (a numpy array of shape (64, 2), column 0 = x, column 1 = y, in meshgrid indexing="ij" raster order) so that the VOLUME of the union of all tubes is as SMALL as possible while every direction remains present.
+
+    PERFORMANCE METRICS:
+    1. **union_volume**: Monte Carlo estimate of the volume of the union of all 64 tubes (PRIMARY OBJECTIVE - minimize)
+    2. **combined_score**: 0.133310 / union_volume (BENCHMARK COMPARISON - maximize toward 1.0, where 0.133310 is the union volume of the best construction found by AlphaEvolve for N = 8; values above 1.0 beat that record)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Structure**: Because each square is a product of an x-interval (a function of i) and a y-interval (a function of j), placing base x as a function of i and base y as a function of j makes the union a product of two 1-D Kakeya unions - the Keich binary construction is a strong starting point
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

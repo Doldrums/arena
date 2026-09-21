@@ -1,0 +1,64 @@
+{
+  "checked_at": "2026-09-19T10:41:20.120183+00:00",
+  "platform": "macOS-15.7.9-arm64-arm-64bit",
+  "checks": [
+    {
+      "check": "unittest",
+      "python": "3.14.3",
+      "exit_code": 0,
+      "tests": 61,
+      "seconds": 10.998,
+      "log": "unit-tests-python-3.14.3.txt"
+    },
+    {
+      "check": "unittest",
+      "python": "3.12.14",
+      "exit_code": 0,
+      "tests": 61,
+      "seconds": 8.395,
+      "log": "unit-tests-python-3.12.14.txt"
+    },
+    {
+      "check": "registry",
+      "exit_code": 0,
+      "result": {
+        "schema_version": "1.0",
+        "valid": true,
+        "paper_count": 98,
+        "task_count": 1045,
+        "errors": []
+      }
+    },
+    {
+      "check": "json_schema",
+      "exit_code": 0,
+      "result": {
+        "task_manifests": 1045,
+        "valid": true,
+        "errors": []
+      }
+    },
+    {
+      "check": "all_python_ast_python310_grammar",
+      "files": 2178,
+      "valid": true
+    },
+    {
+      "check": "all_upstream_command_previews",
+      "commands": 336,
+      "tasks": 264,
+      "executed": false,
+      "result_schema_valid": true
+    },
+    {
+      "check": "recorded_evaluation_result_schema",
+      "results": 48,
+      "valid": true
+    }
+  ],
+  "limitations": [
+    "Unit tests include all 66 included native baselines; they do not reproduce upstream searches.",
+    "Preview validation checks interface plans only, without executing the commands.",
+    "No full hosted-model, GPU, simulator or dataset-driven upstream experiments were performed."
+  ]
+}

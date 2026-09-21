@@ -1,0 +1,313 @@
+{
+  "schema_version": "1.0",
+  "mode": "evaluator_smoke_campaign",
+  "created_at": "2026-09-19T11:24:25.005573+00:00",
+  "root": "${USER_REPOSITORY}",
+  "settings": {
+    "workers": 2,
+    "timeout": 40,
+    "context": {
+      "framework": "SCiEL",
+      "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+      "tracked_modified": false,
+      "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0",
+      "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adapter_files_sha256": {
+        "sciel.py": "957beb3906bd0cc53a8ee50a9b7e01010f1f0c2692af73a015b74d79f4eec66c",
+        "sciel_worker.py": "e47318a860b035fab0194d067908b88acf2584c7d841813a516b64524391961e",
+        "runner.py": "62da440404ff70278221627c170d2d089f0f634df63fbbb84d94fd4c1e295671",
+        "bridge.py": "65487a04f67dbcf0d6e446be50901eeb6f270f443a176ab3333f3a0b15933e5e",
+        "worker.py": "a359c63c3c0b2bead9f06157ef747b10a28ff86deb805b6dcac5f6c4c9d1f389",
+        "judge.py": "d35fb108b9a23be87dea5df454399c508dd9fff20eefadbf0275e552400c0b38",
+        "native.py": "233e5ab23d84d5c99688f518324d298fc576c261bcd23de35161760806c77201",
+        "tensor_task.py": "4ee221ca2f91be75eadfbfa3545413b16f9629e3542459720f29b87bb725a662"
+      },
+      "mode": "seed_evaluator",
+      "model_calls": 0,
+      "evaluation_timeout": 30
+    },
+    "runtime": {
+      "executable": "${USER_REPOSITORY}/.cache/sciel-env/bin/python",
+      "resolved_executable": "${USER_HOME}/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+      "available": true,
+      "sha256": "ac60cfe0268614638d0ffa35f3b0284fc7b3a11482723793455e17eeb278509e",
+      "venv_config_sha256": "611bef4eaa37d92b4941a57be94b7c3c649ae3d6ae14a6a03063c164565b1b62"
+    },
+    "environment_sha256": "c8808b3622be4ca3081b6ea2deaca508079cde69007cee52fb7f7b1af0c03976",
+    "executor_supplied": true
+  },
+  "tasks": [
+    {
+      "task_id": "reference-knapsack",
+      "name": "Zero-one knapsack",
+      "kind": "native",
+      "paper_ids": [
+        "a2dept",
+        "reevo"
+      ],
+      "runtime": {
+        "executable": "${USER_REPOSITORY}/.cache/sciel-env/bin/python",
+        "resolved_executable": "${USER_HOME}/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+        "available": true,
+        "sha256": "ac60cfe0268614638d0ffa35f3b0284fc7b3a11482723793455e17eeb278509e",
+        "venv_config_sha256": "611bef4eaa37d92b4941a57be94b7c3c649ae3d6ae14a6a03063c164565b1b62"
+      },
+      "manifest_sha256": "8ea8fefc0da3fb1d6a6db846b6a704a9c033615fb27c0bdd407330e8f1765926",
+      "dependencies": [],
+      "files": {
+        "candidate": {
+          "path": "${USER_REPOSITORY}/tasks/reference-knapsack/baseline.py",
+          "exists": true,
+          "sha256": "d720106e094f0d2cd244c0672af99ac2dbc8d58f8bced5deb65e82702bccd38a"
+        }
+      },
+      "readiness": "ready",
+      "reasons": [],
+      "unknowns": [],
+      "candidate_format": "python",
+      "reason_code": "valid_output",
+      "next_steps": [],
+      "fingerprint": "88fe0f5543157762ed30069afa9a2a43959e7442a5c60972aa9ca7b69b48969d",
+      "status": "completed",
+      "score": 374.0,
+      "valid": true,
+      "sciel_exercised": true,
+      "attempt": 1,
+      "resumed": false,
+      "command": [
+        "${USER_REPOSITORY}/.cache/sciel-env/bin/python",
+        "-m",
+        "autoresearch_tasks.sciel",
+        "--root",
+        "${USER_REPOSITORY}",
+        "--task",
+        "reference-knapsack",
+        "--output-dir",
+        "${USER_REPOSITORY}/runs/installation-check/bundles/reference-knapsack",
+        "--sciel-root",
+        "${SCIEL_ROOT}",
+        "--python",
+        "${USER_REPOSITORY}/.cache/sciel-env/bin/python",
+        "--upstream-python",
+        "${USER_REPOSITORY}/.cache/sciel-env/bin/python",
+        "--timeout",
+        "30"
+      ],
+      "cwd": "${USER_REPOSITORY}",
+      "started_at": "2026-09-19T11:24:25.009191+00:00",
+      "process_started": true,
+      "logs": {
+        "stdout": "${USER_REPOSITORY}/runs/installation-check/tasks/reference-knapsack/attempt-001/stdout.log",
+        "stderr": "${USER_REPOSITORY}/runs/installation-check/tasks/reference-knapsack/attempt-001/stderr.log"
+      },
+      "exit_code": 0,
+      "result": {
+        "task_id": "reference-knapsack",
+        "mode": "sciel_evaluator_smoke",
+        "score": 374.0,
+        "valid": true,
+        "sciel_exercised": true,
+        "sciel_source": {
+          "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+          "tracked_modified": false,
+          "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+        },
+        "llm_calls_requested": false,
+        "logs": {
+          "stdout": "${USER_REPOSITORY}/runs/installation-check/bundles/reference-knapsack/evaluator_smoke.stdout.log",
+          "stderr": "${USER_REPOSITORY}/runs/installation-check/bundles/reference-knapsack/evaluator_smoke.stderr.log"
+        },
+        "status": "success",
+        "metric": "total_value",
+        "direction": "maximize",
+        "combined_score": 374.0,
+        "sciel_metrics": {
+          "combined_score": 374.0,
+          "evaluation_failed": 0.0,
+          "validity_known": 1.0,
+          "original_score": 374.0,
+          "valid": 1.0
+        },
+        "evolution_exercised": false,
+        "mutations": 0,
+        "task_result": {
+          "schema_version": "1.0",
+          "task_id": "reference-knapsack",
+          "mode": "native_reference",
+          "profile": "smoke",
+          "seed": 0,
+          "started_at": "2026-09-19T11:24:26.234055+00:00",
+          "candidate_sha256": "99c2c330257b2583862889acbe4cb6fa4332466109ce48a37889ccee9678de9e",
+          "metric": "total_value",
+          "direction": "maximize",
+          "aggregation": "mean",
+          "cases": [
+            {
+              "index": 0,
+              "status": "ok",
+              "score": 374
+            }
+          ],
+          "status": "success",
+          "valid": true,
+          "score": 374.0,
+          "elapsed_seconds": 0.076184,
+          "finished_at": "2026-09-19T11:24:26.310461+00:00"
+        },
+        "upstream_result": null,
+        "engine_evaluator_file": "engine/openevolve/evaluator.py",
+        "python_version": "3.12.14",
+        "exit_code": 0
+      },
+      "finished_at": "2026-09-19T11:24:26.452759+00:00",
+      "elapsed_seconds": 1.44358
+    }
+  ],
+  "state": "finished",
+  "results": [
+    {
+      "task_id": "reference-knapsack",
+      "name": "Zero-one knapsack",
+      "kind": "native",
+      "paper_ids": [
+        "a2dept",
+        "reevo"
+      ],
+      "runtime": {
+        "executable": "${USER_REPOSITORY}/.cache/sciel-env/bin/python",
+        "resolved_executable": "${USER_HOME}/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+        "available": true,
+        "sha256": "ac60cfe0268614638d0ffa35f3b0284fc7b3a11482723793455e17eeb278509e",
+        "venv_config_sha256": "611bef4eaa37d92b4941a57be94b7c3c649ae3d6ae14a6a03063c164565b1b62"
+      },
+      "manifest_sha256": "8ea8fefc0da3fb1d6a6db846b6a704a9c033615fb27c0bdd407330e8f1765926",
+      "dependencies": [],
+      "files": {
+        "candidate": {
+          "path": "${USER_REPOSITORY}/tasks/reference-knapsack/baseline.py",
+          "exists": true,
+          "sha256": "d720106e094f0d2cd244c0672af99ac2dbc8d58f8bced5deb65e82702bccd38a"
+        }
+      },
+      "readiness": "ready",
+      "reasons": [],
+      "unknowns": [],
+      "candidate_format": "python",
+      "reason_code": "valid_output",
+      "next_steps": [],
+      "fingerprint": "88fe0f5543157762ed30069afa9a2a43959e7442a5c60972aa9ca7b69b48969d",
+      "status": "completed",
+      "score": 374.0,
+      "valid": true,
+      "sciel_exercised": true,
+      "attempt": 1,
+      "resumed": false,
+      "command": [
+        "${USER_REPOSITORY}/.cache/sciel-env/bin/python",
+        "-m",
+        "autoresearch_tasks.sciel",
+        "--root",
+        "${USER_REPOSITORY}",
+        "--task",
+        "reference-knapsack",
+        "--output-dir",
+        "${USER_REPOSITORY}/runs/installation-check/bundles/reference-knapsack",
+        "--sciel-root",
+        "${SCIEL_ROOT}",
+        "--python",
+        "${USER_REPOSITORY}/.cache/sciel-env/bin/python",
+        "--upstream-python",
+        "${USER_REPOSITORY}/.cache/sciel-env/bin/python",
+        "--timeout",
+        "30"
+      ],
+      "cwd": "${USER_REPOSITORY}",
+      "started_at": "2026-09-19T11:24:25.009191+00:00",
+      "process_started": true,
+      "logs": {
+        "stdout": "${USER_REPOSITORY}/runs/installation-check/tasks/reference-knapsack/attempt-001/stdout.log",
+        "stderr": "${USER_REPOSITORY}/runs/installation-check/tasks/reference-knapsack/attempt-001/stderr.log"
+      },
+      "exit_code": 0,
+      "result": {
+        "task_id": "reference-knapsack",
+        "mode": "sciel_evaluator_smoke",
+        "score": 374.0,
+        "valid": true,
+        "sciel_exercised": true,
+        "sciel_source": {
+          "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+          "tracked_modified": false,
+          "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+        },
+        "llm_calls_requested": false,
+        "logs": {
+          "stdout": "${USER_REPOSITORY}/runs/installation-check/bundles/reference-knapsack/evaluator_smoke.stdout.log",
+          "stderr": "${USER_REPOSITORY}/runs/installation-check/bundles/reference-knapsack/evaluator_smoke.stderr.log"
+        },
+        "status": "success",
+        "metric": "total_value",
+        "direction": "maximize",
+        "combined_score": 374.0,
+        "sciel_metrics": {
+          "combined_score": 374.0,
+          "evaluation_failed": 0.0,
+          "validity_known": 1.0,
+          "original_score": 374.0,
+          "valid": 1.0
+        },
+        "evolution_exercised": false,
+        "mutations": 0,
+        "task_result": {
+          "schema_version": "1.0",
+          "task_id": "reference-knapsack",
+          "mode": "native_reference",
+          "profile": "smoke",
+          "seed": 0,
+          "started_at": "2026-09-19T11:24:26.234055+00:00",
+          "candidate_sha256": "99c2c330257b2583862889acbe4cb6fa4332466109ce48a37889ccee9678de9e",
+          "metric": "total_value",
+          "direction": "maximize",
+          "aggregation": "mean",
+          "cases": [
+            {
+              "index": 0,
+              "status": "ok",
+              "score": 374
+            }
+          ],
+          "status": "success",
+          "valid": true,
+          "score": 374.0,
+          "elapsed_seconds": 0.076184,
+          "finished_at": "2026-09-19T11:24:26.310461+00:00"
+        },
+        "upstream_result": null,
+        "engine_evaluator_file": "engine/openevolve/evaluator.py",
+        "python_version": "3.12.14",
+        "exit_code": 0
+      },
+      "finished_at": "2026-09-19T11:24:26.452759+00:00",
+      "elapsed_seconds": 1.44358
+    }
+  ],
+  "finished": true,
+  "updated_at": "2026-09-19T11:24:26.454140+00:00",
+  "summary": {
+    "total": 1,
+    "statuses": {
+      "completed": 1
+    },
+    "counts": {
+      "completed": 1
+    },
+    "ready": 1,
+    "attempted": 1,
+    "executed": 1,
+    "verified_valid": 1,
+    "unknown_validity": 0,
+    "sciel_exercised": 1,
+    "blocked_reasons": {}
+  },
+  "finished_at": "2026-09-19T11:24:26.454136+00:00"
+}

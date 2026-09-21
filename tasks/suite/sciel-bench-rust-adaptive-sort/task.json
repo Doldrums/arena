@@ -1,0 +1,231 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-bench-rust-adaptive-sort",
+  "name": "SCiEL: Rust adaptive sorting",
+  "description": "Evolve a Rust adaptive_sort implementation compiled with Cargo and benchmarked on ten generated integer datasets (random, nearly sorted, reversed, duplicate-heavy and partially sorted; 1,000 and 10,000 elements). score = 0.6*performance + 0.4*adaptability when every dataset sorts correctly, otherwise 0.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "systems_performance",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/rust_adaptive_sort/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/rust_adaptive_sort/initial_program.rs",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/rust_adaptive_sort/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU with a Rust toolchain; network access for the rand crate on first build.",
+    "dependencies": [
+      "openevolve"
+    ],
+    "environment_variables": [],
+    "datasets": "Generated in the pinned benchmark harness (sort_test/src/main.rs).",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Install the Rust toolchain from rustup; cargo must be on PATH for the evaluation environment."
+    ],
+    "executables": [
+      "cargo"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example rust_adaptive_sort",
+    "paper_metric": null,
+    "source_locator": "examples/rust_adaptive_sort/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/rust_adaptive_sort",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/rust_adaptive_sort/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/rust_adaptive_sort",
+      "score_key": "metrics.score",
+      "score_direction": "maximize",
+      "error_key": "artifacts.error",
+      "baseline_path": "examples/rust_adaptive_sort/initial_program.rs",
+      "candidate_format": "rs",
+      "dependencies": [
+        "openevolve"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply task validity; preserve unknown validity unless the original evaluator exposes an explicit signal.",
+        "The evaluator returns an openevolve EvaluationResult; the bridge serializes it as metrics/artifacts."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Install the Rust toolchain from rustup; cargo must be on PATH for the evaluation environment."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.rs",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "bin:cargo",
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The pinned evaluator copies sort_test/Cargo.lock into the temporary project, but no Cargo.lock is tracked at the pinned commit (sort_test/.gitignore ignores only target/). Every evaluation therefore raises FileNotFoundError and returns score 0.0 with artifacts.error until a lock file is generated in the checkout; this repository records the defect and does not silently repair it."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "A missing Cargo.lock at the pinned commit makes the unmodified evaluator fail deterministically before compilation.",
+      "Timing-based performance and adaptability scores depend on the host machine and compiler version."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/rust_adaptive_sort/README.md": "f190587411f3b2bdc7933615d08dbbd240ff61bedd5a64c61748450af976167c",
+    "examples/rust_adaptive_sort/config.yaml": "cb1631b4cf9f9dfe56735890451f5934b878c9102ec42d252783b19625250fab",
+    "examples/rust_adaptive_sort/evaluator.py": "b7e24493c765be2450de04671aacff5c788b0edab8eeda63912a1defe9893e7b",
+    "examples/rust_adaptive_sort/initial_program.rs": "b27c6f6e778f5872de8d94d44158ed93f97232f45f827e84d25dc2bc3fcf48f4",
+    "examples/rust_adaptive_sort/requirements.txt": "ae7abe81edabb4c53a0c105cca1b6fadc60e4dc59e70088a35271f417762ac2f",
+    "examples/rust_adaptive_sort/sort_test/.gitignore": "91e32e7c7446da0e17ef5bc0a3a783065c4476613ea4a7c24dee14aa889c6ddd",
+    "examples/rust_adaptive_sort/sort_test/Cargo.toml": "0cadd184d24d3715b1b231f3ff37c6451a4d523db9546135c1adae9f1bebc34d",
+    "examples/rust_adaptive_sort/sort_test/src/lib.rs": "1a56b8b9302ee6f3e0e2f0447d976cb60a15021717b02471e171ce495118600f",
+    "examples/rust_adaptive_sort/sort_test/src/main.rs": "686237bc09caec9db2bbb4835e8833cba40d47c241a681a2cd74dba0513fb168"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/rust_adaptive_sort/evaluator.py",
+      "signature": "program_path: str",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "pub fn adaptive_sort<T: Ord + Clone>(arr: &mut [T]) compiled as src/lib.rs and driven by the pinned main.rs benchmark"
+    ],
+    "baseline_path": "examples/rust_adaptive_sort/initial_program.rs",
+    "baseline_functions": {},
+    "parameters": {
+      "datasets": 10,
+      "sizes": [
+        1000,
+        10000
+      ],
+      "weights": {
+        "performance": 0.6,
+        "adaptability": 0.4
+      }
+    },
+    "score_key": "metrics.score",
+    "score_direction": "maximize",
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 27,
+        "expression": "result"
+      }
+    ],
+    "validity_key": null,
+    "validity_semantics": "Correctness is checked by the pinned Rust harness (all datasets sorted); a correctness below 1.0 yields score 0.0 without an error field.",
+    "error_key": "artifacts.error",
+    "declared_requirements": [
+      "numpy>=1.22.0"
+    ],
+    "evaluator_imports": [
+      "asyncio",
+      "json",
+      "logging",
+      "openevolve",
+      "os",
+      "pathlib",
+      "subprocess",
+      "sys",
+      "tempfile"
+    ],
+    "baseline_imports": [],
+    "source_config_path": "examples/rust_adaptive_sort/config.yaml",
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 150,
+      "checkpoint_interval": 15,
+      "file_suffix": ".rs",
+      "evaluator": {
+        "timeout": 60,
+        "cascade_evaluation": false,
+        "parallel_evaluations": 3
+      },
+      "database": {
+        "population_size": 150,
+        "num_islands": 4
+      },
+      "llm": {
+        "api_base": "https://generativelanguage.googleapis.com/v1beta/openai/",
+        "models": [
+          "gemini-flash-lite-latest",
+          "gemini-flash-latest"
+        ],
+        "timeout": null
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "heavy_cpu_or_compiler",
+    "recommended_smoke_outer_timeout_seconds": 120
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

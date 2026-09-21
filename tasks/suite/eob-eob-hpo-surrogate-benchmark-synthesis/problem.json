@@ -1,0 +1,73 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "dataset:COCO-BBOB / MetaBox"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "dataset",
+  "unsupported_reason": "Fitness requires the COCO-BBOB / MetaBox data and training pipeline, which are not redistributed with the suite.",
+  "protocol_description": "Not executable in this suite: Fitness requires the COCO-BBOB / MetaBox data and training pipeline, which are not redistributed with the suite.",
+  "id": "eob-eob-hpo-surrogate-benchmark-synthesis",
+  "name": "EoB-HPO surrogate benchmark synthesis",
+  "paper_ids": [
+    "eob"
+  ],
+  "description": "EoB-HPO surrogate benchmark synthesis",
+  "benchmark": "COCO-BBOB / MetaBox",
+  "paper_metric": "landscape similarity and algorithm distinction capability",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2601.21877",
+      "type": "paper",
+      "locator": "Section 4.1–4.3"
+    },
+    {
+      "url": "https://github.com/MetaEvo/EoB/tree/5d9f30cb19a0231a74f58d17926cff828db6857f",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Paper-provided anonymous code URL https://anonymous.4open.science/r/EoB could not be read: web tool inaccessible; direct HTTPS connection reset. No downloadable artifact verified.",
+    "Official EoB release pinned; the search needs a DeepSeek-compatible API key in config.py and PyTorch; the LSI/ADC scoring of evolved functions runs inside the search loop.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "eob",
+      "title": "Evolution of Benchmark: Black-Box Optimization Benchmark Design through Large Language Model",
+      "url": "https://arxiv.org/pdf/2601.21877"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

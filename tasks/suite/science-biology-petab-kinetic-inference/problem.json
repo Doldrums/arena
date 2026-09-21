@@ -1,0 +1,93 @@
+{
+  "protocol": "recreated",
+  "family": "science_biology_b10",
+  "direction": "minimize",
+  "contract": "fit_kinetics(petab_problem, training_objective, budget) -> {parameters,intervals}. problem includes parameter names, transformed bounds, initial_parameters, and training observations. Enforce bounds, finite intervals containing estimates, objective-call budget. Independently use pinned source-specific PEtab simulator on held-out whole conditions. No source-fitted held-out parameter values in candidate input.",
+  "parameters": {},
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "file:../../.cache/science-biology/B10.json",
+    "file:../../.cache/science-biology/B10.manifest.json"
+  ],
+  "timeout": 600,
+  "notes": [
+    "Independently written bounded scientific adaptation. Source data and SHA256 preparation receipts required. See docs/BIOLOGY_EXPANSION.md and task limitations; fixture tests never establish source benchmark reproduction."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-biology-petab-kinetic-inference",
+  "name": "Biology: PEtab biochemical kinetic parameter inference",
+  "paper_ids": [
+    "science-biology_expansion"
+  ],
+  "description": "Fit mechanistic biochemical ODE parameters from measured signaling trajectories and predict complete held-out stimulation conditions with an independent source-model solver.",
+  "benchmark": "Biology: PEtab biochemical kinetic parameter inference",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1371/journal.pcbi.1008646",
+      "type": "paper",
+      "locator": "PEtab specification: parameters, measurements, observables, condition-dependent simulation and noise likelihood. Brannmark_JBC2010 model in official collection."
+    },
+    {
+      "url": "https://github.com/Benchmarking-Initiative/Benchmark-Models-PEtab",
+      "type": "repository",
+      "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2888430/",
+      "type": "paper",
+      "title": "Mass and Information Feedbacks through Receptor Endocytosis Govern Insulin Signaling as Revealed Using a Parameter-free Modeling Framework",
+      "locator": "Fits and tests quantitative insulin-signaling models against phosphorylation observations. The local PEtab Brannmark_JBC2010 parameter-inference problem uses this biological model, with a restricted inference protocol."
+    }
+  ],
+  "limitations": [
+    "Source Brannmark insulin-signaling SBML transcribed independently and integrated bySciPyBDF. Source-fitted nominal parameters are excluded from candidate inputs. Bounds-wide intervals are only a valid seed, not calibrated uncertainty.",
+    "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+    "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-biology_expansion",
+      "title": "Biology and bioinformatics: source-based research tasks",
+      "url": "https://papers.neurips.cc/paper_files/paper/2023/file/cac723e5ff29f65e3fcbb0739ae91bee-Paper-Datasets_and_Benchmarks.pdf"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Infer the mechanisms and kinetic parameters underlying insulin-signaling dynamics.",
+    "importance_rationale": "Quantitative receptor-signaling models help explain how cells respond to insulin and how feedback affects the response.",
+    "papers": [
+      {
+        "title": "Mass and Information Feedbacks through Receptor Endocytosis Govern Insulin Signaling as Revealed Using a Parameter-free Modeling Framework",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2888430/",
+        "primary_goal": "Determine which receptor-endocytosis and feedback mechanisms explain measured insulin-signaling responses.",
+        "task_relation": "The local Brannmark_JBC2010 ODE task fits parameters and predicts held-out stimulation conditions of the source mechanistic model. It does not rerun the paper's complete model-selection or experimental argument.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The qualifying evidence is the original mechanistic insulin-signaling study; the PEtab model-format/software paper alone is excluded.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "optimizer",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "simulation",
+    "reference": "none",
+    "area": "biology",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

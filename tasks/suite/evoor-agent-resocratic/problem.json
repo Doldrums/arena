@@ -1,0 +1,76 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "service:llm_api",
+    "env:OPENROUTER_API_KEY",
+    "dataset:ReSocratic"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "llm_api",
+  "unsupported_reason": "Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the ReSocratic benchmark. The suite embeds neither model calls nor the benchmark data.",
+  "protocol_description": "Not executable in this suite: Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the ReSocratic benchmark. The suite embeds neither model calls nor the benchmark data.",
+  "id": "evoor-agent-resocratic",
+  "name": "ReSocratic",
+  "paper_ids": [
+    "evoor-agent"
+  ],
+  "description": "ReSocratic",
+  "benchmark": "ReSocratic",
+  "paper_metric": "optimization-model solution accuracy",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.17708",
+      "type": "paper",
+      "locator": "Section IV and Table III"
+    },
+    {
+      "url": "https://github.com/EvoNexusX/2026HuangEvoORAgent/tree/1a255eaade3b325706ab9b2ad1e20f2aafae0a06",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Paper-provided anonymous code URL https://anonymous.4open.science/r/pL8xY2mQ8rA5fC3vB7nK could not be read: web tool inaccessible; direct HTTPS connection reset. No downloadable artifact verified.",
+    "Official EvoOR-Agent release pinned; the LLM configuration is anonymized in the release and per-dataset selection is internal to evaluate.py.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "evoor-agent",
+      "title": "Co-evolving Agent Architectures and Interpretable Reasoning for Automated Optimization",
+      "url": "https://arxiv.org/pdf/2604.17708"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

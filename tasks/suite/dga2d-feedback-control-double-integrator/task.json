@@ -1,0 +1,178 @@
+{
+  "schema_version": "1.0",
+  "id": "dga2d-feedback-control-double-integrator",
+  "name": "Feedback control: Double integrator",
+  "description": "Feedback control: Double integrator",
+  "paper_ids": [
+    "dga2d",
+    "a2dept"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2608.00700",
+      "type": "paper",
+      "locator": "Appendix G.2"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2604.24043",
+      "type": "paper",
+      "locator": "Appendix G.3, Table 19"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "1 design instance, 30 test instances; dt=0.02, T=100",
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "-log10(1 + cumulative tracking/control cost)",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Appendix G.2"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Task specification verified from paper; direct evaluator availability not confirmed."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "feedback_controller",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Paper says an anonymized implementation was supplied as supplementary material but no public URL was found in the extracted PDF.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "Feedback control: Double integrator",
+    "slug": "feedback-control-double-integrator",
+    "description": "Feedback control: Double integrator",
+    "benchmark": null,
+    "dataset": "1 design instance, 30 test instances; dt=0.02, T=100",
+    "metric": "-log10(1 + cumulative tracking/control cost)",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2608.00700",
+    "source_locator": "Appendix G.2",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": "Task specification verified from paper; direct evaluator availability not confirmed."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "numerical_computing",
+    "area": "robotics_and_control",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "a2dept-feedback-control-double-integrator",
+      "paper_ids": [
+        "a2dept"
+      ],
+      "name": "Feedback control: Double Integrator",
+      "description": "Feedback control: Double Integrator",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2604.24043",
+          "type": "paper",
+          "locator": "Appendix G.3, Table 19"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "5 random seeds, RK4 dt=0.02, 5000-step horizon",
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "stability score",
+        "paper_metric": "stability score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": null,
+        "protocol": "specified_only",
+        "source_locator": "Appendix G.3, Table 19"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Paper task identified; evaluator invocation not yet verified."
+        ]
+      },
+      "limitations": [
+        "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

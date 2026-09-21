@@ -1,0 +1,309 @@
+{
+  "review_date": "2026-09-20",
+  "scope": "Twelve proposed chemistry/materials families; source passes distinct from unavailable source setup",
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "rdkit": "2026.3.6",
+    "cantera": "3.2.0",
+    "h5py": "3.16.0"
+  },
+  "tests": {
+    "command": ".cache/sciel-env/bin/python -m unittest discover -s tests -p test_science_materials_expansion.py -v",
+    "fixture_policy": "analytic/unit fixtures never counted as completed source benchmarks"
+  },
+  "counts": {
+    "passed": 11,
+    "requires_setup": 1,
+    "failed": 0
+  },
+  "results": [
+    {
+      "proposal_id": "C01",
+      "task_id": "science-materials-edbo-reaction-discovery",
+      "declared_status": "ready",
+      "direction": "maximize",
+      "validation_scope": "actual_staged_source_subset_or_specified_physical_model",
+      "status": "passed",
+      "score": 0.6501901622395335,
+      "details": {
+        "normalized_hypervolume_auc": [
+          0.6725724466709823,
+          0.7818824700265253,
+          0.49611557002109286
+        ],
+        "experiments": 1728,
+        "query_budget": 32,
+        "data_kind": "measured_yields_and_released_cost_accounting",
+        "transfer_claim": false
+      },
+      "seconds": 0.232735
+    },
+    {
+      "proposal_id": "C02",
+      "task_id": "science-materials-geom-conformer-search",
+      "declared_status": "ready",
+      "direction": "maximize",
+      "validation_scope": "actual_staged_source_subset_or_specified_physical_model",
+      "status": "passed",
+      "score": 0.8185583386628384,
+      "details": {
+        "mean_matching_rmsd_angstrom": 0.2549612068540229,
+        "molecules": 57,
+        "reference_kind": "GEOM_CREST_xTB"
+      },
+      "seconds": 7.233503
+    },
+    {
+      "proposal_id": "C03",
+      "task_id": "science-materials-matbench-stability-screening",
+      "declared_status": "ready",
+      "direction": "maximize",
+      "validation_scope": "actual_staged_source_subset_or_specified_physical_model",
+      "status": "passed",
+      "score": 0.1875,
+      "details": {
+        "stable_precision_at_budget": [
+          0.2,
+          0.15,
+          0.15,
+          0.25
+        ],
+        "reference_kind": "DFT_convex_hull_not_synthesis"
+      },
+      "seconds": 0.022784
+    },
+    {
+      "proposal_id": "C04",
+      "task_id": "science-materials-oc20-adsorption-search",
+      "declared_status": "ready",
+      "direction": "maximize",
+      "validation_scope": "actual_staged_source_subset_or_specified_physical_model",
+      "status": "passed",
+      "score": 0.625,
+      "details": {
+        "regret_ev": [
+          1.2793334499999673,
+          0.2009343299999955,
+          0.37970849999999245,
+          0.3322276899999679,
+          0.464010060000021,
+          0.0,
+          0.0006378699999913806,
+          0.19294106000000966,
+          0.0,
+          0.0,
+          0.0784249000000159,
+          0.2211106599999937,
+          0.6076009599999566,
+          0.0011083100000064405,
+          0.0026318199999764147,
+          0.001203799999984767,
+          0.24810597000001167,
+          0.0012961699999891607,
+          0.0,
+          0.006638240000000906,
+          0.0010537300000237337,
+          0.031023229999959767,
+          0.010143280000022514,
+          0.15463772999999037,
+          0.012034310000018422,
+          0.22024981999993543,
+          0.0,
+          0.00047590000008312927,
+          0.0002514500000074804,
+          0.0002127299999870047,
+          0.0002631300000075498,
+          0.10199178999999958
+        ],
+        "success_tolerance_ev": 0.1
+      },
+      "seconds": 0.030143
+    },
+    {
+      "proposal_id": "C05",
+      "task_id": "science-materials-arcmof-carbon-capture",
+      "declared_status": "ready",
+      "direction": "maximize",
+      "validation_scope": "actual_staged_source_subset_or_specified_physical_model",
+      "status": "passed",
+      "score": 0.7249284790894719,
+      "details": {
+        "feasible_capacity_fraction": [
+          0.6159212070279876,
+          0.7877801583962468,
+          0.7315802295759817,
+          0.7644323213576716
+        ],
+        "data_kind": "computed_adsorption"
+      },
+      "seconds": 0.027981
+    },
+    {
+      "proposal_id": "C06",
+      "task_id": "science-materials-pfhub-spinodal-dynamics",
+      "declared_status": "ready",
+      "direction": "minimize",
+      "validation_scope": "actual_staged_source_subset_or_specified_physical_model",
+      "status": "passed",
+      "score": 0.29906879100599326,
+      "details": {
+        "field_rmse": [
+          1.1646367681678774e-05,
+          8.555932937833071e-06
+        ],
+        "mass_drift": [
+          4.3520742565306136e-14,
+          5.551115123125783e-16
+        ],
+        "free_energy": [
+          [
+            319.04686810779407,
+            318.81156738777037,
+            316.1912644525757,
+            188.90924807342117
+          ],
+          [
+            319.0801190291752,
+            318.8531579694447,
+            316.38416887531224,
+            202.60992706038635
+          ]
+        ],
+        "protocol": "PFHub_1a_equations_fixed_mesh_short_horizon_adaptation",
+        "reference": "independent_DOP853_method_of_lines"
+      },
+      "seconds": 0.575016
+    },
+    {
+      "proposal_id": "C07",
+      "task_id": "science-materials-nmr-structure-elucidation",
+      "declared_status": "requires_setup",
+      "direction": "maximize",
+      "validation_scope": "adapter_unit_tests_only",
+      "status": "requires_setup",
+      "error": "requires_setup: C07 source bundle missing: /Users/imran.turganov/code/research/ACLR/autoresearch-tasks/suite/_lib/data/materials-expansion/C07/dataset.json. See docs/MATERIALS_EXPANSION.md and scripts/prepare_materials_expansion.py",
+      "seconds": 8.6e-05,
+      "setup": {
+        "blocker": "Stage licensed NMR2Struct spectrum subset, exact molecular graph labels, scaffold groups and target-free candidate graph library. Full archive is about 30 GB; experimental subset not verified.",
+        "instructions": "docs/MATERIALS_EXPANSION.md",
+        "preparation_command": "python scripts/prepare_materials_expansion.py --validate-bundle C07 suite/_lib/data/materials-expansion/C07/dataset.json"
+      }
+    },
+    {
+      "proposal_id": "C08",
+      "task_id": "science-materials-opxrd-phase-identification",
+      "declared_status": "ready",
+      "direction": "maximize",
+      "validation_scope": "actual_staged_source_subset_or_specified_physical_model",
+      "status": "passed",
+      "score": 0.6422619047619047,
+      "details": {
+        "phase_set_f1": [
+          0.5714285714285714,
+          0.6666666666666666,
+          0.5,
+          1.0,
+          1.0,
+          0.0,
+          0.4,
+          1.0
+        ],
+        "quantitative_fraction_claim": false,
+        "annotation_scope": "source_reported_curated_phase_set; physical exhaustiveness unknown",
+        "unreported_impurities_are_known_absent": false
+      },
+      "seconds": 0.149619,
+      "setup": {
+        "instructions": "docs/MATERIALS_EXPANSION.md",
+        "preparation_command": "python scripts/prepare_opxrd_source.py",
+        "source_member_pins": "data/science/materials_expansion/opxrd_hkust_a_sources.json"
+      }
+    },
+    {
+      "proposal_id": "C09",
+      "task_id": "science-materials-cantera-mechanism-reduction",
+      "declared_status": "ready",
+      "direction": "maximize",
+      "validation_scope": "actual_staged_source_subset_or_specified_physical_model",
+      "status": "passed",
+      "score": 0.0,
+      "details": {
+        "species": 10,
+        "reactions": 29,
+        "full_species": 10,
+        "full_reactions": 29,
+        "worst_errors": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "model_validation": "reference_mechanism_agreement_not_experimental_truth"
+      },
+      "seconds": 1.606596
+    },
+    {
+      "proposal_id": "C10",
+      "task_id": "science-materials-spice-active-potential",
+      "declared_status": "ready",
+      "direction": "minimize",
+      "validation_scope": "actual_staged_source_subset_or_specified_physical_model",
+      "status": "passed",
+      "score": 0.6735044138030362,
+      "details": {
+        "force_rmse_ev_angstrom": 0.4922017848601158,
+        "relative_energy_rmse_ev": 0.18130262894292037,
+        "label_queries": 8,
+        "scalarization": "force_RMSE/(1_eV/Angstrom)+relative_energy_RMSE/(1_eV)"
+      },
+      "seconds": 0.013469
+    },
+    {
+      "proposal_id": "C11",
+      "task_id": "science-materials-kmcpy-ionic-transport",
+      "declared_status": "ready",
+      "direction": "minimize",
+      "validation_scope": "actual_staged_source_subset_or_specified_physical_model",
+      "status": "passed",
+      "score": 0.0002896512581648172,
+      "details": {
+        "transport": [
+          {
+            "finite_horizon_diffusivity_m2_s": 4.702345511365505e-13,
+            "standard_error_m2_s": 1.8615428613345816e-14,
+            "exact_reference_diffusivity_m2_s": 4.791251421829657e-13,
+            "events_per_replica": 1000,
+            "replicas": 64,
+            "reference_tagged_states": 1680,
+            "candidate_seconds": 0.19187891820911318,
+            "scope": "Source NASICON 2x1x1 fixed-Si framework; finite-event tagged-ion MSD/(6 E[time]); not bulk or asymptotic conductivity"
+          }
+        ],
+        "metric": "candidate_seconds_times_squared_relative_standard_error"
+      },
+      "seconds": 0.540529
+    },
+    {
+      "proposal_id": "C12",
+      "task_id": "science-materials-grouped-spme-battery-inversion",
+      "declared_status": "ready",
+      "direction": "minimize",
+      "validation_scope": "actual_staged_source_subset_or_specified_physical_model",
+      "status": "passed",
+      "score": 0.12151700724004497,
+      "details": {
+        "impedance_normalized_rmse": [
+          0.18746001962091594,
+          0.27366362326351534
+        ],
+        "voltage_normalized_rmse": [
+          0.012472193037874267
+        ],
+        "candidate_forward_calls": 0,
+        "identifiability_claim": false
+      },
+      "seconds": 3.685841
+    }
+  ]
+}

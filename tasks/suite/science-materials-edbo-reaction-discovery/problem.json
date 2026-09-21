@@ -1,0 +1,80 @@
+{
+  "protocol": "recreated",
+  "family": "science_materials_edbo_reaction_discovery",
+  "direction": "maximize",
+  "contract": "suggest(observations, candidate_conditions, batch_size) -> list of unused integer row indices. Observations have index, yield (percent), cost (released accounting); pool contains categorical base/ligand/solvent and concentration/temperature. One experiment per call, 32 calls on each of three shuffled versions of the full 1,728-experiment BMS campaign. Score: mean area under normalized two-objective hypervolume trajectory (yield maximized, cost minimized). No unqueried outcomes may be accessed.",
+  "parameters": {
+    "proposal_id": "C01"
+  },
+  "requires": [
+    "py:numpy",
+    "file:data/materials-expansion/C01/experiments_yield_and_cost.csv"
+  ],
+  "timeout": 180,
+  "notes": [
+    "Independently implemented SCIEL adaptation. Source bundles are required except the specified PFHub and Cantera simulations; no generated replacement data. See docs/MATERIALS_EXPANSION.md for provenance, exact setup blockers and validation scope."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-materials-edbo-reaction-discovery",
+  "name": "Budgeted EDBO+ reaction-condition discovery",
+  "paper_ids": [
+    "science-materials_expansion"
+  ],
+  "description": "suggest(observations, candidate_conditions, batch_size) -> list of unused integer row indices. Observations have index, yield (percent), cost (released accounting); pool contains categorical base/ligand/solvent and concentration/temperature. One experiment per call, 32 calls on each of three shuffled versions of the full 1,728-experiment BMS campaign. Score: mean area under normalized two-objective hypervolume trajectory (yield maximized, cost minimized). No unqueried outcomes may be accessed.",
+  "benchmark": "Budgeted EDBO+ reaction-condition discovery",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1021/jacs.2c08592",
+      "type": "paper",
+      "locator": "EDBO+ multi-objective Bayesian reaction optimization; yield-cost BMS benchmark."
+    },
+    {
+      "url": "https://github.com/doyle-lab-ucla/edboplus/tree/db06b8dd592056df03ae604da030b080acd32658/examples/publication/BMS_yield_cost",
+      "type": "repository",
+      "locator": "Pinned author preparation, optimization, hypervolume scripts and 1728-row experiment table."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation of a cited scientific problem; no claim to reproduce author leaderboard scores.",
+    "Candidate and evaluator run in one Python process; data access is separated by API, not an OS sandbox. Isolate evaluator data for adversarial or held-out evaluation.",
+    "One complete experimental reaction campaign is used. Three candidate-pool permutations measure robustness, not transfer to unseen reaction campaigns.",
+    "Costs reproduce the source accounting, not current reagent prices."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-materials_expansion",
+      "title": "Chemistry and materials research: source-based research tasks",
+      "url": "https://doi.org/10.1021/jacs.2c08592"
+    }
+  ],
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Find chemical reaction conditions that balance product yield and experimental cost.",
+    "importance_rationale": "Efficient reaction development can reduce chemical experimentation and resource use.",
+    "papers": [],
+    "reason": "The EDBO+ paper explicitly presents and tunes an active-learning platform and web app. The local BMS campaign is a retrospective yield-cost optimizer evaluation; the review has not located a problem-focused paper whose main objective is solving this campaign's substantive chemical-development problem. The paper's separate live yield/enantioselectivity demonstrations are not the local campaign. No qualifying primary-goal evidence is established for this local task in this review; this is not a finding that the broader subject is unimportant.",
+    "verification_basis": "Local task contract and cited source purpose reviewed; background or benchmark citations were not promoted to primary-problem evidence.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "optimizer",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "chemistry",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  }
+}

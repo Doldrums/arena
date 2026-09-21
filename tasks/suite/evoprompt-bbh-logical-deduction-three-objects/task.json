@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0",
+  "id": "evoprompt-bbh-logical-deduction-three-objects",
+  "name": "BBH logical_deduction_three_objects",
+  "description": "BBH logical_deduction_three_objects task evaluated in EvoPrompt: Connecting LLMs with Evolutionary Algorithms Yields Powerful Prompt Optimizers.",
+  "paper_ids": [
+    "evoprompt"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2309.08532",
+      "type": "paper",
+      "locator": "Appendix C.2, Tables 17-18"
+    },
+    {
+      "url": "https://github.com/beeevita/EvoPrompt/tree/94caff336555df99acc5c338c7930c40cc550ad9",
+      "type": "repository",
+      "locator": "BBH/eval.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "logical_deduction_three_objects",
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "BIG-Bench Hard",
+    "protocol": "specified_only",
+    "source_locator": "Appendix C.2, Tables 17-18"
+  },
+  "execution": {
+    "repository": "https://github.com/beeevita/EvoPrompt",
+    "commit": "94caff336555df99acc5c338c7930c40cc550ad9",
+    "upstream_path": "BBH/eval.py",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/beeevita/EvoPrompt/blob/94caff336555df99acc5c338c7930c40cc550ad9/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/beeevita/EvoPrompt/blob/94caff336555df99acc5c338c7930c40cc550ad9/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "26 individual subtasks across 22 families; web_of_lies excluded because baseline already scores 100%. README BBH script paths are absent from pinned tree.",
+      "Blocked by reproducible upstream duplicate --content registration in BBH/args.py. Remove the second registration; then BBH/eval.py --task logical_deduction_three_objects selects this task, with downloaded BBH/data/logical_deduction_three_objects.json and lib_prompt/logical_deduction_three_objects.txt. Historical model endpoints in auth.yaml also require compatible configuration."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "BBH scripts exist under BBH/scripts after the README cd BBH. Actual blocking defect: BBH/args.py registers --content twice, raising argparse.ArgumentError before execution; observed locally with parse_args(). Remove the duplicate declaration in a documented modified checkout before running BBH.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "BBH logical_deduction_three_objects",
+    "slug": "bbh-logical-deduction-three-objects",
+    "description": "BBH logical_deduction_three_objects task evaluated in EvoPrompt: Connecting LLMs with Evolutionary Algorithms Yields Powerful Prompt Optimizers.",
+    "benchmark": "BIG-Bench Hard",
+    "dataset": "logical_deduction_three_objects",
+    "metric": "accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2309.08532",
+    "source_locator": "Appendix C.2, Tables 17-18",
+    "upstream_path": "BBH/eval.py",
+    "requirements": [],
+    "execution_notes": [
+      "26 individual subtasks across 22 families; web_of_lies excluded because baseline already scores 100%. README BBH script paths are absent from pinned tree.",
+      "Blocked by reproducible upstream duplicate --content registration in BBH/args.py. Remove the second registration; then BBH/eval.py --task logical_deduction_three_objects selects this task, with downloaded BBH/data/logical_deduction_three_objects.json and lib_prompt/logical_deduction_three_objects.txt. Historical model endpoints in auth.yaml also require compatible configuration."
+    ],
+    "setup_commands": [],
+    "run_commands": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

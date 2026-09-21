@@ -1,0 +1,218 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-math-tammes-problem",
+  "name": "SCiEL: Tammes problem with 13 sphere points",
+  "description": "Place 13 points on the unit sphere maximizing the smallest Euclidean separation.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "construction_math",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/tammes_problem/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/tammes_problem/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example tammes_problem",
+    "paper_metric": null,
+    "source_locator": "examples/alphaevolve_math_problems/tammes_problem/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/alphaevolve_math_problems/tammes_problem",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/alphaevolve_math_problems/tammes_problem/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": "examples/alphaevolve_math_problems/tammes_problem/initial_program.py",
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply mathematical validity; preserve unknown validity unless the original evaluator exposes an explicit signal."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/alphaevolve_math_problems/tammes_problem/evaluator.py": "87e6e9b41b64fb9d0cb24d047efa3385245162ec13e02c33e95cb7957635450f",
+    "examples/alphaevolve_math_problems/tammes_problem/config.yaml": "332fd95eec32e831722f71c788aa03d0b3f97844442137402ad726aecee7ecf5",
+    "examples/alphaevolve_math_problems/tammes_problem/requirements.txt": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc",
+    "examples/alphaevolve_math_problems/tammes_problem/initial_program.py": "6b8a49ff0bd2f12f84c97e6f2c5968ba477e241fec5bf4a3b1aa5f2cfdb8a3f3"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/alphaevolve_math_problems/tammes_problem/evaluator.py",
+      "signature": "program_path: str",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.tammes_problem13()"
+    ],
+    "baseline_path": "examples/alphaevolve_math_problems/tammes_problem/initial_program.py",
+    "baseline_functions": {
+      "tammes_problem13": {
+        "signature": "",
+        "docstring": "Place n points on the surface of the unit sphere in R^3 so as to maximize the minimum\npairwise Euclidean distance between any two points (the Tammes problem). Here n = 13.\n\nReturns:\n    points: np.ndarray of shape (13,3) with the x,y,z coordinates of the points,\n        each lying on the unit sphere.",
+        "returns": "np.ndarray"
+      }
+    },
+    "parameters": {
+      "BENCHMARK": 0.9557,
+      "TOL": 1e-06,
+      "NUM_POINTS": 13
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "score_expressions": [
+      "combined_score = min_distance / BENCHMARK",
+      "combined_score = 0.0"
+    ],
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 70,
+        "expression": "{'min_distance': float(min_distance), 'combined_score': float(combined_score), 'eval_time': float(eval_time)}"
+      },
+      {
+        "function": "evaluate",
+        "line": 76,
+        "expression": "{'combined_score': 0.0, 'error': str(e)}"
+      }
+    ],
+    "metric_assignments": [],
+    "validity_key": null,
+    "validity_semantics": "No independent boolean validity field; zero score, success rate and absence of error do not establish validity.",
+    "error_key": "error",
+    "rng_calls": [],
+    "declared_requirements": [
+      "numpy"
+    ],
+    "evaluator_imports": [
+      "importlib",
+      "itertools",
+      "numpy",
+      "os",
+      "sys",
+      "time"
+    ],
+    "baseline_imports": [
+      "numpy"
+    ],
+    "source_config_path": "examples/alphaevolve_math_problems/tammes_problem/config.yaml",
+    "baseline_constants": {},
+    "baseline_rng_calls": [],
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Some branches return score zero without error; some omit the primary score. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 200,
+      "evaluator": {
+        "timeout": 360,
+        "max_retries": 3
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "cpu",
+    "recommended_smoke_outer_timeout_seconds": 15
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Maximize the minimum pairwise separation of thirteen points on the sphere.",
+    "importance_rationale": "This is a precise extremal geometry problem about spherical packing. The research establishes an optimal arrangement, and the local task searches the same thirteen-point objective.",
+    "papers": [
+      {
+        "title": "The strong thirteen spheres problem",
+        "url": "https://arxiv.org/abs/1002.1439",
+        "task_relation": "The paper solves the Tammes problem for thirteen sphere points by a computer-assisted proof. The local task optimizes this same fixed-cardinality arrangement; it is a numerical construction task and does not itself reproduce the proof.",
+        "primary_goal": "Determine and prove the optimal arrangement of thirteen nonoverlapping spheres touching a central sphere.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

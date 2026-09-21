@@ -1,0 +1,38 @@
+{
+  "generated": "2026-09-20",
+  "task": "kaggle-santa-2025-christmas-tree-packing",
+  "official_metric": {
+    "source": "https://github.com/jsebdev/kaggle_santa_challenge_2025/blob/9f0fff6e53fb653dc067214ff19bcb647ee54311/santa-2025-metric.py",
+    "note": "Public mirror of the competition's metric notebook (shapely 2.1.2, Decimal precision 25, scale factor 1e18)."
+  },
+  "checks": [
+    {
+      "case": "metric doctest example (two trees: 002_0 at (-0.2, -0.3, 335 deg), 002_1 at (0.49, 0.21, 155 deg))",
+      "official": 0.877038143325303,
+      "suite": 0.877038143325303,
+      "match": true
+    },
+    {
+      "case": "getting-started sample submission (20,100 rows, n = 1..200)",
+      "sample_submission_sha256": "e363f9006ba207409bd93e13b3a9f437b812b1de54ca8f4e43757bd855768e87",
+      "official": 176.60550959158516,
+      "suite": 176.60550959158516,
+      "match": true,
+      "official_seconds": 2.4,
+      "suite_seconds": 2.1
+    },
+    {
+      "case": "overlapping trees (0, 0, 0) and (0.1, 0, 0)",
+      "official": "ParticipantVisibleError: Overlapping trees",
+      "suite": "CandidateError: configuration 2: trees 0 and 1 overlap",
+      "match": true
+    }
+  ],
+  "seed": {
+    "program": "suite/kaggle-santa-2025-christmas-tree-packing/initial_program.py",
+    "score": 162.58265579475625,
+    "mean_density": 0.305928,
+    "seconds": 1.84
+  },
+  "shapely_version": "2.1.2"
+}

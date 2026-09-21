@@ -1,0 +1,317 @@
+{
+  "schema_version": "1.0",
+  "id": "coral-anthropic-performance-take-home",
+  "name": "Anthropic performance take-home",
+  "description": "Anthropic performance take-home",
+  "paper_ids": [
+    "coral",
+    "aevo"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1 stress tests"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/kernel_builder"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2605.13821",
+      "type": "paper",
+      "locator": "Section 5.1; Appendix C.1"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "coral (installed from pinned checkout)",
+      "numpy",
+      "scipy",
+      "pyyaml",
+      "omegaconf"
+    ],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "CORAL requires Python>=3.11,<3.14. Importing its packaged grader requires installed CORAL metadata; PYTHONPATH alone is insufficient."
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "simulated VLIW SIMD cycle count",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": null,
+    "protocol": "upstream",
+    "source_locator": "Section 4.1 stress tests"
+  },
+  "execution": {
+    "repository": "https://github.com/Human-Agent-Society/CORAL",
+    "commit": "0123dfb939b35228cf2c1fde224cd0561e727408",
+    "upstream_path": "examples/kernel_builder",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/kernel_builder/grader/src/kernel_builder_grader/grader.py",
+      "callable": "_run_evaluation",
+      "candidate_argument": "positional",
+      "cwd": "examples/kernel_builder",
+      "score_key": "cycles",
+      "score_direction": "minimize",
+      "baseline_path": "examples/kernel_builder/seed/kernel_builder.py",
+      "dependencies": [
+        "coral (installed from pinned checkout)",
+        "numpy",
+        "scipy",
+        "pyyaml",
+        "omegaconf"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced.",
+      "kwargs": {
+        "utils_path": "taskdata/frozen_problem.py",
+        "timeout": 120,
+        "python_cmd": [
+          "{python}"
+        ],
+        "params": {
+          "forest_height": 10,
+          "rounds": 16,
+          "batch_size": 256,
+          "iterations": 8
+        }
+      },
+      "validity_key": "is_correct",
+      "validation": {
+        "kind": "official_seed_common_cli_smoke",
+        "passed": true,
+        "status": "completed",
+        "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+        "seconds": 1.21,
+        "candidate_sha256": "2c298fe29691004a21fa454e7d02eb4a748b481c756139e71bf089127c27957f",
+        "evaluator_sha256": "e70c139c10e8027077d0a526fd7f940bf676130e08fe252623030766319fd4fc",
+        "score": 11910,
+        "valid": true,
+        "report": "validation/upstream-gap-smoke-early.json"
+      }
+    },
+    "setup_instructions": [
+      "From the pinned CORAL checkout root: python -m pip install --no-deps . (required to supply CORAL distribution metadata, even when its source is importable).",
+      "python -m pip install numpy scipy pyyaml omegaconf"
+    ],
+    "task_setup_instructions": [
+      "From the pinned CORAL checkout root: python -m pip install --no-deps . (required to supply CORAL distribution metadata, even when its source is importable).",
+      "python -m pip install numpy scipy pyyaml omegaconf"
+    ],
+    "framework_setup_instructions": [
+      "uv sync --extra dev"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "kernel_builder",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Anthropic performance take-home",
+    "slug": "anthropic-performance-take-home",
+    "description": "Anthropic performance take-home",
+    "benchmark": null,
+    "dataset": null,
+    "metric": "simulated VLIW SIMD cycle count",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2604.01658",
+    "source_locator": "Section 4.1 stress tests",
+    "upstream_path": "examples/kernel_builder",
+    "requirements": [
+      "CORAL requires Python>=3.11,<3.14. Importing its packaged grader requires installed CORAL metadata; PYTHONPATH alone is insufficient."
+    ],
+    "execution_notes": "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced.",
+    "upstream_evaluator_paths": [
+      "examples/kernel_builder/grader/src/kernel_builder_grader/grader.py"
+    ],
+    "upstream_seed_paths": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/kernel_builder/grader/src/kernel_builder_grader/grader.py",
+      "callable": "_run_evaluation",
+      "candidate_argument": "positional",
+      "cwd": "examples/kernel_builder",
+      "score_key": "cycles",
+      "score_direction": "minimize",
+      "baseline_path": "examples/kernel_builder/seed/kernel_builder.py",
+      "dependencies": [
+        "coral (installed from pinned checkout)",
+        "numpy",
+        "scipy",
+        "pyyaml",
+        "omegaconf"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced.",
+      "kwargs": {
+        "utils_path": "taskdata/frozen_problem.py",
+        "timeout": 120,
+        "python_cmd": [
+          "{python}"
+        ],
+        "params": {
+          "forest_height": 10,
+          "rounds": 16,
+          "batch_size": 256,
+          "iterations": 8
+        }
+      },
+      "validity_key": "is_correct",
+      "validation": {
+        "kind": "official_seed_common_cli_smoke",
+        "passed": true,
+        "status": "completed",
+        "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+        "seconds": 1.21,
+        "candidate_sha256": "2c298fe29691004a21fa454e7d02eb4a748b481c756139e71bf089127c27957f",
+        "evaluator_sha256": "e70c139c10e8027077d0a526fd7f940bf676130e08fe252623030766319fd4fc",
+        "score": 11910,
+        "valid": true,
+        "report": "validation/upstream-gap-smoke-early.json"
+      }
+    },
+    "execution_sources": [
+      "https://github.com/Human-Agent-Society/CORAL/blob/0123dfb939b35228cf2c1fde224cd0561e727408/examples/kernel_builder/grader/src/kernel_builder_grader/grader.py"
+    ],
+    "setup_commands": [
+      "From the pinned CORAL checkout root: python -m pip install --no-deps . (required to supply CORAL distribution metadata, even when its source is importable).",
+      "python -m pip install numpy scipy pyyaml omegaconf"
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "integration_smoke",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "official_seed_common_cli_smoke",
+      "passed": true,
+      "status": "completed",
+      "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+      "seconds": 1.21,
+      "candidate_sha256": "2c298fe29691004a21fa454e7d02eb4a748b481c756139e71bf089127c27957f",
+      "evaluator_sha256": "e70c139c10e8027077d0a526fd7f940bf676130e08fe252623030766319fd4fc",
+      "score": 11910,
+      "valid": true,
+      "report": "validation/upstream-gap-smoke-early.json"
+    },
+    "execution_evidence": [
+      {
+        "report": "validation/upstream-gap-smoke-early.json",
+        "candidate_label": "upstream_seed",
+        "status": "completed",
+        "valid": true,
+        "score": 11910
+      }
+    ]
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "kernel",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "aevo-anthropic-performance-take-home",
+      "paper_ids": [
+        "aevo"
+      ],
+      "name": "Anthropic performance take-home",
+      "description": "Anthropic performance take-home",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2605.13821",
+          "type": "paper",
+          "locator": "Section 5.1; Appendix C.1"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "simulated machine cycles",
+        "paper_metric": "simulated machine cycles",
+        "paper_direction": "minimize",
+        "direction": "minimize",
+        "benchmark": "Anthropic performance take-home",
+        "protocol": "specified_only",
+        "source_locator": "Section 5.1; Appendix C.1"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Paper task identified; evaluator invocation not yet verified."
+        ]
+      },
+      "limitations": [
+        "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+        "Paper cites Anthropic original_performance_takehome commit 5452f74; this is a simulated VLIW SIMD optimization problem, not a GPU kernel benchmark.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

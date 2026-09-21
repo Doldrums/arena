@@ -1,0 +1,564 @@
+{
+  "schema_version": "1.0",
+  "id": "funbo-ood-hartmann-6d",
+  "name": "OOD Hartmann 6D",
+  "description": "OOD Hartmann 6D: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "funbo"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2406.04824",
+      "type": "paper",
+      "locator": "Section 4 OOD-Bench and Appendix C.1"
+    },
+    {
+      "url": "https://arxiv.org/html/2406.04824v2",
+      "type": "paper",
+      "locator": "AppendixA Figures8/9; AppendixC.1 Table1"
+    },
+    {
+      "url": "https://github.com/boschresearch/MetaBO/blob/3f458bd32db340fbe2d5f072a92cfd782072342c/metabo/environment/objectives.py",
+      "type": "repository",
+      "locator": "Paper-cited comparison repository; objective functions bra,gprice,hm3 (not original FunBO source)"
+    },
+    {
+      "url": "https://github.com/boschresearch/MetaBO/tree/3f458bd32db340fbe2d5f072a92cfd782072342c",
+      "type": "repository",
+      "locator": "metabo/environment/objectives.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Deterministic scrambled Sobol grid on the AppendixC.1 domain; size729, seed0",
+    "notes": [
+      "CPU Python with numpy and scipy; no model credentials or training data",
+      "Pinned paper-cited MetaBO objective source (AGPL-3.0); its legacy training stack is not imported"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "simple regret and trials to optimum",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "OOD-Bench",
+    "protocol": "upstream",
+    "source_locator": "Section 4 OOD-Bench and Appendix C.1"
+  },
+  "execution": {
+    "repository": "https://github.com/boschresearch/MetaBO",
+    "commit": "3f458bd32db340fbe2d5f072a92cfd782072342c",
+    "upstream_path": "metabo/environment/objectives.py",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "adapters/recovered/source_funbo.py",
+      "evaluator_scope": "repository",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "hartmann-6",
+        "trials": 30,
+        "random_seed": 0
+      },
+      "score_key": "normalized_grid_simple_regret",
+      "score_direction": "minimize",
+      "baseline_path": "adapters/recovered/seeds/source_funbo.py",
+      "baseline_scope": "repository",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment": {
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "return_style": "dict",
+      "validity_key": "validity",
+      "implementation_label": "paper-guided reconstructed FunBO OOD evaluator using cited MetaBO objectives",
+      "notes": "New SciPy GP loop using AppendixC.1 hyperparameters; original FunBO evaluator and Sobol seed unavailable. MetaBO is the paper-cited comparison/objective source, not the FunBO implementation. Figure8 EI interface retained. Original normalized/sign-reversed MetaBO definitions are inverted for Branin, Goldstein-Price and Hartmann3.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "runtime": {
+          "python": "3.12.14",
+          "numpy": "2.5.3",
+          "scipy": "1.18.1",
+          "ioh": "0.3.18"
+        },
+        "metrics": {
+          "score": 0.641784749583701,
+          "normalized_grid_simple_regret": 0.641784749583701,
+          "validity": true,
+          "direction": "minimize",
+          "metric": "normalized_grid_simple_regret",
+          "raw_simple_regret": 1.6778356750986667,
+          "best_objective": -0.9365467655207157,
+          "grid_optimum": -2.6143824406193823,
+          "trials_to_grid_optimum": null,
+          "candidate_calls": 30,
+          "initial_evaluations": 1,
+          "trials": 30,
+          "grid_size": 729,
+          "dimension": 6,
+          "random_seed": 0,
+          "numerical_jitter": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "grid_sha256": "35e0c797cf148fc4dc116d1c059931534618892e4aade38ce0f5b32799d96afe",
+          "objective_grid_sha256": "77517432a45ea0084a645fb94d97ace8f44ec667fd605e4e4d1529cc42ccca0f",
+          "objective_source_sha256": "5982f8883406d83570116e5c741fc0f57c34d372e41bd2c680700c35388b50e7",
+          "selected_indices": [
+            119,
+            554,
+            227,
+            109,
+            488,
+            298,
+            617,
+            133,
+            597,
+            65,
+            93,
+            581,
+            160,
+            445,
+            7,
+            198,
+            117,
+            719,
+            421,
+            37,
+            600,
+            396,
+            520,
+            31,
+            534,
+            92,
+            602,
+            610,
+            133,
+            133,
+            133
+          ],
+          "profile": "paper_guided_reconstructed_ood",
+          "validation_scope": "finite original-form objective values and valid acquisition indices; no paper reproduction"
+        },
+        "seconds": 0.01084,
+        "upstream_reproduction": false
+      }
+    },
+    "setup_instructions": [
+      {
+        "argv": [
+          "python",
+          "-m",
+          "pip",
+          "install",
+          "numpy",
+          "scipy"
+        ],
+        "cwd": ".",
+        "source_url": "https://arxiv.org/html/2406.04824v2",
+        "notes": "Dependencies of the repository reconstruction, not original FunBO setup commands."
+      }
+    ],
+    "task_setup_instructions": [
+      {
+        "argv": [
+          "python",
+          "-m",
+          "pip",
+          "install",
+          "numpy",
+          "scipy"
+        ],
+        "cwd": ".",
+        "source_url": "https://arxiv.org/html/2406.04824v2",
+        "notes": "Dependencies of the repository reconstruction, not original FunBO setup commands."
+      }
+    ],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Paper-guided reconstruction, not the original FunBO implementation or a paper-result reproduction. No dedicated official FunBO source repository was verified.",
+      "AppendixC.1 Table1 domains, grid cardinalities, fixed zero-mean RBF GP lengthscales/variance/noise are preserved; one initial worst grid point and30 acquisition decisions follow Figures8/9.",
+      "Original grid/seed not published in inspected sources: scipy.stats.qmc.Sobol(scramble=True,seed=0) creates a fixed dyadic sequence, truncated to the exact paper grid size. The returned grid and objective SHA256 values identify it.",
+      "Reported score is normalized simple regret relative to the same discrete grid optimum; raw regret and trials-to-grid-optimum are retained. It is not error relative to an unknown continuous optimum or the two-term FunSearch training reward.",
+      "GP prediction is implemented with SciPy Cholesky, including Gaussian likelihood variance as in GPy.predict; bounded numerical jitter, if needed, is reported. Candidate returns a validated integer index from predictive mean/variance arrays and incumbent.",
+      "The seed is expected improvement with the paper Figure8 interface; no discovered FunBO AF or MetaBO policy result is claimed."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "bo_acquisition",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No dedicated official FunBO evaluator repository was verified. The nine OOD adapters are explicitly attributed paper-guided reconstructions using the paper-cited MetaBO objective source.",
+    "Exact original Sobol points and some standard-objective internal parameters are unavailable; assumptions and fingerprints are documented per task.",
+    "No full FunSearch discovery or complete paper experiment has been reproduced.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "OOD Hartmann 6D",
+    "slug": "ood-hartmann-6d",
+    "description": "OOD Hartmann 6D: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "OOD-Bench",
+    "dataset": "Deterministic scrambled Sobol grid on the AppendixC.1 domain; size729, seed0",
+    "metric": "normalized_grid_simple_regret",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2406.04824",
+    "source_locator": "Section 4 OOD-Bench and Appendix C.1",
+    "upstream_path": "metabo/environment/objectives.py",
+    "requirements": [
+      "CPU Python with numpy and scipy; no model credentials or training data",
+      "Pinned paper-cited MetaBO objective source (AGPL-3.0); its legacy training stack is not imported"
+    ],
+    "execution_notes": [
+      "Paper-guided reconstruction, not the original FunBO implementation or a paper-result reproduction. No dedicated official FunBO source repository was verified.",
+      "AppendixC.1 Table1 domains, grid cardinalities, fixed zero-mean RBF GP lengthscales/variance/noise are preserved; one initial worst grid point and30 acquisition decisions follow Figures8/9.",
+      "Original grid/seed not published in inspected sources: scipy.stats.qmc.Sobol(scramble=True,seed=0) creates a fixed dyadic sequence, truncated to the exact paper grid size. The returned grid and objective SHA256 values identify it.",
+      "Reported score is normalized simple regret relative to the same discrete grid optimum; raw regret and trials-to-grid-optimum are retained. It is not error relative to an unknown continuous optimum or the two-term FunSearch training reward.",
+      "GP prediction is implemented with SciPy Cholesky, including Gaussian likelihood variance as in GPy.predict; bounded numerical jitter, if needed, is reported. Candidate returns a validated integer index from predictive mean/variance arrays and incumbent.",
+      "The seed is expected improvement with the paper Figure8 interface; no discovered FunBO AF or MetaBO policy result is claimed."
+    ],
+    "implementation_status": "paper_guided_reconstruction",
+    "evaluator_adapter": {
+      "evaluator_path": "adapters/recovered/source_funbo.py",
+      "evaluator_scope": "repository",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "hartmann-6",
+        "trials": 30,
+        "random_seed": 0
+      },
+      "score_key": "normalized_grid_simple_regret",
+      "score_direction": "minimize",
+      "baseline_path": "adapters/recovered/seeds/source_funbo.py",
+      "baseline_scope": "repository",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment": {
+        "OPENBLAS_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "return_style": "dict",
+      "validity_key": "validity",
+      "implementation_label": "paper-guided reconstructed FunBO OOD evaluator using cited MetaBO objectives",
+      "notes": "New SciPy GP loop using AppendixC.1 hyperparameters; original FunBO evaluator and Sobol seed unavailable. MetaBO is the paper-cited comparison/objective source, not the FunBO implementation. Figure8 EI interface retained. Original normalized/sign-reversed MetaBO definitions are inverted for Branin, Goldstein-Price and Hartmann3.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "runtime": {
+          "python": "3.12.14",
+          "numpy": "2.5.3",
+          "scipy": "1.18.1",
+          "ioh": "0.3.18"
+        },
+        "metrics": {
+          "score": 0.641784749583701,
+          "normalized_grid_simple_regret": 0.641784749583701,
+          "validity": true,
+          "direction": "minimize",
+          "metric": "normalized_grid_simple_regret",
+          "raw_simple_regret": 1.6778356750986667,
+          "best_objective": -0.9365467655207157,
+          "grid_optimum": -2.6143824406193823,
+          "trials_to_grid_optimum": null,
+          "candidate_calls": 30,
+          "initial_evaluations": 1,
+          "trials": 30,
+          "grid_size": 729,
+          "dimension": 6,
+          "random_seed": 0,
+          "numerical_jitter": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "grid_sha256": "35e0c797cf148fc4dc116d1c059931534618892e4aade38ce0f5b32799d96afe",
+          "objective_grid_sha256": "77517432a45ea0084a645fb94d97ace8f44ec667fd605e4e4d1529cc42ccca0f",
+          "objective_source_sha256": "5982f8883406d83570116e5c741fc0f57c34d372e41bd2c680700c35388b50e7",
+          "selected_indices": [
+            119,
+            554,
+            227,
+            109,
+            488,
+            298,
+            617,
+            133,
+            597,
+            65,
+            93,
+            581,
+            160,
+            445,
+            7,
+            198,
+            117,
+            719,
+            421,
+            37,
+            600,
+            396,
+            520,
+            31,
+            534,
+            92,
+            602,
+            610,
+            133,
+            133,
+            133
+          ],
+          "profile": "paper_guided_reconstructed_ood",
+          "validation_scope": "finite original-form objective values and valid acquisition indices; no paper reproduction"
+        },
+        "seconds": 0.01084,
+        "upstream_reproduction": false
+      }
+    },
+    "repository_url": "https://github.com/boschresearch/MetaBO",
+    "repository_commit": "3f458bd32db340fbe2d5f072a92cfd782072342c",
+    "paper_metric": "simple regret and trials to optimum",
+    "paper_direction": "minimize",
+    "setup_commands": [
+      {
+        "argv": [
+          "python",
+          "-m",
+          "pip",
+          "install",
+          "numpy",
+          "scipy"
+        ],
+        "cwd": ".",
+        "source_url": "https://arxiv.org/html/2406.04824v2",
+        "notes": "Dependencies of the repository reconstruction, not original FunBO setup commands."
+      }
+    ],
+    "additional_sources": [
+      {
+        "url": "https://arxiv.org/html/2406.04824v2",
+        "type": "paper",
+        "locator": "AppendixA Figures8/9; AppendixC.1 Table1"
+      },
+      {
+        "url": "https://github.com/boschresearch/MetaBO/blob/3f458bd32db340fbe2d5f072a92cfd782072342c/metabo/environment/objectives.py",
+        "type": "repository",
+        "locator": "Paper-cited comparison repository; objective functions bra,gprice,hm3 (not original FunBO source)"
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "baseline_execution",
+      "passed": true,
+      "runtime": {
+        "python": "3.12.14",
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "ioh": "0.3.18"
+      },
+      "metrics": {
+        "score": 0.641784749583701,
+        "normalized_grid_simple_regret": 0.641784749583701,
+        "validity": true,
+        "direction": "minimize",
+        "metric": "normalized_grid_simple_regret",
+        "raw_simple_regret": 1.6778356750986667,
+        "best_objective": -0.9365467655207157,
+        "grid_optimum": -2.6143824406193823,
+        "trials_to_grid_optimum": null,
+        "candidate_calls": 30,
+        "initial_evaluations": 1,
+        "trials": 30,
+        "grid_size": 729,
+        "dimension": 6,
+        "random_seed": 0,
+        "numerical_jitter": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "grid_sha256": "35e0c797cf148fc4dc116d1c059931534618892e4aade38ce0f5b32799d96afe",
+        "objective_grid_sha256": "77517432a45ea0084a645fb94d97ace8f44ec667fd605e4e4d1529cc42ccca0f",
+        "objective_source_sha256": "5982f8883406d83570116e5c741fc0f57c34d372e41bd2c680700c35388b50e7",
+        "selected_indices": [
+          119,
+          554,
+          227,
+          109,
+          488,
+          298,
+          617,
+          133,
+          597,
+          65,
+          93,
+          581,
+          160,
+          445,
+          7,
+          198,
+          117,
+          719,
+          421,
+          37,
+          600,
+          396,
+          520,
+          31,
+          534,
+          92,
+          602,
+          610,
+          133,
+          133,
+          133
+        ],
+        "profile": "paper_guided_reconstructed_ood",
+        "validation_scope": "finite original-form objective values and valid acquisition indices; no paper reproduction"
+      },
+      "seconds": 0.01084,
+      "upstream_reproduction": false
+    }
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

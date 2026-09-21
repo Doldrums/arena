@@ -1,0 +1,92 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "py:matplotlib",
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 600,
+  "notes": [],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "combined_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/circle_packing",
+    "files_sha256": {
+      "README.md": "fcaf35c8c177596cdf61739771686bbc61503d61321c53372e9fa4f5c74246b5",
+      "config_phase_1.yaml": "9b8de628dba5938e4885b5bac969eef9a500d42b9b4f28745f455f9dc7a920e8",
+      "config_phase_1_anthropic.yaml": "382b56ed44a1e8eb48a1670c9395b3b438a433b0ef8c7f9110cd838a3bd8ec1b",
+      "config_phase_2.yaml": "6cd950e5c97285da0cf5960f036900ac3a4955582be15d7de29e7bb9e85d341d",
+      "config_phase_2_anthropic.yaml": "c5127713f29e7ee604f17bd7c198d72658025430b2f102118f70c485babfe83a",
+      "evaluator.py": "a1708613eefca455f8198dc46743a76e97b760b15f99ee6c3009d6803eda6812",
+      "initial_program.py": "d432ec2da7c307180a4dafff1be1ca47cf37be07c40b12c5fedae69417fd639e",
+      "requirements.txt": "7eaf904bf5ff7c93d82be99aa0184701e2398ccc8e8a83a299f453c366e7767d"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/circle_packing` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-math-circle-packing",
+  "name": "SCiEL: 26 circles in a unit square",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Pack 26 nonoverlapping circles inside the unit square to maximize the sum of radii, normalized by target 2.635.",
+  "benchmark": "SCiEL source example circle_packing",
+  "paper_metric": "combined_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/circle_packing/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/circle_packing/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

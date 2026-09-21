@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "id": "deliberate-evolution-lsr-synth-materials",
+  "name": "LSR-Synth Materials",
+  "description": "LSR-Synth Materials",
+  "paper_ids": [
+    "deliberate-evolution"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2606.04360",
+      "type": "paper",
+      "locator": "Appendix E.1 Table 6 and real-world experiment"
+    },
+    {
+      "url": "https://github.com/Xinyu-Pang/Deliberate-Evolution/tree/18ae1f1c33a0dfa3c81298bba035036d3b23ecaf",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "25 problems",
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "normalized mean squared error",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Appendix E.1 Table 6 and real-world experiment"
+  },
+  "execution": {
+    "repository": "https://github.com/Xinyu-Pang/Deliberate-Evolution",
+    "commit": "18ae1f1c33a0dfa3c81298bba035036d3b23ecaf",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Official repository is README-only at pinned commit."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "lsr_equation",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "network:huggingface pkuHaowei/llm-srbench",
+        "py:scipy"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No root license was found in the inspected upstream tree; preserve upstream licensing conditions and do not assume redistribution rights.",
+    "Paper states 240 problems in main text and 239 in Appendix E.1. Official repository contains only README.md at pinned commit.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "LSR-Synth Materials",
+    "slug": "lsr-synth-materials",
+    "description": "LSR-Synth Materials",
+    "benchmark": null,
+    "dataset": "25 problems",
+    "metric": "normalized mean squared error",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2606.04360",
+    "source_locator": "Appendix E.1 Table 6 and real-world experiment",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": "Official repository is README-only at pinned commit."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "science_tier": 2,
+    "artifact": "equation",
+    "domain": "natural_science",
+    "area": "materials_science",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "network"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

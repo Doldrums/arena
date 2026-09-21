@@ -1,0 +1,71 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "service:llm_api",
+    "env:OPENROUTER_API_KEY",
+    "environment:Terminal-Bench"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "llm_agent_env",
+  "unsupported_reason": "Candidates are LLM agents scored inside the Terminal-Bench environment (tools, web, games or code sandboxes); the environment and model access are external.",
+  "protocol_description": "Not executable in this suite: Candidates are LLM agents scored inside the Terminal-Bench environment (tools, web, games or code sandboxes); the environment and model access are external.",
+  "id": "aevo-terminal-bench",
+  "name": "Terminal-Bench",
+  "paper_ids": [
+    "aevo"
+  ],
+  "description": "Terminal-Bench",
+  "benchmark": "Terminal-Bench",
+  "paper_metric": "task success rate",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2605.13821",
+      "type": "paper",
+      "locator": "Section 5.1; Appendix C.1"
+    }
+  ],
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Paper cites Anthropic original_performance_takehome commit 5452f74; this is a simulated VLIW SIMD optimization problem, not a GPU kernel benchmark.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "aevo",
+      "title": "Harnessing Agentic Evolution",
+      "url": "https://arxiv.org/pdf/2605.13821"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

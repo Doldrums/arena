@@ -60,20 +60,28 @@ For a code change, run the relevant checks from [Checks](#checks). Tests should 
 
 ## Tasks
 
-A task collection registration belongs in `registry/task-sources/` and pins a full source commit. Generated task metadata is committed in `registry/catalog.json`. Catalog records retain the original source path, hash, contract, metric direction and requirements.
+Task definitions and evaluators live in `tasks/suite/`, with shared modules in `tasks/suite/_lib/`. Add or update them in the same Arena PR. The bundled collection is registered in `registry/task-sources/arena-tasks.json`; `registry/task-library-manifest.json` binds the library files by SHA-256. Workers use this local library, including when Arena is installed from a wheel.
 
-To update the collection, rebuild from the source checkout matching its registration:
+Update the task's `task.json` and `problem.json`, its evaluator and reference candidate, and the corresponding records in `tasks/catalog/tasks.json` and `tasks/suite/index.json`. Retain paper citations, original implementation notices, metric directions and protocol limits. Refresh the integrity manifest and derived board data:
 
 ```sh
-python scripts/sync_task_catalog.py /path/to/task-source
-python scripts/build_insights.py
+python scripts/build_task_library.py --write
+python scripts/sync_task_catalog.py
 python scripts/build_search_families.py
-python scripts/build_references.py /path/to/task-source
+python scripts/build_participants.py
+python scripts/build_insights.py
+python scripts/build_references.py
 python -m arena.registry validate
 python -m arena.references validate
 ```
 
-The importer reads the exact registered Git revision. It does not fetch, install dependencies or execute tasks. A new collection also needs importer and merge support; adding a registration alone is insufficient. Review the generated metadata together with the source pin.
+These commands read the local library without executing task code or fetching another collection. Review the source changes together with the generated hashes and metadata. Previously recorded measurements retain their original evaluator identity; changing an evaluator does not turn those measurements into results from the new code.
+
+Use `python tasks/run.py doctor TASK_ID` to inspect task-specific requirements. Datasets, simulators and benchmark packages remain explicit environment setup. A small set of unchanged native source dependencies and single-file benchmark seeds has a separate immutable lock in `tasks/catalog/source-assets.json`. Prepare only the required task's assets with `python tasks/scripts/prepare_source_assets.py --task TASK_ID`; add `--check` for a read-only check. This command verifies hashes and never runs downloaded code. Evaluation itself does not download source assets.
+
+Prepared datasets, downloaded implementations and runtime caches live outside the task library. Set `ARENA_TASK_CACHE_DIR` to select their location; the default is `$XDG_CACHE_HOME/empira/tasks` or `~/.cache/empira/tasks`. The registered task sources remain unchanged during setup and evaluation.
+
+For a reviewed local candidate, `python tasks/run.py evaluate TASK_ID --candidate /absolute/path/to/program.py` executes the task directly on the host. Generated candidates should use the Arena worker's canonical evaluator and configured isolation. No model calls are needed for the included CPU reference tasks.
 
 An evaluator declaration is not a completed conformance run. Where evaluation is not yet defined, retain the source status and describe the scientific task without inventing validation or historical claims.
 
@@ -128,7 +136,7 @@ Changes to published snapshots and deployments require review independently of e
 
 ## Running the services
 
-The local read-only board starts with `python -m arena`. It defaults to `outputs/` and `autoresearch/`; repeat `--root` to select other archive directories. The service binds to loopback. Installed wheels include the interface, registry and schemas.
+The local read-only board starts with `python -m arena`. It defaults to `outputs/` and `autoresearch/`; repeat `--root` to select other archive directories. The service binds to loopback. Installed wheels include the interface, task library, registry and schemas.
 
 ### Private control and workers
 
@@ -182,6 +190,7 @@ After installing the development dependencies from [README](README.md#validation
 
 ```sh
 python scripts/check_repository_policy.py
+python scripts/build_task_library.py --check
 python -m arena.registry validate
 python scripts/check_releases.py
 python scripts/audit_framework_coverage.py --check

@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0",
+  "id": "science-tcs-sorting-network-17",
+  "name": "Size-efficient sorting networks on 17 wires",
+  "description": "Construct a compare-exchange network that sorts all 17-input sequences with as few comparators as possible; correctness is certified over all 131,072 Boolean inputs (zero-one principle). The best known network has 71 comparators (depth 12); the proven lower bound is 63, so the optimal size is open. The seed odd-even transposition network uses 136 comparators.",
+  "paper_ids": [
+    "science-tcs"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1507.01428",
+      "type": "paper",
+      "locator": "Codish et al.: comparator networks, zero-one verification and the size/depth optimisation problem for 17 to 20 inputs."
+    },
+    {
+      "url": "https://bertdobbelaere.github.io/sorting_networks.html#N17L71D12",
+      "type": "benchmark",
+      "locator": "Author-maintained list, 17 inputs: best known 71 compare-exchanges (depth 12), size bounds 63..71, inspected 2026-09-20."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "None downloaded; mathematical constructions or locally generated synthetic instances."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Size-efficient sorting networks on 17 wires",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_sorting_network",
+    "science_family": "science_sorting_network",
+    "parameters": {
+      "n": 17,
+      "max_comparators": 4096,
+      "reference": 71
+    },
+    "interface": "construct() -> ordered list of integer pairs (i, j), 0 <= i < j < N. Each compare-exchange writes min to wire i and max to j. The network must sort every input. Score: comparator count, minimized; parallel depth is reported separately. Maximum 4096 comparators.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "theoretical_computer_science"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_sorting_network",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independently recreated construction benchmark; the 71-comparator reference value is taken from the list and is not embedded as a verified fixture.",
+    "Reaching 71 reproduces a known network; only fewer than 71 comparators would be a new bound and must be checked against current literature.",
+    "Depth is diagnostic only."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "evidence": "validation/science-report.json",
+    "tests": "tests/test_science_tcs.py"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "theoretical_computer_science",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Greedy Best-First Search for the Optimal-Size Sorting Network Problem",
+        "url": "https://doi.org/10.1016/j.procs.2019.09.199",
+        "task_relation": "The local task restricts this problem to 17 wires and exhaustively checks binary inputs. Its reference size is not claimed as a current record.",
+        "primary_goal": "Construct sorting networks with fewer comparators.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Minimize comparators in a sorting network on 17 inputs.",
+    "importance_rationale": "Optimal-size sorting networks are the explicit combinatorial optimization target of the paper.",
+    "reason": "The scientific target is the network construction itself, not an incidental test of a general agent.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

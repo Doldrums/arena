@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0",
+  "id": "ready-dedqn-operator-selection",
+  "name": "DEDQN operator selection",
+  "description": "DEDQN operator selection task evaluated in READY: Reward Discovery for Meta-Black-Box Optimization.",
+  "paper_ids": [
+    "ready"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2601.21847",
+      "type": "paper",
+      "locator": "Sections 4.1 and 4.4"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "BBOB final objective cost",
+    "paper_metric": "BBOB final objective cost",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "BBOB",
+    "protocol": "specified_only",
+    "source_locator": "Sections 4.1 and 4.4"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "8 training and 16 held-out BBOB functions. Anonymous code URL: https://anonymous.4open.science/r/ICML_READY-747F; not verified as an immutable public release."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "dataset:BBOB"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "dataset",
+      "unsupported_reason": "Fitness requires the BBOB data and training pipeline, which are not redistributed with the suite."
+    }
+  },
+  "limitations": [
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "DEDQN operator selection",
+    "slug": "dedqn-operator-selection",
+    "description": "DEDQN operator selection task evaluated in READY: Reward Discovery for Meta-Black-Box Optimization.",
+    "benchmark": "BBOB",
+    "dataset": null,
+    "metric": "BBOB final objective cost",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2601.21847",
+    "source_locator": "Sections 4.1 and 4.4",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [
+      "8 training and 16 held-out BBOB functions. Anonymous code URL: https://anonymous.4open.science/r/ICML_READY-747F; not verified as an immutable public release."
+    ],
+    "setup_commands": [],
+    "run_commands": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "reward",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

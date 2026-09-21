@@ -1,0 +1,87 @@
+{
+  "protocol": "recreated",
+  "family": "science_biology_b06",
+  "direction": "minimize",
+  "contract": "deconvolve(spatial_counts, reference_profiles, coordinates) -> nonnegative spots x cell_types absolute abundances. Inputs include training genes only and calibrated per-cell signatures. Minimize Poisson NLL of separate held-out genes, using trusted full reference profiles. Known constructed-mixture composition is diagnostic only.",
+  "parameters": {},
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "file:../../.cache/science-biology/B06.json",
+    "file:../../.cache/science-biology/B06.manifest.json"
+  ],
+  "timeout": 600,
+  "notes": [
+    "Independently written bounded scientific adaptation. Source data and SHA256 preparation receipts required. See docs/BIOLOGY_EXPANSION.md and task limitations; fixture tests never establish source benchmark reproduction."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-biology-spatial-deconvolution",
+  "name": "Biology: Spatial transcriptomic cell abundance inference",
+  "paper_ids": [
+    "science-biology_expansion"
+  ],
+  "description": "Infer nonnegative spatial cell counts from reference expression signatures and evaluate separate held-out genes using a count likelihood.",
+  "benchmark": "Biology: Spatial transcriptomic cell abundance inference",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://www.nature.com/articles/s41587-021-01139-4",
+      "type": "paper",
+      "locator": "cell2location Methods: reference signatures, spatial count decomposition and constructed-mixture validation."
+    },
+    {
+      "url": "https://github.com/vitkl/cell2location_paper",
+      "type": "repository",
+      "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+    }
+  ],
+  "limitations": [
+    "Fixed absolute-scale signatures and local Poisson likelihood are a reduced adaptation; full cell2location accounts for additional technical variation. Real-tissue abundance truth is not assumed.",
+    "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+    "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-biology_expansion",
+      "title": "Biology and bioinformatics: source-based research tasks",
+      "url": "https://papers.neurips.cc/paper_files/paper/2023/file/cac723e5ff29f65e3fcbb0739ae91bee-Paper-Datasets_and_Benchmarks.pdf"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Infer the cellular composition of tissue locations from spatial transcriptomic counts.",
+    "importance_rationale": "Mapping cell types in tissue helps investigate tissue organization and interactions between cellular populations.",
+    "papers": [
+      {
+        "title": "Cell2location maps fine-grained cell types in spatial transcriptomics",
+        "url": "https://www.nature.com/articles/s41587-021-01139-4",
+        "primary_goal": "Resolve spatial locations and abundance of fine-grained cell types by combining reference single-cell signatures with spatial transcriptomics.",
+        "task_relation": "The local nonnegative cell-count deconvolution and held-out-gene likelihood preserve this inference target. They do not reproduce the full cell2location hierarchy or establish that inferred cell counts are experimentally correct.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited primary paper develops or applies a solution to the stated scientific problem; its task is not merely an agent or general-purpose framework evaluation. Support concerns the scientific problem family, not a claim of new discovery or full-paper reproduction by this local task.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "biology",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  }
+}

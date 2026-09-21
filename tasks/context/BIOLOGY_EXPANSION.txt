@@ -1,0 +1,79 @@
+# Biology expansion implementation and validation
+
+Implemented 2026-09-20 against proposals B01–B12 in `SCIENTIFIC_DATASET_EXPANSION.md`. This page distinguishes an implemented evaluator from a benchmark that has actually run on its source data. **Twelve interfaces/evaluators/seeds are implemented; eight source protocols have passed actual runs; four still require source data or a verified upstream simulator.** Unit fixtures are never reported as biological benchmark evidence.
+
+## Semantic duplicate audit
+
+The catalog was searched by scientific objective and data/interface, not just task name. B04 upgrades the existing `the-station-single-cell-batch-integration` ID. It retains the original task identity but introduces a clearly named public scIB adaptation; private Station scores are not reproduced. B02 is different from Station's forward RNA modeling and the existing OpenVaccine reactivity task: the candidate designs a sequence for a target fold. B09 uses measured fluorescence acquisitions rather than the existing dirty-document denoising competition. B10 estimates biochemical parameters from observations, unlike the existing Robertson ODE time-integrator task. The other nine proposal objectives had no matching family in the inspected catalog.
+
+All new biology evaluators and seeds were independently written from scientific specifications. Official data and mathematical definitions are reused; upstream candidate/evaluator implementations were not copied. Every entry is labeled `area=biology`, `domain=natural_science`, and `scientific_contribution=method`. Better benchmark scores do not alone constitute new biological discoveries. B08/B11 are explicitly source simulations; B02 is computational target design; the other protocols target measured data.
+
+## Actual execution status
+
+| Proposal | Canonical task suffix / identity | Implementation | Source execution evidence |
+|---|---|---|---|
+| B01 | `science-biology-proteingym-fitness` | Ready, bounded source protocol | Three measured ProteinGym assays; position-disjoint support/query split. Seed mean Spearman **0.0** (deliberately weak position-specific additive seed). |
+| B02 | `science-biology-eterna-rna-design` | Ready, bounded source protocol | Twelve official Eterna100-v2 targets; ViennaRNA2.6.4; **9/12** solved under64 calls/target. |
+| B03 | `science-biology-gears-perturbation` | Requires setup | GEARS official Harvard Dataverse metadata endpoints6154020,6154417,6154416 returned HTTP403 during access attempts. H5AD conversion and evaluator implemented. |
+| B04 | `the-station-single-cell-batch-integration` | Ready; existing ID upgrade | Official scIB pancreas raw counts, 1,000 cells, 500 genes, nine genuine technology batches; local biology/mixing score **0.566026**. Labels stay evaluator-only. |
+| B05 | `science-biology-isotope-flux` | Requires setup | Needs a verified source-specific isotope atom-map forward simulator and observed isotope blocks. Source FML/MATLAB fits are not substituted as ground truth. |
+| B06 | `science-biology-spatial-deconvolution` | Requires setup | Needs matched source spatial counts and calibrated single-cell reference signatures. Upstream inferred abundances are not accepted as measured composition truth. |
+| B07 | `science-biology-phylogenetic-likelihood` | Ready, bounded source protocol | Empirical RAxML tutorial primate alignment,12 taxa×898 sites; independent JC69 negative log likelihood/site **7.177909**. |
+| B08 | `science-biology-cami-metagenome-assembly` | Requires setup | Needs a licensed source-derived CAMI community plus metaQUAST5.3.0. No locally generated replacement data. |
+| B09 | `science-biology-fmd-microscopy-denoising` | Ready, bounded source protocol | Twelve official FMD test fields, fixed 128×128 central crops from acquired noisy and averaged-reference pairs; seed PSNR **30.60957 dB**. |
+| B10 | `science-biology-petab-kinetic-inference` | Ready, bounded source protocol | Measured Brannmark2010 PEtab insulin-signaling observations; complete dose conditions held out; seed held-out Gaussian NLL **7.829625**. |
+| B11 | `science-biology-beeline-regulatory-network` | Ready, bounded source protocol | Official BEELINE GSD simulated expression example; all genes eligible as regulators; average precision **0.282254**. |
+| B12 | `science-biology-casanovo-peptide-decoding` | Ready, bounded source protocol | Twelve unique, unmodified peptides from official measured mouse spectra; precision-coverage area **0.173247**. |
+
+Scores are local metrics and are not claimed to reproduce original paper leaderboards. These subsets are deliberately small and development-visible. B01 currently includes single substitutions, B07 one alignment, B11 one network, and B12 a source sample rather than the full nine-species benchmark. Generalization to unseen proteins, motifs, clades, networks or species requires expanded source datasets and a fresh frozen-candidate evaluation.
+
+Actual per-case results, source-kind flags and runtime measurements: [biology-expansion-source-runs.json](../validation/biology-expansion-source-runs.json). The first six source runs passed in that report. The two additional measured-data runs (B04/B09) and generated-package rechecks are recorded in `validation/science-expansion-report.json`. Data preparation, compiler work, downloads and testing are excluded from candidate-evaluation timings.
+
+## Scientific verification
+
+[24 unit/interface tests](../validation/biology-expansion-tests.txt) pass, including malformed candidate rejection, no query-label arguments, perturbation-mean baseline normalization, biological conservation versus batch mixing, Poisson count likelihood, closed-form two-taxon JC69 probability, missing-data marginalization, invalid/duplicate taxa, reference-aware assembly penalties, fluorescence PSNR/SSIM, tie-correct network average precision, peptide neutral-mass constraints, isotope mass balance, trusted simulator hashes, kinetic objective budgets and group-disjoint source splits. Tests use explicitly identified fixtures; the metaQUAST process test is a mock, not an actual CAMI run.
+
+The independent Brannmark ODE transcription was cross-checked against all source `simulatedData` rows at published nominal parameters. Maximum absolute difference was **0.0008390**; maximum relative difference with denominator floor1 was **1.43×10⁻⁵**. This comparison is recorded in [biology-petab-crosscheck.json](../validation/biology-petab-crosscheck.json). Published fitted parameters are used only for that oracle comparison, never candidate training inputs. The evaluator re-equilibrates conserved receptor/IRS/X pools and explicitly restarts integration at stimulus discontinuities.
+
+The RNA engine is exactly ViennaRNA2.6.4 at37°C. Its PyPI source distribution initially failed under this host's Clang due to a redundant `template` keyword in vendored dlib C++. A one-line compiler compatibility patch produced a working wheel; RNA thermodynamic code is unchanged. Source hash and exact patch are in [vienna-compatibility.json](../data/science/biology_expansion/vienna-compatibility.json). A compatible upstream binary wheel needs no patch. Direct candidate calls to ViennaRNA outside the provided oracle cannot be counted in the current trusted in-process execution model; this is an honest budget-policy limit, not an enforced sandbox claim.
+
+## Reproduce source preparation and runs
+
+The declared runtime is Python3.10+, NumPy/SciPy, and ViennaRNA2.6.4 for B02. B04 preparation additionally uses h5py; B09 uses Pillow. The source pancreas file is316MB and the FMD test archive43MB; normalized evaluation bundles are much smaller. Data preparation records SHA256 checksums and refuses modified cached files. No dataset is downloaded by an evaluator. Source data remain in ignored local caches; repository manifests pin URLs and digests. Original dataset redistribution/use terms remain applicable, independently of code licenses.
+
+```bash
+.cache/sciel-env/bin/python scripts/prepare_biology_expansion.py --all
+.cache/sciel-env/bin/python -m unittest discover -s tests -p test_science_biology_expansion.py -v
+```
+
+`--all` prepares the eight automatic protocols B01/B02/B04/B07/B09/B10/B11/B12. `--offline` requires already cached source files. Each normal task evaluator then loads `.cache/science-biology/Bxx.json` and its `Bxx.manifest.json`; `SCIEL_BIOLOGY_DATA` can override that directory. Missing data, wrong source-kind, changed hashes, invalid candidates and failed simulators produce explicit failures. The source manifest is [sources.json](../data/science/biology_expansion/sources.json).
+
+```bash
+.cache/sciel-env/bin/python scripts/prepare_biology_expansion.py --proposal B03 \
+  --h5ad /path/to/official/perturb_processed.h5ad \
+  --source-url https://dataverse.harvard.edu/api/access/datafile/6154020
+.cache/sciel-env/bin/python scripts/prepare_biology_expansion.py --proposal B04 \
+  --h5ad /path/to/official/scib-study.h5ad \
+  --batch-key batch --label-key cell_type --source-url https://example-official-dataset.org/source
+```
+
+The last URL is an illustrative placeholder and must be replaced with the actual official dataset URL. B03 requires `anndata` only for preparation. Its converter groups complete perturbations, chooses the gene panel from training perturbations only, and computes shifts relative to observed controls. B04 uses a declared transductive subset of at most1000 cells and500 variable genes; its cell-type labels never enter the candidate API. The input matrix must have the declared source count/normalized-count semantics; do not relabel imputed values as measurements.
+
+## Source bundle schemas for remaining adapters
+
+`--import-bundle /path/to/reviewed-source-bundle.json` stages a reviewed prepared bundle after provenance checks. It does not manufacture scientific observations. Every bundle requires `schema_version:1`, its `proposal_id`, `source_kind` (`measured`, `upstream_simulation`, `computational_targets` or `mixed`), `sources` with actual `https://` URL plus raw-source SHA256, a precise `split_description`, and nonempty `cases`. Per-case fields are:
+
+| Proposal | Required source-derived case fields |
+|---|---|
+| B03 | `id`, `training_shifts`, `training_perturbations`, `query_shifts`, `query_perturbations`, `gene_context`; shifts are perturbation×gene, complete conditions disjoint. |
+| B04 | `id`, `counts`, `batches`, `cell_types`; optional `neighbors`. Genuine batch labels, at least two biological types and at least one type spanning batches. |
+| B05 | `id`, `network` (`stoichiometry`, `bounds`, `feasible_initial_fluxes`), `atom_maps`, `measurements`, positive `standard_deviations`, disjoint `training_indices`/`evaluation_indices`, `forward_model` (`path`, `sha256`) exporting `simulate(fluxes)`, optional `budget`. The trusted simulator must be independently verified against the original isotope model. |
+| B06 | `id`, `spatial_counts` (spots×genes), `reference_profiles` (genes×types), `coordinates`, disjoint `training_genes`/`evaluation_genes`; optional `known_abundances` only for explicitly constructed mixtures. Reference scale denotes absolute expected counts per cell. |
+| B08 | `id`, source `reads`, `library_metadata`, concealed `reference_genomes`; optional `quast_executable`, `min_contig`, size/time limits. Use metaQUAST5.3.0 and source community grouping. The evaluator computes reference-aware errors, never raw N50 as the objective. |
+| B09 | `id`, `noisy_image`, separately acquired `reference_image`, `metadata` including calibrated `data_range`, modality, specimen, acquisition and exposure identity. Preserve every repeated exposure/crop in one study split. |
+
+The trusted isotope/kinetic forward-model path is part of evaluator setup and hash-checked before import; it is not a candidate-supplied program. Flux intervals are checked for valid containment, but real-data interval calibration is not claimed without known-flux coverage experiments. Source model preparation remains the substantive missing work for B05.
+
+## Source attribution
+
+Each canonical task record in [biology_expansion.json](../catalog/science/biology_expansion.json) records its paper, relevant methods section, official repository, adaptation limits and labels. The principal sources are [ProteinGym](https://github.com/OATML-Markslab/ProteinGym), [Eterna100](https://github.com/eternagame/eterna100-benchmarking), [GEARS](https://github.com/snap-stanford/GEARS), [scIB](https://github.com/theislab/scib), [Theorell isotope models](https://github.com/JuBiotech/Supplement-to-Theorell-et-al.-Metabolic_Engineering-2024), [cell2location](https://github.com/vitkl/cell2location_paper), [RAxML-NG empirical tutorial](https://github.com/amkozlov/ng-tutorial), [CAMI II](https://github.com/CAMI-challenge/second_challenge_evaluation), [FMD](https://github.com/yinhaoz/denoising-fluorescence), [PEtab benchmark collection](https://github.com/Benchmarking-Initiative/Benchmark-Models-PEtab), [BEELINE](https://github.com/Murali-group/Beeline), and [Casanovo](https://github.com/Noble-Lab/casanovo).

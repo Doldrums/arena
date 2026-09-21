@@ -1,0 +1,55 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in computational geometry and the theory of spherical designs - special point configurations on the sphere whose empirical moments match those of the uniform distribution. A spherical 2-design on S^2 is a set of points whose first and second moments exactly equal those of the uniform sphere.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that places exactly 12 points on the unit sphere S^2 (in R^3) so that they form a spherical 2-design. Each point is normalized to unit length by the evaluator. The configuration must minimize the design defect:
+        defect = || mean_i(x_i) ||^2  +  || (3/N) * sum_i (x_i x_i^T) - I_3 ||_F^2
+    where the first term is the squared norm of the centroid (degree-1 condition, ideal 0) and the second is the squared Frobenius norm of the deviation of the scaled second-moment matrix from the 3x3 identity (degree-2 condition). A perfect 2-design has defect 0.
+
+    PERFORMANCE METRICS:
+    1. **defect**: The design defect above (PRIMARY OBJECTIVE - minimize toward 0)
+    2. **combined_score**: 1.0 / (1.0 + defect) (in (0,1], approaches 1 as defect approaches 0 - maximize)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

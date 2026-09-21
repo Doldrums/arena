@@ -1,0 +1,81 @@
+{
+  "protocol": "recreated",
+  "family": "evrptw",
+  "direction": "minimize",
+  "contract": "plan(instance) -> list of routes (lists of node ids; depot 0 implicit; charging stations may appear repeatedly). Vehicles have capacity, battery (1 unit per distance) and must respect customer time windows. Score: mean total distance",
+  "parameters": {
+    "n_instances": 3,
+    "n_customers": 25,
+    "n_stations": 4,
+    "seed": 0
+  },
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 120,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "a2dept-capacitated-electric-vehicle-routing-with-time-windows",
+  "name": "Capacitated Electric Vehicle Routing with Time Windows",
+  "paper_ids": [
+    "a2dept"
+  ],
+  "description": "Capacitated Electric Vehicle Routing with Time Windows",
+  "benchmark": "FrontierCO and high-constraint extensions",
+  "paper_metric": "mean normalized optimality gap",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.24043",
+      "type": "paper",
+      "locator": "Section 4; Appendix D Table 5"
+    }
+  ],
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "a2dept",
+      "title": "A2DEPT: Large Language Model-Driven Automated Algorithm Design via Evolutionary Program Trees",
+      "url": "https://arxiv.org/pdf/2604.24043"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Route battery-electric delivery vehicles subject to customer time windows, load limits and recharging requirements.",
+    "importance_rationale": "Feasible routing under battery and service constraints is necessary for practical electric freight operations. The task studies a simplified operational planning problem with an independently researched objective.",
+    "papers": [
+      {
+        "title": "The Electric Vehicle-Routing Problem with Time Windows and Recharging Stations",
+        "url": "https://doi.org/10.1287/trsc.2013.0490",
+        "task_relation": "Schneider, Stenger and Goeke formulate and solve E-VRPTW with recharging stations. The local package uses generated instances and its own evaluator, rather than claiming replication of their complete instance set.",
+        "primary_goal": "Optimize feasible electric-vehicle delivery routes while respecting time windows and battery charging constraints.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

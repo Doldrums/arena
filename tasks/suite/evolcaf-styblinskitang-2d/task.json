@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0",
+  "id": "evolcaf-styblinskitang-2d",
+  "name": "StyblinskiTang 2D",
+  "description": "StyblinskiTang 2D: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "evolcaf"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2404.16906",
+      "type": "paper",
+      "locator": "Section 4.3 Table 1"
+    },
+    {
+      "url": "https://github.com/FeiLiu36/EoH/tree/472545785c936dcfc863d2bc0d6109cf23c7ce62",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "cost-aware synthetic black-box optimization",
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "optimality gap under cost budget",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "cost-aware synthetic black-box optimization",
+    "protocol": "specified_only",
+    "source_locator": "Section 4.3 Table 1"
+  },
+  "execution": {
+    "repository": "https://github.com/FeiLiu36/EoH",
+    "commit": "472545785c936dcfc863d2bc0d6109cf23c7ce62",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "pip install ."
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install ."
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "."
+        ],
+        "cwd": "eoh"
+      }
+    ],
+    "notes": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "bo_cost_aware",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "The paper links examples/user_bo_caf in EoH, which is absent from the current pinned tree. New examples/bo_acquisition is not assumed equivalent to the original cost-aware task suite.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "StyblinskiTang 2D",
+    "slug": "styblinskitang-2d",
+    "description": "StyblinskiTang 2D: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "cost-aware synthetic black-box optimization",
+    "dataset": "cost-aware synthetic black-box optimization",
+    "metric": "optimality gap under cost budget",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2404.16906",
+    "source_locator": "Section 4.3 Table 1",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [],
+    "implementation_status": "paper_inventory_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

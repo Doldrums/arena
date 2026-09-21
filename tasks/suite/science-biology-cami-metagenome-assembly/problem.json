@@ -1,0 +1,88 @@
+{
+  "protocol": "recreated",
+  "family": "science_biology_b08",
+  "direction": "maximize",
+  "contract": "assemble(reads, library_metadata) -> bounded list of ACGTN contigs. Hidden reference genomes evaluated using metaQUAST 5.3.0. Score genome_fraction/(1+misassemblies+sequence_errors_per_100kb/1000); corrected NA50 diagnostic. metaQUAST and licensed CAMI community data must be staged; no synthetic replacement.",
+  "parameters": {},
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "file:../../.cache/science-biology/B08.json",
+    "file:../../.cache/science-biology/B08.manifest.json",
+    "bin:metaquast.py"
+  ],
+  "timeout": 600,
+  "notes": [
+    "Independently written bounded scientific adaptation. Source data and SHA256 preparation receipts required. See docs/BIOLOGY_EXPANSION.md and task limitations; fixture tests never establish source benchmark reproduction."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-biology-cami-metagenome-assembly",
+  "name": "Biology: Reference-aware environmental metagenome assembly",
+  "paper_ids": [
+    "science-biology_expansion"
+  ],
+  "description": "Reconstruct microbial contigs from CAMI-derived reads and score genome recovery with independent reference-aware misassembly and sequence-error penalties.",
+  "benchmark": "Biology: Reference-aware environmental metagenome assembly",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://www.nature.com/articles/s41592-022-01431-4",
+      "type": "paper",
+      "locator": "CAMI II Methods: simulated community datasets and assembly evaluation."
+    },
+    {
+      "url": "https://github.com/CAMI-challenge/second_challenge_evaluation",
+      "type": "repository",
+      "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+    }
+  ],
+  "limitations": [
+    "Requires source CAMI reads/reference genomes and metaQUAST5.3.0. No locally generated substitute is scored as CAMI. Local composite score differs from paper multi-metric ranking; correctedNA50 is diagnostic.",
+    "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+    "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-biology_expansion",
+      "title": "Biology and bioinformatics: source-based research tasks",
+      "url": "https://papers.neurips.cc/paper_files/paper/2023/file/cac723e5ff29f65e3fcbb0739ae91bee-Paper-Datasets_and_Benchmarks.pdf"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Reconstruct microbial genomes from mixed-community sequencing reads.",
+    "importance_rationale": "Assembly makes microbial genetic content accessible for studying communities that cannot easily be isolated in culture.",
+    "papers": [
+      {
+        "title": "metaSPAdes: a new versatile metagenomic assembler",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5411777/",
+        "primary_goal": "Assemble metagenomic reads despite uneven species abundance and closely related microbial strains.",
+        "task_relation": "The local CAMI-derived read task performs this reconstruction with reference-aware recovery and misassembly scoring. Simulated community reads and local scoring do not establish performance on arbitrary environmental communities.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The primary paper solves the specific biological sequence-reconstruction problem. The CAMI assessment/dataset paper alone does not qualify.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "area": "biology",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  }
+}

@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in combinatorial geometry and discrete optimization working on the "no 5 on a sphere" problem: selecting the largest possible subset of points from a finite 3D integer grid such that no five selected points are co-spherical (lie on a common sphere). This condition also forbids any five selected points from being co-planar.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that selects as many points as possible from the n x n x n integer grid {0, 1, ..., n-1}^3 with n = 8, subject to the constraint that no five of the chosen points are co-spherical. Five points p_i = (x_i, y_i, z_i) are co-spherical if and only if the 5x5 determinant of the rows [x_i, y_i, z_i, x_i^2 + y_i^2 + z_i^2, 1] is zero. All coordinates must be integers in the range [0, n-1], and all selected points must be distinct. The objective is to maximize the number of selected points.
+
+    PERFORMANCE METRICS:
+    1. **num_points**: Number of selected grid points in a valid (sphere-free) configuration (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: num_points / 23 (BENCHMARK COMPARISON - maximize toward 1.0, where 23 is the record-size construction found by AlphaEvolve for the 8x8x8 grid; the previously known maximum was 22)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Validity**: Any returned configuration containing five co-spherical (or co-planar) points scores 0; ensure the constraint holds for every five-point subset
+    - **Determinism**: Use fixed random seeds if employing stochastic methods (e.g. randomized greedy search) for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

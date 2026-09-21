@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0",
+  "id": "shinkaevolve-mixture-of-experts-load-balancing-loss",
+  "name": "Mixture-of-experts load balancing loss",
+  "description": "Mixture-of-experts load balancing loss: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "shinkaevolve"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2509.19349",
+      "type": "paper",
+      "locator": "Section 3.4 and Appendix C.4"
+    },
+    {
+      "url": "https://github.com/SakanaAI/ShinkaEvolve/tree/9912af12d423504b8d580f4179fd15f5f88b8c50",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "FineWeb, 556M and 2.7B parameter MoE models",
+    "notes": [
+      "Multi-GPU language-model pretraining"
+    ]
+  },
+  "evaluation": {
+    "metric": "perplexity; seven downstream benchmark accuracies; load imbalance",
+    "paper_metric": "perplexity; seven downstream benchmark accuracies; load imbalance",
+    "paper_direction": null,
+    "direction": null,
+    "benchmark": "Mixture-of-experts load balancing loss",
+    "protocol": "specified_only",
+    "source_locator": "Section 3.4 and Appendix C.4"
+  },
+  "execution": {
+    "repository": "https://github.com/SakanaAI/ShinkaEvolve",
+    "commit": "9912af12d423504b8d580f4179fd15f5f88b8c50",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "uv pip install -e ."
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "uv pip install -e ."
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "uv",
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [
+      "Downstream benchmarks: CommonsenseQA, HellaSwag, OpenBookQA, PIQA, SIQA, WinoGrande, ARC."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "hardware:gpu",
+        "py:torch"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "gpu",
+      "unsupported_reason": "The candidate is a load-balancing loss whose fitness is the perplexity of a mixture-of-experts model trained on GPU."
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Current public examples retain circle packing but do not include verified AIME, ALE-Bench LITE, or MoE experiment drivers. Later added examples are not included as paper evaluations.",
+    "Original public release v0.0.1 (commit23decc6bf118d783ddff5a3c03d2269cbf149971) was also inspected: its example directories are circle_packing, game_2048, julia_prime_counting and novelty_generator, with no released AIME, ALE or MoE evaluator.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Mixture-of-experts load balancing loss",
+    "slug": "mixture-of-experts-load-balancing-loss",
+    "description": "Mixture-of-experts load balancing loss: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "Mixture-of-experts load balancing loss",
+    "dataset": "FineWeb, 556M and 2.7B parameter MoE models",
+    "metric": "perplexity; seven downstream benchmark accuracies; load imbalance",
+    "direction": null,
+    "source_url": "https://arxiv.org/pdf/2509.19349",
+    "source_locator": "Section 3.4 and Appendix C.4",
+    "upstream_path": null,
+    "requirements": [
+      "Multi-GPU language-model pretraining"
+    ],
+    "execution_notes": [
+      "Downstream benchmarks: CommonsenseQA, HellaSwag, OpenBookQA, PIQA, SIQA, WinoGrande, ARC."
+    ],
+    "implementation_status": "paper_inventory_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "gpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

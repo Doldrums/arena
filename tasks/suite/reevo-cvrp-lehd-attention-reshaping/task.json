@@ -1,0 +1,373 @@
+{
+  "schema_version": "1.0",
+  "id": "reevo-cvrp-lehd-attention-reshaping",
+  "name": "CVRP LEHD attention reshaping",
+  "description": "CVRP LEHD attention reshaping: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "reevo"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2402.01145",
+      "type": "paper",
+      "locator": "Sections 5.1–5.5"
+    },
+    {
+      "url": "https://github.com/ai4co/reevo/tree/6dce18257da5e11db2d138e417a2fffc5c72d05f",
+      "type": "repository",
+      "locator": "cfg/problem/cvrp_lehd.yaml"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "torch",
+      "matplotlib",
+      "tqdm",
+      "pytz"
+    ],
+    "environment_variables": [],
+    "datasets": "Original published training instances; explicit bounded subset described in docs/TASKS.md.",
+    "notes": [
+      "CPU Python; numpy, torch, matplotlib, tqdm, pytz",
+      "Fetch checksum-pinned external assets with scripts/prepare_optimization_assets.py."
+    ],
+    "required_files": [
+      "problems/cvrp_lehd/VRPTrainer.py",
+      "problems/cvrp_lehd/VRPModel.py",
+      "problems/cvrp_lehd/VRPTester.py",
+      "problems/cvrp_lehd/utils.py",
+      "problems/cvrp_lehd/eval.py",
+      "problems/cvrp_lehd/VRPEnv.py",
+      "problems/cvrp_lehd/checkpoints/checkpoint-40.pt",
+      "problems/cvrp_lehd/data/vrp200_test_lkh.txt"
+    ],
+    "required_file_hashes": {
+      "problems/cvrp_lehd/VRPTrainer.py": "dbec182ff1816b4a5daf1ab18f8f87cfcfc9ffa293b2340ba7442789b80b668a",
+      "problems/cvrp_lehd/VRPModel.py": "e53f58f84f18d2cd5d1fc32f12ea49cf208fdacbb60e34990a8ee0fad83c30bd",
+      "problems/cvrp_lehd/VRPTester.py": "36534663bf50073c91c2221d3b6c6fed9a262aebcba689e7bbbbec18980ab59d",
+      "problems/cvrp_lehd/utils.py": "91c9bec2a82e6fe2de1e3a4189374777560c768806dbd95bd43f88f40980b510",
+      "problems/cvrp_lehd/eval.py": "77a2a220a4eb3826b2b922a8849235916801fa36fa04f5d304aa49739b44a42e",
+      "problems/cvrp_lehd/VRPEnv.py": "02de45ce6db4dab3b8098783e1b5d3f11a92c470fafa37b73cbe8aa62e5d8faf",
+      "problems/cvrp_lehd/checkpoints/checkpoint-40.pt": "7a3cd8359f94c07ee5674758ef2aa834890e9a3fcd9fc5d35bd6140be1a3551b",
+      "problems/cvrp_lehd/data/vrp200_test_lkh.txt": "618972db2acf810672cf2a4afaec07722a03c79160627c07d684628fcd2ea659"
+    }
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "mean route length",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "CVRP LEHD attention reshaping",
+    "protocol": "upstream",
+    "source_locator": "Sections 5.1–5.5"
+  },
+  "execution": {
+    "repository": "https://github.com/ai4co/reevo",
+    "commit": "6dce18257da5e11db2d138e417a2fffc5c72d05f",
+    "upstream_path": "cfg/problem/cvrp_lehd.yaml",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "main.py",
+          "problem=cvrp_lehd"
+        ],
+        "cwd": ".",
+        "kind": "search_and_evaluation",
+        "requirements": [
+          "Python >=3.12",
+          "ReEvo task extras",
+          "LLM API key"
+        ],
+        "evidence_path": "README.md and cfg/problem/cvrp_lehd.yaml",
+        "verification": "source_inspected_not_executed",
+        "source_url": "https://arxiv.org/pdf/2402.01145"
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_lehd.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_reevo_cvrp_lehd.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "cvrp_lehd",
+        "max_instances": 1
+      },
+      "dependencies": [
+        "numpy",
+        "torch",
+        "matplotlib",
+        "tqdm",
+        "pytz"
+      ],
+      "implementation_label": "bounded_original_protocol_original_checkpoints",
+      "repository_files": {
+        "adapters/recovered/optimization_lehd.py": "31e6719daa08b8d913fe4939076641f3536e4400228d39353ad97ca2fbbb786f",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+        "adapters/recovered/seeds/optimization_reevo_cvrp_lehd.py": "4231141b1e8368e62bf853886ee57a89d1176bf95ed59e4da9fed65807dc9d52"
+      },
+      "notes": "Original CPU protocol, bounded subset. POMO and DPP additionally check feasibility; BO/LEHD remain validity-unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 0.5837621688842773,
+        "metrics": {
+          "score": 20.377817153930664,
+          "validity": null,
+          "reference_mean_route_length": 20.252487182617188,
+          "instances": 1,
+          "instance_size": 200,
+          "candidate_calls": 2,
+          "RRC_budget": 0,
+          "profile": "bounded_original_training_partition",
+          "random_seed": 1234,
+          "device": "cpu",
+          "dataset_sha256": "618972db2acf810672cf2a4afaec07722a03c79160627c07d684628fcd2ea659",
+          "checkpoint_sha256": "7a3cd8359f94c07ee5674758ef2aa834890e9a3fcd9fc5d35bd6140be1a3551b",
+          "validation_scope": "original LEHD tester gap; no independent route certificate",
+          "optimality_gap_percent": 0.6188374305998717
+        },
+        "runtime": "Python3.12 CPU, original published assets; torch2.14.0"
+      }
+    },
+    "setup_instructions": [
+      "pip install -e '.[gls,aco,nco]'"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -e '.[gls,aco,nco]'"
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          ".[gls,aco,nco]"
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [
+      "NCO variants require original POMO/LEHD checkpoints and test datasets.",
+      "main.py writes the selected heuristic to gpt.py and invokes the task evaluator; directly invoking eval.py before generating gpt.py fails.",
+      "Recovered CPU evaluation without model API credentials. Bounded original protocol; see docs/TASKS.md for budgets, recovered assets, and scientific limits.",
+      "Python >=3.12",
+      "ReEvo task extras",
+      "LLM API key",
+      "Upstream operation: search_and_evaluation"
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "reevo_upstream",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "checkout:ai4co/reevo@6dce18257da5e11db2d138e417a2fffc5c72d05f",
+        "py:torch",
+        "py:matplotlib",
+        "py:tqdm",
+        "py:pytz"
+      ],
+      "timeout": 900
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "CVRP LEHD attention reshaping",
+    "slug": "cvrp-lehd-attention-reshaping",
+    "description": "CVRP LEHD attention reshaping: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "CVRP LEHD attention reshaping",
+    "dataset": "Original published training instances; explicit bounded subset described in docs/TASKS.md.",
+    "metric": "mean route length",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2402.01145",
+    "source_locator": "Sections 5.1–5.5",
+    "upstream_path": "cfg/problem/cvrp_lehd.yaml",
+    "requirements": [
+      "CPU Python; numpy, torch, matplotlib, tqdm, pytz",
+      "Fetch checksum-pinned external assets with scripts/prepare_optimization_assets.py."
+    ],
+    "execution_notes": [
+      "NCO variants require original POMO/LEHD checkpoints and test datasets.",
+      "main.py writes the selected heuristic to gpt.py and invokes the task evaluator; directly invoking eval.py before generating gpt.py fails.",
+      "Recovered CPU evaluation without model API credentials. Bounded original protocol; see docs/TASKS.md for budgets, recovered assets, and scientific limits.",
+      "Python >=3.12",
+      "ReEvo task extras",
+      "LLM API key",
+      "Upstream operation: search_and_evaluation"
+    ],
+    "execution": {
+      "argv": [
+        "python",
+        "main.py",
+        "problem=cvrp_lehd"
+      ],
+      "cwd": ".",
+      "kind": "search_and_evaluation",
+      "requirements": [
+        "Python >=3.12",
+        "ReEvo task extras",
+        "LLM API key"
+      ],
+      "evidence_path": "README.md and cfg/problem/cvrp_lehd.yaml",
+      "verification": "source_inspected_not_executed"
+    },
+    "implementation_status": "recovered_direct_evaluator_tested",
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_lehd.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_reevo_cvrp_lehd.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "cvrp_lehd",
+        "max_instances": 1
+      },
+      "dependencies": [
+        "numpy",
+        "torch",
+        "matplotlib",
+        "tqdm",
+        "pytz"
+      ],
+      "implementation_label": "bounded_original_protocol_original_checkpoints",
+      "repository_files": {
+        "adapters/recovered/optimization_lehd.py": "31e6719daa08b8d913fe4939076641f3536e4400228d39353ad97ca2fbbb786f",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+        "adapters/recovered/seeds/optimization_reevo_cvrp_lehd.py": "4231141b1e8368e62bf853886ee57a89d1176bf95ed59e4da9fed65807dc9d52"
+      },
+      "notes": "Original CPU protocol, bounded subset. POMO and DPP additionally check feasibility; BO/LEHD remain validity-unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 0.5837621688842773,
+        "metrics": {
+          "score": 20.377817153930664,
+          "validity": null,
+          "reference_mean_route_length": 20.252487182617188,
+          "instances": 1,
+          "instance_size": 200,
+          "candidate_calls": 2,
+          "RRC_budget": 0,
+          "profile": "bounded_original_training_partition",
+          "random_seed": 1234,
+          "device": "cpu",
+          "dataset_sha256": "618972db2acf810672cf2a4afaec07722a03c79160627c07d684628fcd2ea659",
+          "checkpoint_sha256": "7a3cd8359f94c07ee5674758ef2aa834890e9a3fcd9fc5d35bd6140be1a3551b",
+          "validation_scope": "original LEHD tester gap; no independent route certificate",
+          "optimality_gap_percent": 0.6188374305998717
+        },
+        "runtime": "Python3.12 CPU, original published assets; torch2.14.0"
+      }
+    },
+    "required_files": [
+      "problems/cvrp_lehd/VRPTrainer.py",
+      "problems/cvrp_lehd/VRPModel.py",
+      "problems/cvrp_lehd/VRPTester.py",
+      "problems/cvrp_lehd/utils.py",
+      "problems/cvrp_lehd/eval.py",
+      "problems/cvrp_lehd/VRPEnv.py",
+      "problems/cvrp_lehd/checkpoints/checkpoint-40.pt",
+      "problems/cvrp_lehd/data/vrp200_test_lkh.txt"
+    ],
+    "required_file_hashes": {
+      "problems/cvrp_lehd/VRPTrainer.py": "dbec182ff1816b4a5daf1ab18f8f87cfcfc9ffa293b2340ba7442789b80b668a",
+      "problems/cvrp_lehd/VRPModel.py": "e53f58f84f18d2cd5d1fc32f12ea49cf208fdacbb60e34990a8ee0fad83c30bd",
+      "problems/cvrp_lehd/VRPTester.py": "36534663bf50073c91c2221d3b6c6fed9a262aebcba689e7bbbbec18980ab59d",
+      "problems/cvrp_lehd/utils.py": "91c9bec2a82e6fe2de1e3a4189374777560c768806dbd95bd43f88f40980b510",
+      "problems/cvrp_lehd/eval.py": "77a2a220a4eb3826b2b922a8849235916801fa36fa04f5d304aa49739b44a42e",
+      "problems/cvrp_lehd/VRPEnv.py": "02de45ce6db4dab3b8098783e1b5d3f11a92c470fafa37b73cbe8aa62e5d8faf",
+      "problems/cvrp_lehd/checkpoints/checkpoint-40.pt": "7a3cd8359f94c07ee5674758ef2aa834890e9a3fcd9fc5d35bd6140be1a3551b",
+      "problems/cvrp_lehd/data/vrp200_test_lkh.txt": "618972db2acf810672cf2a4afaec07722a03c79160627c07d684628fcd2ea659"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "baseline_execution",
+      "passed": true,
+      "seconds": 0.5837621688842773,
+      "metrics": {
+        "score": 20.377817153930664,
+        "validity": null,
+        "reference_mean_route_length": 20.252487182617188,
+        "instances": 1,
+        "instance_size": 200,
+        "candidate_calls": 2,
+        "RRC_budget": 0,
+        "profile": "bounded_original_training_partition",
+        "random_seed": 1234,
+        "device": "cpu",
+        "dataset_sha256": "618972db2acf810672cf2a4afaec07722a03c79160627c07d684628fcd2ea659",
+        "checkpoint_sha256": "7a3cd8359f94c07ee5674758ef2aa834890e9a3fcd9fc5d35bd6140be1a3551b",
+        "validation_scope": "original LEHD tester gap; no independent route certificate",
+        "optimality_gap_percent": 0.6188374305998717
+      },
+      "runtime": "Python3.12 CPU, original published assets; torch2.14.0"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Plan short delivery routes that serve customer demands without exceeding vehicle capacity.",
+    "importance_rationale": "This problem represents resource and distance constraints in distribution logistics. Research seeks better feasible delivery plans; local synthetic instances are a controlled subproblem rather than measured real-world savings.",
+    "papers": [
+      {
+        "title": "Hybrid Genetic Search for the CVRP: Open-Source Implementation and SWAP* Neighborhood",
+        "url": "https://arxiv.org/abs/2012.10384",
+        "task_relation": "Vidal develops and evaluates an algorithm specifically to solve capacitated vehicle routing. CVRP LEHD attention reshaping has a different candidate interface, but its distance objective and demand/capacity constraints pursue the same logistics problem.",
+        "primary_goal": "Improve feasible low-cost solutions of the capacitated vehicle-routing problem.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "schema_version": "1.0",
+  "id": "funsearch-re-implementation-minimum-maximal-no-isosceles-set",
+  "name": "Minimum maximal no-isosceles set",
+  "description": "Minimum maximal no-isosceles set task evaluated in Generative Modeling for Mathematical Discovery.",
+  "paper_ids": [
+    "funsearch-re-implementation"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2503.11061",
+      "type": "paper",
+      "locator": "Section 4, Figure 12"
+    },
+    {
+      "url": "https://github.com/kitft/funsearch/tree/cec37d84b474ea6bbd66f6defad8f5b5758449ff",
+      "type": "repository",
+      "locator": "examples/isosceles.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "maximal set cardinality",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "Minimum maximal no-isosceles set",
+    "protocol": "upstream",
+    "source_locator": "Section 4, Figure 12"
+  },
+  "execution": {
+    "repository": "https://github.com/kitft/funsearch",
+    "commit": "cec37d84b474ea6bbd66f6defad8f5b5758449ff",
+    "upstream_path": "examples/isosceles.py",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/math_funsearch.py",
+      "callable": "evaluate",
+      "candidate_parameter": "candidate_path",
+      "baseline_path": "examples/isosceles.py",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "minimum-maximal",
+        "n": 16
+      },
+      "score_key": "score",
+      "validity_key": "validity",
+      "dependencies": [
+        "numpy"
+      ],
+      "implementation_label": "original_constructor_with_independent_certificate",
+      "repository_files": {
+        "adapters/recovered/math_funsearch.py": "2d07449e4daf6177292c296f3ccdc4655091d54a264ecae15e85b74b3381c09f"
+      }
+    },
+    "setup_instructions": [
+      "python -m pip install numpy"
+    ],
+    "task_setup_instructions": [
+      "python -m pip install numpy"
+    ],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "."
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/kitft/funsearch/blob/cec37d84b474ea6bbd66f6defad8f5b5758449ff/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Runs the pinned original solve constructor with a candidate priority function and an independent exact certificate check. Paper search/model budget is not reproduced.",
+      "Uses the published Table 1/2/3 problem dimension, except minimum-maximal uses the n=16 training setting discussed in section 4.2.",
+      "Minimum-maximal uses positive cardinality with direction=minimize; this is equivalent to the paper negative-cardinality reward."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "no_isosceles_maximal",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Minimum maximal no-isosceles set",
+    "slug": "minimum-maximal-no-isosceles-set",
+    "description": "Minimum maximal no-isosceles set task evaluated in Generative Modeling for Mathematical Discovery.",
+    "benchmark": "Minimum maximal no-isosceles set",
+    "dataset": null,
+    "metric": "maximal set cardinality",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2503.11061",
+    "source_locator": "Section 4, Figure 12",
+    "upstream_path": "examples/isosceles.py",
+    "requirements": [],
+    "execution_notes": [
+      "Runs the pinned original solve constructor with a candidate priority function and an independent exact certificate check. Paper search/model budget is not reproduced.",
+      "Uses the published Table 1/2/3 problem dimension, except minimum-maximal uses the n=16 training setting discussed in section 4.2.",
+      "Minimum-maximal uses positive cardinality with direction=minimize; this is equivalent to the paper negative-cardinality reward."
+    ],
+    "setup_commands": [
+      "python -m pip install numpy"
+    ],
+    "run_commands": [],
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/math_funsearch.py",
+      "callable": "evaluate",
+      "candidate_parameter": "candidate_path",
+      "baseline_path": "examples/isosceles.py",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "minimum-maximal",
+        "n": 16
+      },
+      "score_key": "score",
+      "validity_key": "validity",
+      "dependencies": [
+        "numpy"
+      ],
+      "implementation_label": "original_constructor_with_independent_certificate",
+      "repository_files": {
+        "adapters/recovered/math_funsearch.py": "2d07449e4daf6177292c296f3ccdc4655091d54a264ecae15e85b74b3381c09f"
+      }
+    },
+    "parameters": {
+      "n": 16
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

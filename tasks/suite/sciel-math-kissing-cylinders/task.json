@@ -1,0 +1,209 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-math-kissing-cylinders",
+  "name": "SCiEL: Seven mutually tangent cylinders",
+  "description": "Construct seven cylinder axes with pairwise axis distances near 2 and minimize total tangency error.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "construction_math",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/kissing_cylinders/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/kissing_cylinders/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example kissing_cylinders",
+    "paper_metric": null,
+    "source_locator": "examples/alphaevolve_math_problems/kissing_cylinders/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/alphaevolve_math_problems/kissing_cylinders",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/alphaevolve_math_problems/kissing_cylinders/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": "examples/alphaevolve_math_problems/kissing_cylinders/initial_program.py",
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply mathematical validity; preserve unknown validity unless the original evaluator exposes an explicit signal."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/alphaevolve_math_problems/kissing_cylinders/evaluator.py": "507fc951e352b21923b20f2257d4099f523839deacbb5ec95cf2ad2bf6cfb9b4",
+    "examples/alphaevolve_math_problems/kissing_cylinders/config.yaml": "e265de9ca0a6751e09c1ade44b27c5f4ff02c2f37c231286aeb6aedd75191f05",
+    "examples/alphaevolve_math_problems/kissing_cylinders/requirements.txt": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc",
+    "examples/alphaevolve_math_problems/kissing_cylinders/initial_program.py": "5767585ca6d814263ad9a137c71401cbef2bb37d3c4f2f1a2c26f5db35224f09"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/alphaevolve_math_problems/kissing_cylinders/evaluator.py",
+      "signature": "program_path: str",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.kissing_cylinders7()"
+    ],
+    "baseline_path": "examples/alphaevolve_math_problems/kissing_cylinders/initial_program.py",
+    "baseline_functions": {
+      "kissing_cylinders7": {
+        "signature": "",
+        "docstring": "Arrange n mutually tangent infinite unit-radius cylinders in R^3 (the \"kissing\ncylinders\" problem). Each cylinder is described by its axis line: a point P on the\naxis and a unit direction vector v. Two unit cylinders are tangent (kiss) when the\nshortest distance between their axis lines equals 2 (the sum of the two radii). The\nobjective is to make every pair of cylinders mutually tangent. Here n = 7.\n\nReturns:\n    cylinders: np.ndarray of shape (7, 2, 3). For cylinder i, cylinders[i, 0] is the\n        point P on its axis (taken closest to the origin, i.e. P . v = 0) and\n        cylinders[i, 1] is the unit direction vector v of its axis.",
+        "returns": "np.ndarray"
+      }
+    },
+    "parameters": {
+      "BENCHMARK": 0.0,
+      "TARGET_DIST": 2.0,
+      "TOL": 1e-06,
+      "NUM_CYLINDERS": 7,
+      "CONTACT_BOX_LIMIT": 100.0
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "score_expressions": [
+      "combined_score = 1.0 / (1.0 + tangency_error)",
+      "combined_score = 0.0"
+    ],
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 127,
+        "expression": "{'tangency_error': float(tangency_error), 'combined_score': float(combined_score), 'eval_time': float(eval_time)}"
+      },
+      {
+        "function": "evaluate",
+        "line": 133,
+        "expression": "{'combined_score': 0.0, 'error': str(e)}"
+      }
+    ],
+    "metric_assignments": [],
+    "validity_key": null,
+    "validity_semantics": "No independent boolean validity field; zero score, success rate and absence of error do not establish validity.",
+    "error_key": "error",
+    "rng_calls": [],
+    "declared_requirements": [
+      "numpy"
+    ],
+    "evaluator_imports": [
+      "importlib",
+      "itertools",
+      "numpy",
+      "os",
+      "sys",
+      "time"
+    ],
+    "baseline_imports": [
+      "numpy"
+    ],
+    "source_config_path": "examples/alphaevolve_math_problems/kissing_cylinders/config.yaml",
+    "baseline_constants": {},
+    "baseline_rng_calls": [],
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Some branches return score zero without error; some omit the primary score. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 200,
+      "evaluator": {
+        "timeout": 360,
+        "max_retries": 3
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "cpu",
+    "recommended_smoke_outer_timeout_seconds": 15
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

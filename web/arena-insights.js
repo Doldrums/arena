@@ -200,7 +200,7 @@ const TASK_CONTEXT = {
   },
   "eoh-online-bin-packing": {
     "summary": "Place incoming items into fixed-capacity bins without seeing future arrivals, using as few bins as possible. This isolates online heuristic design: each local placement changes the space available for later items.",
-    "source_url": "https://github.com/IMRUNya/autoresearch-tasks/blob/5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935/suite/eoh-online-bin-packing/problem.json",
+    "source_url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/eoh-online-bin-packing/problem.json",
     "source_locator": "#/contract, #/parameters, #/protocol_description; sibling evaluator.py: task()",
     "evidence_note": "Read the pinned canonical task declaration and evaluator source: five generated fixed-seed instances, 1,000 items, capacity 100, priority-based placement, and excess-bin scoring. The source merged reference-online-bin-packing into this recreated task; scores are not comparable with published experimental results. No evaluator was run."
   },

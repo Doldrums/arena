@@ -1,0 +1,829 @@
+{
+  "schema_version": "1.0",
+  "id": "reevo-multiple-knapsack-aco",
+  "name": "Multiple knapsack ACO",
+  "description": "Multiple knapsack ACO: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "reevo",
+    "mcts-ahd",
+    "redahd"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2402.01145",
+      "type": "paper",
+      "locator": "Sections 5.1–5.5"
+    },
+    {
+      "url": "https://github.com/ai4co/reevo/tree/6dce18257da5e11db2d138e417a2fffc5c72d05f",
+      "type": "repository",
+      "locator": "cfg/problem/mkp_aco.yaml"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2501.08603",
+      "type": "paper",
+      "locator": "Section 4; Appendices B-D and F"
+    },
+    {
+      "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+      "type": "repository",
+      "locator": "problems/mkp_aco/eval.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2505.20242",
+      "type": "paper",
+      "locator": "Section 5.1 and Appendix C"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "torch"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+    "notes": [
+      "CPU Python with NumPy",
+      "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+    ],
+    "required_files": [
+      "problems/mkp_aco/eval.py",
+      "problems/mkp_aco/gen_inst.py",
+      "problems/mkp_aco/aco.py",
+      "utils/utils.py"
+    ],
+    "required_file_hashes": {
+      "problems/mkp_aco/eval.py": "9621ff57d2138fef93bc98eafdbef952b15aa5435fab07256fb58d0345ef3667",
+      "problems/mkp_aco/gen_inst.py": "1d2de1bcc1e20afd539b75974b627bc0897e2507cc9150bbeff183870998dd34",
+      "problems/mkp_aco/aco.py": "665dc6dd727ab7c52b883b915fc2220dfca0404f9aa1c9355119cae3ea660f3e",
+      "utils/utils.py": "392d1642f63eb2a64e09a43bc649a8abe3d35fcb68df0ea5b658843524dbc74f"
+    }
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "mean total prize",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Multiple knapsack ACO",
+    "protocol": "upstream",
+    "source_locator": "Sections 5.1–5.5"
+  },
+  "execution": {
+    "repository": "https://github.com/ai4co/reevo",
+    "commit": "6dce18257da5e11db2d138e417a2fffc5c72d05f",
+    "upstream_path": "cfg/problem/mkp_aco.yaml",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "main.py",
+          "problem=mkp_aco"
+        ],
+        "cwd": ".",
+        "kind": "search_and_evaluation",
+        "requirements": [
+          "Python >=3.12",
+          "ReEvo task extras",
+          "LLM API key"
+        ],
+        "evidence_path": "README.md and cfg/problem/mkp_aco.yaml",
+        "verification": "source_inspected_not_executed",
+        "source_url": "https://arxiv.org/pdf/2402.01145"
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_original.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_reevo_mkp_aco.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "maximize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "mkp_aco",
+        "max_instances": 2,
+        "iterations": 5,
+        "ants": 10,
+        "random_seed": 1234,
+        "black_box": false
+      },
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "torch"
+      ],
+      "implementation_label": "bounded_original_protocol_extracted_seed",
+      "repository_files": {
+        "adapters/recovered/seeds/optimization_reevo_mkp_aco.py": "b5acea9e67701270b5173d835c990633fb43781a498bb81cec60322d10bf70f4",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3"
+      },
+      "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 0.722,
+        "metrics": {
+          "score": 15.96555412610347,
+          "validity": null,
+          "instances": 2,
+          "instance_size": 100,
+          "candidate_calls": 2,
+          "instance_objectives": [
+            10.88440290160594,
+            21.046705350601002
+          ],
+          "profile": "bounded_original_training",
+          "iterations": 5,
+          "ants": 10,
+          "black_box": false,
+          "random_seed": 1234,
+          "dataset_origin": "official_generator_training_data",
+          "dataset_sha256": "b1fe8aad2ef8e3eef5cb079a765a135c4173adfd86adcf96a2f4a85c255a2243",
+          "validation_scope": "finite original solver objective; no independent solution certificate"
+        },
+        "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+      }
+    },
+    "setup_instructions": [
+      "pip install -e '.[gls,aco,nco]'"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -e '.[gls,aco,nco]'"
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          ".[gls,aco,nco]"
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [
+      "NCO variants require original POMO/LEHD checkpoints and test datasets.",
+      "main.py writes the selected heuristic to gpt.py and invokes the task evaluator; directly invoking eval.py before generating gpt.py fails.",
+      "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+      "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json.",
+      "Python >=3.12",
+      "ReEvo task extras",
+      "LLM API key",
+      "Upstream operation: search_and_evaluation"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "mkp_aco",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Multiple knapsack ACO",
+    "slug": "multiple-knapsack-aco",
+    "description": "Multiple knapsack ACO: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "Multiple knapsack ACO",
+    "dataset": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+    "metric": "mean total prize",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2402.01145",
+    "source_locator": "Sections 5.1–5.5",
+    "upstream_path": "cfg/problem/mkp_aco.yaml",
+    "requirements": [
+      "CPU Python with NumPy",
+      "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+    ],
+    "execution_notes": [
+      "NCO variants require original POMO/LEHD checkpoints and test datasets.",
+      "main.py writes the selected heuristic to gpt.py and invokes the task evaluator; directly invoking eval.py before generating gpt.py fails.",
+      "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+      "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json.",
+      "Python >=3.12",
+      "ReEvo task extras",
+      "LLM API key",
+      "Upstream operation: search_and_evaluation"
+    ],
+    "execution": {
+      "argv": [
+        "python",
+        "main.py",
+        "problem=mkp_aco"
+      ],
+      "cwd": ".",
+      "kind": "search_and_evaluation",
+      "requirements": [
+        "Python >=3.12",
+        "ReEvo task extras",
+        "LLM API key"
+      ],
+      "evidence_path": "README.md and cfg/problem/mkp_aco.yaml",
+      "verification": "source_inspected_not_executed"
+    },
+    "implementation_status": "recovered_direct_evaluator_tested",
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_original.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_reevo_mkp_aco.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "maximize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "mkp_aco",
+        "max_instances": 2,
+        "iterations": 5,
+        "ants": 10,
+        "random_seed": 1234,
+        "black_box": false
+      },
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "torch"
+      ],
+      "implementation_label": "bounded_original_protocol_extracted_seed",
+      "repository_files": {
+        "adapters/recovered/seeds/optimization_reevo_mkp_aco.py": "b5acea9e67701270b5173d835c990633fb43781a498bb81cec60322d10bf70f4",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3"
+      },
+      "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 0.722,
+        "metrics": {
+          "score": 15.96555412610347,
+          "validity": null,
+          "instances": 2,
+          "instance_size": 100,
+          "candidate_calls": 2,
+          "instance_objectives": [
+            10.88440290160594,
+            21.046705350601002
+          ],
+          "profile": "bounded_original_training",
+          "iterations": 5,
+          "ants": 10,
+          "black_box": false,
+          "random_seed": 1234,
+          "dataset_origin": "official_generator_training_data",
+          "dataset_sha256": "b1fe8aad2ef8e3eef5cb079a765a135c4173adfd86adcf96a2f4a85c255a2243",
+          "validation_scope": "finite original solver objective; no independent solution certificate"
+        },
+        "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+      }
+    },
+    "required_files": [
+      "problems/mkp_aco/eval.py",
+      "problems/mkp_aco/gen_inst.py",
+      "problems/mkp_aco/aco.py",
+      "utils/utils.py"
+    ],
+    "required_file_hashes": {
+      "problems/mkp_aco/eval.py": "9621ff57d2138fef93bc98eafdbef952b15aa5435fab07256fb58d0345ef3667",
+      "problems/mkp_aco/gen_inst.py": "1d2de1bcc1e20afd539b75974b627bc0897e2507cc9150bbeff183870998dd34",
+      "problems/mkp_aco/aco.py": "665dc6dd727ab7c52b883b915fc2220dfca0404f9aa1c9355119cae3ea660f3e",
+      "utils/utils.py": "392d1642f63eb2a64e09a43bc649a8abe3d35fcb68df0ea5b658843524dbc74f"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "baseline_execution",
+      "passed": true,
+      "seconds": 0.722,
+      "metrics": {
+        "score": 15.96555412610347,
+        "validity": null,
+        "instances": 2,
+        "instance_size": 100,
+        "candidate_calls": 2,
+        "instance_objectives": [
+          10.88440290160594,
+          21.046705350601002
+        ],
+        "profile": "bounded_original_training",
+        "iterations": 5,
+        "ants": 10,
+        "black_box": false,
+        "random_seed": 1234,
+        "dataset_origin": "official_generator_training_data",
+        "dataset_sha256": "b1fe8aad2ef8e3eef5cb079a765a135c4173adfd86adcf96a2f4a85c255a2243",
+        "validation_scope": "finite original solver objective; no independent solution certificate"
+      },
+      "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+    }
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "mcts-ahd-mkp-aco",
+      "paper_ids": [
+        "mcts-ahd"
+      ],
+      "name": "mkp_aco",
+      "description": "mkp_aco task evaluated in Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2501.08603",
+          "type": "paper",
+          "locator": "Section 4; Appendices B-D and F"
+        },
+        {
+          "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+          "type": "repository",
+          "locator": "problems/mkp_aco/eval.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy",
+          "torch"
+        ],
+        "environment_variables": [],
+        "datasets": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+        "notes": [
+          "CPU Python with NumPy",
+          "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+        ],
+        "required_files": [
+          "problems/mkp_aco/eval.py",
+          "problems/mkp_aco/gen_inst.py",
+          "problems/mkp_aco/aco.py",
+          "utils/utils.py",
+          "problems/mkp_aco/dataset/train100_dataset.npz"
+        ],
+        "required_file_hashes": {
+          "problems/mkp_aco/eval.py": "9621ff57d2138fef93bc98eafdbef952b15aa5435fab07256fb58d0345ef3667",
+          "problems/mkp_aco/gen_inst.py": "0efc7b67eb18c53b6391ac8bcc953f088a37f38bb7a9ca5e5ff12d4e302b88aa",
+          "problems/mkp_aco/aco.py": "665dc6dd727ab7c52b883b915fc2220dfca0404f9aa1c9355119cae3ea660f3e",
+          "utils/utils.py": "0b9cfa62adcde5046d1b90808e6477928940ef1462602b82685296831285a0b9",
+          "problems/mkp_aco/dataset/train100_dataset.npz": "63ff5e40e167f6a358f47b7fc9df5a7d26597b236995c4a520ef079b0e6484e8"
+        }
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "mean total prize",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "mkp_aco",
+        "protocol": "upstream",
+        "source_locator": "Section 4; Appendices B-D and F"
+      },
+      "execution": {
+        "repository": "https://github.com/zz1358m/MCTS-AHD-master",
+        "commit": "ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+        "upstream_path": "problems/mkp_aco/eval.py",
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "main.py",
+              "problem=mkp_aco"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/main.py",
+            "notes": "Hydra task override derived from inspected @hydra.main configuration and verified cfg/problem file; not executed."
+          }
+        ],
+        "evaluator_adapter": {
+          "evaluator_scope": "repository",
+          "evaluator_path": "adapters/recovered/optimization_original.py",
+          "baseline_scope": "repository",
+          "baseline_path": "adapters/recovered/seeds/optimization_mcts-ahd_mkp_aco.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": ".",
+          "score_key": "score",
+          "score_direction": "maximize",
+          "validity_key": "validity",
+          "return_style": "dict",
+          "kwargs": {
+            "checkout": "{checkout}",
+            "problem": "mkp_aco",
+            "max_instances": 2,
+            "iterations": 5,
+            "ants": 10,
+            "random_seed": 1234,
+            "black_box": false
+          },
+          "dependencies": [
+            "numpy",
+            "scipy",
+            "torch"
+          ],
+          "implementation_label": "bounded_original_protocol_extracted_seed",
+          "repository_files": {
+            "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+            "adapters/recovered/seeds/optimization_mcts-ahd_mkp_aco.py": "bb0d53e6597e4f8c19514ea93f31f65197540c058ddf861a0999f9030d3e7b1e"
+          },
+          "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "seconds": 0.707,
+            "metrics": {
+              "score": 15.96555412610347,
+              "validity": null,
+              "instances": 2,
+              "instance_size": 100,
+              "candidate_calls": 2,
+              "instance_objectives": [
+                10.88440290160594,
+                21.046705350601002
+              ],
+              "profile": "bounded_original_training",
+              "iterations": 5,
+              "ants": 10,
+              "black_box": false,
+              "random_seed": 1234,
+              "dataset_origin": "released_training_data",
+              "dataset_sha256": "63ff5e40e167f6a358f47b7fc9df5a7d26597b236995c4a520ef079b0e6484e8",
+              "validation_scope": "finite original solver objective; no independent solution certificate"
+            },
+            "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+          }
+        },
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Use cfg/problem/mkp_aco.yaml. Set max_fe=2000 for online BPP and init_pop_size=10 for black-box ACO as README instructs.",
+          "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+          "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "seconds": 0.707,
+          "metrics": {
+            "score": 15.96555412610347,
+            "validity": null,
+            "instances": 2,
+            "instance_size": 100,
+            "candidate_calls": 2,
+            "instance_objectives": [
+              10.88440290160594,
+              21.046705350601002
+            ],
+            "profile": "bounded_original_training",
+            "iterations": 5,
+            "ants": 10,
+            "black_box": false,
+            "random_seed": 1234,
+            "dataset_origin": "released_training_data",
+            "dataset_sha256": "63ff5e40e167f6a358f47b7fc9df5a7d26597b236995c4a520ef079b0e6484e8",
+            "validation_scope": "finite original solver objective; no independent solution certificate"
+          },
+          "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+        }
+      }
+    },
+    {
+      "id": "mcts-ahd-mkp-aco-black-box",
+      "paper_ids": [
+        "mcts-ahd"
+      ],
+      "name": "mkp_aco_black_box",
+      "description": "mkp_aco_black_box task evaluated in Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2501.08603",
+          "type": "paper",
+          "locator": "Section 4; Appendices B-D and F"
+        },
+        {
+          "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+          "type": "repository",
+          "locator": "problems/mkp_aco/eval.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy",
+          "torch"
+        ],
+        "environment_variables": [],
+        "datasets": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+        "notes": [
+          "CPU Python with NumPy",
+          "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+        ],
+        "required_files": [
+          "problems/mkp_aco/eval_black_box.py",
+          "problems/mkp_aco/gen_inst.py",
+          "problems/mkp_aco/aco.py",
+          "utils/utils.py",
+          "problems/mkp_aco/dataset/train100_dataset.npz"
+        ],
+        "required_file_hashes": {
+          "problems/mkp_aco/eval_black_box.py": "9621ff57d2138fef93bc98eafdbef952b15aa5435fab07256fb58d0345ef3667",
+          "problems/mkp_aco/gen_inst.py": "0efc7b67eb18c53b6391ac8bcc953f088a37f38bb7a9ca5e5ff12d4e302b88aa",
+          "problems/mkp_aco/aco.py": "665dc6dd727ab7c52b883b915fc2220dfca0404f9aa1c9355119cae3ea660f3e",
+          "utils/utils.py": "0b9cfa62adcde5046d1b90808e6477928940ef1462602b82685296831285a0b9",
+          "problems/mkp_aco/dataset/train100_dataset.npz": "63ff5e40e167f6a358f47b7fc9df5a7d26597b236995c4a520ef079b0e6484e8"
+        }
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "mean total prize",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "mkp_aco_black_box",
+        "protocol": "upstream",
+        "source_locator": "Section 4; Appendices B-D and F"
+      },
+      "execution": {
+        "repository": "https://github.com/zz1358m/MCTS-AHD-master",
+        "commit": "ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+        "upstream_path": "problems/mkp_aco/eval.py",
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "main.py",
+              "problem=mkp_aco_black_box",
+              "init_pop_size=10"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/main.py",
+            "notes": "Hydra task override derived from inspected @hydra.main configuration and verified cfg/problem file; not executed."
+          }
+        ],
+        "evaluator_adapter": {
+          "evaluator_scope": "repository",
+          "evaluator_path": "adapters/recovered/optimization_original.py",
+          "baseline_scope": "repository",
+          "baseline_path": "adapters/recovered/seeds/optimization_mcts-ahd_mkp_aco_black_box.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": ".",
+          "score_key": "score",
+          "score_direction": "maximize",
+          "validity_key": "validity",
+          "return_style": "dict",
+          "kwargs": {
+            "checkout": "{checkout}",
+            "problem": "mkp_aco",
+            "max_instances": 2,
+            "iterations": 5,
+            "ants": 10,
+            "random_seed": 1234,
+            "black_box": true
+          },
+          "dependencies": [
+            "numpy",
+            "scipy",
+            "torch"
+          ],
+          "implementation_label": "bounded_original_protocol_extracted_seed",
+          "repository_files": {
+            "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+            "adapters/recovered/seeds/optimization_mcts-ahd_mkp_aco_black_box.py": "170a7b899203255c3e5f46c0a12ce51c2fe0f6d64e626c12dfa06f43275e6a2d"
+          },
+          "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "seconds": 0.713,
+            "metrics": {
+              "score": 11.650349501405957,
+              "validity": null,
+              "instances": 2,
+              "instance_size": 100,
+              "candidate_calls": 2,
+              "instance_objectives": [
+                6.293270995031325,
+                17.00742800778059
+              ],
+              "profile": "bounded_original_training",
+              "iterations": 5,
+              "ants": 10,
+              "black_box": true,
+              "random_seed": 1234,
+              "dataset_origin": "released_training_data",
+              "dataset_sha256": "63ff5e40e167f6a358f47b7fc9df5a7d26597b236995c4a520ef079b0e6484e8",
+              "validation_scope": "finite original solver objective; no independent solution certificate"
+            },
+            "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+          }
+        },
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Use cfg/problem/mkp_aco_black_box.yaml. Set max_fe=2000 for online BPP and init_pop_size=10 for black-box ACO as README instructs.",
+          "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+          "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "seconds": 0.713,
+          "metrics": {
+            "score": 11.650349501405957,
+            "validity": null,
+            "instances": 2,
+            "instance_size": 100,
+            "candidate_calls": 2,
+            "instance_objectives": [
+              6.293270995031325,
+              17.00742800778059
+            ],
+            "profile": "bounded_original_training",
+            "iterations": 5,
+            "ants": 10,
+            "black_box": true,
+            "random_seed": 1234,
+            "dataset_origin": "released_training_data",
+            "dataset_sha256": "63ff5e40e167f6a358f47b7fc9df5a7d26597b236995c4a520ef079b0e6484e8",
+            "validation_scope": "finite original solver objective; no independent solution certificate"
+          },
+          "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+        }
+      }
+    },
+    {
+      "id": "redahd-multiple-knapsack",
+      "paper_ids": [
+        "redahd"
+      ],
+      "name": "Multiple knapsack",
+      "description": "Multiple knapsack: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2505.20242",
+          "type": "paper",
+          "locator": "Section 5.1 and Appendix C"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "MCTS-AHD evaluation datasets",
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "objective value / gap to optimum (problem dependent)",
+        "paper_metric": "objective value / gap to optimum (problem dependent)",
+        "paper_direction": null,
+        "direction": null,
+        "benchmark": "MCTS-AHD evaluation datasets",
+        "protocol": "specified_only",
+        "source_locator": "Section 5.1 and Appendix C"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "The paper links MCTS-AHD data, not an official RedAHD repository."
+        ]
+      },
+      "limitations": [
+        "No official runnable repository was verified from the paper/project sources examined.",
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

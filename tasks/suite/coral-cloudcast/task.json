@@ -1,0 +1,496 @@
+{
+  "schema_version": "1.0",
+  "id": "coral-cloudcast",
+  "name": "Cloudcast",
+  "description": "Cloudcast",
+  "paper_ids": [
+    "coral",
+    "adaevolve",
+    "evox"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1 and Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/ADRS/cloudcast"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/ADRS/cloudcast"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "networkx>=3.2,<3.4",
+      "pandas"
+    ],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "Docker",
+      "task-specific data"
+    ],
+    "required_files": [
+      "examples/ADRS/cloudcast/taskdata/examples/config/inter_agz.json",
+      "examples/ADRS/cloudcast/taskdata/examples/config/inter_gaz2.json",
+      "examples/ADRS/cloudcast/taskdata/examples/config/intra_aws.json",
+      "examples/ADRS/cloudcast/taskdata/examples/config/intra_azure.json",
+      "examples/ADRS/cloudcast/taskdata/examples/config/intra_gcp.json",
+      "examples/ADRS/cloudcast/taskdata/profiles/cost.csv",
+      "examples/ADRS/cloudcast/taskdata/profiles/throughput.csv"
+    ],
+    "required_file_hashes": {
+      "examples/ADRS/cloudcast/taskdata/profiles/cost.csv": "b0f97b744b8f0ba464f1098975a25232f168ff8a2c12bfc09efb1c35e4453eac",
+      "examples/ADRS/cloudcast/taskdata/profiles/throughput.csv": "e45ee4f0b4101bee184966aedf8efb1e83add7cb3737e172f8729eac00b19e27",
+      "examples/ADRS/cloudcast/taskdata/examples/config/intra_aws.json": "986e7d1f1b7d7186398ac13c1c4fe499a48a164d84a4a7ca8ff17cde3198be42",
+      "examples/ADRS/cloudcast/taskdata/examples/config/intra_azure.json": "ac1d872c8f90b2496bf750b1c8a2b8500b2c74b3b1d2675dc9cc25413541a49f",
+      "examples/ADRS/cloudcast/taskdata/examples/config/intra_gcp.json": "a4f3293f3e973b5c682f270dca8c008a485cecd9bc440d41e4364c196211cfae",
+      "examples/ADRS/cloudcast/taskdata/examples/config/inter_agz.json": "e6f7de15894c79bca94907d0776c17414785e7395e0d369743022146bbc42df4",
+      "examples/ADRS/cloudcast/taskdata/examples/config/inter_gaz2.json": "b40631902a840d17c8089ff93356e7b2542ca1c34e32d11c227eb8176e9bd0f9"
+    }
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "cross-cloud transfer cost",
+    "paper_direction": "minimize",
+    "direction": "maximize",
+    "benchmark": "ADRS",
+    "protocol": "upstream",
+    "source_locator": "Section 4.1 and Table 1"
+  },
+  "execution": {
+    "repository": "https://github.com/Human-Agent-Society/CORAL",
+    "commit": "0123dfb939b35228cf2c1fde224cd0561e727408",
+    "upstream_path": "examples/ADRS/cloudcast",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/ADRS/cloudcast/taskdata/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/ADRS/cloudcast/seed",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "examples/ADRS/cloudcast/seed/initial_program.py",
+      "dependencies": [
+        "networkx>=3.2,<3.4",
+        "pandas"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced. Source imports initial_program at module load, so cwd is the official seed directory while evaluator.parent supplies taskdata modules; same import paths supplied by the packaged CORAL grader.",
+      "validation": {
+        "kind": "official_seed_common_cli_smoke",
+        "passed": true,
+        "status": "completed",
+        "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+        "seconds": 1.15,
+        "candidate_sha256": "a3f0eab844a68407c9bee2e65e8f945bf8d4cfd76beffddba138e460eb661178",
+        "evaluator_sha256": "7db622237f2294413b0e679b13016439f7d4d56c090e40e29fc95db6ba48ef06",
+        "score": 0.0009652509652509653,
+        "valid": null,
+        "report": "validation/upstream-gap-smoke-early.json"
+      }
+    },
+    "setup_instructions": [
+      "python -m pip install 'networkx>=3.2,<3.4' pandas"
+    ],
+    "task_setup_instructions": [
+      "python -m pip install 'networkx>=3.2,<3.4' pandas"
+    ],
+    "framework_setup_instructions": [
+      "uv sync --extra dev"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "adrs_cloudcast",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:networkx",
+        "py:pandas"
+      ],
+      "timeout": 900
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Cloudcast",
+    "slug": "cloudcast",
+    "description": "Cloudcast",
+    "benchmark": "ADRS",
+    "dataset": null,
+    "metric": "cross-cloud transfer cost",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2604.01658",
+    "source_locator": "Section 4.1 and Table 1",
+    "upstream_path": "examples/ADRS/cloudcast",
+    "requirements": [
+      "Docker",
+      "task-specific data"
+    ],
+    "execution_notes": "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced.",
+    "upstream_evaluator_paths": [
+      "examples/ADRS/cloudcast/grader/src/cloudcast_grader/grader.py",
+      "examples/ADRS/cloudcast/taskdata/evaluator.py"
+    ],
+    "upstream_seed_paths": [
+      "examples/ADRS/cloudcast/seed/initial_program.py"
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/ADRS/cloudcast/taskdata/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/ADRS/cloudcast/seed",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "examples/ADRS/cloudcast/seed/initial_program.py",
+      "dependencies": [
+        "networkx>=3.2,<3.4",
+        "pandas"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced. Source imports initial_program at module load, so cwd is the official seed directory while evaluator.parent supplies taskdata modules; same import paths supplied by the packaged CORAL grader.",
+      "validation": {
+        "kind": "official_seed_common_cli_smoke",
+        "passed": true,
+        "status": "completed",
+        "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+        "seconds": 1.15,
+        "candidate_sha256": "a3f0eab844a68407c9bee2e65e8f945bf8d4cfd76beffddba138e460eb661178",
+        "evaluator_sha256": "7db622237f2294413b0e679b13016439f7d4d56c090e40e29fc95db6ba48ef06",
+        "score": 0.0009652509652509653,
+        "valid": null,
+        "report": "validation/upstream-gap-smoke-early.json"
+      }
+    },
+    "execution_sources": [
+      "https://github.com/Human-Agent-Society/CORAL/blob/0123dfb939b35228cf2c1fde224cd0561e727408/examples/ADRS/cloudcast/taskdata/evaluator.py"
+    ],
+    "setup_commands": [
+      "python -m pip install 'networkx>=3.2,<3.4' pandas"
+    ],
+    "required_files": [
+      "examples/ADRS/cloudcast/taskdata/examples/config/inter_agz.json",
+      "examples/ADRS/cloudcast/taskdata/examples/config/inter_gaz2.json",
+      "examples/ADRS/cloudcast/taskdata/examples/config/intra_aws.json",
+      "examples/ADRS/cloudcast/taskdata/examples/config/intra_azure.json",
+      "examples/ADRS/cloudcast/taskdata/examples/config/intra_gcp.json",
+      "examples/ADRS/cloudcast/taskdata/profiles/cost.csv",
+      "examples/ADRS/cloudcast/taskdata/profiles/throughput.csv"
+    ],
+    "required_file_hashes": {
+      "examples/ADRS/cloudcast/taskdata/profiles/cost.csv": "b0f97b744b8f0ba464f1098975a25232f168ff8a2c12bfc09efb1c35e4453eac",
+      "examples/ADRS/cloudcast/taskdata/profiles/throughput.csv": "e45ee4f0b4101bee184966aedf8efb1e83add7cb3737e172f8729eac00b19e27",
+      "examples/ADRS/cloudcast/taskdata/examples/config/intra_aws.json": "986e7d1f1b7d7186398ac13c1c4fe499a48a164d84a4a7ca8ff17cde3198be42",
+      "examples/ADRS/cloudcast/taskdata/examples/config/intra_azure.json": "ac1d872c8f90b2496bf750b1c8a2b8500b2c74b3b1d2675dc9cc25413541a49f",
+      "examples/ADRS/cloudcast/taskdata/examples/config/intra_gcp.json": "a4f3293f3e973b5c682f270dca8c008a485cecd9bc440d41e4364c196211cfae",
+      "examples/ADRS/cloudcast/taskdata/examples/config/inter_agz.json": "e6f7de15894c79bca94907d0776c17414785e7395e0d369743022146bbc42df4",
+      "examples/ADRS/cloudcast/taskdata/examples/config/inter_gaz2.json": "b40631902a840d17c8089ff93356e7b2542ca1c34e32d11c227eb8176e9bd0f9"
+    },
+    "dataset_assets": {
+      "lock": "catalog/adrs-data-lock.json",
+      "repository": "https://huggingface.co/datasets/f20180301/adrs-data",
+      "commit": "f1dd6c53d739c308f150bb7ff9483c60ad364832",
+      "setup": "python3 scripts/prepare_adrs_data.py"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "integration_smoke",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "official_seed_common_cli_smoke",
+      "passed": true,
+      "status": "completed",
+      "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+      "seconds": 1.15,
+      "candidate_sha256": "a3f0eab844a68407c9bee2e65e8f945bf8d4cfd76beffddba138e460eb661178",
+      "evaluator_sha256": "7db622237f2294413b0e679b13016439f7d4d56c090e40e29fc95db6ba48ef06",
+      "score": 0.0009652509652509653,
+      "valid": null,
+      "report": "validation/upstream-gap-smoke-early.json"
+    },
+    "execution_evidence": [
+      {
+        "report": "validation/upstream-gap-smoke-early.json",
+        "candidate_label": "upstream_seed",
+        "status": "completed",
+        "valid": null,
+        "score": 0.0009652509652509653
+      }
+    ]
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "adaevolve-cloudcast",
+      "paper_ids": [
+        "adaevolve"
+      ],
+      "name": "Cloudcast",
+      "description": "Cloudcast",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.20133",
+          "type": "paper",
+          "locator": "Systems results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/ADRS/cloudcast"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "networkx>=3.2,<3.4",
+          "pandas"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "task-specific dependencies and data",
+          "No LLM/API call needed for direct candidate evaluation. External dataset download required."
+        ],
+        "required_files": [
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/inter_agz.json",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/inter_gaz2.json",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/intra_aws.json",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/intra_azure.json",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/intra_gcp.json",
+          "benchmarks/ADRS/cloudcast/evaluator/profiles/cost.csv",
+          "benchmarks/ADRS/cloudcast/evaluator/profiles/throughput.csv"
+        ],
+        "required_file_hashes": {
+          "benchmarks/ADRS/cloudcast/evaluator/profiles/cost.csv": "b0f97b744b8f0ba464f1098975a25232f168ff8a2c12bfc09efb1c35e4453eac",
+          "benchmarks/ADRS/cloudcast/evaluator/profiles/throughput.csv": "e45ee4f0b4101bee184966aedf8efb1e83add7cb3737e172f8729eac00b19e27",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/intra_aws.json": "986e7d1f1b7d7186398ac13c1c4fe499a48a164d84a4a7ca8ff17cde3198be42",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/intra_azure.json": "ac1d872c8f90b2496bf750b1c8a2b8500b2c74b3b1d2675dc9cc25413541a49f",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/intra_gcp.json": "a4f3293f3e973b5c682f270dca8c008a485cecd9bc440d41e4364c196211cfae",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/inter_agz.json": "e6f7de15894c79bca94907d0776c17414785e7395e0d369743022146bbc42df4",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/inter_gaz2.json": "b40631902a840d17c8089ff93356e7b2542ca1c34e32d11c227eb8176e9bd0f9"
+        }
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "cross-cloud transfer cost",
+        "paper_direction": "minimize",
+        "direction": "maximize",
+        "benchmark": "ADRS",
+        "protocol": "upstream",
+        "source_locator": "Systems results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/ADRS/cloudcast",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/ADRS/cloudcast/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/ADRS/cloudcast/evaluator",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/ADRS/cloudcast/initial_program.py",
+          "dependencies": [
+            "networkx>=3.2,<3.4",
+            "pandas"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+        },
+        "setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/cloudcast/evaluator/requirements.txt",
+          "bash benchmarks/ADRS/cloudcast/evaluator/download_dataset.sh"
+        ],
+        "task_setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/cloudcast/evaluator/requirements.txt",
+          "bash benchmarks/ADRS/cloudcast/evaluator/download_dataset.sh"
+        ],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Direct source evaluator adapter; Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "evox-cloudcast",
+      "paper_ids": [
+        "evox"
+      ],
+      "name": "Cloudcast",
+      "description": "Cloudcast",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.23413",
+          "type": "paper",
+          "locator": "Systems results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/ADRS/cloudcast"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "networkx>=3.2,<3.4",
+          "pandas"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "task-specific dependencies and data",
+          "No LLM/API call needed for direct candidate evaluation. External dataset download required."
+        ],
+        "required_files": [
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/inter_agz.json",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/inter_gaz2.json",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/intra_aws.json",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/intra_azure.json",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/intra_gcp.json",
+          "benchmarks/ADRS/cloudcast/evaluator/profiles/cost.csv",
+          "benchmarks/ADRS/cloudcast/evaluator/profiles/throughput.csv"
+        ],
+        "required_file_hashes": {
+          "benchmarks/ADRS/cloudcast/evaluator/profiles/cost.csv": "b0f97b744b8f0ba464f1098975a25232f168ff8a2c12bfc09efb1c35e4453eac",
+          "benchmarks/ADRS/cloudcast/evaluator/profiles/throughput.csv": "e45ee4f0b4101bee184966aedf8efb1e83add7cb3737e172f8729eac00b19e27",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/intra_aws.json": "986e7d1f1b7d7186398ac13c1c4fe499a48a164d84a4a7ca8ff17cde3198be42",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/intra_azure.json": "ac1d872c8f90b2496bf750b1c8a2b8500b2c74b3b1d2675dc9cc25413541a49f",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/intra_gcp.json": "a4f3293f3e973b5c682f270dca8c008a485cecd9bc440d41e4364c196211cfae",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/inter_agz.json": "e6f7de15894c79bca94907d0776c17414785e7395e0d369743022146bbc42df4",
+          "benchmarks/ADRS/cloudcast/evaluator/examples/config/inter_gaz2.json": "b40631902a840d17c8089ff93356e7b2542ca1c34e32d11c227eb8176e9bd0f9"
+        }
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "cross-cloud transfer cost",
+        "paper_direction": "minimize",
+        "direction": "maximize",
+        "benchmark": "ADRS",
+        "protocol": "upstream",
+        "source_locator": "Systems results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/ADRS/cloudcast",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/ADRS/cloudcast/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/ADRS/cloudcast/evaluator",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/ADRS/cloudcast/initial_program.py",
+          "dependencies": [
+            "networkx>=3.2,<3.4",
+            "pandas"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+        },
+        "setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/cloudcast/evaluator/requirements.txt",
+          "bash benchmarks/ADRS/cloudcast/evaluator/download_dataset.sh"
+        ],
+        "task_setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/cloudcast/evaluator/requirements.txt",
+          "bash benchmarks/ADRS/cloudcast/evaluator/download_dataset.sh"
+        ],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Direct source evaluator adapter; Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+        ]
+      },
+      "limitations": [
+        "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

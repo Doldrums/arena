@@ -1,0 +1,93 @@
+{
+  "protocol": "recreated",
+  "family": "science_materials_matbench_stability_screening",
+  "direction": "maximize",
+  "contract": "rank_crystals(unrelaxed_structures, budget) -> exactly budget unique integer indices. Structures are evaluator-provided pre-relaxation crystal records, with optional target-free descriptors; labels remain private. Score precision of DFT energy-above-reference-hull <=0 eV/atom among selected candidates. Training MP and evaluation WBM chemistry/structure groups must be disjoint; no claim of experimental synthesis.",
+  "parameters": {
+    "proposal_id": "C03",
+    "data_sha256": "1d891953e6101f90076ffeb0c6b3d0f36de0fe84ff2196e5c909d7170fa0dd79"
+  },
+  "requires": [
+    "py:numpy",
+    "file:data/materials-expansion/C03/dataset.json"
+  ],
+  "timeout": 180,
+  "notes": [
+    "Independently implemented SCIEL adaptation. Source bundles are required except the specified PFHub and Cantera simulations; no generated replacement data. See docs/MATERIALS_EXPANSION.md for provenance, exact setup blockers and validation scope."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-materials-matbench-stability-screening",
+  "name": "Matbench DFT-stable crystal screening",
+  "paper_ids": [
+    "science-materials_expansion"
+  ],
+  "description": "rank_crystals(unrelaxed_structures, budget) -> exactly budget unique integer indices. Structures are evaluator-provided pre-relaxation crystal records, with optional target-free descriptors; labels remain private. Score precision of DFT energy-above-reference-hull <=0 eV/atom among selected candidates. Training MP and evaluation WBM chemistry/structure groups must be disjoint; no claim of experimental synthesis.",
+  "benchmark": "Matbench DFT-stable crystal screening",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2308.14920",
+      "type": "paper",
+      "locator": "Matbench Discovery; stability discovery, MP/WBM split and reference convex hull."
+    },
+    {
+      "url": "https://github.com/janosh/matbench-discovery",
+      "type": "repository",
+      "locator": "Official stability benchmark and data registry."
+    },
+    {
+      "url": "https://figshare.com/articles/dataset/Matbench_Discovery_v1_0_0/22715158",
+      "type": "benchmark",
+      "locator": "Released structures and DFT reference outcomes."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation of a cited scientific problem; no claim to reproduce author leaderboard scores.",
+    "Candidate and evaluator run in one Python process; data access is separated by API, not an OS sandbox. Isolate evaluator data for adversarial or held-out evaluation.",
+    "Bounded zero-shot screening adaptation: 512 source WBM geometries in four128-candidate pools, selected by label-independent hash. No MP training data or trained checkpoint is supplied and full Matbench leaderboard performance is not claimed."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-materials_expansion",
+      "title": "Chemistry and materials research: source-based research tasks",
+      "url": "https://doi.org/10.1021/jacs.2c08592"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Identify inorganic crystal structures predicted to be thermodynamically stable.",
+    "importance_rationale": "Stable-crystal discovery expands candidates for materials with useful physical properties.",
+    "papers": [
+      {
+        "title": "Scaling deep learning for materials discovery",
+        "url": "https://www.nature.com/articles/s41586-023-06735-9",
+        "primary_goal": "Discover stable inorganic crystals through learned energy predictions and first-principles validation.",
+        "task_relation": "The local task selects stable candidates from unrelaxed WBM structures using DFT reference-hull labels. It is restricted candidate screening and does not claim discovery of the paper's materials, experimental synthesis, or stability beyond the reference hull.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The evidence is a materials-discovery study, rather than the Matbench Discovery benchmark introduction.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "optimizer",
+    "domain": "natural_science",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "materials_science",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

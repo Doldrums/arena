@@ -1,0 +1,281 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-bench-k-module-problem",
+  "name": "SCiEL: K-module pipeline configuration",
+  "description": "Select the correct option for each of four independent pipeline modules (loader, preprocess, algorithm, formatter; five options each, 625 combinations). The evaluator reports only how many modules are correct, so the landscape carries no per-module gradient; combined_score is the fraction of correct modules.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "software_configuration",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/k_module_problem/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/k_module_problem/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/k_module_problem/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "None; the target configuration is a constant in the pinned evaluator.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example k_module_problem",
+    "paper_metric": null,
+    "source_locator": "examples/k_module_problem/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/k_module_problem",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/k_module_problem/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/k_module_problem",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "error_key": "artifacts.error",
+      "baseline_path": "examples/k_module_problem/initial_program.py",
+      "dependencies": [],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply task validity; preserve unknown validity unless the original evaluator exposes an explicit signal.",
+        "Standard library only; the hidden correct configuration is a constant in the pinned evaluator."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The hidden target configuration is readable in the pinned evaluator source; the task measures search behavior under coarse feedback, not concealed knowledge."
+  ],
+  "validation": {
+    "level": "integration_smoke",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "Failure branches nest combined_score under metrics while the success branch returns it at the top level; the adapter treats a missing top-level score as an execution error rather than a zero score."
+    ],
+    "execution_tested": true,
+    "execution_evidence": {
+      "task_id": "sciel-bench-k-module-problem",
+      "date": "2026-09-19",
+      "mode": "original seed, original pinned evaluator",
+      "model_calls": 0,
+      "direct_evaluation": {
+        "command": "run.py evaluate sciel-bench-k-module-problem --python .cache/sciel-env/bin/python",
+        "status": "completed",
+        "score": 0.0,
+        "valid": null,
+        "metric": "combined_score",
+        "direction": "maximize",
+        "upstream_result": {
+          "correct_modules": 0,
+          "total_modules": 4,
+          "accuracy": 0.0,
+          "combined_score": 0.0,
+          "eval_time": 0.00010704994201660156
+        },
+        "started_at": "2026-09-19T15:29:52.759500+00:00",
+        "finished_at": "2026-09-19T15:29:52.889586+00:00"
+      },
+      "sciel_facade_check": {
+        "command": "run.py smoke sciel-bench-k-module-problem",
+        "status": "unverified",
+        "score": 0.0,
+        "valid": null,
+        "reason_code": "validity_not_reported",
+        "combined_score": 0.0,
+        "engine_evaluator_file": "engine/openevolve/evaluator.py",
+        "python_version": "3.12.14",
+        "sciel_source": {
+          "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+          "tracked_modified": false,
+          "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+        }
+      },
+      "score": 0.0,
+      "valid": null,
+      "sciel_exercised": true,
+      "candidate_sha256": "b60f1861b48218e0e7ad90fcdde7eb456fb01f4b939e00df86e6774f5df3090e",
+      "evaluator_sha256": "4f31a4306589d94e8e21e98437e8045b6b1d8a4e5977944d183ee2b31c68fb43",
+      "source_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+      "runtime_executable_sha256": "ac60cfe0268614638d0ffa35f3b0284fc7b3a11482723793455e17eeb278509e",
+      "runs_directory": "runs/sciel-examples-20260919 (git-ignored; per-task JSON and smoke reports)"
+    }
+  },
+  "source_hashes": {
+    "examples/k_module_problem/README.md": "038e522a75b7485bb0d824d6e48e86ad17fa4895effd26e00df730da2cfc2ceb",
+    "examples/k_module_problem/compare_results.py": "f0077a87755f670167dfe80efa2707615b31870292a789e942c8a624efda153b",
+    "examples/k_module_problem/config.yaml": "a7a993a0cfdb0f0002137d90c3f6b8faa141819ea6ebe62012a8e9331399be67",
+    "examples/k_module_problem/evaluator.py": "4f31a4306589d94e8e21e98437e8045b6b1d8a4e5977944d183ee2b31c68fb43",
+    "examples/k_module_problem/initial_program.py": "b60f1861b48218e0e7ad90fcdde7eb456fb01f4b939e00df86e6774f5df3090e",
+    "examples/k_module_problem/iterative_agent.py": "48619906bdd5ddf27528875d08c16e4339975f8d9ffe9177aeef53e0da41443d",
+    "examples/k_module_problem/run_iterative.sh": "f473f7f1071c3fe4a694e37f8a76ff15decae5d0ad9fa6c9d839b05006e0402d",
+    "examples/k_module_problem/run_iterative_trials.py": "099874a21e34d5887369f3a4c69537be3d521c639e87d248bf93ef286fe331a1",
+    "examples/k_module_problem/run_openevolve.sh": "4123126be665db9af2ff8f1989153dd0c0f30d530041f991b8a365cf7119ba0c",
+    "examples/k_module_problem/run_openevolve_trials.py": "3a3f79a4aa84a2c561f13df170afb69d70f0f4c5e6c47a30171f73e995703516",
+    "examples/k_module_problem/run_random_baseline.py": "30b60323fc89c598770e39bab574c93145542a025cc503837abdb96b057faace"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/k_module_problem/evaluator.py",
+      "signature": "program_path: str",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.run_pipeline() or program.configure_pipeline() -> dict with keys loader, preprocess, algorithm, formatter"
+    ],
+    "baseline_path": "examples/k_module_problem/initial_program.py",
+    "baseline_functions": {
+      "configure_pipeline": {
+        "signature": "",
+        "docstring": "Configure a data processing pipeline with 4 independent modules.\n\nEach module choice is independent - changing one doesn't affect\nwhat's optimal for others. This creates a \"needle in haystack\"\nproblem for iterative refinement but is solvable efficiently\nby evolutionary crossover.\n\nReturns:\n    dict: Configuration with keys 'loader', 'preprocess', 'algorithm', 'formatter'"
+      },
+      "run_pipeline": {
+        "signature": "",
+        "docstring": "Run the pipeline configuration (entry point for evaluator)."
+      }
+    },
+    "parameters": {
+      "modules": 4,
+      "options_per_module": 5,
+      "search_space": 625
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 97,
+        "expression": "{ \"correct_modules\": correct_count, \"total_modules\": NUM_MODULES, \"accuracy\": accuracy, \"combined_score\": combined_score, \"eval_time\": eval_time, \"artifacts\": artifacts, }"
+      },
+      {
+        "function": "evaluate",
+        "line": 78,
+        "expression": "_validation_error_result(validation_errors)"
+      },
+      {
+        "function": "evaluate",
+        "line": 107,
+        "expression": "_exception_result(e)"
+      },
+      {
+        "function": "evaluate",
+        "line": 73,
+        "expression": "_error_result(\"Program must define run_pipeline() or configure_pipeline()\")"
+      }
+    ],
+    "validity_key": null,
+    "validity_semantics": "No explicit validity signal. Invalid option names return nested metrics with combined_score 0.0 and artifacts.validation_errors; a solved configuration scores 1.0.",
+    "error_key": "artifacts.error",
+    "declared_requirements": [],
+    "evaluator_imports": [
+      "importlib",
+      "os",
+      "sys",
+      "time",
+      "traceback"
+    ],
+    "baseline_imports": [],
+    "source_config_path": "examples/k_module_problem/config.yaml",
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 50,
+      "checkpoint_interval": 10,
+      "diff_based_evolution": false,
+      "random_seed": 123,
+      "evaluator": {
+        "timeout": 30,
+        "max_retries": 2,
+        "cascade_evaluation": false,
+        "parallel_evaluations": 4
+      },
+      "database": {
+        "population_size": 25,
+        "num_islands": 5,
+        "archive_size": 15
+      },
+      "llm": {
+        "api_base": "https://openrouter.ai/api/v1",
+        "models": [
+          "google/gemini-2.5-flash-lite"
+        ],
+        "timeout": 60
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "cpu",
+    "recommended_smoke_outer_timeout_seconds": 15
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "configuration",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

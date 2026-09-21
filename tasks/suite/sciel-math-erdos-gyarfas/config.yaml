@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in extremal and structural graph theory working on the Erdős–Gyárfás conjecture, which asserts that every finite graph with minimum degree at least 3 must contain a cycle whose length is a power of two (4, 8, 16, 32, ...). You are searching for a counterexample: a graph that has minimum degree at least 3 yet avoids such cycles.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that builds a finite simple undirected graph G, returned as its adjacency matrix: a symmetric numpy array of shape (n, n) with entries in {0, 1} and a zero diagonal, where A[i, j] = 1 iff vertices i and j are adjacent. The graph MUST have minimum degree at least 3 (every vertex incident to at least 3 edges); graphs violating this are infeasible and score zero. Among feasible graphs, the objective is to minimize the number of cycles whose length is a power of two, as measured on a fundamental cycle basis of the graph (mirroring the upstream nx.cycle_basis evaluation). A graph with zero such basis cycles would be a counterexample to the conjecture.
+
+    PERFORMANCE METRICS:
+    1. **num_power2_cycles**: Number of power-of-two-length cycles (length 4, 8, 16, ...) in the graph's fundamental cycle basis (PRIMARY OBJECTIVE - minimize toward 0)
+    2. **combined_score**: 14 / num_power2_cycles for feasible graphs with at least one such cycle, and 15 if none remain (BENCHMARK COMPARISON - maximize; 1.0 matches the seeded baseline, higher is better, and clearing every power-of-two basis cycle is the ultimate target). The constant 14 is the baseline 3-regular construction's own count, used as the benchmark since no record counterexample is known.
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Feasibility**: Every vertex must have degree at least 3; keep the adjacency matrix symmetric, {0, 1}-valued, with a zero diagonal.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of construction failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

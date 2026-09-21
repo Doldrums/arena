@@ -1,0 +1,469 @@
+{
+  "schema_version": "1.0",
+  "id": "coral-model-placement-prism",
+  "name": "Model placement PRISM",
+  "description": "Model placement PRISM",
+  "paper_ids": [
+    "coral",
+    "adaevolve",
+    "evox"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1 and Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/ADRS/prism"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/ADRS/prism"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "Docker",
+      "task-specific data"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "placement score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "ADRS",
+    "protocol": "upstream",
+    "source_locator": "Section 4.1 and Table 1"
+  },
+  "execution": {
+    "repository": "https://github.com/Human-Agent-Society/CORAL",
+    "commit": "0123dfb939b35228cf2c1fde224cd0561e727408",
+    "upstream_path": "examples/ADRS/prism",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/ADRS/prism/taskdata/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/ADRS/prism/taskdata",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "examples/ADRS/prism/seed/initial_program.py",
+      "dependencies": [
+        "numpy"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced.",
+      "validation": {
+        "kind": "official_seed_common_cli_smoke",
+        "passed": true,
+        "status": "completed",
+        "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+        "seconds": 0.28,
+        "candidate_sha256": "4679530731916cf034bba4cac2a21413f7a6a3176cc333d3731b8305d6447042",
+        "evaluator_sha256": "1a712bd1888be5f129a2cde8cdf2f906a4e571d07c140fbe09c85faf13c2555d",
+        "score": 21.891622105209393,
+        "valid": null,
+        "report": "validation/upstream-gap-smoke-early.json"
+      }
+    },
+    "setup_instructions": [
+      "python -m pip install numpy"
+    ],
+    "task_setup_instructions": [
+      "python -m pip install numpy"
+    ],
+    "framework_setup_instructions": [
+      "uv sync --extra dev"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "adrs_prism",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 900
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Model placement PRISM",
+    "slug": "model-placement-prism",
+    "description": "Model placement PRISM",
+    "benchmark": "ADRS",
+    "dataset": null,
+    "metric": "placement score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2604.01658",
+    "source_locator": "Section 4.1 and Table 1",
+    "upstream_path": "examples/ADRS/prism",
+    "requirements": [
+      "Docker",
+      "task-specific data"
+    ],
+    "execution_notes": "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced.",
+    "upstream_evaluator_paths": [
+      "examples/ADRS/prism/grader/src/prism_grader/grader.py",
+      "examples/ADRS/prism/taskdata/evaluator.py"
+    ],
+    "upstream_seed_paths": [
+      "examples/ADRS/prism/seed/initial_program.py"
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/ADRS/prism/taskdata/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/ADRS/prism/taskdata",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "examples/ADRS/prism/seed/initial_program.py",
+      "dependencies": [
+        "numpy"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced.",
+      "validation": {
+        "kind": "official_seed_common_cli_smoke",
+        "passed": true,
+        "status": "completed",
+        "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+        "seconds": 0.28,
+        "candidate_sha256": "4679530731916cf034bba4cac2a21413f7a6a3176cc333d3731b8305d6447042",
+        "evaluator_sha256": "1a712bd1888be5f129a2cde8cdf2f906a4e571d07c140fbe09c85faf13c2555d",
+        "score": 21.891622105209393,
+        "valid": null,
+        "report": "validation/upstream-gap-smoke-early.json"
+      }
+    },
+    "execution_sources": [
+      "https://github.com/Human-Agent-Society/CORAL/blob/0123dfb939b35228cf2c1fde224cd0561e727408/examples/ADRS/prism/taskdata/evaluator.py"
+    ],
+    "setup_commands": [
+      "python -m pip install numpy"
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "integration_smoke",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "official_seed_common_cli_smoke",
+      "passed": true,
+      "status": "completed",
+      "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+      "seconds": 0.28,
+      "candidate_sha256": "4679530731916cf034bba4cac2a21413f7a6a3176cc333d3731b8305d6447042",
+      "evaluator_sha256": "1a712bd1888be5f129a2cde8cdf2f906a4e571d07c140fbe09c85faf13c2555d",
+      "score": 21.891622105209393,
+      "valid": null,
+      "report": "validation/upstream-gap-smoke-early.json"
+    },
+    "execution_evidence": [
+      {
+        "report": "validation/upstream-gap-smoke-early.json",
+        "candidate_label": "upstream_seed",
+        "status": "completed",
+        "valid": null,
+        "score": 21.891622105209393
+      }
+    ]
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "adaevolve-model-placement-prism",
+      "paper_ids": [
+        "adaevolve"
+      ],
+      "name": "Model placement PRISM",
+      "description": "Model placement PRISM",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.20133",
+          "type": "paper",
+          "locator": "Systems results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/ADRS/prism"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "task-specific dependencies and data",
+          "No LLM/API call needed for direct candidate evaluation. Test workloads are procedurally generated; CPU evaluation."
+        ]
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "placement score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ADRS",
+        "protocol": "upstream",
+        "source_locator": "Systems results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/ADRS/prism",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/ADRS/prism/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/ADRS/prism/evaluator",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/ADRS/prism/initial_program.py",
+          "dependencies": [
+            "numpy"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced.",
+          "validation": {
+            "kind": "official_seed_common_cli_smoke",
+            "passed": true,
+            "status": "completed",
+            "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+            "seconds": 0.28,
+            "candidate_sha256": "db9a35fbee16d97055e07594586a9d84817fd7ac63f539a254d282b162f3d819",
+            "evaluator_sha256": "93a18d0f620038d9ece54ff447a788631572c5db563947605266f523c1cd9c95",
+            "score": 21.891622105209393,
+            "valid": null,
+            "report": "validation/upstream-gap-smoke-early.json"
+          }
+        },
+        "setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/prism/evaluator/requirements.txt"
+        ],
+        "task_setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/prism/evaluator/requirements.txt"
+        ],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "official_seed_common_cli_smoke",
+          "passed": true,
+          "status": "completed",
+          "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+          "seconds": 0.28,
+          "candidate_sha256": "db9a35fbee16d97055e07594586a9d84817fd7ac63f539a254d282b162f3d819",
+          "evaluator_sha256": "93a18d0f620038d9ece54ff447a788631572c5db563947605266f523c1cd9c95",
+          "score": 21.891622105209393,
+          "valid": null,
+          "report": "validation/upstream-gap-smoke-early.json"
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-gap-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": 21.891622105209393
+          }
+        ]
+      }
+    },
+    {
+      "id": "evox-model-placement-prism",
+      "paper_ids": [
+        "evox"
+      ],
+      "name": "Model placement PRISM",
+      "description": "Model placement PRISM",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.23413",
+          "type": "paper",
+          "locator": "Systems results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/ADRS/prism"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "task-specific dependencies and data",
+          "No LLM/API call needed for direct candidate evaluation. Test workloads are procedurally generated; CPU evaluation."
+        ]
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "placement score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ADRS",
+        "protocol": "upstream",
+        "source_locator": "Systems results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/ADRS/prism",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/ADRS/prism/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/ADRS/prism/evaluator",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/ADRS/prism/initial_program.py",
+          "dependencies": [
+            "numpy"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced.",
+          "validation": {
+            "kind": "official_seed_common_cli_smoke",
+            "passed": true,
+            "status": "completed",
+            "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+            "seconds": 0.19,
+            "candidate_sha256": "db9a35fbee16d97055e07594586a9d84817fd7ac63f539a254d282b162f3d819",
+            "evaluator_sha256": "93a18d0f620038d9ece54ff447a788631572c5db563947605266f523c1cd9c95",
+            "score": 21.891622105209393,
+            "valid": null,
+            "report": "validation/upstream-gap-smoke-early.json"
+          }
+        },
+        "setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/prism/evaluator/requirements.txt"
+        ],
+        "task_setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/prism/evaluator/requirements.txt"
+        ],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced."
+        ]
+      },
+      "limitations": [
+        "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "official_seed_common_cli_smoke",
+          "passed": true,
+          "status": "completed",
+          "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+          "seconds": 0.19,
+          "candidate_sha256": "db9a35fbee16d97055e07594586a9d84817fd7ac63f539a254d282b162f3d819",
+          "evaluator_sha256": "93a18d0f620038d9ece54ff447a788631572c5db563947605266f523c1cd9c95",
+          "score": 21.891622105209393,
+          "valid": null,
+          "report": "validation/upstream-gap-smoke-early.json"
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-gap-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": 21.891622105209393
+          }
+        ]
+      }
+    }
+  ]
+}

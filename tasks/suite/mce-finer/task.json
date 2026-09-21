@@ -1,0 +1,286 @@
+{
+  "schema_version": "1.0",
+  "id": "mce-finer",
+  "name": "FiNER",
+  "description": "FiNER task evaluated in Meta Context Engineering via Agentic Skill Evolution.",
+  "paper_ids": [
+    "mce",
+    "meta-harness"
+  ],
+  "kind": "upstream",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2601.21557",
+      "type": "paper",
+      "locator": "Section 4.1 and Appendix A"
+    },
+    {
+      "url": "https://github.com/metaevo-ai/mce-artifact/tree/c63300daef93404e22e2569b3d08e72843e7123b",
+      "type": "repository",
+      "locator": "env/finer/finer_environment.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2603.28052",
+      "type": "paper",
+      "locator": "Section 4.1; Table 5; Appendix C.1"
+    },
+    {
+      "url": "https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact/tree/57fefdb2ff84af3fd81b69d67814acbe69bd0743",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "FiNER",
+    "notes": [
+      "uv",
+      "OpenAI/OpenRouter model credentials",
+      "Dependencies in artifact pyproject.toml"
+    ]
+  },
+  "evaluation": {
+    "metric": "pass@1 prediction accuracy",
+    "paper_metric": "pass@1 prediction accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "FiNER",
+    "protocol": "upstream",
+    "source_locator": "Section 4.1 and Appendix A"
+  },
+  "execution": {
+    "repository": "https://github.com/metaevo-ai/mce-artifact",
+    "commit": "c63300daef93404e22e2569b3d08e72843e7123b",
+    "upstream_path": "env/finer/finer_environment.py",
+    "commands": [
+      {
+        "argv": [
+          "bash",
+          "scripts/eval_finer_mce.sh"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/metaevo-ai/mce-artifact/blob/c63300daef93404e22e2569b3d08e72843e7123b/scripts/eval_finer_mce.sh",
+        "notes": ""
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      {
+        "argv": [
+          "uv",
+          "sync"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/metaevo-ai/mce-artifact/blob/c63300daef93404e22e2569b3d08e72843e7123b/README.md",
+        "notes": ""
+      },
+      {
+        "argv": [
+          "uv",
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/metaevo-ai/mce-artifact/blob/c63300daef93404e22e2569b3d08e72843e7123b/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "uv",
+          "sync"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/metaevo-ai/mce-artifact/blob/c63300daef93404e22e2569b3d08e72843e7123b/README.md",
+        "notes": ""
+      },
+      {
+        "argv": [
+          "uv",
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/metaevo-ai/mce-artifact/blob/c63300daef93404e22e2569b3d08e72843e7123b/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "dataset:FiNER"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_api",
+      "unsupported_reason": "Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the FiNER benchmark. The suite embeds neither model calls nor the benchmark data."
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "FiNER",
+    "slug": "finer",
+    "description": "FiNER task evaluated in Meta Context Engineering via Agentic Skill Evolution.",
+    "benchmark": "FiNER",
+    "dataset": "FiNER",
+    "metric": "pass@1 prediction accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2601.21557",
+    "source_locator": "Section 4.1 and Appendix A",
+    "upstream_path": "env/finer/finer_environment.py",
+    "requirements": [
+      "uv",
+      "OpenAI/OpenRouter model credentials",
+      "Dependencies in artifact pyproject.toml"
+    ],
+    "execution_notes": [],
+    "setup_commands": [],
+    "run_commands": [
+      {
+        "argv": [
+          "bash",
+          "scripts/eval_finer_mce.sh"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/metaevo-ai/mce-artifact/blob/c63300daef93404e22e2569b3d08e72843e7123b/scripts/eval_finer_mce.sh",
+        "notes": ""
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "meta-harness-finer",
+      "paper_ids": [
+        "meta-harness"
+      ],
+      "name": "FiNER",
+      "description": "FiNER task evaluated in Meta-Harness: End-to-End Optimization of Model Harnesses.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2603.28052",
+          "type": "paper",
+          "locator": "Section 4.1; Table 5; Appendix C.1"
+        },
+        {
+          "url": "https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact/tree/57fefdb2ff84af3fd81b69d67814acbe69bd0743",
+          "type": "repository",
+          "locator": null
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "classification accuracy",
+        "paper_metric": "classification accuracy",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "FiNER",
+        "protocol": "specified_only",
+        "source_locator": "Section 4.1; Table 5; Appendix C.1"
+      },
+      "execution": {
+        "repository": "https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact",
+        "commit": "57fefdb2ff84af3fd81b69d67814acbe69bd0743",
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "harbor"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact/blob/57fefdb2ff84af3fd81b69d67814acbe69bd0743/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "harbor"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact/blob/57fefdb2ff84af3fd81b69d67814acbe69bd0743/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Public artifact inspected provides Terminal-Bench agent only; classification harness not verified."
+        ]
+      },
+      "limitations": [
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

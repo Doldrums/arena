@@ -95,6 +95,25 @@ def empty_canonical():
                 receipt_hashes=[], valid_candidate_hashes=[], status='missing')
 
 
+def evaluator_source_identity(source):
+    """Retain old Git receipts and bind bundled receipts to complete file hashes."""
+    if source.get('kind') == 'bundled':
+        required = {'kind', 'id', 'manifest_sha256', 'file_count'}
+        if (not required <= source.keys() or source.keys() - required - {'external_files_sha256'}
+                or not text(source.get('id')) or not HASH.fullmatch(source.get('manifest_sha256', ''))
+                or type(source.get('file_count')) is not int or source['file_count'] < 1):
+            raise ValueError('Missing bundled evaluator source identity')
+        identity = {'source_manifest_sha256': source['manifest_sha256'], 'source_id': source['id']}
+        if 'external_files_sha256' in source:
+            if not HASH.fullmatch(source['external_files_sha256']):
+                raise ValueError('Invalid native source asset identity')
+            identity['source_assets_sha256'] = source['external_files_sha256']
+        return identity
+    if not re.fullmatch(r'[a-f0-9]{40}', source.get('commit', '')):
+        raise ValueError('Missing pinned evaluator source')
+    return {'source_commit': source['commit']}
+
+
 def canonical(evidence, run_id):
     result, receipts = empty_canonical(), []
     folders = evidence.children('canonical-evaluations', re.compile(r'[a-f0-9]{32}'), 128)
@@ -112,8 +131,7 @@ def canonical(evidence, run_id):
                 if not HASH.fullmatch(row.get(key, '')):
                     raise ValueError('Invalid evidence digest')
             source = row.get('task_source', {})
-            if not re.fullmatch(r'[a-f0-9]{40}', source.get('commit', '')):
-                raise ValueError('Missing pinned evaluator source')
+            source_identity = evaluator_source_identity(source)
             candidate = evidence.raw(folder / 'input/program.py')
             if hashlib.sha256(candidate).hexdigest() != row['candidate_sha256']:
                 raise ValueError('Candidate evidence changed')
@@ -136,7 +154,7 @@ def canonical(evidence, run_id):
             execution = row.get('execution', {})
             environment = execution.get('image') if execution.get('kind') == 'docker' else None
             cohort_fields = {k: row.get(k) for k in ('task_id', 'problem_sha256', 'evaluator_sha256', 'metric', 'direction', 'protocol')}
-            cohort_fields.update(source_commit=source['commit'], environment=environment)
+            cohort_fields.update(source_identity, environment=environment)
             # Unpinned local evaluation is inspectable, but not a comparison cohort.
             comparable = isinstance(environment, str) and bool(re.search(r'sha256:[a-f0-9]{64}$', environment))
             receipts.append(dict(row=row, hash=receipt_hash, valid=valid, invalid=invalid,

@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "id": "science-biology-phylogenetic-likelihood",
+  "name": "Biology: Empirical phylogenetic tree likelihood search",
+  "description": "Construct a valid evolutionary tree for an empirical DNA alignment; an independently written pruning evaluator recomputes its JC69 likelihood.",
+  "paper_ids": [
+    "science-biology_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6821337/",
+      "type": "paper",
+      "locator": "RAxML-NG paper: maximum-likelihood phylogenetic inference; local evaluator uses fixedJC69 rather than upstream GTR+Gamma."
+    },
+    {
+      "url": "https://github.com/amkozlov/ng-tutorial",
+      "type": "repository",
+      "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned source-derived bundle B07.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Automatic compact-source staging available."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Biology: Empirical phylogenetic tree likelihood search",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_biology_b07",
+    "science_family": "science_biology_b07",
+    "parameters": {},
+    "interface": "infer_tree(alignment, substitution_model, budget_seconds) -> semicolon-terminated Newick tree. Alignment maps taxon names to DNA strings. Each input taxon exactly once; finite branch lengths0..100. Independently calculate JC69 pruning likelihood; minimize mean negative log-likelihood per alignment site. Empirical likelihood is not true-topology accuracy.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "biology"
+    },
+    "proposal_id": "B07",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "additional_requires": [
+      "file:../../.cache/science-biology/B07.json",
+      "file:../../.cache/science-biology/B07.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_biology_b07",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-biology/B07.json",
+        "file:../../.cache/science-biology/B07.manifest.json"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "One complete empirical12-taxon898-site primate tutorial alignment. Not the full paper alignment collection, hidden-clade transfer, or empirical true-tree recovery. Independent JC69 score is not numerically comparable with upstreamGTR+Gamma.",
+    "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+    "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+  ],
+  "validation": {
+    "level": "source_subset_run",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "evidence": "validation/biology-expansion-source-runs.json",
+    "tests": "tests/test_science_biology_expansion.py",
+    "benchmark_validated": true,
+    "fixture_tests_are_benchmark_validation": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "simulation",
+    "reference": "none",
+    "area": "biology",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Infer evolutionary relationships from observed DNA sequences.",
+    "importance_rationale": "Evolutionary trees are scientific hypotheses about common ancestry and sequence evolution.",
+    "papers": [
+      {
+        "title": "Evolutionary trees from DNA sequences: a maximum likelihood approach",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/7288891/",
+        "primary_goal": "Develop feasible maximum-likelihood inference of evolutionary trees from nucleic-acid sequences and evaluate evolutionary hypotheses.",
+        "task_relation": "The local task searches trees for an empirical alignment using independent JC69 likelihood calculations. It is a restricted substitution model and does not establish that the highest-likelihood tree is the true biological history.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The paper directly pursues evolutionary inference; a phylogenetics software-introduction citation alone would not be used as the evidence.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

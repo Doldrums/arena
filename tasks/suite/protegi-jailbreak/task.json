@@ -1,0 +1,211 @@
+{
+  "schema_version": "1.0",
+  "id": "protegi-jailbreak",
+  "name": "Jailbreak",
+  "description": "Jailbreak: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "protegi"
+  ],
+  "kind": "upstream",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2305.03495",
+      "type": "paper",
+      "locator": "Section 4"
+    },
+    {
+      "url": "https://github.com/microsoft/LMOps/tree/6f53ef41c951de0962bbf27fe3f5819eabc8ce0e",
+      "type": "repository",
+      "locator": "prompt_optimization/main.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Jailbreak",
+    "notes": [
+      "Python",
+      "requests",
+      "pandas",
+      "tqdm",
+      "scikit-learn",
+      "Set config.OPENAI_KEY in prompt_optimization/config.py",
+      "requests, tqdm, pandas, scikit-learn and the imported ProTeGi module dependencies",
+      "Set OPENAI_KEY in prompt_optimization/config.py",
+      "Prepare missing dataset in the exact tasks.py schema"
+    ]
+  },
+  "evaluation": {
+    "metric": "F1",
+    "paper_metric": "F1",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Jailbreak",
+    "protocol": "upstream",
+    "source_locator": "Section 4"
+  },
+  "execution": {
+    "repository": "https://github.com/microsoft/LMOps",
+    "commit": "6f53ef41c951de0962bbf27fe3f5819eabc8ce0e",
+    "upstream_path": "prompt_optimization/main.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "main.py",
+          "--task",
+          "jailbreak",
+          "--prompts",
+          "prompts/jailbreak.md",
+          "--data_dir",
+          "data/jailbreak",
+          "--out",
+          "jailbreak_results.out",
+          "--evaluator",
+          "ucb"
+        ],
+        "cwd": "prompt_optimization",
+        "kind": "prompt_search_and_evaluation",
+        "requirements": [
+          "requests, tqdm, pandas, scikit-learn and the imported ProTeGi module dependencies",
+          "Set OPENAI_KEY in prompt_optimization/config.py",
+          "Prepare missing dataset in the exact tasks.py schema"
+        ],
+        "evidence_path": "prompt_optimization/main.py",
+        "source_url": "https://github.com/microsoft/LMOps/blob/6f53ef41c951de0962bbf27fe3f5819eabc8ce0e/prompt_optimization/main.py",
+        "verification": "source_inspected_not_executed"
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Create data/jailbreak/train.tsv and test.tsv. Each line is a JSON conversation, tab, binary integer label; conversation is a list of objects with role/text fields. The evaluator joins role=user text. The original dataset is not included.",
+      "The task selector, prompt file, evaluator and data loader are source-verified. Dataset preparation is still required; these commands do not establish the paper’s exact data split.",
+      "The prompt is included. Output is written to jailbreak_results.out under prompt_optimization.",
+      "Configure historical model identifiers/endpoints in the upstream predictor/optimizer modules before use.",
+      "requests, tqdm, pandas, scikit-learn and the imported ProTeGi module dependencies",
+      "Set OPENAI_KEY in prompt_optimization/config.py",
+      "Prepare missing dataset in the exact tasks.py schema",
+      "Upstream operation: prompt_search_and_evaluation"
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "dataset:Jailbreak"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_api",
+      "unsupported_reason": "Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the Jailbreak benchmark. The suite embeds neither model calls nor the benchmark data."
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Code expects the API key in config.OPENAI_KEY, not the OPENAI_API_KEY environment variable, and hardcodes historical model names. No repository dependency manifest for this subproject was found.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Jailbreak",
+    "slug": "jailbreak",
+    "description": "Jailbreak: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "Jailbreak",
+    "dataset": "Jailbreak",
+    "metric": "F1",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2305.03495",
+    "source_locator": "Section 4",
+    "upstream_path": "prompt_optimization/main.py",
+    "requirements": [
+      "Python",
+      "requests",
+      "pandas",
+      "tqdm",
+      "scikit-learn",
+      "Set config.OPENAI_KEY in prompt_optimization/config.py",
+      "requests, tqdm, pandas, scikit-learn and the imported ProTeGi module dependencies",
+      "Set OPENAI_KEY in prompt_optimization/config.py",
+      "Prepare missing dataset in the exact tasks.py schema"
+    ],
+    "execution_notes": [
+      "Create data/jailbreak/train.tsv and test.tsv. Each line is a JSON conversation, tab, binary integer label; conversation is a list of objects with role/text fields. The evaluator joins role=user text. The original dataset is not included.",
+      "The task selector, prompt file, evaluator and data loader are source-verified. Dataset preparation is still required; these commands do not establish the paper’s exact data split.",
+      "The prompt is included. Output is written to jailbreak_results.out under prompt_optimization.",
+      "Configure historical model identifiers/endpoints in the upstream predictor/optimizer modules before use.",
+      "requests, tqdm, pandas, scikit-learn and the imported ProTeGi module dependencies",
+      "Set OPENAI_KEY in prompt_optimization/config.py",
+      "Prepare missing dataset in the exact tasks.py schema",
+      "Upstream operation: prompt_search_and_evaluation"
+    ],
+    "implementation_status": "source_verified_command_requires_setup",
+    "execution": {
+      "argv": [
+        "python",
+        "main.py",
+        "--task",
+        "jailbreak",
+        "--prompts",
+        "prompts/jailbreak.md",
+        "--data_dir",
+        "data/jailbreak",
+        "--out",
+        "jailbreak_results.out",
+        "--evaluator",
+        "ucb"
+      ],
+      "cwd": "prompt_optimization",
+      "kind": "prompt_search_and_evaluation",
+      "requirements": [
+        "requests, tqdm, pandas, scikit-learn and the imported ProTeGi module dependencies",
+        "Set OPENAI_KEY in prompt_optimization/config.py",
+        "Prepare missing dataset in the exact tasks.py schema"
+      ],
+      "evidence_path": "prompt_optimization/main.py",
+      "source_url": "https://github.com/microsoft/LMOps/blob/6f53ef41c951de0962bbf27fe3f5819eabc8ce0e/prompt_optimization/main.py",
+      "verification": "source_inspected_not_executed"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

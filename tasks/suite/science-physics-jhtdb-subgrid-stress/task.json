@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "id": "science-physics-jhtdb-subgrid-stress",
+  "name": "JHTDB turbulent subgrid stress",
+  "description": "closure(filtered_velocity, gradients, filter_width) -> N x N x N x 3 x 3 symmetric subgrid stress. Complete periodic source DNS boxes (not wrapped cutouts) supply independent box-filtered ground truth. Whole space-time blocks split. Score stress and energy-transfer errors plus Fourier energy error after evaluator RK2 coarse rollout. Galilean and cyclic rotational consistency and rollout stability required.",
+  "paper_ids": [
+    "science-physics_expansion"
+  ],
+  "kind": "native",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://turbulence.pha.jhu.edu/papers/lietal-jhudatabase2008.pdf",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: JHTDB turbulent subgrid stress"
+    },
+    {
+      "url": "https://turbulence.idies.jhu.edu/datasets",
+      "type": "archive",
+      "locator": "Periodic isotropic DNS velocity fields with whole space-time block holdouts; filter and coarse-flow checks."
+    },
+    {
+      "url": "https://arxiv.org/abs/1806.04482",
+      "type": "paper",
+      "title": "Deep Neural Networks for Data-Driven Turbulence Models",
+      "locator": "Learns unresolved closure terms from filtered direct numerical simulations and evaluates stable large-eddy rollouts. The local JHTDB stress-tensor target, invariance checks and numerical rollout are a distinct task-family adaptation."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; source-data preparation may require substantial disk space",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Acquire complete periodic JHTDB DNS fields at separated times with source viscosity/spacing; no wrapping arbitrary small cutouts."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "JHTDB turbulent subgrid stress",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_physics_jhtdb_subgrid_stress",
+    "science_family": "science_physics_jhtdb_subgrid_stress",
+    "parameters": {
+      "proposal_id": "P11"
+    },
+    "interface": "closure(filtered_velocity, gradients, filter_width) -> N x N x N x 3 x 3 symmetric subgrid stress. Complete periodic source DNS boxes (not wrapped cutouts) supply independent box-filtered ground truth. Whole space-time blocks split. Score stress and energy-transfer errors plus Fourier energy error after evaluator RK2 coarse rollout. Galilean and cyclic rotational consistency and rollout stability required.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "physics"
+    },
+    "proposal_id": "P11",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "requires_setup",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_physics_jhtdb_subgrid_stress",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:data/physics-expansion/P11/manifest.json",
+        "file:data/physics-expansion/P11/benchmark.npz"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Acquire complete periodic JHTDB DNS fields at separated times with source viscosity/spacing; no wrapping arbitrary small cutouts."
+  ],
+  "validation": {
+    "level": "adapter_unit_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_physics_expansion.py",
+    "evidence": "validation/physics-expansion-report.json",
+    "benchmark_verified": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "physics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Deep Neural Networks for Data-Driven Turbulence Models",
+        "url": "https://arxiv.org/abs/1806.04482",
+        "task_relation": "The local task predicts subgrid stresses from filtered periodic JHTDB turbulence, with energy-transfer, invariance, and rollout checks. Its flow selection, tensor target, and scoring differ from the published closure construction; JHTDB supplies data rather than the importance evidence.",
+        "primary_goal": "Learn closure terms from direct numerical simulation and use them to construct accurate, stable large-eddy simulations.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Model unresolved turbulent stresses accurately enough to improve coarse large-eddy simulations.",
+    "importance_rationale": "Obtaining useful turbulent closure terms and stable coarse simulations is the main scientific-computing objective of the paper.",
+    "reason": "The source proposes and tests a solution to turbulence closure, not a general-purpose model benchmark.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

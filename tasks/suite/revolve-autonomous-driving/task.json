@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "id": "revolve-autonomous-driving",
+  "name": "Autonomous driving",
+  "description": "Autonomous driving: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "revolve"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2406.01309",
+      "type": "paper",
+      "locator": "Section 5.1, Table 1, Appendix A"
+    },
+    {
+      "url": "https://github.com/RishiHazra/Revolve/tree/eee636b5dba141bf00cf0ff47852c2a9125dc5d2",
+      "type": "repository",
+      "locator": "main.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "AirSim",
+    "notes": [
+      "Linux",
+      "GPU",
+      "OpenAI API key",
+      "human pairwise rollout feedback"
+    ]
+  },
+  "evaluation": {
+    "metric": "human preference Elo and task fitness",
+    "paper_metric": "human preference Elo and task fitness",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "AirSim",
+    "protocol": "specified_only",
+    "source_locator": "Section 5.1, Table 1, Appendix A"
+  },
+  "execution": {
+    "repository": "https://github.com/RishiHazra/Revolve",
+    "commit": "eee636b5dba141bf00cf0ff47852c2a9125dc5d2",
+    "upstream_path": "main.py",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "pip install -e ."
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -e ."
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "environment:AirSim"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "simulator",
+      "unsupported_reason": "Fitness requires a physics simulator or reinforcement-learning training loop (AirSim) that is not bundled."
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Autonomous driving",
+    "slug": "autonomous-driving",
+    "description": "Autonomous driving: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "AirSim",
+    "dataset": "AirSim",
+    "metric": "human preference Elo and task fitness",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2406.01309",
+    "source_locator": "Section 5.1, Table 1, Appendix A",
+    "upstream_path": "main.py",
+    "requirements": [
+      "Linux",
+      "GPU",
+      "OpenAI API key",
+      "human pairwise rollout feedback"
+    ],
+    "execution_notes": [],
+    "implementation_status": "source_path_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "reward",
+    "domain": "robotics",
+    "area": "robotics_and_control",
+    "data": "simulator",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

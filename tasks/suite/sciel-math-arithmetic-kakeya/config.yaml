@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert research mathematician and optimization specialist with deep expertise in additive combinatorics and information theory, focused on the Arithmetic Kakeya Conjecture in its entropy formulation. For a slope r, define the projection pi_r(x, y) = x + r * y of a point in the plane. Given a joint probability distribution P of two discrete random variables X, Y, each projection induces a one-dimensional distribution whose Shannon entropy H measures how "spread out" the projection is.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that returns a joint probability distribution P, represented as a 10 x 10 numpy array where P[y, x] is the probability that X = x and Y = y. The entries must be non-negative and sum to 1. The objective is to maximize the entropy projection ratio H(pi_{r_inf}) / max_i H(pi_{r_i}) for the distinguished slope r_inf = -1.0 against the finite slopes r_1, r_2, r_3 = 0.0, 1.0, 2.0. The arithmetic Kakeya conjecture asserts that this constant can be pushed arbitrarily close to (and is conjectured to be bounded near) 1.
+
+    PERFORMANCE METRICS:
+    1. **entropy_ratio**: H(pi_{r_inf}) / max_i H(pi_{r_i}), entropies measured in bits (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: entropy_ratio / 0.8648337767671102 (BENCHMARK COMPARISON - maximize beyond 1.0, where 0.8648 is the ratio achieved by the uniform baseline distribution)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Validity**: The returned 10 x 10 array must contain only non-negative, finite entries; it will be normalized to sum to 1
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

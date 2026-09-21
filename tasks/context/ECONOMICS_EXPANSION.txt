@@ -1,0 +1,24 @@
+# Economics and finance expansion
+
+F01–F05 are five distinct new families. The duplicate audit found that two existing finance-labeled packages were actually text-classification tasks; their labels were corrected to language. Neither those packages nor generic optimization tasks implement the economic contracts below.
+
+The active evaluators are independently authored and labeled `area=finance`, `scientific_contribution=method`. Public numerical libraries and source data are attributed separately from evaluator authorship. Source-model reuse does not turn a locally written benchmark into a verbatim upstream evaluator.
+
+| Proposal | Actual finite protocol | Ranking and validation |
+|---|---|---|
+| F01 — Consumption and saving | Six-period CRRA household, two Markov income states, no borrowing, fixed terminal consumption | Minimize normalized one-step Bellman improvement independently recomputed on a finer resource grid. The seed solves a finite dynamic program. The score measures a numerical policy residual, not empirical household welfare. |
+| F02 — Macroeconomic transitions | `sequence-jacobian==1.0.0` Krusell–Smith source example, two income states, ten asset nodes, 40 transition periods | Candidate proposes capital deviations; evaluator independently propagates household choices and the distribution and checks market clearing, probability mass and feasible consumption. Candidate model objects are isolated from the reference calculation. |
+| F03 — Differentiated-product demand | Measured BLP automobile products, complete 1971–73 and 1981–83 market blocks, one random coefficient on horsepower/weight | Minimize one-step GMM objective per product. Independent 15-point quadrature and tight share contraction check candidate parameters; redundant instruments are removed by a fixed QR rule. The reduced specification is not a full BLP replication. |
+| F04 — Auctions | One additive bidder, two goods, 16 finite types, three fixed type distributions | Exhaustively check every type/report pair for incentive compatibility and individual rationality, and allocation feasibility. Maximize revenue relative to an independently solved finite-support mechanism LP. Truthfulness is established only on the declared finite support. |
+| F05 — Optimal stopping | Risk-neutral GBM Bermudan put, 12 exercise dates, three spot regimes, 4,096 training and 8,192 independent evaluation paths | Maximize discounted payoff. Scoring exposes current state only; antithetic-pair standard error and a calendar-matched 1,200-step binomial tree are independent diagnostics. This is a pricing-model experiment, not a trading-return benchmark. |
+
+Primary sources: [Carroll's endogenous-grid method](https://www.nber.org/papers/t0309), [sequence-space Jacobian paper](https://doi.org/10.3982/ECTA17434), [official sequence-jacobian implementation](https://github.com/shade-econ/sequence-jacobian), [Conlon–Gortmaker and PyBLP](https://doi.org/10.1111/1756-2171.12352). F04 and F05's mechanism-design and stopping references are preserved in their task manifests and the [approved roadmap](SCIENTIFIC_DATASET_EXPANSION.md).
+
+The checked local environment uses NumPy 2.5.3, SciPy 1.18.1, sequence-jacobian 1.0.0 and PyBLP 1.2.0. PyBLP 1.1.2 was incompatible with this NumPy environment. F01/F04/F05 require only NumPy/SciPy; F02 additionally needs Numba and sequence-jacobian; F03 needs pandas and PyBLP. No evaluator downloads data at evaluation time: the BLP example data ship with PyBLP.
+
+```sh
+.cache/sciel-env/bin/python scripts/check_science_expansion.py --only '^F' --merge
+PYTHONPATH=tests:src .cache/sciel-env/bin/python -m unittest test_science_economics_expansion
+```
+
+All five generated-package seeds have finite, valid executions in the [central report](../validation/science-expansion-report.md). These are public development instances. Independent scientific assessment requires frozen candidates, new parameter/data regimes and appropriate statistical analysis. The task APIs are cooperative research interfaces, not a security sandbox.

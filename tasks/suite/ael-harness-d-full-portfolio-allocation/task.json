@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "id": "ael-harness-d-full-portfolio-allocation",
+  "name": "D-full portfolio allocation",
+  "description": "D-full portfolio allocation",
+  "paper_ids": [
+    "ael-harness"
+  ],
+  "kind": "upstream",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.21725",
+      "type": "paper",
+      "locator": "Section 4.1 and Appendix L"
+    },
+    {
+      "url": "https://github.com/WujiangXu/AEL/tree/c95f5f961667e7df4bdddf750b22332158951bf2",
+      "type": "repository",
+      "locator": "experiments/run_portfolio.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "10 anonymized sector-diverse tickers; 208 hourly episodes, 140/40/28 train/validation/test",
+    "notes": [
+      "LLM API credentials",
+      "market data configured via dataset_d_full.yaml"
+    ]
+  },
+  "evaluation": {
+    "metric": "Sharpe ratio (also Sortino, Calmar, maximum drawdown)",
+    "paper_metric": "Sharpe ratio (also Sortino, Calmar, maximum drawdown)",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "upstream",
+    "source_locator": "Section 4.1 and Appendix L"
+  },
+  "execution": {
+    "repository": "https://github.com/WujiangXu/AEL",
+    "commit": "c95f5f961667e7df4bdddf750b22332158951bf2",
+    "upstream_path": "experiments/run_portfolio.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "baselines/run_portfolio_baselines.py",
+          "--dataset",
+          "d_full",
+          "--method",
+          "reflexion",
+          "--seed",
+          "42"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/WujiangXu/AEL/blob/c95f5f961667e7df4bdddf750b22332158951bf2/baselines/run_portfolio_baselines.py",
+        "notes": "Source-supported Reflexion baseline on exact dataset_d_full.yaml portfolio task. Requires market data and configured model credentials; can incur model calls. This task evaluation command does not claim to reproduce AEL-Full. README run_portfolio.py --dataset examples do not match the pinned parser, so those commands are not used."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "python -m pip install -e ."
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "python -m pip install -e ."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Source-supported Reflexion baseline on exact dataset_d_full.yaml portfolio task. Requires market data and configured model credentials; can incur model calls. This task evaluation command does not claim to reproduce AEL-Full. README run_portfolio.py --dataset examples do not match the pinned parser, so those commands are not used."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "dataset:D-full portfolio allocation"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "dataset",
+      "unsupported_reason": "The AEL harness task needs its market / ticket / 20Newsgroups data streams, which are not distributed with the pinned tree."
+    }
+  },
+  "limitations": [
+    "Support-ticket, 20Newsgroups and synthetic-bandit scripts were not found by filename in pinned tree; paper says synthetic_crossdomain.py is released, but this filename is absent.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "D-full portfolio allocation",
+    "slug": "d-full-portfolio-allocation",
+    "description": "D-full portfolio allocation",
+    "benchmark": null,
+    "dataset": "10 anonymized sector-diverse tickers; 208 hourly episodes, 140/40/28 train/validation/test",
+    "metric": "Sharpe ratio (also Sortino, Calmar, maximum drawdown)",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2604.21725",
+    "source_locator": "Section 4.1 and Appendix L",
+    "upstream_path": "experiments/run_portfolio.py",
+    "requirements": [
+      "LLM API credentials",
+      "market data configured via dataset_d_full.yaml"
+    ],
+    "execution_notes": "Source-supported Reflexion baseline on exact dataset_d_full.yaml portfolio task. Requires market data and configured model credentials; can incur model calls. This task evaluation command does not claim to reproduce AEL-Full. README run_portfolio.py --dataset examples do not match the pinned parser, so those commands are not used.",
+    "upstream_evaluator_paths": [],
+    "upstream_seed_paths": [],
+    "run_commands": [
+      {
+        "argv": [
+          "python",
+          "baselines/run_portfolio_baselines.py",
+          "--dataset",
+          "d_full",
+          "--method",
+          "reflexion",
+          "--seed",
+          "42"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/WujiangXu/AEL/blob/c95f5f961667e7df4bdddf750b22332158951bf2/baselines/run_portfolio_baselines.py",
+        "notes": "Source-supported Reflexion baseline on exact dataset_d_full.yaml portfolio task. Requires market data and configured model credentials; can incur model calls. This task evaluation command does not claim to reproduce AEL-Full. README run_portfolio.py --dataset examples do not match the pinned parser, so those commands are not used."
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "finance",
+    "area": "finance",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

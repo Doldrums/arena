@@ -1,0 +1,57 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in matrix analysis, complex approximation theory, and numerical optimization, with deep expertise in Crouzeix's conjecture - a famous open problem concerning how well the numerical range of a matrix controls the operator norm of matrix-valued polynomials.
+
+    PROBLEM SPECIFICATION:
+    Let A be a complex n x n matrix and p a polynomial with complex coefficients. The numerical range (field of values) of A is W(A) = { <A x, x> : ||x|| <= 1 }, a convex compact subset of the complex plane. Crouzeix's conjecture states that the smallest constant C in the bound
+        || p(A) ||_op <= C * sup_{z in W(A)} |p(z)|
+    is C = 2. Your task is to design and implement a constructor function that returns a matrix A (shape (4, 4), complex) and polynomial coefficients (descending-degree order, numpy.poly1d convention) whose Crouzeix ratio R(A, p) = || p(A) ||_op / sup_{z in W(A)} |p(z)| is as large as possible, probing the conjectured supremum of 2.
+
+    PERFORMANCE METRICS:
+    1. **crouzeix_ratio**: || p(A) ||_op / sup_{z in W(A)} |p(z)| (PRIMARY OBJECTIVE - maximize, conjectured to be at most 2)
+    2. **combined_score**: crouzeix_ratio / 2.0 (BENCHMARK COMPARISON - maximize toward 1.0, where 2.0 is the conjectured maximal Crouzeix constant)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Representation**: Return a tuple (A, poly_coeffs) of numpy arrays; A is complex (4, 4), poly_coeffs is a 1-D array of complex coefficients in descending-degree order.
+    - **Numerical range**: W(A) is approximated by sampling its boundary via supporting hyperplanes (top eigenvector of the Hermitian part (e^{i theta} A + e^{-i theta} A*)/2); the supremum of |p| is taken over these boundary samples.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility.
+    - **Error handling**: Graceful handling of degenerate constructions (e.g. zero polynomial or trivial numerical range).
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0",
+  "id": "ahe-terminal-bench-2",
+  "name": "Terminal-Bench 2",
+  "description": "Terminal-Bench 2",
+  "paper_ids": [
+    "ahe"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.25850",
+      "type": "paper",
+      "locator": "Section 4; Appendix A"
+    },
+    {
+      "url": "https://github.com/china-qijizhifeng/agentic-harness-engineering/tree/8b2a55d97590363fe50c3cc6b5e833b020a4bb4c",
+      "type": "repository",
+      "locator": "configs/base.yaml"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "89-task benchmark subset",
+    "notes": [
+      "Python and uv",
+      "Harbor",
+      "E2B sandboxes",
+      "LLM API credentials"
+    ]
+  },
+  "evaluation": {
+    "metric": "pass rate",
+    "paper_metric": "pass rate",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Terminal-Bench 2",
+    "protocol": "specified_only",
+    "source_locator": "Section 4; Appendix A"
+  },
+  "execution": {
+    "repository": "https://github.com/china-qijizhifeng/agentic-harness-engineering",
+    "commit": "8b2a55d97590363fe50c3cc6b5e833b020a4bb4c",
+    "upstream_path": "configs/base.yaml",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "uv sync"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "uv sync"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "environment:Terminal-Bench 2"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_agent_env",
+      "unsupported_reason": "Candidates are LLM agents scored inside the Terminal-Bench 2 environment (tools, web, games or code sandboxes); the environment and model access are external."
+    }
+  },
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Terminal-Bench 2",
+    "slug": "terminal-bench-2",
+    "description": "Terminal-Bench 2",
+    "benchmark": "Terminal-Bench 2",
+    "dataset": "89-task benchmark subset",
+    "metric": "pass rate",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2604.25850",
+    "source_locator": "Section 4; Appendix A",
+    "upstream_path": "configs/base.yaml",
+    "requirements": [
+      "Python and uv",
+      "Harbor",
+      "E2B sandboxes",
+      "LLM API credentials"
+    ],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified.",
+    "upstream_evaluator_paths": [],
+    "upstream_seed_paths": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

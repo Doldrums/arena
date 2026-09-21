@@ -1,0 +1,237 @@
+{
+  "schema_version": "1.0",
+  "id": "aflow-math",
+  "name": "MATH",
+  "description": "MATH task evaluated in AFlow: Automating Agentic Workflow Generation.",
+  "paper_ids": [
+    "aflow",
+    "evoflow"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2410.10762",
+      "type": "paper",
+      "locator": "Section 4.1"
+    },
+    {
+      "url": "https://github.com/FoundationAgents/AFlow/tree/3f457218fc716093fe53f6df8a5d5e6379d66346",
+      "type": "repository",
+      "locator": "benchmarks/math.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2502.07373",
+      "type": "paper",
+      "locator": "Section 4.1 and Appendix G.1"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "MATH",
+    "notes": [
+      "LLM API configuration",
+      "Download supplied evaluation datasets"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "solve rate",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "MATH",
+    "protocol": "upstream",
+    "source_locator": "Section 4.1"
+  },
+  "execution": {
+    "repository": "https://github.com/FoundationAgents/AFlow",
+    "commit": "3f457218fc716093fe53f6df8a5d5e6379d66346",
+    "upstream_path": "benchmarks/math.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "run.py",
+          "--dataset",
+          "MATH"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/FoundationAgents/AFlow/blob/3f457218fc716093fe53f6df8a5d5e6379d66346/run.py",
+        "notes": "Runs upstream workflow optimization and evaluation for this dataset; requires configured models and data."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/FoundationAgents/AFlow/blob/3f457218fc716093fe53f6df8a5d5e6379d66346/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/FoundationAgents/AFlow/blob/3f457218fc716093fe53f6df8a5d5e6379d66346/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "MATH",
+    "slug": "math",
+    "description": "MATH task evaluated in AFlow: Automating Agentic Workflow Generation.",
+    "benchmark": "MATH",
+    "dataset": "MATH",
+    "metric": "solve rate",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2410.10762",
+    "source_locator": "Section 4.1",
+    "upstream_path": "benchmarks/math.py",
+    "requirements": [
+      "LLM API configuration",
+      "Download supplied evaluation datasets"
+    ],
+    "execution_notes": [],
+    "setup_commands": [],
+    "run_commands": [
+      {
+        "argv": [
+          "python",
+          "run.py",
+          "--dataset",
+          "MATH"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/FoundationAgents/AFlow/blob/3f457218fc716093fe53f6df8a5d5e6379d66346/run.py",
+        "notes": "Runs upstream workflow optimization and evaluation for this dataset; requires configured models and data."
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "evoflow-math",
+      "paper_ids": [
+        "evoflow"
+      ],
+      "name": "MATH",
+      "description": "MATH task evaluated in EvoFlow: Evolving Diverse Agentic Workflows On The Fly.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2502.07373",
+          "type": "paper",
+          "locator": "Section 4.1 and Appendix G.1"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "benchmark success/solve rate or pass@1",
+        "paper_metric": "benchmark success/solve rate or pass@1",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "MATH",
+        "protocol": "specified_only",
+        "source_locator": "Section 4.1 and Appendix G.1"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Paper-cited https://github.com/bingreeky/EvoFlow returned HTTP 404 when checked. MATH uses 617 difficulty-5 problems."
+        ]
+      },
+      "limitations": [
+        "Paper-cited repository could not be fully retrieved: bingreeky/EvoFlow (HTTP Error 404: Not Found).",
+        "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

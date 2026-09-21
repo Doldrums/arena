@@ -1,0 +1,102 @@
+{
+  "protocol": "recreated",
+  "family": "arc_solver",
+  "direction": "maximize",
+  "contract": "solve(task, llm) -> list of output grids, one per test input; task = {'train': [{'input','output'}], 'test': [{'input'}]}. Score: fraction of test grids reproduced exactly on a seeded sample of public evaluation tasks",
+  "parameters": {
+    "version": 2,
+    "split": "evaluation",
+    "seed": 0
+  },
+  "requires": [
+    "py:numpy",
+    "env:OPENROUTER_API_KEY",
+    "network:openrouter",
+    "file:data/arc-prize-2025/arc-agi_evaluation_challenges.json"
+  ],
+  "timeout": 900,
+  "notes": [
+    "Public ARC-AGI data (GitHub) converted to the Kaggle layout; the model, sample size and budget follow the llm family environment variables."
+  ],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "aevo-arc-agi-2",
+  "name": "ARC-AGI-2",
+  "paper_ids": [
+    "aevo",
+    "adaevolve",
+    "evox"
+  ],
+  "description": "ARC-AGI-2",
+  "benchmark": "ARC-AGI-2",
+  "paper_metric": "exact task accuracy",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2605.13821",
+      "type": "paper",
+      "locator": "Section 5.1; Appendix C.1"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Experimental evaluation and additional-results appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/arc_benchmark"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Experimental evaluation and additional-results appendix"
+    }
+  ],
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Paper cites Anthropic original_performance_takehome commit 5452f74; this is a simulated VLIW SIMD optimization problem, not a GPU kernel benchmark.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "aevo",
+      "title": "Harnessing Agentic Evolution",
+      "url": "https://arxiv.org/pdf/2605.13821"
+    },
+    {
+      "id": "adaevolve",
+      "title": "AdaEvolve: Adaptive LLM Driven Zeroth-Order Optimization",
+      "url": "https://arxiv.org/pdf/2602.20133"
+    },
+    {
+      "id": "evox",
+      "title": "EvoX: Meta-Evolution for Automated Discovery",
+      "url": "https://arxiv.org/pdf/2602.23413"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

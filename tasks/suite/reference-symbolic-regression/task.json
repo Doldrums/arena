@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "id": "reference-symbolic-regression",
+  "name": "Univariate symbolic regression",
+  "description": "Fit provided training (x,y) pairs. Return {\"expression\": \"...\"}, using x, finite numeric constants and +, -, *, /, ** only. Evaluation uses a deterministic held-out grid.",
+  "paper_ids": [
+    "coevo",
+    "drsr",
+    "lasr"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2412.18890",
+      "type": "paper",
+      "locator": "Problem family; original benchmark protocol is not claimed."
+    },
+    {
+      "url": "https://arxiv.org/pdf/2506.04282",
+      "type": "paper",
+      "locator": "Problem family; original benchmark protocol is not claimed."
+    },
+    {
+      "url": "https://arxiv.org/pdf/2409.09359",
+      "type": "paper",
+      "locator": "Problem family; original benchmark protocol is not claimed."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Generated locally with documented seed."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "aggregation": "mean",
+    "protocol": "portable_reference",
+    "instance_generation": "src/autoresearch_tasks/native.py",
+    "profiles": [
+      "smoke",
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "symbolic-regression",
+    "parameters": {},
+    "interface": "Fit provided training (x,y) pairs. Return {\"expression\": \"...\"}, using x, finite numeric constants and +, -, *, /, ** only. Evaluation uses a deterministic held-out grid.",
+    "suite": {
+      "protocol": "recreated",
+      "family": "synthetic_equation",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Portable reference implementation, not a reproduction of the original paper experiment.",
+    "Generated deterministic instances are not the paper datasets. Scores are not comparable to published results.",
+    "Single synthetic cubic target; this is not the full SRBench benchmark suite."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "science_tier": 2,
+    "artifact": "equation",
+    "domain": "natural_science",
+    "area": "mathematics",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

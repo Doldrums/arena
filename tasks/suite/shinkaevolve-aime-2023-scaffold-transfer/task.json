@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "id": "shinkaevolve-aime-2023-scaffold-transfer",
+  "name": "AIME 2023 scaffold transfer",
+  "description": "AIME 2023 scaffold transfer: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "shinkaevolve"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2509.19349",
+      "type": "paper",
+      "locator": "Section 3.2 and Appendix C.2"
+    },
+    {
+      "url": "https://github.com/SakanaAI/ShinkaEvolve/tree/9912af12d423504b8d580f4179fd15f5f88b8c50",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "AIME 2023 scaffold transfer",
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "answer accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "AIME 2023 scaffold transfer",
+    "protocol": "specified_only",
+    "source_locator": "Section 3.2 and Appendix C.2"
+  },
+  "execution": {
+    "repository": "https://github.com/SakanaAI/ShinkaEvolve",
+    "commit": "9912af12d423504b8d580f4179fd15f5f88b8c50",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "uv pip install -e ."
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "uv pip install -e ."
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "uv",
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [
+      "Current repository examples do not contain the paper AIME evaluator."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Current public examples retain circle packing but do not include verified AIME, ALE-Bench LITE, or MoE experiment drivers. Later added examples are not included as paper evaluations.",
+    "Original public release v0.0.1 (commit23decc6bf118d783ddff5a3c03d2269cbf149971) was also inspected: its example directories are circle_packing, game_2048, julia_prime_counting and novelty_generator, with no released AIME, ALE or MoE evaluator.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "AIME 2023 scaffold transfer",
+    "slug": "aime-2023-scaffold-transfer",
+    "description": "AIME 2023 scaffold transfer: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "AIME 2023 scaffold transfer",
+    "dataset": "AIME 2023 scaffold transfer",
+    "metric": "answer accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2509.19349",
+    "source_locator": "Section 3.2 and Appendix C.2",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [
+      "Current repository examples do not contain the paper AIME evaluator."
+    ],
+    "implementation_status": "paper_inventory_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

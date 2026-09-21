@@ -1,0 +1,133 @@
+{
+  "protocol": "recreated",
+  "family": "llm_benchmark",
+  "direction": "maximize",
+  "contract": "solve(question, llm) -> answer string; llm(prompt_or_messages, system=None, max_tokens=None) is a budgeted, cached OpenRouter client. Score: mean per-item accuracy (or F1) on a fixed seeded sample of the benchmark",
+  "parameters": {
+    "benchmark": "hotpotqa",
+    "benchmark_options": {},
+    "seed": 0
+  },
+  "requires": [
+    "py:numpy",
+    "py:datasets",
+    "env:OPENROUTER_API_KEY",
+    "network:openrouter+huggingface"
+  ],
+  "timeout": 900,
+  "notes": [
+    "Model-driven evaluation: the score depends on the model (ARTASK_LLM_MODEL, default google/gemini-2.5-flash), the sample size (ARTASK_LLM_SAMPLES, default 10) and the per-evaluation budget (ARTASK_LLM_BUDGET_USD, default 0.25). Responses are cached under .cache/llm-cache."
+  ],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "mipro-hotpotqa",
+  "name": "HotPotQA",
+  "paper_ids": [
+    "mipro",
+    "aflow",
+    "gepa",
+    "pairwise-validator",
+    "polymath"
+  ],
+  "description": "HotPotQA: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "benchmark": "HotPotQA",
+  "paper_metric": "exact match",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2406.11695",
+      "type": "paper",
+      "locator": "Table 1 and Appendices A/E"
+    },
+    {
+      "url": "https://github.com/stanfordnlp/dspy/tree/40a6e168914a7b81a78b1a081d93f26de18c8d0d",
+      "type": "repository",
+      "locator": null
+    },
+    {
+      "url": "https://arxiv.org/pdf/2410.10762",
+      "type": "paper",
+      "locator": "Section 4.1"
+    },
+    {
+      "url": "https://github.com/FoundationAgents/AFlow/tree/3f457218fc716093fe53f6df8a5d5e6379d66346",
+      "type": "repository",
+      "locator": "benchmarks/hotpotqa.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2507.19457",
+      "type": "paper",
+      "locator": "Section 4 evaluation and benchmark appendix"
+    },
+    {
+      "url": "https://github.com/gepa-ai/gepa-artifact/tree/cbefbc1aa0f43dd39874ec4bf42211365dbda42e",
+      "type": "repository",
+      "locator": "gepa_artifact/benchmarks/hotpotQA"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2607.14408",
+      "type": "paper",
+      "locator": "Section 5, Table 1 task inventory"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2508.02959",
+      "type": "paper",
+      "locator": "Experiments: Dataset and Evaluation Metrics"
+    }
+  ],
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Current DSPy repository has MIPROv2 optimizer but the seven original 2024 benchmark drivers were not located in the inspected tree; API library availability alone does not make original tasks executable.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "mipro",
+      "title": "Optimizing Instructions and Demonstrations for Multi-Stage Language Model Programs",
+      "url": "https://arxiv.org/pdf/2406.11695"
+    },
+    {
+      "id": "aflow",
+      "title": "AFlow: Automating Agentic Workflow Generation",
+      "url": "https://arxiv.org/pdf/2410.10762"
+    },
+    {
+      "id": "gepa",
+      "title": "GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning",
+      "url": "https://arxiv.org/pdf/2507.19457"
+    },
+    {
+      "id": "pairwise-validator",
+      "title": "Reward-Free Evolving Agents via Pairwise Validator",
+      "url": "https://arxiv.org/pdf/2607.14408"
+    },
+    {
+      "id": "polymath",
+      "title": "Polymath: A Self-Optimizing Agent with Dynamic Hierarchical Workflow",
+      "url": "https://arxiv.org/pdf/2508.02959"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

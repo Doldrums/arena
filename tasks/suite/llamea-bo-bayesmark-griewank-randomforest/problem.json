@@ -1,0 +1,74 @@
+{
+  "protocol": "recreated",
+  "family": "bayesmark",
+  "direction": "minimize",
+  "contract": "class Optimizer: __init__(self, budget, dim); __call__(self, func) evaluates func(u) for u in [0, 1]^dim (normalized hyperparameters) at most budget times (LLaMEA-BO contract). Score: best cross-validated loss found",
+  "parameters": {
+    "dataset": "griewank",
+    "model": "randomforest",
+    "budget": 15
+  },
+  "requires": [
+    "py:numpy",
+    "py:sklearn",
+    "py:scipy"
+  ],
+  "timeout": 600,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "llamea-bo-bayesmark-griewank-randomforest",
+  "name": "Bayesmark Griewank RandomForest",
+  "paper_ids": [
+    "llamea-bo"
+  ],
+  "description": "Bayesmark Griewank RandomForest task evaluated in LLaMEA-BO: A Large Language Model Evolutionary Algorithm for Automatically Generating Bayesian Optimization Algorithms.",
+  "benchmark": "Bayesmark",
+  "paper_metric": "normalized regret",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2505.21034",
+      "type": "paper",
+      "locator": "Appendix A.2.2-A.2.3; official Benchmarks/run_bayesmark.py dataset/model loops"
+    },
+    {
+      "url": "https://github.com/Ewendawi/LLaMEA-BO/tree/938b4d780aa0cbf9f7c941ebab61dadfa9157185",
+      "type": "repository",
+      "locator": "Benchmarks/run_bayesmark.py"
+    }
+  ],
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "llamea-bo",
+      "title": "LLaMEA-BO: A Large Language Model Evolutionary Algorithm for Automatically Generating Bayesian Optimization Algorithms",
+      "url": "https://arxiv.org/pdf/2505.21034"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

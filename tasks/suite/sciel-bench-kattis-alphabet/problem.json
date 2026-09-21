@@ -1,0 +1,98 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "py:lxml",
+    "py:numpy",
+    "py:requests",
+    "service:open.kattis.com"
+  ],
+  "timeout": 600,
+  "notes": [],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "combined_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/online_judge_programming",
+    "files_sha256": {
+      "README.md": "e71897bc928ad8e368be7a00855cfdd79ed2f3fbb9e91dc93caec6a390d63fbb",
+      "config.yaml": "76f3436538413d30bca16329efc90eedd3a337b2078f6b54e8a7778a57499849",
+      "evaluator.py": "fe2a2b18fc8991a7d7ec10b779d791b088306c37a14d19c640c13a68f22e39a9",
+      "example.kattisrc": "1a730ad659e42f07292fa7997c7c969cb8fb9d72e6029977bfcaed0670cf0895",
+      "initial_program.py": "446a161b4c3bf925a2b6b1a2dfe93fae9a7a17860df95d5ae237cd0efc8cc6ad",
+      "requirements.txt": "9398dcda291a01380dee9778a29be762f2a2268d4fd66109df2afe69f5f6e7a6",
+      "submit.py": "a1ffa2887f60fd7cc107a7666d71fc5fbe4e582a13253a9c6d40dfacf83e1cbe"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/online_judge_programming` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-bench-kattis-alphabet",
+  "name": "SCiEL: Kattis 'Alphabet' online-judge problem",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Write a Python program that reads a lowercase string and prints the minimum number of letters to insert so that a..z appears as a subsequence (Kattis problem 'alphabet'). The pinned evaluator submits the candidate to open.kattis.com and reports the fraction of accepted test cases as combined_score.",
+  "benchmark": "SCiEL source example online_judge_programming",
+  "paper_metric": "combined_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/online_judge_programming/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/online_judge_programming/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/online_judge_programming/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "Evaluation depends on a third-party online judge and a personal account; it is not reproducible offline and the judge's test data can change."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "public_benchmark",
+    "verification": "external",
+    "reference": "none",
+    "resources": [
+      "account"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

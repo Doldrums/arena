@@ -1,0 +1,84 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "service:llm_api",
+    "env:OPENROUTER_API_KEY",
+    "dataset:PUPA"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "llm_api",
+  "unsupported_reason": "Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the PUPA benchmark. The suite embeds neither model calls nor the benchmark data.",
+  "protocol_description": "Not executable in this suite: Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the PUPA benchmark. The suite embeds neither model calls nor the benchmark data.",
+  "id": "gepa-pupa",
+  "name": "PUPA",
+  "paper_ids": [
+    "gepa",
+    "pairwise-validator"
+  ],
+  "description": "PUPA",
+  "benchmark": "PUPA",
+  "paper_metric": "task-specific score",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2507.19457",
+      "type": "paper",
+      "locator": "Section 4 evaluation and benchmark appendix"
+    },
+    {
+      "url": "https://github.com/gepa-ai/gepa-artifact/tree/cbefbc1aa0f43dd39874ec4bf42211365dbda42e",
+      "type": "repository",
+      "locator": "gepa_artifact/benchmarks/papillon"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2607.14408",
+      "type": "paper",
+      "locator": "Section 5, Table 1 task inventory"
+    }
+  ],
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "gepa",
+      "title": "GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning",
+      "url": "https://arxiv.org/pdf/2507.19457"
+    },
+    {
+      "id": "pairwise-validator",
+      "title": "Reward-Free Evolving Agents via Pairwise Validator",
+      "url": "https://arxiv.org/pdf/2607.14408"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

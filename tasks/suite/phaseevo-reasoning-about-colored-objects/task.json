@@ -1,0 +1,214 @@
+{
+  "schema_version": "1.0",
+  "id": "phaseevo-reasoning-about-colored-objects",
+  "name": "Reasoning About Colored Objects",
+  "description": "Reasoning About Colored Objects: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "phaseevo",
+    "evoprompt"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2402.11347",
+      "type": "paper",
+      "locator": "BBH results table; current arXiv v2"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2309.08532",
+      "type": "paper",
+      "locator": "Appendix C.2, Tables 17-18"
+    },
+    {
+      "url": "https://github.com/beeevita/EvoPrompt/tree/94caff336555df99acc5c338c7930c40cc550ad9",
+      "type": "repository",
+      "locator": "BBH/eval.py"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "BBH",
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "BBH",
+    "protocol": "specified_only",
+    "source_locator": "BBH results table; current arXiv v2"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "arXiv latest HTML is v2 titled SEE (2025); original PhaseEvo v1 HTML/PDF returned HTTP 406. Original OpenReview manuscript confirms the same 35-task suite, but version-specific protocol differences must be checked before reproduction.",
+    "No official runnable repository was verified from the paper/project sources examined.",
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "Reasoning About Colored Objects",
+    "slug": "reasoning-about-colored-objects",
+    "description": "Reasoning About Colored Objects: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "BBH",
+    "dataset": "BBH",
+    "metric": "accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2402.11347",
+    "source_locator": "BBH results table; current arXiv v2",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [],
+    "implementation_status": "paper_inventory_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "evoprompt-bbh-reasoning-about-colored-objects",
+      "paper_ids": [
+        "evoprompt"
+      ],
+      "name": "BBH reasoning_about_colored_objects",
+      "description": "BBH reasoning_about_colored_objects task evaluated in EvoPrompt: Connecting LLMs with Evolutionary Algorithms Yields Powerful Prompt Optimizers.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2309.08532",
+          "type": "paper",
+          "locator": "Appendix C.2, Tables 17-18"
+        },
+        {
+          "url": "https://github.com/beeevita/EvoPrompt/tree/94caff336555df99acc5c338c7930c40cc550ad9",
+          "type": "repository",
+          "locator": "BBH/eval.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "reasoning_about_colored_objects",
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "accuracy",
+        "paper_metric": "accuracy",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "BIG-Bench Hard",
+        "protocol": "specified_only",
+        "source_locator": "Appendix C.2, Tables 17-18"
+      },
+      "execution": {
+        "repository": "https://github.com/beeevita/EvoPrompt",
+        "commit": "94caff336555df99acc5c338c7930c40cc550ad9",
+        "upstream_path": "BBH/eval.py",
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/beeevita/EvoPrompt/blob/94caff336555df99acc5c338c7930c40cc550ad9/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/beeevita/EvoPrompt/blob/94caff336555df99acc5c338c7930c40cc550ad9/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": [
+          "26 individual subtasks across 22 families; web_of_lies excluded because baseline already scores 100%. README BBH script paths are absent from pinned tree.",
+          "Blocked by reproducible upstream duplicate --content registration in BBH/args.py. Remove the second registration; then BBH/eval.py --task reasoning_about_colored_objects selects this task, with downloaded BBH/data/reasoning_about_colored_objects.json and lib_prompt/reasoning_about_colored_objects.txt. Historical model endpoints in auth.yaml also require compatible configuration."
+        ]
+      },
+      "limitations": [
+        "BBH scripts exist under BBH/scripts after the README cd BBH. Actual blocking defect: BBH/args.py registers --content twice, raising argparse.ArgumentError before execution; observed locally with parse_args(). Remove the duplicate declaration in a documented modified checkout before running BBH.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

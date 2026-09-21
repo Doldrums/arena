@@ -19,7 +19,8 @@ import time
 import uuid
 
 from arena.registry import get_catalog
-from .runtime import _absolute, _digest_file, _write_json, _Capture, _stop, verify_source
+from arena.task_library import load_task_manifest, read_task_file, resolve_task_root, verify_task_library
+from .runtime import _absolute, _digest_file, _write_json, _Capture, _stop
 
 _CGROUP_MOUNT = Path("/sys/fs/cgroup")
 _PROCESS_CGROUP = Path("/proc/self/cgroup")
@@ -119,14 +120,16 @@ def receipt_root(config, fallback):
 
 
 def validate_config(config):
-    required = {"schema", "tasks_dir", "task_id", "timeout_seconds", "execution"}
-    if type(config) is not dict or not required <= config.keys() or set(config) - required - {"profile", "receipts_dir"}:
+    required = {"schema", "task_id", "timeout_seconds", "execution"}
+    if type(config) is not dict or not required <= config.keys() or set(config) - required - {"profile", "receipts_dir", "tasks_dir"}:
         raise ValueError("Evaluation config has missing or unknown fields")
     if config["schema"] != "arena.evaluation-config/1":
         raise ValueError("Expected arena.evaluation-config/1")
     timeout = config["timeout_seconds"]
     if type(timeout) is not int or not 1 <= timeout <= 86400:
         raise ValueError("Evaluation timeout must be an integer from 1 to 86400 seconds")
+    if "tasks_dir" in config and (type(config["tasks_dir"]) is not str or not config["tasks_dir"]):
+        raise ValueError("tasks_dir must be an absolute task library path")
     if "receipts_dir" in config:
         _absolute(config["receipts_dir"], "receipts_dir")
     catalog = get_catalog()
@@ -134,14 +137,15 @@ def validate_config(config):
     if task is None or not task["executable"]:
         raise ValueError("Task has no registered executable evaluation definition")
     source = next(s for s in catalog["sources"] if s["id"] == task["source_id"])
-    root = _absolute(config["tasks_dir"], "tasks_dir")
-    revision = verify_source(root, source["repository"]["commit"])
-    problem = root / task["contract_source"]["path"]
-    if _digest_file(problem) != task["contract_source"]["sha256"]:
-        raise ValueError("Task contract differs from the registered source hash")
-    evaluator = root / "suite" / task["id"] / "evaluator.py"
-    if evaluator.is_symlink() or not evaluator.is_file():
+    root = resolve_task_root(config.get("tasks_dir"), source=source)
+    revision = verify_task_library(root, source)
+    config = {**config, "tasks_dir": str(root)}
+    read_task_file(root, task["contract_source"]["path"], task["contract_source"]["sha256"])
+    evaluator_path = f"suite/{task['id']}/evaluator.py"
+    files = load_task_manifest(source)["files"]
+    if evaluator_path not in files:
         raise ValueError("Pinned suite evaluator is missing")
+    evaluator_raw = read_task_file(root, evaluator_path, files[evaluator_path])
     execution = config["execution"]
     if type(execution) is not dict:
         raise ValueError("execution must specify docker or local_trusted")
@@ -166,7 +170,8 @@ def validate_config(config):
     else:
         raise ValueError("Choose docker for generated code or local_trusted for reviewed fixtures")
     return {"config": config, "task": task, "source_dir": str(root), "source": revision,
-            "problem_sha256": _digest_file(problem), "evaluator_sha256": _digest_file(evaluator)}
+            "source_registration": source, "problem_sha256": task["contract_source"]["sha256"],
+            "evaluator_sha256": hashlib.sha256(evaluator_raw).hexdigest()}
 
 
 def prepare_evaluation(config, program_path, output_dir):
@@ -299,7 +304,8 @@ def evaluate(config, program_path, output_dir):
                 "--mount", f"type=bind,src={root},dst=/tasks,readonly",
                 "--mount", f"type=bind,src={candidate_dir},dst=/candidate,readonly",
                 "--mount", f"type=bind,src={native_dir},dst=/results",
-                "--env", "PYTHONDONTWRITEBYTECODE=1", "--workdir", "/tmp", execution["image"],
+                "--env", "PYTHONDONTWRITEBYTECODE=1",
+                "--env", "PYTHONPYCACHEPREFIX=/tmp/arena-pycache", "--workdir", "/tmp", execution["image"],
                 execution["python"], "/tasks/run.py", "--root", "/tasks", "evaluate", config["task_id"],
                 "--candidate", "/candidate/program.py", "--python", execution["python"],
                 "--timeout", str(config["timeout_seconds"]), "--output", "/results/native.json"]
@@ -313,7 +319,8 @@ def evaluate(config, program_path, output_dir):
     # Only the operator-selected Unix Docker endpoint crosses this boundary;
     # no model credentials are inherited by the CLI, cleanup, or container.
     environment = {"PATH": os.environ.get("PATH", ""), "PYTHONDONTWRITEBYTECODE": "1",
-                   "HOME": str(output), "TMPDIR": "/tmp", "MPLBACKEND": "Agg"}
+                   "HOME": str(output), "TMPDIR": "/tmp", "MPLBACKEND": "Agg",
+                   "PYTHONPYCACHEPREFIX": str(output / "bytecode-cache")}
     try:
         docker_host = os.environ.get("DOCKER_HOST")
         if execution["kind"] == "docker" and docker_host:
@@ -339,7 +346,8 @@ def evaluate(config, program_path, output_dir):
         if _digest_file(candidate) != prepared["candidate_sha256"]:
             raise ValueError("Candidate changed while being snapshotted")
         candidate.chmod(0o444)
-        verify_source(root, prepared["source"]["commit"])
+        if verify_task_library(root, prepared["source_registration"]) != prepared["source"]:
+            raise ValueError("Task library identity changed before execution")
         if execution["kind"] == "local_trusted":
             receipt["python_sha256"] = _digest_file(Path(execution["python"]))
         _write_json(output / "request.json", {"schema": "arena.evaluation-request/1", "config": config,

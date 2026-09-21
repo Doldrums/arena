@@ -1,0 +1,75 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "service:llm_api",
+    "env:OPENROUTER_API_KEY",
+    "dataset:80 weekly/biweekly contest problems"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "llm_api",
+  "unsupported_reason": "Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the 80 weekly/biweekly contest problems benchmark. The suite embeds neither model calls nor the benchmark data.",
+  "protocol_description": "Not executable in this suite: Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the 80 weekly/biweekly contest problems benchmark. The suite embeds neither model calls nor the benchmark data.",
+  "id": "cocoevo-leetcode-contest",
+  "name": "LeetCode-Contest",
+  "paper_ids": [
+    "cocoevo"
+  ],
+  "description": "LeetCode-Contest task evaluated in CoCoEvo: Co-Evolution of Programs and Test Cases to Enhance Code Generation.",
+  "benchmark": "80 weekly/biweekly contest problems",
+  "paper_metric": "pass@1",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2502.10802",
+      "type": "paper",
+      "locator": "Section IV-A, Table I"
+    },
+    {
+      "url": "https://github.com/lbaf23/llm-cocoevo/tree/504355b568b2a0cbd4054783c80bac9c76a4de6d",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "Official CoCoEvo release pinned; program/test co-evolution needs a code model endpoint and the separately downloaded contest/real-world datasets.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "cocoevo",
+      "title": "CoCoEvo: Co-Evolution of Programs and Test Cases to Enhance Code Generation",
+      "url": "https://arxiv.org/pdf/2502.10802"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

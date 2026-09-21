@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0",
+  "id": "magellan-llvm-function-inlining-for-binary-size",
+  "name": "LLVM function inlining for binary size",
+  "description": "LLVM function inlining for binary size task evaluated in Magellan: Autonomous Discovery of Novel Compiler Optimization Heuristics with AlphaEvolve.",
+  "paper_ids": [
+    "magellan"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2601.21096",
+      "type": "paper",
+      "locator": "Sections 3.1-3.3"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "binary size",
+    "paper_metric": "binary size",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "LLVM function inlining for binary size",
+    "protocol": "specified_only",
+    "source_locator": "Sections 3.1-3.3"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Search workloads and/or private contest test instances are not public. LLVM/contest specification links are dependencies, not a released Magellan implementation."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "toolchain:LLVM function inlining for binary size"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "toolchain",
+      "unsupported_reason": "Evaluation depends on an external toolchain (LLVM function inlining for binary size) that is not bundled."
+    }
+  },
+  "limitations": [
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "LLVM function inlining for binary size",
+    "slug": "llvm-function-inlining-for-binary-size",
+    "description": "LLVM function inlining for binary size task evaluated in Magellan: Autonomous Discovery of Novel Compiler Optimization Heuristics with AlphaEvolve.",
+    "benchmark": "LLVM function inlining for binary size",
+    "dataset": null,
+    "metric": "binary size",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2601.21096",
+    "source_locator": "Sections 3.1-3.3",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [
+      "Search workloads and/or private contest test instances are not public. LLVM/contest specification links are dependencies, not a released Magellan implementation."
+    ],
+    "setup_commands": [],
+    "run_commands": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

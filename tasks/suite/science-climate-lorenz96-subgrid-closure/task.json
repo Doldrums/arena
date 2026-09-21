@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0",
+  "id": "science-climate-lorenz96-subgrid-closure",
+  "name": "Climate dynamics: unresolved-tendency closure",
+  "description": "Fit a shared degree-five polynomial approximation to the unresolved fast-scale forcing of a two-scale Lorenz-96 model. Train on supplied slow-state/tendency pairs and minimize normalized error on independent validation trajectories, including an unseen forcing regime.",
+  "paper_ids": [
+    "science-climate"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://gmd.copernicus.org/articles/13/2185/2020/",
+      "type": "paper",
+      "locator": "Rasp (2020), Section 4.1 Eqs. (2)-(3), slow/fast model and closure target; Section 2 discusses offline versus online evaluation."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "None downloaded; mathematical constructions or locally generated synthetic instances."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Climate dynamics: unresolved-tendency closure",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_lorenz_closure",
+    "science_family": "science_lorenz_closure",
+    "parameters": {},
+    "interface": "construct(training_x, training_subgrid_tendency) -> 6 finite real polynomial coefficients in ASCENDING powers of local slow state x, approximating the unresolved tendency as sum(c_i*x**i). Inputs are flattened paired samples from two independent spun-up trajectories at F=6,8. Reference uses Rasp (2020) two-scale Lorenz-96 with K=8,J=4,h=1,c=10,b=10: dX=advection-X+F-h*c*mean(Y); dY=c*(-b*Y_(j+1)*(Y_(j+2)-Y_(j-1))-Y+h*X/J). Fast indices form one periodic K*J ring, crossing slow-cell boundaries. Score is mean validation MSE/variance(true tendency) over three independent trajectories at F=6,8,10. Units nondimensional. Coefficients must be a single shared polynomial for every cell and forcing.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "equation",
+      "domain": "natural_science",
+      "data": "synthetic",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "climate_dynamics"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_lorenz_closure",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Local polynomial/offline adaptation with reduced K=8,J=4; not the paper's neural-network coupled-training protocol or a score reproduction.",
+    "Training and validation trajectories use distinct initial seeds; F=10 is absent from training, but all generators are public.",
+    "A deterministic local polynomial cannot recover every fast-scale tendency from the slow scalar alone. Lower offline error does not establish stable coupled forecasts or resolve cloud-feedback uncertainty."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "evidence": "validation/science-report.json",
+    "tests": "tests/test_science_climate.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "equation",
+    "domain": "natural_science",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "area": "climate_dynamics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Approximate unresolved forcing in a reduced two-scale Lorenz-96 system.",
+    "importance_rationale": "Physical subgrid modeling is relevant to climate science; this does not make every offline polynomial toy closure a climate-science result.",
+    "papers": [],
+    "reason": "The cited coupled-training paper demonstrates a learning approach using Lorenz-96. The local degree-five polynomial, reduced dimensions and offline tendency error do not address a demonstrated physical climate question, and no qualifying primary-problem paper was established for this adaptation. No qualifying primary-goal evidence is established for this local task in this review; this is not a finding that the broader subject is unimportant.",
+    "verification_basis": "Local task contract and cited source purpose reviewed; background or benchmark citations were not promoted to primary-problem evidence.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,53 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in combinatorial optimization and harmonic analysis with deep expertise in flat polynomials and low-autocorrelation binary sequences - a classical problem that asks for a +/-1 sequence whose Littlewood polynomial is as "flat" as possible on the unit circle.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that generates a binary sequence a of length exactly 41 with entries in {-1, +1} that maximizes the Littlewood merit factor F = N^2 / (2 * sum_{k=1}^{N-1} c_k^2), where N = 41 and c_k = sum_{i=0}^{N-1-k} a_i * a_{i+k} is the aperiodic autocorrelation at lag k. A higher merit factor corresponds to lower aperiodic autocorrelation, i.e. a flatter polynomial.
+
+    PERFORMANCE METRICS:
+    1. **merit_factor**: The Littlewood merit factor F of the sequence (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: merit_factor / 6.0 (BENCHMARK COMPARISON - maximize above 1.0)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "id": "adaevolve-datacenter-tcp-congestion-control",
+  "name": "Datacenter TCP congestion control",
+  "description": "Datacenter TCP congestion control",
+  "paper_ids": [
+    "adaevolve"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Appendix B Table 6"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "ns-3 simulator"
+    ]
+  },
+  "evaluation": {
+    "metric": "throughput and queue latency",
+    "paper_metric": "throughput and queue latency",
+    "paper_direction": null,
+    "direction": null,
+    "benchmark": "ADRS NS3",
+    "protocol": "specified_only",
+    "source_locator": "Appendix B Table 6"
+  },
+  "execution": {
+    "repository": "https://github.com/skydiscover-ai/skydiscover",
+    "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "uv sync"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "uv sync"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "dataset:ADRS private task"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "dataset",
+      "unsupported_reason": "The paper reports this ADRS task but the pinned public repository contains no implementation for it."
+    }
+  },
+  "limitations": [
+    "Paper reports datacenter TCP congestion control, but no task implementation or selector exists in the pinned public repository tree.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Datacenter TCP congestion control",
+    "slug": "datacenter-tcp-congestion-control",
+    "description": "Datacenter TCP congestion control",
+    "benchmark": "ADRS NS3",
+    "dataset": null,
+    "metric": "throughput and queue latency",
+    "direction": null,
+    "source_url": "https://arxiv.org/pdf/2602.20133",
+    "source_locator": "Appendix B Table 6",
+    "upstream_path": null,
+    "requirements": [
+      "ns-3 simulator"
+    ],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified.",
+    "execution_blocked_reason": "Paper reports datacenter TCP congestion control, but no task implementation or selector exists in the pinned public repository tree."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

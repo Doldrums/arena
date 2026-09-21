@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0",
+  "id": "pairwise-validator-julia-prime-counting",
+  "name": "julia_prime_counting",
+  "description": "julia_prime_counting task evaluated in Reward-Free Evolving Agents via Pairwise Validator.",
+  "paper_ids": [
+    "pairwise-validator"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2607.14408",
+      "type": "paper",
+      "locator": "Section 5.4, Table 5"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "upstream task score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "ADRS / ShinkaEvolve",
+    "protocol": "specified_only",
+    "source_locator": "Section 5.4, Table 5"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "circle_packing evaluated through both engines; other tasks follow their respective engine. Scalar metric differs by task."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "shinka_julia",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.jl",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "bin:julia"
+      ],
+      "timeout": 300
+    }
+  },
+  "limitations": [
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "julia_prime_counting",
+    "slug": "julia-prime-counting",
+    "description": "julia_prime_counting task evaluated in Reward-Free Evolving Agents via Pairwise Validator.",
+    "benchmark": "ADRS / ShinkaEvolve",
+    "dataset": null,
+    "metric": "upstream task score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2607.14408",
+    "source_locator": "Section 5.4, Table 5",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [
+      "circle_packing evaluated through both engines; other tasks follow their respective engine. Scalar metric differs by task."
+    ],
+    "setup_commands": [],
+    "run_commands": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "numerical_computing",
+    "area": "scientific_computing",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

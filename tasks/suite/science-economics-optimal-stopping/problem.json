@@ -1,0 +1,84 @@
+{
+  "protocol": "recreated",
+  "family": "science_economics_stopping",
+  "direction": "maximize",
+  "contract": "fit_exercise_policy(training_paths, contract) -> object with exercise(current_state,time) returning a boolean vector. Bermudan put on risk-neutral GBM,12monthly exercise dates(no time0exercise),4096training paths and8192independent evaluation paths per contract. Spot90/100/110,K100,r.05,sigma.2,T1. Maximize mean discounted payoff; antithetic-pair standard error and calendar-matched1200step binomial-tree reference are diagnostics. Candidate receives current states only during scoring, never future evaluation states.",
+  "parameters": {},
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 120,
+  "notes": [
+    "Candidate outputs are independently re-evaluated. Baselines may call named public numerical helpers, but cannot supply their own objective. These bounded research-model adaptations do not establish empirical economic predictions or trading returns."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-economics-optimal-stopping",
+  "name": "Economics: Bermudan exercise-policy research",
+  "paper_ids": [
+    "science-economics_expansion"
+  ],
+  "description": "Bermudan exercise-policy research with an explicit candidate API, independently recomputed objective and fixed model/data assumptions.",
+  "benchmark": "Economics: Bermudan exercise-policy research",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://escholarship.org/uc/item/43n1k4jb",
+      "type": "paper",
+      "locator": "Longstaff and Schwartz least-squares Monte Carlo; independent discrete-calendar tree reference."
+    },
+    {
+      "url": "https://github.com/lballabio/QuantLib",
+      "type": "repository",
+      "locator": "Reference algorithms and source documentation; local evaluator is independently authored."
+    }
+  ],
+  "limitations": [
+    "Bounded adaptation specified in the candidate contract; no claim to reproduce full-paper scores.",
+    "Model/simulation scores do not establish empirical policy validity or market returns.",
+    "Public fixed evaluation inputs support development only; freeze candidates and run new cases for generalization."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-economics_expansion",
+      "title": "Economics and quantitative finance: source-based research tasks",
+      "url": "https://www.nber.org/papers/t0309"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Valuing American Options by Simulation: A Simple Least-Squares Approach",
+        "url": "https://doi.org/10.1093/rfs/14.1.113",
+        "task_relation": "The local task learns exercise policies for specified Bermudan models and checks them against independent discrete-tree calculations. Its finite exercise grid, path budgets, and models are restricted adaptations, not a reproduction of all published derivative examples.",
+        "primary_goal": "Estimate continuation values by simulation to value and exercise American-style options.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Determine optimal exercise policies and values for options with early-exercise opportunities.",
+    "importance_rationale": "Valuing and optimally exercising American-style options is the central financial-mathematics problem in the source.",
+    "reason": "The evidence directly treats the optimal-stopping and valuation problem, rather than using an option model only to showcase a generic agent.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "policy",
+    "domain": "finance",
+    "area": "finance",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

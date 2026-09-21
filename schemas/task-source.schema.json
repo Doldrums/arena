@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Doldrums/arena/raw/main/schemas/task-source.schema.json",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "repository": {
+          "$ref": "common.schema.json#/$defs/repository"
+        },
+        "catalog_path": {
+          "$ref": "common.schema.json#/$defs/relative_path"
+        },
+        "catalog_sha256": {
+          "$ref": "common.schema.json#/$defs/sha256"
+        },
+        "index_path": {
+          "$ref": "common.schema.json#/$defs/relative_path"
+        },
+        "index_sha256": {
+          "$ref": "common.schema.json#/$defs/sha256"
+        }
+      },
+      "required": [
+        "id",
+        "repository",
+        "catalog_path",
+        "catalog_sha256",
+        "index_path",
+        "index_sha256"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "kind": {
+          "const": "bundled"
+        },
+        "root_path": {
+          "const": "tasks"
+        },
+        "repository_url": {
+          "const": "https://github.com/Doldrums/arena"
+        },
+        "revision": {
+          "const": "main"
+        },
+        "manifest_path": {
+          "const": "registry/task-library-manifest.json"
+        },
+        "manifest_sha256": {
+          "$ref": "common.schema.json#/$defs/sha256"
+        },
+        "catalog_path": {
+          "$ref": "common.schema.json#/$defs/relative_path"
+        },
+        "catalog_sha256": {
+          "$ref": "common.schema.json#/$defs/sha256"
+        },
+        "index_path": {
+          "$ref": "common.schema.json#/$defs/relative_path"
+        },
+        "index_sha256": {
+          "$ref": "common.schema.json#/$defs/sha256"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "root_path",
+        "repository_url",
+        "revision",
+        "manifest_path",
+        "manifest_sha256",
+        "catalog_path",
+        "catalog_sha256",
+        "index_path",
+        "index_sha256"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

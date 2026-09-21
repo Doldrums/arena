@@ -1,0 +1,101 @@
+{
+  "proposal_id": "C02",
+  "status": "passed",
+  "score": 0.8185583386628384,
+  "details": {
+    "mean_matching_rmsd_angstrom": 0.2549612068540229,
+    "molecules": 57,
+    "reference_kind": "GEOM_CREST_xTB"
+  },
+  "seconds": 6.927115458005574,
+  "source_preparation": {
+    "proposal_id": "C02",
+    "source_molecules": 67,
+    "source_conformers": 1000,
+    "retained_molecules": 57,
+    "retained_conformers": 958,
+    "excluded_ensembles": [
+      {
+        "source_group": "C1O[C@]23[C@@H]4C[C@]12[C@H]1[C@@H]4[C@H]13",
+        "conformers": 1,
+        "reason": "frame0: perceived graph/stereochemistry differs from source SMILES"
+      },
+      {
+        "source_group": "CO[C@H]1CC[C@H]1O[CH][NH]",
+        "conformers": 15,
+        "reason": "frame0: perceived graph/stereochemistry differs from source SMILES"
+      },
+      {
+        "source_group": "C[C@@H](O)[C@@H]1[C@@H]2O[C@H]1[C@@H]2O",
+        "conformers": 16,
+        "reason": "frame0: Unable to determine valence of atom 15 with atomic number 8 and 2 bonds. Check the input molecules bonding."
+      },
+      {
+        "source_group": "C[C@@H]1[C@@H]2O[C@@H]3[C@H]1[C@]23C",
+        "conformers": 1,
+        "reason": "frame0: Unable to determine valence of atom 11 with atomic number 8 and 2 bonds. Check the input molecules bonding."
+      },
+      {
+        "source_group": "C[C@H]1OC[C@]23CC[C@]12C3",
+        "conformers": 1,
+        "reason": "conformer violates specified stereochemistry"
+      },
+      {
+        "source_group": "C[C@]12C[C@@H]3N[C@H]1[C@]3(C)O2",
+        "conformers": 1,
+        "reason": "frame0: Unable to determine valence of atom 15 with atomic number 8 and 2 bonds. Check the input molecules bonding."
+      },
+      {
+        "source_group": "O=C1C[N][C]2C[C@H]3[C@@H]1N23",
+        "conformers": 1,
+        "reason": "frame0: perceived graph/stereochemistry differs from source SMILES"
+      },
+      {
+        "source_group": "[CH2]C1=C[CH]N2CC(=O)[C@H]12",
+        "conformers": 1,
+        "reason": "frame0: perceived graph/stereochemistry differs from source SMILES"
+      },
+      {
+        "source_group": "[NH][CH]O[C@]12CC[C@H]1CC2",
+        "conformers": 4,
+        "reason": "frame0: perceived graph/stereochemistry differs from source SMILES"
+      },
+      {
+        "source_group": "[N][N][C]1CC(=O)NC1=O",
+        "conformers": 1,
+        "reason": "frame0: perceived graph/stereochemistry differs from source SMILES"
+      }
+    ],
+    "dataset_sha256": "c5c4309e6bdb881b0fc6236a0d0ed4a79f6e8478a07665a3f4d8d21aafc7e141",
+    "source_sha256": "b16cf4c727fe57e6dfc6309815893d25d5524ba048b346ac5e2fbd2401c72e4c"
+  },
+  "source_access_attempts": [
+    {
+      "url": "https://dataverse.harvard.edu/api/access/datafile/4327252",
+      "http_status": 403,
+      "scope": "GET bytes0-511 on2026-09-20"
+    },
+    {
+      "url": "https://dataverse.harvard.edu/api/access/datafile/4327252?gbrecs=true",
+      "http_status": 403,
+      "scope": "GET bytes0-511 on2026-09-20"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/learningmatter-mit/geom/master/README.md",
+      "http_status": 206,
+      "scope": "author source instructions available"
+    },
+    {
+      "url": "https://zenodo.org/api/records/20633997/files/geom_qm9_data_v1.0_ntc_1000.hdf5.gz/content",
+      "http_status": 200,
+      "scope": "complete508291-byte curation download; publisher MD5 and SHA256 verified"
+    }
+  ],
+  "scope": "Secondary published scientific curation; source-based whole-ensemble graph/valence/stereo exclusions; no generated reference conformers or original full-archive reproduction claim",
+  "tests": {
+    "command": ".cache/sciel-env/bin/python -m unittest discover -s tests -p test_science_geom_source.py -v",
+    "passed": 4,
+    "seconds": 7.952,
+    "scope": "Source SHA/MD5, all retained atom maps and coordinate units, mirrored stereo rejection, strained-cage seed regression and actual coverage baseline"
+  }
+}

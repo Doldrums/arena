@@ -1,0 +1,92 @@
+{
+  "protocol": "recreated",
+  "family": "science_physics_robust_transmon_control",
+  "direction": "minimize",
+  "contract": "pulse(target_gate, hardware_model) -> (80,2) IQ amplitudes rad/ns for 40 ns X-pi gate in a three-level Duffing transmon. Enforce amplitude .4 rad/ns and slew .12 rad/ns/ns including endpoints. Independent Lindblad expm and refined DOP853 evaluate six Bloch states over 3x3 detuning/calibration cases, relaxation and dephasing. Score mean plus worst average gate infidelity; report leakage. Explicit simulation, not QuOCS benchmark reproduction.",
+  "parameters": {
+    "proposal_id": "P12"
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 300,
+  "notes": [
+    "Independent SCIEL scientific adaptation. Required source packs never fall back to toy data. Fixture tests are distinct from source-data execution. See docs/PHYSICS_EXPANSION.md."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-physics-robust-transmon-control",
+  "name": "Robust multilevel quantum-control pulses",
+  "paper_ids": [
+    "science-physics_expansion"
+  ],
+  "description": "pulse(target_gate, hardware_model) -> (80,2) IQ amplitudes rad/ns for 40 ns X-pi gate in a three-level Duffing transmon. Enforce amplitude .4 rad/ns and slew .12 rad/ns/ns including endpoints. Independent Lindblad expm and refined DOP853 evaluate six Bloch states over 3x3 detuning/calibration cases, relaxation and dephasing. Score mean plus worst average gate infidelity; report leakage. Explicit simulation, not QuOCS benchmark reproduction.",
+  "benchmark": "Robust multilevel quantum-control pulses",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2212.11144",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: Robust multilevel quantum-control pulses"
+    },
+    {
+      "url": "https://github.com/Quantum-OCS/QuOCS",
+      "type": "repository",
+      "locator": "Optimal-control problem formulation; independent explicit qutrit/Lindblad adaptation, no author pulse reuse."
+    },
+    {
+      "url": "https://arxiv.org/abs/0901.0534",
+      "type": "paper",
+      "title": "Simple pulses for elimination of leakage in weakly nonlinear qubits",
+      "locator": "Develops control pulses that suppress leakage in multilevel superconducting qubits and evaluates gate error. Local robust pulse optimization across parameter uncertainty extends that same control task."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "No external dataset: fully specified physical-model simulation."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-physics_expansion",
+      "title": "Physics and astrophysics research: source-based research tasks",
+      "url": "https://arxiv.org/abs/1904.06778v3"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Simple pulses for elimination of leakage in weakly nonlinear qubits",
+        "url": "https://arxiv.org/abs/0901.0534",
+        "task_relation": "The local task optimizes a fixed-duration IQ pulse in an explicit three-level Duffing/Lindblad model with detuning and calibration uncertainty. Its ensemble, pulse discretization, bounds, and loss are local choices, not a reproduction of the paper's experimental performance.",
+        "primary_goal": "Construct control pulses that suppress leakage and enable accurate fast gates in weakly nonlinear qubits.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Implement fast, accurate gates in weakly anharmonic superconducting qubits while suppressing leakage.",
+    "importance_rationale": "Leakage suppression during physical qubit control is the paper's central quantum-device problem.",
+    "reason": "The cited work solves a concrete control error mechanism, so a generic optimal-control toolkit citation is unnecessary.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "quantum_information",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

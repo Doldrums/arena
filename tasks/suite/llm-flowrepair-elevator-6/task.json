@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.0",
+  "id": "llm-flowrepair-elevator-6",
+  "name": "elevator_6",
+  "description": "elevator_6 task evaluated in Hype Meets Reality: Large Language Models as Mutators in Search-based Automated Program Repair of Simulink-Stateflow Models.",
+  "paper_ids": [
+    "llm-flowrepair"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2608.19347",
+      "type": "paper",
+      "locator": "Section IV-B; Tables II-IV"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "FlowRepair 19 faulty Stateflow models",
+    "notes": [
+      "MATLAB/Simulink/Stateflow",
+      "Original FlowRepair model/test assets",
+      "LLM access"
+    ]
+  },
+  "evaluation": {
+    "metric": "plausible and valid patch counts across five runs",
+    "paper_metric": "plausible and valid patch counts across five runs",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "FlowRepair 19 faulty Stateflow models",
+    "protocol": "specified_only",
+    "source_locator": "Section IV-B; Tables II-IV"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "toolchain:FlowRepair 19 faulty Stateflow models"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "toolchain",
+      "unsupported_reason": "Evaluation depends on an external toolchain (FlowRepair 19 faulty Stateflow models) that is not bundled."
+    }
+  },
+  "limitations": [
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "elevator_6",
+    "slug": "elevator-6",
+    "description": "elevator_6 task evaluated in Hype Meets Reality: Large Language Models as Mutators in Search-based Automated Program Repair of Simulink-Stateflow Models.",
+    "benchmark": "FlowRepair 19 faulty Stateflow models",
+    "dataset": "FlowRepair 19 faulty Stateflow models",
+    "metric": "plausible and valid patch counts across five runs",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2608.19347",
+    "source_locator": "Section IV-B; Tables II-IV",
+    "upstream_path": null,
+    "requirements": [
+      "MATLAB/Simulink/Stateflow",
+      "Original FlowRepair model/test assets",
+      "LLM access"
+    ],
+    "execution_notes": [],
+    "setup_commands": [],
+    "run_commands": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

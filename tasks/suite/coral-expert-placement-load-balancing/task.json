@@ -1,0 +1,399 @@
+{
+  "schema_version": "1.0",
+  "id": "coral-expert-placement-load-balancing",
+  "name": "Expert placement load balancing",
+  "description": "Expert placement load balancing",
+  "paper_ids": [
+    "coral",
+    "adaevolve",
+    "evox"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1 and Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/ADRS/eplb"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/ADRS/eplb"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "torch"
+    ],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "Docker",
+      "task-specific data"
+    ],
+    "required_files": [
+      "examples/ADRS/eplb/taskdata/expert-load.json"
+    ],
+    "required_file_hashes": {
+      "examples/ADRS/eplb/taskdata/expert-load.json": "d93580b3cb3e404a60237fa708271b360229a0c6fdfdd924a8ec4fdb440b71ad"
+    }
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "throughput ratio",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "ADRS",
+    "protocol": "upstream",
+    "source_locator": "Section 4.1 and Table 1"
+  },
+  "execution": {
+    "repository": "https://github.com/Human-Agent-Society/CORAL",
+    "commit": "0123dfb939b35228cf2c1fde224cd0561e727408",
+    "upstream_path": "examples/ADRS/eplb",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/ADRS/eplb/taskdata/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/ADRS/eplb/taskdata",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "examples/ADRS/eplb/seed/initial_program.py",
+      "dependencies": [
+        "torch"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+    },
+    "setup_instructions": [
+      "python -m pip install torch",
+      "Download https://huggingface.co/datasets/abmfy/eplb-openevolve/resolve/main/expert-load.json to examples/ADRS/eplb/taskdata/expert-load.json (documented in grader/src/eplb_grader/grader.py)."
+    ],
+    "task_setup_instructions": [
+      "python -m pip install torch",
+      "Download https://huggingface.co/datasets/abmfy/eplb-openevolve/resolve/main/expert-load.json to examples/ADRS/eplb/taskdata/expert-load.json (documented in grader/src/eplb_grader/grader.py)."
+    ],
+    "framework_setup_instructions": [
+      "uv sync --extra dev"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct source evaluator adapter; Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "adrs_eplb",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "file:vendor/adrs/eplb/expert-load.json"
+      ],
+      "timeout": 900
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Expert placement load balancing",
+    "slug": "expert-placement-load-balancing",
+    "description": "Expert placement load balancing",
+    "benchmark": "ADRS",
+    "dataset": null,
+    "metric": "throughput ratio",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2604.01658",
+    "source_locator": "Section 4.1 and Table 1",
+    "upstream_path": "examples/ADRS/eplb",
+    "requirements": [
+      "Docker",
+      "task-specific data"
+    ],
+    "execution_notes": "Direct source evaluator adapter; Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass.",
+    "upstream_evaluator_paths": [
+      "examples/ADRS/eplb/grader/src/eplb_grader/grader.py",
+      "examples/ADRS/eplb/taskdata/evaluator.py"
+    ],
+    "upstream_seed_paths": [
+      "examples/ADRS/eplb/seed/initial_program.py"
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/ADRS/eplb/taskdata/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/ADRS/eplb/taskdata",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "examples/ADRS/eplb/seed/initial_program.py",
+      "dependencies": [
+        "torch"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+    },
+    "execution_sources": [
+      "https://github.com/Human-Agent-Society/CORAL/blob/0123dfb939b35228cf2c1fde224cd0561e727408/examples/ADRS/eplb/taskdata/evaluator.py"
+    ],
+    "setup_commands": [
+      "python -m pip install torch",
+      "Download https://huggingface.co/datasets/abmfy/eplb-openevolve/resolve/main/expert-load.json to examples/ADRS/eplb/taskdata/expert-load.json (documented in grader/src/eplb_grader/grader.py)."
+    ],
+    "required_files": [
+      "examples/ADRS/eplb/taskdata/expert-load.json"
+    ],
+    "dataset_assets": {
+      "lock": "catalog/eplb-data-lock.json",
+      "repository": "https://huggingface.co/datasets/abmfy/eplb-openevolve",
+      "commit": "071910dada7ce35e8b9b89b64ec1295f1b64590b",
+      "setup": "python3 scripts/prepare_adrs_data.py --lock eplb-data-lock.json"
+    },
+    "required_file_hashes": {
+      "examples/ADRS/eplb/taskdata/expert-load.json": "d93580b3cb3e404a60237fa708271b360229a0c6fdfdd924a8ec4fdb440b71ad"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "adaevolve-expert-placement-load-balancing",
+      "paper_ids": [
+        "adaevolve"
+      ],
+      "name": "Expert placement load balancing",
+      "description": "Expert placement load balancing",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.20133",
+          "type": "paper",
+          "locator": "Systems results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/ADRS/eplb"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "torch"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "task-specific dependencies and data",
+          "No LLM/API call needed for direct candidate evaluation. External dataset download required."
+        ],
+        "required_files": [
+          "benchmarks/ADRS/eplb/evaluator/expert-load.json"
+        ],
+        "required_file_hashes": {
+          "benchmarks/ADRS/eplb/evaluator/expert-load.json": "d93580b3cb3e404a60237fa708271b360229a0c6fdfdd924a8ec4fdb440b71ad"
+        }
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "throughput ratio",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ADRS",
+        "protocol": "upstream",
+        "source_locator": "Systems results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/ADRS/eplb",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/ADRS/eplb/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/ADRS/eplb/evaluator",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/ADRS/eplb/initial_program.py",
+          "dependencies": [
+            "torch"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+        },
+        "setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/eplb/evaluator/requirements.txt",
+          "Download https://huggingface.co/datasets/abmfy/eplb-openevolve/resolve/main/expert-load.json to benchmarks/ADRS/eplb/evaluator/expert-load.json; source evaluator resolves it adjacent to __file__, despite stale parent-directory README instructions."
+        ],
+        "task_setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/eplb/evaluator/requirements.txt",
+          "Download https://huggingface.co/datasets/abmfy/eplb-openevolve/resolve/main/expert-load.json to benchmarks/ADRS/eplb/evaluator/expert-load.json; source evaluator resolves it adjacent to __file__, despite stale parent-directory README instructions."
+        ],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Direct source evaluator adapter; Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "evox-expert-placement-load-balancing",
+      "paper_ids": [
+        "evox"
+      ],
+      "name": "Expert placement load balancing",
+      "description": "Expert placement load balancing",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.23413",
+          "type": "paper",
+          "locator": "Systems results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/ADRS/eplb"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "torch"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "task-specific dependencies and data",
+          "No LLM/API call needed for direct candidate evaluation. External dataset download required."
+        ],
+        "required_files": [
+          "benchmarks/ADRS/eplb/evaluator/expert-load.json"
+        ],
+        "required_file_hashes": {
+          "benchmarks/ADRS/eplb/evaluator/expert-load.json": "d93580b3cb3e404a60237fa708271b360229a0c6fdfdd924a8ec4fdb440b71ad"
+        }
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "throughput ratio",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ADRS",
+        "protocol": "upstream",
+        "source_locator": "Systems results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/ADRS/eplb",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/ADRS/eplb/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/ADRS/eplb/evaluator",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/ADRS/eplb/initial_program.py",
+          "dependencies": [
+            "torch"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+        },
+        "setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/eplb/evaluator/requirements.txt",
+          "Download https://huggingface.co/datasets/abmfy/eplb-openevolve/resolve/main/expert-load.json to benchmarks/ADRS/eplb/evaluator/expert-load.json; source evaluator resolves it adjacent to __file__, despite stale parent-directory README instructions."
+        ],
+        "task_setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/eplb/evaluator/requirements.txt",
+          "Download https://huggingface.co/datasets/abmfy/eplb-openevolve/resolve/main/expert-load.json to benchmarks/ADRS/eplb/evaluator/expert-load.json; source evaluator resolves it adjacent to __file__, despite stale parent-directory README instructions."
+        ],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Direct source evaluator adapter; Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+        ]
+      },
+      "limitations": [
+        "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

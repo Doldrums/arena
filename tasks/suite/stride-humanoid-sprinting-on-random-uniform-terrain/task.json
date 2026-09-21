@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "id": "stride-humanoid-sprinting-on-random-uniform-terrain",
+  "name": "Humanoid sprinting on random uniform terrain",
+  "description": "Humanoid sprinting on random uniform terrain: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "stride"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2502.04692",
+      "type": "paper",
+      "locator": "Section 5.1"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Isaac Gym custom 16-DoF humanoid",
+    "notes": [
+      "Isaac Gym",
+      "NVIDIA GPU",
+      "Custom humanoid URDF",
+      "GPT-4o-mini API"
+    ]
+  },
+  "evaluation": {
+    "metric": "Max Success Score",
+    "paper_metric": "Max Success Score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Isaac Gym custom 16-DoF humanoid",
+    "protocol": "specified_only",
+    "source_locator": "Section 5.1"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "environment:Isaac Gym custom 16-DoF humanoid"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "simulator",
+      "unsupported_reason": "Fitness requires a physics simulator or reinforcement-learning training loop (Isaac Gym custom 16-DoF humanoid) that is not bundled."
+    }
+  },
+  "limitations": [
+    "No official runnable repository was verified from the paper/project sources examined.",
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "Humanoid sprinting on random uniform terrain",
+    "slug": "humanoid-sprinting-on-random-uniform-terrain",
+    "description": "Humanoid sprinting on random uniform terrain: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "Isaac Gym custom 16-DoF humanoid",
+    "dataset": "Isaac Gym custom 16-DoF humanoid",
+    "metric": "Max Success Score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2502.04692",
+    "source_locator": "Section 5.1",
+    "upstream_path": null,
+    "requirements": [
+      "Isaac Gym",
+      "NVIDIA GPU",
+      "Custom humanoid URDF",
+      "GPT-4o-mini API"
+    ],
+    "execution_notes": [],
+    "implementation_status": "paper_inventory_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "reward",
+    "domain": "robotics",
+    "area": "robotics_and_control",
+    "data": "simulator",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

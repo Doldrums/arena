@@ -1,0 +1,148 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "py:matplotlib",
+    "py:numpy",
+    "py:pykalman",
+    "py:pywt",
+    "py:scipy",
+    "py:sklearn"
+  ],
+  "timeout": 600,
+  "notes": [],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "overall_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/signal_processing",
+    "files_sha256": {
+      "README.md": "476d6ea8d49716002f1bfc527ad5fec034a34d54bfa1e05a8fbd1d48f029319f",
+      "config.yaml": "223b1e2b86e2201024f396f19022c431a9f1f1f7b1f535de37b82ac17dc9bbde",
+      "evaluator.py": "9623b2ebaa2a7ad736e532d38a8c6669607924ac606589397c219b240c5e27c1",
+      "initial_program.py": "3316701515451ecbe7bd47231bfbe89155afbe31bb1bc878a0b698a79e412a34",
+      "requirements.txt": "f485bec8e996cdbb122b11de226b82cf1c8fc5259d80ed37363f7783047efcb5"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/signal_processing` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-math-signal-processing",
+  "name": "SCiEL: Adaptive signal processing",
+  "paper_ids": [
+    "sciel-supplement",
+    "adaevolve",
+    "coral",
+    "evox",
+    "pairwise-validator"
+  ],
+  "description": "Return filtered signal metrics for five synthetic signal cases; the original evaluator blends smoothness, error, noise reduction and reliability.",
+  "benchmark": "SCiEL source example signal_processing",
+  "paper_metric": "overall_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/signal_processing/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/signal_processing/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Math results and task-definition appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/math/signal_processing"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1, Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/math/signal_processing"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Math results and task-definition appendix"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2607.14408",
+      "type": "paper",
+      "locator": "Section 5.4, Table 5"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The evaluator generates noisy/clean reference signals but passes only signal length, noise level and window size to run_signal_processing(). Candidate output may correspond to a different generated input; the resulting signal comparison is not an independent check of filtering the intended input.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    },
+    {
+      "id": "adaevolve",
+      "title": "AdaEvolve: Adaptive LLM Driven Zeroth-Order Optimization",
+      "url": "https://arxiv.org/pdf/2602.20133"
+    },
+    {
+      "id": "coral",
+      "title": "CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery",
+      "url": "https://arxiv.org/pdf/2604.01658"
+    },
+    {
+      "id": "evox",
+      "title": "EvoX: Meta-Evolution for Automated Discovery",
+      "url": "https://arxiv.org/pdf/2602.23413"
+    },
+    {
+      "id": "pairwise-validator",
+      "title": "Reward-Free Evolving Agents via Pairwise Validator",
+      "url": "https://arxiv.org/pdf/2607.14408"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "numerical_computing",
+    "area": "scientific_computing",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "schema_version": "1.0",
+  "id": "dga2d-ode-solver-van-der-pol",
+  "name": "ODE solver: Van der Pol",
+  "description": "ODE solver: Van der Pol",
+  "paper_ids": [
+    "dga2d",
+    "a2dept"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2608.00700",
+      "type": "paper",
+      "locator": "Appendix G.1"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2604.24043",
+      "type": "paper",
+      "locator": "Appendix G.1, Table 17"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "1 design instance, 4 test instances per system",
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "-log10(error) - lambda log10(function evaluations)",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Appendix G.1"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Task specification verified from paper; direct evaluator availability not confirmed."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "ode_integrator",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Paper says an anonymized implementation was supplied as supplementary material but no public URL was found in the extracted PDF.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "ODE solver: Van der Pol",
+    "slug": "ode-solver-van-der-pol",
+    "description": "ODE solver: Van der Pol",
+    "benchmark": null,
+    "dataset": "1 design instance, 4 test instances per system",
+    "metric": "-log10(error) - lambda log10(function evaluations)",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2608.00700",
+    "source_locator": "Appendix G.1",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": "Task specification verified from paper; direct evaluator availability not confirmed."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "numerical_computing",
+    "area": "scientific_computing",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "a2dept-ode-integration-van-der-pol-oscillator",
+      "paper_ids": [
+        "a2dept"
+      ],
+      "name": "ODE integration: Van der Pol Oscillator",
+      "description": "ODE integration: Van der Pol Oscillator",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2604.24043",
+          "type": "paper",
+          "locator": "Appendix G.1, Table 17"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "-log10(error) - lambda log10(function evaluations)",
+        "paper_metric": "-log10(error) - lambda log10(function evaluations)",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": null,
+        "protocol": "specified_only",
+        "source_locator": "Appendix G.1, Table 17"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Paper task identified; evaluator invocation not yet verified."
+        ]
+      },
+      "limitations": [
+        "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

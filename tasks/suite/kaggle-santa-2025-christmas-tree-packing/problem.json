@@ -1,0 +1,82 @@
+{
+  "protocol": "recreated_verified",
+  "family": "tree_packing",
+  "direction": "minimize",
+  "contract": "construct(n) -> array of shape (n, 3): rows (x, y, deg) placing n copies of the fixed Christmas-tree polygon without overlap (deg rotates about the tree origin, x and y within [-100, 100]); called once for every n from n_min to n_max",
+  "parameters": {
+    "n_min": 1,
+    "n_max": 200,
+    "reference": 176.60550959158516
+  },
+  "requires": [
+    "py:numpy",
+    "py:shapely"
+  ],
+  "timeout": 900,
+  "notes": [
+    "The reference value is the competition's getting-started sample submission scored with the official metric; the seed grid scores 162.58.",
+    "Independent implementation of the Kaggle Santa 2025 metric (same polygon, 1e18 scaling, touch-but-not-overlap rule, bounding-square area over n summed over n = 1..200); reproduces the official metric's doctest value and the getting-started sample submission's score exactly (validation/santa-2025-crosscheck.json)."
+  ],
+  "protocol_description": "Reimplemented in this repository and cross-checked against the paper's published constructions/values.",
+  "id": "kaggle-santa-2025-christmas-tree-packing",
+  "name": "Santa 2025: Christmas tree packing (n = 1..200)",
+  "paper_ids": [
+    "kaggle-santa-2025"
+  ],
+  "description": "For every n from 1 to 200 place n copies of the competition's fixed 15-vertex tree polygon (rotations allowed, no overlaps, coordinates within [-100, 100]) so that the bounding square of each configuration is as small as possible; the score is the sum over n of (bounding-square area / n), lower is better.",
+  "benchmark": "Kaggle Santa 2025 - Christmas Tree Packing Challenge",
+  "paper_metric": "sum over n of bounding-square area / n",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://www.kaggle.com/competitions/santa-2025",
+      "type": "benchmark",
+      "locator": "Competition overview and evaluation page (task statement, metric definition, submission format)"
+    },
+    {
+      "url": "https://www.kaggle.com/code/inversion/santa-2025-getting-started",
+      "type": "benchmark",
+      "locator": "Getting-started notebook (tree geometry, collision rule, greedy sample submission)"
+    },
+    {
+      "url": "https://github.com/jsebdev/kaggle_santa_challenge_2025/tree/9f0fff6e53fb653dc067214ff19bcb647ee54311",
+      "type": "repository",
+      "locator": "santa-2025-metric.py (official metric, shapely 2.1.2), sample_submission.csv"
+    }
+  ],
+  "limitations": [
+    "The evaluator is an independent reimplementation of the competition metric (same polygon, scaling factor, overlap rule and bounding-square formula) and reproduces the official code's doctest value and the sample submission's score exactly; it is not the Kaggle scoring service.",
+    "No leaderboard value is embedded; the reference value is the getting-started sample submission (176.60550959158516)."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "kaggle-santa-2025",
+      "title": "Santa 2025 - Christmas Tree Packing Challenge (Kaggle competition)",
+      "url": "https://www.kaggle.com/competitions/santa-2025"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "leaderboard",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,56 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in active learning and experimental design working on an offline proxy of AlphaEvolve Problem 66, "The function guessing game". In the original interactive game an agent must guess a hidden function f: R -> R, paying 1 currency unit per function evaluation, and earning a reward of 1000 currency units whenever it reconstructs the function within a small L^1 error. This task captures the deterministic economic core of that game using only point evaluations: choose WHERE to sample so the function can be reconstructed exactly while spending as little as possible.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that returns a fixed "guessing strategy": a 1-D numpy array of k query locations in the domain [-1, 1]. For each hidden function in a fixed, seeded family of degree-5 polynomials, the function is sampled at your k query points (costing k currency units), reconstructed by degree-5 least-squares polynomial interpolation, and the 1000-unit reward is granted only if the reconstruction's mean L^1 error over a dense grid falls below a small threshold. A degree-5 polynomial is uniquely determined by 6 distinct samples, so the optimal strategy uses exactly 6 well-placed, distinct, in-domain points; duplicate or out-of-domain points waste money and break reconstruction.
+
+    PERFORMANCE METRICS:
+    1. **net_reward**: 1000 * (fraction of functions reconstructed correctly) - (number of query points). PRIMARY OBJECTIVE - maximize.
+    2. **combined_score**: net_reward / 994 (BENCHMARK COMPARISON - maximize toward 1.0, where 994 = 1000 - 6 is the best achievable net reward: every function reconstructed correctly using the minimal 6 queries).
+    3. **fraction_correct**: Fraction of the hidden functions reconstructed within the L^1 threshold (must stay at 1.0; dropping below it forfeits the 1000-unit rewards).
+    4. **num_queries**: Number of query points used (cost per function - minimize, but never below what is needed for exact reconstruction).
+    5. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality).
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility.
+    - **Domain**: All query points must lie within [-1, 1]; out-of-domain points are infeasible and score 0.
+    - **Error handling**: Graceful handling of degenerate query sets or infeasible configurations.
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

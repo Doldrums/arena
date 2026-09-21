@@ -227,7 +227,11 @@ def canonical_config(body, name, run_id, config):
     require(body.get("Image") in config.images)
     require(body.get("User") == f"{config.worker_uid}:{config.worker_gid}")
     require(body.get("WorkingDir") == "/tmp")
-    require(body.get("Env") == ["PYTHONDONTWRITEBYTECODE=1"])
+    # Docker CLI versions may serialize environment entries in either order.
+    # Accept the exact pair once each; values and all extra names remain denied.
+    environment = ["PYTHONDONTWRITEBYTECODE=1", "PYTHONPYCACHEPREFIX=/tmp/arena-pycache"]
+    require(type(body.get("Env")) is list and len(body["Env"]) == len(environment)
+            and all(type(value) is str for value in body["Env"]) and set(body["Env"]) == set(environment))
     require(body.get("Labels") == {"arena.evaluator": "canonical-v1", "arena.control-run": run_id})
     command = body.get("Cmd")
     require(type(command) is list and len(command) == 14 and all(type(v) is str for v in command))
@@ -277,7 +281,7 @@ def canonical_config(body, name, run_id, config):
     require(RUN.fullmatch(candidate.parent.name))
     require(any(candidate.parent.parent == root / run_id / "artifacts" / "canonical-evaluations"
                 for root in config.run_roots), "Evaluation paths must belong to this admitted run")
-    rebuilt = {"Image": body["Image"], "Cmd": command, "User": body["User"], "Env": body["Env"],
+    rebuilt = {"Image": body["Image"], "Cmd": command, "User": body["User"], "Env": environment,
                "WorkingDir": "/tmp", "Labels": body["Labels"], "AttachStdout": True, "AttachStderr": True,
                "Tty": False, "OpenStdin": False, "Entrypoint": [], "HostConfig": {
                    "NetworkMode": "none", "ReadonlyRootfs": True, "NanoCpus": 1_000_000_000,

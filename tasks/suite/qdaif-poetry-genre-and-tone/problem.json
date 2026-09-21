@@ -1,0 +1,83 @@
+{
+  "protocol": "recreated",
+  "family": "llm_benchmark",
+  "direction": "maximize",
+  "contract": "solve(question, llm) -> answer string; llm(prompt_or_messages, system=None, max_tokens=None) is a budgeted, cached OpenRouter client. Score: mean per-item accuracy (or F1) on a fixed seeded sample of the benchmark",
+  "parameters": {
+    "benchmark": "creative_writing",
+    "benchmark_options": {
+      "task": "poetry"
+    },
+    "seed": 0
+  },
+  "requires": [
+    "py:numpy",
+    "py:datasets",
+    "env:OPENROUTER_API_KEY",
+    "network:openrouter+huggingface"
+  ],
+  "timeout": 900,
+  "notes": [
+    "Open-ended outputs are rated by the same model client acting as a judge (1-10 rubric score scaled to [0,1]); the papers also use AI feedback, but the rubric and judge model are local choices.",
+    "Model-driven evaluation: the score depends on the model (ARTASK_LLM_MODEL, default google/gemini-2.5-flash), the sample size (ARTASK_LLM_SAMPLES, default 10) and the per-evaluation budget (ARTASK_LLM_BUDGET_USD, default 0.25). Responses are cached under .cache/llm-cache."
+  ],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "qdaif-poetry-genre-and-tone",
+  "name": "Poetry genre and tone",
+  "paper_ids": [
+    "qdaif"
+  ],
+  "description": "Poetry genre and tone: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "benchmark": "Poetry genre and tone",
+  "paper_metric": "quality-diversity score",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2310.13032",
+      "type": "paper",
+      "locator": "Sections 4.1–4.4"
+    },
+    {
+      "url": "https://github.com/CarperAI/OpenELM/tree/c844e149e3f59fef546e0bc55f4e12e0f192feb9",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Companion qdaif_scripts_data repository links results data on Google Drive; no LICENSE file was found in that repository. It does not provide one verified end-to-end paper-task CLI.",
+    "No SPDX license identification verified for https://github.com/qdaif/qdaif_scripts_data.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "qdaif",
+      "title": "Quality-Diversity through AI Feedback",
+      "url": "https://arxiv.org/pdf/2310.13032"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

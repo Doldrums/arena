@@ -1,0 +1,468 @@
+{
+  "schema_version": "1.0",
+  "id": "promptbreeder-gsm8k",
+  "name": "GSM8K",
+  "description": "GSM8K: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "promptbreeder",
+    "adas",
+    "aflow",
+    "evoflow",
+    "polymath"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2309.16797",
+      "type": "paper",
+      "locator": "Section 4 and Appendix I"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2408.08435",
+      "type": "paper",
+      "locator": "Section 4.3 and Appendix A"
+    },
+    {
+      "url": "https://github.com/ShengranHu/ADAS/tree/2702bee8fefda42255efc5be9f60e3bd3db96ae4",
+      "type": "repository",
+      "locator": "_transfer_math/evaluation_gsm8k.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2410.10762",
+      "type": "paper",
+      "locator": "Section 4.1"
+    },
+    {
+      "url": "https://github.com/FoundationAgents/AFlow/tree/3f457218fc716093fe53f6df8a5d5e6379d66346",
+      "type": "repository",
+      "locator": "benchmarks/gsm8k.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2502.07373",
+      "type": "paper",
+      "locator": "Section 4.1 and Appendix G.1"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2508.02959",
+      "type": "paper",
+      "locator": "Experiments: Dataset and Evaluation Metrics"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "GSM8K",
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "GSM8K",
+    "protocol": "specified_only",
+    "source_locator": "Section 4 and Appendix I"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No official runnable repository was verified from the paper/project sources examined.",
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "GSM8K",
+    "slug": "gsm8k",
+    "description": "GSM8K: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "GSM8K",
+    "dataset": "GSM8K",
+    "metric": "accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2309.16797",
+    "source_locator": "Section 4 and Appendix I",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [],
+    "implementation_status": "paper_inventory_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "adas-gsm8k",
+      "paper_ids": [
+        "adas"
+      ],
+      "name": "GSM8K",
+      "description": "GSM8K: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2408.08435",
+          "type": "paper",
+          "locator": "Section 4.3 and Appendix A"
+        },
+        {
+          "url": "https://github.com/ShengranHu/ADAS/tree/2702bee8fefda42255efc5be9f60e3bd3db96ae4",
+          "type": "repository",
+          "locator": "_transfer_math/evaluation_gsm8k.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "GSM8K",
+        "notes": [
+          "ADAS requirements.txt dependencies",
+          "OPENAI_API_KEY",
+          "Compatible available model among the upstream --model choices"
+        ]
+      },
+      "evaluation": {
+        "metric": "answer accuracy",
+        "paper_metric": "answer accuracy",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "GSM8K",
+        "protocol": "upstream",
+        "source_locator": "Section 4.3 and Appendix A"
+      },
+      "execution": {
+        "repository": "https://github.com/ShengranHu/ADAS",
+        "commit": "2702bee8fefda42255efc5be9f60e3bd3db96ae4",
+        "upstream_path": "_transfer_math/evaluation_gsm8k.py",
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "_transfer_math/evaluation_gsm8k.py",
+              "--eval_file_path",
+              "results/mgsm_transfer_domains_results.json",
+              "--data_filename",
+              "dataset/GSM8k_test.jsonl"
+            ],
+            "cwd": ".",
+            "kind": "transfer_evaluation",
+            "requirements": [
+              "ADAS requirements.txt dependencies",
+              "OPENAI_API_KEY",
+              "Compatible available model among the upstream --model choices"
+            ],
+            "evidence_path": "_transfer_math/evaluation_gsm8k.py",
+            "source_url": "https://github.com/ShengranHu/ADAS/blob/2702bee8fefda42255efc5be9f60e3bd3db96ae4/_transfer_math/evaluation_gsm8k.py",
+            "verification": "source_inspected_not_executed"
+          }
+        ],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "pip install -r requirements.txt"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "pip install -r requirements.txt"
+        ],
+        "setup_steps": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": "."
+          }
+        ],
+        "notes": [
+          "Evaluates the ten released baseline/discovered agents in results/mgsm_transfer_domains_results.json; supplied dataset is present in the pinned repository.",
+          "The script rewrites results/mgsm_transfer_domains_results.json in place, updating this task’s test-fitness fields. Copy the archive and change --eval_file_path if preserving upstream results is required.",
+          "Defaults select up to 800 test examples and 48 API workers; inspect API budget before execution. This is transfer evaluation, not a new MGSM agent search.",
+          "Model defaults to gpt-4o-2024-05-13; upstream accepts a fixed list of historical model IDs, so available endpoint/model configuration must be verified.",
+          "ADAS requirements.txt dependencies",
+          "OPENAI_API_KEY",
+          "Compatible available model among the upstream --model choices",
+          "Upstream operation: transfer_evaluation"
+        ]
+      },
+      "limitations": [
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "aflow-gsm8k",
+      "paper_ids": [
+        "aflow"
+      ],
+      "name": "GSM8K",
+      "description": "GSM8K task evaluated in AFlow: Automating Agentic Workflow Generation.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2410.10762",
+          "type": "paper",
+          "locator": "Section 4.1"
+        },
+        {
+          "url": "https://github.com/FoundationAgents/AFlow/tree/3f457218fc716093fe53f6df8a5d5e6379d66346",
+          "type": "repository",
+          "locator": "benchmarks/gsm8k.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "GSM8K",
+        "notes": [
+          "LLM API configuration",
+          "Download supplied evaluation datasets"
+        ]
+      },
+      "evaluation": {
+        "metric": "solve rate",
+        "paper_metric": "solve rate",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "GSM8K",
+        "protocol": "upstream",
+        "source_locator": "Section 4.1"
+      },
+      "execution": {
+        "repository": "https://github.com/FoundationAgents/AFlow",
+        "commit": "3f457218fc716093fe53f6df8a5d5e6379d66346",
+        "upstream_path": "benchmarks/gsm8k.py",
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "run.py",
+              "--dataset",
+              "GSM8K"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/FoundationAgents/AFlow/blob/3f457218fc716093fe53f6df8a5d5e6379d66346/run.py",
+            "notes": "Runs upstream workflow optimization and evaluation for this dataset; requires configured models and data."
+          }
+        ],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/FoundationAgents/AFlow/blob/3f457218fc716093fe53f6df8a5d5e6379d66346/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/FoundationAgents/AFlow/blob/3f457218fc716093fe53f6df8a5d5e6379d66346/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": []
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "evoflow-gsm8k",
+      "paper_ids": [
+        "evoflow"
+      ],
+      "name": "GSM8K",
+      "description": "GSM8K task evaluated in EvoFlow: Evolving Diverse Agentic Workflows On The Fly.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2502.07373",
+          "type": "paper",
+          "locator": "Section 4.1 and Appendix G.1"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "benchmark success/solve rate or pass@1",
+        "paper_metric": "benchmark success/solve rate or pass@1",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "GSM8K",
+        "protocol": "specified_only",
+        "source_locator": "Section 4.1 and Appendix G.1"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Paper-cited https://github.com/bingreeky/EvoFlow returned HTTP 404 when checked. MATH uses 617 difficulty-5 problems."
+        ]
+      },
+      "limitations": [
+        "Paper-cited repository could not be fully retrieved: bingreeky/EvoFlow (HTTP Error 404: Not Found).",
+        "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "polymath-gsm8k",
+      "paper_ids": [
+        "polymath"
+      ],
+      "name": "GSM8K",
+      "description": "GSM8K: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2508.02959",
+          "type": "paper",
+          "locator": "Experiments: Dataset and Evaluation Metrics"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "GSM8K",
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "solve rate",
+        "paper_metric": "solve rate",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "GSM8K",
+        "protocol": "specified_only",
+        "source_locator": "Experiments: Dataset and Evaluation Metrics"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": []
+      },
+      "limitations": [
+        "No official runnable repository was verified from the paper/project sources examined.",
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

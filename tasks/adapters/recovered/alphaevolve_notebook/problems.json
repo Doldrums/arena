@@ -1,0 +1,479 @@
+{
+  "_notebook": "mathematical_results.ipynb",
+  "_notebook_sha256": "2cce2543e48c89aa3e91614272a698a0147dd2548ea11cf92f1292b7435d38ff",
+  "_repository": "https://github.com/google-deepmind/alphaevolve_results",
+  "_commit": "4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+  "first_autocorrelation": {
+    "slug": "first-autocorrelation-inequality",
+    "candidate_variables": [
+      "step_function_heights_1"
+    ],
+    "cells": [
+      [
+        53,
+        "8d990665c77395f8f6c2400caf4eff095a265b0128705beb5a9710ca537f6344"
+      ],
+      [
+        54,
+        "7b3f88f59adf0127894167d3a5be7909be4cf4fde20a6c284faf73e6d05e85eb"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "C_upper_bound",
+    "result_expression": null,
+    "direction": "minimize",
+    "contract": "construct() -> list of 600 nonnegative step heights on equal intervals of [-1/4, 1/4]",
+    "published_value": 1.5052939684401607
+  },
+  "second_autocorrelation": {
+    "slug": "second-autocorrelation-inequality",
+    "candidate_variables": [
+      "heights_sequence_2"
+    ],
+    "cells": [
+      [
+        57,
+        "770902c3ad4eb22968a42d13a60812efbbb4fbc8fb62c73839a28282e1047e21"
+      ],
+      [
+        58,
+        "59c77ff01ff425c4c0620e85173f4c7db585cb776109577f453dcbc6a3ff39c1"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "C_lower_bound",
+    "result_expression": null,
+    "direction": "maximize",
+    "contract": "construct() -> list of 50 nonnegative step heights on equal intervals of [-1/4, 1/4]",
+    "published_value": 0.8962799441554086
+  },
+  "third_autocorrelation": {
+    "slug": "third-autocorrelation-inequality",
+    "candidate_variables": [
+      "height_sequence_3"
+    ],
+    "cells": [
+      [
+        61,
+        "01378d907e1202f046df76d70770cace909a86596680213b6fa8e1cbe4016fcd"
+      ],
+      [
+        62,
+        "ab13d2a325d5fdfa6b815b4fca41e8edd6d0f7875bb491776a765a6dcf153161"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "C_upper_bound",
+    "result_expression": null,
+    "direction": "minimize",
+    "contract": "construct() -> numpy array of 400 signed step heights on equal intervals of [-1/4, 1/4]",
+    "published_value": 1.4556427953745406
+  },
+  "signed_autocorrelation_abs": {
+    "slug": "signed-autocorrelation-maximum-absolute-value-variant",
+    "candidate_variables": [
+      "height_sequence_4"
+    ],
+    "cells": [
+      [
+        65,
+        "bffef5b4db03ea0eee9fd3bff2ac459bb16bf954bf98897d2be867a6952e1e18"
+      ],
+      [
+        66,
+        "8cd0a4b5e521bf301a8dfaf5b7fe4b4e587a82dd4e8d34493d62a2692757d6fe"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "C_upper_bound",
+    "result_expression": null,
+    "direction": "minimize",
+    "contract": "construct() -> numpy array of signed step heights on equal intervals of [-1/4, 1/4]",
+    "published_value": 1.4687620697410226
+  },
+  "uncertainty_hermite": {
+    "slug": "uncertainty-inequality",
+    "candidate_variables": [
+      "coefficients_alphaevolve"
+    ],
+    "cells": [
+      [
+        68,
+        "b78351d3d215e2ef1de095ef0df7da6f2daaa699acf1444811c836f97ff9021f"
+      ],
+      [
+        69,
+        "13257733de3b8b2c3e6ae0ada2926c47f02108516cbf7dbe074d7ebabf598ae2"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": null,
+    "result_expression": "get_upper_bound(coefficients_alphaevolve)",
+    "direction": "minimize",
+    "contract": "construct() -> numpy array of three Hermite-combination coefficients (degrees 0, 4, 8 pattern of the notebook)",
+    "published_value": 0.35209910442252773
+  },
+  "uncertainty_laguerre": {
+    "slug": "refined-uncertainty-inequality",
+    "candidate_variables": [
+      "zs"
+    ],
+    "cells": [
+      [
+        72,
+        "7a27fb84a6268712be79c199c846f01a792e88f47cbddb0c8010e41d1d55124d"
+      ],
+      [
+        73,
+        "dc57885763bd16b1c8998658671c734df7a073856f08551013afd84da0f20552"
+      ],
+      [
+        74,
+        "5d12b69db0019b356b22f339fd52fc9c8252acc1d44a9a57b1a618a692edb20d"
+      ],
+      [
+        75,
+        "967be2bc6b0810057deeb4d74643dc00e2413f44b40aad32d02898e270ba5538"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "upper_bound",
+    "result_expression": null,
+    "direction": "minimize",
+    "contract": "construct() -> list of 12 positive double-root locations for the Laguerre combination with m=12, n=1",
+    "published_value": 0.3215872333529007
+  },
+  "erdos_minimum_overlap": {
+    "slug": "erdos-minimum-overlap",
+    "candidate_variables": [
+      "best_sequence"
+    ],
+    "cells": [
+      [
+        77,
+        "37f015c53030f32e41b3829b07926b5173c9f8fc9f0ae02ef14a5da7ecec29be"
+      ],
+      [
+        78,
+        "ad4f8ac6b91b05da50f6b0a27a434c2052f92b2cb9a55baad5508dd721e74233"
+      ],
+      [
+        79,
+        "199b6250ca2b1662f7ddce147009be2e9c5e6cfd922018310d02e41b9932cbd1"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "new_upper_bound",
+    "result_expression": null,
+    "direction": "minimize",
+    "contract": "construct() -> numpy array of step heights in [0, 1] whose sum is exactly len/2",
+    "published_value": 0.38092303510845016
+  },
+  "sums_differences_finite_sets": {
+    "slug": "sums-and-differences-of-finite-sets",
+    "candidate_variables": [
+      "solution_1"
+    ],
+    "cells": [
+      [
+        82,
+        "159bc2a903afd2e8be80081fea3f8fcf9673c7812a33ea11ed817d3577b69cd0"
+      ],
+      [
+        83,
+        "bcf87bbf85d2a6bd39412306e036884c613a01e082dbf3af6465eeed0f465a79"
+      ]
+    ],
+    "reference_cells": [
+      [
+        81,
+        "88d3f02764d2d975bebcebdd8e950af43954511eec3b00d8f63716a67d81b020"
+      ]
+    ],
+    "result_variable": null,
+    "result_expression": "compute_lower_bound(solution_1)",
+    "direction": "maximize",
+    "contract": "construct() -> list of nonnegative integers containing 0",
+    "published_value": 1.1479888965092757
+  },
+  "hexagons_11": {
+    "slug": "unit-regular-hexagons-inside-a-regular-hexagon",
+    "candidate_variables": [
+      "inner_hex_data",
+      "outer_hex_center",
+      "outer_hex_side_length",
+      "outer_hex_angle_degrees"
+    ],
+    "cells": [
+      [
+        86,
+        "cad6ba16ecee2398f325b987a676e33b2b13890f37ffa1f14b0204119bba9838"
+      ],
+      [
+        87,
+        "2f01d64cfa3f9754694bb2f34bd9d26e5ff3b352df3e7759458b57a698e97b04"
+      ],
+      [
+        88,
+        "f2bdb2010f6c89569bcc7299e07cd5205aef017e0ddc17568d198b0515632049"
+      ],
+      [
+        89,
+        "839aa2567081613365ec355fe1f5fbf518f1e7d07890e4915e4cae6f21e8827c"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "outer_hex_side_length",
+    "result_expression": null,
+    "direction": "minimize",
+    "contract": "construct() -> (inner_hex_data [[x, y, angle_degrees] x 11], outer_hex_center (x, y), outer_hex_side_length, outer_hex_angle_degrees)",
+    "published_value": 3.930092
+  },
+  "hexagons_12": {
+    "slug": "unit-regular-hexagons-inside-a-regular-hexagon-n-12",
+    "candidate_variables": [
+      "inner_hex_data",
+      "outer_hex_center",
+      "outer_hex_side_length",
+      "outer_hex_angle_degrees"
+    ],
+    "cells": [
+      [
+        86,
+        "cad6ba16ecee2398f325b987a676e33b2b13890f37ffa1f14b0204119bba9838"
+      ],
+      [
+        87,
+        "2f01d64cfa3f9754694bb2f34bd9d26e5ff3b352df3e7759458b57a698e97b04"
+      ],
+      [
+        90,
+        "cb776fb2ad2af0d9afaf8ddf5b2087d178ea46d3061193949729a8d229568f6b"
+      ],
+      [
+        91,
+        "bfe2bec1cc3e5e0953481867b8693120d642b3c0753e7b99097e1664ad44f421"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "outer_hex_side_length",
+    "result_expression": null,
+    "direction": "minimize",
+    "contract": "construct() -> (inner_hex_data [[x, y, angle_degrees] x 12], outer_hex_center (x, y), outer_hex_side_length, outer_hex_angle_degrees)",
+    "published_value": 3.9419123
+  },
+  "distance_ratio_2d_16": {
+    "slug": "maximum-to-minimum-distance-ratio",
+    "candidate_variables": [
+      "construction_1"
+    ],
+    "cells": [
+      [
+        93,
+        "edff2c010b2bfd927f057ba6bbf83e95d6f3539b0afc5c314d41cd02083a69bf"
+      ],
+      [
+        94,
+        "ccc3fc661dd1f8461299de01f5d6bcde050a551b6678f315c062891b7f690057"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "ratio_squared",
+    "result_expression": null,
+    "direction": "minimize",
+    "contract": "construct() -> numpy array of shape (16, 2)",
+    "published_value": 12.88926611203463
+  },
+  "distance_ratio_3d_14": {
+    "slug": "maximum-to-minimum-distance-ratio-n-14-d-3",
+    "candidate_variables": [
+      "construction_2"
+    ],
+    "cells": [
+      [
+        96,
+        "ac112fabb90ae676edb03372d78f6bb4044bee43f01cbc2a35e942a1dc2ca379"
+      ],
+      [
+        97,
+        "939000c1350737d11b336e6a2e75975831eed4dbf69c13d1f3d85bf13e00968d"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "ratio_squared",
+    "result_expression": null,
+    "direction": "minimize",
+    "contract": "construct() -> numpy array of shape (14, 3)",
+    "published_value": 4.1658497672256525
+  },
+  "heilbronn_triangle_11": {
+    "slug": "heilbronn-triangles",
+    "candidate_variables": [
+      "found_points"
+    ],
+    "cells": [
+      [
+        100,
+        "a12a9de776499feaf34f336a53ff0a510dcc0c10759f9e6cbe19491917849bab"
+      ],
+      [
+        101,
+        "097a937d3c731856034086b082f7d136b122e8e4c0d8c8705e7a53c0c02fd7e1"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "min_area_normalized",
+    "result_expression": null,
+    "direction": "maximize",
+    "contract": "construct() -> numpy array of shape (11, 2) inside the triangle (0,0), (1,0), (1/2, sqrt(3)/2)",
+    "published_value": 0.036529889880030156
+  },
+  "heilbronn_convex_13": {
+    "slug": "heilbronn-convex-regions",
+    "candidate_variables": [
+      "construction_1"
+    ],
+    "cells": [
+      [
+        104,
+        "b93bf8520047f0e2df5e28f7ca81bb9b692ab1e83b302e90660dfa691d0b0a03"
+      ],
+      [
+        106,
+        "3807224b4c425f34de507591432f39ea33c1568c1cdd79dae56f0b98e2af1cec"
+      ],
+      [
+        107,
+        "7d6d9cc6a64a42c2272a43263a11eafcf7c696093b5172ff70b928dc0afc42ce"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "construction_1_score",
+    "result_expression": null,
+    "direction": "maximize",
+    "contract": "construct() -> numpy array of shape (13, 2)",
+    "published_value": 0.030936889034895648
+  },
+  "heilbronn_convex_14": {
+    "slug": "heilbronn-convex-regions-n-14",
+    "candidate_variables": [
+      "construction_2"
+    ],
+    "cells": [
+      [
+        104,
+        "b93bf8520047f0e2df5e28f7ca81bb9b692ab1e83b302e90660dfa691d0b0a03"
+      ],
+      [
+        109,
+        "f05d3602ac8446512786dcab05bdc965180427e9b7c198a07886a514bbe4be9a"
+      ],
+      [
+        110,
+        "439eb255d3474974aae8b958c06a1f6dfd87235643e641b94603f514b35c9945"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "construction_2_score",
+    "result_expression": null,
+    "direction": "maximize",
+    "contract": "construct() -> numpy array of shape (14, 2)",
+    "published_value": 0.02783557145848214
+  },
+  "kissing_number_11": {
+    "slug": "kissing-number-in-dimension-11",
+    "candidate_variables": [
+      "sphere_centers"
+    ],
+    "cells": [
+      [
+        113,
+        "2781df4091a667a2af927c6913d2510e28b05606bf15be3609cbb759348b7890"
+      ],
+      [
+        114,
+        "994e4add1b00d504000976c4f406184d8b2a7dd599dba2b535d3a864dcc7406f"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "num_spheres",
+    "result_expression": null,
+    "direction": "maximize",
+    "contract": "construct() -> integer numpy array of shape (k, 11); minimum pairwise distance must be at least the maximum norm",
+    "published_value": 593.0
+  },
+  "circle_packing_square_26": {
+    "slug": "circle-packing-in-unit-square",
+    "candidate_variables": [
+      "construction_1"
+    ],
+    "cells": [
+      [
+        116,
+        "7d8bb0f9fd7064f94ff744986f5cbe4d93d5011b775cdf3ddbec6cd691bac1df"
+      ],
+      [
+        118,
+        "521b42f1003af356e4fbbbb5e578ec5e21c8d317406c806b0542c5b2d8ded3f9"
+      ],
+      [
+        119,
+        "c10f50098667229e6e37f5ead6f8b0aead5657bbea8f2da82bc699df7815034f"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "sum_radii",
+    "result_expression": null,
+    "direction": "maximize",
+    "contract": "construct() -> numpy array of shape (26, 3) rows (x, y, radius)",
+    "published_value": 2.6358627564136983
+  },
+  "circle_packing_square_32": {
+    "slug": "circle-packing-in-unit-square-n-32",
+    "candidate_variables": [
+      "construction_2"
+    ],
+    "cells": [
+      [
+        116,
+        "7d8bb0f9fd7064f94ff744986f5cbe4d93d5011b775cdf3ddbec6cd691bac1df"
+      ],
+      [
+        121,
+        "f6f3b4957acdf4b857985c020e20dd05eb0b4592b446d3b7b76a3995c238cbc6"
+      ],
+      [
+        122,
+        "99a84aef3687f99d3320950be7a09121c547a0099a182ff6f8b952418d1a8cd6"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "sum_radii",
+    "result_expression": null,
+    "direction": "maximize",
+    "contract": "construct() -> numpy array of shape (32, 3) rows (x, y, radius)",
+    "published_value": 2.937944526205518
+  },
+  "circle_packing_rectangle_21": {
+    "slug": "circle-packing-in-perimeter-4-rectangle",
+    "candidate_variables": [
+      "circles"
+    ],
+    "cells": [
+      [
+        125,
+        "c6cc6ba2693493b059c84afaa004d4161cb685dc420f6a4634880bfbc30f609c"
+      ],
+      [
+        126,
+        "85799ce3e9ce28501a7a3fd92de304f074d5ad305f8722b02516ff7ad0a31886"
+      ]
+    ],
+    "reference_cells": [],
+    "result_variable": "sum_radii",
+    "result_expression": null,
+    "direction": "maximize",
+    "contract": "construct() -> numpy array of shape (21, 3) rows (x, y, radius); minimum circumscribing rectangle must have perimeter <= 4",
+    "published_value": 2.3658321334167627
+  }
+}

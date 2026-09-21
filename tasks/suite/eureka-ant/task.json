@@ -1,0 +1,549 @@
+{
+  "schema_version": "1.0",
+  "id": "eureka-ant",
+  "name": "Ant",
+  "description": "Ant: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "eureka",
+    "dreureka",
+    "hyperagents",
+    "text2reward"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2310.12931",
+      "type": "paper",
+      "locator": "Appendix B task table"
+    },
+    {
+      "url": "https://github.com/eureka-research/Eureka/tree/9eee42808b52d8abc14845d1547bfde886403ccc",
+      "type": "repository",
+      "locator": "eureka/cfg/env/ant.yaml"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2406.01967",
+      "type": "paper",
+      "locator": "Sections 4–6"
+    },
+    {
+      "url": "https://github.com/eureka-research/DrEureka/tree/1d4e00700423170717654516f4ef4b24cb0f3a84",
+      "type": "repository",
+      "locator": "forward_locomotion"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2603.19461",
+      "type": "paper",
+      "locator": "Section 4 and Appendix C"
+    },
+    {
+      "url": "https://github.com/facebookresearch/Hyperagents/tree/59a68f672dfb92c74aeb7e61535d776fb36e172d",
+      "type": "repository",
+      "locator": "domains/genesis"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2309.11489",
+      "type": "paper",
+      "locator": "Appendix B Table 6"
+    },
+    {
+      "url": "https://github.com/xlang-ai/text2reward/tree/e7f57efcf76b22bbfb7c3eb9d67d98ff2765a926",
+      "type": "repository",
+      "locator": "code_generation/single_flow/classlike_prompt/AntPrompt.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Isaac Gym",
+    "notes": [
+      "Python 3.8",
+      "Linux",
+      "NVIDIA GPU",
+      "Isaac Gym Preview 4",
+      "OPENAI_API_KEY"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "task-specific fitness and human-normalized score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Isaac Gym",
+    "protocol": "upstream",
+    "source_locator": "Appendix B task table"
+  },
+  "execution": {
+    "repository": "https://github.com/eureka-research/Eureka",
+    "commit": "9eee42808b52d8abc14845d1547bfde886403ccc",
+    "upstream_path": "eureka/cfg/env/ant.yaml",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "eureka.py",
+          "env=ant"
+        ],
+        "cwd": "eureka",
+        "kind": "reward_search_and_training",
+        "requirements": [
+          "Python 3.8",
+          "Linux",
+          "NVIDIA GPU",
+          "Isaac Gym Preview 4",
+          "OPENAI_API_KEY"
+        ],
+        "evidence_path": "README.md",
+        "verification": "source_inspected_not_executed",
+        "source_url": "https://arxiv.org/pdf/2310.12931"
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "pip install -e .",
+      "pip install -e .",
+      "pip install -e ."
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -e .",
+      "pip install -e .",
+      "pip install -e ."
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": "."
+      },
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": "isaacgymenvs"
+      },
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": "rl_games"
+      }
+    ],
+    "notes": [
+      "Python 3.8",
+      "Linux",
+      "NVIDIA GPU",
+      "Isaac Gym Preview 4",
+      "OPENAI_API_KEY",
+      "Upstream operation: reward_search_and_training"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "gym_reward_design",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:gymnasium",
+        "py:mujoco"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Pinned cfg/config.yaml selects historical model gpt-4-0314 and the legacy OpenAI SDK. Configure a compatible available endpoint/model before execution; changing models changes reproduction conditions.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Ant",
+    "slug": "ant",
+    "description": "Ant: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "Isaac Gym",
+    "dataset": "Isaac Gym",
+    "metric": "task-specific fitness and human-normalized score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2310.12931",
+    "source_locator": "Appendix B task table",
+    "upstream_path": "eureka/cfg/env/ant.yaml",
+    "requirements": [
+      "Python 3.8",
+      "Linux",
+      "NVIDIA GPU",
+      "Isaac Gym Preview 4",
+      "OPENAI_API_KEY"
+    ],
+    "execution_notes": [
+      "Python 3.8",
+      "Linux",
+      "NVIDIA GPU",
+      "Isaac Gym Preview 4",
+      "OPENAI_API_KEY",
+      "Upstream operation: reward_search_and_training"
+    ],
+    "execution": {
+      "argv": [
+        "python",
+        "eureka.py",
+        "env=ant"
+      ],
+      "cwd": "eureka",
+      "kind": "reward_search_and_training",
+      "requirements": [
+        "Python 3.8",
+        "Linux",
+        "NVIDIA GPU",
+        "Isaac Gym Preview 4",
+        "OPENAI_API_KEY"
+      ],
+      "evidence_path": "README.md",
+      "verification": "source_inspected_not_executed"
+    },
+    "implementation_status": "upstream_command_source_inspected"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "reward",
+    "domain": "robotics",
+    "area": "robotics_and_control",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "dreureka-go1-forward-locomotion",
+      "paper_ids": [
+        "dreureka"
+      ],
+      "name": "Go1 forward locomotion",
+      "description": "Go1 forward locomotion: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2406.01967",
+          "type": "paper",
+          "locator": "Sections 4–6"
+        },
+        {
+          "url": "https://github.com/eureka-research/DrEureka/tree/1d4e00700423170717654516f4ef4b24cb0f3a84",
+          "type": "repository",
+          "locator": "forward_locomotion"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "Go1 forward locomotion",
+        "notes": [
+          "Isaac Gym Preview 4",
+          "Linux and NVIDIA GPU",
+          "OpenAI API key",
+          "Physical robot for sim-to-real evaluation"
+        ]
+      },
+      "evaluation": {
+        "metric": "forward velocity/distance, cube rotations, or balance duration",
+        "paper_metric": "forward velocity/distance, cube rotations, or balance duration",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "Go1 forward locomotion",
+        "protocol": "specified_only",
+        "source_locator": "Sections 4–6"
+      },
+      "execution": {
+        "repository": "https://github.com/eureka-research/DrEureka",
+        "commit": "1d4e00700423170717654516f4ef4b24cb0f3a84",
+        "upstream_path": "forward_locomotion",
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "pip install -e .",
+          "pip install -e .",
+          "pip install -e ."
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "pip install -e .",
+          "pip install -e .",
+          "pip install -e ."
+        ],
+        "setup_steps": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": "dr_eureka"
+          },
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": "forward_locomotion"
+          },
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": "globe_walking"
+          }
+        ],
+        "notes": [
+          "Current repository contains Go1 locomotion and walking-globe pipelines; the paper-specific LEAP Hand pipeline was not located."
+        ]
+      },
+      "limitations": [
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "hyperagents-quadruped-walk-forward-reward-design",
+      "paper_ids": [
+        "hyperagents"
+      ],
+      "name": "Quadruped walk-forward reward design",
+      "description": "Quadruped walk-forward reward design",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2603.19461",
+          "type": "paper",
+          "locator": "Section 4 and Appendix C"
+        },
+        {
+          "url": "https://github.com/facebookresearch/Hyperagents/tree/59a68f672dfb92c74aeb7e61535d776fb36e172d",
+          "type": "repository",
+          "locator": "domains/genesis"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "LLM credentials",
+          "GPU and Genesis simulator"
+        ]
+      },
+      "evaluation": {
+        "metric": "forward locomotion performance",
+        "paper_metric": "forward locomotion performance",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": null,
+        "protocol": "specified_only",
+        "source_locator": "Section 4 and Appendix C"
+      },
+      "execution": {
+        "repository": "https://github.com/facebookresearch/Hyperagents",
+        "commit": "59a68f672dfb92c74aeb7e61535d776fb36e172d",
+        "upstream_path": "domains/genesis",
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "python -m pip install -r requirements.txt",
+          "docker build --network=host -t hyperagents .",
+          "bash setup_initial.sh"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "python -m pip install -r requirements.txt",
+          "docker build --network=host -t hyperagents .",
+          "bash setup_initial.sh"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Paper task identified; evaluator invocation not yet verified."
+        ]
+      },
+      "limitations": [
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "text2reward-ant-move-forward",
+      "paper_ids": [
+        "text2reward"
+      ],
+      "name": "Ant Move Forward",
+      "description": "Ant Move Forward: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2309.11489",
+          "type": "paper",
+          "locator": "Appendix B Table 6"
+        },
+        {
+          "url": "https://github.com/xlang-ai/text2reward/tree/e7f57efcf76b22bbfb7c3eb9d67d98ff2765a926",
+          "type": "repository",
+          "locator": "code_generation/single_flow/classlike_prompt/AntPrompt.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "Gym MuJoCo",
+        "notes": [
+          "MuJoCo"
+        ]
+      },
+      "evaluation": {
+        "metric": "task success rate",
+        "paper_metric": "task success rate",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "Gym MuJoCo",
+        "protocol": "specified_only",
+        "source_locator": "Appendix B Table 6"
+      },
+      "execution": {
+        "repository": "https://github.com/xlang-ai/text2reward",
+        "commit": "e7f57efcf76b22bbfb7c3eb9d67d98ff2765a926",
+        "upstream_path": "code_generation/single_flow/classlike_prompt/AntPrompt.py",
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "pip install -e .  # cwd: ManiSkill2",
+          "pip install stable-baselines3==1.8.0 wandb tensorboard",
+          "bash download_data.sh  # cwd: run_maniskill",
+          "pip install -e .  # cwd: Metaworld",
+          "pip install langchain chromadb==0.4.0"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "pip install -e .  # cwd: ManiSkill2",
+          "pip install stable-baselines3==1.8.0 wandb tensorboard",
+          "bash download_data.sh  # cwd: run_maniskill",
+          "pip install -e .  # cwd: Metaworld",
+          "pip install langchain chromadb==0.4.0"
+        ],
+        "setup_steps": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": "ManiSkill2"
+          },
+          {
+            "argv": [
+              "pip",
+              "install",
+              "stable-baselines3==1.8.0",
+              "wandb",
+              "tensorboard"
+            ],
+            "cwd": "."
+          },
+          {
+            "argv": [
+              "bash",
+              "download_data.sh"
+            ],
+            "cwd": "run_maniskill"
+          },
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": "Metaworld"
+          },
+          {
+            "argv": [
+              "pip",
+              "install",
+              "langchain",
+              "chromadb==0.4.0"
+            ],
+            "cwd": "."
+          }
+        ],
+        "notes": [
+          "These six novel behaviors lack verified run scripts in current repository.",
+          "Released source provides an Ant reward-generation prompt template, but no matching novel-behavior environment wrapper, training script, generated reward and quantitative evaluator were established."
+        ]
+      },
+      "limitations": [
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "MuJoCo installation is manual per README. Repository shell script lists handle-pull-v2 but corresponding released reward file is absent; it is not included as a paper task (paper lists ten MetaWorld tasks).",
+        "No SPDX license identification verified for https://github.com/xlang-ai/text2reward.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

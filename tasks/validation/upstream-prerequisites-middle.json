@@ -1,0 +1,134 @@
+{
+  "scope": "Direct-evaluator prerequisite preparation only; no broad campaign or API calls executed.",
+  "source_checkouts": [
+    {
+      "repository": "https://github.com/THU-Team-Eureka/EurekAgent",
+      "commit": "fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+      "method": "clean sparse checkout; local partial-cache fetch could not supply objects, fetched exact remote commit"
+    },
+    {
+      "repository": "https://github.com/fangchenli/ranking-evolved",
+      "commit": "8f664bcd5123bac2397f0c1bfbdb347ca3233483",
+      "method": "clean sparse checkout"
+    }
+  ],
+  "installed_dependencies": [
+    {
+      "name": "matplotlib",
+      "version": "3.11.2"
+    },
+    {
+      "name": "networkx",
+      "version": "3.3"
+    },
+    {
+      "name": "pykalman",
+      "version": "0.11.2"
+    },
+    {
+      "name": "PyWavelets",
+      "version": "1.10.0"
+    },
+    {
+      "name": "scikit-learn",
+      "version": "1.9.1"
+    },
+    {
+      "name": "tenacity",
+      "version": "9.1.4"
+    },
+    {
+      "name": "torch",
+      "version": "2.14.0"
+    }
+  ],
+  "data_lock": "catalog/adrs-data-lock.json",
+  "data_verification_command": "python3 scripts/prepare_adrs_data.py --verify-only",
+  "tsp_seed_export": {
+    "bundle_format": "original ten-file mixed-language source text",
+    "source_formatter": "examples/tsp_tour_minimization/utils/code_to_query.py::format_query_code",
+    "original_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "round_trip_verified": true,
+    "serialized_sha256": "d664433dbec0633d079c94b7fc82b602ee67e778196f19640616c84d1a7d0f27",
+    "unit_tests": 3,
+    "evaluator_executed": false
+  },
+  "preflight": {
+    "before_ready": 174,
+    "after_ready": 182,
+    "new_ready_tasks": [
+      "adaevolve-expert-placement-load-balancing",
+      "coral-expert-placement-load-balancing",
+      "evox-expert-placement-load-balancing",
+      "sciel-math-circle-packing",
+      "sciel-math-function-minimization",
+      "sciel-math-signal-processing",
+      "sciel-math-symbolic-regression-bench",
+      "sciel-math-tsp-tour-minimization"
+    ],
+    "note": "Preflight ready means eligible to attempt; it does not mean evaluator passed. Source/dependency availability may have changed after this snapshot."
+  },
+  "failure_analysis": [
+    {
+      "tasks": [
+        "adaevolve-cloudcast",
+        "evox-cloudcast"
+      ],
+      "cause": "Missing original profiles and five configuration files.",
+      "action": "Fetched exact upstream public dataset revision and installed source-compatible networkx3.3. Eligible to retry; not rerun here."
+    },
+    {
+      "tasks": [
+        "adaevolve-llm-sql",
+        "evox-llm-sql",
+        "coral-llm-sql"
+      ],
+      "cause": "Missing original five CSV input datasets.",
+      "action": "Fetched exact source-linked public datasets into expected untracked data directories. Eligible to retry; not rerun here."
+    },
+    {
+      "tasks": [
+        "loongflow-circle-packing-square"
+      ],
+      "cause": "Original seed produces overlapping circles and original validator rejects it.",
+      "action": "Preserved original seed and failure; no replacement baseline. Separate valid-grid fixture remains independent integration evidence."
+    }
+  ],
+  "remaining_prerequisites": [
+    "RankEvolve: missing Python/Java search dependencies and large benchmark corpora; code source alone is insufficient.",
+    "EurekAgent: secure JSON grading contract has no registered original JSON seed; Python seeds require a separate original conversion interface. GPU kernel additionally needs accelerator runtime.",
+    "EvoX ALE-Bench: original C++ seeds/evaluators/configs materialized; Docker judge daemon/images and ale-bench package remain prerequisites.",
+    "SCiEL AlgoTune numerical kernels: external AlgoTuneTasks checkout remains unavailable/unpinned by original SCiEL; no fabricated reference task registry."
+  ],
+  "followup": {
+    "expert_placement": {
+      "tasks": [
+        "adaevolve-expert-placement-load-balancing",
+        "coral-expert-placement-load-balancing",
+        "evox-expert-placement-load-balancing"
+      ],
+      "missing_file": "expert-load.json",
+      "url": "https://huggingface.co/datasets/abmfy/eplb-openevolve/resolve/071910dada7ce35e8b9b89b64ec1295f1b64590b/expert-load.json",
+      "size_bytes": 234047730,
+      "status": "prepared_source_verified",
+      "sha256": "d93580b3cb3e404a60237fa708271b360229a0c6fdfdd924a8ec4fdb440b71ad",
+      "action": "Downloaded full original workload at immutable revision; prepared both expected source locations for all three adapters; required_files and hashes participate in preflight.",
+      "lock": "catalog/eplb-data-lock.json",
+      "setup": "python3 scripts/prepare_adrs_data.py --lock eplb-data-lock.json"
+    },
+    "llm_sql": {
+      "tasks": [
+        "adaevolve-llm-sql",
+        "evox-llm-sql"
+      ],
+      "observed_failure": "Original seed assigning reordered mixed-dtype values via group.iloc[:,1:] failed under pandas3.0.6.",
+      "environment_change": "Installed pandas2.2.3 without changing original seed/evaluator.",
+      "validation": "Root will retry to establish result; compatibility inference is not claimed as a pass."
+    },
+    "tsp": {
+      "missing_secondary_import": "psutil",
+      "action": "Installed psutil and added declared adapter/requirements dependency; inspected all secondary imports in utils and original heat-map seed scripts. No other missing packages identified.",
+      "dataset": "Original load_points generates eight1000-city cases on demand and caches; absence is not a missing prerequisite."
+    }
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0",
+  "id": "lasr-procedurally-generated-symbolic-equations",
+  "name": "Procedurally generated symbolic equations",
+  "description": "Procedurally generated symbolic equations: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "lasr"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2409.09359",
+      "type": "paper",
+      "locator": "Sections 4.1–4.5 and Appendix A.4–A.6"
+    },
+    {
+      "url": "https://github.com/trishullab/LibraryAugmentedSymbolicRegression.jl/tree/776196e339191736e20d4eb6eed7c468aa6e4472",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Procedurally generated symbolic equations",
+    "notes": [
+      "Julia",
+      "LLM backend"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "exact symbolic recovery / MSE (symbolic regression); scaling-law predictive fit",
+    "paper_direction": null,
+    "direction": "minimize",
+    "benchmark": "Procedurally generated symbolic equations",
+    "protocol": "specified_only",
+    "source_locator": "Sections 4.1–4.5 and Appendix A.4–A.6"
+  },
+  "execution": {
+    "repository": "https://github.com/trishullab/LibraryAugmentedSymbolicRegression.jl",
+    "commit": "776196e339191736e20d4eb6eed7c468aa6e4472",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "julia --project=. -e 'using Pkg; Pkg.instantiate()'"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "julia --project=. -e 'using Pkg; Pkg.instantiate()'"
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "julia",
+          "--project=.",
+          "-e",
+          "using Pkg; Pkg.instantiate()"
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [
+      "Feynman suite contains 100 equations; algorithm repository has examples but no verified paper experiment driver."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "sr_algorithm",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Procedurally generated symbolic equations",
+    "slug": "procedurally-generated-symbolic-equations",
+    "description": "Procedurally generated symbolic equations: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "Procedurally generated symbolic equations",
+    "dataset": "Procedurally generated symbolic equations",
+    "metric": "exact symbolic recovery / MSE (symbolic regression); scaling-law predictive fit",
+    "direction": null,
+    "source_url": "https://arxiv.org/pdf/2409.09359",
+    "source_locator": "Sections 4.1–4.5 and Appendix A.4–A.6",
+    "upstream_path": null,
+    "requirements": [
+      "Julia",
+      "LLM backend"
+    ],
+    "execution_notes": [
+      "Feynman suite contains 100 equations; algorithm repository has examples but no verified paper experiment driver."
+    ],
+    "implementation_status": "paper_inventory_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "natural_science",
+    "area": "mathematics",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

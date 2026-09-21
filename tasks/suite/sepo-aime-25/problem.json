@@ -1,0 +1,109 @@
+{
+  "protocol": "recreated",
+  "family": "llm_benchmark",
+  "direction": "maximize",
+  "contract": "solve(question, llm) -> answer string; llm(prompt_or_messages, system=None, max_tokens=None) is a budgeted, cached OpenRouter client. Score: mean per-item accuracy (or F1) on a fixed seeded sample of the benchmark",
+  "parameters": {
+    "benchmark": "aime25",
+    "benchmark_options": {},
+    "seed": 0
+  },
+  "requires": [
+    "py:numpy",
+    "py:datasets",
+    "env:OPENROUTER_API_KEY",
+    "network:openrouter+huggingface"
+  ],
+  "timeout": 900,
+  "notes": [
+    "Model-driven evaluation: the score depends on the model (ARTASK_LLM_MODEL, default google/gemini-2.5-flash), the sample size (ARTASK_LLM_SAMPLES, default 10) and the per-evaluation budget (ARTASK_LLM_BUDGET_USD, default 0.25). Responses are cached under .cache/llm-cache."
+  ],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "sepo-aime-25",
+  "name": "AIME'25",
+  "paper_ids": [
+    "sepo",
+    "gepa",
+    "shinkaevolve"
+  ],
+  "description": "AIME'25 task evaluated in SePO: Self-Evolving Prompt Agent for System Prompt Optimization.",
+  "benchmark": "AIME'25",
+  "paper_metric": "test accuracy",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2606.04465",
+      "type": "paper",
+      "locator": "Section 4.1; Appendix B"
+    },
+    {
+      "url": "https://github.com/taowangcheng/SePO/tree/83083782a9487ef61962d933fc72abbe95f9fa76",
+      "type": "repository",
+      "locator": null
+    },
+    {
+      "url": "https://arxiv.org/pdf/2507.19457",
+      "type": "paper",
+      "locator": "Section 4 evaluation and benchmark appendix"
+    },
+    {
+      "url": "https://github.com/gepa-ai/gepa-artifact/tree/cbefbc1aa0f43dd39874ec4bf42211365dbda42e",
+      "type": "repository",
+      "locator": "gepa_artifact/benchmarks/AIME"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2509.19349",
+      "type": "paper",
+      "locator": "Section 3.2 and Appendix C.2"
+    },
+    {
+      "url": "https://github.com/SakanaAI/ShinkaEvolve/tree/9912af12d423504b8d580f4179fd15f5f88b8c50",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sepo",
+      "title": "SePO: Self-Evolving Prompt Agent for System Prompt Optimization",
+      "url": "https://arxiv.org/pdf/2606.04465"
+    },
+    {
+      "id": "gepa",
+      "title": "GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning",
+      "url": "https://arxiv.org/pdf/2507.19457"
+    },
+    {
+      "id": "shinkaevolve",
+      "title": "ShinkaEvolve: Towards Open-Ended And Sample-Efficient Program Evolution",
+      "url": "https://arxiv.org/pdf/2509.19349"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

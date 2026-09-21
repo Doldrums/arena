@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "id": "science-earth-climatebench-emissions-response",
+  "name": "Earth and environment: ClimateBench emissions-to-climate response",
+  "description": "Learn a compact emissions-response emulator from complete training scenarios and predict source climate anomalies for the entirely withheldSSP245 scenario.",
+  "paper_ids": [
+    "science-earth_data"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1029/2021MS002954",
+      "type": "paper",
+      "locator": "ClimateBench1.0 problem definition, scenario-level split and spatial/global normalized error, Sections2–4."
+    },
+    {
+      "url": "https://github.com/duncanwp/ClimateBench/blob/085c0b5b20761446fabe05bbc58b9a5440e9c25f/analysis_notebooks/paper_figures.ipynb",
+      "type": "repository",
+      "locator": "Official source data/evaluation reference; evaluator and seed independently written."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "SHA256-locked source bundle E05.json in .cache/science-earth-data. Automatically prepared by scripts/prepare_earth_data.py.",
+    "preparation_dependencies": [
+      "netCDF4",
+      "numcodecs==0.16.3"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Earth and environment: ClimateBench emissions-to-climate response",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_earth_e05",
+    "science_family": "science_earth_e05",
+    "parameters": {},
+    "interface": "fit_climate(training_scenarios,grid) -> model.project_climate(forcing_history) returning declared year x latitude x longitude fields. Input named columns cumulativeCO2,CH4,globalSO2,globalBC. NorESM source climate anomalies, tas inK and precipitation inmm/day. Complete SSP245 withheld; score2080–2100 using cos(latitude)-weighted spatialNRMSE+5*globalNRMSE, then mean variables. Four-variable full leaderboard not claimed for two-variable coarse subset.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "model",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "earth_and_environment"
+    },
+    "proposal_id": "E05",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_code_used": false,
+      "note": "Local evaluator, candidate interface and seed recreated from scientific specifications; official benchmark data are reused."
+    },
+    "additional_requires": [
+      "file:../../.cache/science-earth-data/E05.json",
+      "file:../../.cache/science-earth-data/E05.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_earth_e05",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-earth-data/E05.json",
+        "file:../../.cache/science-earth-data/E05.manifest.json"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Source NorESM member means, temperature/precipitation anomalies, area-weighted8×12 spatial adaptation. CompleteSSP245 held out;2080–2100 scored. TrainingSSP370 uses available-member means because two source members end early. Not the full-resolution four-variable leaderboard or observed future climate.",
+    "Source data remain local caches with immutable revisions/content hashes and no evaluator network access. Public subsets are development-visible; freeze candidates before wider generalization tests.",
+    "Improved source benchmark performance is a scientific-method contribution, not alone a new discovery or operational forecast validation."
+  ],
+  "validation": {
+    "level": "source_subset_run",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "benchmark_validated": true,
+    "fixture_tests_are_benchmark_validation": false,
+    "evidence": "validation/earth-data-source-runs.json",
+    "tests": "tests/test_science_earth_data.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "model",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "area": "earth_and_environment",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Predict spatial climate temperature responses to greenhouse-gas and aerosol emissions.",
+    "importance_rationale": "Resolving regional emissions responses helps understand how different emissions pathways affect future climate.",
+    "papers": [
+      {
+        "title": "Emulation of the Climate Response to Greenhouse Gas and Aerosol Emissions From High- and Low-Income Nations",
+        "url": "https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2025GL117841",
+        "primary_goal": "Separate and predict spatiotemporal temperature impacts of greenhouse gases and aerosols associated with different emitting regions.",
+        "task_relation": "The paper solves emissions-to-temperature emulation for CESM2 experiments. The local task instead uses ClimateBench scenarios and a withheld SSP245 response; it tests the same physical response family without reproducing the paper's regional attribution or climate model.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The qualifying paper pursues a climate-response and attribution question. The ClimateBench benchmark paper itself is excluded.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

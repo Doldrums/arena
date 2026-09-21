@@ -1,0 +1,120 @@
+{
+  "protocol": "original",
+  "family": "alebench",
+  "direction": "maximize",
+  "contract": "A C++20 program for AtCoder heuristic contest ahc025 (EVOLVE-BLOCK markers optional); scored by ALE-Bench on 50 public cases, score sign-adjusted so higher is better",
+  "parameters": {
+    "problem": "ahc025",
+    "public_cases": 50
+  },
+  "requires": [
+    "py:ale_bench",
+    "docker",
+    "bin:cargo"
+  ],
+  "timeout": 1800,
+  "notes": [
+    "ALE-Bench compiles its Rust judge tools in a rust:1.79.0-buster container at every session and runs candidates in the ale-bench:cpp20-202301 judge image (both must be the same CPU architecture: on Apple silicon pull the Rust image with --platform linux/amd64 because the judge images are amd64). On macOS run with TMPDIR under $HOME so the Docker VM can mount the build directory."
+  ],
+  "entry": {
+    "callable": "evaluate",
+    "env": {
+      "DYLD_FALLBACK_LIBRARY_PATH": "/opt/homebrew/lib"
+    },
+    "seed": "initial_program.cpp",
+    "score_key": "score",
+    "error_key": "error",
+    "validity_key": "valid"
+  },
+  "origin": {
+    "repository": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+    "path": "benchmarks/ale_bench/ale-bench-lite-problems/ahc025",
+    "files_sha256": {
+      "evaluator.py": "257b1af77e2c30f7e9b2fdb6c236792924bed0f5884bb7d726a847e595384243",
+      "initial_program.cpp": "af6965a223ddd27fdcc19d6dfbc85f0dee9c79a59f03fdc041d898328cf88688"
+    }
+  },
+  "protocol_description": "Verbatim EvoX ALE-Bench evaluator (skydiscover benchmarks) with a shim for its unpublished session helper; the judge is the public ALE-Bench package.",
+  "id": "evox-ahc025-weight-balancing",
+  "name": "ahc025 Weight balancing",
+  "paper_ids": [
+    "evox",
+    "shinkaevolve"
+  ],
+  "description": "ahc025 Weight balancing",
+  "benchmark": "ALE-Bench-Lite",
+  "paper_metric": "official AtCoder heuristic score",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Appendix A.3 Table 6"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/ale_bench/ale-bench-lite-problems/ahc025"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2509.19349",
+      "type": "paper",
+      "locator": "Section 3.3 and Appendix C.3"
+    },
+    {
+      "url": "https://huggingface.co/datasets/SakanaAI/ALE-Bench/raw/main/problem_ids_lite.txt",
+      "locator": "Lite problem registry",
+      "type": "benchmark"
+    },
+    {
+      "url": "https://github.com/SakanaAI/ALE-Bench/blob/main/src/ale_bench/data.py",
+      "locator": "list_problem_ids(lite_version=True)",
+      "type": "benchmark"
+    },
+    {
+      "url": "https://github.com/SakanaAI/ShinkaEvolve/tree/9912af12d423504b8d580f4179fd15f5f88b8c50",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.cpp",
+  "papers": [
+    {
+      "id": "evox",
+      "title": "EvoX: Meta-Evolution for Automated Discovery",
+      "url": "https://arxiv.org/pdf/2602.23413"
+    },
+    {
+      "id": "shinkaevolve",
+      "title": "ShinkaEvolve: Towards Open-Ended And Sample-Efficient Program Evolution",
+      "url": "https://arxiv.org/pdf/2509.19349"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "docker"
+    ],
+    "cost": "slow",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

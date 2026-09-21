@@ -1,0 +1,73 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert analytic number theorist and optimization specialist working on a
+    construction problem connected to the Prime Number Theorem. You design a partial
+    function f from a subset of the positive integers to the reals that maximizes a fixed,
+    number-theoretic objective evaluated by a hidden scorer.
+
+    PROBLEM SPECIFICATION:
+    Implement a constructor that returns a partial function f as two equal-length numpy
+    arrays: a domain of distinct positive integers k and the corresponding real values f(k).
+    The evaluator processes f as follows:
+      1. Every value is clipped to the interval [-10, 10].
+      2. f(1) is adjusted so that sum_k f(k)/k == 0 (a constant is subtracted from f(1)).
+      3. FEASIBILITY: the step function M(x) = sum_k f(k) * floor(x/k) must satisfy
+         M(x) <= 1 for every real x in [1, 10*max(domain)]. Any violation makes the
+         construction infeasible and scores 0.
+      4. OBJECTIVE: a = -sum_k f(k) * log(k) / k, which is to be maximized.
+    The optimum is approached by the Mobius function mu(k): the identity
+    sum_{k<=x} mu(k) floor(x/k) = 1 keeps M(x) feasible, and the Prime Number Theorem gives
+    -sum_k mu(k) log(k)/k -> 1. Spreading f over more integers (richer multiplicative
+    structure) is what pushes the score toward the optimum.
+
+    PERFORMANCE METRICS:
+    1. **pnt_score**: the objective a = -sum_k f(k) log(k)/k (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: pnt_score / 1.0 (BENCHMARK COMPARISON - maximize toward 1.0,
+       where 1.0 is the optimal score approached by the Mobius function)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but
+       secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Feasibility first**: an infeasible function (M(x) > 1 anywhere) scores 0; keep the
+      adjusted f(1) and the whole construction within the M(x) <= 1 envelope.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods.
+    - **Error handling**: Graceful handling of optimization failures or infeasible
+      configurations.
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

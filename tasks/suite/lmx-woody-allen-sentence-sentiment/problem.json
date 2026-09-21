@@ -1,0 +1,74 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "service:llm_api",
+    "env:OPENROUTER_API_KEY",
+    "dataset:Woody Allen sentence sentiment"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "llm_api",
+  "unsupported_reason": "Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the Woody Allen sentence sentiment benchmark. The suite embeds neither model calls nor the benchmark data.",
+  "protocol_description": "Not executable in this suite: Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the Woody Allen sentence sentiment benchmark. The suite embeds neither model calls nor the benchmark data.",
+  "id": "lmx-woody-allen-sentence-sentiment",
+  "name": "Woody Allen sentence sentiment",
+  "paper_ids": [
+    "lmx"
+  ],
+  "description": "Woody Allen sentence sentiment: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "benchmark": "Woody Allen sentence sentiment",
+  "paper_metric": "domain-specific fitness / QD score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2302.12170",
+      "type": "paper",
+      "locator": "Sections 4.1–4.5"
+    },
+    {
+      "url": "https://github.com/jal278/lmx/tree/b8fec5dd16451cf7afb6e02ac621b71d5bdfee7f",
+      "type": "repository",
+      "locator": "scripts/lmx_sentiment_demo.ipynb"
+    }
+  ],
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "lmx",
+      "title": "Language Model Crossover: Variation through Few-Shot Prompting",
+      "url": "https://arxiv.org/pdf/2302.12170"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

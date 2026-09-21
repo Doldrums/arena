@@ -1,0 +1,844 @@
+{
+  "schema_version": "1.0",
+  "id": "alphaevolve-maximum-to-minimum-distance-ratio",
+  "name": "Maximum-to-minimum distance ratio",
+  "description": "Place 16 distinct points in two-dimensional Euclidean space to minimize the squared ratio of maximum to minimum pairwise distance.",
+  "paper_ids": [
+    "alphaevolve",
+    "base",
+    "codeevolve",
+    "coral",
+    "evox",
+    "loongflow"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2506.13131",
+      "type": "paper",
+      "locator": "Appendix B.8"
+    },
+    {
+      "url": "https://github.com/google-deepmind/alphaevolve_results/tree/4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+      "type": "repository",
+      "locator": "mathematical_results.ipynb"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2605.29268",
+      "type": "paper",
+      "locator": "Section 4"
+    },
+    {
+      "url": "https://github.com/keruiwu/self-evolving-allocation/tree/ae7b5da1db39c0fd826adda7893c99d5bda5ac1b",
+      "type": "repository",
+      "locator": "tasks/min_max_dist"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2510.14150",
+      "type": "paper",
+      "locator": "Appendix A.1"
+    },
+    {
+      "url": "https://github.com/inter-co/science-codeevolve/tree/c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+      "type": "repository",
+      "locator": "problems/alphaevolve_math_problems/minimizing_max_min_dist/2/input"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1, Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/math/minimizing_max_min_dist_2d"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Table 2"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/math/minimizing_max_min_dist/2"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2512.24077",
+      "type": "paper",
+      "locator": "Table 1"
+    },
+    {
+      "url": "https://github.com/baidu-baige/LoongFlow/tree/945c78bc1554f8281aac40320b3599bd68d528d7",
+      "type": "repository",
+      "locator": "agents/math_agent/examples/max_to_min_ratios/eval_program.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "sympy"
+    ],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "numpy",
+      "scipy or sympy for applicable notebook sections"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "(maximum pairwise distance / minimum pairwise distance)^2",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "Maximum-to-minimum distance ratio",
+    "protocol": "upstream",
+    "source_locator": "Appendix B.8"
+  },
+  "execution": {
+    "repository": "https://github.com/google-deepmind/alphaevolve_results",
+    "commit": "4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+    "upstream_path": "mathematical_results.ipynb",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "adapters/recovered/alphaevolve_notebook/evaluator.py",
+      "evaluator_scope": "repository",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "distance_ratio_2d_16"
+      },
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "valid",
+      "error_key": "error",
+      "baseline_path": "adapters/recovered/alphaevolve_notebook/seeds/distance_ratio_2d_16.py",
+      "baseline_scope": "repository",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "sympy"
+      ],
+      "implementation_label": "Official notebook verification cells executed on the candidate construction; independently written trivial seed",
+      "repository_files": {
+        "adapters/recovered/alphaevolve_notebook/problems.json": "4483af1dd32e079af49be518d93a3e73a6581ec4d5cebe8c66c961413f7950f7",
+        "adapters/recovered/alphaevolve_notebook/seeds/distance_ratio_2d_16.py": "a1c6309f4243ec1e76abab4188a9010d3bdb43de60155c21f78ccf64994ce22e"
+      },
+      "notes": [
+        "Executes the official notebook data and verification cells (indices recorded in problems.json, hash-checked) with the notebook's data variable rebound to the candidate's construct() output.",
+        "Notebook assertions decide validity; the score is the notebook's own printed bound. Plotting is stubbed.",
+        "Published notebook value 12.88926611203463 is a reference, not a target; the trivial seed is deliberately weak."
+      ]
+    },
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Official notebook contains construction data and verification code. Cell indices are zero-based.",
+      "Published result is a rounded paper reference, not a claimed result of this repository.",
+      "Recovered through the official notebook verification cells; see docs/TASKS.md."
+    ],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "max_min_distance_ratio",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Paper reports over 50 mathematical problems but explicitly details 13 families in Appendix B. Unpublished full task inventory and internal Google assets prevent a complete runnable reproduction.",
+    "Official result notebook provides mathematical constructions and verification, but no AlphaEvolve search implementation. It publishes a subset of all evaluated problems; the full >50 mathematical problem inventory is not disclosed.",
+    "Paper Appendix B.3 writes max(abs(autoconvolution)); notebook B.3 reported 1.4557 construction computes abs(max(autoconvolution)). The notebook separately verifies the max(abs(...)) variant at 1.4688. These are not interchangeable metrics.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Maximum-to-minimum distance ratio",
+    "slug": "maximum-to-minimum-distance-ratio",
+    "description": "Place 16 distinct points in two-dimensional Euclidean space to minimize the squared ratio of maximum to minimum pairwise distance.",
+    "benchmark": "Maximum-to-minimum distance ratio",
+    "dataset": null,
+    "metric": "(maximum pairwise distance / minimum pairwise distance)^2",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2506.13131",
+    "source_locator": "Appendix B.8",
+    "upstream_path": "mathematical_results.ipynb",
+    "requirements": [
+      "numpy",
+      "scipy or sympy for applicable notebook sections"
+    ],
+    "execution_notes": [
+      "Official notebook contains construction data and verification code. Cell indices are zero-based.",
+      "Published result is a rounded paper reference, not a claimed result of this repository.",
+      "Recovered through the official notebook verification cells; see docs/TASKS.md."
+    ],
+    "setup_commands": [],
+    "run_commands": [],
+    "parameters": {
+      "n": 16,
+      "dimension": 2
+    },
+    "constraints": [
+      "All points finite and distinct",
+      "Minimum pairwise distance > 0"
+    ],
+    "published_result": 12.889266112,
+    "notebook_cells": [
+      92,
+      93,
+      94
+    ],
+    "artifact_source_url": "https://github.com/google-deepmind/alphaevolve_results/blob/4226acbf237ff9ad10ba7673a2af127a2d8a5971/mathematical_results.ipynb",
+    "evaluator_adapter": {
+      "evaluator_path": "adapters/recovered/alphaevolve_notebook/evaluator.py",
+      "evaluator_scope": "repository",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "distance_ratio_2d_16"
+      },
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "valid",
+      "error_key": "error",
+      "baseline_path": "adapters/recovered/alphaevolve_notebook/seeds/distance_ratio_2d_16.py",
+      "baseline_scope": "repository",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "sympy"
+      ],
+      "implementation_label": "Official notebook verification cells executed on the candidate construction; independently written trivial seed",
+      "repository_files": {
+        "adapters/recovered/alphaevolve_notebook/problems.json": "4483af1dd32e079af49be518d93a3e73a6581ec4d5cebe8c66c961413f7950f7",
+        "adapters/recovered/alphaevolve_notebook/seeds/distance_ratio_2d_16.py": "a1c6309f4243ec1e76abab4188a9010d3bdb43de60155c21f78ccf64994ce22e"
+      },
+      "notes": [
+        "Executes the official notebook data and verification cells (indices recorded in problems.json, hash-checked) with the notebook's data variable rebound to the candidate's construct() output.",
+        "Notebook assertions decide validity; the score is the notebook's own printed bound. Plotting is stubbed.",
+        "Published notebook value 12.88926611203463 is a reference, not a target; the trivial seed is deliberately weak."
+      ]
+    },
+    "upstream_seed_paths": [
+      "adapters/recovered/alphaevolve_notebook/seeds/distance_ratio_2d_16.py"
+    ],
+    "candidate_contract": "construct() -> numpy array of shape (16, 2)"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "base-minmaxdist-16",
+      "paper_ids": [
+        "base"
+      ],
+      "name": "MinMaxDist 16",
+      "description": "MinMaxDist 16",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2605.29268",
+          "type": "paper",
+          "locator": "Section 4"
+        },
+        {
+          "url": "https://github.com/keruiwu/self-evolving-allocation/tree/ae7b5da1db39c0fd826adda7893c99d5bda5ac1b",
+          "type": "repository",
+          "locator": "tasks/min_max_dist"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python",
+          "OpenAI-compatible LLM endpoint"
+        ]
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "fitness normalized to best published construction",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "OpenEvolve math",
+        "protocol": "upstream",
+        "source_locator": "Section 4"
+      },
+      "execution": {
+        "repository": "https://github.com/keruiwu/self-evolving-allocation",
+        "commit": "ae7b5da1db39c0fd826adda7893c99d5bda5ac1b",
+        "upstream_path": "tasks/min_max_dist",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "tasks/min_max_dist/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "tasks/min_max_dist",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "tasks/min_max_dist/initial_program.py",
+          "dependencies": [
+            "numpy",
+            "scipy"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Exact official function inspected; normalized score maximized. Invalid candidates may return zero with error.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+            "metrics": {
+              "min_max_ratio": 0.0015354732902234823,
+              "combined_score": 0.01979112384555867,
+              "eval_time": 1.378566026687622
+            },
+            "seconds": 6.44
+          }
+        },
+        "setup_instructions": [
+          "python -m pip install -r requirements.txt"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "python -m pip install -r requirements.txt"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Direct evaluate(program_path) available without LLM calls."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+          "metrics": {
+            "min_max_ratio": 0.0015354732902234823,
+            "combined_score": 0.01979112384555867,
+            "eval_time": 1.378566026687622
+          },
+          "seconds": 6.44
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": 0.01979112384555867
+          }
+        ]
+      }
+    },
+    {
+      "id": "codeevolve-min-max-distance-16-points-2d",
+      "paper_ids": [
+        "codeevolve"
+      ],
+      "name": "Min-max distance 16 points 2D",
+      "description": "Min-max distance 16 points 2D",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2510.14150",
+          "type": "paper",
+          "locator": "Appendix A.1"
+        },
+        {
+          "url": "https://github.com/inter-co/science-codeevolve/tree/c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+          "type": "repository",
+          "locator": "problems/alphaevolve_math_problems/minimizing_max_min_dist/2/input"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python",
+          "NumPy",
+          "SciPy"
+        ]
+      },
+      "evaluation": {
+        "metric": "benchmark_ratio",
+        "paper_metric": "maximum/minimum distance ratio",
+        "paper_direction": "minimize",
+        "direction": "maximize",
+        "benchmark": "AlphaEvolve math",
+        "protocol": "upstream",
+        "source_locator": "Appendix A.1"
+      },
+      "execution": {
+        "repository": "https://github.com/inter-co/science-codeevolve",
+        "commit": "c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+        "upstream_path": "problems/alphaevolve_math_problems/minimizing_max_min_dist/2/input",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "problems/alphaevolve_math_problems/minimizing_max_min_dist/2/input/evaluate.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "problems/alphaevolve_math_problems/minimizing_max_min_dist/2/input",
+          "score_key": "benchmark_ratio",
+          "score_direction": "maximize",
+          "baseline_path": "problems/alphaevolve_math_problems/minimizing_max_min_dist/2/input/src/init_program.py",
+          "dependencies": [
+            "numpy",
+            "scipy"
+          ],
+          "return_style": "json_file",
+          "output_argument": "positional",
+          "notes": "Official evaluate(program_path, results_path) writes JSON and raises on rejected construction; no separate validity field. baseline_path is repository-relative.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+            "metrics": {
+              "min_max_ratio": 0.0015354732902234823,
+              "benchmark_ratio": 0.01979112384555867,
+              "eval_time": 1.2315468788146973
+            },
+            "seconds": 6.15
+          }
+        },
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Direct evaluator signature and normalized maximizing score verified in pinned source. Baseline may be an intentionally weak or infeasible starting construction; check reported evaluator errors."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+          "metrics": {
+            "min_max_ratio": 0.0015354732902234823,
+            "benchmark_ratio": 0.01979112384555867,
+            "eval_time": 1.2315468788146973
+          },
+          "seconds": 6.15
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": 0.01979112384555867
+          }
+        ]
+      }
+    },
+    {
+      "id": "coral-min-max-distance-16-points-2d",
+      "paper_ids": [
+        "coral"
+      ],
+      "name": "Min-max distance 16 points 2D",
+      "description": "Min-max distance 16 points 2D",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2604.01658",
+          "type": "paper",
+          "locator": "Section 4.1, Table 1"
+        },
+        {
+          "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+          "type": "repository",
+          "locator": "examples/math/minimizing_max_min_dist_2d"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "coral (installed from pinned checkout)",
+          "numpy",
+          "scipy",
+          "pyyaml",
+          "omegaconf"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python 3.11+",
+          "coding-agent credentials",
+          "CORAL requires Python>=3.11,<3.14. Importing its packaged grader requires installed CORAL metadata; PYTHONPATH alone is insufficient."
+        ]
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "maximum/minimum distance ratio",
+        "paper_direction": "minimize",
+        "direction": "maximize",
+        "benchmark": null,
+        "protocol": "upstream",
+        "source_locator": "Section 4.1, Table 1"
+      },
+      "execution": {
+        "repository": "https://github.com/Human-Agent-Society/CORAL",
+        "commit": "0123dfb939b35228cf2c1fde224cd0561e727408",
+        "upstream_path": "examples/math/minimizing_max_min_dist_2d",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "examples/math/minimizing_max_min_dist_2d/grader/src/minimizing_max_min_dist_2d_grader/grader.py",
+          "callable": "_run_evaluation",
+          "candidate_argument": "positional",
+          "cwd": "examples/math/minimizing_max_min_dist_2d",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "examples/math/minimizing_max_min_dist_2d/seed/initial_program.py",
+          "dependencies": [
+            "coral (installed from pinned checkout)",
+            "numpy",
+            "scipy",
+            "pyyaml",
+            "omegaconf"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced. Uses the official grader helper; {python} resolves to the bridge interpreter. Does not launch agents.",
+          "kwargs": {
+            "timeout": 600,
+            "python_cmd": [
+              "{python}"
+            ]
+          },
+          "validation": {
+            "kind": "official_seed_common_cli_smoke",
+            "passed": true,
+            "status": "completed",
+            "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+            "seconds": 0.46,
+            "candidate_sha256": "9833ac062fe5adc3ac4dacdba6f4a72eef135df01e279eed1ce5e6122a1d3e0c",
+            "evaluator_sha256": "45b6f7b27a0a6a7a431561f3ed10a1a80a52ab4cbd99c3d75911751f8979296a",
+            "score": 0.01979112384555867,
+            "valid": null,
+            "report": "validation/upstream-gap-smoke-early.json"
+          }
+        },
+        "setup_instructions": [
+          "From the pinned CORAL checkout root: python -m pip install --no-deps . (required to supply CORAL distribution metadata, even when its source is importable).",
+          "python -m pip install numpy scipy pyyaml omegaconf"
+        ],
+        "task_setup_instructions": [
+          "From the pinned CORAL checkout root: python -m pip install --no-deps . (required to supply CORAL distribution metadata, even when its source is importable).",
+          "python -m pip install numpy scipy pyyaml omegaconf"
+        ],
+        "framework_setup_instructions": [
+          "uv sync --extra dev"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "official_seed_common_cli_smoke",
+          "passed": true,
+          "status": "completed",
+          "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+          "seconds": 0.46,
+          "candidate_sha256": "9833ac062fe5adc3ac4dacdba6f4a72eef135df01e279eed1ce5e6122a1d3e0c",
+          "evaluator_sha256": "45b6f7b27a0a6a7a431561f3ed10a1a80a52ab4cbd99c3d75911751f8979296a",
+          "score": 0.01979112384555867,
+          "valid": null,
+          "report": "validation/upstream-gap-smoke-early.json"
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-gap-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": 0.01979112384555867
+          }
+        ]
+      }
+    },
+    {
+      "id": "evox-min-max-distance-dimension-2",
+      "paper_ids": [
+        "evox"
+      ],
+      "name": "Min-max distance dimension 2",
+      "description": "Min-max distance dimension 2",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.23413",
+          "type": "paper",
+          "locator": "Table 2"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/math/minimizing_max_min_dist/2"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy"
+        ],
+        "environment_variables": [],
+        "datasets": "16 points in dimension 2",
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "maximum/minimum distance ratio",
+        "paper_direction": "minimize",
+        "direction": "maximize",
+        "benchmark": "AlphaEvolve math",
+        "protocol": "upstream",
+        "source_locator": "Table 2"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/math/minimizing_max_min_dist/2",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/math/minimizing_max_min_dist/2/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/math/minimizing_max_min_dist/2",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/math/minimizing_max_min_dist/2/initial_program.py",
+          "dependencies": [
+            "numpy",
+            "scipy"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Official evaluate(program_path) returns a normalized maximizing score; errors can return zero with an error field. Inspect errors rather than interpreting zero as success.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+            "metrics": {
+              "min_max_ratio": 0.0015354732902234823,
+              "combined_score": 0.01979112384555867,
+              "eval_time": 0.005895853042602539
+            },
+            "seconds": 0.2
+          }
+        },
+        "setup_instructions": [
+          "uv sync"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Exact callable, return metric, seed and dependencies inspected from pinned SkyDiscover repository."
+        ]
+      },
+      "limitations": [
+        "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+          "metrics": {
+            "min_max_ratio": 0.0015354732902234823,
+            "combined_score": 0.01979112384555867,
+            "eval_time": 0.005895853042602539
+          },
+          "seconds": 0.2
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": 0.01979112384555867
+          }
+        ]
+      }
+    },
+    {
+      "id": "loongflow-max-to-min-ratios",
+      "paper_ids": [
+        "loongflow"
+      ],
+      "name": "Max-to-min ratios",
+      "description": "Max-to-min ratios task evaluated in LoongFlow: Directed Evolutionary Search via a Cognitive Plan-Execute-Summarize Paradigm.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2512.24077",
+          "type": "paper",
+          "locator": "Table 1"
+        },
+        {
+          "url": "https://github.com/baidu-baige/LoongFlow/tree/945c78bc1554f8281aac40320b3599bd68d528d7",
+          "type": "repository",
+          "locator": "agents/math_agent/examples/max_to_min_ratios/eval_program.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python >=3.12",
+          "Model API credentials"
+        ]
+      },
+      "evaluation": {
+        "metric": "paper construction objective",
+        "paper_metric": "paper construction objective",
+        "paper_direction": "minimize",
+        "direction": "minimize",
+        "benchmark": "Max-to-min ratios",
+        "protocol": "upstream",
+        "source_locator": "Table 1"
+      },
+      "execution": {
+        "repository": "https://github.com/baidu-baige/LoongFlow",
+        "commit": "945c78bc1554f8281aac40320b3599bd68d528d7",
+        "upstream_path": "agents/math_agent/examples/max_to_min_ratios/eval_program.py",
+        "commands": [
+          {
+            "argv": [
+              "./run_math.sh",
+              "max_to_min_ratios"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/baidu-baige/LoongFlow/blob/945c78bc1554f8281aac40320b3599bd68d528d7/README.md",
+            "notes": "README documents run_math.sh task-name interface; task directory verified. Install task requirements first."
+          }
+        ],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/baidu-baige/LoongFlow/blob/945c78bc1554f8281aac40320b3599bd68d528d7/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/baidu-baige/LoongFlow/blob/945c78bc1554f8281aac40320b3599bd68d528d7/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": []
+      },
+      "limitations": [
+        "Direct CPU checks found upstream square seed rejected by strict overlap test and rectangle seed incompatible with its evaluator. Original Autocorrelation II and Erdos overlap seeds passed; a new simple square grid fixture passed. These are integration checks, not reproduced paper results.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

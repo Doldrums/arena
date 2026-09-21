@@ -1,0 +1,75 @@
+{
+  "protocol": "recreated",
+  "family": "bo_acquisition",
+  "direction": "minimize",
+  "contract": "acquisition(mu, sigma, f_best) -> one score per candidate point (higher = evaluate next) for a Gaussian-process BO loop on a synthetic function (FunBO contract). Score: mean simple regret after the evaluation budget",
+  "parameters": {
+    "function": "ackley_2d",
+    "budget": 30
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 300,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "funbo-few-shot-ackley-2d-adaptation",
+  "name": "Few-shot Ackley 2D adaptation",
+  "paper_ids": [
+    "funbo"
+  ],
+  "description": "Few-shot Ackley 2D adaptation: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "benchmark": "Few-shot Ackley 2D adaptation",
+  "paper_metric": "simple regret",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2406.04824",
+      "type": "paper",
+      "locator": "Section 4 and Appendices C.3–C.5"
+    },
+    {
+      "url": "https://github.com/boschresearch/MetaBO/tree/3f458bd32db340fbe2d5f072a92cfd782072342c",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "No dedicated official FunBO evaluator repository was verified. The nine OOD adapters are explicitly attributed paper-guided reconstructions using the paper-cited MetaBO objective source.",
+    "Exact original Sobol points and some standard-objective internal parameters are unavailable; assumptions and fingerprints are documented per task.",
+    "No full FunSearch discovery or complete paper experiment has been reproduced.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "funbo",
+      "title": "FunBO: Discovering Acquisition Functions for Bayesian Optimization with FunSearch",
+      "url": "https://arxiv.org/pdf/2406.04824"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

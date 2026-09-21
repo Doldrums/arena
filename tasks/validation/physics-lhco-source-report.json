@@ -1,0 +1,31 @@
+{
+  "proposal_id": "P06",
+  "status": "passed",
+  "score": 0.011486920418863095,
+  "details": {
+    "metric": "SIC_at_5percent_background_divided_by_1_plus_mass_sculpting",
+    "signal_efficiency": 0.0234192037470726,
+    "background_efficiency": 0.049980850248946766,
+    "sic": 0.10475392515172832,
+    "mass_sculpting_chi2_per_bin": 8.11940897402824,
+    "auc": 0.5917746773917232,
+    "discovery_claim": false,
+    "null_acceptance_at_test_threshold": 0.05555555555555555,
+    "source_data_sha256": "5416658b3001115198bff21204a8109154ef2be9f8aef299f49e27ea5daf5e86",
+    "source_kind": "source_simulation"
+  },
+  "seconds": 0.45716516600805335,
+  "pack_sha256": "5416658b3001115198bff21204a8109154ef2be9f8aef299f49e27ea5daf5e86",
+  "source_counts": {
+    "train": 10769,
+    "test": 12152,
+    "test_signal": 1708,
+    "null": 2646,
+    "training_signal_contamination_diagnostic": 450
+  },
+  "tests": {
+    "command": ".cache/sciel-env/bin/python -m unittest discover -s tests -p test_science_lhco_source.py -v",
+    "passed": 3,
+    "fixture_policy": "Analytic jet oracles are unit tests, not replacement source events"
+  }
+}

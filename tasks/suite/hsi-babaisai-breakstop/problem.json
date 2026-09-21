@@ -1,0 +1,74 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "service:llm_api",
+    "env:OPENROUTER_API_KEY",
+    "environment:BALROG"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "llm_agent_env",
+  "unsupported_reason": "Candidates are LLM agents scored inside the BALROG environment (tools, web, games or code sandboxes); the environment and model access are external.",
+  "protocol_description": "Not executable in this suite: Candidates are LLM agents scored inside the BALROG environment (tools, web, games or code sandboxes); the environment and model access are external.",
+  "id": "hsi-babaisai-breakstop",
+  "name": "BabaIsAI BreakStop",
+  "paper_ids": [
+    "hsi"
+  ],
+  "description": "BabaIsAI BreakStop",
+  "benchmark": "BALROG",
+  "paper_metric": "episode progress / task success",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2608.08466",
+      "type": "paper",
+      "locator": "Section 4"
+    },
+    {
+      "url": "https://github.com/TailinZhou/hsi/tree/97a022b9a9c260c0498806fc9826ebf22e753ed9",
+      "type": "repository",
+      "locator": "benchmark_config_goal/balrog_babaisai_breakstop/config.yaml"
+    }
+  ],
+  "limitations": [
+    "No root license was found in the inspected upstream tree; preserve upstream licensing conditions and do not assume redistribution rights.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "hsi",
+      "title": "Hierarchical Self-Improvement: A Framework for Task-Specific Evolvable Agent Harnesses",
+      "url": "https://arxiv.org/pdf/2608.08466"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

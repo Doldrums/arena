@@ -1,0 +1,208 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-math-szemeredi-trotter",
+  "name": "SCiEL: 54 points and 27 lines",
+  "description": "Choose 54 integer points and 27 lines maximizing point-line incidences.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "construction_math",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/szemeredi_trotter/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/szemeredi_trotter/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example szemeredi_trotter",
+    "paper_metric": null,
+    "source_locator": "examples/alphaevolve_math_problems/szemeredi_trotter/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/alphaevolve_math_problems/szemeredi_trotter",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/alphaevolve_math_problems/szemeredi_trotter/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": "examples/alphaevolve_math_problems/szemeredi_trotter/initial_program.py",
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply mathematical validity; preserve unknown validity unless the original evaluator exposes an explicit signal."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/alphaevolve_math_problems/szemeredi_trotter/evaluator.py": "c4fb75e8bb01c58c09289d986d1953d0b5f7cae57947bfb71f96655394c2296e",
+    "examples/alphaevolve_math_problems/szemeredi_trotter/config.yaml": "3e238081b239afbd6e1fcbd1dadba733ea67e1f44a2048be5b3e8e397eeeee80",
+    "examples/alphaevolve_math_problems/szemeredi_trotter/requirements.txt": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc",
+    "examples/alphaevolve_math_problems/szemeredi_trotter/initial_program.py": "b586073cc67976c42b43b3fbda54a2a949ed935477c7104f232ad234dd2adeb7"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/alphaevolve_math_problems/szemeredi_trotter/evaluator.py",
+      "signature": "program_path: str",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.szemeredi_trotter_incidences()"
+    ],
+    "baseline_path": "examples/alphaevolve_math_problems/szemeredi_trotter/initial_program.py",
+    "baseline_functions": {
+      "szemeredi_trotter_incidences": {
+        "signature": "",
+        "docstring": "Szemeredi-Trotter incidence maximization. Construct a set of n points and a set of\nm lines in the plane (on the integer lattice) so as to maximize the number of\npoint-line incidences (pairs (p, l) with p lying on l). Here the instance is fixed\nat n = 54 points and m = 27 lines.\n\nBaseline: the classical Szemeredi-Trotter extremal grid construction with k = 3.\n    Points:  {1,...,k} x {1,...,2*k^2}                          -> 2*k^3 = 54 points\n    Lines :  y = a*x + b  for a in {1,...,k}, b in {1,...,k^2}  ->   k^3 = 27 lines\nEach line y = a*x + b passes through exactly k of the grid points (one per column\nx in {1,...,k}, since a*x + b stays within {1,...,2*k^2}), giving k^4 = 81 total\nincidences. This matches the Szemeredi-Trotter bound n^(2/3) m^(2/3) up to a constant.\n\nLines are encoded in homogeneous form (A, B, C) meaning A*x + B*y + C = 0, so the\nline y = a*x + b becomes (a, -1, b).\n\nReturns:\n    points: np.ndarray of shape (54, 2), integer (x, y) lattice coordinates.\n    lines : np.ndarray of shape (27, 3), integer (A, B, C) with A*x + B*y + C = 0.",
+        "returns": null
+      }
+    },
+    "parameters": {
+      "BENCHMARK": 81.0,
+      "TOL": 1e-06,
+      "NUM_POINTS": 54,
+      "NUM_LINES": 27
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "score_expressions": [
+      "combined_score = incidences / BENCHMARK",
+      "combined_score = 0.0"
+    ],
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 120,
+        "expression": "{'incidences': float(incidences), 'combined_score': float(combined_score), 'eval_time': float(eval_time)}"
+      },
+      {
+        "function": "evaluate",
+        "line": 126,
+        "expression": "{'combined_score': 0.0, 'error': str(e)}"
+      }
+    ],
+    "metric_assignments": [],
+    "validity_key": null,
+    "validity_semantics": "No independent boolean validity field; zero score, success rate and absence of error do not establish validity.",
+    "error_key": "error",
+    "rng_calls": [],
+    "declared_requirements": [
+      "numpy"
+    ],
+    "evaluator_imports": [
+      "importlib",
+      "math",
+      "numpy",
+      "os",
+      "sys",
+      "time"
+    ],
+    "baseline_imports": [
+      "numpy"
+    ],
+    "source_config_path": "examples/alphaevolve_math_problems/szemeredi_trotter/config.yaml",
+    "baseline_constants": {},
+    "baseline_rng_calls": [],
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Some branches return score zero without error; some omit the primary score. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 200,
+      "evaluator": {
+        "timeout": 360,
+        "max_retries": 3
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "cpu",
+    "recommended_smoke_outer_timeout_seconds": 15
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

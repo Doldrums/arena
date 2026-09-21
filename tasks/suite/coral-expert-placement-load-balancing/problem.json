@@ -1,0 +1,105 @@
+{
+  "protocol": "original",
+  "family": "adrs_eplb",
+  "direction": "maximize",
+  "contract": "rebalance_experts(weight, num_replicas, num_groups, num_nodes, num_gpus) -> (phy2log, log2phy, logcnt) expert placement; score = mean of balancedness and speed scores on the recorded expert-load trace",
+  "parameters": {},
+  "requires": [
+    "py:numpy",
+    "file:vendor/adrs/eplb/expert-load.json"
+  ],
+  "timeout": 900,
+  "notes": [
+    "The released data files (eplb expert-load.json, llm_sql datasets) are not stored in the repository; `python3 scripts/prepare_adrs_data.py --suite` (and `--lock eplb-data-lock.json --suite`) fetches them at the locked revision and SHA-256 into suite/_lib/vendor/adrs. Until then the evaluator reports the missing file."
+  ],
+  "origin": {
+    "repository": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+    "path": "examples/ADRS/eplb",
+    "files_sha256": {
+      "evaluator.py": "193c012bbc71edc33fbf9cbffec34fea099695e2fafa6a247dbf1b46703454f2"
+    }
+  },
+  "protocol_description": "Verbatim copy of the CORAL ADRS task evaluator (the same code the paper's ADRS benchmark uses); only a thin loader normalises the result.",
+  "id": "coral-expert-placement-load-balancing",
+  "name": "Expert placement load balancing",
+  "paper_ids": [
+    "coral",
+    "adaevolve",
+    "evox"
+  ],
+  "description": "Expert placement load balancing",
+  "benchmark": "ADRS",
+  "paper_metric": "throughput ratio",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1 and Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/ADRS/eplb"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/ADRS/eplb"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    }
+  ],
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "coral",
+      "title": "CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery",
+      "url": "https://arxiv.org/pdf/2604.01658"
+    },
+    {
+      "id": "adaevolve",
+      "title": "AdaEvolve: Adaptive LLM Driven Zeroth-Order Optimization",
+      "url": "https://arxiv.org/pdf/2602.20133"
+    },
+    {
+      "id": "evox",
+      "title": "EvoX: Meta-Evolution for Automated Discovery",
+      "url": "https://arxiv.org/pdf/2602.23413"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

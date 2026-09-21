@@ -1,0 +1,534 @@
+{
+  "date": "2026-09-19",
+  "scope": "Independent review of new recovered adapters, validity claims, transitive helper integrity, and setup documentation. No campaign rerun.",
+  "recovered_task_manifests_checked": 79,
+  "distinct_pinned_repository_assets_checked": 67,
+  "automated_integrity_issues": [],
+  "material_findings": [],
+  "manual_contract_review": [
+    {
+      "family": "Optimization (32)",
+      "assessment": "Explicit independent packing/TSP/POMO/DPP feasibility supports 7 true flags; 25 finite-scored results retain null validity. Bounded protocols and DPP source split caveat disclosed."
+    },
+    {
+      "family": "LLaMEA-BO (24)",
+      "assessment": "Pinned IOH objectives; bounds/budget enforced and returned optimum must be observed. Validity means bounded protocol completion, not optimization success."
+    },
+    {
+      "family": "FunBO (9)",
+      "assessment": "Candidate returns integer acquisition index; objective scored outside candidate. Reconstructed objectives and bounded GP protocol disclosed."
+    },
+    {
+      "family": "FunSearch (4)",
+      "assessment": "Original constructor plus independent exact combinatorial certificate; minimum-maximal variant also checks maximality."
+    },
+    {
+      "family": "Shinka (1)",
+      "assessment": "Original source validator/aggregator; source checkout verification supplies pin. Root separately repaired source cache checkout integrity."
+    },
+    {
+      "family": "SCiEL AlgoTune (8)",
+      "assessment": "Vendored modules/config/provenance pinned. Candidate-controlled is_solution remains explicitly unverified. Evaluator/seed separately fingerprinted by core; no need to duplicate them in repository_files."
+    },
+    {
+      "family": "SCiEL R (1)",
+      "assessment": "CSV transport adaptation preserves original metric and independent_verification false. R runtime setup supplied."
+    }
+  ],
+  "documentation_correction": "LEHD validation_scope corrected to finite original mean route length; two affected manifest hashes updated and rerun requested.",
+  "runtime_note": "For MCTS BO, use tested botorch/gpytorch versions in RECOVERY_OPTIMIZATION.md; generic module dependency names alone do not enforce these versions.",
+  "tasks": [
+    {
+      "task_id": "eoh-online-bin-packing",
+      "evaluator": "adapters/recovered/optimization_eoh.py",
+      "pinned_repository_assets": 3,
+      "sibling_helpers": [
+        "adapters/recovered/optimization_original.py"
+      ]
+    },
+    {
+      "task_id": "eoh-permutation-flow-shop-scheduling",
+      "evaluator": "adapters/recovered/optimization_eoh.py",
+      "pinned_repository_assets": 3,
+      "sibling_helpers": [
+        "adapters/recovered/optimization_original.py"
+      ]
+    },
+    {
+      "task_id": "eoh-traveling-salesman-gls",
+      "evaluator": "adapters/recovered/optimization_eoh.py",
+      "pinned_repository_assets": 3,
+      "sibling_helpers": [
+        "adapters/recovered/optimization_original.py"
+      ]
+    },
+    {
+      "task_id": "funbo-ood-beale-2d",
+      "evaluator": "adapters/recovered/source_funbo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "funbo-ood-branin-2d",
+      "evaluator": "adapters/recovered/source_funbo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "funbo-ood-goldstein-price-2d",
+      "evaluator": "adapters/recovered/source_funbo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "funbo-ood-hartmann-3d",
+      "evaluator": "adapters/recovered/source_funbo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "funbo-ood-hartmann-6d",
+      "evaluator": "adapters/recovered/source_funbo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "funbo-ood-michalewicz-2d",
+      "evaluator": "adapters/recovered/source_funbo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "funbo-ood-sphere-1d",
+      "evaluator": "adapters/recovered/source_funbo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "funbo-ood-styblinski-tang-1d",
+      "evaluator": "adapters/recovered/source_funbo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "funbo-ood-weierstrass-1d",
+      "evaluator": "adapters/recovered/source_funbo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "funsearch-re-implementation-cap-set",
+      "evaluator": "adapters/recovered/math_funsearch.py",
+      "pinned_repository_assets": 1,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "funsearch-re-implementation-minimum-maximal-no-isosceles-set",
+      "evaluator": "adapters/recovered/math_funsearch.py",
+      "pinned_repository_assets": 1,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "funsearch-re-implementation-narrow-admissible-tuple",
+      "evaluator": "adapters/recovered/math_funsearch.py",
+      "pinned_repository_assets": 1,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "funsearch-re-implementation-no-isosceles-set",
+      "evaluator": "adapters/recovered/math_funsearch.py",
+      "pinned_repository_assets": 1,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "hsevo-online-bin-packing",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "hsevo-orienteering-aco",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "hsevo-traveling-salesman-gls",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f1",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f10",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f11",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f12",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f13",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f14",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f15",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f16",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f17",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f18",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f19",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f2",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f20",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f21",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f22",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f23",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f24",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f3",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f4",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f5",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f6",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f7",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f8",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "llamea-bo-bbob-f9",
+      "evaluator": "adapters/recovered/source_llamea_bo.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-asp-constructive",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-bo-caf",
+      "evaluator": "adapters/recovered/optimization_bo.py",
+      "pinned_repository_assets": 3,
+      "sibling_helpers": [
+        "adapters/recovered/optimization_original.py"
+      ]
+    },
+    {
+      "task_id": "mcts-ahd-bpp-offline-aco",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-bpp-offline-aco-black-box",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-bpp-online",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-cvrp-aco",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-cvrp-aco-black-box",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-kp-constructive",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-mkp-aco",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-mkp-aco-black-box",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-tsp-aco",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-tsp-aco-black-box",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-tsp-constructive",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "mcts-ahd-tsp-gls",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "reevo-cvrp-aco",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "reevo-cvrp-lehd-attention-reshaping",
+      "evaluator": "adapters/recovered/optimization_lehd.py",
+      "pinned_repository_assets": 3,
+      "sibling_helpers": [
+        "adapters/recovered/optimization_original.py"
+      ]
+    },
+    {
+      "task_id": "reevo-cvrp-pomo-attention-reshaping",
+      "evaluator": "adapters/recovered/optimization_pomo.py",
+      "pinned_repository_assets": 3,
+      "sibling_helpers": [
+        "adapters/recovered/optimization_original.py"
+      ]
+    },
+    {
+      "task_id": "reevo-decap-placement-genetic-algorithm",
+      "evaluator": "adapters/recovered/optimization_dpp.py",
+      "pinned_repository_assets": 3,
+      "sibling_helpers": [
+        "adapters/recovered/optimization_original.py"
+      ]
+    },
+    {
+      "task_id": "reevo-multiple-knapsack-aco",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "reevo-offline-bin-packing-aco",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "reevo-orienteering-aco",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "reevo-tsp-aco",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "reevo-tsp-constructive-heuristic",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "reevo-tsp-gls",
+      "evaluator": "adapters/recovered/optimization_original.py",
+      "pinned_repository_assets": 2,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "reevo-tsp-lehd-attention-reshaping",
+      "evaluator": "adapters/recovered/optimization_lehd.py",
+      "pinned_repository_assets": 3,
+      "sibling_helpers": [
+        "adapters/recovered/optimization_original.py"
+      ]
+    },
+    {
+      "task_id": "reevo-tsp-pomo-attention-reshaping",
+      "evaluator": "adapters/recovered/optimization_pomo.py",
+      "pinned_repository_assets": 3,
+      "sibling_helpers": [
+        "adapters/recovered/optimization_original.py"
+      ]
+    },
+    {
+      "task_id": "sciel-math-algotune-affine-transform-2d",
+      "evaluator": "adapters/recovered/sciel_algotune/evaluator.py",
+      "pinned_repository_assets": 27,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "sciel-math-algotune-convolve2d-full-fill",
+      "evaluator": "adapters/recovered/sciel_algotune/evaluator.py",
+      "pinned_repository_assets": 27,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "sciel-math-algotune-eigenvectors-complex",
+      "evaluator": "adapters/recovered/sciel_algotune/evaluator.py",
+      "pinned_repository_assets": 27,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "sciel-math-algotune-fft-cmplx-scipy-fftpack",
+      "evaluator": "adapters/recovered/sciel_algotune/evaluator.py",
+      "pinned_repository_assets": 27,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "sciel-math-algotune-fft-convolution",
+      "evaluator": "adapters/recovered/sciel_algotune/evaluator.py",
+      "pinned_repository_assets": 27,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "sciel-math-algotune-lu-factorization",
+      "evaluator": "adapters/recovered/sciel_algotune/evaluator.py",
+      "pinned_repository_assets": 27,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "sciel-math-algotune-polynomial-real",
+      "evaluator": "adapters/recovered/sciel_algotune/evaluator.py",
+      "pinned_repository_assets": 27,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "sciel-math-algotune-psd-cone-projection",
+      "evaluator": "adapters/recovered/sciel_algotune/evaluator.py",
+      "pinned_repository_assets": 27,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "sciel-math-r-robust-regression",
+      "evaluator": "adapters/recovered/sciel_r_robust_regression.py",
+      "pinned_repository_assets": 0,
+      "sibling_helpers": []
+    },
+    {
+      "task_id": "shinkaevolve-circle-packing-n-26",
+      "evaluator": "adapters/recovered/math_shinka.py",
+      "pinned_repository_assets": 1,
+      "sibling_helpers": []
+    }
+  ]
+}

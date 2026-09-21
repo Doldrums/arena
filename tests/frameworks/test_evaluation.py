@@ -1,4 +1,4 @@
-"""Canonical evaluation orchestration with local Git and inert evaluator fixtures."""
+"""Canonical evaluation orchestration with bundled tasks and inert evaluator fixtures."""
 import hashlib
 import io
 import json
@@ -11,6 +11,7 @@ from types import SimpleNamespace
 import pytest
 
 from arena.frameworks import evaluation, runtime
+from arena import task_library
 
 
 def digest(path):
@@ -38,17 +39,17 @@ native={'task_id':'fixture-task','candidate_sha256':hashlib.sha256(candidate.rea
 Path(args[args.index('--output')+1]).write_text(json.dumps(native))
 sys.stdout.write('x'*8192);sys.stderr.write('fixture stderr')
 ''')
-    def git(*args):
-        return subprocess.check_output(["git", "-C", str(source), *args], text=True).strip()
-    git("init", "-q")
-    git("config", "user.name", "Fixture")
-    git("config", "user.email", "fixture@example.invalid")
-    git("add", ".")
-    git("commit", "-qm", "fixture")
+    registry = tmp_path / "registry"
+    registry.mkdir()
+    manifest = registry / "task-library-manifest.json"
+    manifest.write_text(json.dumps({"schema": "arena.task-library/1", "files": {
+        path.relative_to(source).as_posix(): digest(path) for path in source.rglob("*") if path.is_file()}}))
+    monkeypatch.setattr(task_library, "resolve_registry_root", lambda _: registry)
     task = {"id": "fixture-task", "source_id": "fixture", "executable": True, "direction": "minimize",
             "protocol": "original", "metric": "fixture_error", "contract_source": {
                 "path": "suite/fixture-task/problem.json", "sha256": digest(problem)}}
-    catalog = {"tasks": [task], "sources": [{"id": "fixture", "repository": {"commit": git("rev-parse", "HEAD")}}]}
+    catalog = {"tasks": [task], "sources": [{"id": "fixture", "kind": "bundled", "root_path": "tasks",
+        "manifest_path": "registry/task-library-manifest.json", "manifest_sha256": digest(manifest)}]}
     monkeypatch.setattr(evaluation, "get_catalog", lambda: catalog)
     candidate = tmp_path / "candidate.py"
     candidate.write_text("raise RuntimeError('Candidate must not execute in these fixtures')\n")
@@ -70,7 +71,7 @@ def test_prepare_does_not_execute_or_create_outputs(evaluation_inputs):
     plan = evaluation.prepare_evaluation(config, candidate, output)
     assert not output.exists()
     assert plan["candidate_sha256"] == digest(candidate)
-    assert plan["source"]["commit"] == catalog["sources"][0]["repository"]["commit"]
+    assert plan["source"]["manifest_sha256"] == catalog["sources"][0]["manifest_sha256"]
     assert plan["problem_sha256"] == catalog["tasks"][0]["contract_source"]["sha256"]
 
 

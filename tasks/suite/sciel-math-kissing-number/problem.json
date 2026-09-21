@@ -1,0 +1,98 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 600,
+  "notes": [],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "combined_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/alphaevolve_math_problems/kissing_number",
+    "files_sha256": {
+      "config.yaml": "a231862e9cd659a2d64b60b42aa54a48e143d654d698a094e322fcbde67decc3",
+      "evaluator.py": "6f22ecc1977018be67c8bc82f53e24d84e9539fb5a833b7d1396fbd587a0f8c1",
+      "initial_program.py": "d458c1142f83a8f48c9adbc54cded088b627d7f8375f880a8dd0c9aa6b08e508",
+      "requirements.txt": "73dd0baf8e5438da8816254a073ee43b61f8b2cdef6f393e0059cdbc55cb8d9c"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/alphaevolve_math_problems/kissing_number` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-math-kissing-number",
+  "name": "SCiEL: Kissing number in dimension 11",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Construct an integral point configuration in 11 dimensions satisfying the upstream norm and distance checks and maximize its size.",
+  "benchmark": "SCiEL source example kissing_number",
+  "paper_metric": "combined_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/kissing_number/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/kissing_number/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Construct large eleven-dimensional kissing configurations of nonoverlapping spheres.",
+    "importance_rationale": "Kissing configurations establish lower bounds in discrete geometry and are related to spherical codes. Each additional validated sphere can strengthen a mathematical packing bound; the local score is not a general AI benchmark metric.",
+    "papers": [
+      {
+        "title": "Finding Kissing Numbers with Game-theoretic Reinforcement Learning",
+        "url": "https://arxiv.org/abs/2511.13391",
+        "task_relation": "The paper directly constructs kissing configurations to improve kissing-number bounds. This local task fixes dimension eleven and restricts its representation; the paper establishes the primary problem pursued, without implying that its reported improvements occur in dimension eleven.",
+        "primary_goal": "Discover sphere configurations giving stronger kissing-number lower bounds.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

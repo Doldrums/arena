@@ -1,0 +1,77 @@
+{
+  "protocol": "recreated",
+  "family": "bo_cost_aware",
+  "direction": "minimize",
+  "contract": "acquisition(mu, sigma, f_best, cost) -> one score per candidate point; the loop stops when accumulated cost exceeds the budget (EvolCAF-style; cost(x) = 1 + mean normalized coordinate, a documented stand-in for the paper's cost functions). Score: mean simple regret",
+  "parameters": {
+    "functions": [
+      "ackley_2d",
+      "rastrigin_2d",
+      "levy_2d",
+      "hartmann_3d"
+    ],
+    "budget": 30
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 300,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "mcts-ahd-bo-caf",
+  "name": "bo_caf",
+  "paper_ids": [
+    "mcts-ahd"
+  ],
+  "description": "bo_caf task evaluated in Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design.",
+  "benchmark": "bo_caf",
+  "paper_metric": "mean absolute optimality gap",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2501.08603",
+      "type": "paper",
+      "locator": "Section 4; Appendices B-D and F"
+    },
+    {
+      "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+      "type": "repository",
+      "locator": "problems/bo_caf/eval.py"
+    }
+  ],
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "mcts-ahd",
+      "title": "Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design",
+      "url": "https://arxiv.org/pdf/2501.08603"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

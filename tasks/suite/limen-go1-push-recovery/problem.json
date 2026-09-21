@@ -1,0 +1,70 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "environment:MuJoCo MJX"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "simulator",
+  "unsupported_reason": "Fitness requires a physics simulator or reinforcement-learning training loop (MuJoCo MJX) that is not bundled.",
+  "protocol_description": "Not executable in this suite: Fitness requires a physics simulator or reinforcement-learning training loop (MuJoCo MJX) that is not bundled.",
+  "id": "limen-go1-push-recovery",
+  "name": "Go1 push recovery",
+  "paper_ids": [
+    "limen"
+  ],
+  "description": "Survive 500 steps of lateral pushes and keep mean base displacement below 10 cm",
+  "benchmark": "MuJoCo MJX",
+  "paper_metric": "mean success rate across three seeds",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2605.03408",
+      "type": "paper",
+      "locator": "Section 5.1"
+    },
+    {
+      "url": "https://github.com/Lossfunk/LIMEN/tree/cf0b44da37f7e7ee038920c860a8cb00c610c9af",
+      "type": "repository",
+      "locator": "configs/go1_push_recovery.yaml"
+    }
+  ],
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "limen",
+      "title": "Discovering Reinforcement Learning Interfaces with Large Language Models",
+      "url": "https://arxiv.org/pdf/2605.03408"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "reward",
+    "domain": "robotics",
+    "area": "robotics_and_control",
+    "data": "simulator",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

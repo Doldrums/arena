@@ -1,0 +1,161 @@
+{
+  "schema_version": "1.0",
+  "id": "science-materials-opxrd-phase-identification",
+  "name": "opXRD experimental phase identification",
+  "description": "identify_phases(two_theta_degrees, intensity, wavelength_angstrom, candidate_library) -> unique phase identifiers. Eight measured HKUST-A opXRD evaluation scans, including real2/3/4-phase mixtures;13 development scans use disjoint connected compound groups. The fixed25-phase library supplies source refined lattices and atomic bases, never held-out measured intensities. Score macro F1 of all source-reported curated phase labels. Annotation exhaustiveness and unreported impurities are unknown; no phase-fraction metric. Single-contributor study, no cross-laboratory claim. Seed computes approximate kinematic structural templates; observations are always actual source scans.",
+  "paper_ids": [
+    "science-materials_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1002/aidi.202500044",
+      "type": "paper",
+      "locator": "Section3.2 HKUST-A/XRed:21 measured phase-identification patterns, corresponding refined CIF structures and single-/multiphase mixtures. Full structural labels are not an exhaustive-impurity certificate."
+    },
+    {
+      "url": "https://github.com/aimat-lab/opXRD",
+      "type": "repository",
+      "locator": "Official loaders."
+    },
+    {
+      "url": "https://zenodo.org/records/15298026",
+      "type": "benchmark",
+      "locator": "Pinned record15298026, only HKUST/HKUST-A/pattern_0.json through pattern_20.json;21uncompressed members SHA256 pinned in data/science/materials_expansion/opxrd_hkust_a_sources.json. Verified ZIP CRC and HTTP byte ranges; not a full-archive digest claim."
+    },
+    {
+      "url": "https://www.nature.com/articles/s41467-019-13749-3",
+      "type": "paper",
+      "title": "A deep-learning technique for phase identification in multiphase inorganic compounds using synthetic XRD powder patterns",
+      "locator": "Develops and tests phase identification from diffraction patterns, including real-data tests. The local opXRD experimental collection is separate, and complete phase annotations are required before scoring."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; GPU optional for learned candidate methods",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "21actual HKUST-A opXRD scans and25source crystal structures,13development/8compound-disjoint evaluation scans. Source ZIP selected verified byte ranges only; pinned compact dataset.json."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "opXRD experimental phase identification",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_materials_opxrd_phase_identification",
+    "science_family": "science_materials_opxrd_phase_identification",
+    "parameters": {
+      "proposal_id": "C08",
+      "data_sha256": "b223818dfbb1ac489ba4ba0941d3e9451814cc223988bad4f83f803b22e6e886"
+    },
+    "interface": "identify_phases(two_theta_degrees, intensity, wavelength_angstrom, candidate_library) -> unique phase identifiers. Eight measured HKUST-A opXRD evaluation scans, including real2/3/4-phase mixtures;13 development scans use disjoint connected compound groups. The fixed25-phase library supplies source refined lattices and atomic bases, never held-out measured intensities. Score macro F1 of all source-reported curated phase labels. Annotation exhaustiveness and unreported impurities are unknown; no phase-fraction metric. Single-contributor study, no cross-laboratory claim. Seed computes approximate kinematic structural templates; observations are always actual source scans.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "model",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "materials_science"
+    },
+    "proposal_id": "C08",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "setup": {
+      "instructions": "docs/MATERIALS_EXPANSION.md",
+      "preparation_command": "python scripts/prepare_opxrd_source.py",
+      "source_member_pins": "data/science/materials_expansion/opxrd_hkust_a_sources.json"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL contracts, evaluator logic and tests are independently implemented. Reused scientific engines and reference data are separately attributed in reuse_scope; author-code availability alone is not classified as evaluator reuse.",
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "reuse_scope": "No upstream scientific evaluator or model implementation; source numerical data and standard numerical libraries only"
+    },
+    "setup_instructions": [],
+    "additional_requires": [
+      "file:data/materials-expansion/C08/dataset.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_materials_opxrd_phase_identification",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:data/materials-expansion/C08/dataset.json"
+      ],
+      "timeout": 180,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent source-reported phase-label recovery adaptation; no claim to reproduce author leaderboard scores or identify every chemically present impurity.",
+    "All curated released HKUST-A phase labels are evaluated. annotation_complete remains null because unreported phases/impurities are unknown; no phase-fraction metrics.",
+    "Thirteen development/eight evaluation scans use connected compound groups; mixtures sharing a compound stay together. One source contributor, so no cross-laboratory generalization claim.",
+    "Closed25-phase structure library is available to candidates; it contains source refined lattices/bases, not held-out experimental intensities. Near-identical beta-Sn refinements are treated as one phase.",
+    "The seed uses approximate constant atomic-number form factors and fixed broadening; this is a candidate heuristic, not full Rietveld refinement. Source scans and experimental mixtures are never generated.",
+    "Candidate and evaluator share a Python process; API separation is cooperative, not an OS sandbox. Public cases are development data."
+  ],
+  "validation": {
+    "level": "source_subset_run",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_materials_expansion.py; tests/test_science_opxrd_source.py",
+    "evidence": "validation/opxrd-source-run.json",
+    "benchmark_verified": true,
+    "fixture_tests_are_benchmark_validation": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "model",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "materials_science",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Identify crystalline phases present in powder X-ray diffraction measurements of mixtures.",
+    "importance_rationale": "Phase identification determines which materials were formed and informs interpretation of their properties.",
+    "papers": [
+      {
+        "title": "A deep-learning technique for phase identification in multiphase inorganic compounds using synthetic XRD powder patterns",
+        "url": "https://www.nature.com/articles/s41467-019-13749-3",
+        "primary_goal": "Identify constituent crystalline phases in multiphase compounds from powder diffraction patterns.",
+        "task_relation": "The local task classifies phases in eight measured opXRD mixture scans using a fixed phase library. It addresses the same inverse diffraction problem with a different source subset; F1 against reported labels does not prove absence of unreported phases or determine phase fractions.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "A phase-identification solution paper provides the evidence; the opXRD data-collection paper alone would not qualify.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

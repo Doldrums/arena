@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0",
+  "id": "funl2o-fsnet-nonconvex-qp",
+  "name": "FSNet Nonconvex QP",
+  "description": "FSNet Nonconvex QP",
+  "paper_ids": [
+    "funl2o"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2607.27389",
+      "type": "paper",
+      "locator": "Table 2 Panel B"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "FSNet training pipeline"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "optimality gap with feasibility at 1e-4",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Table 2 Panel B"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "l2o",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "py:cvxpy"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "FSNet Nonconvex QP",
+    "slug": "fsnet-nonconvex-qp",
+    "description": "FSNet Nonconvex QP",
+    "benchmark": null,
+    "dataset": null,
+    "metric": "optimality gap with feasibility at 1e-4",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2607.27389",
+    "source_locator": "Table 2 Panel B",
+    "upstream_path": null,
+    "requirements": [
+      "FSNet training pipeline"
+    ],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

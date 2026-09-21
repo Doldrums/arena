@@ -1,0 +1,70 @@
+{
+  "protocol": "recreated",
+  "family": "no_isosceles",
+  "direction": "maximize",
+  "contract": "construct() -> list of (x, y) grid points in [0, n)^2 with no three points forming an isosceles triangle. Score: number of points",
+  "parameters": {
+    "n": 64
+  },
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 300,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "funsearch-re-implementation-no-isosceles-set",
+  "name": "No-isosceles set",
+  "paper_ids": [
+    "funsearch-re-implementation"
+  ],
+  "description": "No-isosceles set task evaluated in Generative Modeling for Mathematical Discovery.",
+  "benchmark": "No-isosceles set",
+  "paper_metric": "no-isosceles set cardinality",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2503.11061",
+      "type": "paper",
+      "locator": "Section 3, Tables 1-3"
+    },
+    {
+      "url": "https://github.com/kitft/funsearch/tree/cec37d84b474ea6bbd66f6defad8f5b5758449ff",
+      "type": "repository",
+      "locator": "examples/isosceles.py"
+    }
+  ],
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "funsearch-re-implementation",
+      "title": "Generative Modeling for Mathematical Discovery",
+      "url": "https://arxiv.org/pdf/2503.11061"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

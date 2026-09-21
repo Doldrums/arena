@@ -1,0 +1,427 @@
+{
+  "created_at": "2026-09-20T19:11:09.448753+00:00",
+  "mode": "physics_source_validation",
+  "tasks": [
+    {
+      "id": "science-physics-great3-shear-calibration",
+      "proposal_id": "P01",
+      "status": "blocked",
+      "valid": null,
+      "score": null,
+      "seconds": 0.0,
+      "reason": "Prepare complete GREAT3 subfields, source shears/PSF angles and disjoint noise-cancellation group labels; official legacy data host timed out during audit.",
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729"
+    },
+    {
+      "id": "science-physics-mlgwsc-event-search",
+      "proposal_id": "P02",
+      "status": "blocked",
+      "valid": null,
+      "score": null,
+      "seconds": 0.0,
+      "reason": "Prepare source MLGWSC foreground/background with actual injection volume weights and long background; short clips cannot resolve declared FAR.",
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729"
+    },
+    {
+      "id": "science-physics-experimental-surface-code",
+      "proposal_id": "P03",
+      "status": "ok",
+      "valid": true,
+      "score": 0.06934000000000001,
+      "seconds": 1.820082187652588,
+      "reason": null,
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729",
+      "result": {
+        "metric": "macro_acquisition_logical_failure_rate",
+        "acquisitions": [
+          {
+            "logical_failures": 4565,
+            "shots": 50000,
+            "wilson_95": [
+              0.08880660545392058,
+              0.09385618989036554
+            ],
+            "metric": "logical_failure_per_complete_shot",
+            "decode_seconds": 0.24143991697928868,
+            "code_distance": 3,
+            "batch_id": "google_105Q_surface_code_d3_d5_d7/d3_at_q10_7/X/r13"
+          },
+          {
+            "logical_failures": 3518,
+            "shots": 50000,
+            "wilson_95": [
+              0.06815111895570118,
+              0.07263489374730615
+            ],
+            "metric": "logical_failure_per_complete_shot",
+            "decode_seconds": 0.2631333750032354,
+            "code_distance": 5,
+            "batch_id": "google_105Q_surface_code_d3_d5_d7/d5_at_q4_7/X/r13"
+          },
+          {
+            "logical_failures": 2318,
+            "shots": 50000,
+            "wilson_95": [
+              0.044551584223590304,
+              0.04823811599657596
+            ],
+            "metric": "logical_failure_per_complete_shot",
+            "decode_seconds": 0.6473700419883244,
+            "code_distance": 7,
+            "batch_id": "google_105Q_surface_code_d3_d5_d7/d7_at_q6_7/X/r13"
+          }
+        ],
+        "shots": 150000,
+        "source": "complete released experimental shot batches; no synthetic shots",
+        "scientific_library_versions": {
+          "numpy": "2.3.5",
+          "scipy": "1.18.1",
+          "stim": "1.15.0",
+          "pymatching": "2.3.1"
+        },
+        "source_data_sha256": "a1115986d3b32580d49a1dcc7b58b981dd4c3d1f239f8c70887ce830e9063a53",
+        "source_kind": "experimental",
+        "execution_environment": ".cache/physics-env"
+      },
+      "candidate_sha256": "e0c38353421b699cd17943f848606f977b442ebb163a28f76e57da05988ab2e9",
+      "data_sha256": "a1115986d3b32580d49a1dcc7b58b981dd4c3d1f239f8c70887ce830e9063a53"
+    },
+    {
+      "id": "science-physics-calochallenge-photon-showers",
+      "proposal_id": "P04",
+      "status": "ok",
+      "valid": true,
+      "score": 0.1433975384868703,
+      "seconds": 0.512037992477417,
+      "reason": null,
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729",
+      "result": {
+        "metric": "mean_per_energy_standardized_feature_Wasserstein",
+        "classifier_auc_diagnostic": 0.504345703125,
+        "sampling_seconds": 0.013655582995852455,
+        "showers": 1920,
+        "adaptation": "CPU source-data subset; independent HLF-inspired metric, not the full CaloChallenge leaderboard",
+        "source_data_sha256": "a170a7ba9ab59b097cad9c24ec4619aaf8a5adc5af7da202969eacd189d0f3e9",
+        "source_kind": "source_simulation"
+      },
+      "candidate_sha256": "148efed09ea0a5ffdc4f865f698b3491a494cfcf0be4468f0f693367d54957f4",
+      "data_sha256": "a170a7ba9ab59b097cad9c24ec4619aaf8a5adc5af7da202969eacd189d0f3e9"
+    },
+    {
+      "id": "science-particle-helical-track-reconstruction",
+      "proposal_id": "P05",
+      "status": "blocked",
+      "valid": null,
+      "score": null,
+      "seconds": 0.0,
+      "reason": "Obtain full official TrackML events/cells/detector, preserve event boundaries; benchmark source files are not staged.",
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729"
+    },
+    {
+      "id": "science-particle-collider-anomaly-ranking",
+      "proposal_id": "P06",
+      "status": "blocked",
+      "valid": null,
+      "score": null,
+      "seconds": 0.0,
+      "reason": "Obtain official 2.78 GB LHCO release and validated anti-kt feature preprocessing; source physics features are not staged.",
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729"
+    },
+    {
+      "id": "science-physics-tdlmc-distance-posterior",
+      "proposal_id": "P07",
+      "status": "blocked",
+      "valid": null,
+      "score": null,
+      "seconds": 0.0,
+      "reason": "Official Rung1 observations and open-box truth downloaded. Validate real-host morphology, astrometry labels, external convergence, aperture dynamics and pixel conventions in a source pack before seed execution.",
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729"
+    },
+    {
+      "id": "science-physics-ariel-atmospheric-posterior",
+      "proposal_id": "P08",
+      "status": "blocked",
+      "valid": null,
+      "score": null,
+      "seconds": 0.0,
+      "reason": "Official ABC Level2 and tutorial archives downloaded and checksum-verified. Source-matched opacity/model conventions remain required: independent generating-truth spectral check fails (chi\u00b2/bin92.3; diagnostic radius conversion47.6). See validation/physics-atmosphere-forward-check.json.",
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729"
+    },
+    {
+      "id": "science-physics-ngeht-closure-imaging",
+      "proposal_id": "P09",
+      "status": "blocked",
+      "valid": null,
+      "score": null,
+      "seconds": 0.0,
+      "reason": "Source restricted to challenge participants; obtain explicit source permission/credentials, then curate fixed-FOV visibilities/closure/model data.",
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729"
+    },
+    {
+      "id": "science-physics-freegsnke-coil-design",
+      "proposal_id": "P10",
+      "status": "ok",
+      "valid": true,
+      "score": 0.02727281865991725,
+      "seconds": 7.146137952804565,
+      "reason": null,
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729",
+      "result": {
+        "metric": "worst_resolution_boundary_flux_and_magnetic_axis_error",
+        "cases": [
+          {
+            "currents_A": [
+              185639.8081674701,
+              -217403.81742084463,
+              102084.57629532363,
+              521797.58020724595,
+              -326255.78283688385,
+              521797.5802073219,
+              102084.57629375611,
+              -217403.52213397654
+            ],
+            "coarse_error": 0.014728762545216507,
+            "refined_error": 0.006307075331910834,
+            "relative_GS_residuals": [
+              1.162467977407819e-09,
+              1.2416657299386024e-09
+            ],
+            "axis_refinement_shift_m": 0.0030171868735576245
+          },
+          {
+            "currents_A": [
+              158267.34914797675,
+              -190877.57291522654,
+              96004.4869443645,
+              480643.0819176945,
+              -300735.5198109618,
+              480643.0819176776,
+              96004.48694608167,
+              -190877.54130967008
+            ],
+            "coarse_error": 0.039816874774618,
+            "refined_error": 0.01185697594846241,
+            "relative_GS_residuals": [
+              4.063835555748861e-10,
+              1.2842471467370644e-09
+            ],
+            "axis_refinement_shift_m": 0.004340225136426631
+          }
+        ],
+        "model": "Published idealized Anamak geometry, static free-boundary Lao85 equilibria; not experimental operation",
+        "scientific_library_versions": {
+          "numpy": "2.3.5",
+          "scipy": "1.18.1",
+          "freegsnke": "3.1.0",
+          "freegs4e": "0.15.0"
+        },
+        "source_data_sha256": "fa982359d3b9d333d006ad2e0097021b2fca7b4ab5c3cda28c969c68fa418b63",
+        "source_kind": "source_model",
+        "execution_environment": ".cache/physics-env"
+      },
+      "candidate_sha256": "60a2c3e04525d88f203ffcce7e698d7200b50fb2ff6804974ace30f38fe9d29b",
+      "data_sha256": "fa982359d3b9d333d006ad2e0097021b2fca7b4ab5c3cda28c969c68fa418b63"
+    },
+    {
+      "id": "science-physics-jhtdb-subgrid-stress",
+      "proposal_id": "P11",
+      "status": "blocked",
+      "valid": null,
+      "score": null,
+      "seconds": 0.0,
+      "reason": "Acquire complete periodic JHTDB DNS fields at separated times with source viscosity/spacing; no wrapping arbitrary small cutouts.",
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729"
+    },
+    {
+      "id": "science-physics-robust-transmon-control",
+      "proposal_id": "P12",
+      "status": "ok",
+      "valid": true,
+      "score": 0.062278705175584585,
+      "seconds": 0.05073094367980957,
+      "reason": null,
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729",
+      "result": {
+        "metric": "mean_plus_worst_robust_average_gate_infidelity",
+        "mean_infidelity": 0.020726426388027734,
+        "worst_infidelity": 0.04155227878755685,
+        "mean_leakage": 2.55176887282006e-06,
+        "independent_integration_max_error": 6.250062072931235e-10,
+        "seconds": 0.050304000003961846,
+        "physical_model": "three-level Duffing transmon with Lindblad relaxation/dephasing; no hardware claim"
+      },
+      "candidate_sha256": "79e002ad449c71111072c315657f8b73c3a2f9cadbb762b9012d99d69a636926",
+      "data_sha256": null
+    },
+    {
+      "id": "science-physics-refnx-contrast-inversion",
+      "proposal_id": "P13",
+      "status": "ok",
+      "valid": true,
+      "score": 2.3279723658671254,
+      "seconds": 1.0221025943756104,
+      "reason": null,
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729",
+      "result": {
+        "metric": "held_out_contrast_posterior_predictive_nll_plus_simulated_truth_CRPS",
+        "cases": [
+          {
+            "track": "experimental",
+            "sample_id": "refnx_motofit_shared_sample",
+            "held_out_contrast": "e361r",
+            "predictive_nll_above_noise_constant": 7.101362466568899,
+            "truth_normalized_crps": null
+          },
+          {
+            "track": "experimental",
+            "sample_id": "refnx_motofit_shared_sample",
+            "held_out_contrast": "e365r",
+            "predictive_nll_above_noise_constant": 2.7391113397356617,
+            "truth_normalized_crps": null
+          },
+          {
+            "track": "experimental",
+            "sample_id": "refnx_motofit_shared_sample",
+            "held_out_contrast": "e366r",
+            "predictive_nll_above_noise_constant": 2.571433013655578,
+            "truth_normalized_crps": null
+          },
+          {
+            "track": "specified_model_simulation",
+            "sample_id": "independent_simulated_sample_0",
+            "held_out_contrast": "sim_0_2",
+            "predictive_nll_above_noise_constant": 0.5418220184251332,
+            "truth_normalized_crps": 0.00916224545429183
+          },
+          {
+            "track": "specified_model_simulation",
+            "sample_id": "independent_simulated_sample_1",
+            "held_out_contrast": "sim_1_2",
+            "predictive_nll_above_noise_constant": 0.4690522999258451,
+            "truth_normalized_crps": 0.003992360144701826
+          },
+          {
+            "track": "specified_model_simulation",
+            "sample_id": "independent_simulated_sample_2",
+            "held_out_contrast": "sim_2_2",
+            "predictive_nll_above_noise_constant": 0.5236251410682505,
+            "truth_normalized_crps": 0.008273310224394235
+          }
+        ],
+        "experimental_samples": 1,
+        "limitation": "Measured curves are not exact profile truth. Single experimental sample, three contrasts; no cross-sample generalization claim.",
+        "source_data_sha256": "18efb8761bac809c60aaf488949e26646977bd76d8b237d51cc632251684d001",
+        "source_kind": "experimental"
+      },
+      "candidate_sha256": "8fcb787be07a4b17fe6a2c9ccbe4398f7b39a17d889fd08bdd05e143967f81fc",
+      "data_sha256": "18efb8761bac809c60aaf488949e26646977bd76d8b237d51cc632251684d001"
+    },
+    {
+      "id": "science-physics-xy-critical-monte-carlo",
+      "proposal_id": "P14",
+      "status": "ok",
+      "valid": true,
+      "score": 0.036131463099573415,
+      "seconds": 0.5038959980010986,
+      "reason": null,
+      "implementation_sha256": "52df29cf601f5d8b8541d76f09ee09508e6bb9e67c66cb97674bad9ed5366729",
+      "result": {
+        "metric": "independent_chain_equilibrium_observable_normalized_MSE_at_fixed_work",
+        "cases": [
+          {
+            "temperature": 0.88,
+            "size": 8,
+            "mean_observables": [
+              -1.4689894358318731,
+              0.7810630026707067
+            ],
+            "independent_chain_standard_errors": [
+              0.007535434072977099,
+              0.003351404581881532
+            ],
+            "reference_means": [
+              -1.470686440914867,
+              0.7837275521996798
+            ],
+            "reference_standard_errors": [
+              0.001337269646842502,
+              0.0006010253574456779
+            ],
+            "lag1_autocorrelation": [
+              0.8633231962488631,
+              0.7291741766404062
+            ],
+            "charged_site_units_per_chain": 24576,
+            "normalized_MSE": 0.0225761422857752
+          },
+          {
+            "temperature": 0.96,
+            "size": 12,
+            "mean_observables": [
+              -1.3987914077470023,
+              0.7080429636077668
+            ],
+            "independent_chain_standard_errors": [
+              0.006035394179748404,
+              0.005806588234599598
+            ],
+            "reference_means": [
+              -1.3850206139757821,
+              0.7040203889763105
+            ],
+            "reference_standard_errors": [
+              0.0014095028703851639,
+              0.0012636390967276409
+            ],
+            "lag1_autocorrelation": [
+              0.8642900366158925,
+              0.7785121547233368
+            ],
+            "charged_site_units_per_chain": 55296,
+            "normalized_MSE": 0.04455915363811839
+          },
+          {
+            "temperature": 1.1,
+            "size": 8,
+            "mean_observables": [
+              -1.2284084260863095,
+              0.6503009535779275
+            ],
+            "independent_chain_standard_errors": [
+              0.014656703899204652,
+              0.009339031857753295
+            ],
+            "reference_means": [
+              -1.2374043157968142,
+              0.6577989330485982
+            ],
+            "reference_standard_errors": [
+              0.0032812935384694164,
+              0.0021968220607282343
+            ],
+            "lag1_autocorrelation": [
+              0.8736912008181742,
+              0.8147900299335756
+            ],
+            "charged_site_units_per_chain": 24576,
+            "normalized_MSE": 0.04125909337482666
+          }
+        ],
+        "reference": "long independent mixed-kernel chains, numerical reference with explicit uncertainty; not exact equilibrium truth",
+        "source_data_sha256": "65e6b38c7089d59573cc57d62efe8d5e96d1479f2877347457f058e9378bde4e",
+        "source_kind": "source_model"
+      },
+      "candidate_sha256": "19c56e67a5001bd70815e0a8705a413d462628e9e66d23e2ded7001799d3f3c3",
+      "data_sha256": "65e6b38c7089d59573cc57d62efe8d5e96d1479f2877347457f058e9378bde4e"
+    }
+  ],
+  "summary": {
+    "ok": 6,
+    "blocked": 8,
+    "failed": 0
+  },
+  "unit_tests": {
+    "checker_fixtures": 20,
+    "counted_as_benchmark_success": false
+  }
+}

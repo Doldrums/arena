@@ -1,0 +1,285 @@
+{
+  "schema_version": "1.0",
+  "id": "evox-frontier-cs",
+  "name": "Frontier-CS",
+  "description": "Frontier-CS",
+  "paper_ids": [
+    "evox",
+    "adaevolve"
+  ],
+  "kind": "upstream",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Experimental evaluation and additional-results appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/frontier-cs-eval"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Experimental evaluation and additional-results appendix"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "172 problems",
+    "notes": [
+      "benchmark dependencies",
+      "task data"
+    ]
+  },
+  "evaluation": {
+    "metric": "official benchmark score",
+    "paper_metric": "official benchmark score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Frontier-CS",
+    "protocol": "upstream",
+    "source_locator": "Experimental evaluation and additional-results appendix"
+  },
+  "execution": {
+    "repository": "https://github.com/skydiscover-ai/skydiscover",
+    "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+    "upstream_path": "benchmarks/frontier-cs-eval",
+    "commands": [
+      {
+        "argv": [
+          "uv",
+          "run",
+          "python",
+          "run_all_frontiercs.py",
+          "--search",
+          "evox",
+          "--iterations",
+          "50",
+          "--workers",
+          "6"
+        ],
+        "cwd": "benchmarks/frontier-cs-eval",
+        "source_url": "https://github.com/skydiscover-ai/skydiscover/blob/0d932b690670a7e544388ad362e9876c8bd256a0/benchmarks/frontier-cs-eval/run_all_frontiercs.py",
+        "notes": "Full source-provided suite search launcher; discovers problem IDs from the Frontier-CS judge. Requires Docker judge, Frontier-CS clone and model credentials; may launch costly LLM search. It is not a cheap baseline evaluator."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "Clone https://github.com/FrontierCS/Frontier-CS.git into benchmarks/frontier-cs-eval/Frontier-CS.",
+      "Start docker compose up -d in its algorithmic directory.",
+      "uv sync --extra frontier-cs",
+      "Set OPENAI_API_KEY and JUDGE_URLS (default http://localhost:8081)."
+    ],
+    "task_setup_instructions": [
+      "Clone https://github.com/FrontierCS/Frontier-CS.git into benchmarks/frontier-cs-eval/Frontier-CS.",
+      "Start docker compose up -d in its algorithmic directory.",
+      "uv sync --extra frontier-cs",
+      "Set OPENAI_API_KEY and JUDGE_URLS (default http://localhost:8081)."
+    ],
+    "framework_setup_instructions": [
+      "uv sync"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Full source-provided suite search launcher; discovers problem IDs from the Frontier-CS judge. Requires Docker judge, Frontier-CS clone and model credentials; may launch costly LLM search. It is not a cheap baseline evaluator."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "toolchain:Frontier-CS judge",
+        "docker"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "toolchain",
+      "unsupported_reason": "Frontier-CS problems are judged by the Frontier-CS evaluation service (Docker judge and hidden tests), which is not bundled."
+    }
+  },
+  "limitations": [
+    "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Frontier-CS",
+    "slug": "frontier-cs",
+    "description": "Frontier-CS",
+    "benchmark": "Frontier-CS",
+    "dataset": "172 problems",
+    "metric": "official benchmark score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2602.23413",
+    "source_locator": "Experimental evaluation and additional-results appendix",
+    "upstream_path": "benchmarks/frontier-cs-eval",
+    "requirements": [
+      "benchmark dependencies",
+      "task data"
+    ],
+    "execution_notes": "Full source-provided suite search launcher; discovers problem IDs from the Frontier-CS judge. Requires Docker judge, Frontier-CS clone and model credentials; may launch costly LLM search. It is not a cheap baseline evaluator.",
+    "upstream_evaluator_paths": [
+      "benchmarks/frontier-cs-eval/evaluator.py"
+    ],
+    "upstream_seed_paths": [],
+    "run_commands": [
+      {
+        "argv": [
+          "uv",
+          "run",
+          "python",
+          "run_all_frontiercs.py",
+          "--search",
+          "evox",
+          "--iterations",
+          "50",
+          "--workers",
+          "6"
+        ],
+        "cwd": "benchmarks/frontier-cs-eval",
+        "source_url": "https://github.com/skydiscover-ai/skydiscover/blob/0d932b690670a7e544388ad362e9876c8bd256a0/benchmarks/frontier-cs-eval/run_all_frontiercs.py",
+        "notes": "Full source-provided suite search launcher; discovers problem IDs from the Frontier-CS judge. Requires Docker judge, Frontier-CS clone and model credentials; may launch costly LLM search. It is not a cheap baseline evaluator."
+      }
+    ],
+    "setup_commands": [
+      "Clone https://github.com/FrontierCS/Frontier-CS.git into benchmarks/frontier-cs-eval/Frontier-CS.",
+      "Start docker compose up -d in its algorithmic directory.",
+      "uv sync --extra frontier-cs",
+      "Set OPENAI_API_KEY and JUDGE_URLS (default http://localhost:8081)."
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "docker",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "adaevolve-frontier-cs",
+      "paper_ids": [
+        "adaevolve"
+      ],
+      "name": "Frontier-CS",
+      "description": "Frontier-CS",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.20133",
+          "type": "paper",
+          "locator": "Experimental evaluation and additional-results appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/frontier-cs-eval"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "172 problems",
+        "notes": [
+          "benchmark dependencies",
+          "task data"
+        ]
+      },
+      "evaluation": {
+        "metric": "official benchmark score",
+        "paper_metric": "official benchmark score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "Frontier-CS",
+        "protocol": "upstream",
+        "source_locator": "Experimental evaluation and additional-results appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/frontier-cs-eval",
+        "commands": [
+          {
+            "argv": [
+              "uv",
+              "run",
+              "python",
+              "run_all_frontiercs.py",
+              "--search",
+              "adaevolve",
+              "--iterations",
+              "50",
+              "--workers",
+              "6"
+            ],
+            "cwd": "benchmarks/frontier-cs-eval",
+            "source_url": "https://github.com/skydiscover-ai/skydiscover/blob/0d932b690670a7e544388ad362e9876c8bd256a0/benchmarks/frontier-cs-eval/run_all_frontiercs.py",
+            "notes": "Full source-provided suite search launcher; discovers problem IDs from the Frontier-CS judge. Requires Docker judge, Frontier-CS clone and model credentials; may launch costly LLM search. It is not a cheap baseline evaluator."
+          }
+        ],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "Clone https://github.com/FrontierCS/Frontier-CS.git into benchmarks/frontier-cs-eval/Frontier-CS.",
+          "Start docker compose up -d in its algorithmic directory.",
+          "uv sync --extra frontier-cs",
+          "Set OPENAI_API_KEY and JUDGE_URLS (default http://localhost:8081)."
+        ],
+        "task_setup_instructions": [
+          "Clone https://github.com/FrontierCS/Frontier-CS.git into benchmarks/frontier-cs-eval/Frontier-CS.",
+          "Start docker compose up -d in its algorithmic directory.",
+          "uv sync --extra frontier-cs",
+          "Set OPENAI_API_KEY and JUDGE_URLS (default http://localhost:8081)."
+        ],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Full source-provided suite search launcher; discovers problem IDs from the Frontier-CS judge. Requires Docker judge, Frontier-CS clone and model credentials; may launch costly LLM search. It is not a cheap baseline evaluator."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

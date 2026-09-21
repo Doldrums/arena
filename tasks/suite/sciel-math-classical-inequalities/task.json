@@ -1,0 +1,217 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-math-classical-inequalities",
+  "name": "SCiEL: Hausdorff–Young quotient",
+  "description": "Choose 2,048 step heights on [−10,10] to maximize the numerically evaluated Hausdorff–Young quotient for p=3/2 and q=3.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "construction_math",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/classical_inequalities/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/classical_inequalities/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example classical_inequalities",
+    "paper_metric": null,
+    "source_locator": "examples/alphaevolve_math_problems/classical_inequalities/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/alphaevolve_math_problems/classical_inequalities",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/alphaevolve_math_problems/classical_inequalities/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": "examples/alphaevolve_math_problems/classical_inequalities/initial_program.py",
+      "dependencies": [
+        "numpy"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply mathematical validity; preserve unknown validity unless the original evaluator exposes an explicit signal."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The score uses finite discretization, sampling or numerical approximation; it does not prove a continuous mathematical bound.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "The score uses finite discretization, sampling or numerical approximation; it does not prove a continuous mathematical bound."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/alphaevolve_math_problems/classical_inequalities/evaluator.py": "3aa4ea9dbabf5e44ce41ee648e892ebb925e94f318995caeb85845d76c5e6ab1",
+    "examples/alphaevolve_math_problems/classical_inequalities/config.yaml": "a32fa2f9e749659a3936dd9a58cc4b756471b9cca9f06dcc35125b8404a56024",
+    "examples/alphaevolve_math_problems/classical_inequalities/requirements.txt": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc",
+    "examples/alphaevolve_math_problems/classical_inequalities/initial_program.py": "6510f4dad4f4ba2ffea02282746224cdf72d98e98afecfd9e088520087851082"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/alphaevolve_math_problems/classical_inequalities/evaluator.py",
+      "signature": "program_path: str",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.hausdorff_young_p32()"
+    ],
+    "baseline_path": "examples/alphaevolve_math_problems/classical_inequalities/initial_program.py",
+    "baseline_functions": {
+      "hausdorff_young_p32": {
+        "signature": "",
+        "docstring": "Hausdorff-Young inequality, probing the Babenko-Beckner constant.\n\nConstruct a bounded, integrable, not-identically-zero step function f of one real\nvariable that maximizes the quotient\n\n    Q(f) = ||fhat||_q / ||f||_p ,     with 1/p + 1/q = 1, p = 3/2, q = 3,\n\nwhere fhat is the Fourier transform fhat(xi) = integral f(x) exp(-2*pi*i*x*xi) dx.\n\nThe function is represented as a step function on the interval [-R, R]: cell j\n(j = 0 .. N-1) spans [x_j, x_j + dx) with x_j = -R + j*dx and dx = 2R/N, and f takes\nthe constant value returned in entry j of the array. The sharp maximizer of the\nHausdorff-Young ratio is a Gaussian (Babenko-Beckner), so the baseline samples the\nGaussian exp(-x^2) on the grid.\n\nReturns:\n    values: np.ndarray of shape (N,), the step-function value of f on each grid cell.",
+        "returns": "np.ndarray"
+      }
+    },
+    "parameters": {
+      "P": "3.0 / 2.0",
+      "Q": "P / (P - 1.0)",
+      "R": 10.0,
+      "N": 2048,
+      "BENCHMARK": "float(np.sqrt(P ** (1.0 / P) / Q ** (1.0 / Q)))",
+      "MAX_F": 100.0,
+      "MAX_FHAT": 100.0,
+      "TOL": 1e-12
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "score_expressions": [
+      "combined_score = quotient / BENCHMARK",
+      "combined_score = 0.0"
+    ],
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 107,
+        "expression": "{'quotient': float(quotient), 'combined_score': float(combined_score), 'eval_time': float(eval_time)}"
+      },
+      {
+        "function": "evaluate",
+        "line": 113,
+        "expression": "{'combined_score': 0.0, 'error': str(e)}"
+      }
+    ],
+    "metric_assignments": [],
+    "validity_key": null,
+    "validity_semantics": "No independent boolean validity field; zero score, success rate and absence of error do not establish validity.",
+    "error_key": "error",
+    "rng_calls": [],
+    "declared_requirements": [
+      "numpy"
+    ],
+    "evaluator_imports": [
+      "importlib",
+      "numpy",
+      "os",
+      "sys",
+      "time"
+    ],
+    "baseline_imports": [
+      "numpy"
+    ],
+    "source_config_path": "examples/alphaevolve_math_problems/classical_inequalities/config.yaml",
+    "baseline_constants": {
+      "R": 10.0,
+      "N": 2048
+    },
+    "baseline_rng_calls": [],
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Some branches return score zero without error; some omit the primary score. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 200,
+      "evaluator": {
+        "timeout": 360,
+        "max_retries": 3
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "cpu",
+    "recommended_smoke_outer_timeout_seconds": 15
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

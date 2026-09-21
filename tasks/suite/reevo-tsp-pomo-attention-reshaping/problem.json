@@ -1,0 +1,105 @@
+{
+  "protocol": "original",
+  "family": "reevo_upstream",
+  "direction": "minimize",
+  "contract": "Original CPU protocol, bounded subset. POMO and DPP additionally check feasibility; BO/LEHD remain validity-unverified.",
+  "parameters": {
+    "checkout": "{checkout}",
+    "problem": "tsp_pomo",
+    "max_instances": 2
+  },
+  "requires": [
+    "py:numpy",
+    "checkout:ai4co/reevo@6dce18257da5e11db2d138e417a2fffc5c72d05f",
+    "py:torch"
+  ],
+  "timeout": 900,
+  "notes": [
+    "Bounded profile of the paper's evaluator (few instances, CPU); see the adapter kwargs in task.json."
+  ],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "score",
+    "error_key": "error",
+    "validity_key": "valid"
+  },
+  "origin": {
+    "repository": "https://github.com/ai4co/reevo",
+    "path": "adapters/recovered/optimization_pomo.py",
+    "files_sha256": {
+      "adapters/recovered/optimization_pomo.py": "07c2467b82eddf7f096f09970d2aafeceb706293f75d16276701e2ebe8864d2d",
+      "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+      "adapters/recovered/seeds/optimization_reevo_tsp_pomo.py": "467029e20ad6e306d3a023cea36e3efeb571fb0b1410c1b9e65a73c523cadc59"
+    }
+  },
+  "protocol_description": "The paper's pinned evaluator, executed through the repository's upstream adapter (bounded_original_protocol_original_checkpoints). The pinned source is fetched by `python3 run.py setup reevo-tsp-pomo-attention-reshaping`; data preparation is described in the notes.",
+  "id": "reevo-tsp-pomo-attention-reshaping",
+  "name": "TSP POMO attention reshaping",
+  "paper_ids": [
+    "reevo"
+  ],
+  "description": "TSP POMO attention reshaping: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "benchmark": "TSP POMO attention reshaping",
+  "paper_metric": "mean route length",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2402.01145",
+      "type": "paper",
+      "locator": "Sections 5.1–5.5"
+    },
+    {
+      "url": "https://github.com/ai4co/reevo/tree/6dce18257da5e11db2d138e417a2fffc5c72d05f",
+      "type": "repository",
+      "locator": "cfg/problem/tsp_pomo.yaml"
+    }
+  ],
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "reevo",
+      "title": "ReEvo: Large Language Models as Hyper-Heuristics with Reflective Evolution",
+      "url": "https://arxiv.org/pdf/2402.01145"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Minimize the length of a tour that visits each location once and returns to its start.",
+    "importance_rationale": "Shorter feasible tours address routing, inspection and manufacturing movement costs. The local instances are bounded algorithmic studies of that operations-research objective, not evidence of a deployed logistics improvement.",
+    "papers": [
+      {
+        "title": "An effective implementation of the Lin–Kernighan traveling salesman heuristic",
+        "url": "https://doi.org/10.1016/S0377-2217(99)00284-2",
+        "task_relation": "Helsgaun develops a solver whose central goal is shorter symmetric TSP tours. TSP POMO attention reshaping uses its own construction, search, or attention interface and instance distribution while optimizing that same feasible-tour objective.",
+        "primary_goal": "Compute optimal or near-optimal traveling-salesman tours efficiently.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

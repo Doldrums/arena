@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "id": "science-materials-geom-conformer-search",
+  "name": "GEOM molecular conformer ensemble search",
+  "description": "conformers(molecular_graph_smiles, stereochemistry, budget) -> K x N x 3 coordinates in Angstrom, N is RDKit AddHs atom order and 1<=K<=budget. Return bounded physically plausible conformers preserving all explicit stereocentres. Score molecular-macro GEOM heavy-atom symmetry-aware RMSD coverage at 0.5 Angstrom; matching RMSD is diagnostic. Evaluator checks bond distances, clashes and chirality against the molecular graph.",
+  "paper_ids": [
+    "science-materials_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1038/s41597-022-01288-4",
+      "type": "paper",
+      "locator": "GEOM conformer ensembles; dataset preparation and molecular diversity evaluation."
+    },
+    {
+      "url": "https://github.com/learningmatter-mit/geom",
+      "type": "benchmark",
+      "locator": "Official conformer pickles and dataset loading instructions; each trusted source pickle must be hash-pinned before conversion."
+    },
+    {
+      "url": "https://arxiv.org/abs/2203.02923",
+      "type": "paper",
+      "title": "GeoDiff: a Geometric Diffusion Model for Molecular Conformation Generation",
+      "locator": "Generates molecular conformations from molecular graphs and benchmarks conformation quality and coverage. The local GEOM subset, budget, stereochemistry and validity checks are a restricted protocol."
+    },
+    {
+      "url": "https://zenodo.org/records/20633997",
+      "type": "archive",
+      "locator": "ChoderaLab Modelforge GEOM-QM9 nc_1000_v1.0 curation, CC0; 67 molecules/1000 actual conformers, publisher MD5 and full source SHA256 verified. 57 complete ensembles/958 conformers retained after source-only graph, valence and stereochemistry audit."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; GPU optional for learned candidate methods",
+    "dependencies": [
+      "numpy",
+      "rdkit"
+    ],
+    "environment_variables": [],
+    "datasets": "Run python scripts/prepare_geom_source.py for the published508KB Modelforge GEOM-QM9 source curation. Original GEOM trusted-pickle conversion remains available; full Harvard direct datafile returned HTTP403."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "GEOM molecular conformer ensemble search",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_materials_geom_conformer_search",
+    "science_family": "science_materials_geom_conformer_search",
+    "parameters": {
+      "proposal_id": "C02",
+      "data_sha256": "c5c4309e6bdb881b0fc6236a0d0ed4a79f6e8478a07665a3f4d8d21aafc7e141"
+    },
+    "interface": "conformers(molecular_graph_smiles, stereochemistry, budget) -> K x N x 3 coordinates in Angstrom, N is RDKit AddHs atom order and 1<=K<=budget. Return bounded physically plausible conformers preserving all explicit stereocentres. Score molecular-macro GEOM heavy-atom symmetry-aware RMSD coverage at 0.5 Angstrom; matching RMSD is diagnostic. Evaluator checks bond distances, clashes and chirality against the molecular graph.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "public_benchmark",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "chemistry"
+    },
+    "proposal_id": "C02",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL contracts, evaluator logic and tests are independently implemented. Reused scientific engines and reference data are separately attributed in reuse_scope; author-code availability alone is not classified as evaluator reuse.",
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "reuse_scope": "RDKit molecular graph, stereochemistry, symmetry alignment and ETKDG/UFF seed engine; RDKit bond perception in verified source atom-order conversion. GEOM and ChoderaLab curation data separately attributed."
+    },
+    "additional_requires": [
+      "file:data/materials-expansion/C02/dataset.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_materials_geom_conformer_search",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:rdkit",
+        "file:data/materials-expansion/C02/dataset.json"
+      ],
+      "timeout": 180,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent SCIEL adaptation of a cited scientific problem; no claim to reproduce author leaderboard scores.",
+    "Candidate and evaluator run in one Python process; data access is separated by API, not an OS sandbox. Isolate evaluator data for adversarial or held-out evaluation.",
+    "Secondary published scientific curation of GEOM-QM9, zero-shot pilot over57 molecules/958 released conformers. No claim to cover the complete original ensemble archive, GEOM-Drugs, or experimental conformer populations.",
+    "Ten entire source ensembles excluded by graph/valence/stereochemistry checks before candidate evaluation. Source atomic order is recovered using geometry-based bond perception and verified chirality-preserving graph isomorphism; all retained reference frames pass the physical contract.",
+    "No fitted training split is used. Coverage measures the released subset only; author-curation selection may differ from the full GEOM population."
+  ],
+  "validation": {
+    "level": "source_seed_executed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_geom_source.py",
+    "evidence": "validation/materials-geom-source-report.json",
+    "benchmark_verified": true
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "chemistry",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Find physically plausible low-energy conformational ensembles of molecules.",
+    "importance_rationale": "Molecular conformations affect spectra, thermodynamic properties and molecular interactions.",
+    "papers": [
+      {
+        "title": "Automated exploration of the low-energy chemical space with fast quantum chemical methods",
+        "url": "https://pubs.rsc.org/en/content/articlehtml/2020/cp/c9cp06869d",
+        "primary_goal": "Generate quantum-chemically grounded conformer ensembles representing significantly populated molecular structures.",
+        "task_relation": "The local task constructs stereochemistry-preserving conformers and scores coverage of GEOM reference structures. It measures a restricted geometric aspect of conformer search, not thermodynamic populations, spectroscopic accuracy or all CREST procedures.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The paper directly pursues physical molecular-ensemble construction; the GEOM dataset paper by itself is excluded.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

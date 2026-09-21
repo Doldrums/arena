@@ -1,0 +1,205 @@
+{
+  "schema_version": "1.0",
+  "id": "evox-telemetry-repair",
+  "name": "Telemetry repair",
+  "description": "Telemetry repair",
+  "paper_ids": [
+    "evox",
+    "adaevolve"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": null
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "Docker",
+      "task-specific dependencies and data"
+    ]
+  },
+  "evaluation": {
+    "metric": "evaluator combined score",
+    "paper_metric": "evaluator combined score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "ADRS",
+    "protocol": "specified_only",
+    "source_locator": "Systems results and task-definition appendix"
+  },
+  "execution": {
+    "repository": "https://github.com/skydiscover-ai/skydiscover",
+    "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "uv sync"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "uv sync"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper/task descriptions differ across revisions; use pinned upstream evaluator as execution authority."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "dataset:ADRS private task"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "dataset",
+      "unsupported_reason": "The paper reports this ADRS task but the pinned public repository contains no implementation for it."
+    }
+  },
+  "limitations": [
+    "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+    "Telemetry Repair is explicitly marked Coming soon in pinned benchmarks/ADRS/README.md; no implementation released.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Telemetry repair",
+    "slug": "telemetry-repair",
+    "description": "Telemetry repair",
+    "benchmark": "ADRS",
+    "dataset": null,
+    "metric": "evaluator combined score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2602.23413",
+    "source_locator": "Systems results and task-definition appendix",
+    "upstream_path": null,
+    "requirements": [
+      "Docker",
+      "task-specific dependencies and data"
+    ],
+    "execution_notes": "Paper/task descriptions differ across revisions; use pinned upstream evaluator as execution authority.",
+    "execution_blocked_reason": "Telemetry Repair is explicitly marked Coming soon in pinned benchmarks/ADRS/README.md; no implementation released."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "model",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "adaevolve-telemetry-repair",
+      "paper_ids": [
+        "adaevolve"
+      ],
+      "name": "Telemetry repair",
+      "description": "Telemetry repair",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.20133",
+          "type": "paper",
+          "locator": "Systems results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": null
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "task-specific dependencies and data"
+        ]
+      },
+      "evaluation": {
+        "metric": "evaluator combined score",
+        "paper_metric": "evaluator combined score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ADRS",
+        "protocol": "specified_only",
+        "source_locator": "Systems results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "uv sync"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Paper/task descriptions differ across revisions; use pinned upstream evaluator as execution authority."
+        ]
+      },
+      "limitations": [
+        "Telemetry Repair is explicitly marked Coming soon in pinned benchmarks/ADRS/README.md; no implementation released.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

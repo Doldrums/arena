@@ -1,0 +1,80 @@
+{
+  "protocol": "recreated",
+  "family": "ode_integrator",
+  "direction": "maximize",
+  "contract": "integrate(f, t_span, y0) -> y(t_end) for an initial-value problem y' = f(t, y); the evaluator counts calls to f. Score: -log10(relative error) - 0.5 * log10(evaluations)",
+  "parameters": {
+    "problem": "convection_diffusion_100"
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 300,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "dga2d-ode-solver-convection-diffusion-100-point",
+  "name": "ODE solver: Convection-diffusion 100-point",
+  "paper_ids": [
+    "dga2d"
+  ],
+  "description": "ODE solver: Convection-diffusion 100-point",
+  "benchmark": null,
+  "paper_metric": "-log10(error) - lambda log10(function evaluations)",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2608.00700",
+      "type": "paper",
+      "locator": "Appendix G.1"
+    }
+  ],
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Paper says an anonymized implementation was supplied as supplementary material but no public URL was found in the extracted PDF.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "dga2d",
+      "title": "DGA2D: Directed Graph-Guided Automated Algorithm Design with Large Language Models",
+      "url": "https://arxiv.org/pdf/2608.00700"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "numerical_computing",
+    "area": "scientific_computing",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Compute accurate initial-value trajectories for spatially discretized transport by convection and diffusion with controlled numerical cost.",
+    "importance_rationale": "Stable and efficient integration is needed to simulate spatially discretized transport by convection and diffusion. This local model is an idealized numerical-method instance; it does not supply empirical measurements or establish a new physical law.",
+    "papers": [
+      {
+        "title": "Automatic Selection of Methods for Solving Stiff and Nonstiff Systems of Ordinary Differential Equations",
+        "url": "https://doi.org/10.1137/0904010",
+        "task_relation": "Petzold develops a numerical integrator that changes methods according to stiffness to solve initial-value systems efficiently. This task implements the same numerical-solution objective for spatially discretized transport by convection and diffusion, with a local error-versus-evaluation-cost score and discretization.",
+        "primary_goal": "Improve the efficiency and reliability of solving stiff and nonstiff ordinary differential-equation initial-value systems.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

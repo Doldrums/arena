@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "id": "meta-harness-financial-phrasebank",
+  "name": "Financial PhraseBank",
+  "description": "Financial PhraseBank task evaluated in Meta-Harness: End-to-End Optimization of Model Harnesses.",
+  "paper_ids": [
+    "meta-harness"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2603.28052",
+      "type": "paper",
+      "locator": "Section 4.1; Table 5; Appendix C.1"
+    },
+    {
+      "url": "https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact/tree/57fefdb2ff84af3fd81b69d67814acbe69bd0743",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "classification accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Financial PhraseBank",
+    "protocol": "specified_only",
+    "source_locator": "Section 4.1; Table 5; Appendix C.1"
+  },
+  "execution": {
+    "repository": "https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact",
+    "commit": "57fefdb2ff84af3fd81b69d67814acbe69bd0743",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "harbor"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact/blob/57fefdb2ff84af3fd81b69d67814acbe69bd0743/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "harbor"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact/blob/57fefdb2ff84af3fd81b69d67814acbe69bd0743/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Public artifact inspected provides Terminal-Bench agent only; classification harness not verified."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Financial PhraseBank",
+    "slug": "financial-phrasebank",
+    "description": "Financial PhraseBank task evaluated in Meta-Harness: End-to-End Optimization of Model Harnesses.",
+    "benchmark": "Financial PhraseBank",
+    "dataset": null,
+    "metric": "classification accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2603.28052",
+    "source_locator": "Section 4.1; Table 5; Appendix C.1",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [
+      "Public artifact inspected provides Terminal-Bench agent only; classification harness not verified."
+    ],
+    "setup_commands": [],
+    "run_commands": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

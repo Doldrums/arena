@@ -1,0 +1,227 @@
+{
+  "schema_version": "1.0",
+  "evidence_kind": "Four original R cases using the labeled CSV repair and real R",
+  "historical_recovery_check": true,
+  "authoritative_current_run": "Use the final recovery campaign report for current manifest/runtime fingerprints.",
+  "source_sha256": "c609ce82de2a31b91e2da662794cb20076e3ba83818ae471617811382e3130ac",
+  "path_sanitization": {
+    "${REPOSITORY}": "repository root",
+    "${SCIEL_ROOT}": "external pinned SCiEL source",
+    "${WORKSPACE}": "task workspace",
+    "${HOME}": "user home directory",
+    "${TEMP}": "temporary directory"
+  },
+  "results": [
+    {
+      "task_id": "sciel-math-r-robust-regression",
+      "mode": "sciel_evaluator_smoke",
+      "score": 0.7633300000000001,
+      "valid": null,
+      "sciel_exercised": true,
+      "sciel_source": {
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "tracked_modified": false,
+        "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+      },
+      "llm_calls_requested": false,
+      "logs": {
+        "stdout": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-r-robust-regression/evaluator_smoke.stdout.log",
+        "stderr": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-r-robust-regression/evaluator_smoke.stderr.log"
+      },
+      "status": "unverified",
+      "metric": "score",
+      "direction": "maximize",
+      "combined_score": 0.7633300000000001,
+      "sciel_metrics": {
+        "combined_score": 0.7633300000000001,
+        "evaluation_failed": 0.0,
+        "validity_known": 0.0,
+        "original_score": 0.7633300000000001
+      },
+      "evolution_exercised": false,
+      "mutations": 0,
+      "task_result": {
+        "schema_version": "1.0",
+        "task_id": "sciel-math-r-robust-regression",
+        "mode": "upstream",
+        "status": "completed",
+        "valid": null,
+        "score": 0.7633300000000001,
+        "source_type": "git",
+        "repository": "https://github.com/luciferkonn/SCiEL",
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "metric": "score",
+        "direction": "maximize",
+        "candidate_sha256": "34ba74971b8416a443ba5c5e45248148c1fe162a17e4b7614ad1263c10564b27",
+        "evaluator_sha256": "ea9c03d202b8883891222167c2963461ab926c9c0f4d12a377a8ecfcfa841983",
+        "evaluator_scope": "repository",
+        "implementation_label": "Repository repair of SCiEL R CSV transport; scientific scoring unchanged",
+        "repository_asset_sha256": {},
+        "started_at": "2026-09-19T12:34:21.278808+00:00",
+        "actual_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "working_tree_modified": false,
+        "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "upstream_result": {
+          "metrics": {
+            "score": 0.7633300000000001,
+            "mse": 4.4966,
+            "mae": 0.92285,
+            "medae": 0.312625,
+            "r_squared": 0.383625,
+            "outlier_robustness": 0.9175,
+            "execution_time": 0.004975
+          },
+          "artifacts": {
+            "test_results": [
+              {
+                "test_case": 0,
+                "outlier_fraction": 0.0,
+                "metrics": {
+                  "mse": 0.0078,
+                  "mae": 0.0707,
+                  "r_squared": 0.9935,
+                  "medae": 0.0633,
+                  "outlier_robustness": 0.95,
+                  "execution_time": 0.0054
+                },
+                "case_score": 0.96937
+              },
+              {
+                "test_case": 1,
+                "outlier_fraction": 0.1,
+                "metrics": {
+                  "mse": 2.7759,
+                  "mae": 0.7564,
+                  "r_squared": 0.2851,
+                  "medae": 0.2819,
+                  "outlier_robustness": 0.91,
+                  "execution_time": 0.0046
+                },
+                "case_score": 0.60794
+              },
+              {
+                "test_case": 2,
+                "outlier_fraction": 0.2,
+                "metrics": {
+                  "mse": 8.966,
+                  "mae": 1.6028,
+                  "r_squared": 0.0599,
+                  "medae": 0.4421,
+                  "outlier_robustness": 0.89,
+                  "execution_time": 0.0051
+                },
+                "case_score": 0.5293600000000002
+              },
+              {
+                "test_case": 3,
+                "outlier_fraction": 0.15,
+                "metrics": {
+                  "mse": 6.2367,
+                  "mae": 1.2615,
+                  "r_squared": 0.196,
+                  "medae": 0.4632,
+                  "outlier_robustness": 0.92,
+                  "execution_time": 0.0048
+                },
+                "case_score": 0.54864
+              }
+            ],
+            "repository_repair": {
+              "changes": [
+                "Create CSV files before rendering R script",
+                "Pass CSV file paths",
+                "Quote candidate path",
+                "Isolate each case's temporary output"
+              ],
+              "original_source_sha256": "05f0b398ac677bcdbb7737f52041a59559dfed90df8b3eccf4577c4a68f10c9b",
+              "scoring_changed": false,
+              "independent_verification": false
+            }
+          }
+        },
+        "finished_at": "2026-09-19T12:34:23.363561+00:00"
+      },
+      "upstream_result": {
+        "metrics": {
+          "score": 0.7633300000000001,
+          "mse": 4.4966,
+          "mae": 0.92285,
+          "medae": 0.312625,
+          "r_squared": 0.383625,
+          "outlier_robustness": 0.9175,
+          "execution_time": 0.004975
+        },
+        "artifacts": {
+          "test_results": [
+            {
+              "test_case": 0,
+              "outlier_fraction": 0.0,
+              "metrics": {
+                "mse": 0.0078,
+                "mae": 0.0707,
+                "r_squared": 0.9935,
+                "medae": 0.0633,
+                "outlier_robustness": 0.95,
+                "execution_time": 0.0054
+              },
+              "case_score": 0.96937
+            },
+            {
+              "test_case": 1,
+              "outlier_fraction": 0.1,
+              "metrics": {
+                "mse": 2.7759,
+                "mae": 0.7564,
+                "r_squared": 0.2851,
+                "medae": 0.2819,
+                "outlier_robustness": 0.91,
+                "execution_time": 0.0046
+              },
+              "case_score": 0.60794
+            },
+            {
+              "test_case": 2,
+              "outlier_fraction": 0.2,
+              "metrics": {
+                "mse": 8.966,
+                "mae": 1.6028,
+                "r_squared": 0.0599,
+                "medae": 0.4421,
+                "outlier_robustness": 0.89,
+                "execution_time": 0.0051
+              },
+              "case_score": 0.5293600000000002
+            },
+            {
+              "test_case": 3,
+              "outlier_fraction": 0.15,
+              "metrics": {
+                "mse": 6.2367,
+                "mae": 1.2615,
+                "r_squared": 0.196,
+                "medae": 0.4632,
+                "outlier_robustness": 0.92,
+                "execution_time": 0.0048
+              },
+              "case_score": 0.54864
+            }
+          ],
+          "repository_repair": {
+            "changes": [
+              "Create CSV files before rendering R script",
+              "Pass CSV file paths",
+              "Quote candidate path",
+              "Isolate each case's temporary output"
+            ],
+            "original_source_sha256": "05f0b398ac677bcdbb7737f52041a59559dfed90df8b3eccf4577c4a68f10c9b",
+            "scoring_changed": false,
+            "independent_verification": false
+          }
+        }
+      },
+      "engine_evaluator_file": "engine/openevolve/evaluator.py",
+      "python_version": "3.12.14",
+      "exit_code": 0
+    }
+  ]
+}

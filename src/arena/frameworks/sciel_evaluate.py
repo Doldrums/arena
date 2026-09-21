@@ -17,7 +17,7 @@ import uuid
 
 PROFILE = "sciel-unit-interval/1"
 TASK_ID = "reference-sat"
-TASK_COMMIT = "5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935"
+_EVALUATOR_SHA256 = "902213f32318831532fc1c57ddcb4805bef23ccc60e93cfd2a14b59bc47ced06"
 _MAX_CANDIDATE = 10 * 1024 * 1024
 _PROBLEM_SHA256 = "040f339b9871d23def130b429233b9d56b8a4fcaa0cdb86a1e6837771ada8ed9"
 _SEED_SHA256 = "f0cc231aebfbb48c490cb28beee229ac5b133403d6c615e19789a4800e70d23d"
@@ -25,16 +25,19 @@ _ALLOWED_CONFIG = {"schema", "tasks_dir", "task_id", "timeout_seconds", "executi
 
 
 def _profile(config):
-    if type(config) is not dict or set(config) != _ALLOWED_CONFIG:
+    if (type(config) is not dict or not _ALLOWED_CONFIG - {"tasks_dir"} <= config.keys()
+            or config.keys() - _ALLOWED_CONFIG):
         raise ValueError("SCiEL bridge requires the exact evaluation-config fields plus profile and receipts_dir")
     if config.get("schema") != "arena.evaluation-config/1" or config.get("profile") != PROFILE:
         raise ValueError("Unknown SCiEL evaluation profile")
     if config.get("task_id") != TASK_ID:
         raise ValueError("This SCiEL profile supports only the reviewed reference-sat task")
-    for key in ("tasks_dir", "receipts_dir"):
-        if type(config[key]) is not str or "\x00" in config[key] or not Path(config[key]).is_absolute():
-            raise ValueError(f"{key}: an absolute path is required")
-    tasks, receipts = Path(config["tasks_dir"]).resolve(), Path(config["receipts_dir"]).resolve()
+    value = config["receipts_dir"]
+    if type(value) is not str or "\x00" in value or not Path(value).is_absolute():
+        raise ValueError("receipts_dir: an absolute path is required")
+    from arena.task_library import resolve_task_root
+    tasks = resolve_task_root(config.get("tasks_dir"))
+    receipts = Path(config["receipts_dir"]).resolve()
     if receipts == tasks or receipts.is_relative_to(tasks) or tasks.is_relative_to(receipts):
         raise ValueError("Receipts must be outside the task-source tree")
     return receipts
@@ -43,7 +46,8 @@ def _profile(config):
 def _verified_source(config):
     from .evaluation import validate_config
     verified = validate_config(config)
-    if verified["source"]["commit"] != TASK_COMMIT or verified["problem_sha256"] != _PROBLEM_SHA256:
+    if (verified["problem_sha256"] != _PROBLEM_SHA256
+            or verified["evaluator_sha256"] != _EVALUATOR_SHA256):
         raise ValueError("The SCiEL unit-interval profile is bound to the reviewed task version")
     return verified
 
@@ -52,6 +56,7 @@ def create_task(config: dict, destination: Path) -> dict:
     """Write one native task package, after read-only source/config verification."""
     receipts = _profile(config)
     verified = _verified_source(config)
+    config = verified["config"]
     destination = Path(destination)
     if not destination.is_absolute() or destination.exists() or destination.is_symlink():
         raise ValueError("destination must be a new absolute task directory")
@@ -103,7 +108,7 @@ def full(program_path):
         shutil.rmtree(temporary, ignore_errors=True)
         raise
     return {"profile": PROFILE, "directory": str(destination), "qualified_task": "arena/reference-sat",
-            "task_source_commit": TASK_COMMIT, "canonical_evaluation": True,
+            "task_source": verified["source"], "canonical_evaluation": True,
             "native_config": {"task": "arena/reference-sat", "confirm_records": False,
                               "llm": {"system_message": prompt}},
             "runtime_conformance": "not_verified"}

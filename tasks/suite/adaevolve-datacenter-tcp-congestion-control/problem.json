@@ -1,0 +1,71 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "dataset:ADRS private task"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "dataset",
+  "unsupported_reason": "The paper reports this ADRS task but the pinned public repository contains no implementation for it.",
+  "protocol_description": "Not executable in this suite: The paper reports this ADRS task but the pinned public repository contains no implementation for it.",
+  "id": "adaevolve-datacenter-tcp-congestion-control",
+  "name": "Datacenter TCP congestion control",
+  "paper_ids": [
+    "adaevolve"
+  ],
+  "description": "Datacenter TCP congestion control",
+  "benchmark": "ADRS NS3",
+  "paper_metric": "throughput and queue latency",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Appendix B Table 6"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "Paper reports datacenter TCP congestion control, but no task implementation or selector exists in the pinned public repository tree.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "adaevolve",
+      "title": "AdaEvolve: Adaptive LLM Driven Zeroth-Order Optimization",
+      "url": "https://arxiv.org/pdf/2602.20133"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0",
+  "id": "eurekagent-dog-breed-identification",
+  "name": "dog-breed-identification",
+  "description": "dog-breed-identification",
+  "paper_ids": [
+    "eurekagent"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2606.13662",
+      "type": "paper",
+      "locator": "Appendix B"
+    },
+    {
+      "url": "https://github.com/THU-Team-Eureka/EurekAgent/tree/fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "MLE-Bench",
+      "Kaggle competition data",
+      "single GPU",
+      "24-hour experiment budget"
+    ]
+  },
+  "evaluation": {
+    "metric": "competition score and medal threshold",
+    "paper_metric": "competition score and medal threshold",
+    "paper_direction": null,
+    "direction": null,
+    "benchmark": "MLE-Bench Lite",
+    "protocol": "specified_only",
+    "source_locator": "Appendix B"
+  },
+  "execution": {
+    "repository": "https://github.com/THU-Team-Eureka/EurekAgent",
+    "commit": "fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "uv sync",
+      "bash docker/build.sh"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "uv sync",
+      "bash docker/build.sh"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Task appears in paper; no corresponding example package in inspected EurekAgent tree."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "dataset:MLE-bench",
+        "hardware:gpu"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "dataset",
+      "unsupported_reason": "MLE-bench competitions require the Kaggle data and model training; neither is redistributed."
+    }
+  },
+  "limitations": [
+    "Task appears in the paper MLE evaluation but no corresponding dataset wrapper, run config or evaluator package is present in the pinned public EurekAgent repository.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "dog-breed-identification",
+    "slug": "dog-breed-identification",
+    "description": "dog-breed-identification",
+    "benchmark": "MLE-Bench Lite",
+    "dataset": null,
+    "metric": "competition score and medal threshold",
+    "direction": null,
+    "source_url": "https://arxiv.org/pdf/2606.13662",
+    "source_locator": "Appendix B",
+    "upstream_path": null,
+    "requirements": [
+      "MLE-Bench",
+      "Kaggle competition data",
+      "single GPU",
+      "24-hour experiment budget"
+    ],
+    "execution_notes": "Task appears in paper; no corresponding example package in inspected EurekAgent tree.",
+    "execution_blocked_reason": "Task appears in the paper MLE evaluation but no corresponding dataset wrapper, run config or evaluator package is present in the pinned public EurekAgent repository."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "model",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "gpu",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

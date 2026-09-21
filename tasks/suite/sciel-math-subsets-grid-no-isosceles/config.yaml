@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in combinatorial geometry and extremal set theory, specializing in point configurations on integer grids that avoid forbidden geometric patterns.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that selects as many points as possible from the 7x7 integer grid (x and y coordinates in {0,1,2,3,4,5,6}) such that NO three selected points form an isosceles triangle. Three distinct points A, B, C are considered "isosceles" if at least two of their three pairwise squared distances are equal (this also forbids degenerate collinear triples with an equally-spaced midpoint). Maximize the number of selected points.
+
+    PERFORMANCE METRICS:
+    1. **subset_size**: Number of selected grid points in a valid (isosceles-free) configuration (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: subset_size / 8 (BENCHMARK COMPARISON - maximize above 1.0)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Validity**: All points must be distinct, lie within the 7x7 grid, and contain no isosceles triple; invalid configurations score zero.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of construction failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

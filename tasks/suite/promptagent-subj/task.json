@@ -1,0 +1,298 @@
+{
+  "schema_version": "1.0",
+  "id": "promptagent-subj",
+  "name": "SUBJ",
+  "description": "SUBJ: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "promptagent",
+    "evoprompt"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2310.16427",
+      "type": "paper",
+      "locator": "Section 4.1 Table 2"
+    },
+    {
+      "url": "https://github.com/XinyuanWangCS/PromptAgent/tree/2edfc9e4462a6af97dc973442d074de9b3e876b2",
+      "type": "repository",
+      "locator": "src/tasks/subj.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2309.08532",
+      "type": "paper",
+      "locator": "Section 4.2"
+    },
+    {
+      "url": "https://github.com/beeevita/EvoPrompt/tree/94caff336555df99acc5c338c7930c40cc550ad9",
+      "type": "repository",
+      "locator": "infer.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "SUBJ",
+    "notes": [
+      "OpenAI API key",
+      "Task datasets"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "SUBJ",
+    "protocol": "specified_only",
+    "source_locator": "Section 4.1 Table 2"
+  },
+  "execution": {
+    "repository": "https://github.com/XinyuanWangCS/PromptAgent",
+    "commit": "2edfc9e4462a6af97dc973442d074de9b3e876b2",
+    "upstream_path": "src/tasks/subj.py",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "pip install -r requirements.txt"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -r requirements.txt"
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [
+      "Copy example_config.yaml and apply the structured configuration_recipe. The released penguin example must not be reused without these task changes.",
+      "No complete per-task search configuration with verified paper prompts, split sizes and model settings is released, so this remains documentation-only.",
+      "src/test.py is not used as a shortcut: test_helper.test leaves eval_prompt uninitialized unless --prompt_file is supplied, and API keys are CLI arguments there.",
+      "Task class loads its named Hugging Face dataset; network access, compatible datasets version and data availability are prerequisites."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "SUBJ",
+    "slug": "subj",
+    "description": "SUBJ: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "SUBJ",
+    "dataset": "SUBJ",
+    "metric": "accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2310.16427",
+    "source_locator": "Section 4.1 Table 2",
+    "upstream_path": "src/tasks/subj.py",
+    "requirements": [
+      "OpenAI API key",
+      "Task datasets"
+    ],
+    "execution_notes": [
+      "Copy example_config.yaml and apply the structured configuration_recipe. The released penguin example must not be reused without these task changes.",
+      "No complete per-task search configuration with verified paper prompts, split sizes and model settings is released, so this remains documentation-only.",
+      "src/test.py is not used as a shortcut: test_helper.test leaves eval_prompt uninitialized unless --prompt_file is supplied, and API keys are CLI arguments there.",
+      "Task class loads its named Hugging Face dataset; network access, compatible datasets version and data availability are prerequisites."
+    ],
+    "implementation_status": "source_path_only",
+    "configuration_recipe": {
+      "template_path": "example_config.yaml",
+      "entrypoint": "src/main.py --config_dir PATH_TO_TASK_CONFIG.yaml",
+      "verified_overrides": {
+        "task_name": "subj"
+      },
+      "required_user_configuration": [
+        "Task-appropriate init_prompt",
+        "base_model_setting.api_key and optim_model_setting.api_key",
+        "Available model names and corresponding API compatibility",
+        "Task-specific train_size/eval_size/test_size and seed from desired protocol"
+      ],
+      "evidence_paths": [
+        "src/main.py",
+        "src/tasks/subj.py",
+        "src/tasks/base_task.py"
+      ]
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "evoprompt-subj",
+      "paper_ids": [
+        "evoprompt"
+      ],
+      "name": "Subj",
+      "description": "Subj task evaluated in EvoPrompt: Connecting LLMs with Evolutionary Algorithms Yields Powerful Prompt Optimizers.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2309.08532",
+          "type": "paper",
+          "locator": "Section 4.2"
+        },
+        {
+          "url": "https://github.com/beeevita/EvoPrompt/tree/94caff336555df99acc5c338c7930c40cc550ad9",
+          "type": "repository",
+          "locator": "infer.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "requirements.txt dependencies",
+          "Alpaca weights chavinlo/alpaca-native and compatible GPU/8-bit bitsandbytes environment",
+          "auth.yaml configuration initialized by evaluator",
+          "Classification test files from README LM-BFF dataset download where not present"
+        ]
+      },
+      "evaluation": {
+        "metric": "accuracy",
+        "paper_metric": "accuracy",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "Subj",
+        "protocol": "upstream",
+        "source_locator": "Section 4.2"
+      },
+      "execution": {
+        "repository": "https://github.com/beeevita/EvoPrompt",
+        "commit": "94caff336555df99acc5c338c7930c40cc550ad9",
+        "upstream_path": "infer.py",
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "infer.py",
+              "--dataset",
+              "subj",
+              "--task",
+              "cls",
+              "--seed",
+              "5",
+              "--position",
+              "demon",
+              "--batch-size",
+              "16",
+              "--prompt-num",
+              "0",
+              "--language_model",
+              "alpaca",
+              "--output",
+              "outputs/cls/subj/catalog-baseline",
+              "--content",
+              "Please perform Subjectivity Classification task. Given the sentence, assign a label from ['subjective', 'objective']. Return label only without any other text.",
+              "--test_file",
+              "data/cls/subj/test.txt",
+              "--dev_file",
+              "data/cls/subj/seed5/dev.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/beeevita/EvoPrompt/blob/94caff336555df99acc5c338c7930c40cc550ad9/infer.py",
+            "notes": "Source-composed inference command using official scripts/args and published manual baseline prompt. Explicit classification test path fixes mismatch between README download location and evaluator default. Requires setup; not executed."
+          }
+        ],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/beeevita/EvoPrompt/blob/94caff336555df99acc5c338c7930c40cc550ad9/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/beeevita/EvoPrompt/blob/94caff336555df99acc5c338c7930c40cc550ad9/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": []
+      },
+      "limitations": [
+        "BBH scripts exist under BBH/scripts after the README cd BBH. Actual blocking defect: BBH/args.py registers --content twice, raising argparse.ArgumentError before execution; observed locally with parse_args(). Remove the duplicate declaration in a documented modified checkout before running BBH.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

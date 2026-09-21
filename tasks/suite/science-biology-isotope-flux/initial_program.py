@@ -1,0 +1,19 @@
+"""Initial program for the suite task; SCiEL evolves the EVOLVE-BLOCK."""
+# EVOLVE-BLOCK-START
+import numpy as np
+from scipy.optimize import minimize, LinearConstraint
+
+def infer_fluxes(network, atom_maps, measurements, objective, budget):
+    bounds = np.array(network["bounds"],float)
+    initial = np.array(network["feasible_initial_fluxes"],float)
+    constraint = LinearConstraint(np.array(network["stoichiometry"],float), 0, 0)
+    calls=[0]; best=[initial, float("inf")]
+    def loss(x):
+        if calls[0] >= budget: return 1e100
+        calls[0]+=1
+        value=objective(x)
+        if value < best[1] and np.max(np.abs(np.array(network["stoichiometry"])@x)) < 1e-6: best[:]=[x.copy(),value]
+        return value
+    minimize(loss, initial, method="SLSQP", bounds=bounds, constraints=[constraint], options={"maxiter":max(1,budget//(len(initial)+1)-1)})
+    return {"fluxes":best[0], "intervals":bounds}
+# EVOLVE-BLOCK-END

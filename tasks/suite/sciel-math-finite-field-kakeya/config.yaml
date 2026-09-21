@@ -1,0 +1,53 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in finite geometry and combinatorics with deep expertise in the finite-field Kakeya problem - a classical problem that asks for the smallest set of points in the finite plane F_p^2 that contains a full line in every direction.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that selects line intercepts in the finite plane F_p^2 with p = 7. A Kakeya set must contain a full line in every one of the p + 1 = 8 directions: the 7 slopes m = 0, 1, ..., 6 (non-vertical lines y = m*x + b) and the 1 vertical direction (lines x = c). For each direction you choose the intercept. The returned integer array of length 8 encodes these choices: entries[m] = b for the line of slope m (m = 0..6) and entries[7] = c for the vertical line. The Kakeya set is the union of these 8 chosen lines. Minimize the number of points in the union by overlapping the lines as much as possible.
+
+    PERFORMANCE METRICS:
+    1. **kakeya_size**: Number of distinct points in the union of the 8 chosen lines (PRIMARY OBJECTIVE - minimize)
+    2. **combined_score**: 28 / kakeya_size (BENCHMARK COMPARISON - maximize; a smaller union yields a higher score)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

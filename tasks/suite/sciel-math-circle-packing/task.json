@@ -1,0 +1,260 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-math-circle-packing",
+  "name": "SCiEL: 26 circles in a unit square",
+  "description": "Pack 26 nonoverlapping circles inside the unit square to maximize the sum of radii, normalized by target 2.635.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "optimization_statistics",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/circle_packing/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/circle_packing/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
+    "dependencies": [
+      "matplotlib",
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example circle_packing",
+    "paper_metric": null,
+    "source_locator": "examples/circle_packing/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/circle_packing",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/circle_packing/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": "examples/circle_packing/initial_program.py",
+      "dependencies": [
+        "matplotlib",
+        "numpy",
+        "scipy"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply mathematical validity; preserve unknown validity unless the original evaluator exposes an explicit signal."
+      ],
+      "validity_key": "validity"
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "py:matplotlib",
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/circle_packing/evaluator.py": "a1708613eefca455f8198dc46743a76e97b760b15f99ee6c3009d6803eda6812",
+    "examples/circle_packing/requirements.txt": "7eaf904bf5ff7c93d82be99aa0184701e2398ccc8e8a83a299f453c366e7767d",
+    "examples/circle_packing/README.md": "fcaf35c8c177596cdf61739771686bbc61503d61321c53372e9fa4f5c74246b5",
+    "examples/circle_packing/initial_program.py": "d432ec2da7c307180a4dafff1be1ca47cf37be07c40b12c5fedae69417fd639e"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/circle_packing/evaluator.py",
+      "signature": "program_path",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.run_packing() -> (centers[26,2], radii[26], reported_sum)"
+    ],
+    "baseline_path": "examples/circle_packing/initial_program.py",
+    "baseline_functions": {
+      "construct_packing": {
+        "signature": "",
+        "docstring": "Construct a specific arrangement of 26 circles in a unit square\nthat attempts to maximize the sum of their radii.\n\nReturns:\n    Tuple of (centers, radii, sum_of_radii)\n    centers: np.array of shape (26, 2) with (x, y) coordinates\n    radii: np.array of shape (26) with radius of each circle\n    sum_of_radii: Sum of all radii",
+        "returns": null
+      },
+      "compute_max_radii": {
+        "signature": "centers",
+        "docstring": "Compute the maximum possible radii for each circle position\nsuch that they don't overlap and stay within the unit square.\n\nArgs:\n    centers: np.array of shape (n, 2) with (x, y) coordinates\n\nReturns:\n    np.array of shape (n) with radius of each circle",
+        "returns": null
+      },
+      "run_packing": {
+        "signature": "",
+        "docstring": "Run the circle packing constructor for n=26",
+        "returns": null
+      },
+      "visualize": {
+        "signature": "centers, radii",
+        "docstring": "Visualize the circle packing\n\nArgs:\n    centers: np.array of shape (n, 2) with (x, y) coordinates\n    radii: np.array of shape (n) with radius of each circle",
+        "returns": null
+      }
+    },
+    "parameters": {},
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "score_expressions": [
+      "combined_score = target_ratio * validity",
+      "combined_score = actual_sum / target if valid else 0.0"
+    ],
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 260,
+        "expression": "{'sum_radii': float(sum_radii), 'target_ratio': float(target_ratio), 'validity': float(validity), 'eval_time': float(eval_time), 'combined_score': float(combined_score)}"
+      },
+      {
+        "function": "evaluate",
+        "line": 221,
+        "expression": "{'sum_radii': 0.0, 'target_ratio': 0.0, 'validity': 0.0, 'eval_time': float(time.time() - start_time), 'combined_score': 0.0}"
+      },
+      {
+        "function": "evaluate",
+        "line": 271,
+        "expression": "{'sum_radii': 0.0, 'target_ratio': 0.0, 'validity': 0.0, 'eval_time': 0.0, 'combined_score': 0.0}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 314,
+        "expression": "{'validity': 1.0 if valid else 0.0, 'sum_radii': float(actual_sum), 'target_ratio': float(actual_sum / target if valid else 0.0), 'combined_score': float(combined_score)}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 332,
+        "expression": "{'validity': 0.0, 'combined_score': 0.0, 'error': str(e)}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 300,
+        "expression": "{'validity': 0.0, 'error': 'Invalid shapes'}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 323,
+        "expression": "{'validity': 0.0, 'combined_score': 0.0, 'error': 'Timeout'}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 327,
+        "expression": "{'validity': 0.0, 'combined_score': 0.0, 'error': str(e)}"
+      },
+      {
+        "function": "evaluate_stage2",
+        "line": 340,
+        "expression": "evaluate(program_path)"
+      }
+    ],
+    "metric_assignments": [],
+    "validity_key": "validity",
+    "validity_semantics": "Upstream numeric 0/1 packing validity; preserved as an upstream signal.",
+    "error_key": "error",
+    "rng_calls": [],
+    "declared_requirements": [
+      "matplotlib",
+      "scipy"
+    ],
+    "evaluator_imports": [
+      "importlib",
+      "numpy",
+      "os",
+      "pickle",
+      "signal",
+      "subprocess",
+      "sys",
+      "tempfile",
+      "time",
+      "traceback"
+    ],
+    "baseline_imports": [
+      "matplotlib",
+      "numpy"
+    ],
+    "source_config_path": null,
+    "baseline_constants": {},
+    "baseline_rng_calls": [],
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Some branches return score zero without error; some omit the primary score. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {},
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "cpu",
+    "recommended_smoke_outer_timeout_seconds": 15,
+    "evaluator_internal_timeout_seconds": 600
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

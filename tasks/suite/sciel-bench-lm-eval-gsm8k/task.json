@@ -1,0 +1,233 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-bench-lm-eval-gsm8k",
+  "name": "SCiEL: lm-evaluation-harness GSM8K adapter",
+  "description": "Answer GSM8K questions through the lm-eval.py adapter, which registers an 'openevolve' model in EleutherAI's lm-evaluation-harness and answers each prompt by running a short evolution over a text stub. The headline metric is GSM8K exact_match (strict-match) over the evaluated examples.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "llm_benchmark",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/lm_eval/evaluator_stub.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/lm_eval/initial_content_stub.txt",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/lm_eval/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU plus an OpenAI-compatible model endpoint (source default: local Ollama at http://localhost:11434/v1/).",
+    "dependencies": [
+      "datasets",
+      "lm-eval"
+    ],
+    "environment_variables": [],
+    "datasets": "GSM8K through lm-evaluation-harness (Hugging Face download).",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Install lm-eval and datasets from the example requirements; configure the model endpoint in examples/lm_eval/config.yml."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example lm_eval",
+    "paper_metric": null,
+    "source_locator": "examples/lm_eval/evaluator_stub.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/lm_eval",
+    "commands": [
+      {
+        "argv": [
+          "python3",
+          "examples/lm_eval/lm-eval.py",
+          "--tasks",
+          "gsm8k",
+          "--limit",
+          "10",
+          "--iterations",
+          "1"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/lm_eval/README.md",
+        "notes": "Source README invocation. The adapter changes directory to the checkout root itself, runs openevolve-run.py per prompt against the model endpoint in examples/lm_eval/config.yml (default: a local Ollama server) and grades generations with lm-eval. Model calls are required; --limit is for tests only per the source README."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Install lm-eval and datasets from the example requirements; configure the model endpoint in examples/lm_eval/config.yml."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Command-only or blocked interface; see limitations for why no direct candidate evaluator is registered."
+    ],
+    "model_calls": "search_and_task",
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_content_stub.txt",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "env:OPENROUTER_API_KEY",
+        "network:huggingface datasets",
+        "network:openrouter",
+        "py:datasets",
+        "py:lm_eval",
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "There is no candidate evaluator: evaluator_stub.py returns a constant, and scoring happens inside lm-evaluation-harness after model generation. No direct evaluator adapter is possible; the source command is recorded as a command-only interface.",
+    "The source README states the early implementation has not been benchmarked and that metrics with --limit are not meaningful."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "Every 'evaluation' is a model-driven search; results depend on the configured model and are not deterministic."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/lm_eval/README.md": "7de704f34ff28a886479c4cdc683af47aa4cda11bc3e30ecb40ebcf6b0af76a9",
+    "examples/lm_eval/config.yml": "66e4b9ba13035906e64908eac7c6b65b95f52b4a2dd72cf9450e0300352bf18d",
+    "examples/lm_eval/evaluator_stub.py": "e2d1a90d7d6a336fa7b8b0caaf459bf7b699b36387c00ccb5c88158211e4d63b",
+    "examples/lm_eval/initial_content_stub.txt": "a86624d9b4488bcd918bc11fa22b44422c7085d44a7cac32785be01571a192a4",
+    "examples/lm_eval/lm-eval.py": "a606f5c3759c0bdcd925e77138b9aa64224fd35f08cc7022404e4575561c3cdc",
+    "examples/lm_eval/prompts/diff_user.txt": "b632e7230960ef8fce65f291d8c9f004be19efe606a5c724a4d3cf055e4d40b4",
+    "examples/lm_eval/prompts/evaluation.txt": "63b1f8c46253f091ccf0c2671f38535eb71bb0080de56f52edc0ceba1ab11b1d",
+    "examples/lm_eval/prompts/evolution_history.txt": "d140ac866590570f56ccb78a87b6ae7f925039756885456fc2a661d58a3a2e17",
+    "examples/lm_eval/prompts/full_rewrite_user.txt": "26703a248b0ca9aa9efdff01d7c9f2975d323ce1010d4834ad85a8a8dfe0976a",
+    "examples/lm_eval/prompts/previous_attempt.txt": "24b97bfa9a48ef58c2956384b05c31816ffee67e00e6bf6f003187b3e74483c9",
+    "examples/lm_eval/prompts/top_program.txt": "6676d395c9297782089a5f356d80060b347ebdc5d3778009e5d16a50204776ef",
+    "examples/lm_eval/requirements.txt": "8001b6e712a75e26ed268825f488d6f39fa60f2248389f9a1b2244ef0d62d6b7"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/lm_eval/evaluator_stub.py",
+      "signature": "file_path",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "text stub evolved per prompt; evaluator_stub.evaluate returns a constant not_implemented metric, so the model output is scored only by lm-eval after evolution"
+    ],
+    "baseline_path": "examples/lm_eval/initial_content_stub.txt",
+    "baseline_functions": {},
+    "parameters": {
+      "tasks": [
+        "gsm8k"
+      ],
+      "limit_in_source_example": 10,
+      "iterations_in_source_example": 1
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "return_branches": [
+      {
+        "function": "evaluate_stage1",
+        "line": 2,
+        "expression": "{\"not_implemented\": 0.0}"
+      },
+      {
+        "function": "evaluate",
+        "line": 6,
+        "expression": "evaluate_stage1(file_path)"
+      }
+    ],
+    "validity_key": null,
+    "validity_semantics": "No candidate-level validity; the stub evaluator returns a constant and lm-eval computes exact_match after generation.",
+    "error_key": null,
+    "declared_requirements": [
+      "datasets",
+      "lm-eval"
+    ],
+    "evaluator_imports": [],
+    "baseline_imports": [],
+    "source_config_path": "examples/lm_eval/config.yml",
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 1,
+      "checkpoint_interval": 10,
+      "diff_based_evolution": false,
+      "evaluator": {
+        "timeout": 60,
+        "cascade_evaluation": false,
+        "cascade_thresholds": [
+          0.5,
+          0.75
+        ],
+        "parallel_evaluations": 4
+      },
+      "database": {
+        "population_size": 50,
+        "num_islands": 3,
+        "archive_size": 20
+      },
+      "llm": {
+        "api_base": "http://localhost:11434/v1/",
+        "models": [
+          "gemma3:12b-it-qat",
+          "gemma3:12b-it-qat"
+        ],
+        "timeout": null
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "paid_model_calls",
+    "recommended_smoke_outer_timeout_seconds": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "network"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

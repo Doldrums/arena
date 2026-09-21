@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "id": "science-earth-oceanbench-satellite-ssh",
+  "name": "Earth and environment: Independent-track ocean surface-height reconstruction",
+  "description": "Reconstruct measured sea-surface-height anomalies from irregular satellite observations and evaluate a fully withheld satellite system.",
+  "paper_ids": [
+    "science-earth_data"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2309.15599",
+      "type": "paper",
+      "locator": "OceanBench sea-surface-height reconstruction and distinct observing-system experiment versus simulation regimes."
+    },
+    {
+      "url": "https://github.com/quentinf00/oceanbench-data-registry/tree/b678399e9264e8a1a04384cb4c1ca71a2773f302",
+      "type": "repository",
+      "locator": "Official source data/evaluation reference; evaluator and seed independently written."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "SHA256-locked source bundle E06.json in .cache/science-earth-data. Automatically prepared by scripts/prepare_earth_data.py.",
+    "preparation_dependencies": [
+      "netCDF4",
+      "numcodecs==0.16.3"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Earth and environment: Independent-track ocean surface-height reconstruction",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_earth_e06",
+    "science_family": "science_earth_e06",
+    "parameters": {},
+    "interface": "reconstruct_ssh(observations,times,coordinates,grid) -> finite values at grid[coordinates,times]. Coordinates[latitude_deg,longitude_deg]; times are days since declared epoch; observed/returned sea-surface-height anomalies in meters. Withheld complete satellite system supplies evaluation tracks. PrimaryRMSE; independent-track OSE is incomplete truth, no full-field spectral-resolution claim.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "earth_and_environment"
+    },
+    "proposal_id": "E06",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_code_used": false,
+      "note": "Local evaluator, candidate interface and seed recreated from scientific specifications; official benchmark data are reused."
+    },
+    "additional_requires": [
+      "file:../../.cache/science-earth-data/E06.json",
+      "file:../../.cache/science-earth-data/E06.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_earth_e06",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-earth-data/E06.json",
+        "file:../../.cache/science-earth-data/E06.manifest.json"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Real January2017GulfStream Jason2N observations to independently withheldJason3 tracks. Source filteredSLA in meters, retrospective reconstruction and source-order decimation. Independent tracks provide incomplete spatial truth; no full-fieldOSSE or spectral-resolution claim.",
+    "Source data remain local caches with immutable revisions/content hashes and no evaluator network access. Public subsets are development-visible; freeze candidates before wider generalization tests.",
+    "Improved source benchmark performance is a scientific-method contribution, not alone a new discovery or operational forecast validation."
+  ],
+  "validation": {
+    "level": "source_subset_run",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "benchmark_validated": true,
+    "fixture_tests_are_benchmark_validation": false,
+    "evidence": "validation/earth-data-source-runs.json",
+    "tests": "tests/test_science_earth_data.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "earth_and_environment",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Reconstruct ocean sea-level anomalies from irregular satellite altimetry tracks.",
+    "importance_rationale": "Sea-surface-height fields reveal ocean variability and support inference of ocean circulation.",
+    "papers": [
+      {
+        "title": "An Improved Mapping Method of Multisatellite Altimeter Data",
+        "url": "https://journals.ametsoc.org/abstract/journals/atot/15/2/1520-0426_1998_015_0522_aimmom_2_0_co_2.xml",
+        "primary_goal": "Recover ocean sea-level signals from multisatellite altimetry while correcting along-track correlated measurement errors that obscure ocean features.",
+        "task_relation": "The paper directly reconstructs sea-level anomaly maps from measured TOPEX/Poseidon and ERS-1 tracks. The local task uses a different source/time period with a wholly withheld satellite; it does not reproduce the paper's error model, region or global analysis.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "A physical oceanographic reconstruction paper supplies the evidence, rather than the OceanBench benchmark or a general learning framework.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

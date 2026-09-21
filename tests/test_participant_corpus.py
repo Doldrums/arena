@@ -40,7 +40,7 @@ def test_every_corpus_work_has_one_scholarly_entry_and_exact_paper_link():
         assert entry["provenance"]["sha256"] == corpus["source"]["sha256"]
         assert entry["provenance"]["section_sha256"] == work["section_sha256"]
         assert entry["provenance"]["line_start"] == work["line_start"]
-        assert "/blob/5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935/" in entry["provenance"]["metadata_source"]["url"]
+        assert entry["provenance"]["metadata_source"]["url"] == "https://github.com/Doldrums/arena/blob/main/tasks/catalog/papers.json"
     assert {paper["id"] for _, paper in linked if paper["kind"] == "technical_report"} == {"agentic-optimization", "darwinian-evolver"}
 
 

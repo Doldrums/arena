@@ -1,0 +1,350 @@
+{
+  "schema_version": "1.0",
+  "id": "mcts-ahd-bo-caf",
+  "name": "bo_caf",
+  "description": "bo_caf task evaluated in Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design.",
+  "paper_ids": [
+    "mcts-ahd"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2501.08603",
+      "type": "paper",
+      "locator": "Section 4; Appendices B-D and F"
+    },
+    {
+      "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+      "type": "repository",
+      "locator": "problems/bo_caf/eval.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "torch",
+      "botorch",
+      "gpytorch",
+      "linear_operator",
+      "pyro",
+      "joblib"
+    ],
+    "environment_variables": [],
+    "datasets": "Original published training instances; explicit bounded subset described in docs/TASKS.md.",
+    "notes": [
+      "CPU Python; numpy, torch, botorch, gpytorch, linear_operator, pyro, joblib",
+      "Original botorch==0.12.0 and gpytorch==1.13 API."
+    ],
+    "required_files": [
+      "problems/bo_caf/prob.py",
+      "problems/bo_caf/eval-test.py",
+      "problems/bo_caf/eval.py",
+      "problems/bo_caf/instance_generator.py",
+      "problems/bo_caf/instance/botorch_problem_train.pkl"
+    ],
+    "required_file_hashes": {
+      "problems/bo_caf/prob.py": "d9d4d989d467dc2f477bbf52cb8e5c4c181a8c9b866259736381549970fbfc7c",
+      "problems/bo_caf/eval-test.py": "1482d743290ffa5a2f59df1107bd5a29ecff6f1288e7240699130dbcc01ad4c0",
+      "problems/bo_caf/eval.py": "4f516b70588ab7ac2e4a42f0fcbd62f680677e20dd910cb5074adc156cae7eef",
+      "problems/bo_caf/instance_generator.py": "0af889c8840446854709fbfb01084c1ffa5a5a7d5d3262e45af329fe920005ed",
+      "problems/bo_caf/instance/botorch_problem_train.pkl": "e22dc35f42e71d9989adfc4d80abe208d205045272d156adfe3ba1b392e339a2"
+    }
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "mean absolute optimality gap",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "bo_caf",
+    "protocol": "upstream",
+    "source_locator": "Section 4; Appendices B-D and F"
+  },
+  "execution": {
+    "repository": "https://github.com/zz1358m/MCTS-AHD-master",
+    "commit": "ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+    "upstream_path": "problems/bo_caf/eval.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "main.py",
+          "problem=bo_caf"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/main.py",
+        "notes": "Hydra task override derived from inspected @hydra.main configuration and verified cfg/problem file; not executed."
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_bo.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_mcts-ahd_bo_caf.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "max_instances": 1,
+        "cost_budget": 4.0,
+        "random_seed": 1
+      },
+      "dependencies": [
+        "numpy",
+        "torch",
+        "botorch",
+        "gpytorch",
+        "linear_operator",
+        "pyro",
+        "joblib"
+      ],
+      "implementation_label": "bounded_original_protocol_recreated_seed",
+      "repository_files": {
+        "adapters/recovered/optimization_bo.py": "71b512382dcca1711d51c6ec1030e5f9580e158bc5973cf360339225bd8824c8",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+        "adapters/recovered/seeds/optimization_mcts-ahd_bo_caf.py": "4bd047fe9ad90ce0223884faa6d853c11f8e92032e4dcee95a7aba36c6c7c390"
+      },
+      "notes": "Original CPU protocol, bounded subset. POMO and DPP additionally check feasibility; BO/LEHD remain validity-unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 2.521383285522461,
+        "metrics": {
+          "score": 19.349655151367188,
+          "validity": null,
+          "instances": 1,
+          "instance_names": [
+            "Ackley"
+          ],
+          "candidate_calls": 471,
+          "instance_objectives": [
+            19.349655151367188
+          ],
+          "cost_budget": 4.0,
+          "trials_per_instance": 1,
+          "random_seed": 1,
+          "profile": "bounded_original_training",
+          "dataset_sha256": "e22dc35f42e71d9989adfc4d80abe208d205045272d156adfe3ba1b392e339a2",
+          "validation_scope": "original EGO absolute optimality gap on released benchmark; no independent certificate"
+        },
+        "runtime": "Python3.12 CPU, original published assets; torch2.14.0"
+      }
+    },
+    "setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Use cfg/problem/bo_caf.yaml. Set max_fe=2000 for online BPP and init_pop_size=10 for black-box ACO as README instructs.",
+      "Recovered CPU evaluation without model API credentials. Bounded original protocol; see docs/TASKS.md for budgets, recovered assets, and scientific limits."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "bo_cost_aware",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "bo_caf",
+    "slug": "bo-caf",
+    "description": "bo_caf task evaluated in Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design.",
+    "benchmark": "bo_caf",
+    "dataset": "Original published training instances; explicit bounded subset described in docs/TASKS.md.",
+    "metric": "mean absolute optimality gap",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2501.08603",
+    "source_locator": "Section 4; Appendices B-D and F",
+    "upstream_path": "problems/bo_caf/eval.py",
+    "requirements": [
+      "CPU Python; numpy, torch, botorch, gpytorch, linear_operator, pyro, joblib",
+      "Original botorch==0.12.0 and gpytorch==1.13 API."
+    ],
+    "execution_notes": [
+      "Use cfg/problem/bo_caf.yaml. Set max_fe=2000 for online BPP and init_pop_size=10 for black-box ACO as README instructs.",
+      "Recovered CPU evaluation without model API credentials. Bounded original protocol; see docs/TASKS.md for budgets, recovered assets, and scientific limits."
+    ],
+    "setup_commands": [],
+    "run_commands": [
+      {
+        "argv": [
+          "python",
+          "main.py",
+          "problem=bo_caf"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/main.py",
+        "notes": "Hydra task override derived from inspected @hydra.main configuration and verified cfg/problem file; not executed."
+      }
+    ],
+    "implementation_status": "recovered_direct_evaluator_tested",
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_bo.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_mcts-ahd_bo_caf.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "max_instances": 1,
+        "cost_budget": 4.0,
+        "random_seed": 1
+      },
+      "dependencies": [
+        "numpy",
+        "torch",
+        "botorch",
+        "gpytorch",
+        "linear_operator",
+        "pyro",
+        "joblib"
+      ],
+      "implementation_label": "bounded_original_protocol_recreated_seed",
+      "repository_files": {
+        "adapters/recovered/optimization_bo.py": "71b512382dcca1711d51c6ec1030e5f9580e158bc5973cf360339225bd8824c8",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+        "adapters/recovered/seeds/optimization_mcts-ahd_bo_caf.py": "4bd047fe9ad90ce0223884faa6d853c11f8e92032e4dcee95a7aba36c6c7c390"
+      },
+      "notes": "Original CPU protocol, bounded subset. POMO and DPP additionally check feasibility; BO/LEHD remain validity-unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 2.521383285522461,
+        "metrics": {
+          "score": 19.349655151367188,
+          "validity": null,
+          "instances": 1,
+          "instance_names": [
+            "Ackley"
+          ],
+          "candidate_calls": 471,
+          "instance_objectives": [
+            19.349655151367188
+          ],
+          "cost_budget": 4.0,
+          "trials_per_instance": 1,
+          "random_seed": 1,
+          "profile": "bounded_original_training",
+          "dataset_sha256": "e22dc35f42e71d9989adfc4d80abe208d205045272d156adfe3ba1b392e339a2",
+          "validation_scope": "original EGO absolute optimality gap on released benchmark; no independent certificate"
+        },
+        "runtime": "Python3.12 CPU, original published assets; torch2.14.0"
+      }
+    },
+    "required_files": [
+      "problems/bo_caf/prob.py",
+      "problems/bo_caf/eval-test.py",
+      "problems/bo_caf/eval.py",
+      "problems/bo_caf/instance_generator.py",
+      "problems/bo_caf/instance/botorch_problem_train.pkl"
+    ],
+    "required_file_hashes": {
+      "problems/bo_caf/prob.py": "d9d4d989d467dc2f477bbf52cb8e5c4c181a8c9b866259736381549970fbfc7c",
+      "problems/bo_caf/eval-test.py": "1482d743290ffa5a2f59df1107bd5a29ecff6f1288e7240699130dbcc01ad4c0",
+      "problems/bo_caf/eval.py": "4f516b70588ab7ac2e4a42f0fcbd62f680677e20dd910cb5074adc156cae7eef",
+      "problems/bo_caf/instance_generator.py": "0af889c8840446854709fbfb01084c1ffa5a5a7d5d3262e45af329fe920005ed",
+      "problems/bo_caf/instance/botorch_problem_train.pkl": "e22dc35f42e71d9989adfc4d80abe208d205045272d156adfe3ba1b392e339a2"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "baseline_execution",
+      "passed": true,
+      "seconds": 2.521383285522461,
+      "metrics": {
+        "score": 19.349655151367188,
+        "validity": null,
+        "instances": 1,
+        "instance_names": [
+          "Ackley"
+        ],
+        "candidate_calls": 471,
+        "instance_objectives": [
+          19.349655151367188
+        ],
+        "cost_budget": 4.0,
+        "trials_per_instance": 1,
+        "random_seed": 1,
+        "profile": "bounded_original_training",
+        "dataset_sha256": "e22dc35f42e71d9989adfc4d80abe208d205045272d156adfe3ba1b392e339a2",
+        "validation_scope": "original EGO absolute optimality gap on released benchmark; no independent certificate"
+      },
+      "runtime": "Python3.12 CPU, original published assets; torch2.14.0"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

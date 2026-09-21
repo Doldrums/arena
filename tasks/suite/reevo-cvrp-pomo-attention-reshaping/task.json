@@ -1,0 +1,378 @@
+{
+  "schema_version": "1.0",
+  "id": "reevo-cvrp-pomo-attention-reshaping",
+  "name": "CVRP POMO attention reshaping",
+  "description": "CVRP POMO attention reshaping: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "reevo"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2402.01145",
+      "type": "paper",
+      "locator": "Sections 5.1–5.5"
+    },
+    {
+      "url": "https://github.com/ai4co/reevo/tree/6dce18257da5e11db2d138e417a2fffc5c72d05f",
+      "type": "repository",
+      "locator": "cfg/problem/cvrp_pomo.yaml"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "torch"
+    ],
+    "environment_variables": [],
+    "datasets": "Original published training instances; explicit bounded subset described in docs/TASKS.md.",
+    "notes": [
+      "CPU Python; numpy, torch",
+      "Fetch checksum-pinned external assets with scripts/prepare_optimization_assets.py."
+    ],
+    "required_files": [
+      "problems/cvrp_pomo/CVRPTrainer.py",
+      "problems/cvrp_pomo/gen_inst.py",
+      "problems/cvrp_pomo/CVRPModel.py",
+      "problems/cvrp_pomo/CVRProblemDef.py",
+      "problems/cvrp_pomo/train_n100.py",
+      "problems/cvrp_pomo/utils.py",
+      "problems/cvrp_pomo/eval.py",
+      "problems/cvrp_pomo/CVRPTester.py",
+      "problems/cvrp_pomo/CVRPEnv.py",
+      "problems/cvrp_pomo/checkpoints/checkpoint-30500.pt"
+    ],
+    "required_file_hashes": {
+      "problems/cvrp_pomo/CVRPTrainer.py": "77cc016669d28ccb8bf6ad860a31bfe97590377c15ebbe503f18520b54f36996",
+      "problems/cvrp_pomo/gen_inst.py": "3ac8f5fd151ecfb6d3220bb6f7de2948c654cfc4440a66bb9b154be0a1e94ef3",
+      "problems/cvrp_pomo/CVRPModel.py": "14d81e8b85d6d4b08a68293bf26156812f92235254b56671624c317290b88686",
+      "problems/cvrp_pomo/CVRProblemDef.py": "0f3c90ffda2274e6e82a5370acb31cd482eda03ab52e10612dfabd76f35e6428",
+      "problems/cvrp_pomo/train_n100.py": "af03faf82acfed2995eafa66414c918a018a833a448ca33ac386d8518de4a330",
+      "problems/cvrp_pomo/utils.py": "52c41f224d322702453109f8c01d2aae30d4c544579d61c59a66e9e87ea7bf45",
+      "problems/cvrp_pomo/eval.py": "3977afe728d28df5c7feac9f8b1012835ae0f346b4914da28de61e36399be617",
+      "problems/cvrp_pomo/CVRPTester.py": "4e30dd954ae0dae585da227e7fc5313ffa71772e0939974f52261e50ee363d40",
+      "problems/cvrp_pomo/CVRPEnv.py": "1e16b84204a6b8788cd96c85b239b4b1697501262e67f0856960e21bec17295e",
+      "problems/cvrp_pomo/checkpoints/checkpoint-30500.pt": "d7a08f6115623eba15cf789db85c0356107178927724815f456188aa075d5ce8"
+    }
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "mean route length",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "CVRP POMO attention reshaping",
+    "protocol": "upstream",
+    "source_locator": "Sections 5.1–5.5"
+  },
+  "execution": {
+    "repository": "https://github.com/ai4co/reevo",
+    "commit": "6dce18257da5e11db2d138e417a2fffc5c72d05f",
+    "upstream_path": "cfg/problem/cvrp_pomo.yaml",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "main.py",
+          "problem=cvrp_pomo"
+        ],
+        "cwd": ".",
+        "kind": "search_and_evaluation",
+        "requirements": [
+          "Python >=3.12",
+          "ReEvo task extras",
+          "LLM API key"
+        ],
+        "evidence_path": "README.md and cfg/problem/cvrp_pomo.yaml",
+        "verification": "source_inspected_not_executed",
+        "source_url": "https://arxiv.org/pdf/2402.01145"
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_pomo.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_reevo_cvrp_pomo.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "cvrp_pomo",
+        "max_instances": 2
+      },
+      "dependencies": [
+        "numpy",
+        "torch"
+      ],
+      "implementation_label": "bounded_original_protocol_original_checkpoints",
+      "repository_files": {
+        "adapters/recovered/optimization_pomo.py": "07c2467b82eddf7f096f09970d2aafeceb706293f75d16276701e2ebe8864d2d",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+        "adapters/recovered/seeds/optimization_reevo_cvrp_pomo.py": "df874f1680384f2bca7a5403370308cf173875fcc9b0e4ff9e5dd6a7c6e696bc"
+      },
+      "notes": "Original CPU protocol, bounded subset. POMO and DPP additionally check feasibility; BO/LEHD remain validity-unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 0.2279980182647705,
+        "metrics": {
+          "score": 24.272915840148926,
+          "validity": true,
+          "instances": 2,
+          "instance_size": 200,
+          "candidate_calls": 2,
+          "instance_objectives": [
+            24.124996185302734,
+            24.420835494995117
+          ],
+          "profile": "bounded_original_training",
+          "device": "cpu",
+          "pomo_size": 1,
+          "augmentation_factor": 1,
+          "random_seed": 5,
+          "training_subset_tensor_sha256": "8ad82ef14693e2a56c73b1291e6e846d1b074e18721de719a905cf00708f7248",
+          "checkpoint_sha256": "d7a08f6115623eba15cf789db85c0356107178927724815f456188aa075d5ce8",
+          "validation_scope": "every customer visited once, CVRP depot/capacity checked, route length independently recomputed"
+        },
+        "runtime": "Python3.12 CPU, original published assets; torch2.14.0"
+      }
+    },
+    "setup_instructions": [
+      "pip install -e '.[gls,aco,nco]'"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -e '.[gls,aco,nco]'"
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          ".[gls,aco,nco]"
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [
+      "NCO variants require original POMO/LEHD checkpoints and test datasets.",
+      "main.py writes the selected heuristic to gpt.py and invokes the task evaluator; directly invoking eval.py before generating gpt.py fails.",
+      "Recovered CPU evaluation without model API credentials. Bounded original protocol; see docs/TASKS.md for budgets, recovered assets, and scientific limits.",
+      "Python >=3.12",
+      "ReEvo task extras",
+      "LLM API key",
+      "Upstream operation: search_and_evaluation"
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "reevo_upstream",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "checkout:ai4co/reevo@6dce18257da5e11db2d138e417a2fffc5c72d05f",
+        "py:torch"
+      ],
+      "timeout": 900
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "CVRP POMO attention reshaping",
+    "slug": "cvrp-pomo-attention-reshaping",
+    "description": "CVRP POMO attention reshaping: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "CVRP POMO attention reshaping",
+    "dataset": "Original published training instances; explicit bounded subset described in docs/TASKS.md.",
+    "metric": "mean route length",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2402.01145",
+    "source_locator": "Sections 5.1–5.5",
+    "upstream_path": "cfg/problem/cvrp_pomo.yaml",
+    "requirements": [
+      "CPU Python; numpy, torch",
+      "Fetch checksum-pinned external assets with scripts/prepare_optimization_assets.py."
+    ],
+    "execution_notes": [
+      "NCO variants require original POMO/LEHD checkpoints and test datasets.",
+      "main.py writes the selected heuristic to gpt.py and invokes the task evaluator; directly invoking eval.py before generating gpt.py fails.",
+      "Recovered CPU evaluation without model API credentials. Bounded original protocol; see docs/TASKS.md for budgets, recovered assets, and scientific limits.",
+      "Python >=3.12",
+      "ReEvo task extras",
+      "LLM API key",
+      "Upstream operation: search_and_evaluation"
+    ],
+    "execution": {
+      "argv": [
+        "python",
+        "main.py",
+        "problem=cvrp_pomo"
+      ],
+      "cwd": ".",
+      "kind": "search_and_evaluation",
+      "requirements": [
+        "Python >=3.12",
+        "ReEvo task extras",
+        "LLM API key"
+      ],
+      "evidence_path": "README.md and cfg/problem/cvrp_pomo.yaml",
+      "verification": "source_inspected_not_executed"
+    },
+    "implementation_status": "recovered_direct_evaluator_tested",
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_pomo.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_reevo_cvrp_pomo.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "cvrp_pomo",
+        "max_instances": 2
+      },
+      "dependencies": [
+        "numpy",
+        "torch"
+      ],
+      "implementation_label": "bounded_original_protocol_original_checkpoints",
+      "repository_files": {
+        "adapters/recovered/optimization_pomo.py": "07c2467b82eddf7f096f09970d2aafeceb706293f75d16276701e2ebe8864d2d",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+        "adapters/recovered/seeds/optimization_reevo_cvrp_pomo.py": "df874f1680384f2bca7a5403370308cf173875fcc9b0e4ff9e5dd6a7c6e696bc"
+      },
+      "notes": "Original CPU protocol, bounded subset. POMO and DPP additionally check feasibility; BO/LEHD remain validity-unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 0.2279980182647705,
+        "metrics": {
+          "score": 24.272915840148926,
+          "validity": true,
+          "instances": 2,
+          "instance_size": 200,
+          "candidate_calls": 2,
+          "instance_objectives": [
+            24.124996185302734,
+            24.420835494995117
+          ],
+          "profile": "bounded_original_training",
+          "device": "cpu",
+          "pomo_size": 1,
+          "augmentation_factor": 1,
+          "random_seed": 5,
+          "training_subset_tensor_sha256": "8ad82ef14693e2a56c73b1291e6e846d1b074e18721de719a905cf00708f7248",
+          "checkpoint_sha256": "d7a08f6115623eba15cf789db85c0356107178927724815f456188aa075d5ce8",
+          "validation_scope": "every customer visited once, CVRP depot/capacity checked, route length independently recomputed"
+        },
+        "runtime": "Python3.12 CPU, original published assets; torch2.14.0"
+      }
+    },
+    "required_files": [
+      "problems/cvrp_pomo/CVRPTrainer.py",
+      "problems/cvrp_pomo/gen_inst.py",
+      "problems/cvrp_pomo/CVRPModel.py",
+      "problems/cvrp_pomo/CVRProblemDef.py",
+      "problems/cvrp_pomo/train_n100.py",
+      "problems/cvrp_pomo/utils.py",
+      "problems/cvrp_pomo/eval.py",
+      "problems/cvrp_pomo/CVRPTester.py",
+      "problems/cvrp_pomo/CVRPEnv.py",
+      "problems/cvrp_pomo/checkpoints/checkpoint-30500.pt"
+    ],
+    "required_file_hashes": {
+      "problems/cvrp_pomo/CVRPTrainer.py": "77cc016669d28ccb8bf6ad860a31bfe97590377c15ebbe503f18520b54f36996",
+      "problems/cvrp_pomo/gen_inst.py": "3ac8f5fd151ecfb6d3220bb6f7de2948c654cfc4440a66bb9b154be0a1e94ef3",
+      "problems/cvrp_pomo/CVRPModel.py": "14d81e8b85d6d4b08a68293bf26156812f92235254b56671624c317290b88686",
+      "problems/cvrp_pomo/CVRProblemDef.py": "0f3c90ffda2274e6e82a5370acb31cd482eda03ab52e10612dfabd76f35e6428",
+      "problems/cvrp_pomo/train_n100.py": "af03faf82acfed2995eafa66414c918a018a833a448ca33ac386d8518de4a330",
+      "problems/cvrp_pomo/utils.py": "52c41f224d322702453109f8c01d2aae30d4c544579d61c59a66e9e87ea7bf45",
+      "problems/cvrp_pomo/eval.py": "3977afe728d28df5c7feac9f8b1012835ae0f346b4914da28de61e36399be617",
+      "problems/cvrp_pomo/CVRPTester.py": "4e30dd954ae0dae585da227e7fc5313ffa71772e0939974f52261e50ee363d40",
+      "problems/cvrp_pomo/CVRPEnv.py": "1e16b84204a6b8788cd96c85b239b4b1697501262e67f0856960e21bec17295e",
+      "problems/cvrp_pomo/checkpoints/checkpoint-30500.pt": "d7a08f6115623eba15cf789db85c0356107178927724815f456188aa075d5ce8"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "baseline_execution",
+      "passed": true,
+      "seconds": 0.2279980182647705,
+      "metrics": {
+        "score": 24.272915840148926,
+        "validity": true,
+        "instances": 2,
+        "instance_size": 200,
+        "candidate_calls": 2,
+        "instance_objectives": [
+          24.124996185302734,
+          24.420835494995117
+        ],
+        "profile": "bounded_original_training",
+        "device": "cpu",
+        "pomo_size": 1,
+        "augmentation_factor": 1,
+        "random_seed": 5,
+        "training_subset_tensor_sha256": "8ad82ef14693e2a56c73b1291e6e846d1b074e18721de719a905cf00708f7248",
+        "checkpoint_sha256": "d7a08f6115623eba15cf789db85c0356107178927724815f456188aa075d5ce8",
+        "validation_scope": "every customer visited once, CVRP depot/capacity checked, route length independently recomputed"
+      },
+      "runtime": "Python3.12 CPU, original published assets; torch2.14.0"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Plan short delivery routes that serve customer demands without exceeding vehicle capacity.",
+    "importance_rationale": "This problem represents resource and distance constraints in distribution logistics. Research seeks better feasible delivery plans; local synthetic instances are a controlled subproblem rather than measured real-world savings.",
+    "papers": [
+      {
+        "title": "Hybrid Genetic Search for the CVRP: Open-Source Implementation and SWAP* Neighborhood",
+        "url": "https://arxiv.org/abs/2012.10384",
+        "task_relation": "Vidal develops and evaluates an algorithm specifically to solve capacitated vehicle routing. CVRP POMO attention reshaping has a different candidate interface, but its distance objective and demand/capacity constraints pursue the same logistics problem.",
+        "primary_goal": "Improve feasible low-cost solutions of the capacitated vehicle-routing problem.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

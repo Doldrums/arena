@@ -1,0 +1,197 @@
+{
+  "schema_version": "1.0",
+  "id": "eurekagent-gpumode-trimul-a100",
+  "name": "GPUMODE TriMul A100",
+  "description": "GPUMODE TriMul A100",
+  "paper_ids": [
+    "eurekagent"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2606.13662",
+      "type": "paper",
+      "locator": "Sections 4.1–4.2"
+    },
+    {
+      "url": "https://github.com/THU-Team-Eureka/EurekAgent/tree/fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+      "type": "repository",
+      "locator": "examples/kernel_engineering_trimul_strict"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "torch",
+      "triton",
+      "numpy",
+      "pydantic",
+      "PyYAML"
+    ],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "Docker",
+      "Node.js 22+",
+      "Python 3.12",
+      "coding-agent credentials",
+      "NVIDIA A100",
+      "NVIDIA A100 CUDA environment. Set TRIMUL_EVAL_PYTHON to the CUDA Python executable if python3 differs. Uses the vendored TTT-Discover pipeline under hidden_eval_dir/_ttt_lib."
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "geometric mean runtime",
+    "paper_direction": "minimize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "upstream",
+    "source_locator": "Sections 4.1–4.2"
+  },
+  "execution": {
+    "repository": "https://github.com/THU-Team-Eureka/EurekAgent",
+    "commit": "fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+    "upstream_path": "examples/kernel_engineering_trimul_strict",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/kernel_engineering_trimul_strict/hidden_eval_dir/evaluate.py",
+      "callable": "grade_submission",
+      "candidate_argument": "positional",
+      "cwd": "examples/kernel_engineering_trimul_strict",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "baseline_path": null,
+      "dependencies": [
+        "torch",
+        "triton",
+        "numpy",
+        "pydantic",
+        "PyYAML"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass. Caller must provide a submission JSON matching SUBMISSION_FORMAT.md. Upstream uses positive infinity for some invalid minimized candidates; the bridge may reject non-finite JSON while preserving failure.",
+      "kwargs": {
+        "context": {}
+      },
+      "validity_key": "valid",
+      "candidate_format": "json"
+    },
+    "setup_instructions": [
+      "uv sync",
+      "bash docker/build.sh"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "uv sync",
+      "bash docker/build.sh"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct source evaluator adapter; Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "kernel_cpu",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:torch"
+      ],
+      "timeout": 1800,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "GPUMODE TriMul A100",
+    "slug": "gpumode-trimul-a100",
+    "description": "GPUMODE TriMul A100",
+    "benchmark": null,
+    "dataset": null,
+    "metric": "geometric mean runtime",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2606.13662",
+    "source_locator": "Sections 4.1–4.2",
+    "upstream_path": "examples/kernel_engineering_trimul_strict",
+    "requirements": [
+      "Docker",
+      "Node.js 22+",
+      "Python 3.12",
+      "coding-agent credentials",
+      "NVIDIA A100",
+      "NVIDIA A100 CUDA environment. Set TRIMUL_EVAL_PYTHON to the CUDA Python executable if python3 differs. Uses the vendored TTT-Discover pipeline under hidden_eval_dir/_ttt_lib."
+    ],
+    "execution_notes": "Direct source evaluator adapter; Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass.",
+    "upstream_evaluator_paths": [
+      "examples/kernel_engineering_trimul_strict/hidden_eval_dir/evaluate.py"
+    ],
+    "upstream_seed_paths": [
+      "examples/kernel_engineering_trimul_strict/initial.py"
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/kernel_engineering_trimul_strict/hidden_eval_dir/evaluate.py",
+      "callable": "grade_submission",
+      "candidate_argument": "positional",
+      "cwd": "examples/kernel_engineering_trimul_strict",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "baseline_path": null,
+      "dependencies": [
+        "torch",
+        "triton",
+        "numpy",
+        "pydantic",
+        "PyYAML"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass. Caller must provide a submission JSON matching SUBMISSION_FORMAT.md. Upstream uses positive infinity for some invalid minimized candidates; the bridge may reject non-finite JSON while preserving failure.",
+      "kwargs": {
+        "context": {}
+      },
+      "validity_key": "valid",
+      "candidate_format": "json"
+    },
+    "execution_sources": [
+      "https://github.com/THU-Team-Eureka/EurekAgent/blob/fb96df897dfb99797a77623aa0dd9ee178fe89d2/examples/kernel_engineering_trimul_strict/hidden_eval_dir/evaluate.py"
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "kernel",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

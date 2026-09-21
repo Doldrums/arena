@@ -54,6 +54,7 @@ export function createArenaTaskDetail(context) {
     fact(facts, 'Source status', words(task.declared_status));
     holder.append(facts);
     if (source?.repository?.commit) fact(facts, 'Source revision', source.repository.commit);
+    if (source?.kind === 'bundled') fact(facts, 'Task library SHA-256', source.manifest_sha256);
     const annotation = state.insights?.task_annotations?.[task.id];
     const domain = state.insights?.domains.find((item) => item.id === annotation?.domain_id);
     const taskType = state.insights?.task_types.find(
@@ -98,7 +99,7 @@ export function createArenaTaskDetail(context) {
         ),
       );
     if (task.contract_source) {
-      externalLinks(contract, [['Pinned contract source', task.contract_source.url]]);
+      externalLinks(contract, [[source?.kind === 'bundled' ? 'Task definition in Arena' : 'Pinned contract source', task.contract_source.url]]);
       const metadata = element('dl', 'arena-contract-source');
       if (task.contract_source.path) fact(metadata, 'Source file', task.contract_source.path);
       if (task.contract_source.sha256)

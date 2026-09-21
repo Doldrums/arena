@@ -1,0 +1,444 @@
+[
+  {
+    "id": "science-earth-wildfire-spread-law",
+    "name": "Earth science: Measured wildfire spread laws",
+    "description": "Measured wildfire spread laws with an explicit candidate interface, physical units, independent evaluator and source-traceable observations or numerical model.",
+    "family": "science_earth_fire",
+    "parameters": {},
+    "proposal_id": "E07",
+    "status": "ready",
+    "sources": [
+      {
+        "url": "https://doi.org/10.1071/WF14130",
+        "type": "paper",
+        "locator": "Scientific process, benchmark motivation and evaluation assumptions."
+      },
+      {
+        "url": "https://github.com/wirc-sjsu/firebench",
+        "type": "repository",
+        "locator": "Original source data/model; local candidate and evaluator are independently implemented."
+      }
+    ],
+    "limitations": [
+      "Bounded adaptation; no complete source-paper score reproduction or novel scientific discovery claimed.",
+      "Public evaluation cases are development instances; independent generalization requires frozen candidates and new cases.",
+      "CPU, measured Anderson2015 shrubland fires; commercial-use permissions apply."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "area": "earth_and_environment",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none"
+    },
+    "requirements": {
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "datasets": "CPU, measured Anderson2015 shrubland fires; commercial-use permissions apply."
+    },
+    "validation": {
+      "level": "source_reviewed",
+      "upstream_reproduction": false,
+      "tests": "tests/test_science_earth_expansion.py"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy"
+      ]
+    },
+    "setup": {
+      "command": "python scripts/prepare_earth_expansion.py --proposal E07",
+      "documentation": "docs/EARTH_EXPANSION.md"
+    },
+    "setup_reason": "CPU, measured Anderson2015 shrubland fires; commercial-use permissions apply.",
+    "requires": [
+      "file:../../.cache/science-earth/E07.json",
+      "file:../../.cache/science-earth/E07.manifest.json"
+    ]
+  },
+  {
+    "id": "science-earth-seasonal-sea-ice",
+    "name": "Earth science: Seasonal Arctic sea-ice probabilities",
+    "description": "Seasonal Arctic sea-ice probabilities with an explicit candidate interface, physical units, independent evaluator and source-traceable observations or numerical model.",
+    "family": "science_earth_ice",
+    "parameters": {},
+    "proposal_id": "E08",
+    "status": "ready",
+    "sources": [
+      {
+        "url": "https://www.nature.com/articles/s41467-021-25257-4",
+        "type": "paper",
+        "locator": "Scientific process, benchmark motivation and evaluation assumptions."
+      },
+      {
+        "url": "https://github.com/tom-andersson/icenet-paper",
+        "type": "repository",
+        "locator": "Original source data/model; local candidate and evaluator are independently implemented."
+      },
+      {
+        "url": "https://nsidc.org/data/g02202/versions/2",
+        "type": "corpus",
+        "locator": "Meier et al.2013, G02202 Version2 DOI10.7265/N55M63M1. Source monthly unedited CDR concentration, flags, projection and license; exact18files pinned locally."
+      },
+      {
+        "url": "https://essd.copernicus.org/articles/5/311/2013/",
+        "type": "paper",
+        "locator": "Peng et al.2013 NOAA/NSIDC CDR algorithms, monthly concentrations, quality limitations and reproducibility."
+      },
+      {
+        "url": "https://www.ncei.noaa.gov/data/sea-ice-concentration/access/",
+        "type": "archive",
+        "locator": "Official NOAA NCEI v02r00 monthly files: July-December2013/2014 and January/March/June2014/2015. SHA256 pins in data/science/earth_expansion/seaice_sources.json."
+      }
+    ],
+    "limitations": [
+      "Historical NOAA/NSIDC G02202 v02r00 observational adaptation, not the original IceNet OSISAF dataset or full-paper score reproduction.",
+      "Six fixed public chronological development cases at1/3/6-month leads; independent generalization requires frozen candidates and unseen years.",
+      "Version2 is superseded and is not current operational data. Satellite retrieval and summer melt uncertainty remain; pole-hole, land/coastal and missing cells are excluded.",
+      "Only valid Arctic ocean north of60N is scored; historical invalid cells have explicit masked zero placeholders. Edge diagnostic uses projected, not great-circle, distances."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "area": "earth_and_environment",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none"
+    },
+    "requirements": {
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "datasets": "18 pinned official NOAA/NSIDC monthly satellite CDR files(~67MB), prepared E08 source bundle(~61MB), six forecasts on full native448x304 maps.",
+      "preparation_dependencies": [
+        "netCDF4",
+        "pyproj==3.7.2"
+      ]
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "source_reviewed": "2026-09-20",
+      "upstream_reproduction": false,
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false,
+      "evidence": "validation/seaice-source-run.json",
+      "tests": "tests/test_science_earth_expansion.py; tests/test_science_seaice_source.py"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy",
+        "netCDF4(preparation)",
+        "pyproj3.7.2(preparation)"
+      ],
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false
+    },
+    "setup": {
+      "command": "python scripts/prepare_earth_expansion.py --proposal E08",
+      "documentation": "docs/EARTH_EXPANSION.md"
+    },
+    "requires": [
+      "file:../../.cache/science-earth/E08.json",
+      "file:../../.cache/science-earth/E08.manifest.json"
+    ]
+  },
+  {
+    "id": "science-earth-snow-accumulation-melt",
+    "name": "Earth science: Snow accumulation and melt across sites",
+    "description": "Snow accumulation and melt across sites with an explicit candidate interface, physical units, independent evaluator and source-traceable observations or numerical model.",
+    "family": "science_earth_snow",
+    "parameters": {},
+    "proposal_id": "E09",
+    "status": "ready",
+    "sources": [
+      {
+        "url": "https://gmd.copernicus.org/articles/11/5027/2018/",
+        "type": "paper",
+        "locator": "Scientific process, benchmark motivation and evaluation assumptions."
+      },
+      {
+        "url": "https://doi.pangaea.de/10.1594/PANGAEA.897575",
+        "type": "benchmark",
+        "locator": "Original source data/model; local candidate and evaluator are independently implemented."
+      }
+    ],
+    "limitations": [
+      "Bounded adaptation; no complete source-paper score reproduction or novel scientific discovery claimed.",
+      "Public evaluation cases are development instances; independent generalization requires frozen candidates and new cases.",
+      "Four complete site-winters from ESM-SnowMIP; CC-BY-NC4.0 source observations."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "area": "earth_and_environment",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none"
+    },
+    "requirements": {
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "datasets": "Four complete site-winters from ESM-SnowMIP; CC-BY-NC4.0 source observations."
+    },
+    "validation": {
+      "level": "source_reviewed",
+      "upstream_reproduction": false,
+      "tests": "tests/test_science_earth_expansion.py"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy"
+      ]
+    },
+    "setup": {
+      "command": "python scripts/prepare_earth_expansion.py --proposal E09",
+      "documentation": "docs/EARTH_EXPANSION.md"
+    },
+    "setup_reason": "Four complete site-winters from ESM-SnowMIP; CC-BY-NC4.0 source observations.",
+    "requires": [
+      "file:../../.cache/science-earth/E09.json",
+      "file:../../.cache/science-earth/E09.manifest.json"
+    ]
+  },
+  {
+    "id": "science-earth-irrigation-policies",
+    "name": "Earth science: Water-efficient irrigation policies",
+    "description": "Water-efficient irrigation policies with an explicit candidate interface, physical units, independent evaluator and source-traceable observations or numerical model.",
+    "family": "science_earth_irrigation",
+    "parameters": {},
+    "proposal_id": "E10",
+    "status": "ready",
+    "sources": [
+      {
+        "url": "https://pure.manchester.ac.uk/ws/files/48339277/AquaCropOS_Foster.pdf",
+        "type": "paper",
+        "locator": "Scientific process, benchmark motivation and evaluation assumptions."
+      },
+      {
+        "url": "https://github.com/aquacropos/aquacrop",
+        "type": "repository",
+        "locator": "Original source data/model; local candidate and evaluator are independently implemented."
+      },
+      {
+        "url": "https://agupubs.onlinelibrary.wiley.com/doi/10.1002/2014WR015620",
+        "type": "paper",
+        "title": "Modeling irrigation behavior in groundwater systems",
+        "locator": "Develops irrigation decision models coupling crop response, water availability and economic objectives. The local water-budget policy search uses AquaCrop simulations with its own objective and weather cases."
+      }
+    ],
+    "limitations": [
+      "Bounded adaptation; no complete source-paper score reproduction or novel scientific discovery claimed.",
+      "Public evaluation cases are development instances; independent generalization requires frozen candidates and new cases.",
+      "AquaCrop-OSPy3.0.12 and bundled Tunis weather; simulated wheat yield."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "policy",
+      "domain": "natural_science",
+      "area": "earth_and_environment",
+      "data": "simulator",
+      "verification": "simulation",
+      "reference": "none"
+    },
+    "requirements": {
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "aquacrop==3.0.12"
+      ],
+      "datasets": "AquaCrop-OSPy3.0.12 and bundled Tunis weather; simulated wheat yield."
+    },
+    "validation": {
+      "level": "source_reviewed",
+      "upstream_reproduction": false,
+      "tests": "tests/test_science_earth_expansion.py"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "upstream_reference_code_available": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy",
+        "aquacrop==3.0.12"
+      ],
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "AquaCrop-OSPy3.0.12 forward crop/soil-water model and bundled measured Tunis weather; local causal candidate interface, budget validation and objective are independently authored."
+    },
+    "setup": {
+      "command": "python scripts/prepare_earth_expansion.py --proposal E10",
+      "documentation": "docs/EARTH_EXPANSION.md"
+    },
+    "setup_reason": "AquaCrop-OSPy3.0.12 and bundled Tunis weather; simulated wheat yield.",
+    "requires": []
+  },
+  {
+    "id": "science-earth-groundwater-uncertainty",
+    "name": "Earth science: Groundwater predictive uncertainty",
+    "description": "Groundwater predictive uncertainty with an explicit candidate interface, physical units, independent evaluator and source-traceable observations or numerical model.",
+    "family": "science_earth_groundwater",
+    "parameters": {},
+    "proposal_id": "E11",
+    "status": "ready",
+    "sources": [
+      {
+        "url": "https://www.usgs.gov/publications/jupyter-notebooks-parameter-estimation-uncertainty-analysis-and-optimization-pest",
+        "type": "paper",
+        "locator": "Scientific process, benchmark motivation and evaluation assumptions."
+      },
+      {
+        "url": "https://github.com/pypest/pyemu_pestpp_workflow",
+        "type": "repository",
+        "locator": "Original source data/model; local candidate and evaluator are independently implemented."
+      },
+      {
+        "url": "https://www.sciencedirect.com/science/article/pii/S1364815218302676",
+        "type": "paper",
+        "title": "A model-independent iterative ensemble smoother for efficient history-matching and uncertainty quantification in very high dimensions",
+        "locator": "Develops and tests groundwater-model parameter inference and predictive uncertainty estimation, including synthetic groundwater examples. The local problem is a restricted inference protocol."
+      }
+    ],
+    "limitations": [
+      "Bounded adaptation; no complete source-paper score reproduction or novel scientific discovery claimed.",
+      "Public evaluation cases are development instances; independent generalization requires frozen candidates and new cases.",
+      "Pinned MODFLOW6.7.0 binary and Freyberg model inputs; synthetic aquifers."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "area": "earth_and_environment",
+      "data": "simulator",
+      "verification": "simulation",
+      "reference": "none"
+    },
+    "requirements": {
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "flopy==3.9.5"
+      ],
+      "datasets": "Pinned MODFLOW6.7.0 binary and Freyberg model inputs; synthetic aquifers."
+    },
+    "validation": {
+      "level": "source_reviewed",
+      "upstream_reproduction": false,
+      "tests": "tests/test_science_earth_expansion.py"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "upstream_reference_code_available": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy",
+        "flopy==3.9.5"
+      ],
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "MODFLOW6 6.7.0 forward groundwater model, source Freyberg arrays and FloPy model I/O; local candidate/oracle interface, predictive likelihood, split and budget checks are independently authored."
+    },
+    "setup": {
+      "command": "python scripts/prepare_earth_expansion.py --proposal E11",
+      "documentation": "docs/EARTH_EXPANSION.md"
+    },
+    "setup_reason": "Pinned MODFLOW6.7.0 binary and Freyberg model inputs; synthetic aquifers.",
+    "requires": [
+      "file:../../.cache/science-earth/E11.json",
+      "file:../../.cache/science-earth/E11.manifest.json"
+    ]
+  },
+  {
+    "id": "science-earth-methane-emission-inversion",
+    "name": "Earth science: Methane emission inversion",
+    "description": "Methane emission inversion with an explicit candidate interface, physical units, independent evaluator and source-traceable observations or numerical model.",
+    "family": "science_earth_methane",
+    "parameters": {},
+    "proposal_id": "E12",
+    "status": "requires_setup",
+    "sources": [
+      {
+        "url": "https://gmd.copernicus.org/articles/15/5787/2022/",
+        "type": "paper",
+        "locator": "Scientific process, benchmark motivation and evaluation assumptions."
+      },
+      {
+        "url": "https://github.com/geoschem/integrated_methane_inversion",
+        "type": "repository",
+        "locator": "Original source data/model; local candidate and evaluator are independently implemented."
+      }
+    ],
+    "limitations": [
+      "Bounded adaptation; no complete source-paper score reproduction or novel scientific discovery claimed.",
+      "Public evaluation cases are development instances; independent generalization requires frozen candidates and new cases.",
+      "Requires a curated source IMI case with quality masks, averaging kernels, precomputed GEOS-Chem operator and orbit split."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "area": "earth_and_environment",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none"
+    },
+    "requirements": {
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "datasets": "Requires a curated source IMI case with quality masks, averaging kernels, precomputed GEOS-Chem operator and orbit split."
+    },
+    "validation": {
+      "level": "source_reviewed",
+      "upstream_reproduction": false,
+      "tests": "tests/test_science_earth_expansion.py"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy"
+      ]
+    },
+    "setup": {
+      "command": "python scripts/prepare_earth_expansion.py --proposal E12",
+      "documentation": "docs/EARTH_EXPANSION.md"
+    },
+    "setup_reason": "Requires a curated source IMI case with quality masks, averaging kernels, precomputed GEOS-Chem operator and orbit split.",
+    "requires": [
+      "file:../../.cache/science-earth/E12.json",
+      "file:../../.cache/science-earth/E12.manifest.json"
+    ]
+  }
+]

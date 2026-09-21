@@ -1,0 +1,89 @@
+{
+  "protocol": "recreated",
+  "family": "science_physics_experimental_surface_code",
+  "direction": "minimize",
+  "contract": "decode(detector_events, metadata) -> shot x observable bits. Metadata includes source detector-error model, code distance and observable count. Train/test acquisition batches disjoint. Score logical failure per complete experimental shot, with Wilson confidence interval and timing. PyMatching baseline uses only error model and detector events.",
+  "parameters": {
+    "proposal_id": "P03"
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "file:../../.cache/physics-env/bin/python",
+    "file:data/physics-expansion/P03/manifest.json",
+    "file:data/physics-expansion/P03/benchmark.npz"
+  ],
+  "timeout": 300,
+  "notes": [
+    "Independent SCIEL scientific adaptation. Required source packs never fall back to toy data. Fixture tests are distinct from source-data execution. See docs/PHYSICS_EXPANSION.md."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-physics-experimental-surface-code",
+  "name": "Experimental surface-code logical decoding",
+  "paper_ids": [
+    "science-physics_expansion"
+  ],
+  "description": "decode(detector_events, metadata) -> shot x observable bits. Metadata includes source detector-error model, code distance and observable count. Train/test acquisition batches disjoint. Score logical failure per complete experimental shot, with Wilson confidence interval and timing. PyMatching baseline uses only error model and detector events.",
+  "benchmark": "Experimental surface-code logical decoding",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://www.nature.com/articles/s41586-024-08449-y",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: Experimental surface-code logical decoding"
+    },
+    {
+      "url": "https://zenodo.org/records/13273331",
+      "type": "archive",
+      "locator": "google_105Q_surface_code_d3_d5_d7.zip: experimental detection events, acquisition batches and detector-error model."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Compact zero-shot experimental pilot: three complete X-basis 13-cycle acquisitions, no fitted training shots and no logical-per-cycle scaling claim."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-physics_expansion",
+      "title": "Physics and astrophysics research: source-based research tasks",
+      "url": "https://arxiv.org/abs/1904.06778v3"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Learning high-accuracy error decoding for quantum processors",
+        "url": "https://www.nature.com/articles/s41586-024-08148-8",
+        "task_relation": "The local task predicts logical outcomes from complete experimental syndrome shots. Its three X-basis acquisitions and shot-level score are a restricted local evaluation, not the paper's complete decoder architecture or experimental programme.",
+        "primary_goal": "Improve surface-code decoding accuracy on experimental quantum-processor data and realistic simulations.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Decode measured surface-code syndromes to reduce logical errors in quantum memories.",
+    "importance_rationale": "Inferring logical corrections from noisy experimental syndromes is the direct error-correction problem addressed by the paper.",
+    "reason": "The paper attempts to solve physical error decoding; its learned architecture is the means of solving that problem.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "quantum_information",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

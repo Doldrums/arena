@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.0",
+  "id": "pdr-car-sequencing-csplib-1",
+  "name": "Car sequencing (CSPLib 1)",
+  "description": "Car sequencing (CSPLib 1) task evaluated in LLM-Guided Evolutionary Search for Constraint Model Reformulation to Improve Solver Efficiency.",
+  "paper_ids": [
+    "pdr"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2607.28268",
+      "type": "paper",
+      "locator": "Section 5, Experimental setup"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "CPMpy",
+      "OR-Tools",
+      "AutoIG instance pools"
+    ]
+  },
+  "evaluation": {
+    "metric": "geometric mean baseline-relative runtime speedup (PAR2 for timeout)",
+    "paper_metric": "geometric mean baseline-relative runtime speedup (PAR2 for timeout)",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "CSPLib / AutoIG",
+    "protocol": "specified_only",
+    "source_locator": "Section 5, Experimental setup"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Paper says code and detailed results will be made publicly available; no release URL supplied."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "toolchain:CSPLib / AutoIG"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "toolchain",
+      "unsupported_reason": "Evaluation depends on an external toolchain (CSPLib / AutoIG) that is not bundled."
+    }
+  },
+  "limitations": [
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "Car sequencing (CSPLib 1)",
+    "slug": "car-sequencing-csplib-1",
+    "description": "Car sequencing (CSPLib 1) task evaluated in LLM-Guided Evolutionary Search for Constraint Model Reformulation to Improve Solver Efficiency.",
+    "benchmark": "CSPLib / AutoIG",
+    "dataset": null,
+    "metric": "geometric mean baseline-relative runtime speedup (PAR2 for timeout)",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2607.28268",
+    "source_locator": "Section 5, Experimental setup",
+    "upstream_path": null,
+    "requirements": [
+      "CPMpy",
+      "OR-Tools",
+      "AutoIG instance pools"
+    ],
+    "execution_notes": [
+      "Paper says code and detailed results will be made publicly available; no release URL supplied."
+    ],
+    "setup_commands": [],
+    "run_commands": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}
