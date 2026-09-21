@@ -10,11 +10,34 @@ const env: Env = {ASSETS: {fetch: async request => new Response(new URL(request.
 const request = (path: string, init?: RequestInit) => new Request(`http://localhost${path}`, init);
 
 test('production protects HTML, assets and API even when Access is unconfigured', async () => {
-  for (const path of ['/', '/style.css', '/arena-atlas.js', '/arena-atlas.css', '/arena-theme.css', '/api/catalog', '/api/insights', '/api/references', '/api/search-families', '/experiments', '/results', '/experiments/results', '/experiments/queue']) {
+  for (const path of ['/', '/style.css', '/arena-atlas.js', '/arena-atlas.css', '/arena-theme.css', '/api/catalog', '/api/insights', '/api/references', '/api/search-families', '/api/results-overview', '/experiments', '/results', '/experiments/results', '/experiments/queue']) {
     const response = await worker.fetch(request(path), env);
     assert.equal(response.status, 503);
     assert.equal((await response.json()).error, 'access_not_configured');
   }
+});
+
+test('published results overview is read-only and does not expose private control records', async () => {
+  const response = await route(request('/api/results-overview'), env);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('Cache-Control'), 'private, no-store');
+  const overview = await response.json();
+  assert.equal(overview.schema, 'arena.results-overview/1');
+  assert.ok(overview.loaded <= overview.total);
+  assert.equal(overview.summary.runs, overview.loaded);
+  assert.ok(Array.isArray(overview.systems) && Array.isArray(overview.cohorts));
+  const forbidden = new Set(['owner', 'id', 'label', 'batch_id', 'version', 'engine', 'template', 'profile', 'reason', 'receipt_hashes', 'valid_candidate_hashes', 'source', 'prompt', 'code']);
+  const check = (value: unknown): void => {
+    if (Array.isArray(value)) value.forEach(check);
+    else if (value && typeof value === 'object') for (const [key, child] of Object.entries(value)) {
+      assert.equal(forbidden.has(key), false, `private field: ${key}`);
+      check(child);
+    }
+  };
+  check(overview);
+  assert.equal(await (await route(request('/api/results-overview', {method: 'HEAD'}), env)).text(), '');
+  assert.equal((await route(request('/api/results-overview', {method: 'POST'}), env)).status, 405);
+  assert.equal((await route(request('/api/control/results'), env)).status, 404);
 });
 test('production rejects missing and forged tokens; local adapter rejects remote host', async () => {
   const protectedEnv = {...env, ACCESS_TEAM_DOMAIN: 'https://arena.cloudflareaccess.com', ACCESS_AUD: 'our-team-app'};

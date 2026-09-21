@@ -1,16 +1,34 @@
 # Recorded results
 
-The research overview has a Results dashboard at `/results`, with the same
-masthead and tabs as Tasks and Participants. It starts with measurement filters
-and a compact summary, followed by score/resource and seed/best plots, evaluation
-outcomes, token composition, a paginated run comparison and measurement coverage.
-The research hand-off panel links to the separate experiment workspace.
+The landing Results tab at `/results` opens a compact published overview without
+an experiment access key: four measurement cards, a score/resource chart within
+one evaluator cohort, experiment coverage and a short expandable system table.
+The timestamp explicitly identifies the published snapshot; this is not a live
+queue. The existing “Follow the research behind the numbers” panel leads to the
+full experiment workspace. Production Cloudflare team Access still applies.
+
+`GET /api/results-overview` serves only the reviewed `registry/results-overview.json`
+snapshot in both the Python board and Cloudflare catalog. It never accesses the
+control service or falls back to private run data. The export excludes run IDs,
+user labels, owners, private versions, paths, artifacts, source hashes and prompts.
+It preserves failed and cancelled runs, unknown measurements, and evaluator
+cohort boundaries. Program counts include the initial programs (seeds).
+
+An operator refreshes the snapshot from an authenticated results response saved
+outside the repository:
+
+```sh
+python3 scripts/export_results_overview.py --input /private/results.json --output registry/results-overview.json
+```
+
+Review and deploy the aggregate with the catalog. Never commit the private input
+or its access key. The export is offline and performs no model calls or launches.
 
 The experiment workspace retains its left sidebar: Experiments at `/experiments`,
 detailed Results at `/experiments/results`, and Queue at `/experiments/queue`.
-`/queue` remains an alias for the queue. Both Results views use the same tab-session
-access key and owner-scoped data. Opening them, changing a filter or refreshing
-never submits work or imports a participant implementation.
+`/queue` remains an alias. Connecting a key on landing Results opens the existing
+owner-scoped detailed view; disconnecting returns to the published overview.
+Opening pages, changing filters or refreshing never submits work.
 
 `GET /api/control/results` requires `read` scope. Ordinary keys see their owner's
 runs; administrators see all runs. The response contains at most the newest 500

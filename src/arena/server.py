@@ -159,6 +159,10 @@ class Handler(BaseHTTPRequestHandler):
             from .search_families import get_search_families
             self.reply(get_search_families(self.server.registry_root))
             return
+        if parts == ["api", "results-overview"]:
+            from .results_overview import get_results_overview
+            self.reply(get_results_overview(self.server.registry_root))
+            return
         if parts == ["api", "runs"]:
             with self.server.store_lock:
                 payload = {"runs": self.server.store.discover(), "refresh_seconds": 2}
@@ -242,7 +246,8 @@ class Handler(BaseHTTPRequestHandler):
                                              "arena-atlas.js", "arena-atlas.css", "arena-theme.css",
                                              "arena-contribute.js", "arena-contribute.css", "arena-queue.js", "arena-queue.css",
                                              "arena-results.js", "arena-results.css", "arena-workspace.css",
-                                             "arena-results-showcase.js", "arena-results-showcase.css"}:
+                                             "arena-results-showcase.js", "arena-results-showcase.css",
+                                             "arena-results-overview.js", "arena-results-overview.css"}:
             file = STATIC / parts[0]
         elif len(parts) == 2 and parts[0] == "brand" and parts[1] in {"cpil.png", "mbzuai.png"}:
             file = STATIC / "brand" / parts[1]

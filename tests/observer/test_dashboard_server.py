@@ -115,6 +115,7 @@ class DashboardServerTests(unittest.TestCase):
                            ("/experiments/queue", "text/html"), ("/queue", "text/html"),
                            ("/arena-workspace.css", "text/css"),
                            ("/arena-results-showcase.js", "javascript"), ("/arena-results-showcase.css", "text/css"),
+                           ("/arena-results-overview.js", "javascript"), ("/arena-results-overview.css", "text/css"),
                            ("/arena.js", "javascript"), ("/arena.css", "text/css"),
                            ("/arena-insights.js", "javascript"), ("/arena-insights.css", "text/css"),
                            ("/arena-atlas.js", "javascript"), ("/arena-atlas.css", "text/css"),
@@ -154,6 +155,30 @@ class DashboardServerTests(unittest.TestCase):
         self.assertIn("+value = 2", detail["diff"])
         self.assertFalse(self.executed.exists())
         self.assertEqual(self.fingerprints(), before)
+
+    def test_results_overview_reads_only_explicit_snapshot_without_control_key(self):
+        from arena.results_overview import build_results_overview
+        published = build_results_overview(dict(schema="arena.results/1", generated_at=100,
+            total=0, truncated=False, runs=[]), generated_at=101)
+        registry = self.root / "registry"
+        registry.mkdir()
+        snapshot = registry / "results-overview.json"
+        snapshot.write_text(json.dumps(published), encoding="utf-8")
+        self.server.registry_root = registry
+        before = self.fingerprints()
+        status, headers, body = self.get("/api/results-overview")
+        self.assertEqual(status, 200)
+        self.assertEqual(headers["Cache-Control"], "no-store")
+        self.assertEqual(json.loads(body), published)
+        self.assertEqual(self.fingerprints(), before)
+        self.assertFalse(self.executed.exists())
+        # Never fall back to private runs when publication is absent or invalid.
+        snapshot.write_text(json.dumps({**published, "private": "do-not-publish"}), encoding="utf-8")
+        status, _, body = self.get("/api/results-overview")
+        self.assertEqual(status, 503)
+        self.assertNotIn(b"do-not-publish", body)
+        snapshot.unlink()
+        self.assertEqual(self.get("/api/results-overview")[0], 503)
 
     def test_showcase_and_operational_results_keep_separate_navigation(self):
         landing = self.get('/')[2].decode()

@@ -3,6 +3,7 @@ import participants from '../../registry/participants.json';
 import insights from '../../registry/insights.json';
 import references from '../../registry/references.json';
 import searchFamilies from '../../registry/search-families.json';
+import resultsOverview from '../../registry/results-overview.json';
 import type {AccessConfig} from './auth.ts';
 
 export interface Env extends AccessConfig {
@@ -34,6 +35,9 @@ export async function route(request: Request, env: Env): Promise<Response> {
     response = json(references);
   } else if (url.pathname === '/api/search-families') {
     response = json(searchFamilies);
+  } else if (url.pathname === '/api/results-overview') {
+    // Explicitly published measurements only; never proxy the private control API.
+    response = json(resultsOverview);
   } else if (url.pathname === '/api/runs' || url.pathname.startsWith('/api/runs/')) {
     response = json({error: 'observer_not_connected', message: 'Cloud run ingestion is not connected yet. Use the local Arena observer to inspect SCiEL runs.'}, 503);
   } else if (url.pathname === '/api' || url.pathname.startsWith('/api/')) {

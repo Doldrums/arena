@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="/arena-theme.css">
   <link rel="stylesheet" href="/arena-results-showcase.css">
   <script type="module" src="/arena-results-showcase.js"></script>
+  <link rel="stylesheet" href="/arena-results-overview.css">
+  <script type="module" src="/arena-results-overview.js"></script>
 </head>
 <body class="arena-shell showcase-shell" data-results-showcase="true">
   <a class="skip" href="#main">Skip to results</a>
@@ -31,6 +33,7 @@
       <h1 id="showcase-title">Results</h1>
       <div class="showcase-context"><span id="showcase-status" role="status" aria-live="polite">Connect to explore recorded results.</span><button id="showcase-refresh" type="button" disabled aria-label="Refresh results">↻</button></div>
     </header>
+    <section id="results-overview" aria-label="Published results overview" aria-busy="true"></section>
     <section id="showcase-toolbar" class="showcase-toolbar" aria-label="Filter results" hidden>
       <label>System<select id="showcase-framework"><option value="sciel-release">SCiEL</option></select></label>
       <label>Model<select id="showcase-model"><option value="all">All models</option></select></label>

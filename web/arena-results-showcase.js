@@ -83,6 +83,11 @@ export function initResultsShowcase({doc = document, fetcher = (...args) => fetc
     }
   }
   function setAccess() {
+    const access = key ? 'connected' : 'overview';
+    if (doc.body.dataset.resultsAccess !== access) {
+      doc.body.dataset.resultsAccess = access;
+      doc.dispatchEvent(new win.CustomEvent('arena:results-access', {detail:{connected:!!key}}));
+    }
     $('showcase-connect').textContent = key ? 'Access key' : 'Connect with key';
     $('showcase-refresh').disabled = !key || !!pending;
     $('showcase-empty-connect').hidden = !!key;
