@@ -1,0 +1,69 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "protegi",
+      "name": "ProTeGi",
+      "participant_ids": [
+        "protegi"
+      ],
+      "repository": {
+        "url": "https://github.com/microsoft/LMOps",
+        "commit": "6f53ef41c951de0962bbf27fe3f5819eabc8ce0e"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "prompt_optimization/README.md": "e4c51c23da69d7a9c3bfa3cf1b6b8d119ed42be1a926b47adacf8f4b768043b7",
+        "prompt_optimization/evaluators.py": "3093f8d96074460133010af46bbf75eede62dbb78cc17d99856560a2906d5982",
+        "prompt_optimization/main.py": "ce45c2db59e6d1017b9b7f446880457ac852b2977cb687e67fd14a1bc96ed7fa",
+        "prompt_optimization/optimizers.py": "037636b5e0f533ffedd4df81fe06f16026b22131a79954a5e5f082daac6bb8de",
+        "prompt_optimization/utils.py": "11cb47316ee45dff678e52e908dafecb459f0b5b423ff669b58ecb452132b248"
+      },
+      "profiles": [
+        {
+          "id": "native-search",
+          "description": "Released ProTeGi textual-gradient prompt optimization.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.protegi"
+          },
+          "cwd": "prompt_optimization",
+          "fixed_args": [],
+          "output": {
+            "flag": "--out",
+            "path": "results.txt"
+          },
+          "required_files": [
+            "prompt_optimization/main.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native evaluator (brute force/UCB/etc.) and task scorer; raw search output is retained.",
+            "evidence": [
+              "prompt_optimization/main.py",
+              "prompt_optimization/utils.py",
+              "prompt_optimization/evaluators.py",
+              "prompt_optimization/optimizers.py"
+            ]
+          },
+          "argument_help": [
+            "--task liar --data_dir data/liar --prompts prompts/liar.md --rounds 6 --evaluator ucb",
+            "OPENAI_API_KEY is provided to native config.OPENAI_KEY in memory."
+          ],
+          "limitations": [
+            "Historical model names are hardcoded in upstream utils.py; no claim of compatibility with current provider endpoints.",
+            "Native request retry loops can be unbounded; the outer native-run timeout remains required."
+          ]
+        }
+      ]
+    }
+  ]
+}

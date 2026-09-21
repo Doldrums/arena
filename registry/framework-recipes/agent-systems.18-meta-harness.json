@@ -1,0 +1,73 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "meta-harness",
+      "name": "Meta-Harness",
+      "participant_ids": [
+        "meta-harness"
+      ],
+      "repository": {
+        "url": "https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact",
+        "commit": "57fefdb2ff84af3fd81b69d67814acbe69bd0743"
+      },
+      "status": "artifact_only",
+      "license": null,
+      "setup": [
+        "Prepare Python >=3.12, pyproject.toml dependencies, a compatible Harbor installation and Terminal-Bench backend.",
+        "Configure ANTHROPIC_API_KEY or the selected model environment explicitly; no commercial inference is performed during planning."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "9d3cfad1978ef25c9569beb917ba15c66080f3ca0eb160d7b256236cd21444de",
+        "agent.py": "2afb292271e06ba25afa26ae729e56294c8d3822c846614ab944c0ba9e37e271",
+        "anthropic_caching.py": "fbc08f6e93569ce8dc144d765be6c24f28be139e630983aea9f0b741a464d56c",
+        "pyproject.toml": "9770b769eab9fc692d76a75815402c497f1e28913e37c673cacaab71ed8e9589"
+      },
+      "profiles": [
+        {
+          "id": "terminal-bench-artifact",
+          "description": "Frozen Meta-Harness AgentHarness evaluated by the installed native Harbor command",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.meta_harness"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "run",
+            "--agent-import-path",
+            "agent:AgentHarness",
+            "-d",
+            "terminal-bench@2.0"
+          ],
+          "output": null,
+          "required_files": [
+            "agent.py",
+            "anthropic_caching.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "jobs/**/*.json",
+            "jobs/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Frozen Meta-Harness AgentHarness evaluated by the installed native Harbor command Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "agent.py",
+              "anthropic_caching.py"
+            ]
+          },
+          "argument_help": [
+            "-m MODEL -e BACKEND -n CONCURRENCY --n-attempts N, following the installed Harbor CLI."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "This repository publishes the discovered agent artifact, not the harness-optimization process.",
+            "Harbor is an external installed dependency; its entrypoint/version and result schema are not pinned by this source revision."
+          ]
+        }
+      ]
+    }
+  ]
+}

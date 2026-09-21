@@ -1,0 +1,435 @@
+/* Research notes: a quiet side heading and one continuous accordion surface. */
+.arena-faq {
+  max-width: 1190px;
+  margin: 86px auto 66px;
+  display: grid;
+  grid-template-columns: 245px minmax(0, 1fr);
+  gap: 38px;
+  align-items: start;
+}
+.arena-faq-heading {
+  padding: 22px 4px;
+}
+.arena-faq-kicker {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #85818d;
+}
+.arena-faq-heading h2 {
+  font-size: 29px;
+  letter-spacing: -0.8px;
+  font-weight: 500;
+  margin: 10px 0 13px;
+  color: #2d2933;
+}
+.arena-faq-heading p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #817c87;
+  margin: 0;
+}
+.arena-faq-heading > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: #81718f;
+  margin-top: 25px;
+  min-height: 32px;
+}
+.arena-faq-heading > a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.arena-faq-list {
+  display: grid;
+  gap: 5px;
+  background: #eeedf0;
+  border: 1px solid #e9e7eb;
+  padding: 6px;
+  border-radius: 25px;
+}
+.arena-faq details {
+  border: 1px solid #eeecf0;
+  border-radius: 18px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 1px 2px #29233103;
+}
+.arena-faq summary {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 22px;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 500;
+  color: #45404c;
+  padding: 20px 20px;
+  cursor: pointer;
+  min-height: 74px;
+}
+.arena-faq summary::-webkit-details-marker {
+  display: none;
+}
+.arena-faq summary:hover {
+  background: #fcfbfd;
+}
+.arena-faq summary:focus-visible,
+.arena-catalog-browser > summary:focus-visible {
+  outline: 2px solid #9181ac;
+  outline-offset: -5px;
+  border-radius: 14px;
+}
+.arena-faq-index {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 28px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: #938b9f;
+  background: #f5f3f8;
+  border-radius: 9px;
+}
+.arena-faq summary svg {
+  color: #938e9b;
+  width: 17px;
+  height: 17px;
+  padding: 2px;
+  border-radius: 50%;
+}
+.arena-faq details[open] summary svg {
+  transform: rotate(180deg);
+}
+.arena-faq details[open] .arena-faq-index {
+  background: #eae5f2;
+  color: #86709e;
+}
+.arena-faq details > div {
+  padding: 0 58px 23px 62px;
+  max-width: 850px;
+  font-size: 13px;
+  line-height: 1.85;
+  color: #78727f;
+}
+.arena-faq details p {
+  margin: 0;
+}
+.arena-faq details a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin-top: 9px;
+  font-size: 11px;
+  color: #8a70a3;
+}
+.arena-faq details a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .arena-catalog-toggle-label svg,
+  .arena-faq summary svg {
+    transition: none;
+  }
+}
+@media (max-width: 1180px) {
+  .arena-intro {
+    max-width: 770px;
+    margin: 76px auto 84px;
+  }
+  .arena-intro h1 {
+    font-size: 32px;
+  }
+  .arena-idea-text {
+    font-size: 28px;
+    letter-spacing: -0.75px;
+  }
+  .arena-positioning {
+    margin-top: 70px;
+  }
+  .arena-difference-heading h2 {
+    font-size: 27px;
+  }
+  .arena-growth {
+    padding: 21px;
+  }
+  .arena-evidence-copy p {
+    font-size: 13px;
+  }
+}
+@media (max-width: 920px) {
+  .arena-intro {
+    max-width: 720px;
+    padding: 0 24px;
+    margin: 66px auto 76px;
+  }
+  .arena-intro h1 {
+    font-size: 30px;
+    letter-spacing: -0.9px;
+  }
+  .arena-idea-text {
+    font-size: 26px;
+    letter-spacing: -0.65px;
+  }
+  .arena-difference-heading {
+    display: block;
+  }
+  .arena-difference-heading p {
+    margin-top: 12px;
+    max-width: none;
+  }
+  .arena-difference-layout {
+    gap: 12px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .arena-record-preview {
+    padding: 15px 10px;
+  }
+  .arena-record-preview dl > div {
+    padding: 10px;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+  .arena-record-preview dd {
+    padding-left: 34px;
+    flex-basis: 100%;
+    text-align: left;
+  }
+  .arena-evidence-copy {
+    padding: 22px 13px 12px;
+  }
+  .arena-evidence-copy h3 {
+    font-size: 20px;
+  }
+  .arena-growth {
+    align-items: flex-start;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .arena-faq {
+    margin-top: 70px;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 20px;
+  }
+}
+@media (max-width: 720px) {
+  .arena-intro {
+    padding: 0 12px;
+    margin: 53px auto 62px;
+  }
+  .arena-idea-heading {
+    margin-bottom: 17px;
+  }
+  .arena-idea-mark {
+    width: 29px;
+    height: 29px;
+  }
+  .arena-intro h1 {
+    font-size: 27px;
+    letter-spacing: -0.8px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .arena-idea-text {
+    font-size: 24px;
+    letter-spacing: -0.6px;
+    line-height: 1.42;
+  }
+  .arena-idea-context {
+    margin-top: 23px;
+    padding-left: 14px;
+  }
+  .arena-idea-context p {
+    font-size: 13px;
+    line-height: 1.85;
+  }
+  .arena-idea-citation {
+    font-size: 10px;
+    margin-left: 0;
+  }
+  .arena-catalog-browser {
+    border-radius: 18px;
+    padding: 5px;
+    margin-top: 21px;
+  }
+  .arena-catalog-browser > summary {
+    padding: 13px 12px;
+    gap: 15px;
+    min-height: 78px;
+    font-size: 15px;
+  }
+  .arena-catalog-browser > summary small {
+    font-size: 11px;
+  }
+  .arena-catalog-toggle-label {
+    gap: 6px;
+    font-size: 11px;
+  }
+  .arena-catalog-toggle-label svg {
+    width: 17px;
+    height: 17px;
+  }
+  .arena-catalog-browser #arena-analysis {
+    padding: 10px 0 0;
+  }
+  .arena-positioning {
+    margin-top: 60px;
+  }
+  .arena-difference-heading {
+    margin-bottom: 23px;
+  }
+  .arena-difference-heading h2 {
+    font-size: 28px;
+  }
+  .arena-difference-heading p {
+    font-size: 13px;
+    line-height: 1.8;
+    margin-top: 10px;
+  }
+  .arena-difference-layout {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .arena-evidence-card {
+    border-radius: 22px;
+  }
+  .arena-record-preview {
+    padding: 18px 13px;
+  }
+  .arena-record-preview dl > div {
+    flex-wrap: nowrap;
+    gap: 12px;
+    padding: 11px;
+  }
+  .arena-record-preview dd {
+    padding: 0;
+    flex-basis: auto;
+    text-align: right;
+  }
+  .arena-evidence-copy {
+    padding: 24px 17px 14px;
+  }
+  .arena-evidence-copy h3 {
+    font-size: 22px;
+  }
+  .arena-evidence-copy p {
+    font-size: 14px;
+  }
+  .arena-status-upcoming {
+    font-size: 10px;
+  }
+  .arena-growth {
+    padding: 21px 19px;
+    gap: 18px;
+    border-radius: 20px;
+  }
+  .arena-growth h3 {
+    font-size: 16px;
+  }
+  .arena-growth p {
+    font-size: 12px;
+  }
+  .arena-contribution-actions {
+    width: 100%;
+    gap: 8px;
+  }
+  .arena-contribution-actions .button {
+    flex: 1;
+    font-size: 11px;
+    gap: 12px;
+    padding: 10px 12px;
+  }
+  .arena-faq {
+    margin: 60px 0 35px;
+    grid-template-columns: 1fr;
+    gap: 19px;
+  }
+  .arena-faq-heading {
+    padding: 0 6px;
+  }
+  .arena-faq-heading h2 {
+    font-size: 29px;
+    margin: 5px 0 8px;
+  }
+  .arena-faq-heading p {
+    font-size: 12px;
+  }
+  .arena-faq-heading p br {
+    display: none;
+  }
+  .arena-faq-heading > a {
+    margin-top: 9px;
+  }
+  .arena-faq-list {
+    padding: 5px;
+    border-radius: 22px;
+    gap: 4px;
+  }
+  .arena-faq details {
+    border-radius: 16px;
+  }
+  .arena-faq summary {
+    font-size: 13px;
+    padding: 17px 14px;
+    gap: 11px;
+    grid-template-columns: 25px minmax(0, 1fr) 17px;
+    min-height: 74px;
+  }
+  .arena-faq-index {
+    line-height: 25px;
+    font-size: 9px;
+    border-radius: 8px;
+  }
+  .arena-faq details > div {
+    font-size: 12px;
+    padding: 0 22px 20px 50px;
+  }
+  .arena-faq details a {
+    font-size: 11px;
+  }
+}
+@media (max-width: 390px) {
+  .arena-intro {
+    padding: 0 7px;
+  }
+  .arena-intro h1 {
+    font-size: 25px;
+    letter-spacing: -0.7px;
+  }
+  .arena-idea-text {
+    font-size: 22px;
+    letter-spacing: -0.5px;
+  }
+  .arena-idea-word {
+    white-space: normal;
+  }
+  .arena-catalog-toggle-label {
+    font-size: 0;
+    gap: 0;
+  }
+  .arena-catalog-browser > summary small {
+    font-size: 10px;
+  }
+  .arena-record-preview dd {
+    font-size: 10px;
+  }
+  .arena-record-preview dt {
+    font-size: 11px;
+  }
+  .arena-contribution-actions .button {
+    font-size: 10px;
+    gap: 10px;
+  }
+  .arena-faq summary {
+    font-size: 12px;
+    padding: 16px 11px;
+    gap: 9px;
+  }
+  .arena-faq details > div {
+    padding-left: 45px;
+    padding-right: 15px;
+  }
+}

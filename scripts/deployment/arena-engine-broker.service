@@ -1,0 +1,36 @@
+[Unit]
+Description=Empira approved private SCiEL image broker
+After=docker.service arena-engine-staging.service arena-evaluator-engine.service
+Requires=docker.service arena-engine-staging.service arena-evaluator-engine.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/opt/arena/venv/bin/python -m arena.engine_broker --config /etc/arena/engine-broker.json
+Environment=PYTHONDONTWRITEBYTECODE=1
+UMask=0077
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=45
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+RestrictNamespaces=yes
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=CAP_CHOWN CAP_DAC_OVERRIDE CAP_FOWNER
+ReadWritePaths=/run/arena-engine /srv/arena/releases/engine-receipts /srv/arena/control /sys/fs/cgroup/arena-workers
+# SQLite mode=ro still coordinates through transient WAL shared-memory files.
+# Keep the database itself read-only while allowing its directory coordination.
+ReadOnlyPaths=/srv/arena/control/queue.sqlite
+InaccessiblePaths=/etc/arena/provider -/etc/arena/admin-access.json -/etc/arena/agent-access.json -/etc/arena/worker.env
+MemoryMax=1G
+CPUQuota=100%
+TasksMax=128
+
+[Install]
+WantedBy=multi-user.target

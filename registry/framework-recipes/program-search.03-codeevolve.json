@@ -1,0 +1,145 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "codeevolve",
+      "name": "CodeEvolve",
+      "participant_ids": [
+        "codeevolve"
+      ],
+      "repository": {
+        "url": "https://github.com/inter-co/science-codeevolve",
+        "commit": "c077959e1ab24b060aaa6d4c563bca2e9cbe8617"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare the pinned environment.yml / pyproject.toml environment; Linux is needed for full CPU-affinity support."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "configs/templates/config_qwen.yaml": "7e5dd68a3bcf44df97b82fc301555021b0bcae3390af0f714e6f96f71f19da93",
+        "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/evaluate.py": "384364d3e858d03d1a26c008667760f340ca4dc966e602a3f2346fd1f2ad5591",
+        "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/src/init_program.py": "a8d0e3fc3476840d45fd4c7258fec99727d9f5027492eb8ed7e06c67c263e392",
+        "src/codeevolve/cli.py": "8101763b06d7c4521aa619f87b2101cb5b9279f4de90ede40185279f59774cb9",
+        "src/codeevolve/evaluator.py": "d56c9c050b1b98ad27b3077a65eac30468f20f14eaee03106ad782cdeefd7724",
+        "src/codeevolve/utils/cli_setup.py": "554e9d8af7954d49ab52ab1ba7f10136919e1a5e7ebfb58a1a6dac5e55a37496",
+        "src/codeevolve/lm/openai.py": "ea2816e745b1b129e8bada96036821c4e17d7f3e8acf6eaa7cafbc79d750bd99",
+        "src/codeevolve/islands/graph.py": "3bb34657380ae7fa7d2a99b723ec7490280d9afb7060b0dfaa251c1f3e431063"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "Native CodeEvolve islands invoke evaluate.py with program and JSON-result paths; metrics include benchmark_ratio and eval_time.",
+          "invocation": {
+            "kind": "module",
+            "target": "codeevolve.cli"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--inpt_dir",
+            "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input",
+            "--cfg_path",
+            "configs/templates/config_qwen.yaml",
+            "--y"
+          ],
+          "output": {
+            "flag": "--out_dir",
+            "path": "results"
+          },
+          "required_files": [
+            "src/codeevolve/cli.py",
+            "src/codeevolve/utils/cli_setup.py",
+            "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/src/init_program.py"
+          ],
+          "config_files": [
+            "configs/templates/config_qwen.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native CodeEvolve islands invoke evaluate.py with program and JSON-result paths; metrics include benchmark_ratio and eval_time.",
+            "evidence": [
+              "src/codeevolve/evaluator.py",
+              "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/evaluate.py"
+            ]
+          },
+          "argument_help": [
+            "Supply a secret-free config overlay to select models, epoch count, island count and evaluation budget.",
+            "Credentials and endpoint are native API_KEY / API_BASE environment variables."
+          ],
+          "limitations": [
+            "Requires Python >=3.13.5 at this revision. Native templates name deployment-specific models; configure the selected endpoint before launch.",
+            "Native config fixes benchmark_ratio fitness; no canonical Arena metric conversion is performed."
+          ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Bounded native CPU pilot through the private OpenAI-compatible gateway; original optimizer and evaluator.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.cpu_program_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "codeevolve",
+            "--inpt_dir",
+            "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input",
+            "--cfg_path",
+            "configs/templates/config_qwen.yaml",
+            "--y"
+          ],
+          "output": {
+            "flag": "--out_dir",
+            "path": "results"
+          },
+          "required_files": [
+            "src/codeevolve/cli.py",
+            "src/codeevolve/utils/cli_setup.py",
+            "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/src/init_program.py"
+          ],
+          "config_files": [
+            "configs/templates/config_qwen.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "arena-provider-seam.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native CodeEvolve islands invoke evaluate.py with program and JSON-result paths; metrics include benchmark_ratio and eval_time.",
+            "evidence": [
+              "src/codeevolve/evaluator.py",
+              "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/evaluate.py"
+            ]
+          },
+          "argument_help": [
+            "Supply a secret-free config overlay to select models, epoch count, island count and evaluation budget.",
+            "Credentials and endpoint are native API_KEY / API_BASE environment variables."
+          ],
+          "limitations": [
+            "Requires Python >=3.13.5 at this revision. Native templates name deployment-specific models; configure the selected endpoint before launch.",
+            "Native config fixes benchmark_ratio fitness; no canonical Arena metric conversion is performed.",
+            "One native island, four epochs, two initial-population targets; individual native evaluation timeout 60 seconds. No migration occurs with one island.",
+            "Linux fork process backend required for the reviewed HTTP client extension. It validates and discards only the native user tracking field; no generation parameters or search logic are changed."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1"
+          },
+          "protected_args": [
+            "--engine"
+          ]
+        }
+      ]
+    }
+  ]
+}

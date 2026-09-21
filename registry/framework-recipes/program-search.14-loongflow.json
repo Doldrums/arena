@@ -1,0 +1,152 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "loongflow",
+      "name": "LoongFlow",
+      "participant_ids": [
+        "loongflow"
+      ],
+      "repository": {
+        "url": "https://github.com/baidu-baige/LoongFlow",
+        "commit": "945c78bc1554f8281aac40320b3599bd68d528d7"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare Python >=3.12; install pinned project and example requirements."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py": "b4b3ea2574adebf66d019f822d8c50c25301fc1555dc47057717311fa73d07da",
+        "agents/math_agent/examples/packing_circle_in_unit_square/initial_program.py": "8978ed67815d71153825a3a252493fae8476416c8c93143d532bba745c089130",
+        "agents/math_agent/examples/packing_circle_in_unit_square/task_config.yaml": "ad914318cbe0aba5e29aa966967bd505f96e2a07eb247d1f492fa30ce6d2573a",
+        "agents/math_agent/math_evolve_agent.py": "98a21a7933154b58d9bfa46fe6d55efca9addea60056a0dee9b8eefe85c1326f",
+        "src/loongflow/agentsdk/models/litellm_model.py": "400de0bfb5497580b585c9a8ad7e5ab15c747d45278b6dc968d7de660f74fbd0",
+        "src/loongflow/framework/pes/base_runner.py": "960e04ea5863d17dd649ae48fb867eeba69d5917ce45a8e4dac0fb44ead213cf",
+        "agents/math_agent/executor/execute_fuse/execute_agent_fuse.py": "d4ba3dc1aa35a71c9668d8514d2c094c187c5ec477ebb6964e56e20a6c2ef01e",
+        "agents/math_agent/planner/plan_agent.py": "97acaf1613f4e4065914380fa05bc104f48496ebc73ce58e2bfc3673fb264a10",
+        "agents/math_agent/summary/summary_agent.py": "32c260a3b714bdf4beab874c58e25c63663d39cd7a539102d33295876682a607",
+        "src/loongflow/agentsdk/models/formatter/litellm_formatter.py": "136a453b91424f18183917c1acecd6eaa418a494bef8babeb02a62a88db0d93f",
+        "src/loongflow/framework/pes/context/config.py": "d1cb38f66a42d9e3944c365646aa016a795871ebce1d9b291c598d2fa3fa8d14",
+        "src/loongflow/framework/react/components/default_actor.py": "72bed8097cc3a89152de053b34bc494e0205d32b30aa8fde1ec07aaf37d688c1"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "Native MathPESAgent executes its planner/executor/summary loop and evaluates generated programs with the pinned math task.",
+          "invocation": {
+            "kind": "script",
+            "target": "agents/math_agent/math_evolve_agent.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--config",
+            "agents/math_agent/examples/packing_circle_in_unit_square/task_config.yaml",
+            "--eval-file",
+            "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py",
+            "--initial-file",
+            "agents/math_agent/examples/packing_circle_in_unit_square/initial_program.py"
+          ],
+          "output": {
+            "flag": "--workspace-path",
+            "path": "results"
+          },
+          "required_files": [
+            "agents/math_agent/math_evolve_agent.py",
+            "src/loongflow/framework/pes/base_runner.py",
+            "agents/math_agent/examples/packing_circle_in_unit_square/initial_program.py"
+          ],
+          "config_files": [
+            "agents/math_agent/examples/packing_circle_in_unit_square/task_config.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native MathPESAgent executes its planner/executor/summary loop and evaluates generated programs with the pinned math task.",
+            "evidence": [
+              "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py",
+              "src/loongflow/agentsdk/models/litellm_model.py"
+            ]
+          },
+          "argument_help": [
+            "--max-iterations N --log-level INFO",
+            "Supply a secret-free task config overlay replacing placeholder URL/model; api_key may be null for a provider using environment credentials."
+          ],
+          "limitations": [
+            "The pinned example contains placeholder model credentials and endpoint; it needs an explicitly configured provider environment.",
+            "Native evaluator environment and agent tooling must already be available; Arena does not install them during planning."
+          ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Bounded native CPU pilot through the private OpenAI-compatible gateway; original optimizer and evaluator.",
+          "invocation": {
+            "kind": "script",
+            "target": "agents/math_agent/math_evolve_agent.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--config",
+            "agents/math_agent/examples/packing_circle_in_unit_square/task_config.yaml",
+            "--eval-file",
+            "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py",
+            "--initial-file",
+            "agents/math_agent/examples/packing_circle_in_unit_square/initial_program.py"
+          ],
+          "output": {
+            "flag": "--workspace-path",
+            "path": "results"
+          },
+          "required_files": [
+            "agents/math_agent/math_evolve_agent.py",
+            "src/loongflow/framework/pes/base_runner.py",
+            "agents/math_agent/examples/packing_circle_in_unit_square/initial_program.py"
+          ],
+          "config_files": [
+            "agents/math_agent/examples/packing_circle_in_unit_square/task_config.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.log",
+            "output-circle-packing/**/*.json",
+            "output-circle-packing/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native MathPESAgent executes its planner/executor/summary loop and evaluates generated programs with the pinned math task.",
+            "evidence": [
+              "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py",
+              "src/loongflow/agentsdk/models/litellm_model.py"
+            ]
+          },
+          "argument_help": [
+            "--max-iterations N --log-level INFO",
+            "Supply a secret-free task config overlay replacing placeholder URL/model; api_key may be null for a provider using environment credentials."
+          ],
+          "limitations": [
+            "The pinned example contains placeholder model credentials and endpoint; it needs an explicitly configured provider environment.",
+            "Native evaluator environment and agent tooling must already be available; Arena does not install them during planning.",
+            "Pilot uses native concurrency=1, executor max_rounds=1, and existing SequenceActor; four PES iterations with bounded ReAct steps. Native package-install tools may fail against the read-only shared environment."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "MPLCONFIGDIR": "{output}/.arena/matplotlib",
+            "LITELLM_LOCAL_MODEL_COST_MAP": "True",
+            "LITELLM_TELEMETRY": "False",
+            "DO_NOT_TRACK": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

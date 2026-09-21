@@ -1,0 +1,87 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "adaevolve",
+      "name": "AdaEvolve",
+      "participant_ids": [
+        "adaevolve"
+      ],
+      "repository": {
+        "url": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare Python >=3.10,<3.14 and install this pinned project with math dependencies."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "d7830a145285bd62b4290381f64feae143e18364fd519ad590b6dbbe87702c54",
+        "benchmarks/math/circle_packing/config.yaml": "77ab10ca87b92f6997807f808257b74a4d9ef0b1e3767e376b291acb044af226",
+        "benchmarks/math/circle_packing/evaluator.py": "672e8f36b18855d721ae3d7adc53883bb97050f2174b95793d306c1c8fbdd6f9",
+        "benchmarks/math/circle_packing/initial_program.py": "d432ec2da7c307180a4dafff1be1ca47cf37be07c40b12c5fedae69417fd639e",
+        "skydiscover/__main__.py": "00b54e379d5463becc7d8dec3fb475b4e595e7a8472ca1b2b03d39873a6d5914",
+        "skydiscover/main.py": "9073262c74e7bbe659f325e60d4c1ba426c5b57e8cf1745235d715466a2e28d8",
+        "skydiscover/optimize/cli.py": "d35724413ea3cbc02cf97300967a4a403763892b997b0433e89e10defcce8f97",
+        "skydiscover/optimize/evaluation/evaluator.py": "84471c1312e1789ccce2101d622ba0ccdb86ed4d765738de754158371b266dfa"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "Native SkyDiscover optimization calls the pinned circle-packing evaluator and records its native metrics.",
+          "invocation": {
+            "kind": "module",
+            "target": "skydiscover"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "optimize",
+            "benchmarks/math/circle_packing/initial_program.py",
+            "benchmarks/math/circle_packing/evaluator.py",
+            "--search",
+            "adaevolve"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "skydiscover/__main__.py",
+            "skydiscover/main.py",
+            "skydiscover/optimize/cli.py",
+            "benchmarks/math/circle_packing/initial_program.py"
+          ],
+          "config_files": [
+            "benchmarks/math/circle_packing/config.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native SkyDiscover optimization calls the pinned circle-packing evaluator and records its native metrics.",
+            "evidence": [
+              "benchmarks/math/circle_packing/evaluator.py",
+              "skydiscover/optimize/evaluation/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "--model MODEL --iterations N",
+            "Credentials: OPENAI_API_KEY in explicit environment_names."
+          ],
+          "limitations": [
+            "Profile fixes the selected search algorithm and the native 26-circle task. No Arena task equivalence or canonical receipt is inferred."
+          ],
+          "protected_args": [
+            "-s",
+            "-o",
+            "--checkpoint"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "sica",
+      "name": "SICA",
+      "participant_ids": [
+        "sica"
+      ],
+      "repository": {
+        "url": "https://github.com/MaximeRobeyns/self_improving_coding_agent",
+        "commit": "ed8275dca4d3c5dbf77229964351fe9b424797dc"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare base_agent/requirements.txt and native Docker/benchmark dependencies; supply credentials through native environment names."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "2d78355384623d154356c299d0acecae66fe44a03066ecdd08e13f07175768a1",
+        "README.md": "8d750c0a93c48b45a1cd629ea56089e19fc0ca12d55e5cac9171b271e754e712",
+        "base_agent/src/benchmarks/base.py": "f3fc93daa6eed83957dc4e98c92e210f35d83cc5e327c7f2851f64d21d80550f",
+        "runner.py": "bc1dcc8fe3d73268e33eac9684ac549a70b88a1264387d6d98ab0ba2b2d6176e"
+      },
+      "profiles": [
+        {
+          "id": "self-improvement",
+          "description": "SICA native coding-agent benchmark evaluation and self-improvement cycles",
+          "invocation": {
+            "kind": "script",
+            "target": "runner.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "runner.py",
+            "base_agent/src/benchmarks/base.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/metadata.json",
+            "results/**/perf.json",
+            "results/**/results.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "SICA native coding-agent benchmark evaluation and self-improvement cycles Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "runner.py",
+              "base_agent/src/benchmarks/base.py"
+            ]
+          },
+          "argument_help": [
+            "--iterations N --workers N; omit the test subcommand to run self-improvement."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Native model and benchmark choices reside in source config; Arena does not replace the search with a single benchmark run.",
+            "Prepared Docker/SWE-bench and each selected benchmark dependency remain required."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "the-station",
+      "name": "The Station",
+      "participant_ids": [
+        "the-station"
+      ],
+      "repository": {
+        "url": "https://github.com/dualverse-ai/station",
+        "commit": "782088e561998bf357d95a838a0566a8229425d9"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Linux worker with a dedicated writable cgroup v2 child under /sys/fs/cgroup, cpu/memory/pids controllers delegated and cgroup.kill available. No host cgroup configuration is changed automatically.",
+        "Prepared Station Python environment with its pinned requirements and task dependencies; named conda evaluation environment, explicit Codex executable and authenticated Codex state. No install, authentication or deployment runs during preparation.",
+        "OPENAI_API_KEY and any required Codex authentication are provided explicitly through inherited environment names or worker-owned CLI state; model and coder-model plus all resource/session bounds are required."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "ac7c91145158935971c68da4f6deb6afacd666680429c3221a16df01ad993966",
+        "README.md": "8e9bb643533a9d7ca3549bb59193e46e891c241f0edf6cdd1ecbbf445a96c1b7",
+        "example/research_alpha_evolve/circle_n32/README.md": "91846faa84ce0fa04dd8588394ff6f357d8cbc5b377ad082519709afe24b3564",
+        "example/research_alpha_evolve/circle_n32/constant_config.yaml": "caf1a1f06e90b2af95ac66ffce51ba969c473799346c1fae1abd9113b0a45d1d",
+        "example/research_alpha_evolve/circle_n32/research/baseline.yamll": "917e2884636be15d0e5fa6c73a314615d76e7defde5c57f7eede2db0f9b3c7a8",
+        "example/research_alpha_evolve/circle_n32/research/evaluators/evaluator.py": "2d066542e7dfa1ee51384b035a26e056b61336f3b51f91d611b289aee71adbee",
+        "example/research_alpha_evolve/circle_n32/research/research_task.md": "ab23bf07a68811bdba1cd0f8f6a93cba3edfa1f444df00112a6e6a0db6d901d6",
+        "example/station/default/codex.md": "3e34378a5576159affe6182446fb1aa6f2cd36cb4cae66aa525c3e54eabf5ca6",
+        "example/station/default/holiday_prompts.yaml": "21846832694027c5ef6cb92e701b378ab232354f2928f1cbd6e54eff4e0ea6d2",
+        "example/station/default/init_agents.yaml": "ea1729681fcea49f9fde1920a55921dfedb32f5342fae95eaa5b49e8e517ab92",
+        "example/station/default/init_role_def.yaml": "16aa40b02f8cc40edf2d16cc53de00084f11882c67afe4bd7c041ea580815aee",
+        "example/station/default/meta_prompts.yaml": "5af322a85f6c8904f56a5d6997f2b45995ca5371d0cd7d2baa253b808cf52770",
+        "example/station/default/random_prompts.yaml": "b0befd462800d4a954f2d35f440c781d26b1794fad7edfb0cff5b9c7681dc913",
+        "example/station/default/rooms/research/storage/architect/password.txt": "c02e60c6eab565d769bf85f01c6f003d3bba454b4729316c9d0aba0f75c9f658",
+        "requirements.txt": "e986756ff2f6256f452c24adca7ee52ddf5887de74e31194f15f45d7dd42d865",
+        "station/constants.py": "a92d7ab6c4377a986b0c6bded7940d6cd287c3da3252e6b3458ef772eb497e3b",
+        "station/eval_research/auto_evaluator.py": "e299c95e34854d257954c86cdc877f22591f05dc5f1ad5a8c2147579f7c7993d",
+        "station/eval_research/evaluation_helpers.py": "ca1541bbb20b5ee84161dcd49bd6d960fad45db245f1a32bef2adfb48ab48622",
+        "station/eval_research/evaluation_manager.py": "9f9438286e44b47763fd3c6d8bc246236e571ab9c6ae1937a99fb7aa921e5d0b",
+        "station/eval_research/executor_sandbox.py": "1b48cbf4f2066011f4468c17bb1ce17fff2aab8567eb5f298f18b737ca536a4d",
+        "station/eval_research/runtime_paths.py": "c09e395c63352fad98a73e93c6aef7f32ef5e3284550ffa90d42ec0470084150",
+        "station/llm_connectors/factory.py": "a1915f784a5868ff01a40183a17f00b15dde0c0aea985cf76e11c0519f04d721",
+        "station/startup_overrides.py": "12f4c80fc48856326643e6c9129d4aaaaec9ffe7221cc00fa17fc47e3a6e858d",
+        "station/station.py": "e3a2eb6de6bc0ae551eca781273c9ae73cac814244b7beffe1169a41041d5da0",
+        "station/station_runner.py": "1a9c2c21c30516799312550fd5e2885d222f999358a642855047c9b7008d769a",
+        "station/workers/job_manager.py": "731112fda1b4c79ed019fe7f41238e8df3eb974a5a6a1be6e49640e922e4d6e3",
+        "station_tools/commands/init.py": "dc0445e51e2b9e5f70efb9cf330c27f359e80801eb9d2e43468cdbf89ee27397"
+      },
+      "profiles": [
+        {
+          "id": "circle-n32",
+          "description": "Foreground native Station research ecosystem and automatic evaluator for the pinned 32-circle packing task; native tick limit with evaluation draining.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.station"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "run",
+            "--task",
+            "example/research_alpha_evolve/circle_n32"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "native"
+          },
+          "required_files": [
+            "LICENSE",
+            "README.md",
+            "example/research_alpha_evolve/circle_n32/README.md",
+            "example/research_alpha_evolve/circle_n32/constant_config.yaml",
+            "example/research_alpha_evolve/circle_n32/research/baseline.yamll",
+            "example/research_alpha_evolve/circle_n32/research/evaluators/evaluator.py",
+            "example/research_alpha_evolve/circle_n32/research/research_task.md",
+            "example/station/default/codex.md",
+            "example/station/default/holiday_prompts.yaml",
+            "example/station/default/init_agents.yaml",
+            "example/station/default/init_role_def.yaml",
+            "example/station/default/meta_prompts.yaml",
+            "example/station/default/random_prompts.yaml",
+            "example/station/default/rooms/research/storage/architect/password.txt",
+            "requirements.txt",
+            "station/constants.py",
+            "station/eval_research/auto_evaluator.py",
+            "station/eval_research/evaluation_helpers.py",
+            "station/eval_research/evaluation_manager.py",
+            "station/eval_research/executor_sandbox.py",
+            "station/eval_research/runtime_paths.py",
+            "station/llm_connectors/factory.py",
+            "station/startup_overrides.py",
+            "station/station.py",
+            "station/station_runner.py",
+            "station/workers/job_manager.py",
+            "station_tools/commands/init.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/session.json",
+            "native/native-session.json",
+            "native/station_data/rooms/research/**/*.yaml",
+            "native/station_data/rooms/research/**/*.json",
+            "native/station_data/rooms/research/**/*.jsonl",
+            "native/station_data/rooms/research/**/*.log",
+            "native/station_data/rooms/research/internal/packings/*.npz"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Station AutoResearchEvaluator runs the native Research Center coder/submission lifecycle and circle_n32 Task1Evaluator; validity and sum-of-radii scores remain native records, never canonical Arena receipts. Session completion requires the requested tick boundary and drained native evaluation queues.",
+            "evidence": [
+              "station/station_runner.py",
+              "station/eval_research/auto_evaluator.py",
+              "station/eval_research/executor_sandbox.py",
+              "example/research_alpha_evolve/circle_n32/research/evaluators/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "Required: --model MODEL --coder-model MODEL --agents N --ticks N --context-tokens N --response-tokens N --wall-seconds N --eval-seconds N --eval-workers N --cpus N --memory-gib N --max-processes N --conda-env NAME --cgroup-root /sys/fs/cgroup/DELEGATED_ROOT",
+            "Provide request.executables.codex as an absolute prepared executable; the shared driver fingerprints it and supplies --codex-binary.",
+            "Set outer timeout_seconds above wall-seconds plus cleanup allowance; pass OPENAI_API_KEY through environment_names. Native model/provider/runtime readiness remains unverified."
+          ],
+          "limitations": [
+            "Source and inert fixture checks only; no paid/native research session has run.",
+            "Linux cgroup v2 lifecycle/resource containment is required because native Codex and evaluation children start separate sessions; this is not a security sandbox or a cloud/Docker dispatcher. Use a dedicated worker with no sensitive host data.",
+            "This profile uses the native circle_n32 task and OpenAI agent/reviewer/reflection connectors plus Codex coder/surveyor. It does not register canonical task-library support.",
+            "Model context/output limits and native ticks are not a monetary API budget. Native evaluations may remain incomplete when the wall limit cancels the entire cgroup.",
+            "The public dashboard/start.sh deployment and multistart branches are not launched; native single-station research/evaluation behavior is otherwise delegated to the pinned implementation."
+          ],
+          "executable_args": {
+            "codex": "--codex-binary"
+          }
+        }
+      ]
+    }
+  ]
+}

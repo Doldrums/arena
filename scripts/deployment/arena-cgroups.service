@@ -1,0 +1,11 @@
+[Unit]
+Description=Empira dedicated workload cgroups
+Before=arena-worker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/arena/setup-cgroups.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

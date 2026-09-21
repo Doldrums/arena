@@ -1,0 +1,32 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "gepa-artifact",
+      "name": "GEPA",
+      "participant_ids": [
+        "gepa"
+      ],
+      "repository": {
+        "url": "https://github.com/gepa-ai/gepa-artifact",
+        "commit": "cbefbc1aa0f43dd39874ec4bf42211365dbda42e"
+      },
+      "status": "artifact_only",
+      "license": "MIT",
+      "setup": [
+        "bash setup_gepa_repo.sh",
+        "uv sync"
+      ],
+      "blocked_reason": "Official reproduction artifact, kept separate from the GEPA library runner. Requires modified DSPy/Arbor forks and benchmark-specific configurations; command generation alone is not a search run.",
+      "evidence": {
+        "LICENSE": "10c47467a961feb40adf3294fe27dd9cba79d4d1b7cf27173b1c34586d4126c3",
+        "README.md": "8c46423da9370893b02d6d3fb82976ad6fd93301afa66e4b29594cd78a010066",
+        "scripts/experiment_configs.py": "0d8b8b6cbec9084cc1a4feb7d46110c8d0f96cb1059c589bf68ab96205d734cf",
+        "scripts/generate_launch_commands.py": "3d8497b5ba90f77e6e5b3e84de46dc96b6c589804e62469239759635ddca9c0c",
+        "scripts/run_experiments.py": "6056daa632957604c3830446f077eaddaca69e3116ed5ed1cec4813e08ea8a67",
+        "setup_gepa_repo.sh": "9a0fa055f70695c38d10bf76ed2e15122c6bb97de69ef9a247f01749b3d2adf1"
+      },
+      "profiles": []
+    }
+  ]
+}

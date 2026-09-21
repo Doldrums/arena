@@ -1,0 +1,74 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "promptagent",
+      "name": "PromptAgent",
+      "participant_ids": [
+        "promptagent"
+      ],
+      "repository": {
+        "url": "https://github.com/XinyuanWangCS/PromptAgent",
+        "commit": "2edfc9e4462a6af97dc973442d074de9b3e876b2"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "pip install -r requirements.txt"
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "README.md": "cde840770ba6254757f7844b33b2d2efde002aadc9d6057472c303d408177471",
+        "example_config.yaml": "f52594cf512d503003c821727fa767006761f5bdd05a2749350ae8105de8eaee",
+        "src/main.py": "e3007e46387cff6002b563ccc8116e6cd0e25bc1735627ee75c96b1a1a1c29a5",
+        "src/prompt_optim_agent/agent.py": "706b3aa71faf21b137cbb9c15f3a1ad2283541f2ba0773490246a3f8e6ff90c8",
+        "src/prompt_optim_agent/search_algo/mcts.py": "c83fd88a10fe2379eeaeb19ae3a30852a31037f313ab7adc323b85ea0a2325f8"
+      },
+      "profiles": [
+        {
+          "id": "native-search",
+          "description": "Native PromptAgent MCTS/beam search with environment credentials and redacted configuration logging.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.promptagent"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "src/main.py"
+          ],
+          "config_files": [
+            "example_config.yaml"
+          ],
+          "result_globs": [
+            "**/*.json",
+            "**/*.jsonl",
+            "**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native task accuracy/reward, search histories and final held-out evaluation are retained.",
+            "evidence": [
+              "src/main.py",
+              "src/prompt_optim_agent/agent.py",
+              "src/prompt_optim_agent/search_algo/mcts.py"
+            ]
+          },
+          "argument_help": [
+            "--config example_config.yaml",
+            "Keep api_key fields null. Pass PROMPTAGENT_BASE_API_KEY and PROMPTAGENT_OPTIM_API_KEY, or OPENAI_API_KEY, via environment_names."
+          ],
+          "limitations": [
+            "The bridge changes only credential injection, output location and credential logging; search and task evaluation remain native.",
+            "Set dataset paths and explicit search budgets in the staged/overlaid YAML."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,239 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "adas",
+      "name": "ADAS",
+      "participant_ids": [
+        "adas"
+      ],
+      "repository": {
+        "url": "https://github.com/ShengranHu/ADAS",
+        "commit": "2702bee8fefda42255efc5be9f60e3bd3db96ae4"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Install requirements.txt in the selected environment; configure OPENAI_API_KEY through explicit environment_names.",
+        "Provide native dataset/ files; GPQA access and each benchmark license remain separate."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "2591bb5c650dc96c48e4244d52c7bc179ff904e3129d65dcb9180bc726a4b3ad",
+        "README.md": "0e57018546d045e1452ba90e0b61c37da0c964a451ee4dcc82cbbb53fd046b96",
+        "_arc/arc_prompt.py": "744fdc6a3c60b3afdb5bf75b9b7e140ee79f2a777d567d32da52d059c0f44cac",
+        "_arc/search.py": "bee294342dc70774818c144e073b773a582ec545f44ac83244a2a131bebb1fa1",
+        "_arc/utils.py": "4cd764fcae3df036f25f397d4c86a11fefa9b711eda61eee800e7ab1afd79392",
+        "_drop/drop_prompt.py": "118153ed337e17c9379d57cb057c4dd6ba68c7754820ecb12c6f674dede435d1",
+        "_drop/search.py": "2541df225858917255afb5ae7947eb2c58f6239e7af1287600179e9a70f0de44",
+        "_drop/utils.py": "a44914ed0d12949dc12ce9089c23a819de7cda1ddd7089de339c5607def1e678",
+        "_gpqa/gpqa_prompt.py": "06349a3a96d625c931198107eafc7b425031d419d141b6730adb423ca54064de",
+        "_gpqa/search.py": "ff3dd9dac40791db3fb583820e93524af2c924583315c80b781f49d8ae85d745",
+        "_gpqa/utils.py": "3438ce5872bdfa9fa768d4b5267700a5563fb261e1eb9f2cdefbd1c2957b88ee",
+        "_mgsm/mgsm_prompt.py": "6512b4a3d01ca80171f749981361c19edfbc6863b4de8ca70fa9aee6a6960f2b",
+        "_mgsm/search.py": "1d75318e452e1cdca455d9cd073749b9b43e3c49d2f00d85a1faa9d10585e920",
+        "_mgsm/utils.py": "b294dc54f685fe14704154356da47b69bda7c254b8a1e06c4297d3169379ba2c",
+        "_mmlu/mmlu_prompt.py": "60ff5bfe049fc011d1345dc715e89ccdde017f58d44734f528a7f7b1487fa368",
+        "_mmlu/search.py": "749503b4454f97e105eed7e96fb5d402ef26fd0905b80f91a5d29a6045957228",
+        "_mmlu/utils.py": "179d20ab07b4e2d4a08a2e001cd9ce9e09602d79b5e743d3425ece1ea6bd2146"
+      },
+      "profiles": [
+        {
+          "id": "arc",
+          "description": "ADAS ARC agent-program search and native held-out evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "_arc/search.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--val_data_path",
+            "dataset/sampled_arc_val_data.pkl",
+            "--test_data_path",
+            "dataset/sampled_arc_test_data.pkl"
+          ],
+          "output": {
+            "flag": "--save_dir",
+            "path": "native/arc"
+          },
+          "required_files": [
+            "_arc/search.py",
+            "_arc/arc_prompt.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/arc/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "ADAS ARC agent-program search and native held-out evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "_arc/search.py",
+              "_arc/utils.py"
+            ]
+          },
+          "argument_help": [
+            "--n_generation N --max_workers N --model MODEL",
+            "Native benchmark data paths and split sizes are configured by the matching search.py parser."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Generated agent code executes in native Python; prepare the benchmark dataset and trusted isolation first."
+          ]
+        },
+        {
+          "id": "drop",
+          "description": "ADAS DROP agent-program search and native held-out evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "_drop/search.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--save_dir",
+            "path": "native/drop"
+          },
+          "required_files": [
+            "_drop/search.py",
+            "_drop/drop_prompt.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/drop/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "ADAS DROP agent-program search and native held-out evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "_drop/search.py",
+              "_drop/utils.py"
+            ]
+          },
+          "argument_help": [
+            "--n_generation N --max_workers N --model MODEL",
+            "Native benchmark data paths and split sizes are configured by the matching search.py parser."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Generated agent code executes in native Python; prepare the benchmark dataset and trusted isolation first."
+          ]
+        },
+        {
+          "id": "mgsm",
+          "description": "ADAS MGSM agent-program search and native held-out evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "_mgsm/search.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--save_dir",
+            "path": "native/mgsm"
+          },
+          "required_files": [
+            "_mgsm/search.py",
+            "_mgsm/mgsm_prompt.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/mgsm/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "ADAS MGSM agent-program search and native held-out evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "_mgsm/search.py",
+              "_mgsm/utils.py"
+            ]
+          },
+          "argument_help": [
+            "--n_generation N --max_workers N --model MODEL",
+            "Native benchmark data paths and split sizes are configured by the matching search.py parser."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Generated agent code executes in native Python; prepare the benchmark dataset and trusted isolation first."
+          ]
+        },
+        {
+          "id": "mmlu",
+          "description": "ADAS MMLU agent-program search and native held-out evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "_mmlu/search.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--save_dir",
+            "path": "native/mmlu"
+          },
+          "required_files": [
+            "_mmlu/search.py",
+            "_mmlu/mmlu_prompt.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/mmlu/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "ADAS MMLU agent-program search and native held-out evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "_mmlu/search.py",
+              "_mmlu/utils.py"
+            ]
+          },
+          "argument_help": [
+            "--n_generation N --max_workers N --model MODEL",
+            "Native benchmark data paths and split sizes are configured by the matching search.py parser."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Generated agent code executes in native Python; prepare the benchmark dataset and trusted isolation first."
+          ]
+        },
+        {
+          "id": "gpqa",
+          "description": "ADAS GPQA agent-program search and native held-out evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "_gpqa/search.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--save_dir",
+            "path": "native/gpqa"
+          },
+          "required_files": [
+            "_gpqa/search.py",
+            "_gpqa/gpqa_prompt.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/gpqa/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "ADAS GPQA agent-program search and native held-out evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "_gpqa/search.py",
+              "_gpqa/utils.py"
+            ]
+          },
+          "argument_help": [
+            "--n_generation N --max_workers N --model MODEL",
+            "Native benchmark data paths and split sizes are configured by the matching search.py parser."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Generated agent code executes in native Python; prepare the benchmark dataset and trusted isolation first."
+          ]
+        }
+      ]
+    }
+  ]
+}

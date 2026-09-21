@@ -1,0 +1,352 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "eob",
+      "name": "EoB",
+      "participant_ids": [
+        "eob"
+      ],
+      "repository": {
+        "url": "https://github.com/MetaEvo/EoB",
+        "commit": "5d9f30cb19a0231a74f58d17926cff828db6857f"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Prepare the repository requirements in a separate Python 3.10 environment (the README used torch 2.1.1).",
+        "Explicitly pass OPENAI_API_KEY for the selected provider. Native model prefixes select fixed OpenAI, Gemini, or DashScope endpoints."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "Constructor.py": "d0d53a16a0f94efd6fea7f325056b0acb578a2d6f0ec46e8459c1d339af23432",
+        "Generator.py": "a3c0843d08cd7e70afe09744388440c1e41f9da9397d87d8219a9c4c429254c3",
+        "README.md": "d10d3317e1c96c7b025b73ee1d6ec05625e4c2f466d126f49fd2fc339a876309",
+        "Reflector.py": "62ddb90d526ed0e9d3d456b3541338623670ea2f3d432cbeab141ba699cb034c",
+        "Scorer.py": "a7d02b6df35dd8f8a6f7d5860b51c8708f8bc2975670d6272f3f8c66c5509727",
+        "config.py": "77101d5da479d885560f28b534f1bef7459b2ee9dbce621b634856027c3fec3d",
+        "data/bbob_ela/bbob_neurela_features_final.npy": "c88596ad68ffe51ec7376ef8b0263c72a66e654a8413beaeb9dc867aa64a0865",
+        "feature_extractor/feature_extractor.py": "bbd0150e724493d87c5ccd6dc8a52d58a533624b239bcda0e7bad6b87755016c",
+        "main.py": "d96ec658f76b01af55fa81e452918a85474963c6defaffd8e254f9d99d065ef6",
+        "requirements.txt": "d9759f27474304b29ca1fdaabfe5021c29516d4f422f3b93340c424fb24800d6",
+        "utils/NeurELA_Scorer.py": "82449ad9b20108b3014ba0d7fb920736a5e7c7129cc8c86905f813d987ea68e2",
+        "utils/algo.py": "8185a4a179244d38c1c87cb05a6b01e8268c5dccf4325e1f6a9cc20f0aec178b",
+        "utils/utils.py": "37c6c4d8f2140dd0e5443adad2bf1f8516d9629a8e7a8bfad50189bfc21e348a"
+      },
+      "profiles": [
+        {
+          "id": "bbob",
+          "description": "Native BBOB benchmark evolution with NeurELA and optimizer-difficulty scoring.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.eob"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--task_mode",
+            "task_bbob_expand"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "config.py",
+            "Generator.py",
+            "Constructor.py",
+            "Reflector.py",
+            "Scorer.py",
+            "utils/utils.py",
+            "data/bbob_ela/bbob_neurela_features_final.npy"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "save/**/*.json",
+            "save/**/*.md",
+            "save/**/*.pkl",
+            "save/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "The native ScoreAgent evaluates generated objective functions with NeurELA similarity and optimizer difficulty; the native multiobjective generator performs selection.",
+            "evidence": [
+              "Scorer.py",
+              "utils/NeurELA_Scorer.py",
+              "utils/algo.py",
+              "feature_extractor/feature_extractor.py"
+            ]
+          },
+          "argument_help": [
+            "--model deepseek-v3.2 --N 8 --generation 2 --dim 10 --n_jobs 1",
+            "Native config.py options also expose --algo_diff_run_time (minutes per optimizer) and --algo_diff_base_FES."
+          ],
+          "limitations": [
+            "The driver supplies credentials to the same constructors used by main.py; the upstream hard-coded API-key placeholder is not executed.",
+            "BBOB only; dimensions 2, 10, 30, 50. Native scoring can consume substantial CPU and provider calls.",
+            "Native results are preserved; no Arena canonical task compatibility or end-to-end run is asserted."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evoor-agent",
+      "name": "EvoOR-Agent",
+      "participant_ids": [
+        "evoor-agent"
+      ],
+      "repository": {
+        "url": "https://github.com/EvoNexusX/2026HuangEvoORAgent",
+        "commit": "1a255eaade3b325706ab9b2ad1e20f2aafae0a06"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Prepare requirements.txt, an OpenAI-compatible provider, and native optimization-solver dependencies/licenses required by generated agents.",
+        "Explicitly pass OPENAI_API_KEY and optionally OPENAI_BASE_URL. The integration supports the native OpenAI-compatible branch."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "Evo_agent/dataset/IndustryOR_test.json": "db21ac714d17d66b14f2fdf09c0c1e70c5e5153162d0a351b16c01dfef8763e9",
+        "README.md": "e343598c3b3a3dfa2e2776b667a09bdd7db8c0fe3299fade2df8678352e9e12e",
+        "evaluate.py": "1dc87eb7cb82f15b9d55baf7a26ab0052dd96f4c7e20975345b0a32b87bd5c5a",
+        "initial.py": "96ca24c9dec8a19c0735af1030c2b48f337b22545fde1710ffeb8390542a8aff",
+        "new_utils.py": "04006f1dfaa4e3b68391945faadb462466ee39ed15ce3cacd14a9dab86862d0e",
+        "prompt/chain.txt": "7e8cf048b9c40774e1c968c6700670eec255983682385e9177000e5727d05366",
+        "prompt/change.txt": "17ebee68cc75ab412c871907c2aa6d9c18f4678138161799a017b6eb79b2b2f1",
+        "prompt/initialize.txt": "bba7b512584f11a7b22e01dba93ef1737c182a17a313cdb2466a69a9753d4303",
+        "prompt/knowledges.txt": "92167a00554ec7f74a24956df704d895f840c747579efd2697bcd53f3b3fd72b",
+        "prompt/tool.txt": "f2abb062c7d3323a9ebdfb27a24687faae68e7ea43c510ec6b26b194ed40b706",
+        "requirements.txt": "5544df942aae8a9d1fc846a20954fb85fdfc5230b3681c3678d3397a1bf12270"
+      },
+      "profiles": [
+        {
+          "id": "industry-or",
+          "description": "Native population initialization and architecture/reasoning evolution on the included IndustryOR data.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.evoor"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--dataset",
+            "Evo_agent/dataset/IndustryOR_test.json"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "initial.py",
+            "evaluate.py",
+            "new_utils.py",
+            "prompt/initialize.txt",
+            "prompt/knowledges.txt",
+            "prompt/change.txt",
+            "prompt/chain.txt",
+            "prompt/tool.txt",
+            "Evo_agent/dataset/IndustryOR_test.json"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "populations/**/*.json",
+            "populations/**/*.txt",
+            "results/porting-receipt.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native generated-agent validation writes eval_result.json and ranks parents by solve_correct. Native elite reuse, crossover and mutation retain their published scoring behavior.",
+            "evidence": [
+              "initial.py",
+              "evaluate.py",
+              "new_utils.py"
+            ]
+          },
+          "argument_help": [
+            "--model MODEL --population 6 --generations 5 --seed 42",
+            "Generations includes initialized generation 1; resume is intentionally not implemented."
+          ],
+          "limitations": [
+            "At explicit run only, a hash-guarded configuration port restores anonymized provider environment names, disables implicit dotenv loading and replaces one Windows dataset path. A porting receipt records hashes without credentials.",
+            "The published generate_all/evolve_generation APIs are used because the upstream evaluate.py CLI overrides its requested mode. Search and scoring functions are not modified.",
+            "Generated agents may invoke external solvers and execute generated code. Native metrics are not Arena canonical evaluations."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dreureka",
+      "name": "DrEureka",
+      "participant_ids": [
+        "dreureka"
+      ],
+      "repository": {
+        "url": "https://github.com/eureka-research/DrEureka",
+        "commit": "1d4e00700423170717654516f4ef4b24cb0f3a84"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare the native IsaacGym/CUDA environment and editable project packages exactly as the source README describes; IsaacGym must be supplied separately.",
+        "Use a compatible legacy OpenAI Python SDK exposing ChatCompletion and explicitly supply OPENAI_API_KEY.",
+        "This profile is the domain-randomization search stage; the native task reward/template and prior RAPP parameter bounds must be prepared as described upstream."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "15e4a1167ad5ad021d41e9520f9f10ec9cf95ca6969131519c1353672f09ad83",
+        "README.md": "83241b4cd9e2189bb90cdc5156072a89dd19d6863364babf9f9660375ae76c09",
+        "dr_eureka/cfg/config.yaml": "dae55edbf84084bc7f16d791009a0c083a07270c961959e1238fc8877351fd5b",
+        "dr_eureka/cfg/env/forward_locomotion.yaml": "69c4987b376258cb2519f9054d1c7bdacf6f2c21291808c779632bdad1234124",
+        "dr_eureka/dr_eureka.py": "0f7d7e00163540f73cdace28cdafe55d738fa0a60cb21ff24079c132071a1c34",
+        "dr_eureka/prompts/initial_system.txt": "e1e68c00244ebd4a082224468e7b85636e760a725ad2fdd2f5ef1c2d91b5cf2a",
+        "dr_eureka/prompts/initial_users/forward_locomotion.txt": "eeffbbf4b779a40c6e6a6780edcdcc4eaf37654ae759a3b35965b514b129945e",
+        "dr_eureka/rapp.py": "886670cbfb16a61df5b47df351c48fe022aa65ad92335b81e4ce88bf48174286",
+        "dr_eureka/utils/misc.py": "9f42af514b38efe3ce57b0fc45c9ef1695d1fc86f9da45ff91d0cbb216473696",
+        "forward_locomotion/go1_gym/envs/base/legged_robot_config_template.py": "5a156e2b9eb875f2ffb19d3b045ad9e73b28eda6efd2e0a8ad72e65d9ea73f4f",
+        "forward_locomotion/scripts/train.py": "19adac0db2425ccbc4bbdd8d650aef50a83bcb7f219286e55ffc8cb329f7150c"
+      },
+      "profiles": [
+        {
+          "id": "forward-locomotion",
+          "description": "Native DrEureka domain-randomization generation and RL training/evaluation.",
+          "invocation": {
+            "kind": "script",
+            "target": "dr_eureka/dr_eureka.py"
+          },
+          "cwd": "dr_eureka",
+          "fixed_args": [
+            "env=forward_locomotion",
+            "use_wandb=false"
+          ],
+          "output": {
+            "flag": "hydra.run.dir=",
+            "path": "results"
+          },
+          "required_files": [
+            "dr_eureka/dr_eureka.py",
+            "dr_eureka/utils/misc.py",
+            "dr_eureka/prompts/initial_system.txt",
+            "dr_eureka/prompts/initial_users/forward_locomotion.txt",
+            "forward_locomotion/scripts/train.py",
+            "forward_locomotion/go1_gym/envs/base/legged_robot_config_template.py"
+          ],
+          "config_files": [
+            "dr_eureka/cfg/config.yaml",
+            "dr_eureka/cfg/env/forward_locomotion.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.txt",
+            "results/**/*.log",
+            "results/**/*.npz",
+            "forward_locomotion/runs/**/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "The native script trains each proposed randomization configuration, parses its training success/reward logs and preserves native response artifacts.",
+            "evidence": [
+              "dr_eureka/dr_eureka.py",
+              "dr_eureka/utils/misc.py",
+              "forward_locomotion/scripts/train.py"
+            ]
+          },
+          "argument_help": [
+            "model=gpt-4-0125-preview sample=4 env.train_iterations=1000"
+          ],
+          "limitations": [
+            "Requires a GPU, native physics simulation, native task assets and training dependencies; these were not installed or executed by Arena validation.",
+            "Only the forward-locomotion DR search stage is exposed here; reward discovery and RAPP remain separate upstream preparation stages.",
+            "Native RL success/reward measurements are not a shared Arena evaluator."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lasr",
+      "name": "LaSR",
+      "participant_ids": [
+        "lasr"
+      ],
+      "repository": {
+        "url": "https://github.com/trishullab/LibraryAugmentedSymbolicRegression.jl",
+        "commit": "776196e339191736e20d4eb6eed7c468aa6e4472"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare Julia 1.11\u20131.12 and the pinned project dependencies before launch; the driver never invokes Pkg.instantiate.",
+        "Supply request.executables.julia as an absolute executable; Arena records and rechecks its hash.",
+        "Provide numeric JSON through inputs[\"data.json\"], and explicitly pass OPENAI_API_KEY and OPENAI_BASE_URL for the OpenAI-compatible endpoint."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "56423973a619185f498f8bbc22dc7026e6d40ad202a49bb8721ec09c355f27a0",
+        "Project.toml": "e4390570ae9152b44ae958877cd86529553bc7f6d53fe5d4901420aa7ec1dbaa",
+        "README.md": "d03aeaf4beea9d773d69652dd9dd616e8a10cbf4457c49e29c1e84679cb1fc67",
+        "example.jl": "e0e587ca064b49e6abd567bb6849bbbfa79e9df61b483bbf3d50426d51163b71",
+        "prompts/concept_evolution_system.prompt": "c8dc0e3f5aaa88b5f4deb4a63097a92ec2c6f7f8ce2438fd5335ed41af533e98",
+        "prompts/concept_evolution_user.prompt": "b2fac5cabaec663c7c5a8677d76082396e03e3e5143387ec214d5a98de95fb77",
+        "prompts/crossover_system.prompt": "cad4a01e18c799d60ef78347e6f7e09f6b965a74905806f1155a87f22dd12514",
+        "prompts/crossover_user.prompt": "211ed9a18a203633d292bab3ffe1260acf5ed87678e83c25e8ef82de671664b4",
+        "prompts/gen_random_system.prompt": "d6322806b44ad658705c76f2105881e70fd25103c40567ef4cd60467a3b5e774",
+        "prompts/gen_random_user.prompt": "abf2b0e720f90f830811c0dfda8a48abba1d5e095f602bacd41661f375db2e29",
+        "prompts/generate_concepts_system.prompt": "db7c66e458f55032732bb22fae4ce84750260c7c2b6a846b46b98ad1c38e5cb0",
+        "prompts/generate_concepts_user.prompt": "9e410e0e5d8ea11ef0d87d9303673150b71ca353d090c7ccb1eb30be289a3a96",
+        "prompts/mutate_system.prompt": "040ff8e4d75ba5a4c8d3e9ef1f58d99120a118428e4dcff4152ee5bd9ee22124",
+        "prompts/mutate_user.prompt": "94d0e4259da2d484c57d016c2b1c357890d8a0f16db1d1ac5ca46afde44abc2c",
+        "src/LLMFunctions.jl": "00179e63471523d4b0730fdfc5ca520bd0f980fd1ff3b4b62a18ca15b9aa57fe",
+        "src/LLMOptions.jl": "84a45ffe5cd4dc9f31e324405b152646d6de448e4a56757bb57f0bf5f14cd767",
+        "src/LibraryAugmentedSymbolicRegression.jl": "a231802c24fedd69282b7dc5f0acc0d39bcc3e9ffb9053ca0848c2a1b332fa19"
+      },
+      "profiles": [
+        {
+          "id": "symbolic-regression",
+          "description": "Native library-augmented symbolic regression over an explicit numeric dataset.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.lasr"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--data",
+            "data.json"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "Project.toml",
+            "example.jl",
+            "src/LibraryAugmentedSymbolicRegression.jl",
+            "src/LLMOptions.jl",
+            "src/LLMFunctions.jl"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/native-frontier.json",
+            "outputs/**/*.csv"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "LaSROptions and equation_search retain the native evolutionary loop and concept library. The output records the native loss, complexity and equation string of each Pareto-frontier member.",
+            "evidence": [
+              "src/LibraryAugmentedSymbolicRegression.jl",
+              "src/LLMOptions.jl",
+              "src/LLMFunctions.jl"
+            ]
+          },
+          "argument_help": [
+            "--model MODEL --iterations 40 --populations 20 --llm-probability 0.0001",
+            "data.json: {\"X\": [[feature1, feature2], ...], \"y\": [target, ...]}; X rows are samples."
+          ],
+          "limitations": [
+            "The Python bridge writes a fixed Julia entry script, validates numeric data and calls the published Julia library; it does not implement an optimizer.",
+            "Loss is the native in-sample search loss, not a held-out or Arena canonical evaluation. Formula strings are recorded as data.",
+            "A prepared Julia environment and reachable model endpoint are prerequisites; no native research execution was performed during integration."
+          ],
+          "executable_args": {
+            "julia": "--julia"
+          }
+        }
+      ]
+    }
+  ]
+}

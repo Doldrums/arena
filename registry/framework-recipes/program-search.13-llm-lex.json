@@ -1,0 +1,73 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "llm-lex",
+      "name": "LLM-LEx",
+      "participant_ids": [
+        "llm-lex"
+      ],
+      "repository": {
+        "url": "https://github.com/harveyThomas4692/llmlex",
+        "commit": "9f02b58c5efb6d3c973c2ad2552ecc3a57998f81"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Install the pinned llmlex package and declared dependencies; prepare the supplied data JSON."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "llmlex/fit.py": "d6ac28fbd86a20416b533883e0148da8f72722bd084e77f5bfb39dd108950929",
+        "llmlex/images.py": "5e2ac2e38cdecf1a439f9e47761c19ced23e49a082550b6938c9a6f224868701",
+        "llmlex/llmlex.py": "26111b441b132e6dab1c0a682ec2025b050a6b4da5d80036e05329081a6f216f",
+        "readme.md": "f011a41efc1b862f94c31903cf051fb328d0a3ffb82025aeff7d36b458514fb7"
+      },
+      "profiles": [
+        {
+          "id": "symbolic-regression",
+          "description": "Native llmlex.run_genetic proposes and fits expressions; returned populations retain native negative normalized chi-squared scores.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.llm_lex"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "llmlex/llmlex.py",
+            "llmlex/images.py",
+            "llmlex/fit.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native llmlex.run_genetic proposes and fits expressions; returned populations retain native negative normalized chi-squared scores.",
+            "evidence": [
+              "llmlex/llmlex.py",
+              "llmlex/fit.py",
+              "readme.md"
+            ]
+          },
+          "argument_help": [
+            "Required: --data inputs/data.json --model MODEL --population N --generations N",
+            "Add inputs/data.json through request.inputs; it contains numeric arrays x and y.",
+            "Explicit OPENAI_API_KEY and optional OPENAI_BASE_URL; default endpoint is the upstream example OpenRouter API."
+          ],
+          "limitations": [
+            "The library has no native search CLI; this driver calls its public genetic loop without changing selection or fitting.",
+            "The data are fitted by the native loop. This profile does not add held-out evaluation.",
+            "No root license file was found at the pinned revision."
+          ]
+        }
+      ]
+    }
+  ]
+}

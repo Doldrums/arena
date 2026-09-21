@@ -1,0 +1,72 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "eureka",
+      "name": "Eureka",
+      "participant_ids": [
+        "eureka"
+      ],
+      "repository": {
+        "url": "https://github.com/eureka-research/Eureka",
+        "commit": "9eee42808b52d8abc14845d1547bfde886403ccc"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "pip install -e .",
+        "pip install -e .",
+        "pip install -e ."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "21f92ab927ed0138bd1e0f1644e447b9bb7e84744f2b7b02145b65688fa7c0bf",
+        "README.md": "f5fd6703733a723e2b0f4ad02d394e1bd8f648c9f4d94afbaa056d4578c45a91",
+        "eureka/cfg/config.yaml": "566d1d5ea0790c4cc17836721c9283d027dc546177e832b50b7d535e56e6e7a7",
+        "eureka/eureka.py": "b421d92cfd1011892fafbab26d3be3327911e682d4fc2819274e97bddcf26525",
+        "eureka/utils/misc.py": "343eaca24365a8c2d2016d7480b1cf088bbee8ddad879ed98b4c6ea1ae46aaa6"
+      },
+      "profiles": [
+        {
+          "id": "reward-evolution",
+          "description": "Eureka native reward synthesis, policy training, feedback and final evaluation.",
+          "invocation": {
+            "kind": "script",
+            "target": "eureka/eureka.py"
+          },
+          "cwd": "eureka",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [],
+          "config_files": [
+            "eureka/cfg/config.yaml"
+          ],
+          "result_globs": [
+            "eureka/**/*.json",
+            "eureka/**/*.log",
+            "eureka/**/*.npz"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native success curves and final simulator evaluations; binary NumPy summaries are opaque artifacts.",
+            "evidence": [
+              "eureka/eureka.py",
+              "eureka/utils/misc.py"
+            ]
+          },
+          "argument_help": [
+            "env=cartpole iteration=1 sample=3 max_iterations=3000 num_eval=5 model=<compatible-model>"
+          ],
+          "limitations": [
+            "Requires Isaac Gym/NVIDIA GPU and legacy OpenAI SDK. Default gpt-4-0314 is historical; select a compatible model explicitly.",
+            "Native writes generated environments into the cloned isaacgymenvs tree; the original source remains unchanged."
+          ],
+          "python_paths": [
+            "isaacgymenvs",
+            "rl_games"
+          ]
+        }
+      ]
+    }
+  ]
+}

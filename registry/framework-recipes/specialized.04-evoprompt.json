@@ -1,0 +1,83 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "evoprompt",
+      "name": "EvoPrompt",
+      "participant_ids": [
+        "evoprompt"
+      ],
+      "repository": {
+        "url": "https://github.com/beeevita/EvoPrompt",
+        "commit": "94caff336555df99acc5c338c7930c40cc550ad9"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "pip install -r requirements.txt (cwd .)"
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "BBH/args.py": "d78a6b67ffd9e69e175733e84202832729831d5520b0fb9d67c537184e36bd03",
+        "LICENSE.txt": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+        "README.md": "26cf9b46a2faeeeb7bfec6a85d5a754a6695eb8d00006905e87b5752bae3525f",
+        "args.py": "ba12c2570e4d2299776c7a3bb767b88af50a75a90a5d1852d2407a5b3b23cfd2",
+        "auth.yaml": "9c9b2e8e36f2b49448f65a4ba2e422300be3a4cde0f104233fa6dbcd604b06bd",
+        "data/template_v2.json": "1181cf4454d47f22c4d29aa5db8cedf9b626687ec23d0ec841bf94a906089405",
+        "evaluator.py": "558fba6eb5e97ac531ce8de92d3481e47964e0fb4ac1c3eb39f136aac9509aed",
+        "evolution.py": "b484c38bdea489a362dbe0fb19b865499df26a81813a4c88a25660c6a91f2ca7",
+        "llm_client.py": "92c22177ff4dc5b1d1b4abf27265f8b8c838dd4c491dc8ca6931a0fed0108649",
+        "run.py": "99440d56269556c246589175041da3e83b138d5702885fb4de31b560b9ac438f"
+      },
+      "profiles": [
+        {
+          "id": "ga-de",
+          "description": "Released EvoPrompt GA/DE optimization for classification, summarization and simplification.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.evoprompt"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "run.py",
+            "auth.yaml",
+            "data/template_v2.json"
+          ],
+          "config_files": [
+            "auth.yaml"
+          ],
+          "result_globs": [
+            "**/*.json",
+            "**/*.jsonl",
+            "**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native task evaluator and GA/DE selection retain their released metrics and data splits.",
+            "evidence": [
+              "run.py",
+              "args.py",
+              "evolution.py",
+              "evaluator.py",
+              "llm_client.py",
+              "BBH/args.py"
+            ]
+          },
+          "argument_help": [
+            "--task cls --dataset sst2 --language_model gpt --llm_type turbo --evo_mode de --budget 10 --popsize 10",
+            "Stage --dev_file and --test_file datasets; OPENAI_API_KEY is injected in memory, not written to auth.yaml."
+          ],
+          "limitations": [
+            "BBH profile is excluded: BBH/args.py registers --content twice and fails during argparse construction.",
+            "Legacy OpenAI endpoints/models and old Transformers dependencies require a compatible environment; no endpoint compatibility run was performed."
+          ]
+        }
+      ]
+    }
+  ]
+}

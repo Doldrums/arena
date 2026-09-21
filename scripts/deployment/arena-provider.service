@@ -1,0 +1,27 @@
+[Unit]
+Description=Empira private model gateway
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=arena-provider
+Group=arena-provider
+ExecStart=/opt/arena/venv/bin/python -m arena.providers serve --token-file /etc/arena/provider/codex.token --gateway-key-file /etc/arena/provider/gateway.key --port 8789 --max-concurrency 8 --requests-per-minute 120 --timeout 300 --compatibility-policy codex-native
+Restart=on-failure
+RestartSec=5
+UMask=0077
+Environment=PYTHONDONTWRITEBYTECODE=1
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+MemoryMax=1G
+CPUQuota=200%
+
+[Install]
+WantedBy=multi-user.target

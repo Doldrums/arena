@@ -1,0 +1,176 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "llamea-hpo",
+      "name": "LLaMEA-HPO",
+      "participant_ids": [
+        "llamea-hpo"
+      ],
+      "repository": {
+        "url": "https://github.com/XAI-liacs/LLaMEA",
+        "commit": "2a200f6b48038358223326b45869892b8ca09c4d"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "uv sync --group examples"
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "f9fa8b5c4c4e4dd86253c1b2b77f4d975699582008f847a297ff3918ed253f5f",
+        "README.md": "cf60a5ffc582153afedd7956780757f19203872328d2330d1db73df48e3cbb10",
+        "examples/black-box-opt-with-HPO.py": "639801bc40be6ea560e756486cf0ab872f0ca27a62dd38fb9d23511d779430ae",
+        "llamea/llamea.py": "1ea91e25e52afa8fd7a2cc84df87fd43bacb904aab71f8787f57adfb8a88cefe",
+        "llamea/loggers.py": "62c5090d7aa9332d710c95ddf22e9688b17cb1acb97c3507845065f1e6407fd2",
+        "examples/black-box-optimization.py": "c0e399a9ee358e331ad8f8f4a1f8bae10c1ccc45a62d491fb8f7826a4a4c8009",
+        "misc/utils.py": "51e06b05e768eb67cf29da70949ef45f73cfd5e3458ee55b4c9720a6bde3fcb6",
+        "llamea/llm.py": "41f6ef1071d4d9d36e3d0f9664c52052013a1769e6d7060f6478c1d7bec7cc15",
+        "llamea/solution.py": "13c8996e090b4c14a98dbfc11f5de947a3fbdc720c72ab66c9ce3165e4ba2b79"
+      },
+      "profiles": [
+        {
+          "id": "native-hpo-api",
+          "description": "Native LLaMEA with HPO evaluation supplied by an explicit research factory.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.llamea_hpo"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "llamea/llamea.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "**/*.jsonl",
+            "**/*.json",
+            "**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native LLaMEA HPO=True requests configuration spaces; the factory evaluator must perform the intended inner HPO and benchmark validation.",
+            "evidence": [
+              "llamea/llamea.py",
+              "llamea/loggers.py",
+              "examples/black-box-opt-with-HPO.py"
+            ]
+          },
+          "argument_help": [
+            "--factory inputs/llamea_hpo_factory.py:build --generations 10",
+            "Factory returns f, llm and optional LLaMEA constructor arguments. Use the released example as the HPO evaluator reference."
+          ],
+          "limitations": [
+            "The example script passes mutation_prompts, absent from the current pinned LLaMEA constructor; use the native API driver rather than claiming the stale example executes.",
+            "HPO=True alone does not implement SMAC: the user factory must supply the actual HPO evaluation function."
+          ]
+        },
+        {
+          "id": "gateway-bbob-pilot",
+          "description": "Native LLaMEA with packaged BBOB AOCC evaluator; explicit pilot budgets. HPO variant retains native SMAC facade with compatibility fixes.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.llamea_bbob_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "examples/black-box-optimization.py",
+            "examples/black-box-opt-with-HPO.py",
+            "misc/utils.py",
+            "llamea/llm.py",
+            "llamea/solution.py",
+            "llamea/llamea.py",
+            "llamea/loggers.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.log",
+            "results/**/*.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native LLaMEA with packaged BBOB AOCC evaluator; explicit pilot budgets. HPO variant retains native SMAC facade with compatibility fixes.",
+            "evidence": [
+              "examples/black-box-optimization.py",
+              "examples/black-box-opt-with-HPO.py",
+              "misc/utils.py",
+              "llamea/llm.py",
+              "llamea/solution.py",
+              "llamea/llamea.py",
+              "llamea/loggers.py"
+            ]
+          },
+          "argument_help": [
+            "--model gpt-5.6-sol; scoped OPENAI_API_KEY via explicit environment_names."
+          ],
+          "limitations": [
+            "Native evaluation only; canonical_evaluation=false. Pilot budgets do not reproduce paper-scale experiments.",
+            "No provider token/temperature enforcement; native retry/parse behavior can exceed nominal sample count; outer timeout applies.",
+            "HPO profile fixes obsolete Solution.keys() check and string instance IDs, uses8 SMAC trials and1000 objective calls; ordinary evaluator unchanged. Native max_workers=1 does not guarantee per-candidate timeout; admitted outer cgroup2400s is authoritative."
+          ]
+        },
+        {
+          "id": "gateway-bbob-hpo-pilot",
+          "description": "Native LLaMEA with packaged BBOB AOCC evaluator; explicit pilot budgets. HPO variant retains native SMAC facade with compatibility fixes.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.llamea_bbob_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--hpo"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "examples/black-box-optimization.py",
+            "examples/black-box-opt-with-HPO.py",
+            "misc/utils.py",
+            "llamea/llm.py",
+            "llamea/solution.py",
+            "llamea/llamea.py",
+            "llamea/loggers.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.log",
+            "results/**/*.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native LLaMEA with packaged BBOB AOCC evaluator; explicit pilot budgets. HPO variant retains native SMAC facade with compatibility fixes.",
+            "evidence": [
+              "examples/black-box-optimization.py",
+              "examples/black-box-opt-with-HPO.py",
+              "misc/utils.py",
+              "llamea/llm.py",
+              "llamea/solution.py",
+              "llamea/llamea.py",
+              "llamea/loggers.py"
+            ]
+          },
+          "argument_help": [
+            "--model gpt-5.6-sol; scoped OPENAI_API_KEY via explicit environment_names."
+          ],
+          "limitations": [
+            "Native evaluation only; canonical_evaluation=false. Pilot budgets do not reproduce paper-scale experiments.",
+            "No provider token/temperature enforcement; native retry/parse behavior can exceed nominal sample count; outer timeout applies.",
+            "HPO profile fixes obsolete Solution.keys() check and string instance IDs, uses8 SMAC trials and1000 objective calls; ordinary evaluator unchanged. Native max_workers=1 does not guarantee per-candidate timeout; admitted outer cgroup2400s is authoritative."
+          ]
+        }
+      ]
+    }
+  ]
+}

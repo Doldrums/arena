@@ -1,0 +1,2962 @@
+{
+  "schema": "arena.taxonomy/1",
+  "domains": [
+    {
+      "id": "mathematics",
+      "label": "Mathematics & optimization",
+      "description": "Mathematical constructions, inequalities, generic optimizers and numerical algorithms.",
+      "why_it_matters": "Candidate objects or algorithms can improve explicit bounds, feasibility, approximation error or search efficiency."
+    },
+    {
+      "id": "operations-research",
+      "label": "Operations research",
+      "description": "Routing, packing, scheduling, allocation and constraint models with an operational objective.",
+      "why_it_matters": "These tasks study how to use limited space, time and resources under explicit constraints."
+    },
+    {
+      "id": "machine-learning",
+      "label": "Machine learning & language",
+      "description": "Learning algorithms, generic prediction, language benchmarks, retrieval and digital-agent behavior.",
+      "why_it_matters": "Compare generalization, reasoning, learning procedures and retrieval quality across defined data and benchmark tasks."
+    },
+    {
+      "id": "software-engineering",
+      "label": "Software engineering",
+      "description": "Program synthesis, code repair, repository tasks and verification workflows.",
+      "why_it_matters": "Correctness and task completion expose whether generated software satisfies a program or repository contract."
+    },
+    {
+      "id": "computer-systems",
+      "label": "Computer systems & hardware",
+      "description": "Kernels, compilers, databases, datacenters, circuits and infrastructure optimization.",
+      "why_it_matters": "Latency, throughput, resource use and hardware constraints connect candidate programs to computing efficiency."
+    },
+    {
+      "id": "robotics-control",
+      "label": "Robotics & control",
+      "description": "Feedback controllers, embodied policies and rewards for locomotion or manipulation.",
+      "why_it_matters": "Closed-loop behavior tests stability, task completion and control performance, often in simulation."
+    },
+    {
+      "id": "physics",
+      "label": "Physics",
+      "description": "Physical models, cosmology, quantum systems, transport, event reconstruction and physical-law inference.",
+      "why_it_matters": "Compare physical constructions, inferred relationships and numerical methods against declared measurements or simulations."
+    },
+    {
+      "id": "chemistry-materials",
+      "label": "Chemistry & materials",
+      "description": "Reaction kinetics, chemical transformations, material properties and constitutive models.",
+      "why_it_matters": "Infer stress–strain relationships, integrate chemical reaction dynamics and predict reaction outcomes or material properties."
+    },
+    {
+      "id": "biology-health",
+      "label": "Biology & health",
+      "description": "Growth, biological sequences, cellular or neural data and biological or medical prediction targets.",
+      "why_it_matters": "Fit growth and population models, analyze RNA and cellular data, and learn predictive relationships in biological imagery and neural activity."
+    },
+    {
+      "id": "earth-environment",
+      "label": "Earth & environment",
+      "description": "Earth-system and environmental models, observations, prediction and resource-control targets.",
+      "why_it_matters": "Modeling environmental observations can test forecasting or process prediction under a defined dataset protocol."
+    },
+    {
+      "id": "finance-economics",
+      "label": "Finance & economics",
+      "description": "Economic decisions, allocation, mechanism design, structural models and financial policies.",
+      "why_it_matters": "Study economic models and decision rules under explicit objectives, information limits and feasibility constraints."
+    },
+    {
+      "id": "unknown",
+      "label": "Mixed / unclassified",
+      "description": "The available metadata describes a mixed suite or does not identify one primary application domain.",
+      "why_it_matters": "Keep mixed or underspecified packages visible while more detailed target and evaluation evidence is recorded."
+    }
+  ],
+  "task_types": [
+    {
+      "id": "mathematical-construction",
+      "label": "Mathematical construction",
+      "description": "Construct a discrete or continuous object under mathematical constraints.",
+      "why_it_matters": "Feasibility and an explicit extremal objective make candidate configurations directly comparable."
+    },
+    {
+      "id": "combinatorial-optimization",
+      "label": "Combinatorial optimization",
+      "description": "Design a constructive heuristic or search strategy for a discrete allocation problem.",
+      "why_it_matters": "Solution quality and feasibility measure how a method navigates a constrained search space."
+    },
+    {
+      "id": "black-box-optimization",
+      "label": "Black-box optimization",
+      "description": "Design an optimizer, acquisition function or selection policy for an objective oracle.",
+      "why_it_matters": "Evaluation budgets and attained objective values test search efficiency rather than one fixed solution."
+    },
+    {
+      "id": "symbolic-regression",
+      "label": "Symbolic regression",
+      "description": "Recover an equation, scaling law or symbolic-regression procedure from data.",
+      "why_it_matters": "Held-out error tests whether a compact functional expression predicts beyond the fitted examples."
+    },
+    {
+      "id": "numerical-solver",
+      "label": "Numerical solver",
+      "description": "Integrate or simulate specified dynamics, solve equations, or design numerical integration and sampling procedures.",
+      "why_it_matters": "Accuracy and numerical cost quantify behavior on specified functions, states or trajectories."
+    },
+    {
+      "id": "prediction-modeling",
+      "label": "Prediction & model design",
+      "description": "Fit, infer, train or design a predictive or generative model, representation or parameter estimate.",
+      "why_it_matters": "Prediction error or task return evaluates learned behavior on the declared data or environment."
+    },
+    {
+      "id": "hyperparameter-search",
+      "label": "Hyperparameter search",
+      "description": "Optimize training settings or model hyperparameters.",
+      "why_it_matters": "A held-out objective tests the quality and cost of selecting a model configuration."
+    },
+    {
+      "id": "language-reasoning",
+      "label": "Language & reasoning",
+      "description": "Optimize prompts, scaffolds or outputs on language, reasoning or grid-inference benchmarks.",
+      "why_it_matters": "Measure compositional reasoning, language understanding and constraint satisfaction on specified benchmark cases."
+    },
+    {
+      "id": "agent-workflow",
+      "label": "Agent workflow",
+      "description": "Design an agent workflow for tools, web environments, planning or digital tasks.",
+      "why_it_matters": "End-to-end task completion tests how actions and tools are coordinated across a trajectory."
+    },
+    {
+      "id": "software-generation",
+      "label": "Software generation & repair",
+      "description": "Generate, repair, review or verify program code.",
+      "why_it_matters": "Executable tests or repository task outcomes connect a proposed change to software behavior."
+    },
+    {
+      "id": "systems-optimization",
+      "label": "Systems optimization",
+      "description": "Improve kernel, compiler, infrastructure, hardware or program-performance decisions.",
+      "why_it_matters": "Correctness plus cost or performance measurements test whether systems changes are useful."
+    },
+    {
+      "id": "control-policy",
+      "label": "Control policy",
+      "description": "Design a feedback controller, sequential decision rule or embodied action policy.",
+      "why_it_matters": "Sequential outcomes test decisions under changing state and information constraints."
+    },
+    {
+      "id": "reward-design",
+      "label": "Reward design",
+      "description": "Design a reward for a learning controller or policy.",
+      "why_it_matters": "The resulting trained behavior tests whether the reward induces the intended task behavior."
+    },
+    {
+      "id": "retrieval",
+      "label": "Information retrieval",
+      "description": "Optimize document retrieval or ranking.",
+      "why_it_matters": "Relevance measurements compare ranking functions and document-search quality across different collections."
+    },
+    {
+      "id": "constraint-modeling",
+      "label": "Constraint modeling",
+      "description": "Reformulate or solve explicit satisfiability, logic or mathematical-program constraints.",
+      "why_it_matters": "Feasibility and solver efficiency expose the value of the model formulation or solver policy."
+    },
+    {
+      "id": "benchmark-generation",
+      "label": "Benchmark generation",
+      "description": "Generate benchmark functions or embodied evaluation tasks.",
+      "why_it_matters": "Produce controlled instances for probing evaluation coverage, difficulty and optimizer or policy robustness."
+    },
+    {
+      "id": "signal-processing",
+      "label": "Signal processing",
+      "description": "Filter or transform a signal under error, noise and smoothness criteria.",
+      "why_it_matters": "Output fidelity and robustness test whether useful signal structure survives processing."
+    },
+    {
+      "id": "unknown",
+      "label": "Unclassified task type",
+      "description": "The catalog does not yet specify a clear candidate or evaluation operation.",
+      "why_it_matters": "Expose gaps in the recorded optimization contract so future catalog curation can resolve them."
+    }
+  ],
+  "rules": [
+    {
+      "id": "frontier-polyomino-packing",
+      "match": {
+        "task_ids": [
+          "coral-frontier-cs-polyominoes-packing"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "This package explicitly constructs a polyomino packing under a packing-score objective; unlike the opaque Frontier-CS suite labels, its geometric target is specified."
+    },
+    {
+      "id": "limen-gridworld-policies",
+      "match": {
+        "task_ids": [
+          "limen-easy-pickup",
+          "limen-hard-rule-chain",
+          "limen-medium-place-near"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "control-policy",
+      "rationale": "The descriptions specify gridworld pickup/placement/subgoal behavior in XLand-MiniGrid; this is a learned digital action policy, not a physical robot experiment."
+    },
+    {
+      "id": "forest-cover-prediction",
+      "match": {
+        "task_ids": [
+          "loongflow-tabular-playground-series-dec-2021"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The catalog description explicitly predicts forest Cover_Type labels from tabular environmental features."
+    },
+    {
+      "id": "growth-and-population",
+      "match": {
+        "task_ids": [
+          "coevo-e-coli-growth"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The task explicitly names E. coli growth; the candidate is a fitted growth equation."
+    },
+    {
+      "id": "oscillation-equations",
+      "match": {
+        "task_ids": [
+          "coevo-oscillation-1",
+          "coevo-oscillation-2"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "symbolic-regression",
+      "rationale": "Oscillation is the named physical target of the fitted symbolic equation."
+    },
+    {
+      "id": "stress-strain-equations",
+      "match": {
+        "task_ids": [
+          "coevo-stress-strain"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "symbolic-regression",
+      "rationale": "Stress–strain regression targets a material constitutive relationship, not a generic language benchmark."
+    },
+    {
+      "id": "lsr-synthetic-biology",
+      "match": {
+        "task_ids": [
+          "deliberate-evolution-lsr-synth-biology"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The package explicitly labels its synthetic equation set biology; this records benchmark subject, not an experimentally recovered law."
+    },
+    {
+      "id": "lsr-synthetic-chemistry",
+      "match": {
+        "task_ids": [
+          "deliberate-evolution-lsr-synth-chemistry"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The package explicitly labels its synthetic equation set chemistry; this records benchmark subject, not an experimentally recovered law."
+    },
+    {
+      "id": "lsr-synthetic-materials",
+      "match": {
+        "task_ids": [
+          "deliberate-evolution-lsr-synth-materials"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The package explicitly labels its synthetic equation set materials; this records benchmark subject, not an experimentally recovered law."
+    },
+    {
+      "id": "lsr-synthetic-physics",
+      "match": {
+        "task_ids": [
+          "deliberate-evolution-lsr-synth-physics"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The package explicitly labels its synthetic equation set physics; this records benchmark subject, not an experimentally recovered law."
+    },
+    {
+      "id": "physical-ode-models",
+      "match": {
+        "task_ids": [
+          "a2dept-ode-integration-discretized-heat-equation-n-20",
+          "a2dept-ode-integration-harmonic-oscillator",
+          "dga2d-ode-solver-convection-diffusion-100-point",
+          "dga2d-ode-solver-heat2d-10x10",
+          "dga2d-ode-solver-lorenz",
+          "dga2d-ode-solver-van-der-pol"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "numerical-solver",
+      "rationale": "The named integration target is a heat/transport equation, oscillator or Lorenz system; candidate quality is numerical trajectory accuracy and evaluation cost."
+    },
+    {
+      "id": "reaction-kinetics-ode",
+      "match": {
+        "task_ids": [
+          "dga2d-ode-solver-robertson"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "numerical-solver",
+      "rationale": "Robertson reaction kinetics is the named differential-equation integration target."
+    },
+    {
+      "id": "population-dynamics-ode",
+      "match": {
+        "task_ids": [
+          "dga2d-ode-solver-lotka-volterra"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "numerical-solver",
+      "rationale": "Lotka–Volterra population dynamics is the named integration target."
+    },
+    {
+      "id": "physical-symbolic-targets",
+      "match": {
+        "task_ids": [
+          "lasr-feynman-equations-symbolic-regression",
+          "llm-lex-kan-gravitational-potential-x-y-z"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The task explicitly targets Feynman physical equations or a synthetic gravitational-potential relation."
+    },
+    {
+      "id": "biological-prediction-targets",
+      "match": {
+        "task_ids": [
+          "eurekagent-dog-breed-identification",
+          "eurekagent-the-icml-2013-whale-redux",
+          "loongflow-aerial-cactus-identification",
+          "loongflow-dogs-vs-cats-redux-kernels-edition",
+          "loongflow-histopathologic-cancer-detection",
+          "loongflow-plant-pathology-2020-fgvc7",
+          "loongflow-plant-pathology-2021-fgvc8",
+          "loongflow-stanford-covid-vaccine",
+          "loongflow-the-icml-2013-whale-challenge-right-whale-redux",
+          "mipro-heart-disease",
+          "the-station-rna-sequence-modeling",
+          "the-station-single-cell-batch-integration",
+          "the-station-zapbench-neural-activity-prediction"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The task name specifies biological imagery, disease, RNA, cellular integration or neural-activity prediction. This is a dataset/modeling application, not verified biological discovery."
+    },
+    {
+      "id": "materials-prediction-targets",
+      "match": {
+        "task_ids": [
+          "loongflow-nomad2018-predict-transparent-conductors"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The named target is transparent-conductor material-property prediction."
+    },
+    {
+      "id": "chemical-transformation-targets",
+      "match": {
+        "task_ids": [
+          "mce-uspto-50k"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "language-reasoning",
+      "rationale": "USPTO-50k is explicitly named as the chemical-reaction task. The package is a model/agent benchmark, not a laboratory synthesis protocol."
+    },
+    {
+      "id": "environmental-prediction-targets",
+      "match": {
+        "task_ids": [
+          "loongflow-predict-volcanic-eruptions-ingv-oe"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The package explicitly targets volcanic-eruption prediction."
+    },
+    {
+      "id": "image-hpo",
+      "match": {
+        "task_ids": [
+          "evolcaf-cifar-10-hyperparameter-optimization",
+          "evolcaf-colorectal-histology-hyperparameter-optimization",
+          "evolcaf-fashion-mnist-hyperparameter-optimization"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "hyperparameter-search",
+      "rationale": "These named image benchmarks optimize model hyperparameters; benchmark theme is not treated as a separate scientific task."
+    },
+    {
+      "id": "direct-financial-objectives",
+      "match": {
+        "task_ids": [
+          "ael-harness-d-full-portfolio-allocation",
+          "algoevolve-numin-intraday-equity-trading"
+        ]
+      },
+      "domain_id": "finance-economics",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The task directly names portfolio allocation or intraday equity trading, rather than financial question answering."
+    },
+    {
+      "id": "sciel-scaling-laws",
+      "match": {
+        "id_prefixes": [
+          "sciel-bench-sldbench-"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "symbolic-regression",
+      "rationale": "SLDBench fits predictive scaling laws for language-model loss or performance."
+    },
+    {
+      "id": "sciel-prompts",
+      "match": {
+        "id_prefixes": [
+          "sciel-bench-prompt-optimization-"
+        ],
+        "families": [
+          "sciel_copy"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "language-reasoning",
+      "rationale": "The SCiEL package optimizes a prompt or reasoning transformation against labeled benchmark examples."
+    },
+    {
+      "id": "sciel-language-benchmarks",
+      "match": {
+        "task_ids": [
+          "sciel-bench-arc-agi-evaluation-task-0",
+          "sciel-bench-lm-eval-gsm8k"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "language-reasoning",
+      "rationale": "The candidate answers GSM8K questions or transforms ARC grids; this is capability evaluation."
+    },
+    {
+      "id": "sciel-systems-benchmarks",
+      "match": {
+        "task_ids": [
+          "sciel-bench-mlir-attention-optimization",
+          "sciel-bench-mlx-qwen3-gqa-kernel",
+          "sciel-bench-rust-adaptive-sort"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "systems-optimization",
+      "rationale": "The task changes compiler passes, an attention kernel or a sorting implementation to improve computing performance."
+    },
+    {
+      "id": "sciel-software-benchmarks",
+      "match": {
+        "task_ids": [
+          "sciel-bench-kattis-alphabet",
+          "sciel-bench-web-scraper-api-docs"
+        ]
+      },
+      "domain_id": "software-engineering",
+      "task_type_id": "software-generation",
+      "rationale": "The candidate implements an online-judge solution or extracts an API-documentation structure."
+    },
+    {
+      "id": "sciel-generic-search",
+      "match": {
+        "task_ids": [
+          "sciel-bench-k-module-problem",
+          "sciel-math-function-guessing-game",
+          "sciel-math-function-minimization"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "black-box-optimization",
+      "rationale": "The candidate searches a synthetic configuration or budgeted test function."
+    },
+    {
+      "id": "sciel-symbolic-regression",
+      "match": {
+        "task_ids": [
+          "sciel-math-symbolic-regression-bench"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The candidate models a synthetic trigonometric-polynomial target; no physical system is specified."
+    },
+    {
+      "id": "sciel-statistical-regression",
+      "match": {
+        "task_ids": [
+          "sciel-math-r-robust-regression"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate performs robust regression on synthetic outlier-contaminated data."
+    },
+    {
+      "id": "sciel-operational-routing",
+      "match": {
+        "task_ids": [
+          "sciel-math-ring-loading-problem",
+          "sciel-math-tsp-tour-minimization"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The objective is tour length or network edge load under routing constraints."
+    },
+    {
+      "id": "sciel-physical-configurations",
+      "match": {
+        "task_ids": [
+          "sciel-math-block-stacking",
+          "sciel-math-thomson-problem"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The explicit objective models Coulomb energy on a sphere or statically stable block overhang. These remain small mathematical model problems."
+    },
+    {
+      "id": "signal-processing-packages",
+      "match": {
+        "task_ids": [
+          "sciel-math-signal-processing"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "signal-processing",
+      "rationale": "The named signal-processing task filters synthetic signal cases and scores error/noise/smoothness."
+    },
+    {
+      "id": "sciel-mathematical-objects",
+      "match": {
+        "families": [
+          "sciel_copy"
+        ],
+        "id_prefixes": [
+          "sciel-math-"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The SCiEL mathematical package constructs an extremal graph, set, function, polynomial or geometric configuration; specific non-construction exceptions precede this rule."
+    },
+    {
+      "id": "reevo-circuit-placement",
+      "match": {
+        "task_ids": [
+          "reevo-decap-placement-genetic-algorithm"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The candidate optimizes decoupling-capacitor placement for a circuit."
+    },
+    {
+      "id": "unsupported-kernel-and-compiler",
+      "match": {
+        "task_ids": [
+          "accelopt-adamw-m10944-n2048-0",
+          "accelopt-add-rmsnorm-matmul-m4096-n2048-k1024-0",
+          "accelopt-bmm-b16-m4096-k64-n4096-0",
+          "accelopt-bmm-softmax-b16-k64-m4096-n4096-0",
+          "accelopt-gqa-full-b1-n4096-qh16-kh8-d128-0",
+          "accelopt-lora-m4096-n12288-k5120-r128-0",
+          "accelopt-mamba-m7168-c256-s16-0",
+          "accelopt-matmul-add-rmsnorm-m4096-n2048-k2048-0",
+          "accelopt-matmul-m4096-n12288-k5120-0",
+          "accelopt-rmsnorm-matmul-m4096-n2048-k1024-0",
+          "accelopt-rope-single-freq-apply-b1-h64-n4096-d128-0",
+          "accelopt-silu-m4096-n7168-0",
+          "accelopt-swiglu-m4096-n3072-k1024-0",
+          "accelopt-transpose-matmul-m4096-k2048-n10944-0",
+          "agentic-optimization-decode-attention-kernel-optimization",
+          "agentic-optimization-qwen3-1-7b-end-to-end-sglang-kernel-optimization",
+          "alphaevolve-borg-data-center-scheduling",
+          "alphaevolve-compiler-generated-flashattention-code-optimization",
+          "alphaevolve-gemini-matrix-multiplication-tiling",
+          "alphaevolve-tpu-hardware-circuit-design",
+          "avo-gqa-32-query-heads-4-kv-heads-causal-sequence-16384",
+          "avo-gqa-32-query-heads-4-kv-heads-causal-sequence-32768",
+          "avo-gqa-32-query-heads-4-kv-heads-causal-sequence-4096",
+          "avo-gqa-32-query-heads-4-kv-heads-causal-sequence-8192",
+          "avo-gqa-32-query-heads-4-kv-heads-non-causal-sequence-16384",
+          "avo-gqa-32-query-heads-4-kv-heads-non-causal-sequence-32768",
+          "avo-gqa-32-query-heads-4-kv-heads-non-causal-sequence-4096",
+          "avo-gqa-32-query-heads-4-kv-heads-non-causal-sequence-8192",
+          "avo-gqa-32-query-heads-8-kv-heads-causal-sequence-16384",
+          "avo-gqa-32-query-heads-8-kv-heads-causal-sequence-32768",
+          "avo-gqa-32-query-heads-8-kv-heads-causal-sequence-4096",
+          "avo-gqa-32-query-heads-8-kv-heads-causal-sequence-8192",
+          "avo-gqa-32-query-heads-8-kv-heads-non-causal-sequence-16384",
+          "avo-gqa-32-query-heads-8-kv-heads-non-causal-sequence-32768",
+          "avo-gqa-32-query-heads-8-kv-heads-non-causal-sequence-4096",
+          "avo-gqa-32-query-heads-8-kv-heads-non-causal-sequence-8192",
+          "avo-mha-16-heads-causal-sequence-16384",
+          "avo-mha-16-heads-causal-sequence-32768",
+          "avo-mha-16-heads-causal-sequence-4096",
+          "avo-mha-16-heads-causal-sequence-8192",
+          "avo-mha-16-heads-non-causal-sequence-16384",
+          "avo-mha-16-heads-non-causal-sequence-32768",
+          "avo-mha-16-heads-non-causal-sequence-4096",
+          "avo-mha-16-heads-non-causal-sequence-8192",
+          "codeevolve-salesforce-apex-program-optimization",
+          "codeevolve-salesforce-apiname-constructor",
+          "codeevolve-salesforce-batchimporter-serializerowinfo",
+          "codeevolve-salesforce-composedapiname-equals",
+          "codeevolve-salesforce-domainsuffixpair-hashcode",
+          "codeevolve-salesforce-fieldidentifier-hashcode",
+          "codeevolve-salesforce-getinstanceidmutations",
+          "codeevolve-salesforce-hbaseconnectionregistryutil-filtermap",
+          "kernelpro-kernelbench-level-1-single-operators",
+          "kernelpro-kernelbench-level-2-fused-operators",
+          "kernelpro-kernelbench-level-3-architectures",
+          "kernelpro-swish-energy-aware-kernel-optimization",
+          "kernelpro-triton-inference-fused-moe",
+          "kernelpro-triton-inference-gemm-split-k",
+          "kernelpro-triton-inference-kernel-paged-attention",
+          "kernelpro-triton-inference-layer-norm",
+          "kernelpro-triton-inference-persistent-vec-matmul",
+          "kernelpro-triton-inference-vec-matmul",
+          "kernelpro-veomni-dw1-grouped-gemm-weight-gradient",
+          "magellan-llvm-function-inlining-for-binary-size",
+          "magellan-llvm-function-inlining-for-clang-runtime",
+          "magellan-llvm-register-allocation",
+          "magellan-xla-auto-sharding-iopddl",
+          "magellan-xla-enzyme-jax-e-graph-extraction",
+          "polymath-axi-hardware-module-configuration"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "systems-optimization",
+      "rationale": "The reviewed source group names accelerator kernels, attention variants, compiler decisions or program performance; unsupported status is unchanged."
+    },
+    {
+      "id": "unsupported-infrastructure",
+      "match": {
+        "task_ids": [
+          "adaevolve-datacenter-tcp-congestion-control",
+          "evox-telemetry-repair"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "systems-optimization",
+      "rationale": "The task explicitly names datacenter TCP congestion control or telemetry repair."
+    },
+    {
+      "id": "unsupported-software-agent-suites",
+      "match": {
+        "task_ids": [
+          "ahe-terminal-bench-2",
+          "cocoevo-deveval-real-world-function-completion",
+          "cocoevo-leetcode-contest",
+          "darwinian-evolver-vet-code-verification-prompt-evolution",
+          "dgm-aider-polyglot",
+          "sica-livecodebench",
+          "sica-swe-bench-verified",
+          "sica-synthetic-file-editing",
+          "sica-synthetic-symbol-location"
+        ]
+      },
+      "domain_id": "software-engineering",
+      "task_type_id": "software-generation",
+      "rationale": "The reviewed task names are code repair, coding, program verification or repository-editing benchmarks."
+    },
+    {
+      "id": "unsupported-terminal-bench",
+      "match": {
+        "task_ids": [
+          "aevo-terminal-bench",
+          "ahe-terminal-bench-2",
+          "meta-harness-terminal-bench-2-0"
+        ]
+      },
+      "domain_id": "software-engineering",
+      "task_type_id": "agent-workflow",
+      "rationale": "Terminal-Bench evaluates task completion through a terminal; no broader science domain is asserted."
+    },
+    {
+      "id": "unsupported-retrieval-corpora",
+      "match": {
+        "task_ids": [
+          "rankevolve-aops",
+          "rankevolve-biology",
+          "rankevolve-climate-fever",
+          "rankevolve-cqadupstack",
+          "rankevolve-dbpedia-entity",
+          "rankevolve-dl19",
+          "rankevolve-dl20",
+          "rankevolve-earth-science",
+          "rankevolve-economics",
+          "rankevolve-fever",
+          "rankevolve-fiqa",
+          "rankevolve-hotpotqa",
+          "rankevolve-leetcode",
+          "rankevolve-nq",
+          "rankevolve-pony",
+          "rankevolve-psychology",
+          "rankevolve-quora",
+          "rankevolve-robotics",
+          "rankevolve-scidocs",
+          "rankevolve-stackoverflow",
+          "rankevolve-sustainable-living",
+          "rankevolve-theoremqa-questions",
+          "rankevolve-theoremqa-theorems",
+          "rankevolve-trec-covid",
+          "rankevolve-webis-touche2020"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "retrieval",
+      "rationale": "RankEvolve optimizes document ranking. A corpus named biology, climate or economics remains a retrieval task, not an experiment in that discipline."
+    },
+    {
+      "id": "unsupported-constraint-models",
+      "match": {
+        "task_ids": [
+          "evoor-agent-bwor",
+          "evoor-agent-industryor",
+          "evoor-agent-mamo-complexlp",
+          "evoor-agent-mamo-easylp",
+          "evoor-agent-nl4opt",
+          "evoor-agent-nlp4lp",
+          "evoor-agent-resocratic",
+          "funl2o-dc3-convex-qp",
+          "funl2o-dc3-nonconvex-qp",
+          "funl2o-dc3-nonsmooth-nonconvex-qp",
+          "funl2o-fsnet-convex-qcqp",
+          "funl2o-fsnet-convex-qp",
+          "funl2o-fsnet-convex-socp",
+          "funl2o-fsnet-nonconvex-qcqp",
+          "funl2o-fsnet-nonconvex-qp",
+          "funl2o-fsnet-nonconvex-socp",
+          "funl2o-fsnet-nonsmooth-nonconvex-qcqp",
+          "funl2o-fsnet-nonsmooth-nonconvex-qp",
+          "funl2o-fsnet-nonsmooth-nonconvex-socp",
+          "funl2o-ipm-mpnn-lp-combinatorial-auction",
+          "funl2o-ipm-mpnn-lp-gnnlp",
+          "funl2o-ipm-mpnn-lp-independent-set",
+          "funl2o-ipm-mpnn-lp-set-cover",
+          "funl2o-pdhg-net-pagerank-lp-warm-start",
+          "funl2o-predict-and-search-combinatorial-auctions",
+          "funl2o-predict-and-search-minimum-vertex-cover",
+          "pdr-balanced-academic-curriculum-csplib-30",
+          "pdr-balanced-incomplete-block-design-csplib-28",
+          "pdr-car-sequencing-csplib-1",
+          "pdr-covering-arrays-csplib-45",
+          "pdr-error-correction-codes-csplib-36",
+          "pdr-social-golfer-csplib-10",
+          "pdr-tail-assignment-csplib-115",
+          "pdr-vessel-loading-csplib-8"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "constraint-modeling",
+      "rationale": "The source names mathematical-program, constraint-reformulation or OR-modeling instances; the optimized artifact is a solver/model formulation."
+    },
+    {
+      "id": "unsupported-benchmark-generation",
+      "match": {
+        "task_ids": [
+          "eob-eob-bbob-benchmark-synthesis",
+          "eob-eob-hpo-surrogate-benchmark-synthesis",
+          "eob-eob-uav-surrogate-benchmark-synthesis"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "benchmark-generation",
+      "rationale": "EoB generates optimizer benchmark functions or surrogates; the generator itself is not a solved UAV or HPO application."
+    },
+    {
+      "id": "unsupported-optimization-rewards",
+      "match": {
+        "task_ids": [
+          "ready-dedqn-operator-selection",
+          "ready-gleet-reward-transfer",
+          "ready-rldas-algorithm-selection",
+          "ready-rldeafl-reward-transfer",
+          "ready-rlepso-parameter-control"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "reward-design",
+      "rationale": "READY learns rewards or adaptation decisions for a black-box optimizer."
+    },
+    {
+      "id": "unsupported-embodied-reward-suites",
+      "match": {
+        "task_ids": [
+          "dreureka-go1-walking-globe",
+          "dreureka-leap-hand-cube-rotation",
+          "eureka-allegrohand",
+          "eureka-ant",
+          "eureka-anymal",
+          "eureka-ballbalance",
+          "eureka-blockstack",
+          "eureka-bottlecap",
+          "eureka-cartpole",
+          "eureka-catchabreast",
+          "eureka-catchover2underarm",
+          "eureka-catchunderarm",
+          "eureka-doorcloseinward",
+          "eureka-doorcloseoutward",
+          "eureka-dooropeninward",
+          "eureka-dooropenoutward",
+          "eureka-frankacabinet",
+          "eureka-graspandplace",
+          "eureka-humanoid",
+          "eureka-kettle",
+          "eureka-liftunderarm",
+          "eureka-over",
+          "eureka-pen",
+          "eureka-pushblock",
+          "eureka-quadcopter",
+          "eureka-reorientation",
+          "eureka-scissors",
+          "eureka-shadow-hand-pen-spinning",
+          "eureka-shadowhand",
+          "eureka-swingcup",
+          "eureka-switch",
+          "eureka-twocatchunderarm",
+          "revolve-adroit-hand-door-opening",
+          "revolve-autonomous-driving",
+          "stride-humanoid-sprinting-on-flat-terrain",
+          "stride-humanoid-sprinting-on-random-uniform-terrain",
+          "stride-humanoid-sprinting-on-wave-terrain",
+          "text2reward-ant-lie-down",
+          "text2reward-ant-wave-leg",
+          "text2reward-hopper-back-flip",
+          "text2reward-hopper-front-flip",
+          "text2reward-hopper-move-forward",
+          "text2reward-liftcube-v0",
+          "text2reward-opencabinetdoor-v1",
+          "text2reward-opencabinetdrawer-v1",
+          "text2reward-pickcube-v0",
+          "text2reward-pushchair-v1",
+          "text2reward-real-franka-panda-pick-cube",
+          "text2reward-real-franka-panda-stack-cube",
+          "text2reward-stackcube-v0",
+          "text2reward-turnfaucet-v0"
+        ]
+      },
+      "domain_id": "robotics-control",
+      "task_type_id": "reward-design",
+      "rationale": "The reviewed source tasks design rewards or reward/domain-randomization settings for named locomotion or manipulation environments."
+    },
+    {
+      "id": "unsupported-enpire-robotics",
+      "match": {
+        "task_ids": [
+          "enpire-gpu-insertion",
+          "enpire-gym-pusht-simulation",
+          "enpire-physical-push-t",
+          "enpire-physical-zip-tie-threading",
+          "enpire-pin-insertion",
+          "enpire-robocasa-simulation",
+          "enpire-zip-tie-cutting",
+          "enpire-zip-tie-insertion-reward-verification"
+        ]
+      },
+      "domain_id": "robotics-control",
+      "task_type_id": "control-policy",
+      "rationale": "The named ENPIRE tasks improve embodied robot behavior in manipulation environments. The pinned papers/enpire.md identifies Robot Control and agentic robot policy self-improvement; this is not treated as a generic reward-design suite."
+    },
+    {
+      "id": "unsupported-hyperagent-robotics",
+      "match": {
+        "task_ids": [
+          "eureka-ant",
+          "hyperagents-quadruped-torso-height-reward-design"
+        ]
+      },
+      "domain_id": "robotics-control",
+      "task_type_id": "reward-design",
+      "rationale": "The package explicitly names quadruped reward design."
+    },
+    {
+      "id": "unsupported-walker-synthesis",
+      "match": {
+        "task_ids": [
+          "elm-sodarace-walker-program-evolution",
+          "elm-terrain-conditioned-sodarace-synthesis"
+        ]
+      },
+      "domain_id": "robotics-control",
+      "task_type_id": "control-policy",
+      "rationale": "The task synthesizes a Sodarace walker program, a simulated embodied controller."
+    },
+    {
+      "id": "unsupported-specific-robot-controls",
+      "match": {
+        "task_ids": [
+          "limen-go1-push-recovery",
+          "limen-panda-trajectory-tracking"
+        ]
+      },
+      "domain_id": "robotics-control",
+      "task_type_id": "control-policy",
+      "rationale": "The task explicitly names Go1 push recovery or Panda trajectory tracking."
+    },
+    {
+      "id": "unsupported-embodied-generation",
+      "match": {
+        "task_ids": [
+          "omni-epic-open-ended-embodied-task-generation"
+        ]
+      },
+      "domain_id": "robotics-control",
+      "task_type_id": "benchmark-generation",
+      "rationale": "The task generates embodied environments/tasks; it is not a fixed controller benchmark."
+    },
+    {
+      "id": "unsupported-web-and-tool-agents",
+      "match": {
+        "task_ids": [
+          "agentsquare-alfworld",
+          "agentsquare-m3tooleval",
+          "agentsquare-pddl",
+          "agentsquare-scienceworld",
+          "agentsquare-travelplanner",
+          "agentsquare-webshop",
+          "evoflow-alfworld",
+          "evoskill-browsecomp-transfer",
+          "evoskill-officeqa",
+          "evoskill-sealqa",
+          "flowscout-toolbench-finance",
+          "flowscout-toolbench-sports",
+          "flowscout-toolbench-travel",
+          "flowscout-toolbench-weather",
+          "hsi-babaisai-breakstop",
+          "hsi-babaisai-goto",
+          "hsi-babaisai-make",
+          "hsi-babyai",
+          "hsi-crafter",
+          "hsi-minihack",
+          "hsi-nle",
+          "hsi-textworld",
+          "meta-ttl-jericho-balances",
+          "meta-ttl-jericho-detective",
+          "meta-ttl-jericho-library",
+          "meta-ttl-jericho-temple",
+          "meta-ttl-jericho-zork-1",
+          "meta-ttl-jericho-zork-3",
+          "meta-ttl-tau2-bench-airline",
+          "meta-ttl-tau2-bench-retail",
+          "meta-ttl-tau2-bench-telecom",
+          "meta-ttl-webarena-lite-gitlab",
+          "meta-ttl-webarena-lite-map",
+          "meta-ttl-webarena-lite-reddit",
+          "meta-ttl-webarena-lite-shopping",
+          "meta-ttl-webarena-lite-shopping-admin"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "agent-workflow",
+      "rationale": "These reviewed task names describe tool use, web environments, text games or task planning; ScienceWorld/Weather labels do not establish a science-modeling objective."
+    },
+    {
+      "id": "unsupported-task-planning",
+      "match": {
+        "task_ids": [
+          "mind-evolution-natural-plan-meeting-planning",
+          "mind-evolution-natural-plan-trip-planning",
+          "mind-evolution-travelplanner"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "agent-workflow",
+      "rationale": "The named package evaluates natural-language trip/meeting/travel planning."
+    },
+    {
+      "id": "unsupported-coding-tasks",
+      "match": {
+        "task_ids": [
+          "dgm-aider-polyglot",
+          "elm-single-step-code-bug-repair",
+          "qdaif-humaneval-88-conditional-sorting",
+          "rqgm-code-review",
+          "rqgm-polyglot-coding"
+        ]
+      },
+      "domain_id": "software-engineering",
+      "task_type_id": "software-generation",
+      "rationale": "The task name explicitly identifies code repair, code review, coding, file editing or HumanEval."
+    },
+    {
+      "id": "unsupported-architecture-search",
+      "match": {
+        "task_ids": [
+          "evoprompting-mnist-1d-architecture-search",
+          "evoprompting-nats-bench-cifar-10",
+          "evoprompting-nats-bench-cifar-100",
+          "evoprompting-nats-bench-imagenet-16-120",
+          "llmastool-cifar-10",
+          "llmastool-cifar-100",
+          "llmastool-imagenet-100",
+          "llmastool-imagenet16-120"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "hyperparameter-search",
+      "rationale": "The named benchmark concerns neural architecture or model-configuration search."
+    },
+    {
+      "id": "unsupported-algorithm-programs",
+      "match": {
+        "task_ids": [
+          "evoprompting-activity-selector",
+          "evoprompting-articulation-points",
+          "evoprompting-bellman-ford",
+          "evoprompting-bfs",
+          "evoprompting-binary-search",
+          "evoprompting-bridges",
+          "evoprompting-bubble-sort",
+          "evoprompting-dag-shortest-paths",
+          "evoprompting-dfs",
+          "evoprompting-dijkstra",
+          "evoprompting-find-maximum-subarray-kadane",
+          "evoprompting-floyd-warshall",
+          "evoprompting-graham-scan",
+          "evoprompting-heapsort",
+          "evoprompting-insertion-sort",
+          "evoprompting-jarvis-march",
+          "evoprompting-knuth-morris-pratt",
+          "evoprompting-lcs-length",
+          "evoprompting-matrix-chain-order",
+          "evoprompting-minimum",
+          "evoprompting-mnist-1d-architecture-search",
+          "evoprompting-mst-kruskal",
+          "evoprompting-mst-prim",
+          "evoprompting-naive-string-matcher",
+          "evoprompting-nats-bench-cifar-10",
+          "evoprompting-nats-bench-cifar-100",
+          "evoprompting-nats-bench-imagenet-16-120",
+          "evoprompting-optimal-bst",
+          "evoprompting-quickselect",
+          "evoprompting-quicksort",
+          "evoprompting-segments-intersect",
+          "evoprompting-strongly-connected-components",
+          "evoprompting-task-scheduling",
+          "evoprompting-topological-sort"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The catalog description explicitly evaluates a discovered graph-neural-network architecture on CLRS algorithmic reasoning, including out-of-distribution lengths; BFS/Dijkstra names do not mean ordinary code synthesis."
+    },
+    {
+      "id": "unsupported-generic-ml-datasets",
+      "match": {
+        "task_ids": [
+          "ael-harness-20newsgroups-stream-classification",
+          "ael-harness-d-full-portfolio-allocation",
+          "ael-harness-support-ticket-routing",
+          "eurekagent-dog-breed-identification",
+          "eurekagent-gpumode-trimul-a100",
+          "eurekagent-jigsaw-toxic-comment",
+          "eurekagent-tabular-playground-may-2022",
+          "eurekagent-the-icml-2013-whale-redux",
+          "l-autoda-cifar-10-decision-based-adversarial-attack",
+          "loongflow-aerial-cactus-identification",
+          "loongflow-denoising-dirty-documents",
+          "loongflow-detecting-insults-in-social-commentary",
+          "loongflow-dogs-vs-cats-redux-kernels-edition",
+          "loongflow-google-quest-challenge",
+          "loongflow-histopathologic-cancer-detection",
+          "loongflow-nomad2018-predict-transparent-conductors",
+          "loongflow-plant-pathology-2020-fgvc7",
+          "loongflow-plant-pathology-2021-fgvc8",
+          "loongflow-predict-volcanic-eruptions-ingv-oe",
+          "loongflow-stanford-covid-vaccine",
+          "loongflow-tabular-playground-series-dec-2021",
+          "loongflow-the-icml-2013-whale-challenge-right-whale-redux",
+          "loongflow-us-patent-phrase-to-phrase-matching"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "prediction-modeling",
+      "rationale": "After explicit scientific-target exceptions, these reviewed tasks are generic image, text or tabular prediction datasets."
+    },
+    {
+      "id": "unsupported-language-evaluation",
+      "match": {
+        "task_ids": [
+          "constitutional-evolution-multi-agent-society-constitution-optimization",
+          "deevo-abcd",
+          "deevo-mt-bench-humanities",
+          "deevo-mt-bench-roleplay",
+          "deevo-mt-bench-writing",
+          "dgm-aider-polyglot",
+          "elm-sodarace-walker-program-evolution",
+          "eureka-ant",
+          "evoprompt-asset",
+          "gepa-ifbench",
+          "gepa-pupa",
+          "hyperagents-conference-paper-acceptance-prediction",
+          "hyperagents-imo-gradingbench",
+          "hyperagents-quadruped-torso-height-reward-design",
+          "lmx-gore-vidal-sentence-sentiment",
+          "lmx-homer-simpson-sentence-sentiment",
+          "lmx-stable-diffusion-excess-blue",
+          "lmx-stable-diffusion-excess-green",
+          "lmx-stable-diffusion-excess-red",
+          "lmx-woody-allen-sentence-sentiment",
+          "mce-finer",
+          "mce-lawbench-criminal-charge-prediction",
+          "mce-uspto-50k",
+          "meta-harness-arxivmath",
+          "meta-harness-banking77",
+          "meta-harness-financial-phrasebank",
+          "meta-harness-imo-answerbench",
+          "meta-harness-imo-proofbench",
+          "meta-harness-terminal-bench-2-0",
+          "mipro-heart-disease",
+          "mipro-hover",
+          "promptagent-biosses",
+          "promptagent-epistemic-reasoning",
+          "promptagent-ncbi-disease",
+          "promptbreeder-addsub",
+          "promptbreeder-singleeq",
+          "protegi-jailbreak",
+          "qdaif-humaneval-88-conditional-sorting",
+          "qdaif-opinion-writing",
+          "qdaif-poetry-genre-and-tone",
+          "qdaif-stories-ending",
+          "qdaif-stories-genre",
+          "qdaif-stories-genre-and-ending",
+          "rqgm-code-review",
+          "rqgm-olympiad-proof-grading",
+          "rqgm-olympiad-proof-writing",
+          "rqgm-paper-reviewing",
+          "rqgm-paper-writing",
+          "rqgm-polyglot-coding"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "language-reasoning",
+      "rationale": "The reviewed source tasks optimize language-model prompts, outputs, proof reasoning or text judgments. Domain words in the benchmark name are not evidence of scientific modeling."
+    },
+    {
+      "id": "unsupported-stegpoet",
+      "match": {
+        "task_ids": [
+          "mind-evolution-stegpoet"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "language-reasoning",
+      "rationale": "StegPoet generates constrained text encoding a prescribed sequence."
+    },
+    {
+      "id": "unsupported-llm-scaling-law",
+      "match": {
+        "task_ids": [
+          "lasr-big-bench-llm-scaling-law-discovery"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The target is an LLM scaling law, not a physical equation."
+    },
+    {
+      "id": "unsupported-shinka-reasoning",
+      "match": {
+        "task_ids": [
+          "sepo-aime-25",
+          "shinkaevolve-aime-2023-scaffold-transfer",
+          "sica-aime-2024"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "language-reasoning",
+      "rationale": "The named task designs/transfers an AIME reasoning scaffold, rather than constructing a mathematical extremal object."
+    },
+    {
+      "id": "unsupported-moe-loss",
+      "match": {
+        "task_ids": [
+          "shinkaevolve-mixture-of-experts-load-balancing-loss"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate is a mixture-of-experts training/load-balancing loss."
+    },
+    {
+      "id": "unsupported-sokoban-rl",
+      "match": {
+        "task_ids": [
+          "the-station-sokoban-model-free-reinforcement-learning"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The package learns a model-free reinforcement-learning policy in the Sokoban game."
+    },
+    {
+      "id": "unsupported-hybrid-model-repair",
+      "match": {
+        "task_ids": [
+          "llm-flowrepair-door-1",
+          "llm-flowrepair-door-2",
+          "llm-flowrepair-elevator-1",
+          "llm-flowrepair-elevator-10",
+          "llm-flowrepair-elevator-2",
+          "llm-flowrepair-elevator-3",
+          "llm-flowrepair-elevator-4",
+          "llm-flowrepair-elevator-5",
+          "llm-flowrepair-elevator-6",
+          "llm-flowrepair-elevator-7",
+          "llm-flowrepair-elevator-8",
+          "llm-flowrepair-elevator-9",
+          "llm-flowrepair-fridge-1",
+          "llm-flowrepair-fridge-2",
+          "llm-flowrepair-fridge-2a",
+          "llm-flowrepair-fridge-2b",
+          "llm-flowrepair-fridge-3",
+          "llm-flowrepair-pacemaker-1",
+          "llm-flowrepair-pacemaker-2"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "software-generation",
+      "rationale": "The source names control-logic/flow model repair cases (door, elevator, fridge, pacemaker); names alone do not establish clinical or physical validation."
+    },
+    {
+      "id": "family-admissible-tuple",
+      "match": {
+        "families": [
+          "admissible_tuple"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-cap-set-priority",
+      "match": {
+        "families": [
+          "cap_set_priority"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-circle-packing-rectangle",
+      "match": {
+        "families": [
+          "circle_packing_rectangle"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-circle-packing-square",
+      "match": {
+        "families": [
+          "circle_packing_square"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-erdos-minimum-overlap",
+      "match": {
+        "families": [
+          "erdos_minimum_overlap"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-first-autocorrelation",
+      "match": {
+        "families": [
+          "first_autocorrelation"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-heilbronn-convex",
+      "match": {
+        "families": [
+          "heilbronn_convex"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-heilbronn-triangle",
+      "match": {
+        "families": [
+          "heilbronn_triangle"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-hexagon-packing",
+      "match": {
+        "families": [
+          "hexagon_packing"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-kissing-number",
+      "match": {
+        "families": [
+          "kissing_number"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-matmul-tensor",
+      "match": {
+        "families": [
+          "matmul_tensor"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-max-min-distance-ratio",
+      "match": {
+        "families": [
+          "max_min_distance_ratio"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-no-isosceles",
+      "match": {
+        "families": [
+          "no_isosceles"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-no-isosceles-maximal",
+      "match": {
+        "families": [
+          "no_isosceles_maximal"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-second-autocorrelation",
+      "match": {
+        "families": [
+          "second_autocorrelation"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-signed-autocorrelation-abs",
+      "match": {
+        "families": [
+          "signed_autocorrelation_abs"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-sums-differences",
+      "match": {
+        "families": [
+          "sums_differences"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-third-autocorrelation",
+      "match": {
+        "families": [
+          "third_autocorrelation"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-uncertainty-hermite",
+      "match": {
+        "families": [
+          "uncertainty_hermite"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-uncertainty-laguerre",
+      "match": {
+        "families": [
+          "uncertainty_laguerre"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "Construct an extremal mathematical object under explicit feasibility/objective constraints."
+    },
+    {
+      "id": "family-bbob-optimizer",
+      "match": {
+        "families": [
+          "bbob_optimizer"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "black-box-optimization",
+      "rationale": "Design an optimizer or acquisition strategy for generic mathematical objective functions."
+    },
+    {
+      "id": "family-bo-acquisition",
+      "match": {
+        "families": [
+          "bo_acquisition"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "black-box-optimization",
+      "rationale": "Design an optimizer or acquisition strategy for generic mathematical objective functions."
+    },
+    {
+      "id": "family-bo-cost-aware",
+      "match": {
+        "families": [
+          "bo_cost_aware"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "black-box-optimization",
+      "rationale": "Design an optimizer or acquisition strategy for generic mathematical objective functions."
+    },
+    {
+      "id": "family-moo-optimizer",
+      "match": {
+        "families": [
+          "moo_optimizer"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "black-box-optimization",
+      "rationale": "Design an optimizer or acquisition strategy for generic mathematical objective functions."
+    },
+    {
+      "id": "family-onemax",
+      "match": {
+        "families": [
+          "onemax"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "black-box-optimization",
+      "rationale": "Design an optimizer or acquisition strategy for generic mathematical objective functions."
+    },
+    {
+      "id": "family-root-finder",
+      "match": {
+        "families": [
+          "root_finder"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "numerical-solver",
+      "rationale": "Solve an equation or a numerical initial-value problem; named scientific models have explicit preceding overrides."
+    },
+    {
+      "id": "family-root-system-finder",
+      "match": {
+        "families": [
+          "root_system_finder"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "numerical-solver",
+      "rationale": "Solve an equation or a numerical initial-value problem; named scientific models have explicit preceding overrides."
+    },
+    {
+      "id": "family-ode-integrator",
+      "match": {
+        "families": [
+          "ode_integrator"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "numerical-solver",
+      "rationale": "Solve an equation or a numerical initial-value problem; named scientific models have explicit preceding overrides."
+    },
+    {
+      "id": "family-synthetic-equation",
+      "match": {
+        "families": [
+          "synthetic_equation"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "symbolic-regression",
+      "rationale": "Fit synthetic mathematical expressions or design a regression algorithm; named physical targets have explicit preceding overrides."
+    },
+    {
+      "id": "family-sr-algorithm",
+      "match": {
+        "families": [
+          "sr_algorithm"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "symbolic-regression",
+      "rationale": "Fit synthetic mathematical expressions or design a regression algorithm; named physical targets have explicit preceding overrides."
+    },
+    {
+      "id": "family-lsr-equation",
+      "match": {
+        "families": [
+          "lsr_equation"
+        ]
+      },
+      "domain_id": "unknown",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The family specifies equation fitting, but this remaining package does not identify a defensible single science domain in catalog metadata."
+    },
+    {
+      "id": "family-llmsr-equation",
+      "match": {
+        "families": [
+          "llmsr_equation"
+        ]
+      },
+      "domain_id": "unknown",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The family specifies equation fitting, but this remaining package does not identify a defensible single science domain in catalog metadata."
+    },
+    {
+      "id": "family-alebench",
+      "match": {
+        "families": [
+          "alebench"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-bin-packing-3d",
+      "match": {
+        "families": [
+          "bin_packing_3d"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-bpp-offline-aco",
+      "match": {
+        "families": [
+          "bpp_offline_aco"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-container-loading",
+      "match": {
+        "families": [
+          "container_loading"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-cvrp-aco",
+      "match": {
+        "families": [
+          "cvrp_aco"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-cvrp-constructive",
+      "match": {
+        "families": [
+          "cvrp_constructive"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-evrptw",
+      "match": {
+        "families": [
+          "evrptw"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-facility-location",
+      "match": {
+        "families": [
+          "facility_location"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-flow-shop",
+      "match": {
+        "families": [
+          "flow_shop"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-job-shop",
+      "match": {
+        "families": [
+          "job_shop"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-knapsack-constructive",
+      "match": {
+        "families": [
+          "knapsack_constructive"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-maxcut",
+      "match": {
+        "families": [
+          "maxcut"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-mis-greedy",
+      "match": {
+        "families": [
+          "mis_greedy"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-mkp-aco",
+      "match": {
+        "families": [
+          "mkp_aco"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-online-bin-packing",
+      "match": {
+        "families": [
+          "online_bin_packing"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-orienteering-aco",
+      "match": {
+        "families": [
+          "orienteering_aco"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-rcpsp",
+      "match": {
+        "families": [
+          "rcpsp"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-reevo-upstream",
+      "match": {
+        "families": [
+          "reevo_upstream"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-salbp",
+      "match": {
+        "families": [
+          "salbp"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-tsp-aco",
+      "match": {
+        "families": [
+          "tsp_aco"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-tsp-constructive",
+      "match": {
+        "families": [
+          "tsp_constructive"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-tsp-gls",
+      "match": {
+        "families": [
+          "tsp_gls"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The family optimizes routing, scheduling, packing, graph selection or resource allocation through a candidate heuristic."
+    },
+    {
+      "id": "family-quadratic-program",
+      "match": {
+        "families": [
+          "quadratic_program"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "numerical-solver",
+      "rationale": "Solve the specified constrained quadratic-optimization problem numerically."
+    },
+    {
+      "id": "family-sat-solver",
+      "match": {
+        "families": [
+          "sat_solver"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "constraint-modeling",
+      "rationale": "Generate a satisfiability solver or satisfy an explicit Boolean formula."
+    },
+    {
+      "id": "family-adrs-cloudcast",
+      "match": {
+        "families": [
+          "adrs_cloudcast"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "systems-optimization",
+      "rationale": "The candidate optimizes infrastructure placement, database/transaction decisions or low-level computing performance."
+    },
+    {
+      "id": "family-adrs-eplb",
+      "match": {
+        "families": [
+          "adrs_eplb"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "systems-optimization",
+      "rationale": "The candidate optimizes infrastructure placement, database/transaction decisions or low-level computing performance."
+    },
+    {
+      "id": "family-adrs-llm-sql",
+      "match": {
+        "families": [
+          "adrs_llm_sql"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "systems-optimization",
+      "rationale": "The candidate optimizes infrastructure placement, database/transaction decisions or low-level computing performance."
+    },
+    {
+      "id": "family-adrs-prism",
+      "match": {
+        "families": [
+          "adrs_prism"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "systems-optimization",
+      "rationale": "The candidate optimizes infrastructure placement, database/transaction decisions or low-level computing performance."
+    },
+    {
+      "id": "family-adrs-txn-scheduling",
+      "match": {
+        "families": [
+          "adrs_txn_scheduling"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "systems-optimization",
+      "rationale": "The candidate optimizes infrastructure placement, database/transaction decisions or low-level computing performance."
+    },
+    {
+      "id": "family-kernel-builder",
+      "match": {
+        "families": [
+          "kernel_builder"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "systems-optimization",
+      "rationale": "The candidate optimizes infrastructure placement, database/transaction decisions or low-level computing performance."
+    },
+    {
+      "id": "family-bayesmark",
+      "match": {
+        "families": [
+          "bayesmark"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "hyperparameter-search",
+      "rationale": "Search model hyperparameters on a benchmark dataset; dataset theme alone does not imply a domain-science experiment."
+    },
+    {
+      "id": "family-bo-hpo",
+      "match": {
+        "families": [
+          "bo_hpo"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "hyperparameter-search",
+      "rationale": "Search model hyperparameters on a benchmark dataset; dataset theme alone does not imply a domain-science experiment."
+    },
+    {
+      "id": "family-arc-solver",
+      "match": {
+        "families": [
+          "arc_solver"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "language-reasoning",
+      "rationale": "Optimize language-model behavior or grid-inference answers against benchmark examples; question subject is not scientific-modeling evidence."
+    },
+    {
+      "id": "family-llm-benchmark",
+      "match": {
+        "families": [
+          "llm_benchmark"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "language-reasoning",
+      "rationale": "Optimize language-model behavior or grid-inference answers against benchmark examples; question subject is not scientific-modeling evidence."
+    },
+    {
+      "id": "family-contextual-bandit",
+      "match": {
+        "families": [
+          "contextual_bandit"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "prediction-modeling",
+      "rationale": "Design a learning algorithm or action-selection method; the optimization target is learned behavior."
+    },
+    {
+      "id": "family-rl-algorithm",
+      "match": {
+        "families": [
+          "rl_algorithm"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "prediction-modeling",
+      "rationale": "Design a learning algorithm or action-selection method; the optimization target is learned behavior."
+    },
+    {
+      "id": "family-rankevolve-bm25",
+      "match": {
+        "families": [
+          "rankevolve_bm25"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "retrieval",
+      "rationale": "Optimize a document-ranking function against relevance labels."
+    },
+    {
+      "id": "family-feedback-controller",
+      "match": {
+        "families": [
+          "feedback_controller"
+        ]
+      },
+      "domain_id": "robotics-control",
+      "task_type_id": "control-policy",
+      "rationale": "Design a feedback controller for the named dynamical system."
+    },
+    {
+      "id": "family-reward-design",
+      "match": {
+        "families": [
+          "reward_design"
+        ]
+      },
+      "domain_id": "robotics-control",
+      "task_type_id": "reward-design",
+      "rationale": "Design the reward used to train the named simulated manipulation policy."
+    },
+    {
+      "id": "family-shinka-julia",
+      "match": {
+        "families": [
+          "shinka_julia"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "systems-optimization",
+      "rationale": "Optimize the Julia prime-counting implementation while preserving its numerical result."
+    },
+    {
+      "id": "family-sciel-copy",
+      "match": {
+        "families": [
+          "sciel_copy"
+        ]
+      },
+      "domain_id": "unknown",
+      "task_type_id": "unknown",
+      "rationale": "The copied upstream family is heterogeneous; only explicit task-prefix/ID rules establish a primary domain and task type."
+    },
+    {
+      "id": "family-gym-reward-design",
+      "match": {
+        "families": [
+          "gym_reward_design"
+        ]
+      },
+      "domain_id": "robotics-control",
+      "task_type_id": "reward-design",
+      "rationale": "The family optimizes rewards for simulated locomotion or manipulation; source availability does not establish physical robot performance. Reviewed source family gym_reward_design, area robotics_and_control."
+    },
+    {
+      "id": "family-kernel-cpu",
+      "match": {
+        "families": [
+          "kernel_cpu"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "systems-optimization",
+      "rationale": "The source family specifies numerical kernel or attention implementation optimization; the hardware adaptation does not change the systems objective. Reviewed source family kernel_cpu, area systems_and_hardware."
+    },
+    {
+      "id": "family-kernel-cpu-attention",
+      "match": {
+        "families": [
+          "kernel_cpu_attention"
+        ]
+      },
+      "domain_id": "computer-systems",
+      "task_type_id": "systems-optimization",
+      "rationale": "The source family specifies numerical kernel or attention implementation optimization; the hardware adaptation does not change the systems objective. Reviewed source family kernel_cpu_attention, area systems_and_hardware."
+    },
+    {
+      "id": "family-l2o",
+      "match": {
+        "families": [
+          "l2o"
+        ]
+      },
+      "domain_id": "operations-research",
+      "task_type_id": "constraint-modeling",
+      "rationale": "The family designs learning-to-optimize procedures for explicit mathematical-program constraints, consistent with the reviewed FunL2O packages. Reviewed source family l2o, area optimization."
+    },
+    {
+      "id": "family-mnist1d-arch",
+      "match": {
+        "families": [
+          "mnist1d_arch"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "hyperparameter-search",
+      "rationale": "The source specifies neural architecture search on MNIST-1D, preserving the reviewed architecture-search classification. Reviewed source family mnist1d_arch, area machine_learning."
+    },
+    {
+      "id": "family-science-binary-code",
+      "match": {
+        "families": [
+          "science_binary_code"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The source specifies a finite packing, graph, code, or circuit construction checked against explicit mathematical constraints. Classification does not endorse an open-problem or current-record claim. Reviewed source family science_binary_code, area theoretical_computer_science."
+    },
+    {
+      "id": "family-science-biology-b01",
+      "match": {
+        "families": [
+          "science_biology_b01"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate estimates biological effects, parameters, sequences, networks or cellular structure from the named biological data. Its modeling operation does not make the primary domain generic ML. Reviewed source family science_biology_b01, area biology."
+    },
+    {
+      "id": "family-science-biology-b02",
+      "match": {
+        "families": [
+          "science_biology_b02"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "black-box-optimization",
+      "rationale": "The candidate designs an RNA sequence-search procedure under a folding-oracle budget, with predicted structure matching as its objective. Reviewed source family science_biology_b02, area biology."
+    },
+    {
+      "id": "family-science-biology-b03",
+      "match": {
+        "families": [
+          "science_biology_b03"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate estimates biological effects, parameters, sequences, networks or cellular structure from the named biological data. Its modeling operation does not make the primary domain generic ML. Reviewed source family science_biology_b03, area biology."
+    },
+    {
+      "id": "family-science-biology-b04",
+      "match": {
+        "families": [
+          "science_biology_b04"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate estimates biological effects, parameters, sequences, networks or cellular structure from the named biological data. Its modeling operation does not make the primary domain generic ML. Reviewed source family science_biology_b04, area biology."
+    },
+    {
+      "id": "family-science-biology-b05",
+      "match": {
+        "families": [
+          "science_biology_b05"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate estimates biological effects, parameters, sequences, networks or cellular structure from the named biological data. Its modeling operation does not make the primary domain generic ML. Reviewed source family science_biology_b05, area biology."
+    },
+    {
+      "id": "family-science-biology-b06",
+      "match": {
+        "families": [
+          "science_biology_b06"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate estimates biological effects, parameters, sequences, networks or cellular structure from the named biological data. Its modeling operation does not make the primary domain generic ML. Reviewed source family science_biology_b06, area biology."
+    },
+    {
+      "id": "family-science-biology-b07",
+      "match": {
+        "families": [
+          "science_biology_b07"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The candidate constructs a valid phylogenetic tree and branch parameters; the evaluator recomputes likelihood on a DNA alignment. Reviewed source family science_biology_b07, area biology."
+    },
+    {
+      "id": "family-science-biology-b08",
+      "match": {
+        "families": [
+          "science_biology_b08"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate estimates biological effects, parameters, sequences, networks or cellular structure from the named biological data. Its modeling operation does not make the primary domain generic ML. Reviewed source family science_biology_b08, area biology."
+    },
+    {
+      "id": "family-science-biology-b09",
+      "match": {
+        "families": [
+          "science_biology_b09"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "signal-processing",
+      "rationale": "The candidate denoises fluorescence microscopy measurements; image fidelity is a biological-imaging signal-processing target. Reviewed source family science_biology_b09, area biology."
+    },
+    {
+      "id": "family-science-biology-b10",
+      "match": {
+        "families": [
+          "science_biology_b10"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate estimates biological effects, parameters, sequences, networks or cellular structure from the named biological data. Its modeling operation does not make the primary domain generic ML. Reviewed source family science_biology_b10, area biology."
+    },
+    {
+      "id": "family-science-biology-b11",
+      "match": {
+        "families": [
+          "science_biology_b11"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate estimates biological effects, parameters, sequences, networks or cellular structure from the named biological data. Its modeling operation does not make the primary domain generic ML. Reviewed source family science_biology_b11, area biology."
+    },
+    {
+      "id": "family-science-biology-b12",
+      "match": {
+        "families": [
+          "science_biology_b12"
+        ]
+      },
+      "domain_id": "biology-health",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate estimates biological effects, parameters, sequences, networks or cellular structure from the named biological data. Its modeling operation does not make the primary domain generic ML. Reviewed source family science_biology_b12, area biology."
+    },
+    {
+      "id": "family-science-cosmology-distance-quadrature",
+      "match": {
+        "families": [
+          "science_cosmology_distance_quadrature"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "numerical-solver",
+      "rationale": "The candidate specifies a quadrature rule or sampling schedule for a physical numerical calculation; accuracy is evaluated under the declared work constraints. Reviewed source family science_cosmology_distance_quadrature, area cosmology_and_astrophysics."
+    },
+    {
+      "id": "family-science-cosmology-growth-index",
+      "match": {
+        "families": [
+          "science_cosmology_growth_index"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The candidate fits a compact expansion-history or growth formula against cosmological observations or numerical references; the source distinguishes these settings. Reviewed source family science_cosmology_growth_index, area cosmology_and_astrophysics."
+    },
+    {
+      "id": "family-science-earth-e01",
+      "match": {
+        "families": [
+          "science_earth_e01"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source names a climate, hydrological, geophysical or environmental inference/forecasting target; its data may be simulated or measured as declared in the package. Reviewed source family science_earth_e01, area earth_and_environment."
+    },
+    {
+      "id": "family-science-earth-e02",
+      "match": {
+        "families": [
+          "science_earth_e02"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source names a climate, hydrological, geophysical or environmental inference/forecasting target; its data may be simulated or measured as declared in the package. Reviewed source family science_earth_e02, area earth_and_environment."
+    },
+    {
+      "id": "family-science-earth-e03",
+      "match": {
+        "families": [
+          "science_earth_e03"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source names a climate, hydrological, geophysical or environmental inference/forecasting target; its data may be simulated or measured as declared in the package. Reviewed source family science_earth_e03, area earth_and_environment."
+    },
+    {
+      "id": "family-science-earth-e04",
+      "match": {
+        "families": [
+          "science_earth_e04"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source names a climate, hydrological, geophysical or environmental inference/forecasting target; its data may be simulated or measured as declared in the package. Reviewed source family science_earth_e04, area earth_and_environment."
+    },
+    {
+      "id": "family-science-earth-e05",
+      "match": {
+        "families": [
+          "science_earth_e05"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source names a climate, hydrological, geophysical or environmental inference/forecasting target; its data may be simulated or measured as declared in the package. Reviewed source family science_earth_e05, area earth_and_environment."
+    },
+    {
+      "id": "family-science-earth-e06",
+      "match": {
+        "families": [
+          "science_earth_e06"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source names a climate, hydrological, geophysical or environmental inference/forecasting target; its data may be simulated or measured as declared in the package. Reviewed source family science_earth_e06, area earth_and_environment."
+    },
+    {
+      "id": "family-science-earth-fire",
+      "match": {
+        "families": [
+          "science_earth_fire"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source names a climate, hydrological, geophysical or environmental inference/forecasting target; its data may be simulated or measured as declared in the package. Reviewed source family science_earth_fire, area earth_and_environment."
+    },
+    {
+      "id": "family-science-earth-groundwater",
+      "match": {
+        "families": [
+          "science_earth_groundwater"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source names a climate, hydrological, geophysical or environmental inference/forecasting target; its data may be simulated or measured as declared in the package. Reviewed source family science_earth_groundwater, area earth_and_environment."
+    },
+    {
+      "id": "family-science-earth-ice",
+      "match": {
+        "families": [
+          "science_earth_ice"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source names a climate, hydrological, geophysical or environmental inference/forecasting target; its data may be simulated or measured as declared in the package. Reviewed source family science_earth_ice, area earth_and_environment."
+    },
+    {
+      "id": "family-science-earth-irrigation",
+      "match": {
+        "families": [
+          "science_earth_irrigation"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "control-policy",
+      "rationale": "The candidate chooses sequential irrigation actions from past weather and current soil state under water limits; scoring uses a declared crop simulator. Reviewed source family science_earth_irrigation, area earth_and_environment."
+    },
+    {
+      "id": "family-science-earth-methane",
+      "match": {
+        "families": [
+          "science_earth_methane"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source names a climate, hydrological, geophysical or environmental inference/forecasting target; its data may be simulated or measured as declared in the package. Reviewed source family science_earth_methane, area earth_and_environment."
+    },
+    {
+      "id": "family-science-earth-snow",
+      "match": {
+        "families": [
+          "science_earth_snow"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "numerical-solver",
+      "rationale": "The candidate advances snow stores and fluxes through time while maintaining the specified water-balance constraints, evaluated against source snow observations. Reviewed source family science_earth_snow, area earth_and_environment."
+    },
+    {
+      "id": "family-science-economics-auctions",
+      "match": {
+        "families": [
+          "science_economics_auctions"
+        ]
+      },
+      "domain_id": "finance-economics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The candidate constructs a finite allocation/payment mechanism under explicit feasibility, individual-rationality and incentive constraints. Reviewed source family science_economics_auctions, area finance."
+    },
+    {
+      "id": "family-science-economics-consumption",
+      "match": {
+        "families": [
+          "science_economics_consumption"
+        ]
+      },
+      "domain_id": "finance-economics",
+      "task_type_id": "control-policy",
+      "rationale": "The candidate defines a consumption-saving or exercise policy under a fixed economic model and information boundary; no real investment return is established. Reviewed source family science_economics_consumption, area finance."
+    },
+    {
+      "id": "family-science-economics-demand",
+      "match": {
+        "families": [
+          "science_economics_demand"
+        ]
+      },
+      "domain_id": "finance-economics",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate estimates a structural demand parameter from product data using the declared moment objective and independent numerical re-evaluation. Reviewed source family science_economics_demand, area finance."
+    },
+    {
+      "id": "family-science-economics-macro",
+      "match": {
+        "families": [
+          "science_economics_macro"
+        ]
+      },
+      "domain_id": "finance-economics",
+      "task_type_id": "numerical-solver",
+      "rationale": "The candidate solves a macroeconomic equilibrium transition path, evaluated by independently recomputed market residuals under fixed model assumptions. Reviewed source family science_economics_macro, area finance."
+    },
+    {
+      "id": "family-science-economics-stopping",
+      "match": {
+        "families": [
+          "science_economics_stopping"
+        ]
+      },
+      "domain_id": "finance-economics",
+      "task_type_id": "control-policy",
+      "rationale": "The candidate defines a consumption-saving or exercise policy under a fixed economic model and information boundary; no real investment return is established. Reviewed source family science_economics_stopping, area finance."
+    },
+    {
+      "id": "family-science-lj-cluster",
+      "match": {
+        "families": [
+          "science_lj_cluster"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The candidate constructs atomic coordinates or molecular conformations under geometric and chemical constraints, evaluated through the declared energy or structural objective. Reviewed source family science_lj_cluster, area chemistry."
+    },
+    {
+      "id": "family-science-lorenz-assimilation",
+      "match": {
+        "families": [
+          "science_lorenz_assimilation"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source names a climate, hydrological, geophysical or environmental inference/forecasting target; its data may be simulated or measured as declared in the package. Reviewed source family science_lorenz_assimilation, area climate_dynamics."
+    },
+    {
+      "id": "family-science-lorenz-closure",
+      "match": {
+        "families": [
+          "science_lorenz_closure"
+        ]
+      },
+      "domain_id": "earth-environment",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The candidate fits a shared polynomial closure for unresolved forcing in a synthetic climate-dynamics model; this is a bounded equation approximation, not an observed climate discovery. Reviewed source family science_lorenz_closure, area climate_dynamics."
+    },
+    {
+      "id": "family-science-materials-arcmof-carbon-capture",
+      "match": {
+        "families": [
+          "science_materials_arcmof_carbon_capture"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "black-box-optimization",
+      "rationale": "The candidate chooses material configurations or reaction conditions from observations under a query budget; the application objective remains chemical or material design. Reviewed source family science_materials_arcmof_carbon_capture, area materials_science."
+    },
+    {
+      "id": "family-science-materials-cantera-mechanism-reduction",
+      "match": {
+        "families": [
+          "science_materials_cantera_mechanism_reduction"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The candidate selects species and reactions for a reduced chemical mechanism subject to accuracy and physical-validity constraints. Reviewed source family science_materials_cantera_mechanism_reduction, area chemistry."
+    },
+    {
+      "id": "family-science-materials-edbo-reaction-discovery",
+      "match": {
+        "families": [
+          "science_materials_edbo_reaction_discovery"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "black-box-optimization",
+      "rationale": "The candidate chooses material configurations or reaction conditions from observations under a query budget; the application objective remains chemical or material design. Reviewed source family science_materials_edbo_reaction_discovery, area chemistry."
+    },
+    {
+      "id": "family-science-materials-geom-conformer-search",
+      "match": {
+        "families": [
+          "science_materials_geom_conformer_search"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The candidate constructs atomic coordinates or molecular conformations under geometric and chemical constraints, evaluated through the declared energy or structural objective. Reviewed source family science_materials_geom_conformer_search, area chemistry."
+    },
+    {
+      "id": "family-science-materials-grouped-spme-battery-inversion",
+      "match": {
+        "families": [
+          "science_materials_grouped_spme_battery_inversion"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate infers material or molecular structure, fits physical parameters, ranks stable crystals, or learns a potential from the specified data; no laboratory validation is implied. Reviewed source family science_materials_grouped_spme_battery_inversion, area materials_science."
+    },
+    {
+      "id": "family-science-materials-kmcpy-ionic-transport",
+      "match": {
+        "families": [
+          "science_materials_kmcpy_ionic_transport"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "numerical-solver",
+      "rationale": "The candidate simulates ionic transport or composition dynamics against the specified independent physical reference. Reviewed source family science_materials_kmcpy_ionic_transport, area materials_science."
+    },
+    {
+      "id": "family-science-materials-matbench-stability-screening",
+      "match": {
+        "families": [
+          "science_materials_matbench_stability_screening"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate infers material or molecular structure, fits physical parameters, ranks stable crystals, or learns a potential from the specified data; no laboratory validation is implied. Reviewed source family science_materials_matbench_stability_screening, area materials_science."
+    },
+    {
+      "id": "family-science-materials-nmr-structure-elucidation",
+      "match": {
+        "families": [
+          "science_materials_nmr_structure_elucidation"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate infers material or molecular structure, fits physical parameters, ranks stable crystals, or learns a potential from the specified data; no laboratory validation is implied. Reviewed source family science_materials_nmr_structure_elucidation, area chemistry."
+    },
+    {
+      "id": "family-science-materials-oc20-adsorption-search",
+      "match": {
+        "families": [
+          "science_materials_oc20_adsorption_search"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "black-box-optimization",
+      "rationale": "The candidate chooses material configurations or reaction conditions from observations under a query budget; the application objective remains chemical or material design. Reviewed source family science_materials_oc20_adsorption_search, area materials_science."
+    },
+    {
+      "id": "family-science-materials-opxrd-phase-identification",
+      "match": {
+        "families": [
+          "science_materials_opxrd_phase_identification"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate infers material or molecular structure, fits physical parameters, ranks stable crystals, or learns a potential from the specified data; no laboratory validation is implied. Reviewed source family science_materials_opxrd_phase_identification, area materials_science."
+    },
+    {
+      "id": "family-science-materials-pfhub-spinodal-dynamics",
+      "match": {
+        "families": [
+          "science_materials_pfhub_spinodal_dynamics"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "numerical-solver",
+      "rationale": "The candidate simulates ionic transport or composition dynamics against the specified independent physical reference. Reviewed source family science_materials_pfhub_spinodal_dynamics, area materials_science."
+    },
+    {
+      "id": "family-science-materials-spice-active-potential",
+      "match": {
+        "families": [
+          "science_materials_spice_active_potential"
+        ]
+      },
+      "domain_id": "chemistry-materials",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The candidate infers material or molecular structure, fits physical parameters, ranks stable crystals, or learns a potential from the specified data; no laboratory validation is implied. Reviewed source family science_materials_spice_active_potential, area chemistry."
+    },
+    {
+      "id": "family-science-pantheon",
+      "match": {
+        "families": [
+          "science_pantheon"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "symbolic-regression",
+      "rationale": "The candidate fits a compact expansion-history or growth formula against cosmological observations or numerical references; the source distinguishes these settings. Reviewed source family science_pantheon, area cosmology_and_astrophysics."
+    },
+    {
+      "id": "family-science-physics-ariel-atmospheric-posterior",
+      "match": {
+        "families": [
+          "science_physics_ariel_atmospheric_posterior"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source specifies physical-event reconstruction, a physical surrogate, decoding, imaging or parameter inference. The scientific target, not use of a learned model, determines the primary domain. Reviewed source family science_physics_ariel_atmospheric_posterior, area cosmology_and_astrophysics."
+    },
+    {
+      "id": "family-science-physics-calochallenge-photon-showers",
+      "match": {
+        "families": [
+          "science_physics_calochallenge_photon_showers"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source specifies physical-event reconstruction, a physical surrogate, decoding, imaging or parameter inference. The scientific target, not use of a learned model, determines the primary domain. Reviewed source family science_physics_calochallenge_photon_showers, area particle_physics."
+    },
+    {
+      "id": "family-science-physics-experimental-surface-code",
+      "match": {
+        "families": [
+          "science_physics_experimental_surface_code"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source specifies physical-event reconstruction, a physical surrogate, decoding, imaging or parameter inference. The scientific target, not use of a learned model, determines the primary domain. Reviewed source family science_physics_experimental_surface_code, area quantum_information."
+    },
+    {
+      "id": "family-science-physics-freegsnke-coil-design",
+      "match": {
+        "families": [
+          "science_physics_freegsnke_coil_design"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The candidate constructs bounded coil-current settings for a specified plasma boundary; this is physical configuration design, not a robot policy. Reviewed source family science_physics_freegsnke_coil_design, area physics."
+    },
+    {
+      "id": "family-science-physics-great3-shear-calibration",
+      "match": {
+        "families": [
+          "science_physics_great3_shear_calibration"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source specifies physical-event reconstruction, a physical surrogate, decoding, imaging or parameter inference. The scientific target, not use of a learned model, determines the primary domain. Reviewed source family science_physics_great3_shear_calibration, area cosmology_and_astrophysics."
+    },
+    {
+      "id": "family-science-physics-jhtdb-subgrid-stress",
+      "match": {
+        "families": [
+          "science_physics_jhtdb_subgrid_stress"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source specifies physical-event reconstruction, a physical surrogate, decoding, imaging or parameter inference. The scientific target, not use of a learned model, determines the primary domain. Reviewed source family science_physics_jhtdb_subgrid_stress, area physics."
+    },
+    {
+      "id": "family-science-physics-lhco-control-region-anomalies",
+      "match": {
+        "families": [
+          "science_physics_lhco_control_region_anomalies"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source specifies physical-event reconstruction, a physical surrogate, decoding, imaging or parameter inference. The scientific target, not use of a learned model, determines the primary domain. Reviewed source family science_physics_lhco_control_region_anomalies, area particle_physics."
+    },
+    {
+      "id": "family-science-physics-mlgwsc-event-search",
+      "match": {
+        "families": [
+          "science_physics_mlgwsc_event_search"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "signal-processing",
+      "rationale": "The candidate detects and ranks events in gravitational-wave strain signals under a false-alarm constraint. Reviewed source family science_physics_mlgwsc_event_search, area cosmology_and_astrophysics."
+    },
+    {
+      "id": "family-science-physics-ngeht-closure-imaging",
+      "match": {
+        "families": [
+          "science_physics_ngeht_closure_imaging"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source specifies physical-event reconstruction, a physical surrogate, decoding, imaging or parameter inference. The scientific target, not use of a learned model, determines the primary domain. Reviewed source family science_physics_ngeht_closure_imaging, area cosmology_and_astrophysics."
+    },
+    {
+      "id": "family-science-physics-refnx-contrast-inversion",
+      "match": {
+        "families": [
+          "science_physics_refnx_contrast_inversion"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source specifies physical-event reconstruction, a physical surrogate, decoding, imaging or parameter inference. The scientific target, not use of a learned model, determines the primary domain. Reviewed source family science_physics_refnx_contrast_inversion, area physics."
+    },
+    {
+      "id": "family-science-physics-robust-transmon-control",
+      "match": {
+        "families": [
+          "science_physics_robust_transmon_control"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "control-policy",
+      "rationale": "The candidate designs a constrained control pulse for a transmon gate and is scored through a fixed quantum-dynamics simulation. Reviewed source family science_physics_robust_transmon_control, area quantum_information."
+    },
+    {
+      "id": "family-science-physics-tdlmc-distance-posterior",
+      "match": {
+        "families": [
+          "science_physics_tdlmc_distance_posterior"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source specifies physical-event reconstruction, a physical surrogate, decoding, imaging or parameter inference. The scientific target, not use of a learned model, determines the primary domain. Reviewed source family science_physics_tdlmc_distance_posterior, area cosmology_and_astrophysics."
+    },
+    {
+      "id": "family-science-physics-trackml-complete-events",
+      "match": {
+        "families": [
+          "science_physics_trackml_complete_events"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "prediction-modeling",
+      "rationale": "The source specifies physical-event reconstruction, a physical surrogate, decoding, imaging or parameter inference. The scientific target, not use of a learned model, determines the primary domain. Reviewed source family science_physics_trackml_complete_events, area particle_physics."
+    },
+    {
+      "id": "family-science-physics-xy-critical-monte-carlo",
+      "match": {
+        "families": [
+          "science_physics_xy_critical_monte_carlo"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "numerical-solver",
+      "rationale": "The candidate specifies a quadrature rule or sampling schedule for a physical numerical calculation; accuracy is evaluated under the declared work constraints. Reviewed source family science_physics_xy_critical_monte_carlo, area physics."
+    },
+    {
+      "id": "family-science-qaoa",
+      "match": {
+        "families": [
+          "science_qaoa"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "black-box-optimization",
+      "rationale": "The candidate chooses parameters of a fixed quantum circuit against simulated expected-cut or ground-state energy objectives; circuit architecture is fixed. Reviewed source family science_qaoa, area quantum_information."
+    },
+    {
+      "id": "family-science-ramsey",
+      "match": {
+        "families": [
+          "science_ramsey"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The source specifies a finite packing, graph, code, or circuit construction checked against explicit mathematical constraints. Classification does not endorse an open-problem or current-record claim. Reviewed source family science_ramsey, area theoretical_computer_science."
+    },
+    {
+      "id": "family-science-snake",
+      "match": {
+        "families": [
+          "science_snake"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The source specifies a finite packing, graph, code, or circuit construction checked against explicit mathematical constraints. Classification does not endorse an open-problem or current-record claim. Reviewed source family science_snake, area theoretical_computer_science."
+    },
+    {
+      "id": "family-science-sorting-network",
+      "match": {
+        "families": [
+          "science_sorting_network"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The source specifies a finite packing, graph, code, or circuit construction checked against explicit mathematical constraints. Classification does not endorse an open-problem or current-record claim. Reviewed source family science_sorting_network, area theoretical_computer_science."
+    },
+    {
+      "id": "family-science-tcs-expansion-lift",
+      "match": {
+        "families": [
+          "science_tcs_expansion_lift"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The source specifies a finite packing, graph, code, or circuit construction checked against explicit mathematical constraints. Classification does not endorse an open-problem or current-record claim. Reviewed source family science_tcs_expansion_lift, area theoretical_computer_science."
+    },
+    {
+      "id": "family-science-tcs-expansion-pebbling",
+      "match": {
+        "families": [
+          "science_tcs_expansion_pebbling"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "combinatorial-optimization",
+      "rationale": "The candidate schedules load/store/compute/delete operations under a fast-memory constraint; the objective is communication cost in a finite DAG model. Reviewed source family science_tcs_expansion_pebbling, area theoretical_computer_science."
+    },
+    {
+      "id": "family-science-tcs-expansion-streaming",
+      "match": {
+        "families": [
+          "science_tcs_expansion_streaming"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "systems-optimization",
+      "rationale": "The source labels this a theoretical-computer-science task: design a bounded-memory frequency-summary program and measure approximation error, without claiming asymptotic guarantees or hardware speedups. Reviewed source family science_tcs_expansion_streaming, area theoretical_computer_science."
+    },
+    {
+      "id": "family-science-tcs-expansion-xor",
+      "match": {
+        "families": [
+          "science_tcs_expansion_xor"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The source specifies a finite packing, graph, code, or circuit construction checked against explicit mathematical constraints. Classification does not endorse an open-problem or current-record claim. Reviewed source family science_tcs_expansion_xor, area theoretical_computer_science."
+    },
+    {
+      "id": "family-science-vqe-ising",
+      "match": {
+        "families": [
+          "science_vqe_ising"
+        ]
+      },
+      "domain_id": "physics",
+      "task_type_id": "black-box-optimization",
+      "rationale": "The candidate chooses parameters of a fixed quantum circuit against simulated expected-cut or ground-state energy objectives; circuit architecture is fixed. Reviewed source family science_vqe_ising, area quantum_information."
+    },
+    {
+      "id": "family-text-game",
+      "match": {
+        "families": [
+          "text_game"
+        ]
+      },
+      "domain_id": "machine-learning",
+      "task_type_id": "agent-workflow",
+      "rationale": "The family evaluates digital text-game agent behavior; this is not an embodied physical control experiment. Reviewed source family text_game, area games."
+    },
+    {
+      "id": "family-tree-packing",
+      "match": {
+        "families": [
+          "tree_packing"
+        ]
+      },
+      "domain_id": "mathematics",
+      "task_type_id": "mathematical-construction",
+      "rationale": "The source specifies a finite packing, graph, code, or circuit construction checked against explicit mathematical constraints. Classification does not endorse an open-problem or current-record claim. Reviewed source family tree_packing, area mathematics."
+    },
+    {
+      "id": "unknown-metadata",
+      "match": {
+        "fallback": true
+      },
+      "domain_id": "unknown",
+      "task_type_id": "unknown",
+      "rationale": "Available metadata is an opaque or broad suite/task label, insufficient to establish one scientific domain and candidate operation."
+    }
+  ],
+  "methodology": {
+    "classification_authority": "Arena editorial inference from the pinned catalog; these labels are not a taxonomy supplied or certified by the source authors.",
+    "unit": "One canonical registered task package (task ID). This snapshot merges 254 upstream aliases; remaining parameter variants and distinct protocols are separate packages. Counts are not counts of unique scientific problems.",
+    "primary_domain": "Exactly one primary application domain per package. Classification follows the candidate objective/target, not paper-title keywords or the subject of QA/retrieval documents. Cross-domain connections are discussed in definitions, never counted twice.",
+    "task_type": "Exactly one task type per package, describing the candidate operation independently of application domain.",
+    "rules": "Ordered first-match rules: explicit scientific targets and mixed-family exceptions, reviewed task groups, defaults for each of 151 source families, then unknown. Conditions within a rule are AND; values within one condition are OR. Historical rule IDs containing unsupported do not override current catalog availability.",
+    "evidence": "Annotations retain the matched rule, rationale, task name, description, metric, source family and paper IDs. Exact-ID lists were resolved using catalog/duplicates.json at source commit 5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935; merged predecessors had consistent domain/type assignments. New family classifications review catalog/tasks.json, labels.area, candidate interfaces and catalog/science/*.json at that commit. These are editorial classifications, not endorsements of upstream scientific-importance or open-problem labels.",
+    "percentages": "Each domain distribution and each task-type distribution uses all catalog packages as denominator. Largest-remainder rounding to 0.1 percentage point makes each partition sum to 100.0%; ties use taxonomy definition order.",
+    "availability": "Executable and unsupported counts preserve source protocol status. Classification neither installs an environment nor establishes runtime readiness, fidelity, reproducibility or Arena conformance.",
+    "papers": "Corpus paper counts exclude the 15 supplemental source IDs declared in non_paper_source_ids: SCiEL, Santa 2025 and 13 science collections. This snapshot covers 98 corpus paper IDs and 113 source groups. unique_paper_count is a compatibility alias for source_group_count; label it source groups. Per-group paper_count counts corpus IDs, not independently verified publications. Per-group source_group_count includes supplements; group coverage overlaps.",
+    "families": "Family counts exclude null source families. Families can span domains/types and must not be summed across groups.",
+    "coverage": "Coverage rows are overlapping indicators, each using the complete package denominator. They are not a distribution and their percentages must not be summed.",
+    "scientific_relevance": "why_it_matters describes the modeled function or evaluation operation, not a subjective scientific-importance ranking or a claim that the benchmark produced a discovery.",
+    "refresh": "Changing catalog or taxonomy requires rebuilding insights.json. Offline validation compares digests, every assignment and all aggregate totals before serving the Python API."
+  },
+  "non_paper_source_ids": [
+    "kaggle-santa-2025",
+    "sciel-supplement",
+    "science-biology_expansion",
+    "science-chemistry",
+    "science-climate",
+    "science-cosmology",
+    "science-earth_data",
+    "science-earth_expansion",
+    "science-economics_expansion",
+    "science-materials_expansion",
+    "science-particle",
+    "science-physics_expansion",
+    "science-quantum",
+    "science-tcs",
+    "science-tcs_expansion"
+  ]
+}

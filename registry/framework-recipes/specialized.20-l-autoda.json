@@ -1,0 +1,67 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "l-autoda",
+      "name": "L-AutoDA",
+      "participant_ids": [
+        "l-autoda"
+      ],
+      "repository": {
+        "url": "https://github.com/pgg3/L-AutoDA",
+        "commit": "f35ca7915c60425e884325f08e9203091c39da82"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "pip install uv; uv sync (resolves PyTorch cu128)",
+        "Original standalone implementation is on the v1 branch"
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "41704ca5cef39b020eb65c60f853c2bd0baae2831b30916cf06e3fa35d61d6df",
+        "core/search_utils/task.py": "24dd4e05710be905c3b164ad97ea4ce343cdf502b046cbbd6b829cd3ef280dbc",
+        "run.py": "65ffd7d48c390127ba20a4a031428c77efb4d5f2aee4aac4b523633eefed965a"
+      },
+      "profiles": [
+        {
+          "id": "evolve-attacks",
+          "description": "Native EvoEngineer evolution of decision-based adversarial attack heuristics.",
+          "invocation": {
+            "kind": "script",
+            "target": "run.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output_path",
+            "path": "results"
+          },
+          "required_files": [],
+          "config_files": [],
+          "result_globs": [
+            "**/*.json",
+            "**/*.jsonl",
+            "**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native AdversarialAttackTask evaluates generated attack procedures against the selected RobustBench model and dataset.",
+            "evidence": [
+              "run.py",
+              "core/search_utils/task.py"
+            ]
+          },
+          "argument_help": [
+            "--dataset cifar10 --model Standard --atk_step 300 --pop_size 5 --max_generations 10 --num_samplers 1 --num_evaluators 1",
+            "Pass API_URL, API_KEY and MODEL via environment_names; no --api_key argument."
+          ],
+          "limitations": [
+            "Pinned main integrates EvoToolkit and is not the original standalone v1 artifact.",
+            "PyTorch/RobustBench models and datasets must be provisioned; CUDA/model downloads are not performed during planning."
+          ]
+        }
+      ]
+    }
+  ]
+}

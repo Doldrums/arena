@@ -1,0 +1,98 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "gepa-gateway-gsm8k",
+      "name": "GEPA \u00b7 GSM8K gateway pilot",
+      "participant_ids": [
+        "gepa"
+      ],
+      "repository": {
+        "url": "https://github.com/gepa-ai/gepa",
+        "commit": "15ee314f9c7d34ec153b809d401f42f55c4dcd76"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the pinned native source from a separate build copy into an isolated environment; retain pip freeze and pip check evidence.",
+        "Supply the immutable GSM8K pilot bundle via request.inputs and scoped OPENAI_API_KEY environment reference."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "10c47467a961feb40adf3294fe27dd9cba79d4d1b7cf27173b1c34586d4126c3",
+        "pyproject.toml": "735e3c3b843ef27a7bcdb0e5e1ab49914f9f61112730bb207484d76f31bab8a9",
+        "src/gepa/api.py": "304b7f10faea546c0eac7161890625bebbdea784eaafb09838e944f8477ec1fd",
+        "src/gepa/core/engine.py": "96779c98be8568eeb3899044cb37b0fb87d07a91af2979403dff2a7b6eeba365",
+        "src/gepa/core/result.py": "77ee61655eb71f5eb259f2394bcd7f83cdc1cd4980aa55cdbdae781b6fd43d63",
+        "src/gepa/adapters/default_adapter/default_adapter.py": "9583ceb97990d2230450410913d748761fdbf9f279b9e6dcd7011200dec8063e",
+        "src/gepa/strategies/instruction_proposal.py": "c3848586365c546afdbfb7ffd6f80b6f49def7575821ff352a29bbcf624bd977",
+        "src/gepa/proposer/reflective_mutation/reflective_mutation.py": "2fcc6681d3498700a4a6b79297c98e0fcfc8601503cc019dca56681f51e4eb5d"
+      },
+      "profiles": [
+        {
+          "id": "gsm8k-prompt-pilot",
+          "description": "Native prompt optimization on eight train and eight validation examples, with a separate eight-example official-test heldout assessed only after optimization.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.gepa_gateway_pilot"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--dataset",
+            "arena-inputs/gsm8k-prompt-pilot-v1.json"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "LICENSE",
+            "pyproject.toml",
+            "src/gepa/api.py",
+            "src/gepa/core/engine.py",
+            "src/gepa/core/result.py",
+            "src/gepa/adapters/default_adapter/default_adapter.py",
+            "src/gepa/strategies/instruction_proposal.py",
+            "src/gepa/proposer/reflective_mutation/reflective_mutation.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Official GSM8K extract_answer/is_correct metric supplied through the native optimizer API; heldout outputs and scores are stored separately from native validation selection.",
+            "evidence": [
+              "src/gepa/api.py",
+              "src/gepa/core/engine.py",
+              "src/gepa/core/result.py",
+              "src/gepa/adapters/default_adapter/default_adapter.py",
+              "src/gepa/strategies/instruction_proposal.py",
+              "src/gepa/proposer/reflective_mutation/reflective_mutation.py"
+            ]
+          },
+          "argument_help": [
+            "--model EXACT_REVIEWED_ID; request.inputs must map arena-inputs/gsm8k-prompt-pilot-v1.json to the pinned dataset bundle."
+          ],
+          "limitations": [
+            "This is a tiny integration pilot with genuine public data, not the original GEPA or MIPRO paper protocol and not evidence of model-pretraining disjointness.",
+            "Native search methods and response parsing remain; a sequential local-gateway transport preserves exact model identity and n choices. SDK retries are zero; sampling/token controls are recorded but not enforced.",
+            "A separate 128-request admission limit and 2400-second outer deadline bound the pilot. Budget exhaustion is not native completion.",
+            "Only train and validation reach optimization. Seed and selected programs use heldout only after optimization; no heldout score influences selection.",
+            "Provider token usage is retained when returned; cost remains unknown. Native GEPA TrackingLM estimates are not billing evidence."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONUNBUFFERED": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

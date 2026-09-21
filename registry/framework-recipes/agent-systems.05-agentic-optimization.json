@@ -1,0 +1,74 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "agentic-optimization",
+      "name": "Agentic Optimization",
+      "participant_ids": [
+        "agentic-optimization"
+      ],
+      "repository": {
+        "url": "https://github.com/Junye-Pan/AgenticOptimization",
+        "commit": "712b2fd4888c4b57fc08c1d2bdf4b1ca4c4517fb"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Prepare Flask and native task dependencies plus an authenticated Codex CLI; use a private execution environment and explicit credential environment names."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "48fa0fbfd2a876b99c53f31ce94972e72b1329ad0c041120a2f5dd63812a750c",
+        "src/agentic_opt/control_plane/evaluation.py": "5ab6e3790d114df8747917911f0160381399e8755cc9814adcb1b10102ede318",
+        "src/agentic_opt/web/app.py": "5e582ae6f7114e88a8e7f85b3bde019319d50fd556b49f430ce8b46b77394145",
+        "src/agentic_opt/web/routes_control_plane.py": "ded9afa86b3d585c7694b33fd8865160c6e43fed72560e5fe627e0867bd59445",
+        "src/agentic_opt/web/workers.py": "f12425123f525aa3767d538cf6227751b0fdc4e4d3b85a35caf5451acaa699ff"
+      },
+      "profiles": [
+        {
+          "id": "native-worker-search",
+          "description": "AgenticOptimization native control plane and one bounded Codex worker search assignment",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.agentic_optimization"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--state-root",
+            "path": "native"
+          },
+          "required_files": [
+            "src/agentic_opt/web/app.py",
+            "src/agentic_opt/web/workers.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/arena-native.json",
+            "native/control.sqlite3",
+            "native/worker_logs/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "AgenticOptimization native control plane and one bounded Codex worker search assignment Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "src/agentic_opt/web/app.py",
+              "src/agentic_opt/web/routes_control_plane.py",
+              "src/agentic_opt/web/workers.py",
+              "src/agentic_opt/control_plane/evaluation.py"
+            ]
+          },
+          "argument_help": [
+            "--task-id TASK --max-evaluator-runs N --worker-seconds N --wall-seconds N [--codex-binary /absolute/codex]"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Native task packages and Codex CLI/backend must be prepared; no dependency manifest or root license is supplied at this pin.",
+            "The driver creates a loopback-only control service and delegates assignment continuation/evaluation to native WorkerManager.",
+            "Native process completion does not establish canonical Arena fitness or a successful scientific result."
+          ]
+        }
+      ]
+    }
+  ]
+}

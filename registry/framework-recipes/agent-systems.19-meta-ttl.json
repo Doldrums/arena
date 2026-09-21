@@ -1,0 +1,106 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "meta-ttl",
+      "name": "META-TTL",
+      "participant_ids": [
+        "meta-ttl"
+      ],
+      "repository": {
+        "url": "https://github.com/zzzlou/meta-ttl",
+        "commit": "b72db4b77e9ae01aec1cbfd36ae0edae902b6468"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Prepare requirements.txt, benchmark environments and explicit OpenRouter/OpenAI environment names.",
+        "No tau2-bench profile is claimed because this pinned public tree exposes Jericho/WebArena implementations."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "d92dd49d68f2e75d5832bc98ab19e85cf0d5ac2adba8d9339e686be0cd8c0f3f",
+        "jericho_meta_training/jericho_adapter.py": "03435d29a34113a6e1cd48e06523ca66bf78e7121826a6cc1b386c10f679b583",
+        "jericho_meta_training/train_meta_agent.py": "77e3e4e041cdf611e3043908f09b0ca9bbe213827a657bef649b493a406cdf33",
+        "webarena_meta_training/train_meta_agent.py": "605a145758dd63e88e987537fa7c1827f6e9408055fdbd8e2685fcc71a7a22c6",
+        "webarena_meta_training/webarena_adapter.py": "86a6e563d80f5b1a0cfa8a877b299ea03a4d5bedb489ce7311517a7371882f43"
+      },
+      "profiles": [
+        {
+          "id": "jericho",
+          "description": "META-TTL native jericho GEPA meta-policy optimization",
+          "invocation": {
+            "kind": "script",
+            "target": "jericho_meta_training/train_meta_agent.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "jericho_meta_training/train_meta_agent.py",
+            "jericho_meta_training/jericho_adapter.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "train_results/**/*.json",
+            "train_results/**/*.jsonl",
+            "train_results/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "META-TTL native jericho GEPA meta-policy optimization Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "jericho_meta_training/train_meta_agent.py",
+              "jericho_meta_training/jericho_adapter.py"
+            ]
+          },
+          "argument_help": [
+            "WebArena supports --meta_model MODEL --max_metric_calls N --max_concurrent N; Jericho settings are fixed in the native entrypoint."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Native train/validation split semantics and fixed model choices are retained.",
+            "Jericho ROMs or hosted WebArena sites/browser runtime must be provisioned; saved pickles are not loaded by Arena."
+          ]
+        },
+        {
+          "id": "webarena",
+          "description": "META-TTL native webarena GEPA meta-policy optimization",
+          "invocation": {
+            "kind": "script",
+            "target": "webarena_meta_training/train_meta_agent.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "webarena_meta_training/train_meta_agent.py",
+            "webarena_meta_training/webarena_adapter.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "train_results_webarena/**/*.json",
+            "train_results_webarena/**/*.jsonl",
+            "train_results_webarena/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "META-TTL native webarena GEPA meta-policy optimization Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "webarena_meta_training/train_meta_agent.py",
+              "webarena_meta_training/webarena_adapter.py"
+            ]
+          },
+          "argument_help": [
+            "WebArena supports --meta_model MODEL --max_metric_calls N --max_concurrent N; Jericho settings are fixed in the native entrypoint."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Native train/validation split semantics and fixed model choices are retained.",
+            "Jericho ROMs or hosted WebArena sites/browser runtime must be provisioned; saved pickles are not loaded by Arena."
+          ]
+        }
+      ]
+    }
+  ]
+}

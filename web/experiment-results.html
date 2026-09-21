@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f5f5f5">
+  <title>Empira · Results</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/arena-results.css">
+  <link rel="stylesheet" href="/arena-results-overview.css">
+  <link rel="stylesheet" href="/arena-workspace.css">
+  <script type="module" src="/arena-results.js"></script>
+</head>
+<body class="arena-workspace" data-results-app="true">
+  <a class="skip" href="#main">Skip to results</a>
+  <aside class="workspace-sidebar" aria-label="Research workspace">
+    <a class="workspace-brand" href="/experiments" aria-label="Empira experiments">
+      <span class="workspace-brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="28" height="28" fill="#fff"><rect x="9" y="10" width="9" height="17" rx="4.5" transform="rotate(9 13.5 18.5)"/><rect x="24" y="13" width="9" height="16" rx="4.5" transform="rotate(12 28.5 21)"/></svg></span>
+      <span class="workspace-brand-name">Empira<small>THE RSI RESEARCH ARENA</small></span>
+    </a>
+    <nav class="workspace-nav" aria-label="Experiment workspace">
+      <a href="/experiments" aria-label="Experiments" title="Experiments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16h16M7 15l4-5 4 3 5-7"/></svg><span>Experiments</span></a>
+      <a href="/experiments/results" aria-current="page" aria-label="Results" title="Results"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V12M12 20V4M19 20V8"/></svg><span>Results</span></a>
+      <a href="/experiments/queue" aria-label="Queue" title="Queue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h1M3 12h1M3 18h1"/></svg><span>Queue</span></a>
+    </nav>
+    <div class="workspace-sidebar-note"><span>Research workspace</span><p>Experiments, their evidence<br>and the next runs.</p></div>
+    <div class="workspace-sidebar-bottom"><a href="/" aria-label="Research overview" title="Research overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg><span>Research overview</span></a></div>
+  </aside>
+  <div class="workspace-content">
+    <header class="workspace-topbar">
+      <div class="workspace-breadcrumbs"><a href="/experiments">Experiments</a><span aria-hidden="true">/</span><span>Results</span></div>
+      <button id="results-connect" type="button" hidden>Connect with key</button>
+    </header>
+  <main id="main" tabindex="-1">
+    <div class="results-heading"><div><p class="eyebrow">RESEARCH EVIDENCE</p><h1>Results</h1><p id="results-intro" class="results-intro">SCiEL across models, tasks and search budgets.</p></div><span class="readonly">Read only <span aria-hidden="true">↗</span></span></div>
+    <div class="results-status-line"><span id="results-status" role="status" aria-live="polite">Loading published results…</span><button id="results-refresh" class="text-button" type="button" disabled>Refresh ↻</button></div>
+    <section id="published-results-overview" aria-label="Published results overview" aria-busy="true" hidden></section>
+    <div id="private-results-content" hidden>
+    <section class="results-controls" aria-label="Filter results">
+      <label>System<select id="results-framework"><option value="sciel-release">SCiEL · private image</option><option value="all">All systems</option></select></label>
+      <label>Model<select id="results-model"><option value="all">All models</option></select></label>
+      <label>Process status<select id="results-state"><option value="all">All statuses</option><option value="completed">Completed</option><option value="active">Active / queued</option><option value="attention">Failed / blocked</option><option value="cancelled">Cancelled</option></select></label>
+      <label class="results-search-label">Find a run<input id="results-search" type="search" placeholder="Task, profile, batch or run ID"></label>
+    </section>
+    <section id="results-overview" class="results-overview" aria-label="Evidence summary"></section>
+    <div id="results-notices" class="results-notices"></div>
+    <section class="results-panel results-matrix-panel" aria-labelledby="matrix-title">
+      <div class="panel-heading"><div><p class="eyebrow" id="matrix-eyebrow">SCIEL · PRIVATE IMAGE</p><h2 id="matrix-title">Across models</h2><p>Process completion and candidate validity are separate. Seed → best shows whether the search improved on its starting point.</p></div><span id="results-count" class="count-pill">—</span></div>
+      <div id="results-matrix" class="results-matrix"><p class="empty">Recorded runs will appear here after you connect.</p></div>
+    </section>
+    <section class="results-panel results-comparison-panel" aria-labelledby="comparison-title">
+      <div class="panel-heading"><div><p class="eyebrow">SHARED EVALUATOR</p><h2 id="comparison-title">Score and recorded resources</h2><p>Compare within one task and evaluator identity. Budgets and search protocols can still differ. Select the same model before interpreting efficiency.</p></div></div>
+      <div class="comparison-controls"><label>Evaluator cohort<select id="results-cohort" disabled><option value="">No recorded cohort</option></select></label><fieldset><legend>Resource axis</legend><label><input type="radio" name="results-axis" value="tokens" checked> Recorded tokens</label><label><input type="radio" name="results-axis" value="time"> Wall time</label></fieldset></div>
+      <div id="results-chart" class="results-chart"><p class="empty">A plot appears when a canonical score and the selected resource measurement are both recorded.</p></div>
+      <p class="comparison-note">Tokens are counts, not a price estimate. Wall time includes the run’s recorded work and waiting. These observations do not establish which method is best.</p>
+    </section>
+    <section class="reading-guide" aria-labelledby="guide-title"><h2 id="guide-title">How to read this board</h2><div><p><strong>Canonical evidence</strong> comes from the task evaluator. A valid candidate can have a low score; validity does not mean an optimal solution.</p><p><strong>Native scores</strong> stay attached to their framework and task in each run’s evidence. They are not combined into a global ranking.</p><p><strong>Missing measurements</strong> stay unknown. Partial evidence and failed processes remain visible, including useful results produced before a failure.</p></div></section>
+    <details id="results-methodology" class="measurement-notes" hidden><summary>Measurement notes</summary><div id="results-measurement-notes"></div></details>
+    </div>
+    <footer><span id="results-footer-scope">Published results · read only</span><a href="/experiments/queue">Open run queue ↗</a><a href="/experiments">Inspect SCiEL experiments ↗</a></footer>
+  </main>
+  </div>
+  <dialog id="results-key-dialog" aria-labelledby="results-key-title"><form id="results-key-form"><div class="dialog-heading"><h2 id="results-key-title">Connect to results</h2><button id="results-key-close" type="button" aria-label="Close">×</button></div><p>Use your Arena access key. It stays in this browser tab’s session and is sent only to this server.</p><label>Access key<input id="results-key" type="password" required autocomplete="off" spellcheck="false"></label><p id="results-key-error" class="error" role="alert"></p><div class="dialog-actions"><button id="results-disconnect" type="button">Disconnect</button><button class="primary" type="submit">Connect</button></div></form></dialog>
+</body>
+</html>

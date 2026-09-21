@@ -1,0 +1,92 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "eurekagent",
+      "name": "EurekAgent",
+      "participant_ids": [
+        "eurekagent"
+      ],
+      "repository": {
+        "url": "https://github.com/THU-Team-Eureka/EurekAgent",
+        "commit": "fb96df897dfb99797a77623aa0dd9ee178fe89d2"
+      },
+      "status": "source_verified",
+      "license": "AGPL-3.0",
+      "setup": [
+        "Prepare Python >=3.12.12, native dependencies, Claude CLI and documented Docker agent image."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "4df3c306dddaaf4baffdff5ca820cc679ac8cd6dc263c6a74517783e42fa7a3b",
+        "examples/circle_packing/INSTRUCTION.md": "9b4e251ce2151768513679b9a5101af4351a30ffd0161d5085fdaef4c9600b92",
+        "examples/circle_packing/SUBMISSION_FORMAT.md": "fd60f9162f9bcacc473382ee621cc6af7d894ddb05f0e1b0b4b7807476ea3436",
+        "examples/circle_packing/hidden_eval_dir/evaluate.py": "f417007dd60c9781bb48a40468baa3552e3127ac0f447601f645a34da8d48fcd",
+        "examples/circle_packing/initial.py": "c6f80c89d5baa8ecb14711fd7cd274ad1b9cc7f38f2e6881e69b9417a8afd1c8",
+        "examples/circle_packing/run.sh": "63c4ab519a593afe7339958c3a0188db8db8bd8ddddaa47ee2273dea3604fad0",
+        "src/__main__.py": "56e9f3d9f1bba6b01e621f415ca6d8a3e4b6ebad61dc7a15e0cf3bc8dbf3d2b3",
+        "src/eval_grader/client.py": "97ee0ab194d9c8a9ce7894ae9f5131339cbf3cb25becab409f18126777ac3d18",
+        "src/pipeline.py": "59d4008b9ddc3909b9364752ba1a280fce54f638005561533952e9d9701f8fdc"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "The native research pipeline uses the private grader grade_submission and is_better contract in a separate Docker grader.",
+          "invocation": {
+            "kind": "module",
+            "target": "src"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--problem",
+            "examples/circle_packing/INSTRUCTION.md",
+            "--hidden-eval-dir",
+            "examples/circle_packing/hidden_eval_dir",
+            "--submission-format",
+            "examples/circle_packing/SUBMISSION_FORMAT.md",
+            "--initial-code",
+            "examples/circle_packing/initial.py",
+            "--no-monitor",
+            "--no-tui"
+          ],
+          "output": {
+            "flag": "--runs-dir",
+            "path": "results"
+          },
+          "required_files": [
+            "src/__main__.py",
+            "examples/circle_packing/run.sh",
+            "examples/circle_packing/INSTRUCTION.md",
+            "examples/circle_packing/SUBMISSION_FORMAT.md",
+            "examples/circle_packing/initial.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "The native research pipeline uses the private grader grade_submission and is_better contract in a separate Docker grader.",
+            "evidence": [
+              "examples/circle_packing/hidden_eval_dir/evaluate.py",
+              "src/eval_grader/client.py",
+              "src/pipeline.py"
+            ]
+          },
+          "argument_help": [
+            "Required native settings: --model MODEL --propose-time-limit-per-session DURATION --implement-time-limit-per-session DURATION",
+            "Set --max-loops N --max-num-approaches N --cost-limit USD and --gpus none for CPU-only math."
+          ],
+          "limitations": [
+            "Requires the native CLI agent, prepared Docker image and container environment. No Docker build or provider setup occurs during Arena planning.",
+            "Native nested Docker and agent processes require worker/container lifecycle supervision beyond a Python exit code."
+          ],
+          "protected_args": [
+            "--resume"
+          ]
+        }
+      ]
+    }
+  ]
+}

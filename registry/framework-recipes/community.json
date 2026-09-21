@@ -1,0 +1,153 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "avo-community",
+      "name": "AVO \u00b7 community implementation",
+      "participant_ids": [
+        "avo"
+      ],
+      "repository": {
+        "url": "https://github.com/austin1997/AVO",
+        "commit": "0d36ada5e149f6f86c845f9405381cf09b572d62"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare Python 3.10+ and the pinned repository dependencies in a separate native environment.",
+        "Install the native package only as an explicit operator step."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "46800daaac930a55a0045a981ff320be288da943f2f8adea9c4d4aa7400ad8e0",
+        "LICENSE": "f407136d7b3090198b8131ca95aa54dca6a184c20ff3f90fea1b3467edbc6107",
+        "pyproject.toml": "b0dc6d029b2e228ba5b7ca338b64849fc46e5b086b8fd428881434ff10afb051",
+        "avo/cli.py": "069859e8e215dce98316d8a9181661236f7d21682da4283e703a9c795033c43e",
+        "avo/config.py": "10ddacb642fc40b0a5df2d8eaef819db70af3131d1d099ea4e80d37773a14f1d",
+        "avo/core/evolution.py": "e410f9b5c5db47cdc5d9e3f151ae0ecd07537323d33402f7f9faf1ac88e2130a",
+        "avo/core/scoring.py": "b8a10d71e970c79aaa357c0406435ef91fbdf0694c30794db4ed2c8a5cff2f72",
+        "avo/agent/llm_client.py": "fb2f66a51f3d5553e3ad6b5bc50d549be96e71ef2629a6e77dffac83b615626e"
+      },
+      "profiles": [
+        {
+          "id": "native-evolution",
+          "description": "Community AVO reimplementation: original native agentic variation, lineage and scorer interface.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.avo_community"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "native"
+          },
+          "required_files": [
+            "avo/config.py",
+            "avo/core/evolution.py",
+            "avo/core/scoring.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/native-summary.json",
+            "native/population/.avo_population.json",
+            "native/logs/*.json*"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Configured native ScoringFunction correctness and per-configuration values; native geometric mean remains implementation-specific.",
+            "evidence": [
+              "avo/core/scoring.py",
+              "avo/core/evolution.py"
+            ]
+          },
+          "argument_help": [
+            "Stage a credential-free YAML config, seed, scorer and optional knowledge base through request.inputs.",
+            "--config arena-inputs/config.yaml --max-versions 2 --hours 0.1 --max-agent-steps 10",
+            "Supply provider credentials only through explicit environment_names."
+          ],
+          "limitations": [
+            "Independent austin1997 implementation of the AVO paper; not an author-released NVIDIA implementation or a paper reproduction claim.",
+            "Native generated-code execution requires worker isolation. Library defaults and scorer semantics remain native.",
+            "A full model-driven run and environment have not been verified."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "openevolve",
+      "name": "OpenEvolve \u00b7 independent AlphaEvolve implementation",
+      "participant_ids": [
+        "alphaevolve"
+      ],
+      "repository": {
+        "url": "https://github.com/algorithmicsuperintelligence/openevolve",
+        "commit": "411fb59c886c18704caaffb611e17cf9e7d824d2"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare Python 3.10+ and install the pinned repository in a separate environment.",
+        "Configure an explicit model provider, candidate/evaluator dependencies and a worker sandbox."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "12636fe7fed91a393e5f40b0a877641d7e1fea691dbda4cf48474ca6769b93fc",
+        "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "pyproject.toml": "e6072c43d3c8a867af076007c39fb8a4da26e881600126930ac508b0596f2884",
+        "openevolve/cli.py": "5e837fb8b7a23335e721d9d4b5f4257aea4f717e114a9da0ee2f2e8cdb6b3cf4",
+        "openevolve/config.py": "d8a8a49536e4502ac1302516113cd9a4ec1601998acd8a26fcb0dcff4b9315d4",
+        "openevolve/controller.py": "155eaf982037d4b8f8164a468bc7dae798bf101c645127667473390a881f17ba",
+        "openevolve/evaluator.py": "f1deed6c378cc1e57bfb86548375ca7775de6857d829169015999d269f46bc5b"
+      },
+      "profiles": [
+        {
+          "id": "native-evolution",
+          "description": "OpenEvolve native evolutionary search and Python evaluator.",
+          "invocation": {
+            "kind": "module",
+            "target": "openevolve.cli"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "native"
+          },
+          "required_files": [
+            "openevolve/cli.py",
+            "openevolve/controller.py",
+            "openevolve/evaluator.py"
+          ],
+          "config_files": [],
+          "protected_args": [
+            "-o"
+          ],
+          "result_globs": [
+            "native/best/*",
+            "native/checkpoints/**/*.json",
+            "native/evolution_trace.json*"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native evaluator loads the supplied evaluate function; objective metrics and optional cascade stages remain defined by that evaluator.",
+            "evidence": [
+              "openevolve/evaluator.py",
+              "openevolve/controller.py"
+            ]
+          },
+          "argument_help": [
+            "Stage the initial program, evaluator and explicit YAML config through request.inputs.",
+            "arena-inputs/initial.py arena-inputs/evaluate.py --config arena-inputs/config.yaml --iterations 2",
+            "Select models, evaluation timeout and concurrency explicitly in the native config. Output is forced by Arena."
+          ],
+          "limitations": [
+            "OpenEvolve is an independent implementation inspired by AlphaEvolve; it is not Google DeepMind's private engine.",
+            "The native checkpoint option does not establish Arena lifecycle/resume conformance.",
+            "Native environment, model-driven research runs and cross-task conformance remain unverified."
+          ]
+        }
+      ]
+    }
+  ]
+}

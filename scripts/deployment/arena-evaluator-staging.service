@@ -1,0 +1,11 @@
+[Unit]
+Description=Empira bounded host-visible evaluator staging
+Before=arena-evaluator-proxy.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/arena/current/scripts/deployment/setup-evaluator-staging.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

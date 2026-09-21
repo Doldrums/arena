@@ -1,0 +1,157 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {createLocalJWKSet, exportJWK, generateKeyPair, SignJWT} from 'jose';
+import worker from '../../api/src/index.ts';
+import dev from '../../api/src/dev.ts';
+import {route, type Env} from '../../api/src/router.ts';
+import {verifyAccessToken} from '../../api/src/auth.ts';
+
+const env: Env = {ASSETS: {fetch: async request => new Response(new URL(request.url).pathname)}};
+const request = (path: string, init?: RequestInit) => new Request(`http://localhost${path}`, init);
+
+test('production protects HTML, assets and API even when Access is unconfigured', async () => {
+  for (const path of ['/', '/style.css', '/arena-atlas.js', '/arena-atlas.css', '/arena-theme.css', '/api/catalog', '/api/insights', '/api/references', '/api/search-families', '/api/results-overview', '/experiments', '/results', '/experiments/results', '/experiments/queue']) {
+    const response = await worker.fetch(request(path), env);
+    assert.equal(response.status, 503);
+    assert.equal((await response.json()).error, 'access_not_configured');
+  }
+});
+
+test('published results overview is read-only and does not expose private control records', async () => {
+  const response = await route(request('/api/results-overview'), env);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('Cache-Control'), 'private, no-store');
+  const overview = await response.json();
+  assert.equal(overview.schema, 'arena.results-overview/1');
+  assert.ok(overview.loaded <= overview.total);
+  assert.equal(overview.summary.runs, overview.loaded);
+  assert.ok(Array.isArray(overview.systems) && Array.isArray(overview.cohorts));
+  const forbidden = new Set(['owner', 'id', 'label', 'batch_id', 'version', 'engine', 'template', 'profile', 'reason', 'receipt_hashes', 'valid_candidate_hashes', 'source', 'prompt', 'code']);
+  const check = (value: unknown): void => {
+    if (Array.isArray(value)) value.forEach(check);
+    else if (value && typeof value === 'object') for (const [key, child] of Object.entries(value)) {
+      if (key === 'source') {
+        assert.equal(child, 'native_observer', 'only the fixed research provenance marker may be published');
+      } else {
+        assert.equal(forbidden.has(key), false, `private field: ${key}`);
+      }
+      check(child);
+    }
+  };
+  check(overview);
+  assert.equal(await (await route(request('/api/results-overview', {method: 'HEAD'}), env)).text(), '');
+  assert.equal((await route(request('/api/results-overview', {method: 'POST'}), env)).status, 405);
+  assert.equal((await route(request('/api/control/results'), env)).status, 404);
+});
+test('production rejects missing and forged tokens; local adapter rejects remote host', async () => {
+  const protectedEnv = {...env, ACCESS_TEAM_DOMAIN: 'https://arena.cloudflareaccess.com', ACCESS_AUD: 'our-team-app'};
+  assert.equal((await worker.fetch(request('/'), protectedEnv)).status, 401);
+  assert.equal((await worker.fetch(request('/', {headers: {'Cf-Access-Jwt-Assertion': 'forged'}}), protectedEnv)).status, 403);
+  assert.equal((await dev.fetch(new Request('https://arena.example.com/'), env)).status, 403);
+});
+test('Access verifies signature, issuer, audience and expiration', async () => {
+  const {privateKey, publicKey} = await generateKeyPair('RS256');
+  const keys = createLocalJWKSet({keys: [{...await exportJWK(publicKey), kid: 'fixture'}]});
+  const config = {ACCESS_TEAM_DOMAIN: 'https://arena.cloudflareaccess.com', ACCESS_AUD: 'arena-app'};
+  const sign = (aud = 'arena-app', issuer = config.ACCESS_TEAM_DOMAIN, expiry = '5m') => new SignJWT({})
+    .setProtectedHeader({alg: 'RS256', kid: 'fixture'}).setSubject('team-user')
+    .setIssuedAt().setIssuer(issuer).setAudience(aud).setExpirationTime(expiry).sign(privateKey);
+  assert.equal((await verifyAccessToken(await sign(), config, keys)).sub, 'team-user');
+  await assert.rejects(verifyAccessToken(await sign('another-app'), config, keys));
+  await assert.rejects(verifyAccessToken(await sign('arena-app', 'https://attacker.example'), config, keys));
+  await assert.rejects(verifyAccessToken(await sign('arena-app', config.ACCESS_TEAM_DOMAIN, '-1m'), config, keys));
+  const wrong = await generateKeyPair('RS256');
+  const otherKeys = createLocalJWKSet({keys: [{...await exportJWK(wrong.publicKey), kid: 'fixture'}]});
+  await assert.rejects(verifyAccessToken(await sign(), config, otherKeys));
+});
+test('catalog and participants are real registry snapshots, with no fake launch support', async () => {
+  const catalog = await (await route(request('/api/catalog'), env)).json();
+  assert.equal(catalog.tasks.length, 959);
+  const participants = await (await route(request('/api/participants'), env)).json();
+  assert.equal(participants.participants.length, 99);
+  assert.equal(participants.summary.research_work_count, 98);
+  assert.equal(participants.summary.pinned_registration_count, 3);
+  assert.equal(participants.summary.integrated_count, 0);
+  const papers = participants.participants.flatMap((item: {papers?: {id:string;url:string}[]}) => item.papers || []);
+  assert.equal(new Set(papers.map((paper: {id:string}) => paper.id)).size, 98);
+  assert.ok(papers.every((paper: {url:string}) => paper.url.startsWith('https://')));
+  assert.equal((await route(request('/api/runs'), env)).status, 503);
+  assert.equal((await route(request('/api/runs', {method: 'POST'}), env)).status, 405);
+  assert.equal((await route(request('/api/unknown'), env)).status, 404);
+});
+test('asset routing preserves the native experiment view and HEAD semantics', async () => {
+  const response = await route(request('/experiments?run=abc'), env);
+  assert.equal(await response.text(), '/experiment.html');
+  assert.equal(response.headers.get('Cache-Control'), 'private, no-store');
+  assert.equal(await (await route(request('/'), env)).text(), '/index.html');
+  for (const [path, file] of [['/results', '/results.html'], ['/results/', '/results.html'],
+                            ['/experiments/results', '/experiment-results.html'], ['/experiments/results/', '/experiment-results.html'],
+                            ['/experiments/queue', '/queue.html'], ['/experiments/queue/', '/queue.html'], ['/queue', '/queue.html']]) {
+    assert.equal(await (await route(request(path + '?view=fixture'), env)).text(), file);
+  }
+  for (const path of ['/arena-atlas.js', '/arena-atlas.css', '/arena-theme.css']) {
+    assert.equal(await (await route(request(path), env)).text(), path);
+  }
+  assert.equal(await (await route(request('/api/catalog', {method: 'HEAD'}), env)).text(), '');
+});
+
+test('search-family API partitions all packages and preserves secondary source links', async () => {
+  const catalog = await (await route(request('/api/catalog'), env)).json();
+  const response = await route(request('/api/search-families'), env);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('Cache-Control'), 'private, no-store');
+  const data = await response.json();
+  assert.equal(data.schema, 'arena.search-families/1');
+  assert.equal(data.summary.task_count, 959);
+  assert.equal(data.summary.corpus_paper_count, 98);
+  assert.equal(data.summary.source_group_count, 113);
+  const taskIds = data.groups.flatMap((group: {task_ids: string[]}) => group.task_ids);
+  assert.equal(taskIds.length, 959);
+  assert.equal(new Set(taskIds).size, 959);
+  assert.deepEqual(taskIds.sort(), catalog.tasks.map((task: {id: string}) => task.id).sort());
+  assert.deepEqual(data.task_annotations['eoh-online-bin-packing'].related_search_family_ids, ['alphaevolve-openevolve', 'funsearch-eoh', 'other']);
+  assert.equal(data.summary.group_count, 10);
+  assert.equal(data.summary.cross_family_task_count, 26);
+  for (const [id, sourceCount, taskCount] of [['sciel-supplement', 1, 93], ['science-supplement', 13, 74], ['community-supplement', 1, 1]]) {
+    const group = data.groups.find((group: {id: string}) => group.id === id);
+    assert.equal(group.paper_count, 0);
+    assert.equal(group.source_group_count, sourceCount);
+    assert.equal(group.task_count, taskCount);
+  }
+  const health = await (await route(request('/api/health'), env)).json();
+  assert.equal(health.capabilities.search_families, true);
+  assert.equal(health.capabilities.launch, false);
+  assert.equal(await (await route(request('/api/search-families', {method: 'HEAD'}), env)).text(), '');
+  assert.equal((await route(request('/api/search-families', {method: 'POST'}), env)).status, 405);
+});
+
+test('search-family data and atlas assets remain behind the production Access gate', async () => {
+  let assetRequests = 0;
+  const protectedEnv: Env = {
+    ASSETS: {fetch: async () => {assetRequests += 1; return new Response('private asset');}},
+    ACCESS_TEAM_DOMAIN: 'https://arena.cloudflareaccess.com', ACCESS_AUD: 'our-team-app',
+  };
+  for (const path of ['/api/search-families', '/arena-atlas.js', '/arena-atlas.css', '/arena-theme.css']) {
+    const missing = await worker.fetch(request(path), protectedEnv);
+    assert.equal(missing.status, 401);
+    assert.deepEqual(await missing.json(), {error: 'authentication_required'});
+    const forged = await worker.fetch(request(path, {headers: {'Cf-Access-Jwt-Assertion': 'forged'}}), protectedEnv);
+    assert.equal(forged.status, 403);
+    assert.deepEqual(await forged.json(), {error: 'invalid_access_token'});
+  }
+  assert.equal(assetRequests, 0);
+});
+
+test('scientific overview counts every catalog task once and serves evidence separately', async () => {
+  const catalog = await (await route(request('/api/catalog'), env)).json();
+  const insights = await (await route(request('/api/insights'), env)).json();
+  const references = await (await route(request('/api/references'), env)).json();
+  assert.equal(insights.schema, 'arena.insights/1');
+  assert.equal(references.schema, 'arena.references/1');
+  assert.deepEqual(Object.keys(insights.task_annotations).sort(), catalog.tasks.map((t: {id: string}) => t.id).sort());
+  for (const groups of [insights.domains, insights.task_types]) {
+    assert.equal(groups.reduce((sum: number, item: {total: number}) => sum + item.total, 0), catalog.tasks.length);
+    assert.ok(Math.abs(groups.reduce((sum: number, item: {percentage: number}) => sum + item.percentage, 0) - 100) < 1e-8);
+  }
+  assert.equal(await (await route(request('/api/insights', {method: 'HEAD'}), env)).text(), '');
+});

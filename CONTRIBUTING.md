@@ -1,0 +1,84 @@
+# Contributing
+
+Use a branch and a pull request against `main`. Existing collaborators can push a branch to this repository; external contributors can use a fork. Include the concrete behavior changed and the relevant validation. Use concise Conventional Commits, for example `fix: preserve evaluator provenance`.
+
+Opening or merging a PR does not authorize an experiment. Execution requires a separately approved run configuration and a scoped worker key.
+
+## Repository rules
+
+- Source, tests and configuration files must contain at most 500 physical lines. Split by responsibility; do not compress formatting to meet the limit.
+- Generated registry data, reviewed fixture data and dependency lockfiles have explicit exceptions in `scripts/check_repository_policy.py`.
+- The only Markdown files are root `README.md` and `CONTRIBUTING.md`. Keep working notes, reports and run outputs outside the repository.
+- Keep secrets, private bindings, local configuration, credentials and raw run archives outside the source tree. `.gitignore` restricts accepted top-level paths; CI also checks tracked files.
+- Preserve the read-only observer boundary. Registry validation, imports and page loads must not run engines, evaluators or paid model calls.
+- Compare results only within compatible evaluator contracts and budgets. Retain model identity, provenance and missing values in the underlying records.
+
+Run the relevant checks listed in [README](README.md#validation). Changes to a shared boundary require its integration tests. Do not replace execution evidence with source inspection or fixture-only results.
+
+## Tasks
+
+A task collection registration belongs in `registry/task-sources/` and pins a full source commit. Task code and datasets stay upstream. Catalog records retain the original source path, hash, contract, metric direction and requirements.
+
+For the existing autoresearch collection, rebuild from an available source checkout:
+
+```sh
+python scripts/sync_task_catalog.py /path/to/autoresearch-tasks
+python scripts/build_insights.py
+python scripts/build_search_families.py
+python scripts/build_references.py /path/to/autoresearch-tasks
+python -m arena.registry validate
+python -m arena.references validate
+```
+
+The importer reads the exact registered Git revision. It does not fetch, install dependencies or execute tasks. A new collection also needs importer and merge support; adding a registration alone is insufficient. Review the generated metadata together with the source pin.
+
+An evaluator declaration is not a completed conformance run. Where evaluation is not yet defined, retain the source status and describe the scientific task without inventing validation or historical claims.
+
+## Participants
+
+Include the research paper, authors or research group, implementation URL, immutable source revision and supported native profiles. Literature-only entries remain valid research records; distinguish them from runnable integrations.
+
+Pinned declarations live in `registry/participants/`. Launch recipes live in `registry/framework-recipes/`; direct integrations live in `src/arena/frameworks/`. Each profile must specify its actual interface and artifact contract. State environment requirements and recorded blockers explicitly. Do not infer task compatibility from a paper's claims.
+
+```sh
+python -m arena.registry validate
+python scripts/audit_framework_coverage.py --check
+python -m arena.frameworks --help
+```
+
+The coverage command joins every participant to native interfaces, artifact interfaces or an explicit recorded blocker. `--json` emits the inventory; `--output /path/to/inventory.json` writes it outside the default source workflow.
+
+## Private engine releases
+
+Keep the engine repository and container image private. The public PR contains only a version reference at `registry/releases/SYSTEM/VERSION.json`:
+
+```json
+{"schema":"arena.release/1","system":"sciel","version":"1.0.4"}
+```
+
+This is an example version, not an assertion that it is registered. Additional fields, private repository addresses and image pointers are rejected in the public record.
+
+1. Build and test the engine in private CI from an exact source commit. Pin the resulting image by its full SHA-256 digest.
+2. Register the private binding in the worker's private release store. Use the shape in `examples/releases/` and `schemas/private-release.schema.json`.
+3. Open the Arena PR with the public system/version record. The reviewer verifies the private CI registration separately.
+4. After review, an authorized operator selects the released version in an explicit run configuration with a task/profile, model, budget and resource limits.
+
+Private registration:
+
+```sh
+python -m arena.releases register /srv/worker/private-binding.json \
+  --store /srv/worker/releases --public-root /srv/arena-web
+python scripts/check_releases.py
+```
+
+The first command prints only the public reference. The store must be private and outside the checkout and publication roots. Existing versions are immutable: changing either pin requires a new version. `resolve` is a worker-only operation whose output contains private pointers; never put it in public CI logs or PRs.
+
+Image/source provenance must be verified by private CI. Registration validates the contract and pins, but does not prove the build, execute the image or grant permission to run it.
+
+## Experiment results
+
+Keep native logs and evidence immutable outside the repository. Inspect them with `python -m arena --root /path/to/archives`. Publish through the explicit results exporter after verifying artifact identities, evaluator contracts and accounting coverage.
+
+Results should expose scores, budgets, elapsed time, measured calls and recorded changes to research cells or tools where available. Report the denominator and evidence source. Do not fill missing measurements, combine incompatible protocols or turn an observed association into a causal RSI claim.
+
+Changes to published snapshots and deployments require review independently of engine version registration.

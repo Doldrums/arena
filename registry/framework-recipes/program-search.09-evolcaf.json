@@ -1,0 +1,84 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "evolcaf",
+      "name": "EvolCAF",
+      "participant_ids": [
+        "evolcaf"
+      ],
+      "repository": {
+        "url": "https://github.com/FeiLiu36/EoH",
+        "commit": "4b2338fc2317c743cec50c5c7a2e4684707af973"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the eoh/ package from this historical recipe pin and BoTorch 0.9.2 with compatible PyTorch dependencies."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "7720014ff3c9115b87cad0113ceb2560298537f02ff6088b5a491cd59b683b79",
+        "eoh/src/eoh/eoh.py": "1cecd82098e8a68163788d462586889a379ef4465cf31867dba08bbd7dcf3111",
+        "eoh/src/eoh/methods/eoh/eoh.py": "01ba40a258f61202dc8d736ba76c92a17ab05d98ac3ea1fbaf8efc67f1792ccb",
+        "eoh/src/eoh/utils/getParas.py": "53ea7487d279e509d1e22ced0365d31854662afd93af0a367ccba1261b0ba73e",
+        "examples/user_bo_caf/instance/botorch_problem.pkl": "abaf980aa41d81385e77ba014c53a419d3486f419486d7bfe51b849c3728470d",
+        "examples/user_bo_caf/prob.py": "d9d4d989d467dc2f477bbf52cb8e5c4c181a8c9b866259736381549970fbfc7c",
+        "examples/user_bo_caf/prompts.py": "0c455edc72641b2279db11de082d44008577a130f7f79c608c2a3aaf1a819aa8",
+        "examples/user_bo_caf/readme.md": "8de68e850e6a3ccf04b5e040ffe75f907ad98ec41eaa864b509fdbe4c5a3c45a",
+        "examples/user_bo_caf/runEoH.py": "9e11218045576dab3bf389da5c2c6665437d6ee670998d9667c6db88652e222f"
+      },
+      "profiles": [
+        {
+          "id": "cost-aware-bo",
+          "description": "Authentic historical EvolCAF evolves cost-aware acquisition functions through eoh.EVOL and Evaluation.evaluate; the native objective is mean BO optimality gap (lower is better).",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.evolcaf"
+          },
+          "cwd": "examples/user_bo_caf",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "examples/user_bo_caf/runEoH.py",
+            "examples/user_bo_caf/prob.py",
+            "examples/user_bo_caf/prompts.py",
+            "examples/user_bo_caf/instance/botorch_problem.pkl",
+            "eoh/src/eoh/eoh.py",
+            "eoh/src/eoh/utils/getParas.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Authentic historical EvolCAF evolves cost-aware acquisition functions through eoh.EVOL and Evaluation.evaluate; the native objective is mean BO optimality gap (lower is better).",
+            "evidence": [
+              "examples/user_bo_caf/readme.md",
+              "examples/user_bo_caf/prob.py",
+              "eoh/src/eoh/methods/eoh/eoh.py"
+            ]
+          },
+          "argument_help": [
+            "Required: --endpoint HOST --model MODEL --population N --generations N",
+            "OPENAI_API_KEY is environment-only; --processes controls the outer native evolution worker count."
+          ],
+          "limitations": [
+            "Recipe intentionally pins 4b2338fc, the last parent before a8861e55 removed examples/user_bo_caf. The corpus metadata pin remains 47254578; these identities are recorded separately.",
+            "Native evaluation loads the pinned BoTorch problem pickle only during explicit execution. Arena planning and readers never unpickle it.",
+            "The native inner evaluator fixes 10 trials, 20 joblib workers and a 60-second BO-loop timeout; --processes does not change those inner settings."
+          ],
+          "python_paths": [
+            "eoh/src",
+            "examples/user_bo_caf"
+          ]
+        }
+      ]
+    }
+  ]
+}

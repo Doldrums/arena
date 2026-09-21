@@ -1,0 +1,69 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "mipro",
+      "name": "DSPy MIPROv2 (MIPRO lineage)",
+      "participant_ids": [
+        "mipro"
+      ],
+      "repository": {
+        "url": "https://github.com/stanfordnlp/dspy",
+        "commit": "40a6e168914a7b81a78b1a081d93f26de18c8d0d"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "pip install -e ."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "fc84421fcf968a696680dacf66ad53db769f699f557690127c5ccb3f6358cfdb",
+        "README.md": "9b2fa5d078b4e4aafe6f8a91d5677c735427e149a235708d98a18c28db8efdea",
+        "dspy/primitives/module.py": "e0eecbef0b9acb828618a59c6710beee40f569a84267e3c46eb7797af0ca7809",
+        "dspy/teleprompt/mipro_optimizer_v2.py": "6bf7632836d3a54ab0da3f38a8f1963813472312e9c0e3f2ff19b4377af407f3"
+      },
+      "profiles": [
+        {
+          "id": "miprov2-native-api",
+          "description": "Current pinned DSPy MIPROv2 component, explicitly distinct from original MIPRO.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.mipro_v2"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "dspy/teleprompt/mipro_optimizer_v2.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "**/*.json",
+            "**/*.jsonl",
+            "**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native DSPy compile metric over factory-supplied train/validation splits; compiled program JSON is retained.",
+            "evidence": [
+              "dspy/teleprompt/mipro_optimizer_v2.py",
+              "dspy/primitives/module.py"
+            ]
+          },
+          "argument_help": [
+            "--factory inputs/mipro_factory.py:build --trials 10 --candidates 4",
+            "Factory returns optimizer (metric/models) and compile (student/trainset/valset) dictionaries."
+          ],
+          "limitations": [
+            "Seven original MIPRO 2024 benchmark drivers were not located in this pinned DSPy tree. This profile must be attributed to MIPROv2.",
+            "API/model/data preparation belongs to the explicit research factory."
+          ]
+        }
+      ]
+    }
+  ]
+}

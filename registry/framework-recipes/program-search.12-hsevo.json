@@ -1,0 +1,140 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "hsevo",
+      "name": "HSEvo",
+      "participant_ids": [
+        "hsevo"
+      ],
+      "repository": {
+        "url": "https://github.com/datphamvn/HSEvo",
+        "commit": "f3afffabc2b458fddf70a42a8678758039671297"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the pinned requirements.txt and native task dependencies; provide explicitly allowed provider credentials."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c60b4146b281dd6cb730a00b2cc6a7c56c966f52a16e60a47f5ee4caa3c68f80",
+        "cfg/config.yaml": "016b30c508504bed3e78303020706a0b85bd75eee9f09e07df89ace85a4054d4",
+        "cfg/problem/bpp_online.yaml": "248826948095d691f5f25056f295de9cbb8ff5790562c20987b7bba14adbddf1",
+        "hsevo.py": "7552b14dd0ac15f87274967a84d04e3906bd30c3c66f4949a42e08654c67e592",
+        "main.py": "f3ac71b5ae57809b09fa1c363c96cf5fc78a9499bf0864654048a583906517ad",
+        "problems/bpp_online/eval.py": "4fa8b4e6f74afa0715e6411d7eb75809c7f35aadaa1435027f9c5f00d1a7bac1",
+        "utils/utils.py": "9655e5afca4b90f866414b934d161b38bc28782288730981ed3fa05153b1dbdc"
+      },
+      "profiles": [
+        {
+          "id": "online-bin-packing",
+          "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+          "invocation": {
+            "kind": "script",
+            "target": "main.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "algorithm=hsevo",
+            "problem=bpp_online"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "hsevo.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/problem/bpp_online.yaml"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "Hydra overrides: max_fe=N pop_size=N init_pop_size=N timeout=N",
+            "Choose a native model via model=... (HSEvo) or llm_client.model=... (ReEvo/MCTS-AHD)."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred."
+          ],
+          "protected_args": [
+            "--config-path",
+            "--config-name",
+            "--config-dir"
+          ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Small native CPU pilot through the private OpenAI-compatible gateway; exact API model identity.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.cpu_heuristic_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "hsevo",
+            "--",
+            "algorithm=hsevo",
+            "problem=bpp_online"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "hsevo.py",
+            "utils/utils.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/problem/bpp_online.yaml"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt",
+            "arena-provider-seam.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "The pilot uses reviewed cfg overlays; native Hydra command line options remain native."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred.",
+            "Native max_fe is not a strict API-call cap; retries and a complete generation can overshoot. The admitted wall timeout remains authoritative. API sampling controls are recorded as unenforced by the Codex-native gateway."
+          ],
+          "protected_args": [
+            "--config-path",
+            "--config-name",
+            "--config-dir"
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "TIKTOKEN_CACHE_DIR": "{workspace}/arena-inputs/tiktoken"
+          }
+        }
+      ]
+    }
+  ]
+}

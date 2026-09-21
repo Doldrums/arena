@@ -1,0 +1,74 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "agentsquare",
+      "name": "AgentSquare",
+      "participant_ids": [
+        "agentsquare"
+      ],
+      "repository": {
+        "url": "https://github.com/tsinghua-fib-lab/AgentSquare",
+        "commit": "8f5b3fe5d8a32f9b59d20370823bef2a2c86928c"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Install requirements.txt and prepare ALFWorld game data/environment.",
+        "Configure native model environment; fixed native models and iteration policy are not replaced by Arena."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "4413c5306b686c9a1ae48364c9b61e2c7a610e6420ce0461c11c1eb95c65fba9",
+        "search/agent_search.py": "9a0f7929be37fcfc48cc39104ecd69db74a41be03d7459a09e12dd2dd80b7f54",
+        "search/alfworld/alfworld_run.py": "f86b66c7700ee38937a6da0e5df9d7ac6982e9d397487c96dcc0d6b74980b30d",
+        "search/memory_modules.json": "9cfa68c228748d3c33ac2b117aa3b935231603f13c8c03365fa72a7ef1a5e09d",
+        "search/planning_modules.json": "d4010f2f922d10f4b111d3ebd551e185f519a366eba3c97f573f9f766a0680a4",
+        "search/reasoning_modules.json": "bd49e6d65700ef8c97f376e70d830bbde59b12de0aba95eb42c1b0d25b23ac02",
+        "search/tooluse_modules.json": "442cefbcb49601cce7ec0193546f7a31bbbd64f8789aaa9366e0ae989678f895"
+      },
+      "profiles": [
+        {
+          "id": "alfworld-search",
+          "description": "AgentSquare module evolution, recombination and ALFWorld native benchmarking",
+          "invocation": {
+            "kind": "script",
+            "target": "search/agent_search.py"
+          },
+          "cwd": "search",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "search/agent_search.py",
+            "search/planning_modules.json",
+            "search/reasoning_modules.json",
+            "search/tooluse_modules.json",
+            "search/memory_modules.json"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "search/*_final.json",
+            "search/*_iteration_*.json",
+            "search/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "AgentSquare module evolution, recombination and ALFWorld native benchmarking Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "search/agent_search.py",
+              "search/alfworld/alfworld_run.py"
+            ]
+          },
+          "argument_help": [
+            "The pinned entrypoint has no CLI options; native iteration/model choices are source-defined."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Native search edits module files; it must run in the isolated workspace.",
+            "Pinned search.py catches exceptions and can exit zero after failure; process completion is not successful optimization."
+          ]
+        }
+      ]
+    }
+  ]
+}

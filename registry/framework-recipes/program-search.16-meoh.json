@@ -1,0 +1,74 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "meoh",
+      "name": "MEoH",
+      "participant_ids": [
+        "meoh"
+      ],
+      "repository": {
+        "url": "https://github.com/Optima-CityU/LLM4AD",
+        "commit": "ffb6acf64497be93932c98d25369352efd3865cf"
+      },
+      "status": "source_verified",
+      "license": "BSD-2-Clause; module research-use notice",
+      "setup": [
+        "Install the pinned LLM4AD project and its online-bin-packing dependencies."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "66d37674abb627f800e3a034cf0353785e9ef2e5dc1d6736bbe31ae0a3e96857",
+        "example/methods/meoh/run_meoh_obp.py": "af3759b1a430938df30391c7175a43f19e6e5e97de5232c20782a66efdd2f0da",
+        "llm4ad/method/meoh/meoh.py": "498d0f76f89b588ebf4986f28d768381db9a52d6302a136358293a1d69397e9b",
+        "llm4ad/method/meoh/profiler.py": "c9c691fb6eb31eb4a6478878ccf91c6b76e51e16a682fe8f59a19e94d24c871d",
+        "llm4ad/task/optimization/online_bin_packing/generate_weibull_instances.py": "ee98f2916e85b06d5d9d79a541c4cdf1df33e185a21bf8ceef70ce8a4422cab6",
+        "llm4ad/task/optimization/online_bin_packing_2O/evaluation.py": "a09ceccbd508d891732d6b50f8e12edf26175f64ac8a641991e7eb43be1d1567",
+        "llm4ad/tools/llm/llm_api_https.py": "f4683d7bbc713b420957de78d85b6968c475e021fd64e022104cd2f118fe2d12"
+      },
+      "profiles": [
+        {
+          "id": "online-bin-packing-two-objectives",
+          "description": "Native MEoH.run preserves the two-objective OBP evaluator: negative mean bin count and negative evaluation time.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.meoh"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "example/methods/meoh/run_meoh_obp.py",
+            "llm4ad/method/meoh/meoh.py",
+            "llm4ad/method/meoh/profiler.py",
+            "llm4ad/tools/llm/llm_api_https.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native MEoH.run preserves the two-objective OBP evaluator: negative mean bin count and negative evaluation time.",
+            "evidence": [
+              "llm4ad/task/optimization/online_bin_packing_2O/evaluation.py",
+              "llm4ad/task/optimization/online_bin_packing/generate_weibull_instances.py"
+            ]
+          },
+          "argument_help": [
+            "Required: --host HOST --model MODEL --population N --generations N --samples N",
+            "OPENAI_API_KEY is environment-only; --host accepts a hostname without https://."
+          ],
+          "limitations": [
+            "Source root LICENSE is BSD-2-Clause; MEoH source headers also contain a research-use notice. This metadata does not resolve that discrepancy.",
+            "Native task generates its Weibull data and uses wall-clock timing as an objective."
+          ]
+        }
+      ]
+    }
+  ]
+}

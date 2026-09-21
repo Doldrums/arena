@@ -1,0 +1,78 @@
+backstop_k: 10
+bet_enabled: false
+budget: null
+candidate_novelty:
+  enabled: true
+  max_resamples: 2
+  neighbors: 3
+  output_repeats: false
+confirm_records: false
+crossover: false
+dup_cap: 4
+dynamic_islands: false
+embed_axis_path: models/behavior_axis/{task}_v3.npz
+embed_grid: false
+embed_grid_path: models/code_embed_v3.pt
+embed_niche: false
+embed_niche_path: models/code_embed_v2.pt
+idea_island: false
+inflight_cap: 1
+llm:
+  max_retries: 1
+  max_tokens: 32000
+  mock: true
+log_population: true
+max_islands: 6
+max_iterations: null
+milestone_fracs: []
+niche_csc_rate: 0.08
+niche_d_min: 0.35
+niche_k_max: 12
+niche_target_k: 6
+num_islands: 4
+op_fixed: full_rewrite
+op_intensify_boost: 0.5
+parallel_search:
+  capacity_dir: /Users/amoriodi/fall2026/arena/.extraction-tmp/work/replayed/capacity
+  enabled: true
+  host_evaluator_slots: 2
+  host_llm_slots: 4
+  max_inflight_per_island: 1
+  max_inflight_per_parent: 1
+  portfolio_schedule: blocking
+  provider_slots: 4
+  workers: 4
+policy:
+  base_mix:
+    base: 0.8
+    exploit: 0.2
+  elite_k: 3
+  enabled: false
+  plateau_hold: 40
+  plateau_horizon: 40
+  plateau_min_n: 12
+  plateau_mix:
+    base: 0.6
+    exploit: 0.4
+  plateau_shift: true
+  plateau_threshold: 0.5
+  tilt_beta: 0.3
+portfolio_seed: false
+random_seed: 23
+refine_elite_frac: 0.9
+refine_stall: 8
+research:
+  enabled: true
+  inject_lessons: true
+  max_aux_calls: null
+  max_experiments: 200
+  max_fragments: 20
+  max_lessons: 50
+  model: null
+  reflection_interval: 0
+  retrieve_k: 3
+schedule_horizon: 80
+schedule_policy: round_robin
+sh_min_fair_evals: 16
+spawn_stall: 12
+task: fixture/run_search

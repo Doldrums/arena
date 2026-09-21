@@ -1,0 +1,81 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "hsi",
+      "name": "HSI",
+      "participant_ids": [
+        "hsi"
+      ],
+      "repository": {
+        "url": "https://github.com/TailinZhou/hsi",
+        "commit": "97a022b9a9c260c0498806fc9826ebf22e753ed9"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Install requirements.txt, prepare BALROG data, and explicitly pass OPENAI_API_KEY/OPENAI_API_BASE environment names.",
+        "Provide bounded config overlays for the chosen benchmark; no game data or environments are installed by the adapter."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "29945faf0e98343a0b9458a6b00adc5b7369939bc5408957a66a19507dbb661a",
+        "benchmark_config_goal/balrog_babyai/config.yaml": "10257fe173b4a93c58abbe9d32f35ed2aaab4f8ae698ce7a6176aa2d32b474ec",
+        "main.py": "a2eb07e1af5f09e6cabcd23570a8e36d63d9f8629a447bd27fc634598dbdfbf9",
+        "src/benchmark/balrog/evaluator.py": "14dd7567e58589106e42e0ab2e6be589c4b448ee0d858c22b81981721590fa30"
+      },
+      "profiles": [
+        {
+          "id": "balrog-harness",
+          "description": "HSI hierarchical harness/meta-harness evolution with native BALROG benchmark evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "main.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "benchmark_config_goal/balrog_babyai/config.yaml"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "benchmark_config_goal/balrog_babyai/config.yaml"
+          ],
+          "config_files": [
+            "benchmark_config_goal/balrog_babyai/config.yaml",
+            "benchmark_config_goal/balrog_textworld/config.yaml",
+            "benchmark_config_goal/balrog_crafter/config.yaml",
+            "benchmark_config_goal/balrog_minihack/config.yaml",
+            "benchmark_config_goal/balrog_nle/config.yaml",
+            "benchmark_config_goal/balrog_babaisai_breakstop/config.yaml",
+            "benchmark_config_goal/balrog_babaisai_goto/config.yaml",
+            "benchmark_config_goal/balrog_babaisai_make/config.yaml"
+          ],
+          "result_globs": [
+            "evolution_results/**/*.json",
+            "evolution_results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "HSI hierarchical harness/meta-harness evolution with native BALROG benchmark evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "main.py",
+              "src/benchmark/balrog/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "--config benchmark_config_goal/SELECTED/config.yaml overrides the default BabyAI profile; budgets/model are in the config."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Source tracks .env; Arena removes only that file from the isolated workspace and never reads or hashes its contents.",
+            "Native benchmark runtime/data, game engines and initial harness repositories must be prepared. Unknown source license remains explicit."
+          ],
+          "remove_files": [
+            ".env"
+          ]
+        }
+      ]
+    }
+  ]
+}

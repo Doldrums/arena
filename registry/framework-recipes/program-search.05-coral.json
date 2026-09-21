@@ -1,0 +1,89 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "coral",
+      "name": "CORAL",
+      "participant_ids": [
+        "coral"
+      ],
+      "repository": {
+        "url": "https://github.com/Human-Agent-Society/CORAL",
+        "commit": "0123dfb939b35228cf2c1fde224cd0561e727408"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Install pinned CORAL and prepare its configured CLI agent, circle-packing seed environment and grader package."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "322e5f2d0b507c80445050afae5bcc4824150ae2a5eca9cb8c3dc8e0cace44c6",
+        "coral/agent/manager.py": "62abaf9c7525de70ab770d0769def3fd2aa435723cba984dae99cd0a4d724931",
+        "coral/cli/__init__.py": "cb2a8a247161fac5a110a2565102cb4ccc1f103cce910acf7f45b865ca3f91e4",
+        "coral/cli/__main__.py": "33dcbddbcd6d962b276f0cc193bfe7e963a5f4d5fc48bfdcbef20f303ef5f7f4",
+        "coral/cli/start.py": "f6fddc0a72ed991a7085117257724e7c9dd04966e8c298967c5fcc1daa4c92be",
+        "coral/config.py": "deb88add858f8d04f591911cadbeadbb23aaccfd791dbb8b74f606e079e3c4eb",
+        "examples/math/circle_packing/grader/src/circle_packing_grader/grader.py": "fe410f41114ffe3bcd6439356f4cab3f5d0e71a28bc79c7ea03658f729f32654",
+        "examples/math/circle_packing/seed/initial_program.py": "ec7ceb3075e8174b67ecf582e0511d850133080493a1a879f72a2598311fe44a",
+        "examples/math/circle_packing/task.yaml": "5eac077ad815ca1021bbb4ab3d0e8b4582f1eec55681c124455e538d62cbe531"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "CORAL runs its native agent manager in the foreground and grades attempts through the configured circle-packing Grader.",
+          "invocation": {
+            "kind": "module",
+            "target": "coral.cli"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "start",
+            "--config",
+            "examples/math/circle_packing/task.yaml",
+            "run.session=local"
+          ],
+          "output": null,
+          "required_files": [
+            "coral/cli/__main__.py",
+            "coral/cli/__init__.py",
+            "coral/cli/start.py",
+            "examples/math/circle_packing/seed/initial_program.py"
+          ],
+          "config_files": [
+            "examples/math/circle_packing/task.yaml"
+          ],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.db",
+            "results/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "CORAL runs its native agent manager in the foreground and grades attempts through the configured circle-packing Grader.",
+            "evidence": [
+              "coral/config.py",
+              "coral/agent/manager.py",
+              "examples/math/circle_packing/grader/src/circle_packing_grader/grader.py"
+            ]
+          },
+          "argument_help": [
+            "Native dotlist overrides include agents.model=MODEL agents.count=N and run.stop settings.",
+            "Configure the native CLI agent and explicit environment credentials before launch."
+          ],
+          "limitations": [
+            "Foreground run.session=local is fixed so launch does not detach into tmux.",
+            "Native workspace setup and grader setup may invoke uv during an explicitly launched run. Prepare dependencies before using the profile.",
+            "Default native results are results/<task>/<timestamp> with hidden .coral state."
+          ],
+          "protected_args": [
+            "-c",
+            "workspace.results_dir",
+            "workspace.run_dir"
+          ]
+        }
+      ]
+    }
+  ]
+}

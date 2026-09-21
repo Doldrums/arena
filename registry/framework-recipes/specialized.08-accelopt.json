@@ -1,0 +1,101 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "accelopt",
+      "name": "AccelOpt",
+      "participant_ids": [
+        "accelopt"
+      ],
+      "repository": {
+        "url": "https://github.com/zhang677/AccelOpt",
+        "commit": "47e29a7c24704e3c3e534b5bcbf39cfac3f831e3"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "python -m pip install logfire openai-agents",
+        "python setup.py install"
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "README.md": "c4593cc3f6aa2aabee8b8183222a521fb750a4f0ff9a9f76acb154323700efbc",
+        "accelopt/kernel_wrapper.py": "eb6e83a540862072a9877e09c9b7e70a0fb06eeb6c9605e6daa53e5115e5e293",
+        "scripts/executor.py": "5743bb4546d60fe98d3fd6dac08ac79d2ff79c01bb409c0a99008be7148cf509",
+        "scripts/planner.py": "d836bf7ef00705a9de683b17ec3ae43c9ba13c3a613827d1fc9a83b567f70168",
+        "templates/complete_local/run_first.sh": "0f1193957d1bd478de6c2a01a19a6145ab5247115a42181a67bd213b3d5079ec",
+        "templates/complete_local/run_single_loop.sh": "ff68bc0a9653444f355e02ef6db54c9e9722853f45a0fd2921135c9f63e8ee61",
+        "templates/fib/complete_local_prompts/run_single_loop.sh": "673b8498553e1a0acfbd77c373af944461b29b8eabe1c6c7d5d09b1d6d4a892d",
+        "templates/complete_local/run_init.sh": "2fa99275b4102ec68bd852638fe1c30a72d11ebeae2c64d34708019ab48f3eb7",
+        "templates/complete_local/run_accum_rewrites.sh": "c03a7216c63c2e118ebbf3c01252d275b19e869f82ae501607e963bd4c4f69ff",
+        "templates/complete_local/run_body.sh": "da6d92f7f36bce6ab21364cba0ab6708245e7525c0ad757d9afafe2ed8dd4388",
+        "experiments/full_complete_local/create_folders.py": "39f3e0c59b0e581da61d26eeb1f73ceff46a9415f6b1e75d1b847d1357227098",
+        "scripts/sequential_profile.py": "014952b9e36f860c837046d8ba849916aef01a74f375dea1af6c3fc3acb9db14",
+        "scripts/rewrites_selection.py": "a462bd1aa5113973cdfe4f8b109bdf1b08c1b2cd5305886153d46c6b35787f8c",
+        "scripts/select_candidates.py": "b35a3f95fa71970457a2e048618a8e359aec91c2f1434c63f25171c2a76113d0",
+        "scripts/construct_experience.py": "3e52813272e30e4db9640169c9edbb8e38f77a9f3edcfc8210bc656a16abf288"
+      },
+      "profiles": [
+        {
+          "id": "nkibench-complete-loop",
+          "description": "Complete native AccelOpt NKIBench loop for one prepared Trainium service, including experience selection and hardware profiling.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.accelopt"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "templates/complete_local/run_single_loop.sh",
+            "templates/complete_local/run_first.sh",
+            "templates/complete_local/run_init.sh",
+            "templates/complete_local/run_accum_rewrites.sh",
+            "templates/complete_local/run_body.sh",
+            "experiments/full_complete_local/create_folders.py",
+            "scripts/planner.py",
+            "scripts/executor.py",
+            "scripts/sequential_profile.py",
+            "scripts/rewrites_selection.py",
+            "scripts/select_candidates.py",
+            "scripts/construct_experience.py",
+            "accelopt/kernel_wrapper.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.csv",
+            "results/log.txt",
+            "results/arena-native-loop.sh"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native NKIKernel correctness checks and Neuron hardware latency profiling remain unchanged. Baseline profile is supplied as evidence; iteration artifacts are hashed without inferring canonical Arena scores.",
+            "evidence": [
+              "scripts/executor.py",
+              "scripts/sequential_profile.py",
+              "accelopt/kernel_wrapper.py"
+            ]
+          },
+          "argument_help": [
+            "--prepared-dir inputs/accelopt --project <logfire-project> --organization <logfire-org> --iterations 2 --neuron-core 0",
+            "Stage configs/{planner,executor,summarizer}_config.json and profile_results.csv for exactly one service; CSV task/kernel paths must point to tracked or staged workspace files.",
+            "--iterations counts feedback passes after one initial native planning/execution pass. The outer native-run timeout is also required.",
+            "Optional native controls: --breadth --top-candidates --samples --max-threshold --min-threshold --topk --experience-count --relative-tolerance."
+          ],
+          "limitations": [
+            "Requires a prepared AWS Trainium/Neuron environment, native profiler, Logfire account/project and compatible model endpoints; no hardware/model run was performed in integration verification.",
+            "The official create_folders.py substitutes the shell template variables. This driver instead creates a hash-checked execution copy with only positional parameters 10 through 15 braced; original source remains unchanged and arena-patch.json records both hashes.",
+            "Model config API keys must be nonsecret placeholders (None, EMPTY or not-needed strings); use local/worker-authenticated endpoints and explicit environment for service authentication.",
+            "NVIDIA/FlashInfer variants are not claimed by this Trainium profile. Native minute-resolution iteration directory naming and independent services retain upstream limitations.",
+            "No dependency install, endpoint probe, profiler run or model call occurs while planning."
+          ]
+        }
+      ]
+    }
+  ]
+}

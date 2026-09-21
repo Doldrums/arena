@@ -1,0 +1,82 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "limen",
+      "name": "LIMEN",
+      "participant_ids": [
+        "limen"
+      ],
+      "repository": {
+        "url": "https://github.com/Lossfunk/LIMEN",
+        "commit": "cf0b44da37f7e7ee038920c860a8cb00c610c9af"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare the native Python/CUDA/JAX environment and selected simulator; configure model/provider environment explicitly."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "1682fe81bc5b1f1b26be3fbf221ef0088f6de523866143810b5846b738f1fc1e",
+        "README.md": "c40de4e174088442e417ac516766f7c0dff21c208b66d389040539a20274e3ba",
+        "configs/easy_pickup.yaml": "0a2585ee71b8a91024df1d760add0181a6b14aa622591f7987ca50f9200f130a",
+        "limen/evaluator.py": "afa19e180381b67ed2d10f1371dea8dae943171ff94e741984670a8ef22caecd",
+        "run.py": "32d92bac53425b1746dfb21a5d3f9e6bf523fa3f64799d598f208b1644636976"
+      },
+      "profiles": [
+        {
+          "id": "rl-interface-search",
+          "description": "LIMEN observation/reward interface evolution using native RL training and fitness",
+          "invocation": {
+            "kind": "script",
+            "target": "run.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--run-dir",
+            "path": "native"
+          },
+          "required_files": [
+            "run.py",
+            "limen/evaluator.py",
+            "configs/easy_pickup.yaml"
+          ],
+          "config_files": [
+            "configs/brax_ant.yaml",
+            "configs/brax_humanoid.yaml",
+            "configs/easy_pickup.yaml",
+            "configs/go1_push_recovery.yaml",
+            "configs/hard_rule_chain.yaml",
+            "configs/medium_place_near.yaml",
+            "configs/panda_pick_and_track.yaml"
+          ],
+          "result_globs": [
+            "native/**/*.json",
+            "native/**/*.jsonl",
+            "native/**/*.log",
+            "native/**/*.csv"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "LIMEN observation/reward interface evolution using native RL training and fitness Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "run.py",
+              "limen/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "--task DESCRIPTION --config configs/PROFILE.yaml --iterations N --timesteps N --timesteps-full N --model MODEL",
+            "Credentials must use inherited OPENAI_API_KEY, never --api-key."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "CUDA/JAX, simulator/task data and the selected RL runtime are native prerequisites.",
+            "Native training returns are not automatically comparable across environments."
+          ]
+        }
+      ]
+    }
+  ]
+}

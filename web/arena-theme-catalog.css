@@ -1,0 +1,298 @@
+/* The task overview reads as atlas → idea → domains → research setup → Q/A. */
+.arena-intro {
+  max-width: 800px;
+  margin: 82px auto 90px;
+  padding: 0 18px;
+}
+.arena-idea-heading {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 19px;
+}
+.arena-idea-mark {
+  width: 31px;
+  height: 31px;
+  fill: none;
+  stroke: #779ac8;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+.arena-idea-eyebrow {
+  font-size: 11px;
+  color: #818087;
+  letter-spacing: 0.04em;
+}
+.arena-intro h1 {
+  font-size: 33px;
+  line-height: 1.2;
+  letter-spacing: -1.1px;
+  font-weight: 600;
+  color: #262628;
+  margin: 0 0 23px;
+}
+.arena-idea-text {
+  font-size: 29px;
+  line-height: 1.42;
+  letter-spacing: -0.85px;
+  font-weight: 450;
+  color: #79797b;
+  margin: 0;
+}
+.arena-idea-word {
+  white-space: nowrap;
+}
+.arena-inline-art {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.94em;
+  height: 0.94em;
+  vertical-align: -0.12em;
+  border-radius: 0.23em;
+  transform: rotate(-7deg);
+  margin: 0 0.03em;
+  box-shadow:
+    inset 0 1px 0 #ffffffd9,
+    0 2px 4px #30332809;
+}
+.arena-inline-art svg {
+  width: 0.7em;
+  height: 0.7em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.is-code.arena-inline-art,
+.is-code.arena-record-symbol,
+.is-code.arena-difference-icon {
+  color: #9680ba;
+  background: #ede7f6;
+}
+.is-search.arena-inline-art,
+.is-search.arena-record-symbol,
+.is-search.arena-difference-icon {
+  color: #6e91b4;
+  background: #e6eef7;
+}
+.is-lab.arena-inline-art,
+.is-lab.arena-record-symbol,
+.is-lab.arena-difference-icon {
+  color: #b47b86;
+  background: #f7e8eb;
+}
+.is-revision.arena-inline-art,
+.is-revision.arena-record-symbol,
+.is-revision.arena-difference-icon {
+  color: #b5945b;
+  background: #f6eddc;
+}
+.arena-inline-art.is-search {
+  transform: rotate(6deg);
+}
+.arena-inline-art.is-lab {
+  transform: rotate(-5deg);
+}
+.arena-inline-art.is-revision {
+  transform: rotate(7deg);
+}
+.arena-idea-context {
+  margin-top: 27px;
+  padding-left: 19px;
+  border-left: 2px solid #dedde7;
+  max-width: 680px;
+}
+.arena-idea-context p {
+  font-size: 14px;
+  line-height: 1.9;
+  color: #7b797f;
+  margin: 0;
+}
+.arena-idea-context cite {
+  font-style: normal;
+  color: #53515a;
+}
+.arena-idea-context q {
+  color: #46424f;
+}
+.arena-idea-citation {
+  display: inline-block;
+  font-size: 11px;
+  color: #88739d;
+  white-space: nowrap;
+  margin-left: 4px;
+}
+.arena-idea-citation:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+#arena-statistics {
+  margin-top: 25px;
+}
+#arena-statistics .insights-composition {
+  background: #fff;
+  border-color: #e8e5eb;
+  padding: 0 24px;
+}
+#arena-statistics .insights-composition > summary {
+  gap: 15px;
+  min-height: 74px;
+  font-size: 15px;
+}
+#arena-statistics .insights-composition > summary::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border: solid #9b8bac;
+  border-width: 0 1.5px 1.5px 0;
+  border-radius: 0;
+  background: none;
+  transform: rotate(45deg);
+  margin: 0 8px 4px 2px;
+  transition: transform 0.18s;
+}
+#arena-statistics .insights-composition[open] > summary::before {
+  transform: rotate(225deg);
+  margin-bottom: -3px;
+}
+#arena-statistics .insights-composition > summary small {
+  font-size: 11px;
+  color: #95899f;
+}
+@media (max-width: 720px) {
+  #arena-statistics {
+    margin-top: 21px;
+  }
+  #arena-statistics .insights-composition {
+    padding: 0 18px;
+  }
+  #arena-statistics .insights-composition > summary {
+    gap: 12px;
+    font-size: 14px;
+  }
+  #arena-statistics .insights-composition > summary small {
+    font-size: 10px;
+    margin-left: 29px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #arena-statistics .insights-composition > summary::before {
+    transition: none;
+  }
+}
+#arena-statistics .insights-composition > summary:focus-visible {
+  outline: 2px solid #9181ac;
+  outline-offset: -4px;
+  border-radius: 14px;
+}
+@media (max-width: 720px) {
+  .arena-metrics:not(.arena-task-metrics) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px;
+  }
+  .arena-metrics:not(.arena-task-metrics) .metric {
+    padding: 17px 13px;
+    min-height: 123px;
+    border-radius: 23px;
+    --metric-radius: 23px;
+  }
+  .arena-metrics:not(.arena-task-metrics) .metric-label {
+    font-size: 10px;
+    min-height: 32px;
+    line-height: 1.5;
+  }
+  .arena-metrics:not(.arena-task-metrics) .metric-icon,
+  .arena-metrics:not(.arena-task-metrics) .arena-metric-icon,
+  .arena-metrics:not(.arena-task-metrics) .metric-foot {
+    display: none;
+  }
+  .arena-metrics:not(.arena-task-metrics) .metric-value {
+    font-size: 29px;
+    margin-top: 12px;
+  }
+  .arena-metrics:not(.arena-task-metrics) .arena-curious-glow {
+    display: none;
+  }
+}
+/* A permanent catalog disclosure keeps filters, history and source evidence together. */
+.arena-catalog-browser {
+  margin: 25px 0 0;
+  border: 1px solid #e5e4e8;
+  border-radius: 21px;
+  background: #f1f1f3;
+  padding: 6px;
+}
+.arena-catalog-browser > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  cursor: pointer;
+  padding: 15px 18px;
+  min-height: 74px;
+  border-radius: 15px;
+  color: #45424a;
+  font-size: 16px;
+  font-weight: 500;
+}
+.arena-catalog-browser > summary::-webkit-details-marker {
+  display: none;
+}
+.arena-catalog-browser > summary small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: #87838b;
+  margin-top: 4px;
+}
+.arena-catalog-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #817b89;
+}
+.arena-catalog-toggle-label svg,
+.arena-faq summary svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+  transition: transform 0.18s;
+}
+.arena-catalog-browser[open] > summary .arena-catalog-toggle-label svg {
+  transform: rotate(180deg);
+}
+.arena-catalog-browser > summary:hover {
+  background: #eae9ee;
+}
+.arena-catalog-browser #arena-list-panel {
+  margin-bottom: 14px;
+  border-radius: 17px;
+}
+.arena-catalog-browser #arena-analysis {
+  padding: 14px 8px 8px;
+}
+.arena-catalog-browser #arena-analysis .arena-insights {
+  margin: 0;
+}
+.arena-catalog-browser:has(> summary[hidden]) {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: none;
+}
+.arena-catalog-browser:has(> summary[hidden]) #arena-list-panel {
+  border-radius: var(--card-radius);
+}

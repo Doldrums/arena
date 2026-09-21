@@ -1,0 +1,72 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "llm-evolved-rl-algorithms",
+      "name": "LLM-evolved RL algorithms",
+      "participant_ids": [
+        "llm-evolved-rl-algorithms"
+      ],
+      "repository": {
+        "url": "https://github.com/sygkounas/Designing-and-Evolving-New-Reinforcement-Learning-Algorithms-using-Large-Language-models",
+        "commit": "b69c4edee1dd37a684c75a1c904190e9a66e1995"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "python -m venv .venv; pip install -r requirements.txt (the README announces requirements.txt but the file is absent at the pinned commit)"
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "f502af514fc94348d96ad39932d33675c19accf66e5e8a078af5ada357f9883a",
+        "Revolve/cfg/config.yaml": "d4fec1406c9e364d250a5b313cfe43acba09c42aee99f6713b7cc80d0bbe366c",
+        "Revolve/cfg/generate.yaml": "4060bd58a85cc4fe8c955fa51a7c650bef5a539735a9e22ddec5fa11a19bbccd",
+        "Revolve/main.py": "92504d593fd605e6f939b1c7de982a23928690f2b8bdfb8cf2bf04115887ca75",
+        "Revolve/rl_agent/main_rl.py": "1950ecafc138390abbfc816e472153f24f2f3e3f5fc91815c224480aca189f4e",
+        "Revolve/rl_agent/rl_utils.py": "4263aa34260b52370cbfeed5cd3166ca94c32a961e6dbb3b5d2975cd4b191709"
+      },
+      "profiles": [
+        {
+          "id": "native-rl-evolution",
+          "description": "Released evolution of complete RL update-rule programs.",
+          "invocation": {
+            "kind": "script",
+            "target": "Revolve/main.py"
+          },
+          "cwd": "Revolve",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [],
+          "config_files": [
+            "Revolve/cfg/generate.yaml",
+            "Revolve/cfg/config.yaml"
+          ],
+          "result_globs": [
+            "Revolve/**/*.json",
+            "Revolve/**/*.jsonl",
+            "Revolve/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native fitness trains each generated algorithm across five environments; pinned code uses two seeds and 1000000 steps, which differs from the README five-seed description.",
+            "evidence": [
+              "Revolve/main.py",
+              "Revolve/rl_agent/main_rl.py",
+              "Revolve/rl_agent/rl_utils.py"
+            ]
+          },
+          "argument_help": [
+            "evolution.num_generations=1 evolution.individuals_per_generation=1 database.num_gpus=1"
+          ],
+          "limitations": [
+            "Pinned release lacks the README-announced requirements.txt and license. Dependency environment needs explicit preparation.",
+            "Each candidate triggers full RL training; this is not a cheap evaluator smoke test."
+          ],
+          "environment": {
+            "ROOT_PATH": "{workspace}/Revolve"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "qdaif-poetry-gateway",
+      "name": "QDAIF \u00b7 native poetry gateway pilot",
+      "participant_ids": [
+        "qdaif"
+      ],
+      "repository": {
+        "url": "https://github.com/CarperAI/OpenELM",
+        "commit": "c844e149e3f59fef546e0bc55f4e12e0f192feb9"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Use isolated Python3.11 plus pinned compatibility constraints for released LangChain0.0.225/typing_extensions4.5; CPU torch2.0.1 and native package metadata required.",
+        "Prepare source/constraint/freeze hashes and review seven actual-native SDK fixtures before admission. Recipe status does not claim service readiness."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "3f408439ded0fec4017836944bd3d49d59865ef53b180dc3d1c408d97df720da",
+        "requirements.txt": "8765e793c288e69837606440d5fb52b9345b48bfd2fae0856448d9881f4acfa4",
+        "pyproject.toml": "c2dc0015231eb70533926132e81373a72537be7e27bcf082f36ed6bca4e7f1da",
+        "run_elm.py": "9dcbde97a03123285581be8768d1987aa75f80e979e56a35d763ca54de7dd325",
+        "src/openelm/__init__.py": "2aeb00b50e04e4958f1bd40e9c2d3929037c9f633e708e4fb49d60364deae965",
+        "src/openelm/algorithms/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/openelm/algorithms/genetic.py": "8ee6dbcc9dfb989e807c85cf0ad01e076769149b1e5ae50c38edcc2500e45c32",
+        "src/openelm/algorithms/map_elites.py": "5bf8970f35232dccec21bcabd97abc36247cdcf482aca380b5898de410a90386",
+        "src/openelm/benchmarks/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/openelm/benchmarks/benchmark_bugs.py": "76c6eb35d6d4cc56561f51d3e07167e3782961097674ccf5e4abf1d7706071e1",
+        "src/openelm/benchmarks/benchmark_crossover.py": "399a6e4ff5de8ce90406bb258aadad4d573370a0bed7963f7cbef91980f9a7d4",
+        "src/openelm/benchmarks/benchmark_lm_speed.py": "88d07574c32a76258746cbb83f66a27545689478bfa969bd7d46ed8c49aea431",
+        "src/openelm/benchmarks/benchmark_sodarace_parallel.py": "8728df575a5c0ee755db726cb4cf188f4cfcdc4317ece5f516444a14e40d35e6",
+        "src/openelm/benchmarks/benchmark_tinygp.py": "d971877307762d9b03bb2e8c977a3977f85f06c8cd3ae6fc5a32ac5f51697a4e",
+        "src/openelm/benchmarks/benchmarks_triton.py": "8d5a9e9e131dd9e64200c84667c01091ff0a29f61fefa76bce02a1c77ab5c089",
+        "src/openelm/codegen/__init__.py": "6a1574fbf3f9b43e2b25a7fd5168977b0333f540e24648e923af782049a2f670",
+        "src/openelm/codegen/codegen_triton.py": "092bac9295aeb433f97915c3bb3f175ecbf529f7be0156a3500c18494f0c87cc",
+        "src/openelm/codegen/codegen_utilities.py": "c0a327d570392e41fc173361ae6443cb238a2944c05f6182adc87f094911182c",
+        "src/openelm/codegen/configuration_codegen.py": "8345798be59c375856fd6fb5ea4454c939779649ee3ebbb9d2fd9d79fc43f7e1",
+        "src/openelm/codegen/modelling_codegen.py": "42513a86126e15f4cafaa4e0ba8463318c54dffcccec0ab30a573d91a43a4e12",
+        "src/openelm/codegen/triton_utils/codegen_gptj_converter.py": "df39a12aa71e96b32351b593fe64f595109d437501519b41c05550fae81a709d",
+        "src/openelm/codegen/triton_utils/convert_ft.py": "d81effd47770a32a14d2e9d0def1e0c1197ef30afb5599349c2356d1afcb73b2",
+        "src/openelm/codegen/triton_utils/gptj_ftconverter.py": "787c1fac4e7f804c0b9220d229bfa67bd00f8e2bcea32eeca66d68ed86352fd0",
+        "src/openelm/configs.py": "45523dedc9c1de605c5d5e158bcc43a610b75ddae792b02475b25c0f8cf586da",
+        "src/openelm/constants.py": "38ec9793777899d6b5ccce986d775ac6a6b1221ec14e3bc17b9d6105d61ba1ef",
+        "src/openelm/elm.py": "415965ba2009e097cffc90ae78b11d713f6d6c3cbe9715fad143e3cc083d2e68",
+        "src/openelm/environments/__init__.py": "3d9edbbd95193a7489318793378a47e56b1d9f46d6f102b1022239aaf19a7370",
+        "src/openelm/environments/base.py": "c85a4d23addab682b5ca7e2af5ec4c74e6addd2e246cb5c484e1c9403fd5e8ed",
+        "src/openelm/environments/p3/__init__.py": "b1764bb0d05400c8ef9b3d0ab5983797850bc9e1b08778793658b7d7f16ff007",
+        "src/openelm/environments/p3/p3.py": "c3800b0e997fec7eabc86ce5efdd68bcfb18490f84818e04591ef0c871bf592b",
+        "src/openelm/environments/poetry.py": "c4d01886169afa991dbf1424bdddffb276b11b2196e738017c5cb897e5dd4744",
+        "src/openelm/environments/prompt/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/openelm/environments/prompt/prompt.py": "87c83e0fceaaa19e63ca2e62a43f6962e3318d42ea914db73d9d05627581e956",
+        "src/openelm/environments/prompt/utils.py": "53b5749e72c2296aa34a79258ed956a0615214fe7d0b96ab42b9213229dcdd62",
+        "src/openelm/environments/sodaracer/__init__.py": "1e6f425536ad8c44de6d7b953829079a2dd40a64206e5f03d4bd01eb1b8af801",
+        "src/openelm/environments/sodaracer/box2d_examples/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/openelm/environments/sodaracer/box2d_examples/backends/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/openelm/environments/sodaracer/box2d_examples/backends/opencv_draw.py": "9b3d2fa8edf3b143b42004ffdf59ef8f2aeabbbf738ffdb0b7fcdedde0973b4c",
+        "src/openelm/environments/sodaracer/box2d_examples/backends/opencv_framework.py": "ed5ada2a8386a93451330881a4fc59627c6f1729fd38a6c8291aa19f0649e35c",
+        "src/openelm/environments/sodaracer/box2d_examples/backends/pygame_framework.py": "5e63b52ba0089d0e430612d7e68692edd3910845cdc71fb0107aa3bb311fa1ce",
+        "src/openelm/environments/sodaracer/box2d_examples/backends/pygame_gui.py": "3d965c240f254290ac544c117a8a2acf4d0a643d87cc6472c0dd4dab470fd1bf",
+        "src/openelm/environments/sodaracer/box2d_examples/backends/pyglet_framework.py": "799b9187aeca826cb5ad1741071aba7e704d7495c89e0113e6f994ae6b8ef18d",
+        "src/openelm/environments/sodaracer/box2d_examples/backends/pyqt4_framework.py": "3f9299ff456033a2bdac59e6de4d0e4070129686e535a3d9d0cba83fb96dafc8",
+        "src/openelm/environments/sodaracer/box2d_examples/backends/pyqt4_gui.py": "046ddbe6af772b6a8e08d65cfb52d0eba452320d6073b684dab4c3b9a7716b29",
+        "src/openelm/environments/sodaracer/box2d_examples/backends/simple_framework.py": "5b9ac2374250441c98d6f8f8a6a25558f06836105fd34137ff46b212d5eb2f2c",
+        "src/openelm/environments/sodaracer/box2d_examples/framework.py": "5748b42e3994b51a745db573fea3cfe95ffc1e59f6e4c8985f341a04138d28be",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/__init__.py": "3a8256e51513f4f92d7b5d75f3855dfc52b620825a8f1fd687fe90fed6b303dc",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/__init__.py": "3ec76be117c00df3a5019036b951b9f44f4d14e354b6a801817a14e125f0fdca",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/app.py": "ecb7b7b9cd1024a846b708a72f7cef63edfeb15a48f0808dca5eddfe31643a99",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/area.py": "0d94253c83a32df48c6aef11924df21d50b34f4bda2c9bed9b0110f76df35c17",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/basic.py": "7eb9ab8f205c16d8bf12c5032245d98176837e351ab7cb2bd7ef869d14efb22e",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/button.py": "961aa4a540e14b2fc59a872363fc6e77194a757106fcf939797c1d44042544ea",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/const.py": "878479c25476895e92ce62a124055b6978d7f71c4ba9ae21512f8c42a3c54f60",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/container.py": "0e0439104acd953172e584b3881e6069a1c7152104afa2ce51c1f3f2cac64c6e",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/deprecated.py": "ae773ac448ac5863903f0caf9f0ae3d0a18244336ad00c669bccddfaf849393f",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/dialog.py": "0f85bdfbd9b721beb3b988a297d5c1f0211ca5f55537cae6b858b902cf54fff4",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/document.py": "038e2d0b87f6f49bdcb947dd3f2b1efb7874323e13db2c6a4572cbce222f9310",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/form.py": "f354e4879939012fcd7d9a3e7bae10ae824767a9e92451cf298eefafdf635cc4",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/group.py": "0dd768f20855d53d51e42223d2f44f1429f72973475788b2b510be4ff5ceac14",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/input.py": "5e5ca54a3279d1e3e635372b8f7fcd1f50717ab93b8d5d0d07c00a2dc7445524",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/keysym.py": "e3c13359728e38c7961f07525b4e49b6f8b4a4ada2342a8f3246721202f5b4c4",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/layout.py": "ffe79983a67be97a5bf50842c39657efd1ae603f8836e31a22585b756bf43f40",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/menus.py": "82bfc1a2a2e2bcd5088423d3978eb96fdbef06522cbc3bb970fd9c066aca9bfd",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/misc.py": "3f1cd1510cd8c9625cc7c596d9c3b4c25adc1866f643b592eb141e503abd9fb6",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/pguglobals.py": "2b04b5a5d82cb76f16ae3905127a596e2b7fca72f95729135db318ad3a6039d2",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/select.py": "0bb5d741dd537a255dd7b73e8210c6366c575ea10ece99c3ab14f602dd3d9409",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/slider.py": "3da1931a079568c64f734019eb14371e45beb17b00b50c5f0385a82190d573f3",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/style.py": "a53b84b019c8c49e8483ff80124ddf4f03bd17d5bf97163912876e1f54271e4c",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/surface.py": "107392da216abd9f1762973194155524847eb6912d98c79e9613afbcc7f7f4e7",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/table.py": "9a93eaebbb43be420ca625661778339b79d16e0e59c631569f7799b1f8c3e51e",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/textarea.py": "4c2eec135e0dc8b7dde9bfd2c74e7756bc2af3e0656d6772000516ffc02eca53",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/theme.py": "774fd2945290b2ca51d71cd783be98a871c718e91ca3a269ea79946cad3c8b5e",
+        "src/openelm/environments/sodaracer/box2d_examples/pgu/gui/widget.py": "8898b3cd197e3fdc0b3e9eea0d293f3da30399b9dd7049e0f6d7f5ad44aec796",
+        "src/openelm/environments/sodaracer/box2d_examples/settings.py": "6c20469c6c846ba9fc1e9180a2a4f4f6a6fe803470e02f4ca4cd38ce7aa67ae5",
+        "src/openelm/environments/sodaracer/environment_sandbox.py": "4294fef051ffc596e29995a6c37cc3d3544de3d6012ce04b99cdc83af096407c",
+        "src/openelm/environments/sodaracer/helpers.py": "e5dab42b28abf0f6c6bf8ea132c6a3a7392c4ac5ee4a3204b8188020817a1dfa",
+        "src/openelm/environments/sodaracer/simulator.py": "fb2f8a446c9dbe9727b784d803eb88ed9447161025f56a73f8d8a24cd247ed5a",
+        "src/openelm/environments/sodaracer/sodarace.py": "ec1818f23c57bb6d0d62682af4b474426fb5e7ce665dc69b16d04edffd4bc5fa",
+        "src/openelm/environments/sodaracer/walker/CPPN_fixed.py": "187e6b755eb6dcdfcdc6ac2461bc8283a5470bd4264da85fc997b5ad3bee2970",
+        "src/openelm/environments/sodaracer/walker/CPPN_mutable.py": "bcdbb3d49fa6ed7ae6590791d05c6c996752db2e9c53446f659bd5a10473374a",
+        "src/openelm/environments/sodaracer/walker/__init__.py": "22f9bb82740a98e3727e6ff786d28b886ca0550b0a68561ca786354dd89333f1",
+        "src/openelm/environments/sodaracer/walker/galloper.py": "657c864c324b0dfb38d6ec1aa8165129961f73200a7ec019cfd10bb2433cd066",
+        "src/openelm/environments/sodaracer/walker/radial.py": "ed6b9f9cf00ee6c5788f25400010eae521de707e35759b54fe6d066306fa25b6",
+        "src/openelm/environments/sodaracer/walker/runner.py": "e2d8b2447fd1e4b7a6e52832d1aaf2d9a8ef024227697a526d9860abacb48f1c",
+        "src/openelm/environments/sodaracer/walker/square.py": "2cca3004cc7ed8ba3be79e3d76065c53f9118fe1d03e9bcaf8451ee0497a6944",
+        "src/openelm/environments/sodaracer/walker/walk_creator.py": "527beb4f52cbb64a428bc063b9a0e83f775c078018e417f9ccb2d2f8ee904776",
+        "src/openelm/environments/sodaracer/walker/wheel.py": "bdcf12bffcfd6b1bf86da00c6976fed7dfd2a49a32673014122bf51c9e5701b9",
+        "src/openelm/environments/utils.py": "157ce322ca21b353d5fd9675aadd6390f4f4e2fe0171f8254b099d87fb3f0970",
+        "src/openelm/mutation_model.py": "83d5968580ce15d3ba1a01536f9cd9ba9a9dae8999e6036ee01b3d9a6e7ad132",
+        "src/openelm/sandbox/server/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "src/openelm/sandbox/server/environments/walker/CPPN_fixed.py": "bb7440337fc3f1e01c90f6af26f5551547f95550c1ac1091461ab9a693af2ab6",
+        "src/openelm/sandbox/server/environments/walker/CPPN_mutable.py": "bfdfe30c7ec9672ad98aa198fd20e17f22f803d92e88a82d5f8722ff66664d91",
+        "src/openelm/sandbox/server/environments/walker/__init__.py": "7bd7f9a0192dfb07036006791a9cc086d46381c3decc5796830131a827a5a855",
+        "src/openelm/sandbox/server/environments/walker/radial.py": "8cb02222d93cf01184f277b6ac0d29513089c7ab86c50ae71257760ae42b4be4",
+        "src/openelm/sandbox/server/environments/walker/square.py": "5d09cc053482059e6d6328291a33f46622373125763becdd2efa95c3edeff89c",
+        "src/openelm/sandbox/server/environments/walker/walk_creator.py": "e66101100f952e2e35a8a0d43b903faad311f93186313801afc284c1896a9988",
+        "src/openelm/sandbox/server/index.py": "21a0ace81e47597cf7dd329a777857666a027a06104220a27ada1c3b8f9975e7",
+        "src/openelm/sandbox/server/sandbox_codex_execute.py": "cfc693939434bab2aeae6337e0589675f0624746bc0794f59fbfc0622582c274",
+        "src/openelm/utils/__init__.py": "0f70de5a14d4535544d5bf8d8c066254d08ae07cc20f6363ef22b2d3d61835ca",
+        "src/openelm/utils/code_eval.py": "215940f1114c45377d2857344ec86098c9cfdf96bc4ea00b95885af513ace05a",
+        "src/openelm/utils/diff_eval.py": "cfb68398cb72e5bb9398c95529b6ba74fb2b5fa15f8c222b3efc59f8c653291f",
+        "src/openelm/utils/utils.py": "7ff2fd289c041f0f0aa808580120aab733dc9c913dc0358447207c9be2826e50"
+      },
+      "profiles": [
+        {
+          "id": "poetry-mapelites-pilot",
+          "description": "Native QDAIF poetry MAP-Elites: packaged seed, quality judgment and categorical diversity judgment, exact gateway model.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.qdaif_poetry_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--preparation",
+            "arena-inputs/qdaif-preparation.json",
+            "--dependencies",
+            "arena-inputs/qdaif-dependencies.txt",
+            "--constraints",
+            "arena-inputs/qdaif-constraints.txt"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "qdaif-pilot"
+          },
+          "required_files": [
+            "src/openelm/mutation_model.py",
+            "src/openelm/environments/poetry.py",
+            "src/openelm/algorithms/map_elites.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "qdaif-pilot/**/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Unchanged PoetryGenotype quality JSON and genre/tone JSON judgments populate native 5\u00d75 MAP-Elites archive. Self-judged quality/diversity, not canonical task fitness.",
+            "evidence": [
+              "src/openelm/environments/poetry.py",
+              "src/openelm/algorithms/map_elites.py",
+              "src/openelm/configs.py"
+            ]
+          },
+          "argument_help": [
+            "--model EXACT_REVIEWED_ID; three hash-bound arena-inputs files required.",
+            "Four native iterations, batch2, initial iteration1; 8 poems and 16 native judgments."
+          ],
+          "limitations": [
+            "Only get_model factory is replaced in the isolated clone, with before/after hashes. Native algorithm, evaluator, archive, packaged seed and prompts are unchanged.",
+            "Exact same model generates and judges; old prefix-based ChatOpenAI/OpenAI selection is replaced by a dual text/messages callable. No embeddings, logprobs or local weights.",
+            "24 physical HTTP attempts including legacy SDK warmup retries; no HTTP adapter retries. Serialized requests/evaluations, request timeout330s, outer2400s. Not a monetary budget.",
+            "Malformed judgments keep native behavior; quality is not clamped and unknown genre/tone can fail the native search.",
+            "Native generation controls temperature/top_p/max_tokens are recorded but not enforced by current gateway. Native pickle files remain opaque; JSON exports live state only.",
+            "Offline SDK fixtures validate protocol, not live provider readiness or paper reproduction."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONUNBUFFERED": "1",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "MPLBACKEND": "Agg",
+            "HF_HUB_OFFLINE": "1",
+            "TRANSFORMERS_OFFLINE": "1",
+            "WANDB_MODE": "disabled"
+          },
+          "python_paths": [
+            "src"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "aflow",
+      "name": "AFlow",
+      "participant_ids": [
+        "aflow"
+      ],
+      "repository": {
+        "url": "https://github.com/FoundationAgents/AFlow",
+        "commit": "3f457218fc716093fe53f6df8a5d5e6379d66346"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install requirements.txt; stage credential-free config/config2.yaml through config_overlays; credentials must remain environment references."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "bce279a8f86499db0f9b1962884544108e4f81705d7c966ad59c66917b1131e5",
+        "README.md": "33845595c1f3f7a102cd31f171a11045415802972487beab8ce6e05e2c24cd46",
+        "config/config2.example.yaml": "32de9e0f212426a8bc53b85cf89f3e1eba99e091fb84c514d2a1eaab87cb2eb6",
+        "run.py": "ac106a27bc83d6022f349fc363fcc591b889cea01f02345c0c9370fc9f236873",
+        "scripts/evaluator.py": "5d115ac921b69f9d5055300cf52969c5e0b4474ab2f5daad13b8af988218616e",
+        "scripts/optimizer.py": "26cc9ac8f99177ed670c75fd6a265294c1dbaf1518e41f383eaf1d980b3968e5"
+      },
+      "profiles": [
+        {
+          "id": "workflow-search",
+          "description": "AFlow workflow optimization over its native MATH/GSM8K/HumanEval/MBPP/HotpotQA/DROP benchmark selection",
+          "invocation": {
+            "kind": "script",
+            "target": "run.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--optimized_path",
+            "path": "native"
+          },
+          "required_files": [
+            "run.py",
+            "scripts/optimizer.py",
+            "scripts/evaluator.py"
+          ],
+          "config_files": [
+            "config/config2.yaml"
+          ],
+          "result_globs": [
+            "native/**/*.json",
+            "native/**/*.jsonl",
+            "native/**/*.csv"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "AFlow workflow optimization over its native MATH/GSM8K/HumanEval/MBPP/HotpotQA/DROP benchmark selection Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "scripts/optimizer.py",
+              "scripts/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "--dataset MATH --max_rounds N --sample N --opt_model_name MODEL --exec_model_name MODEL"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "config/config2.yaml must be supplied from the pinned example; placeholders and model/provider choices must be configured.",
+            "The upstream CLI and benchmark code may download data; no downloads occur during Arena planning."
+          ]
+        }
+      ]
+    }
+  ]
+}
