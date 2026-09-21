@@ -59,7 +59,7 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 | [ENPIRE](https://arxiv.org/pdf/2606.19980) (`enpire`) | Artifact interface only | [`enpire`](https://github.com/NVlabs/ENPIRE/tree/99ee90acf65b5b18957c8382ad580db999528be3) (artifact_only; 1 profile(s)) |
 | [EoB](https://arxiv.org/pdf/2601.21877) (`eob`) | Native source interface present | [`eob`](https://github.com/MetaEvo/EoB/tree/5d9f30cb19a0231a74f58d17926cff828db6857f) (source_verified; 1 profile(s)) |
 | [EoH](https://arxiv.org/pdf/2401.02051) (`eoh`) | Native source interface present | [`eoh`](https://github.com/FeiLiu36/EoH/tree/472545785c936dcfc863d2bc0d6109cf23c7ce62) (source_verified; 1 profile(s)) |
-| [EoH-S](https://arxiv.org/pdf/2508.03082) (`eoh-s`) | Native source interface present | [`eoh-s`](https://github.com/FeiLiu36/EoH-S/tree/8310b056ab0d4ea83d194f1d9e8c7873c0a3b892) (source_verified; 1 profile(s)) |
+| [EoH-S](https://arxiv.org/pdf/2508.03082) (`eoh-s`) | Native source interface present | [`eoh-s`](https://github.com/FeiLiu36/EoH-S/tree/8310b056ab0d4ea83d194f1d9e8c7873c0a3b892) (source_verified; 2 profile(s)) |
 | [Eureka](https://arxiv.org/pdf/2310.12931) (`eureka`) | Native source interface present | [`eureka`](https://github.com/eureka-research/Eureka/tree/9eee42808b52d8abc14845d1547bfde886403ccc) (source_verified; 1 profile(s)) |
 | [EurekAgent](https://arxiv.org/pdf/2606.13662) (`eurekagent`) | Native source interface present | [`eurekagent`](https://github.com/THU-Team-Eureka/EurekAgent/tree/fb96df897dfb99797a77623aa0dd9ee178fe89d2) (source_verified; 1 profile(s)) |
 | [EvoFlow](https://arxiv.org/pdf/2502.07373) (`evoflow`) | Recorded implementation/integration blocker | `evoflow`: The catalog provides no immutable implementation pin. The paper-cited https://github.com/bingreeky/EvoFlow.git returned Repository not found on the explicit fetch retry; no runnable adapter can be tied to verified source. |
@@ -85,7 +85,7 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 | [LaSR](https://arxiv.org/pdf/2409.09359) (`lasr`) | Native source interface present | [`lasr`](https://github.com/trishullab/LibraryAugmentedSymbolicRegression.jl/tree/776196e339191736e20d4eb6eed7c468aa6e4472) (source_verified; 1 profile(s)) |
 | [LIMEN](https://arxiv.org/pdf/2605.03408) (`limen`) | Native source interface present | [`limen`](https://github.com/Lossfunk/LIMEN/tree/cf0b44da37f7e7ee038920c860a8cb00c610c9af) (source_verified; 1 profile(s)) |
 | [LLaMEA-BO](https://arxiv.org/pdf/2505.21034) (`llamea-bo`) | Native source interface present | [`llamea-bo`](https://github.com/Ewendawi/LLaMEA-BO/tree/938b4d780aa0cbf9f7c941ebab61dadfa9157185) (source_verified; 1 profile(s)) |
-| [LLaMEA-HPO](https://arxiv.org/pdf/2410.16309) (`llamea-hpo`) | Native source interface present | [`llamea-hpo`](https://github.com/XAI-liacs/LLaMEA/tree/2a200f6b48038358223326b45869892b8ca09c4d) (source_verified; 1 profile(s)) |
+| [LLaMEA-HPO](https://arxiv.org/pdf/2410.16309) (`llamea-hpo`) | Native source interface present | [`llamea-hpo`](https://github.com/XAI-liacs/LLaMEA/tree/2a200f6b48038358223326b45869892b8ca09c4d) (source_verified; 3 profile(s)) |
 | [LLaMEA-MOBO](https://arxiv.org/pdf/2607.08791) (`llamea-mobo`) | Native source interface present | [`llamea-mobo`](https://github.com/glatq/LLaMEA-MOO/tree/18861aa47f17905c28aa33c5a9f33df3a893d191) (source_verified; 1 profile(s)) |
 | [LLM-evolved RL algorithms](https://arxiv.org/pdf/2603.28416) (`llm-evolved-rl-algorithms`) | Native source interface present | [`llm-evolved-rl-algorithms`](https://github.com/sygkounas/Designing-and-Evolving-New-Reinforcement-Learning-Algorithms-using-Large-Language-models/tree/b69c4edee1dd37a684c75a1c904190e9a66e1995) (source_verified; 1 profile(s)) |
 | [LLM-FlowRepair](https://arxiv.org/pdf/2608.19347) (`llm-flowrepair`) | Recorded implementation/integration blocker | `llm-flowrepair`: The catalog provides no verified official repository or immutable source revision for this paper; no executable method can be attributed from a benchmark-only evaluator. |
@@ -135,11 +135,11 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 
 Snapshot bindings:
 
-- `registry/participants.json`: `a9594bd57871d9e7f611ae7032a4ab9138e1c46b2d96af818a274577b5b41fa0`
+- `registry/participants.json`: `766f305f88910ba257f7881ed4af1a63c8f62a524d066640eecb9d6f67a86361`
 - `registry/framework-recipes/additional.json`: `c6e50ba51ab3415abcd7a553fe8eb1641e655f7e3d1d0c01bbc22e6b447309d0`
 - `registry/framework-recipes/agent-systems.json`: `fd3b88aada8ff990030cf4c8f10951a828cd7bc26a149de6c8894daf112efce9`
 - `registry/framework-recipes/community.json`: `e29e8fadfd1addacdd6accf955accb5c5ae0bf3c762ea432f955e1cca95f2c79`
 - `registry/framework-recipes/funsearch-original.json`: `1bdc224fe22875789a83095961817e209d3c83be87067d0483758ebebbcdda95`
 - `registry/framework-recipes/program-search.json`: `9ab7bee1603dcb95692a2fd169b39ba9e5e3d0ca9f5528e53b787d0774a5f95b`
-- `registry/framework-recipes/specialized.json`: `38c4bc4d85119e4af7fe0ca531c6e8131791de2ded6aac937ca4e3a79f13447f`
+- `registry/framework-recipes/specialized.json`: `07c51f6dae2b37520ce51ed9e72745ab6ada06d12a9bae07d946e22f17d8d737`
 - `registry/framework-recipes/unavailable.json`: `38671bfbde81c4b7420b0e5cd6e19d9593e51ed60c5942e8c784490e79b14ee0`

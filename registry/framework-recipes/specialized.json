@@ -867,7 +867,11 @@
         "README.md": "cf60a5ffc582153afedd7956780757f19203872328d2330d1db73df48e3cbb10",
         "examples/black-box-opt-with-HPO.py": "639801bc40be6ea560e756486cf0ab872f0ca27a62dd38fb9d23511d779430ae",
         "llamea/llamea.py": "1ea91e25e52afa8fd7a2cc84df87fd43bacb904aab71f8787f57adfb8a88cefe",
-        "llamea/loggers.py": "62c5090d7aa9332d710c95ddf22e9688b17cb1acb97c3507845065f1e6407fd2"
+        "llamea/loggers.py": "62c5090d7aa9332d710c95ddf22e9688b17cb1acb97c3507845065f1e6407fd2",
+        "examples/black-box-optimization.py": "c0e399a9ee358e331ad8f8f4a1f8bae10c1ccc45a62d491fb8f7826a4a4c8009",
+        "misc/utils.py": "51e06b05e768eb67cf29da70949ef45f73cfd5e3458ee55b4c9720a6bde3fcb6",
+        "llamea/llm.py": "41f6ef1071d4d9d36e3d0f9664c52052013a1769e6d7060f6478c1d7bec7cc15",
+        "llamea/solution.py": "13c8996e090b4c14a98dbfc11f5de947a3fbdc720c72ab66c9ce3165e4ba2b79"
       },
       "profiles": [
         {
@@ -905,6 +909,110 @@
           "limitations": [
             "The example script passes mutation_prompts, absent from the current pinned LLaMEA constructor; use the native API driver rather than claiming the stale example executes.",
             "HPO=True alone does not implement SMAC: the user factory must supply the actual HPO evaluation function."
+          ]
+        },
+        {
+          "id": "gateway-bbob-pilot",
+          "description": "Native LLaMEA with packaged BBOB AOCC evaluator; explicit pilot budgets. HPO variant retains native SMAC facade with compatibility fixes.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.llamea_bbob_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "examples/black-box-optimization.py",
+            "examples/black-box-opt-with-HPO.py",
+            "misc/utils.py",
+            "llamea/llm.py",
+            "llamea/solution.py",
+            "llamea/llamea.py",
+            "llamea/loggers.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.log",
+            "results/**/*.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native LLaMEA with packaged BBOB AOCC evaluator; explicit pilot budgets. HPO variant retains native SMAC facade with compatibility fixes.",
+            "evidence": [
+              "examples/black-box-optimization.py",
+              "examples/black-box-opt-with-HPO.py",
+              "misc/utils.py",
+              "llamea/llm.py",
+              "llamea/solution.py",
+              "llamea/llamea.py",
+              "llamea/loggers.py"
+            ]
+          },
+          "argument_help": [
+            "--model gpt-5.6-sol; scoped OPENAI_API_KEY via explicit environment_names."
+          ],
+          "limitations": [
+            "Native evaluation only; canonical_evaluation=false. Pilot budgets do not reproduce paper-scale experiments.",
+            "No provider token/temperature enforcement; native retry/parse behavior can exceed nominal sample count; outer timeout applies.",
+            "HPO profile fixes obsolete Solution.keys() check and string instance IDs, uses8 SMAC trials and1000 objective calls; ordinary evaluator unchanged. Native max_workers=1 does not guarantee per-candidate timeout; admitted outer cgroup2400s is authoritative."
+          ]
+        },
+        {
+          "id": "gateway-bbob-hpo-pilot",
+          "description": "Native LLaMEA with packaged BBOB AOCC evaluator; explicit pilot budgets. HPO variant retains native SMAC facade with compatibility fixes.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.llamea_bbob_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--hpo"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "examples/black-box-optimization.py",
+            "examples/black-box-opt-with-HPO.py",
+            "misc/utils.py",
+            "llamea/llm.py",
+            "llamea/solution.py",
+            "llamea/llamea.py",
+            "llamea/loggers.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.log",
+            "results/**/*.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native LLaMEA with packaged BBOB AOCC evaluator; explicit pilot budgets. HPO variant retains native SMAC facade with compatibility fixes.",
+            "evidence": [
+              "examples/black-box-optimization.py",
+              "examples/black-box-opt-with-HPO.py",
+              "misc/utils.py",
+              "llamea/llm.py",
+              "llamea/solution.py",
+              "llamea/llamea.py",
+              "llamea/loggers.py"
+            ]
+          },
+          "argument_help": [
+            "--model gpt-5.6-sol; scoped OPENAI_API_KEY via explicit environment_names."
+          ],
+          "limitations": [
+            "Native evaluation only; canonical_evaluation=false. Pilot budgets do not reproduce paper-scale experiments.",
+            "No provider token/temperature enforcement; native retry/parse behavior can exceed nominal sample count; outer timeout applies.",
+            "HPO profile fixes obsolete Solution.keys() check and string instance IDs, uses8 SMAC trials and1000 objective calls; ordinary evaluator unchanged. Native max_workers=1 does not guarantee per-candidate timeout; admitted outer cgroup2400s is authoritative."
           ]
         }
       ]
@@ -1101,7 +1209,13 @@
         "code/LICENSE": "7720014ff3c9115b87cad0113ceb2560298537f02ff6088b5a491cd59b683b79",
         "code/llm4ad/method/eohs/eohs.py": "96ca5020c831ed0f4a87fba67f1c8346f62d56fe18d9cb4faee03580fda81b2f",
         "code/llm4ad/method/eohs/profiler.py": "63417966e7d0a8f7265d37a3f5597d944852b6d3dea020004639284a1abba823",
-        "examples/training/obp_set/run_eohs.py": "6325b1faa0dac97e1f4e5f24fadaf0be679cca11009874d143315373989a49ef"
+        "examples/training/obp_set/run_eohs.py": "6325b1faa0dac97e1f4e5f24fadaf0be679cca11009874d143315373989a49ef",
+        "code/llm4ad/method/eohs/population.py": "242a2b4813d529ff75214dd6a0d2e8a348bf9cfae14e15e277815b1887c3063b",
+        "code/llm4ad/task/optimization/online_bin_packing_set/evaluation.py": "1709d5904c400cec5009ab8390882e59b94ab481505be8f46033ff3a167a1a21",
+        "code/llm4ad/task/optimization/online_bin_packing_set/template.py": "6207a211c65a8013417aab155d0a037d4c6ba0ae7e9bfa61c7a225f975637658",
+        "code/llm4ad/tools/llm/llm_api_https.py": "1048f628fca49fa052572bb2ddce769693894000a9c1fd9a59621c1175b8b624",
+        "code/llm4ad/tools/profiler/profile.py": "e67d77c569c27aacb1a1f0e30ff6aaef1c73818a63f9bb8a200ad6356145dae0",
+        "datasets/obp/dataset_100_2k_128_5_80_training.pkl": "6ef362b59973163225579e26e5e49f6196579287ff7a3eab0609693db4e25513"
       },
       "profiles": [
         {
@@ -1142,6 +1256,61 @@
           "limitations": [
             "Dataset pickle files are native task inputs, only hashed by Arena; execution of trusted native tasks occurs only on explicit run.",
             "Bundled LLM4AD file headers add research/commercial-use language despite the MIT LICENSE file; review upstream terms before redistribution."
+          ],
+          "python_paths": [
+            "code"
+          ]
+        },
+        {
+          "id": "gateway-obp-set-pilot",
+          "description": "Native EoHS complementary heuristic-set search and packaged online bin packing training evaluator; list-valued native scores retained.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.eohs_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "code/llm4ad/method/eohs/eohs.py",
+            "code/llm4ad/method/eohs/population.py",
+            "code/llm4ad/task/optimization/online_bin_packing_set/evaluation.py",
+            "code/llm4ad/task/optimization/online_bin_packing_set/template.py",
+            "code/llm4ad/tools/llm/llm_api_https.py",
+            "code/llm4ad/tools/profiler/profile.py",
+            "datasets/obp/dataset_100_2k_128_5_80_training.pkl"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.log",
+            "results/**/*.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native EoHS complementary heuristic-set search and packaged online bin packing training evaluator; list-valued native scores retained.",
+            "evidence": [
+              "code/llm4ad/method/eohs/eohs.py",
+              "code/llm4ad/method/eohs/population.py",
+              "code/llm4ad/task/optimization/online_bin_packing_set/evaluation.py",
+              "code/llm4ad/task/optimization/online_bin_packing_set/template.py",
+              "code/llm4ad/tools/llm/llm_api_https.py",
+              "code/llm4ad/tools/profiler/profile.py",
+              "datasets/obp/dataset_100_2k_128_5_80_training.pkl"
+            ]
+          },
+          "argument_help": [
+            "--model gpt-5.6-sol; scoped OPENAI_API_KEY via explicit environment_names.",
+            "--tls-ca arena-inputs/worker-ca.pem (hashed public trust-bundle input)."
+          ],
+          "limitations": [
+            "Native evaluation only; canonical_evaluation=false. Pilot budgets do not reproduce paper-scale experiments.",
+            "No provider token/temperature enforcement; native retry/parse behavior can exceed nominal sample count; outer timeout applies.",
+            "Preserves upstream n_instances=32 and its n>n_instances break (up to33 dataset entries), native training split and complementary population management. Native LLM4AD research-use/citation terms apply."
           ],
           "python_paths": [
             "code"
