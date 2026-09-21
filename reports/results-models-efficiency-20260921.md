@@ -83,4 +83,24 @@ zero research-tool events and remains a separate initial-search efficiency resul
   four-call reference card, preserved model-filter isolation and workspace
   sidebar. No JavaScript errors or horizontal page overflow occurred.
 
-Deployment verification will be appended after publication.
+## Verified deployment
+
+Code commit: `9aafc8fafd80fe5c15770e5eca130147b12e99b6`. The reviewed Git archive
+SHA-256 is `fcc8ddb5846cf15f2c5ff2e5bab8077591196aa2f1b441ffe860b45904bc6757`.
+The VM observer now runs `/opt/arena/observer-releases/9aafc8f`; only the board was
+restarted. Its warmed API returned 217 native records, 203 published research
+records, 196 integration records and all six expected RSI counters. The experiment
+worker process remained unchanged.
+
+- Main Worker: `bed18b9f-b2c8-424f-b141-056dcd2ba5c9`.
+- Expiring debug Worker: `37bd9a50-a63e-4e47-9abb-97ffed6544e5`.
+
+Authenticated browser checks on the deployed debug Worker verified both Results
+routes at desktop/mobile sizes using the actual published snapshot, not fixtures.
+The RSI panel comes first; all seven models and 145 circle outcomes are visible;
+the independent selected-run card shows four calls and a 0.0000000145 gap. Model
+filters retain exact evaluator scope while leaving the global activity and
+all-model distribution visible. No JavaScript errors or page overflow occurred.
+Unauthenticated aggregate requests remained 401, and the main Results route
+retained the university Access sign-in gate. Existing authentication, debug
+expiry and private observer bindings were preserved.

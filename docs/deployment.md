@@ -26,7 +26,10 @@ when its private control API is unavailable, as on Cloudflare. Non-GET/HEAD
 requests return 405. The research snapshot currently contains 203 measured
 SCiEL runs, separate from 196 integration records. See the
 [Results refresh report](../reports/results-research-refresh-20260921.md) for
-metric definitions and validation.
+metric definitions and validation. The latest Results update leads with recorded
+research-cell and authored-tool activity, shows all models in separate evaluator
+groups and includes a receipt-bound effort-to-result comparison. See the
+[RSI activity and model coverage report](../reports/results-models-efficiency-20260921.md).
 
 The existing private VM service hosts experiments and control APIs independently.
 The Worker exposes only an explicit allowlist of native observer GET/HEAD routes.
@@ -76,7 +79,7 @@ and [connector requirements](https://developers.cloudflare.com/workers-vpc/confi
 ### Observer-only updates and imported history
 
 The September 21 observer update uses a separate code release at
-`/opt/arena/observer-releases/b6f1b32`. The board's systemd drop-in,
+`/opt/arena/observer-releases/9aafc8f`. The board's systemd drop-in,
 `/etc/systemd/system/arena-board.service.d/80-observer-snapshot.conf`, selects its
 `src` directory through `PYTHONPATH`. This leaves the worker's existing
 `/opt/arena/current` release and running experiments unchanged. Future board
