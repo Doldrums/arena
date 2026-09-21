@@ -210,7 +210,7 @@ def _pilot_plan(reader):
 
 
 def _fresh_baseline(reader, initial, plan):
-    from .drivers.dgm_pilot import TASKS, baseline_complete
+    from .drivers.dgm_pilot import TASKS, baseline_records_complete
     proof_path = reader.root / "workspace/dgm/.arena-pilot/baseline-proof.json"
     proof = _decoder().decode(reader.read(proof_path, _MAX_JSON))
     if (type(proof) is not dict or proof.get("schema") != "arena.dgm-fresh-baseline/1"
@@ -220,23 +220,33 @@ def _fresh_baseline(reader, initial, plan):
             or proof.get("native_baseline_completed") is not True or proof.get("canonical_evaluation") is not False
             or type(proof.get("files")) is not dict or not 1 <= len(proof["files"]) <= 4096):
         raise ValueError("DGM fresh-baseline proof does not match this run")
+    report_name = plan["model"] + "_0.0.json"
+    predictions = "predictions/" + plan["model"] + "_0/"
+    required = {report_name, "metadata.json"}
+    required.update(predictions + task + suffix for task in TASKS for suffix in (".json", ".md"))
+    if proof.get("report") != report_name or not required <= proof["files"].keys():
+        raise ValueError("DGM fresh-baseline proof omits required native evidence")
     content = {}
     for name, expected in proof["files"].items():
         relative = PurePosixPath(name)
         if (relative.is_absolute() or ".." in relative.parts or str(relative) != name or "\\" in name
-                or not re.fullmatch(r"[a-f0-9]{64}", expected)):
+                or type(expected) is not str or not re.fullmatch(r"[a-f0-9]{64}", expected)):
             raise ValueError("DGM fresh-baseline proof contains an invalid artifact path/hash")
-        value = reader.read(initial / name, _MAX_JOURNAL)
+        value = reader.read(initial / name, _MAX_JSON if name.endswith(".json") else _MAX_JOURNAL)
         if hashlib.sha256(value.encode()).hexdigest() != expected:
             raise ValueError("DGM fresh-baseline artifact hash mismatch")
         if name.endswith(".json"):
             content[name] = _decoder().decode(value)
-    report_name = plan["model"] + "_0.0.json"
-    if proof.get("report") != report_name or report_name not in content or "metadata.json" not in content:
-        raise ValueError("DGM fresh-baseline proof lacks the actual report and metadata")
-    baseline_complete(content[report_name], initial / "predictions" / (plan["model"] + "_0"))
-    performance = content["metadata.json"].get("overall_performance")
-    if (content["metadata.json"].get("run_id") != "initial" or type(performance) is not dict or performance != proof.get("native_performance")
+    states = baseline_records_complete(content[report_name],
+        {task: content[predictions + task + ".json"] for task in TASKS}, plan["model"] + "_0")
+    if any(predictions + task + "_eval.md" not in proof["files"]
+           for task in TASKS if states[task] != "empty_patch"):
+        raise ValueError("DGM fresh-baseline proof omits native evaluation logs")
+    metadata = content["metadata.json"]
+    if type(metadata) is not dict:
+        raise ValueError("DGM fresh-baseline metadata is not an object")
+    performance = metadata.get("overall_performance")
+    if (metadata.get("run_id") != "initial" or type(performance) is not dict or performance != proof.get("native_performance")
             or performance.get("total_submitted_instances") != 2
             or performance.get("total_resolved_instances") != content[report_name]["resolved_instances"]
             or performance.get("accuracy_score") != content[report_name]["resolved_instances"] / 2):

@@ -40,3 +40,21 @@ adapter, broker and evaluator proxy. Fixtures cover real Unix client disconnect,
 bounded partial evidence publication, interrupted-service recovery, provenance
 checks, symlink rejection, stream bounds and root engine identity mapping. These
 tests perform no model calls; the real pilot above is separate evidence.
+
+## Seven-model private-image artifact check
+
+The same approved worker image was submitted under all seven available account
+model IDs. Six processes completed; the Luna process stopped after a gateway
+HTTP 500 with an unknown generation outcome. That failed attempt is retained,
+not silently retried or counted as completion.
+
+A read-only audit of all seven privileged broker receipts verified **888
+artifact hashes** against the published run files. All seven receipts confirm
+cleanup. The runs retain 44 canonical evaluation receipts in total: seven in
+each completed run and two in the stopped Luna run. This count alone is not a
+claim of improvement or a model ranking. The audit did not execute research.
+
+The operator evidence is
+`/srv/arena/build/sciel-image-matrix-artifact-audit-20260921.json`.
+See [native pilot findings](native-pilot-findings-20260921.md) for the
+Luna failure diagnosis and the limit of the old gateway audit.

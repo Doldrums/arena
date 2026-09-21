@@ -241,7 +241,11 @@ def test_http_chat_response_usage_and_metadata_only_audit():
         assert data["choices"][0]["message"]["content"] == "answer"
         assert data["usage"] == {"prompt_tokens": 9, "completion_tokens": 2, "total_tokens": 11}
         assert transport.seen[0]["model"] == MODEL and "max_tokens" not in transport.seen[0]
-        assert audits and set(audits[0]) == {"request_id", "model", "usage", "status"}
+        assert audits and set(audits[0]) == {"request_id", "model", "usage", "status", "started_at", "elapsed_seconds"}
+        assert headers["X-Request-Id"] == audits[0]["request_id"]
+        assert data["id"] == "chatcmpl-" + audits[0]["request_id"]
+        assert 0 < audits[0]["started_at"] <= time.time()
+        assert audits[0]["elapsed_seconds"] >= 0
         assert "private fixture prompt" not in json.dumps(audits) and "answer" not in json.dumps(audits) and KEY not in json.dumps(audits)
 
 
@@ -324,6 +328,28 @@ def test_upstream_rate_limit_is_distinguished_without_logging_private_details():
     assert audits[0]["error_code"] == "upstream_rate_limit"
     assert "private upstream diagnostic" not in json.dumps(audits)
     assert KEY not in json.dumps(audits)
+
+
+@pytest.mark.parametrize("stream", [False, True])
+def test_internal_failure_retains_safe_type_timing_and_response_correlation(stream):
+    events = [{"type": "response.output_text.delta", "delta": "partial"}] if stream else []
+    events.append(ValueError("private diagnostic " + KEY))
+    before = time.time()
+    with gateway(Transport(events)) as (server, bridge, audits):
+        status, headers, raw = call(server, body=chat(stream=stream))
+    assert status == (200 if stream else 500)
+    assert len(audits) == 1
+    audit = audits[0]
+    assert headers["X-Request-Id"] == audit["request_id"]
+    assert audit["status"] == 500 and audit["error_code"] == "gateway_error"
+    assert audit["exception_type"] == "ValueError"
+    assert before <= audit["started_at"] <= time.time()
+    assert audit["elapsed_seconds"] >= 0
+    assert "private diagnostic" not in raw.decode() + json.dumps(audit)
+    assert KEY not in raw.decode() + json.dumps(audit)
+    if stream:
+        parsed = list(parse_sse([raw]))
+        assert parsed[-1]["error"]["code"] == "gateway_error" and None not in parsed
 
 
 def test_anthropic_messages_text_tools_and_local_api_key():

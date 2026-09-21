@@ -198,6 +198,105 @@ def test_reader_refuses_fresh_label_after_report_tampering(prepared, monkeypatch
     assert "fresh_baseline" not in result["native"]
 
 
+@pytest.mark.parametrize("suffix", [".json", ".md", "_eval.md"])
+def test_reader_requires_every_baseline_prediction_artifact_in_proof(prepared, monkeypatch, suffix):
+    _, _, request, output = prepared
+    _, workspace = stage(prepared)
+    fake_native(monkeypatch, workspace, request["model"])
+    pilot.run(workspace, request["model"])
+    proof_path = workspace / ".arena-pilot/baseline-proof.json"
+    proof = json.loads(proof_path.read_text())
+    missing = f"predictions/{request['model']}_0/{pilot.TASKS[0]}{suffix}"
+    del proof["files"][missing]
+    dump(proof_path, proof)
+    result = DGMAdapter().read_results(output)
+    member = result["native"]["runs"][0]["members"][0]
+    assert result["status"] == "partial"
+    assert member["cached_initial"] is None and member["baseline_provenance"] == "unverified"
+    assert "fresh_baseline" not in result["native"]
+
+
+@pytest.mark.parametrize("listed", [False, True])
+def test_reader_never_reads_predictions_through_external_parent(prepared, monkeypatch, tmp_path, listed):
+    _, _, request, output = prepared
+    _, workspace = stage(prepared)
+    fake_native(monkeypatch, workspace, request["model"])
+    pilot.run(workspace, request["model"])
+    initial = workspace / "output_dgm/20260921120530_123456/initial"
+    outside = tmp_path / "outside-native-output"
+    (initial / "predictions").rename(outside)
+    (initial / "predictions").symlink_to(outside, target_is_directory=True)
+    proof_path = workspace / ".arena-pilot/baseline-proof.json"
+    proof = json.loads(proof_path.read_text())
+    if not listed:
+        proof["files"] = {k: v for k, v in proof["files"].items() if not k.startswith("predictions/")}
+    dump(proof_path, proof)
+    external_reads = []
+    # These benign fixtures reproduce the old direct Path.read_* bypass without
+    # accessing any real data outside the test directory.
+    for method in ("read_bytes", "read_text"):
+        original = getattr(Path, method)
+        def checked(path, *args, _original=original, **kwargs):
+            if path.resolve().is_relative_to(outside):
+                external_reads.append(str(path))
+            return _original(path, *args, **kwargs)
+        monkeypatch.setattr(Path, method, checked)
+    result = DGMAdapter().read_results(output)
+    assert external_reads == []
+    assert result["status"] == "partial"
+    assert "fresh_baseline" not in result["native"]
+
+
+def test_reader_preserves_native_empty_patch_without_inventing_eval_logs(prepared, monkeypatch):
+    _, _, request, output = prepared
+    _, workspace = stage(prepared)
+    fake_native(monkeypatch, workspace, request["model"])
+    pilot.run(workspace, request["model"])
+    initial = workspace / "output_dgm/20260921120530_123456/initial"
+    report_path = initial / (request["model"] + "_0.0.json")
+    report = json.loads(report_path.read_text())
+    report.update(unresolved_instances=0, unresolved_ids=[], empty_patch_instances=2,
+                  empty_patch_ids=list(pilot.TASKS))
+    dump(report_path, report)
+    for task in pilot.TASKS:
+        path = initial / f"predictions/{request['model']}_0/{task}.json"
+        dump(path, json.loads(path.read_text()) | {"eval_result": "empty_patch"})
+        path.with_name(task + "_eval.md").unlink()
+    metadata = json.loads((initial / "metadata.json").read_text())
+    metadata["overall_performance"].update(total_unresolved_ids=[], total_emptypatch_ids=list(pilot.TASKS))
+    dump(initial / "metadata.json", metadata)
+    proof_path = workspace / ".arena-pilot/baseline-proof.json"
+    proof = json.loads(proof_path.read_text())
+    proof.update(files=pilot.tree(initial), native_performance=metadata["overall_performance"])
+    dump(proof_path, proof)
+    # Result reading must not reuse the live-harness helpers that open paths.
+    monkeypatch.setattr(pilot, "read_json", lambda *_: pytest.fail("reader bypassed bounded evidence"))
+    monkeypatch.setattr(pilot, "sha", lambda *_: pytest.fail("reader bypassed bounded evidence"))
+    result = DGMAdapter().read_results(output)
+    assert result["status"] == "recorded"
+    assert result["native"]["fresh_baseline"]["overall_performance"]["accuracy_score"] == 0
+    assert result["native"]["fresh_baseline"]["cached_initial"] is False
+
+
+def test_reader_bounds_prediction_json_even_with_matching_proof_hash(prepared, monkeypatch):
+    from arena.frameworks import dgm
+    _, _, request, output = prepared
+    _, workspace = stage(prepared)
+    fake_native(monkeypatch, workspace, request["model"])
+    pilot.run(workspace, request["model"])
+    initial = workspace / "output_dgm/20260921120530_123456/initial"
+    name = f"predictions/{request['model']}_0/{pilot.TASKS[0]}.json"
+    path = initial / name
+    path.write_text(path.read_text() + " " * dgm._MAX_JSON)
+    proof_path = workspace / ".arena-pilot/baseline-proof.json"
+    proof = json.loads(proof_path.read_text())
+    proof["files"][name] = hashlib.sha256(path.read_bytes()).hexdigest()
+    dump(proof_path, proof)
+    result = DGMAdapter().read_results(output)
+    assert result["status"] == "partial"
+    assert "fresh_baseline" not in result["native"]
+
+
 def test_wrapper_refuses_raw_docker_before_imports_or_mutation(prepared, monkeypatch):
     _, _, request, _ = prepared
     _, workspace = stage(prepared)

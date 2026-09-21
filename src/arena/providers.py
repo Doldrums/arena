@@ -668,6 +668,8 @@ class GatewayHandler(BaseHTTPRequestHandler):
         self.send_header("Cache-Control", "no-store")
         self.send_header("Connection", "close")
         self.send_header("X-Content-Type-Options", "nosniff")
+        if getattr(self, "request_id", None):
+            self.send_header("X-Request-Id", self.request_id)
         if length is not None:
             self.send_header("Content-Length", str(length))
         if compatibility:
@@ -715,9 +717,11 @@ class GatewayHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         request_id = uuid.uuid4().hex
+        self.request_id = request_id
+        started_at, started_clock = time.time(), time.monotonic()
         model, observed, status, streaming = None, {}, 500, False
         compatibility = None
-        error_code = None
+        error_code = exception_type = None
         try:
             self._authenticate()
             if self.path not in {"/v1/chat/completions", "/v1/responses", "/v1/messages"}:
@@ -820,6 +824,7 @@ class GatewayHandler(BaseHTTPRequestHandler):
         except ProviderError as exc:
             status = exc.status
             error_code = exc.code
+            exception_type = type(exc).__name__
             data = {"error": {"type": exc.code, "code": exc.code, "message": exc.message}}
             try:
                 if streaming:
@@ -828,12 +833,14 @@ class GatewayHandler(BaseHTTPRequestHandler):
                     self._reply(data, status, compatibility, exc.retry_after)
             except (BrokenPipeError, ConnectionResetError, TimeoutError):
                 pass
-        except (BrokenPipeError, ConnectionResetError, TimeoutError):
+        except (BrokenPipeError, ConnectionResetError, TimeoutError) as exc:
             status = 499
             error_code = "client_disconnected"
-        except Exception:
+            exception_type = type(exc).__name__
+        except Exception as exc:
             status = 500
             error_code = "gateway_error"
+            exception_type = type(exc).__name__
             data = {"error": {"code": "gateway_error", "message": "The private gateway could not complete this request."}}
             try:
                 if streaming:
@@ -843,10 +850,12 @@ class GatewayHandler(BaseHTTPRequestHandler):
             except OSError:
                 pass
         finally:
-            # No body, headers, token claims, errors or input/output text are logged.
-            record = {"request_id": request_id, "model": model, "usage": observed, "status": status}
+            # No bodies, credentials, exception messages or input/output text.
+            record = {"request_id": request_id, "model": model, "usage": observed, "status": status,
+                      "started_at": started_at, "elapsed_seconds": max(0, time.monotonic() - started_clock)}
             if error_code is not None:
                 record["error_code"] = error_code
+                record["exception_type"] = exception_type
             self.server.bridge.audit(record)
 
     @staticmethod

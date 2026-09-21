@@ -93,6 +93,7 @@ def test_optional_exact_pinned_source_and_nonexecuting_plan(tmp_path):
     output = tmp_path / "output"
     command = RecipeAdapter(RECIPE).prepare(source, {
         "python": sys.executable,
+        "profile": "single-threaded-native",
         "arguments": ["--factory", "inputs/provider.py:build", "--specification", "inputs/task.py", "--max-samples", "5"],
     }, output)
     assert command["argv"][:3] == [sys.executable, "-m", "arena.frameworks.drivers.funsearch_original"]

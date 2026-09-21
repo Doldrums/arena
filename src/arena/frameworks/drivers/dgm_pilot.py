@@ -85,8 +85,8 @@ def validate_preparation(source, prepared, freeze):
     return manifest
 
 
-def baseline_complete(report, predictions):
-    """Accept a native zero score, reject incomplete/error/mismatched reports."""
+def _baseline_task_states(report):
+    """Validate decoded native report counts without opening any artifacts."""
     expected = set(TASKS)
     if (type(report) is not dict or report.get("submitted_instances") != 2
             or report.get("completed_instances") != 2 or report.get("total_instances") != 2
@@ -106,11 +106,28 @@ def baseline_complete(report, predictions):
             raise ValueError("Fresh DGM baseline counts do not match task identities")
     if set(states) != expected:
         raise ValueError("Fresh DGM baseline does not classify both tasks")
+    return states
+
+
+def baseline_records_complete(report, predictions, model_name):
+    """Pure validation shared by the live harness and bounded result reader."""
+    states = _baseline_task_states(report)
+    if type(predictions) is not dict or set(predictions) != set(TASKS):
+        raise ValueError("Fresh DGM baseline lacks both prediction records")
     for task in TASKS:
-        record = read_json(predictions / (task + ".json"))
-        if (record.get("instance_id") != task or record.get("success") is not True
-                or record.get("eval_result") != states[task] or record.get("model_name_or_path") != predictions.name):
+        record = predictions[task]
+        if (type(record) is not dict or record.get("instance_id") != task or record.get("success") is not True
+                or record.get("eval_result") != states[task] or record.get("model_name_or_path") != model_name):
             raise ValueError("Fresh DGM baseline prediction and report disagree")
+    return states
+
+
+def baseline_complete(report, predictions):
+    """Live-harness check; untrusted result readers use decoded records instead."""
+    _baseline_task_states(report)
+    records = {task: read_json(predictions / (task + ".json")) for task in TASKS}
+    states = baseline_records_complete(report, records, predictions.name)
+    for task in TASKS:
         sha(predictions / (task + ".md"))
         if states[task] != "empty_patch":
             sha(predictions / (task + "_eval.md"))

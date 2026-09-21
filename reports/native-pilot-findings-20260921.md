@@ -42,6 +42,66 @@ to attribute every rejected request to an upstream account quota. The updated
 gateway audit records sanitized fixed error codes, including local versus
 upstream limits, without recording credentials, prompts or generated text.
 
+## SCiEL private-image Luna: dispatched generation failed
+
+Run `560c5df96d754b9aadec56df6bedf5b1` stopped on its second G request.
+The native dispatch began at 06:40:19.132 UTC and returned HTTP 500 at
+06:42:14.552 UTC after 115.419 seconds; the recorded local queue wait was
+0.000891 seconds. The contemporaneous gateway audit records request
+`0cf10b7885cf459389711d844bfac118`, model `gpt-5.6-luna`, status 500 and
+unknown usage. This was neither a canonical evaluation failure nor the local
+300-second timeout. The old running gateway did not record the exception class
+or error code, so its underlying internal exception cannot be recovered from
+these records.
+
+SCiEL retained `generation_dispatch=unknown` and
+`current_call_cost_unknown=true`, persisted its wave stop and exited. No
+successful generation or zero-cost claim follows from that failed response.
+The authoritative broker receipt is
+`/srv/arena/releases/engine-receipts/560c5df96d754b9aadec56df6bedf5b1.json`,
+SHA-256 `ac325a9d8d326f736aaa2836e57067565e85b03f728c6e045becad4bab4a6270`.
+All 54 published artifact hashes matched, and cleanup was confirmed. Two
+canonical SAT receipts remain valid at score 1.0: the initial seed and one
+returned generated candidate. The seed already scored 1.0; there is no measured
+improvement. The failed dispatched generation was not automatically retried.
+
+Future gateway diagnostics should retain bounded exception-class and request
+timing/correlation metadata without prompts, provider bodies or credentials.
+This diagnosis did not change the provider service or historical artifacts.
+
+## Original FunSearch: client timeout shorter than gateway deadline
+
+Retry run `9d3f5d9cd4d14f3e95b9826c7a22bf04` ran from 06:30:25.058 to
+06:33:27.805 UTC, 182.747 seconds. The installed SDK raised `ReadTimeout` while
+waiting for response headers, followed by `APITimeoutError`. The original
+pilot's client used a 180-second timeout and no SDK retries, while the gateway
+allowed 300 seconds and buffered this nonstreaming completion.
+
+Native evidence records one attempted sample, zero returned samples and one
+sandbox call for the seed. The native admissible-set seed score 125 was
+registered in two islands; these are not two evaluations. There are no
+canonical receipts or generated candidate results from this run. Its retained
+`results/native-result.json` SHA-256 is
+`34beaf333fbc272039af5a9a2fd4de80f5e3ceb25e491efc20f30030e8bf9f8b`;
+`results/native-trace.jsonl` is
+`1da6d46c79622266524d025438322864162fc71eb53355207f682356164ebad8`.
+
+At 06:33:34.313 UTC the gateway recorded a Sol response with status 499 and
+195 input / 5,657 output tokens, request
+`6fce10f1e48142cfafcb9fa68014eedc`. Its timing and input size fit this timeout,
+but the old audit lacks start time and request correlation for the failed
+client, so that association remains an inference. It is not a returned native
+generation, proof of zero spend, or an exact billable-cost measurement.
+
+The separately versioned `funsearch-original-timeout-v2` recipe raises the
+client timeout to 330 seconds, above the expected 300-second gateway deadline,
+with `max_retries=0`. It retains six generated samples, the same native task,
+search/scoring pipeline and a 2,400-second outer runtime template. Existing
+original/reimplementation recipe hashes and their default 180-second behavior
+are unchanged. Seven new templates are prepared only; this work did not admit
+runs, call a provider or alter live configuration. See the
+[versioned transport notes](../docs/frameworks/funsearch-timeout-v2.md).
+
 ## MCTS-AHD prompt/evaluator mismatch
 
 Cancelled run: `4c35e2423b68411395d5b49fd1aa98d5`.

@@ -47,10 +47,12 @@ class SampleBudget:
             await asyncio.gather(stop, return_exceptions=True)
 
 
-def original(args):
+def original(args, *, request_timeout=180):
     import openai
     from . import funsearch_original as driver
-    client = openai.OpenAI(base_url=GATEWAY, api_key=os.environ['OPENAI_API_KEY'], timeout=180, max_retries=0)
+    if type(request_timeout) is not int or request_timeout not in (180, 330):
+        raise ValueError('Only the reviewed 180/330-second request deadlines are supported')
+    client = openai.OpenAI(base_url=GATEWAY, api_key=os.environ['OPENAI_API_KEY'], timeout=request_timeout, max_retries=0)
     def draw(prompt):
         response = client.chat.completions.create(model=args.model, n=1,
             messages=[{'role':'system','content':'Complete the final Python function in the supplied program. Return only its indented function body, without the def header, markdown fences or explanation. Preserve the input/output contract.'},

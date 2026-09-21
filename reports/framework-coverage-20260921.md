@@ -2,7 +2,7 @@
 
 This is a source/interface inventory, not a leaderboard or a statement that research runs have completed. All joins use explicit participant IDs. A task evaluator, baseline repository, result notebook and search engine are different artifacts.
 
-The registry contains **99 participant records** and **98 distinct paper IDs**. It has **3 direct adapters** and **107 recipe records** (including explicit blockers and artifact interfaces). Multiple recipe records can belong to one work.
+The registry contains **99 participant records** and **98 distinct paper IDs**. It has **3 direct adapters** and **109 recipe records** (including explicit blockers and artifact interfaces). Multiple recipe records can belong to one work.
 
 | Participant coverage | Count |
 | --- | ---: |
@@ -59,7 +59,7 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 | [ENPIRE](https://arxiv.org/pdf/2606.19980) (`enpire`) | Artifact interface only | [`enpire`](https://github.com/NVlabs/ENPIRE/tree/99ee90acf65b5b18957c8382ad580db999528be3) (artifact_only; 1 profile(s)) |
 | [EoB](https://arxiv.org/pdf/2601.21877) (`eob`) | Native source interface present | [`eob`](https://github.com/MetaEvo/EoB/tree/5d9f30cb19a0231a74f58d17926cff828db6857f) (source_verified; 1 profile(s)) |
 | [EoH](https://arxiv.org/pdf/2401.02051) (`eoh`) | Native source interface present | [`eoh`](https://github.com/FeiLiu36/EoH/tree/472545785c936dcfc863d2bc0d6109cf23c7ce62) (source_verified; 1 profile(s)) |
-| [EoH-S](https://arxiv.org/pdf/2508.03082) (`eoh-s`) | Native source interface present | [`eoh-s`](https://github.com/FeiLiu36/EoH-S/tree/8310b056ab0d4ea83d194f1d9e8c7873c0a3b892) (source_verified; 2 profile(s)) |
+| [EoH-S](https://arxiv.org/pdf/2508.03082) (`eoh-s`) | Native source interface present | [`eoh-s`](https://github.com/FeiLiu36/EoH-S/tree/8310b056ab0d4ea83d194f1d9e8c7873c0a3b892) (source_verified; 2 profile(s)); [`eoh-s-gateway-v2`](https://github.com/FeiLiu36/EoH-S/tree/8310b056ab0d4ea83d194f1d9e8c7873c0a3b892) (source_verified; 1 profile(s)) |
 | [Eureka](https://arxiv.org/pdf/2310.12931) (`eureka`) | Native source interface present | [`eureka`](https://github.com/eureka-research/Eureka/tree/9eee42808b52d8abc14845d1547bfde886403ccc) (source_verified; 1 profile(s)) |
 | [EurekAgent](https://arxiv.org/pdf/2606.13662) (`eurekagent`) | Native source interface present | [`eurekagent`](https://github.com/THU-Team-Eureka/EurekAgent/tree/fb96df897dfb99797a77623aa0dd9ee178fe89d2) (source_verified; 1 profile(s)) |
 | [EvoFlow](https://arxiv.org/pdf/2502.07373) (`evoflow`) | Recorded implementation/integration blocker | `evoflow`: The catalog provides no immutable implementation pin. The paper-cited https://github.com/bingreeky/EvoFlow.git returned Repository not found on the explicit fetch retry; no runnable adapter can be tied to verified source. |
@@ -127,6 +127,7 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 
 ## Additional engines without a corpus-paper assignment
 
+- [funsearch-original-timeout-v2](https://github.com/google-deepmind/funsearch/tree/cc53f274237d7ab05c19df939edbc1f9616a7c19): source_verified, 1 profile(s).
 - [funsearch-original](https://github.com/google-deepmind/funsearch/tree/cc53f274237d7ab05c19df939edbc1f9616a7c19): source_verified, 2 profile(s).
 
 ## Offline validation and reproducibility
@@ -135,12 +136,14 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 
 Snapshot bindings:
 
-- `registry/participants.json`: `e5ca98e8078a524a39fac79b19f14a924e785cbd5ae815beb04ae74acc4c9155`
+- `registry/participants.json`: `19cb7cecbd41652149c48b05b0c9027440398183b906c0c6c8c4216c23078f56`
 - `registry/framework-recipes/additional.json`: `c6e50ba51ab3415abcd7a553fe8eb1641e655f7e3d1d0c01bbc22e6b447309d0`
 - `registry/framework-recipes/agent-systems.json`: `fd3b88aada8ff990030cf4c8f10951a828cd7bc26a149de6c8894daf112efce9`
 - `registry/framework-recipes/coevo-observed-v2.json`: `1bbe5359406607369cd76248b77e82b29ba20d24044f4475d889faf0743833ff`
 - `registry/framework-recipes/community.json`: `e29e8fadfd1addacdd6accf955accb5c5ae0bf3c762ea432f955e1cca95f2c79`
 - `registry/framework-recipes/darwinian-evolver-gateway.json`: `0d92caff918f98786c9d1df2dc51b71b4771b749791f881c458badf1ff1a87f6`
+- `registry/framework-recipes/eoh-s-gateway-v2.json`: `b7e8fcec7ff731349251074fddcdf60a1c4fb0c03c6945c44c712efa601e772a`
+- `registry/framework-recipes/funsearch-original-timeout-v2.json`: `371484971a63a4b89a0b77b9c8b854b97d06c841f5262e19aca7feb7a28f961a`
 - `registry/framework-recipes/funsearch-original.json`: `1bdc224fe22875789a83095961817e209d3c83be87067d0483758ebebbcdda95`
 - `registry/framework-recipes/gepa-gateway-gsm8k.json`: `d721326429b0d6b86a145a25f3a9b94d8c04bed1f8d04da91b888250dbc4d3ef`
 - `registry/framework-recipes/mcts-ahd-gateway-v2.json`: `0dd35584bd030f2c453e7e9cb8428ca7d2ca53a6cbad8ec2b8e6f8f4f46c90cc`

@@ -173,8 +173,12 @@ No automatic probe or fallback is made to test alternate controls/models.
 
 ## Logging and verification
 
-Each POST log contains only a generated request ID, validated model ID, observed
-token counters and numeric status, plus a fixed error code on failure. The code
+Each POST log contains a generated request ID, validated model ID, observed
+token counters, numeric status, start timestamp and monotonic elapsed seconds.
+Failures include a fixed error code and exception class, never its message.
+`X-Request-Id` joins successful and failed HTTP/SSE responses to the same audit
+record. A client that times out before receiving headers may still lack this
+identifier; timing overlap alone does not prove request identity. The code
 distinguishes local concurrency (`gateway_busy`), local request rate
 (`gateway_rate_limit`) and account rate limits (`upstream_rate_limit`). It does
 not include the upstream error message. Upstream HTTP bodies/errors, authorization
