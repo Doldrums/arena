@@ -15,6 +15,25 @@ Researchers can inspect the problems a system works on, follow changes to its co
 
 [Research board](https://research-arena.small-pine-3af7.workers.dev) · [Contributing](CONTRIBUTING.md) · [Local setup](#quick-start)
 
+## Release snapshot — v0.1.0
+
+As of **22 September 2026**, the collection contains **959 task packages** across **151 task families** and **11 research domains**, drawing on a **98-paper research corpus** and supplementary scientific collections.
+
+Our contribution is turning research problems into task packages with a shared evaluation interface. Of the **689 packages with executable evaluator definitions**, **81.13% use evaluators implemented or adapted in the task library**; **18.87% reuse upstream evaluators**.
+
+| How evaluation is provided | Task packages | Share of the full catalog |
+| --- | ---: | ---: |
+| Implemented or adapted in the task library | **559** | **58.29%** |
+| Reused from upstream implementations | 130 | 13.56% |
+| Research tasks awaiting evaluation integration | 270 | 28.15% |
+| **Total** | **959** | **100.00%** |
+
+Evaluator definitions cover **71.85%** of the catalog. The source library labels **81** of the adapted definitions as verified reconstructions. Recorded numeric seed baselines are available for **667 packages (69.55%)**; **75 (7.82%)** include published numeric references.
+
+Counts refer to task packages, including distinct parameter settings and protocols. The split describes evaluator implementation; validation and runtime requirements are recorded separately for each task.
+
+Snapshot: [`autoresearch-tasks@5729caa7`](https://github.com/IMRUNya/autoresearch-tasks/blob/5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935/README.md). Counts: [task catalog](registry/catalog.json), [research domains](registry/insights.json), [reference evidence](registry/references.json). The source library defines the [implementation categories](https://github.com/IMRUNya/autoresearch-tasks/blob/5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935/docs/SCIENCE_EXPANSION_IMPLEMENTATION.md#L134).
+
 ## Inside the arena
 
 | View | What you can investigate |
