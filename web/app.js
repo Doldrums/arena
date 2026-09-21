@@ -23,7 +23,7 @@ const delta = value => numeric(value) ? (value>0?'+':'')+(Math.abs(value)<.00001
 const short = (value,n=12) => String(value ?? '').slice(0,n);
 const plural = (n,forms) => forms[n===1?0:1];
 const MAX_ROWS = 600;
-const state = {runs:[],runId:null,snapshot:null,contentVersion:null,tab:'trials',axis:'iteration',selected:null,follow:true,stream:null,query:'',limit:60,codeMode:'diff',detail:null,detailKey:null,detailPending:null,detailRequest:0,refreshing:false,listRequest:0,runRequest:0,timingReceivedAt:null,timingAdvance:0,timingConnected:false};
+const state = {runs:[],runId:null,snapshot:null,contentVersion:null,tab:'trials',axis:'iteration',selected:null,follow:true,stream:null,query:'',limit:60,codeMode:'diff',detail:null,detailKey:null,detailPending:null,detailRequest:0,refreshing:false,listRequest:0,listUnavailable:false,runRequest:0,timingReceivedAt:null,timingAdvance:0,timingConnected:false};
 const scientificIdentity = snapshot => JSON.stringify([snapshot?.run?.id,snapshot?.run?.run_id,snapshot?.run?.task_hash]);
 const sourceIdentity = () => JSON.stringify([scientificIdentity(state.snapshot),state.contentVersion,state.selected]);
 const statuses = {running:['Running','success'],starting:['Starting','blue'],stale:['Heartbeat stale','warning'],stalled:['Heartbeat stale','warning'],interrupted:['Interrupted','warning'],completed:['Completed','neutral'],historical:['Archive · unfinished','neutral'],observing:['Waiting for events','blue'],success:['Evaluated','success'],evaluated:['Evaluated','success'],pending:['In progress','blue'],eval_fail:['Evaluation failed','negative'],timeout:['Timed out','warning'],nochild:['No candidate','neutral'],duplicate:['Duplicate','neutral'],failed:['Failed','negative'],invalid:['Rejected','negative'],SUPPORTED:['Supported','success'],CONFIRMED:['Forecast within interval','success'],REFUTED:['Forecast outside interval','negative'],INCONCLUSIVE:['Inconclusive','neutral'],active:['Active','success'],retired:['Retired','neutral']};
@@ -60,10 +60,18 @@ function preferredRun(runs) {
 }
 
 function renderRuns() {
+  if(state.listUnavailable&&!state.runs.length){$('run-list').innerHTML='<div class="sidebar-empty">Run list unavailable. Retrying automatically.</div>';return;}
   const query=$('run-search').value.toLowerCase();
   const runs=state.runs.filter(run=>(nameOf(run)+' '+run.task+' '+run.path).toLowerCase().includes(query));
   $('run-count').textContent=state.runs.length;
   $('run-list').innerHTML=runs.map(run=>'<button class="run-item'+(run.id===state.runId?' selected':'')+'" data-run="'+esc(run.id)+'" '+(run.id===state.runId?'aria-current="true"':'')+'><span class="run-icon" aria-hidden="true">↗</span><span class="run-info"><span class="run-name">'+esc(nameOf(run))+'</span><span class="run-meta"><span class="run-state-dot '+(['running','starting'].includes(run.status)?'live':'')+'"></span>'+esc(statuses[run.status]?.[0]||'Archive')+' · '+(run.kind==='methods'?'Research labs':numeric(run.best_score)?format(run.best_score,4):'—')+'</span>'+runEffort(run)+'</span></button>').join('') || '<div class="sidebar-empty">'+(query?'No matching runs':'No runs yet')+'</div>';
+}
+
+function renderEmptyState(unavailable=false) {
+  $('empty-title').textContent=unavailable?'Experiments are temporarily unavailable':'Watch your search unfold';
+  $('empty-message').textContent=unavailable?'We could not reach the run monitor. We will keep trying, or you can retry now.':'Waiting for the first experiment log. New runs appear automatically.';
+  $('empty-help').hidden=unavailable;
+  $('empty-retry').hidden=!unavailable;
 }
 
 async function refreshRuns(initial=false) {
@@ -71,6 +79,9 @@ async function refreshRuns(initial=false) {
   try {
     const result=await getJSON('/api/runs');
     if(request!==state.listRequest)return;
+    if(state.listUnavailable){showError('');if(state.snapshot&&!state.follow)connection('Updates paused','');}
+    state.listUnavailable=false;
+    renderEmptyState();
     state.runs=result.runs;
     renderRuns();
     if(!state.runId && state.runs.length) {
@@ -81,6 +92,12 @@ async function refreshRuns(initial=false) {
     $('empty-state').hidden=!!state.runs.length;
     if(!state.runs.length){$('dashboard').hidden=true;connection('Waiting for a run','connected');}
   } catch(error) {
+    if(request!==state.listRequest)return;
+    state.listUnavailable=true;
+    if(!state.runs.length&&!state.snapshot){
+      renderRuns();renderEmptyState(true);
+      $('dashboard').hidden=true;$('empty-state').hidden=false;
+    }
     connection('Disconnected','error');
     showError('Unable to connect to the monitor. Reconnecting automatically.');
   }
@@ -971,6 +988,7 @@ async function refreshAll() {
 $('run-list').addEventListener('click',event=>{const button=event.target.closest('[data-run]');if(button)selectRun(button.dataset.run);});
 $('run-search').addEventListener('input',renderRuns);
 $('refresh-button').addEventListener('click',refreshAll);
+$('empty-retry').addEventListener('click',refreshAll);
 $('follow-button').addEventListener('click',()=>{
   state.follow=!state.follow;
   $('follow-button').setAttribute('aria-pressed',String(state.follow));

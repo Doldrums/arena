@@ -3,8 +3,9 @@
 Empira's discovery board is deployed at
 [research-arena.small-pine-3af7.workers.dev](https://research-arena.small-pine-3af7.workers.dev).
 Cloudflare Access protects the entire Worker, including HTML, static assets and
-API responses. The deployment serves registry data and an explicitly published
-results snapshot; it does not connect to the separate live VM backend.
+API responses. Registry data and the published results overview are bundled with
+the Worker. Native experiment inspection can connect to the private VM through
+the optional `OBSERVER` VPC Service binding described below.
 
 ## What the Cloudflare deployment serves
 
@@ -13,7 +14,7 @@ results snapshot; it does not connect to the separate live VM backend.
 | `/` | Tasks overview and catalog |
 | `/?view=participants` | Participants and research references |
 | `/results` | Published results overview from `/api/results-overview` |
-| `/experiments` | Experiment viewer page; `/api/runs` returns 503 `observer_not_connected` |
+| `/experiments` | Live read-only experiment viewer when `OBSERVER` is configured; otherwise the page shows an unavailable/retry state |
 | `/experiments/results` | Private workspace page; `/api/control/results` is unavailable (404) |
 | `/experiments/queue` or `/queue` | Queue page; live queue APIs are unavailable |
 
@@ -22,10 +23,48 @@ refresh control reloads that snapshot; new VM measurements require an explicit
 publication and deployment. The overview does not send an Arena control key or
 fall back to private control endpoints. Non-GET/HEAD requests return 405.
 
-The existing private VM service hosts live experiments and control APIs
-independently. This Worker has no VM proxy, live run ingestion, scheduler, D1 or
-R2 bindings. Serving the workspace pages does not make their live APIs available
-on the Cloudflare hostname.
+The existing private VM service hosts experiments and control APIs independently.
+The Worker exposes only an explicit allowlist of native observer GET/HEAD routes.
+Queue/control routes remain unavailable, and all mutations return 405. Connecting
+the observer does not launch experiments or enable private execution controls.
+
+## Private experiment connection
+
+Create a remotely managed Cloudflare Tunnel without a public hostname or DNS
+record. Its public ingress must be a catch-all `http_status:404`. Use a
+`cloudflared` connector at version 2025.7.0 or later with QUIC transport; the
+deployment unit pins 2026.9.1 at `/usr/local/lib/arena/cloudflared-2026.9.1`.
+Verify the binary against the official release checksum before installation.
+
+Install `scripts/deployment/arena-observer-tunnel.service` on the VM. Store the
+tunnel token at `/etc/arena-observer-tunnel/token`, owned by root with mode 0600
+inside a root-only directory. The unit loads this token through systemd
+credentials rather than command-line arguments. The board continues to listen
+only on `127.0.0.1:8080`; it must not be exposed as a public HTTP origin.
+
+Register one HTTP VPC Service targeting **127.0.0.1, port 8080**, through that
+tunnel. Bind its actual service ID as `OBSERVER` in both Worker configurations:
+
+```json
+"vpc_services": [{"binding": "OBSERVER", "service_id": "<registered-service-id>"}]
+```
+
+VPC Service configuration fixes the destination; a public request cannot choose
+another host or port. Do not substitute a VPC Network binding. The Worker creates
+a new upstream request without browser cookies, bearer credentials or Access
+headers. It rejects unknown route shapes, query parameters and upstream redirects.
+Only native run list/snapshot/detail routes and `/api/stream` are proxied. All
+responses prohibit caching. Header retrieval is limited to 10 seconds; response
+streams close after 30 seconds or verified authentication expiry, whichever is
+earlier. The browser reconnects through authentication for subsequent updates.
+
+Cloudflare provisioning requires Tunnel edit and Connectivity Directory admin
+permissions, in addition to Worker deployment permissions. Code and local browser
+checks are prepared as of 21 September 2026; enabling the production binding is
+pending the corresponding OAuth grant. See the connection report for rollout status.
+
+See the official [Workers VPC setup](https://developers.cloudflare.com/workers-vpc/get-started/)
+and [connector requirements](https://developers.cloudflare.com/workers-vpc/configuration/tunnel/).
 
 For local inspection, `python -m arena --root ...` reads native journals and
 heartbeat files. `npm run dev:cloudflare` uses a separate loopback-only Worker
@@ -66,9 +105,10 @@ documentation.
    and `/api/results-overview` reveal no board or results content.
 2. With an allowed session, open Tasks, Participants and Results; confirm assets
    load and the overview matches the published registry snapshot.
-3. Check `/api/health`, private `no-store` response headers, and the expected
-   503/404 responses for unavailable experiment and control APIs. Confirm the
-   discovery results page makes no private control request.
+3. Check `/api/health` and private `no-store` response headers. With `OBSERVER`
+   configured, verify run selection, a native detail view, and SSE reconnection.
+   Without the binding, observer routes return 503; control APIs always return
+   404. Confirm the discovery results page makes no private control request.
 4. Confirm the Worker-level Access policy still applies and preview URLs remain
    disabled. Check that its allow rules contain only the `mbzuai.ac.ae` email
    domain and the explicit owner address, and that the login guidance is visible.

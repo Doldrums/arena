@@ -1,0 +1,26 @@
+[Unit]
+Description=Empira private observer connection to Cloudflare Workers VPC
+After=network-online.target arena-board.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+LoadCredential=tunnel-token:/etc/arena-observer-tunnel/token
+ExecStart=/usr/local/lib/arena/cloudflared-2026.9.1 tunnel --no-autoupdate --protocol quic --metrics 127.0.0.1:20245 run --token-file %d/tunnel-token
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=20
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+MemoryMax=256M
+
+[Install]
+WantedBy=multi-user.target

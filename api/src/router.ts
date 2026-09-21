@@ -5,9 +5,11 @@ import references from '../../registry/references.json';
 import searchFamilies from '../../registry/search-families.json';
 import resultsOverview from '../../registry/results-overview.json';
 import type {AccessConfig} from './auth.ts';
+import {observerConfigured, proxyObserver, type ObserverBinding, type ObserverOptions} from './observer.ts';
 
 export interface Env extends AccessConfig {
   ASSETS: {fetch(request: Request): Promise<Response>};
+  OBSERVER?: ObserverBinding;
 }
 
 export function json(value: unknown, status = 200): Response {
@@ -16,15 +18,17 @@ export function json(value: unknown, status = 200): Response {
   }});
 }
 
-export async function route(request: Request, env: Env): Promise<Response> {
+export async function route(request: Request, env: Env, options: ObserverOptions = {}): Promise<Response> {
   const url = new URL(request.url);
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     return json({error: 'read_only', message: 'This milestone does not submit or launch experiments.'}, 405);
   }
   let response: Response;
   if (url.pathname === '/api/health') {
-    response = json({status: 'ok', component: 'arena', version: '0.1.0', mode: 'catalog_only',
-      capabilities: {catalog: true, participants: true, insights: true, references: true, search_families: true, native_runs: false, launch: false}});
+    const connected = observerConfigured(env.OBSERVER);
+    response = json({status: 'ok', component: 'arena', version: '0.1.0', mode: connected ? 'read_only' : 'catalog_only',
+      observer_configured: connected,
+      capabilities: {catalog: true, participants: true, insights: true, references: true, search_families: true, native_runs: connected, run_observation: connected, launch: false}});
   } else if (url.pathname === '/api/catalog') {
     response = json(catalog);
   } else if (url.pathname === '/api/participants') {
@@ -38,8 +42,8 @@ export async function route(request: Request, env: Env): Promise<Response> {
   } else if (url.pathname === '/api/results-overview') {
     // Explicitly published measurements only; never proxy the private control API.
     response = json(resultsOverview);
-  } else if (url.pathname === '/api/runs' || url.pathname.startsWith('/api/runs/')) {
-    response = json({error: 'observer_not_connected', message: 'Cloud run ingestion is not connected yet. Use the local Arena observer to inspect SCiEL runs.'}, 503);
+  } else if (url.pathname === '/api/runs' || url.pathname.startsWith('/api/runs/') || url.pathname === '/api/stream') {
+    response = await proxyObserver(request, env.OBSERVER, options);
   } else if (url.pathname === '/api' || url.pathname.startsWith('/api/')) {
     response = json({error: 'not_found'}, 404);
   } else {

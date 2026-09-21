@@ -7,11 +7,13 @@ export default {
     if (!accessIssuer(env)) return json({error: 'access_not_configured'}, 503);
     const token = request.headers.get('Cf-Access-Jwt-Assertion');
     if (!token) return json({error: 'authentication_required'}, 401);
+    let sessionExpiresAt: number;
     try {
-      await verifyAccessToken(token, env);
+      const identity = await verifyAccessToken(token, env);
+      sessionExpiresAt = identity.exp! * 1000;
     } catch {
       return json({error: 'invalid_access_token'}, 403);
     }
-    return route(request, env);
+    return route(request, env, {sessionExpiresAt});
   },
 };

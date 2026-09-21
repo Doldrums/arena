@@ -41,6 +41,33 @@ function assertPrivate(response: Response): void {
   assert.equal(response.headers.get('ETag'), null);
 }
 
+test('an authenticated observer stream stops at the verified debug session deadline', async context => {
+  const timestamp = 1790000000000;
+  context.mock.timers.enable({apis: ['Date', 'setTimeout'], now: timestamp});
+  let cancelled = false;
+  let calls = 0;
+  const env = environment({OBSERVER: {fetch: async () => {
+    calls++;
+    return new Response(new ReadableStream({
+      start(controller) { controller.enqueue(new TextEncoder().encode('event: runtime\ndata: {}\n\n')); },
+      cancel() { cancelled = true; },
+    }), {headers: {'Content-Type': 'text/event-stream'}});
+  }}});
+  const path = '/api/stream?run=0123456789abcdef0123';
+  assert.equal((await debug.fetch(request(path), env)).status, 401);
+  assert.equal(calls, 0);
+  const response = await debug.fetch(request(path, {
+    headers: {Cookie: signedCookie(now(), now() + 2)},
+  }), env);
+  assert.equal(response.status, 200);
+  assertPrivate(response);
+  const reader = response.body!.getReader();
+  assert.equal((await reader.read()).done, false);
+  context.mock.timers.tick(2000);
+  assert.equal((await reader.read()).done, true);
+  assert.equal(cancelled, true);
+});
+
 test('debug protects every asset and API before calling the existing read-only router', async () => {
   let assets = 0;
   const env = environment({ASSETS: {fetch: async () => {assets++; return new Response('secret asset');}}});

@@ -124,20 +124,21 @@ async function sessionCookie(config: Config, origin: string, now: number): Promi
   return `${COOKIE}=${claims}.${signature}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${exp - now}`;
 }
 
-async function authenticated(request: Request, config: Config, now: number): Promise<boolean> {
+async function authenticated(request: Request, config: Config, now: number): Promise<number | null> {
   const header = request.headers.get('Cookie') ?? '';
-  if (header.length > 4096) return false;
+  if (header.length > 4096) return null;
   const cookies = header.split(';').map(value => value.trim()).filter(value => value.startsWith(`${COOKIE}=`));
-  if (cookies.length !== 1) return false;
+  if (cookies.length !== 1) return null;
   const token = cookies[0].slice(COOKIE.length + 1);
   const match = /^v1\.([1-9][0-9]{9})\.([1-9][0-9]{9})\.([A-Za-z0-9_-]{43})$/.exec(token);
-  if (!match) return false;
+  if (!match) return null;
   const iat = Number(match[1]), exp = Number(match[2]);
-  if (iat > now || exp <= now || exp <= iat || exp > config.expires || exp - iat > SESSION_SECONDS) return false;
+  if (iat > now || exp <= now || exp <= iat || exp > config.expires || exp - iat > SESSION_SECONDS) return null;
   const signature = Uint8Array.from(atob(match[3].replace(/-/g, '+').replace(/_/g, '/') + '='), char => char.charCodeAt(0));
-  if (base64url(signature.buffer) !== match[3]) return false;
-  return crypto.subtle.verify('HMAC', await hmacKey(config), signature,
+  if (base64url(signature.buffer) !== match[3]) return null;
+  const valid = await crypto.subtle.verify('HMAC', await hmacKey(config), signature,
     signedData(new URL(request.url).origin, `v1.${iat}.${exp}`));
+  return valid ? exp : null;
 }
 
 function sameOrigin(request: Request): boolean {
@@ -190,14 +191,15 @@ async function handle(request: Request, env: DebugEnv): Promise<Response> {
     response.headers.set('Set-Cookie', await sessionCookie(config, url.origin, issued));
     return response;
   }
-  if (!await authenticated(request, config, now)) {
+  const sessionExpires = await authenticated(request, config, now);
+  if (!sessionExpires) {
     if (url.pathname === '/api' || url.pathname.startsWith('/api/') || !['GET', 'HEAD'].includes(request.method)) {
       return json({error: 'authentication_required'}, 401);
     }
     return redirect('/login');
   }
   if (Math.floor(Date.now() / 1000) >= config.expires) return json({error: 'debug_access_expired'}, 403);
-  return route(request, env);
+  return route(request, env, {sessionExpiresAt: Math.min(sessionExpires, config.expires) * 1000});
 }
 
 export default {

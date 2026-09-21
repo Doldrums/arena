@@ -45,7 +45,7 @@
     <nav id="run-list" aria-label="Select experiment"><div class="sidebar-empty">Loading run logs…</div></nav>
     <footer class="sidebar-footer">
       <span class="connection-dot" id="connection-dot"></span>
-      <div><span id="connection" role="status" aria-live="polite">Connecting…</span><span class="footer-note">Local monitor</span></div>
+      <div><span id="connection" role="status" aria-live="polite">Connecting…</span><span class="footer-note">Run monitor</span></div>
       <button id="help-button" class="icon-button" title="How to connect an experiment" aria-label="How to connect an experiment">?</button>
     </footer>
   </aside>
@@ -57,9 +57,10 @@
     <main id="main" tabindex="-1">
       <div id="error-banner" class="error-banner" hidden></div>
       <section id="empty-state" class="empty-main" hidden>
-        <span class="empty-symbol">↗</span><h1>Watch your search unfold</h1>
-        <p>Waiting for the first experiment log.<br>New runs appear automatically.</p>
+        <span class="empty-symbol">↗</span><h1 id="empty-title">Watch your search unfold</h1>
+        <p id="empty-message">Waiting for the first experiment log.<br>New runs appear automatically.</p>
         <button class="button primary" id="empty-help">Connect an experiment</button>
+        <button class="button primary" id="empty-retry" hidden>Try again</button>
       </section>
       <div id="dashboard" hidden>
         <div class="page-heading">

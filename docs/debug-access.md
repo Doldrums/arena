@@ -4,6 +4,9 @@
 `https://research-arena-debug.small-pine-3af7.workers.dev`. The production entrypoint
 and Cloudflare Access policy are unchanged. It serves the existing catalog, published
 results, and web assets through the same read-only router, with no control backend.
+An optional private `OBSERVER` VPC Service binding also permits native experiment
+inspection. Observer streams inherit the verified cookie/global expiry and close
+after at most 30 seconds, requiring a newly authenticated request to reconnect.
 
 Use `api/wrangler.debug.jsonc` explicitly for every debug Wrangler operation. Its
 asset directory `../web` is relative to that config file. The template names only

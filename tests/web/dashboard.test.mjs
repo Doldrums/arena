@@ -89,6 +89,78 @@ async function mounted({runId=fixtureRun.id,tab,fetchOverride,ready,configure}={
   return {dom,w,doc:w.document,errors,streams,copied:()=>copied};
 }
 
+test('an unavailable run list offers a retry and recovers to the actual experiment',async()=>{
+  let unavailable=true;
+  const {dom,doc,errors}=await mounted({
+    fetchOverride:url=>url==='/api/runs'&&unavailable?Promise.resolve(new Response('{}',{status:503})):undefined,
+    ready:doc=>!doc.querySelector('#error-banner').hidden,
+  });
+  try{
+    assert.equal(doc.querySelector('.footer-note').textContent,'Run monitor');
+    assert.match(doc.querySelector('#run-list').textContent,/Run list unavailable/);
+    assert.doesNotMatch(doc.querySelector('#run-list').textContent,/Loading run logs/);
+    assert.equal(doc.querySelector('#empty-state').hidden,false);
+    assert.match(doc.querySelector('#empty-title').textContent,/temporarily unavailable/);
+    assert.equal(doc.querySelector('#empty-help').hidden,true);
+    assert.equal(doc.querySelector('#empty-retry').hidden,false);
+    unavailable=false;
+    doc.querySelector('#empty-retry').click();
+    await until(()=>doc.querySelector('#evaluations').textContent==='4'&&doc.querySelector('#connection').textContent==='Connected','retry loads experiment');
+    assert.equal(doc.querySelector('#empty-state').hidden,true);
+    assert.equal(doc.querySelector('#dashboard').hidden,false);
+    assert.equal(doc.querySelector('#error-banner').hidden,true);
+    assert.ok(doc.querySelectorAll('.run-item').length>0);
+    assert.deepEqual(errors,[]);
+  }finally{dom.window.close();}
+});
+
+test('recovery to an empty run list restores the waiting state and clears the error',async()=>{
+  let unavailable=true;
+  const {dom,doc,errors}=await mounted({
+    fetchOverride:url=>url==='/api/runs'?Promise.resolve(new Response(JSON.stringify(unavailable?{}:{runs:[]}),{status:unavailable?503:200})):undefined,
+    ready:doc=>!doc.querySelector('#error-banner').hidden,
+  });
+  try{
+    unavailable=false;
+    doc.querySelector('#empty-retry').click();
+    await until(()=>doc.querySelector('#connection').textContent==='Waiting for a run','empty list reconnects');
+    assert.equal(doc.querySelector('#empty-state').hidden,false);
+    assert.equal(doc.querySelector('#empty-title').textContent,'Watch your search unfold');
+    assert.equal(doc.querySelector('#empty-help').hidden,false);
+    assert.equal(doc.querySelector('#empty-retry').hidden,true);
+    assert.equal(doc.querySelector('#error-banner').hidden,true);
+    assert.match(doc.querySelector('#run-list').textContent,/No runs yet/);
+    assert.deepEqual(errors,[]);
+  }finally{dom.window.close();}
+});
+
+test('a later list failure preserves the displayed experiment and retry clears the stale error',async()=>{
+  let unavailable=false;
+  const {dom,doc,errors}=await mounted({
+    fetchOverride:url=>url==='/api/runs'&&unavailable?Promise.resolve(new Response('{}',{status:503})):undefined,
+  });
+  try{
+    await until(()=>doc.querySelector('#connection').textContent==='Connected','initial stream connected');
+    // Pause so a successful SSE event cannot conceal the list error under test.
+    doc.querySelector('#follow-button').click();
+    const score=doc.querySelector('#best-score').textContent;
+    const runCount=doc.querySelectorAll('.run-item').length;
+    unavailable=true;
+    doc.querySelector('#refresh-button').click();
+    await until(()=>!doc.querySelector('#refresh-button').disabled&&!doc.querySelector('#error-banner').hidden,'later list failure');
+    assert.equal(doc.querySelector('#dashboard').hidden,false);
+    assert.equal(doc.querySelector('#empty-state').hidden,true);
+    assert.equal(doc.querySelector('#best-score').textContent,score);
+    assert.equal(doc.querySelectorAll('.run-item').length,runCount);
+    unavailable=false;
+    doc.querySelector('#refresh-button').click();
+    await until(()=>!doc.querySelector('#refresh-button').disabled&&doc.querySelector('#error-banner').hidden,'retry clears list error');
+    assert.equal(doc.querySelector('#best-score').textContent,score);
+    assert.equal(doc.querySelector('#connection').textContent,'Updates paused');
+    assert.deepEqual(errors,[]);
+  }finally{dom.window.close();}
+});
+
 test('Work Flow opens endpoint evidence and preserves the conversation on a dashboard refresh',async()=>{
   const feed=await (await fetch(base+'/api/runs/'+fixtureRun.id+'/workflow?limit=60&actor=all')).json();
   assert.ok(feed.items.length,'fixture supplies workflow activity');
