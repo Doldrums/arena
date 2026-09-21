@@ -1,5 +1,9 @@
 # Temporary debug access — 21 September 2026
 
+Update: the subsequent [observer connection](observer-connection-20260921.md)
+also enables authenticated native experiment inspection. The version and initial
+verification below document the original deployment; the code and cutoff are unchanged.
+
 The user requested a code-based login for reviewers without a university email,
 using an email-style form. The separately deployed debug Worker provides access
 to the catalog and published results. It does not expose experiment controls or

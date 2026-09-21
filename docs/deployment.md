@@ -59,9 +59,11 @@ streams close after 30 seconds or verified authentication expiry, whichever is
 earlier. The browser reconnects through authentication for subsequent updates.
 
 Cloudflare provisioning requires Tunnel edit and Connectivity Directory admin
-permissions, in addition to Worker deployment permissions. Code and local browser
-checks are prepared as of 21 September 2026; enabling the production binding is
-pending the corresponding OAuth grant. See the connection report for rollout status.
+permissions, in addition to Worker deployment permissions. The connection is
+deployed on both Workers as of 21 September 2026. Service
+`01a0c45f-2f66-73d2-b574-803fcc32515e` uses the private `empira-observer-vm` tunnel
+`a05d53a0-4787-4c34-a3b4-b35d5026a089`. See the
+[connection report](../reports/observer-connection-20260921.md) for validation.
 
 See the official [Workers VPC setup](https://developers.cloudflare.com/workers-vpc/get-started/)
 and [connector requirements](https://developers.cloudflare.com/workers-vpc/configuration/tunnel/).
