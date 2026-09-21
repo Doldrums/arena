@@ -1,0 +1,73 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "qdaif",
+      "name": "QDAIF",
+      "participant_ids": [
+        "qdaif"
+      ],
+      "repository": {
+        "url": "https://github.com/CarperAI/OpenELM",
+        "commit": "c844e149e3f59fef546e0bc55f4e12e0f192feb9"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "3f408439ded0fec4017836944bd3d49d59865ef53b180dc3d1c408d97df720da",
+        "README.md": "4e871ddc928f9812506c34302db46d624e513c02d78a1e3c4c0d9934e0f48197",
+        "run_elm.py": "9dcbde97a03123285581be8768d1987aa75f80e979e56a35d763ca54de7dd325",
+        "src/openelm/algorithms/map_elites.py": "5bf8970f35232dccec21bcabd97abc36247cdcf482aca380b5898de410a90386",
+        "src/openelm/configs.py": "45523dedc9c1de605c5d5e158bcc43a610b75ddae792b02475b25c0f8cf586da",
+        "src/openelm/elm.py": "415965ba2009e097cffc90ae78b11d713f6d6c3cbe9715fad143e3cc083d2e68",
+        "src/openelm/environments/poetry.py": "c4d01886169afa991dbf1424bdddffb276b11b2196e738017c5cb897e5dd4744"
+      },
+      "profiles": [
+        {
+          "id": "poetry",
+          "description": "Native OpenELM QDAIF poetry quality-diversity search.",
+          "invocation": {
+            "kind": "script",
+            "target": "run_elm.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "env=qdaif",
+            "qd=mapelites",
+            "model=prompt",
+            "qd.save_history=true"
+          ],
+          "output": null,
+          "required_files": [],
+          "config_files": [],
+          "result_globs": [
+            "**/*.json",
+            "**/*.jsonl",
+            "**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native PoetryEvolution uses model feedback for poem quality, genre and tone; MAP-Elites archive metrics retain native semantics.",
+            "evidence": [
+              "run_elm.py",
+              "src/openelm/elm.py",
+              "src/openelm/environments/poetry.py",
+              "src/openelm/algorithms/map_elites.py",
+              "src/openelm/configs.py"
+            ]
+          },
+          "argument_help": [
+            "qd.init_steps=5 qd.total_steps=50",
+            "Configure the pinned OpenELM model fields and explicit provider environment."
+          ],
+          "limitations": [
+            "This profile covers the released poetry environment, not all opinion/story/code paper experiments.",
+            "LLM feedback is native subjective evaluation; Arena does not relabel it a canonical task verifier."
+          ]
+        }
+      ]
+    }
+  ]
+}

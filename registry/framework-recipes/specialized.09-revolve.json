@@ -1,0 +1,76 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "revolve",
+      "name": "REvolve",
+      "participant_ids": [
+        "revolve"
+      ],
+      "repository": {
+        "url": "https://github.com/RishiHazra/Revolve",
+        "commit": "eee636b5dba141bf00cf0ff47852c2a9125dc5d2"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "pip install -e ."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "3c930d1067fa28c6d5bef8aee3aa8cf263251f473b7d17034fa5a478dfc8a221",
+        "README.md": "f1bcbb1bc52b85827493fe1f9e9b62c0aa1e8ab4a2f73646d78e35721acfd7f0",
+        "cfg/config.yaml": "d4fec1406c9e364d250a5b313cfe43acba09c42aee99f6713b7cc80d0bbe366c",
+        "cfg/generate.yaml": "ca23c5a150ba85f0a53691fea1ac75d59764812837b2244a978fdfce2a3648a6",
+        "main.py": "7168618f1f3a9633075aaf6478052158d03d26eb13b1b328265d6de5e164e290",
+        "rewards_database.py": "84917d92b129fe079a35036ff9e4fd9c48db133791cb3d703afe28a3d93ecfdf",
+        "rl_agent/HumanoidEnv.py": "e36a6a211be16deb974240dbd58aa476ba526a079bb11b155142f3955fd38b91",
+        "rl_agent/fitness_score.py": "6dd63df6852a0eb5136972cc544fe994536beee05037118a45877cc4d5eda8d0"
+      },
+      "profiles": [
+        {
+          "id": "reward-evolution",
+          "description": "Native REvolve reward evolution and policy-training evaluation.",
+          "invocation": {
+            "kind": "script",
+            "target": "main.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [],
+          "config_files": [
+            "cfg/generate.yaml",
+            "cfg/config.yaml"
+          ],
+          "result_globs": [
+            "**/*.json",
+            "**/*.jsonl",
+            "**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Released policy-training fitness and reward database; human-feedback paths remain separate.",
+            "evidence": [
+              "main.py",
+              "rewards_database.py",
+              "rl_agent/fitness_score.py",
+              "rl_agent/HumanoidEnv.py"
+            ]
+          },
+          "argument_help": [
+            "evolution.num_generations=5 evolution.individuals_per_generation=15 environment.name=HumanoidEnv",
+            "Alternative released environment: AdroitHandDoorEnv. OPENAI_API_KEY must be explicitly passed."
+          ],
+          "limitations": [
+            "Requires simulator, RL dependencies and GPU resources; every candidate may launch full policy training.",
+            "AirSim environment setup is not bundled. Native result validity is not a canonical Arena validity claim."
+          ],
+          "environment": {
+            "ROOT_PATH": "{workspace}"
+          }
+        }
+      ]
+    }
+  ]
+}

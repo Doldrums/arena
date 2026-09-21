@@ -1,0 +1,74 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "hyperagents",
+      "name": "HyperAgents",
+      "participant_ids": [
+        "hyperagents"
+      ],
+      "repository": {
+        "url": "https://github.com/facebookresearch/Hyperagents",
+        "commit": "59a68f672dfb92c74aeb7e61535d776fb36e172d"
+      },
+      "status": "source_verified",
+      "license": "CC-BY-NC-SA-4.0",
+      "setup": [
+        "Prepare requirements.txt, native Docker image, setup_initial.sh artifacts and each selected domain as documented; no setup command is run automatically."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE.md": "047d2259741a3ebb30d8c8a43d4ba79b5b229a069acd1d2bea49f22b297d8e98",
+        "README.md": "d4b72ab8e622f58d963cc8b93cc71246dcfe50c7d798d835a042c4c847e1e9fa",
+        "generate_loop.py": "dc9951becd15661fb454d42035f997b4d29ad38d1bb94592c58e0fe1635bec68",
+        "run_meta_agent.py": "ccd3bf349d8ef76333db4c81c0d7eaa6ce425c8ef1f32d3af5c29c46777888d7",
+        "run_task_agent.py": "7bf2ed899e0f1690bdb9a73de25b8307cf72cc1214880cc942b502f822a48c7a"
+      },
+      "profiles": [
+        {
+          "id": "multi-domain",
+          "description": "HyperAgents native task-agent/meta-agent evolution across explicitly selected domains",
+          "invocation": {
+            "kind": "script",
+            "target": "generate_loop.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output_dir_parent",
+            "path": "native"
+          },
+          "required_files": [
+            "generate_loop.py",
+            "run_meta_agent.py",
+            "run_task_agent.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/**/archive.jsonl",
+            "native/**/metadata.json",
+            "native/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "HyperAgents native task-agent/meta-agent evolution across explicitly selected domains Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "generate_loop.py",
+              "run_meta_agent.py",
+              "run_task_agent.py"
+            ]
+          },
+          "argument_help": [
+            "--domains DOMAIN [DOMAIN ...] --max_generation N --eval_workers N",
+            "Use only domain choices admitted by pinned generate_loop.py; domain-specific setup remains required."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Requires Docker image and initialized domain agents; robot/genesis domains add hardware/simulator dependencies.",
+            "Upstream license is CC-BY-NC-SA-4.0; no general redistribution or commercial-use permission is implied."
+          ]
+        }
+      ]
+    }
+  ]
+}

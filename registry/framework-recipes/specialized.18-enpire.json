@@ -1,0 +1,72 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "enpire",
+      "name": "ENPIRE",
+      "participant_ids": [
+        "enpire"
+      ],
+      "repository": {
+        "url": "https://github.com/NVlabs/ENPIRE",
+        "commit": "99ee90acf65b5b18957c8382ad580db999528be3"
+      },
+      "status": "artifact_only",
+      "license": "Apache-2.0",
+      "setup": [
+        "git clone --recurse-submodules; uv sync --extra dev",
+        "uv run enpire examples run 00_hello_environment (hardware-free smoke of the harness, not a paper task)"
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "6133bb57e06b7d6193b26a854884c6a0923f68d76fa3ab6798027b2b83b899af",
+        "README.md": "9e6df09882b8fd39c314e7458624d4fc4ddbc1d97b78fbd8ce2bfb2f2fd85497",
+        "enpire/__main__.py": "b1132c8038fd74efa0fb693e110a045abb2eabd13b46dcf50ebb4dda894d4ee2",
+        "enpire/cli.py": "92d02d7fea8255589cdfdbbc4b5a7dda4b563d4e417d1e90597d7b74f7a36259",
+        "enpire/env/examples/00_hello_environment/example.py": "223a1359bb04a6172ec513bbef25fa08ff9b24d11c3047aca135bb97e7e12e8e"
+      },
+      "profiles": [
+        {
+          "id": "hello-environment",
+          "description": "Hardware-free ENPIRE reset/execute/verify harness example.",
+          "invocation": {
+            "kind": "module",
+            "target": "enpire"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "examples",
+            "run",
+            "00_hello_environment"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "enpire/__main__.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "**/*.json",
+            "**/*.jsonl",
+            "**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "The example verifies its own synthetic environment contract; it does not reproduce a physical paper task or launch an autonomous research optimizer.",
+            "evidence": [
+              "enpire/cli.py",
+              "enpire/env/examples/00_hello_environment/example.py"
+            ]
+          },
+          "argument_help": [],
+          "limitations": [
+            "Physical paper tasks require a configured station or separate simulator, calibrated services, reset and reward/verification functions.",
+            "Released environment/control harness is available. A hardware-free harness example is exposed explicitly; an autonomous paper-task search loop is not inferred from control-client APIs."
+          ]
+        }
+      ]
+    }
+  ]
+}

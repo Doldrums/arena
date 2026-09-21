@@ -1,0 +1,100 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "text2reward",
+      "name": "Text2Reward",
+      "participant_ids": [
+        "text2reward"
+      ],
+      "repository": {
+        "url": "https://github.com/xlang-ai/text2reward",
+        "commit": "e7f57efcf76b22bbfb7c3eb9d67d98ff2765a926"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "pip install -e .  # cwd: ManiSkill2",
+        "pip install stable-baselines3==1.8.0 wandb tensorboard",
+        "bash download_data.sh  # cwd: run_maniskill",
+        "pip install -e .  # cwd: Metaworld",
+        "pip install langchain chromadb==0.4.0"
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "cf3c9a1044ed3b5230cbc4b749fa3013fb54a6f155d99d2d5d2ec3d548ec9c7d",
+        "code_generation/single_flow/metaworld_exp.py": "3084e9aeb2b370e5b9f37ffc2125c0f196690a8ee757ead1b9316dbfafaf7bb9",
+        "code_generation/single_flow/zero_shot/generation.py": "5f2e2f0632fe6131eee4242e18f8acf4e2e7519b6ee78eefd9f9b76af8421abe",
+        "run_metaworld/sac.py": "d5afe15a57d73f3ad89ea9a57e1ddffe90449f01626d93d33196bc0e2b1dc414"
+      },
+      "profiles": [
+        {
+          "id": "generate-metaworld",
+          "description": "Released Text2Reward MetaWorld reward-code generation.",
+          "invocation": {
+            "kind": "module",
+            "target": "code_generation.single_flow.metaworld_exp"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--FILE_PATH",
+            "path": "generated-reward"
+          },
+          "required_files": [
+            "code_generation/single_flow/metaworld_exp.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "generated-reward/*.py"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Generation produces reward source; policy evaluation is a separate explicit native profile.",
+            "evidence": [
+              "code_generation/single_flow/metaworld_exp.py",
+              "code_generation/single_flow/zero_shot/generation.py"
+            ]
+          },
+          "argument_help": [
+            "--TASK drawer-open-v2 --MODEL_NAME gpt-4"
+          ],
+          "limitations": [
+            "Generated reward code is not a policy success score; run sac-metaworld to train/evaluate it."
+          ]
+        },
+        {
+          "id": "sac-metaworld",
+          "description": "Native SAC policy training/evaluation using a supplied reward function.",
+          "invocation": {
+            "kind": "script",
+            "target": "run_metaworld/sac.py"
+          },
+          "cwd": "run_metaworld",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [],
+          "config_files": [],
+          "result_globs": [
+            "run_metaworld/**/*.json",
+            "run_metaworld/**/*.csv",
+            "run_metaworld/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native simulator evaluation callbacks measure policy reward/success; this is full RL training.",
+            "evidence": [
+              "run_metaworld/sac.py"
+            ]
+          },
+          "argument_help": [
+            "--env_id drawer-open-v2 --reward_path reward_code/drawer-open-v2/specific.py --train_max_steps 1000000 --seed 12345"
+          ],
+          "limitations": [
+            "Requires manually provisioned MuJoCo/MetaWorld and compatible Stable-Baselines3; model checkpoints are not deserialized by Arena."
+          ]
+        }
+      ]
+    }
+  ]
+}

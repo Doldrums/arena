@@ -1,0 +1,95 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "adas-gateway-mgsm-v1",
+      "name": "ADAS \u00b7 native MGSM gateway pilot v1",
+      "participant_ids": [
+        "adas"
+      ],
+      "repository": {
+        "url": "https://github.com/ShengranHu/ADAS",
+        "commit": "2702bee8fefda42255efc5be9f60e3bd3db96ae4"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Use the exact ADAS source pin, a separate Python3.11 environment with openai1.90.0, numpy2.2.6, backoff2.2.1 and tqdm4.67.1, and the reviewed official MGSM four-example dataset.",
+        "Plan-only preparation never runs native code. Explicit execution uses the native seven-strategy initial archive, one meta-search generation and unchanged generated-agent forward/scorer."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "2591bb5c650dc96c48e4244d52c7bc179ff904e3129d65dcb9180bc726a4b3ad",
+        "README.md": "0e57018546d045e1452ba90e0b61c37da0c964a451ee4dcc82cbbb53fd046b96",
+        "_arc/arc_prompt.py": "744fdc6a3c60b3afdb5bf75b9b7e140ee79f2a777d567d32da52d059c0f44cac",
+        "_arc/search.py": "bee294342dc70774818c144e073b773a582ec545f44ac83244a2a131bebb1fa1",
+        "_arc/utils.py": "4cd764fcae3df036f25f397d4c86a11fefa9b711eda61eee800e7ab1afd79392",
+        "_drop/drop_prompt.py": "118153ed337e17c9379d57cb057c4dd6ba68c7754820ecb12c6f674dede435d1",
+        "_drop/search.py": "2541df225858917255afb5ae7947eb2c58f6239e7af1287600179e9a70f0de44",
+        "_drop/utils.py": "a44914ed0d12949dc12ce9089c23a819de7cda1ddd7089de339c5607def1e678",
+        "_gpqa/gpqa_prompt.py": "06349a3a96d625c931198107eafc7b425031d419d141b6730adb423ca54064de",
+        "_gpqa/search.py": "ff3dd9dac40791db3fb583820e93524af2c924583315c80b781f49d8ae85d745",
+        "_gpqa/utils.py": "3438ce5872bdfa9fa768d4b5267700a5563fb261e1eb9f2cdefbd1c2957b88ee",
+        "_mgsm/mgsm_prompt.py": "6512b4a3d01ca80171f749981361c19edfbc6863b4de8ca70fa9aee6a6960f2b",
+        "_mgsm/search.py": "1d75318e452e1cdca455d9cd073749b9b43e3c49d2f00d85a1faa9d10585e920",
+        "_mgsm/utils.py": "b294dc54f685fe14704154356da47b69bda7c254b8a1e06c4297d3169379ba2c",
+        "_mmlu/mmlu_prompt.py": "60ff5bfe049fc011d1345dc715e89ccdde017f58d44734f528a7f7b1487fa368",
+        "_mmlu/search.py": "749503b4454f97e105eed7e96fb5d402ef26fd0905b80f91a5d29a6045957228",
+        "_mmlu/utils.py": "179d20ab07b4e2d4a08a2e001cd9ce9e09602d79b5e743d3425ece1ea6bd2146"
+      },
+      "profiles": [
+        {
+          "id": "mgsm-cpu-pilot",
+          "description": "Tiny official MGSM native meta-search pilot with separate underlying optimization and heldout problems; not a paper reproduction.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.adas_mgsm_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "_mgsm/search.py",
+            "_mgsm/mgsm_prompt.py",
+            "_mgsm/utils.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Calls pinned evaluate_forward_fn and score_mgsm. All seven native initial strategies and one native meta-search generation use two optimization examples. Only one selected archived code hash receives two heldout examples after selection freezes.",
+            "evidence": [
+              "_mgsm/search.py",
+              "_mgsm/utils.py",
+              "_mgsm/mgsm_prompt.py"
+            ]
+          },
+          "argument_help": [
+            "--model must be one of the seven exact gateway IDs; both meta and inner agents bind that same ID. Supply inputs arena-inputs/mgsm-adas-pilot-v1.json with the reviewed immutable dataset."
+          ],
+          "limitations": [
+            "Two optimization and two heldout examples are a small integration check, not evidence of benchmark superiority or paper reproduction. MGSM parallel translations are split by underlying source row identity.",
+            "Native search, initial archive, reflection prompts, JSON parsing and native exact-string scoring remain in upstream code. The prompt utility model default reflects the explicitly selected model. No model alias is substituted.",
+            "Provider failures abort with unknown outcome rather than becoming fitness zero or entering unbounded native rate-limit retries. SDK timeout330, retries0; requested temperature/max_tokens/stop are not guaranteed by the separately configured codex-native gateway policy.",
+            "One native meta generation, debug_max1, worker1, up to128 dispatched requests and32 evaluator invocations; external whole-process cap3600seconds. No estimated dollar/FLOP cost is reported.",
+            "Native generated Python executes in the worker process with scoped gateway credentials. In-process budgets and heldout ordering are cooperative instrumentation, not adversarial isolation. Admission requires the reviewed worker boundary; public MGSM source copies are not confidential holdout storage.",
+            "Selection uses exact observed code hashes and raw optimization arrays, never rounded CI strings. Unobserved debug-code/old-fitness mismatches at this source pin are excluded without rewriting native artifacts. Native all-archive test evaluation is replaced only by frozen-selection heldout orchestration."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,479 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Doldrums/arena/raw/main/schemas/participant.schema.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository": {
+      "anyOf": [
+        {
+          "$ref": "common.schema.json#/$defs/repository"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "registration_status": {
+      "enum": [
+        "planned",
+        "literature"
+      ]
+    },
+    "adapter_status": {
+      "enum": [
+        "not_implemented",
+        "native_cli"
+      ]
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "native_run": {
+          "type": "boolean"
+        },
+        "canonical_evaluation": {
+          "const": false
+        },
+        "pause": {
+          "const": false
+        },
+        "resume": {
+          "const": false
+        }
+      },
+      "required": [
+        "native_run",
+        "canonical_evaluation",
+        "pause",
+        "resume"
+      ],
+      "additionalProperties": false
+    },
+    "supported_protocols": {
+      "type": "array",
+      "maxItems": 0,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "record_kind": {
+      "enum": [
+        "system_registration",
+        "research_work"
+      ]
+    },
+    "papers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "common.schema.json#/$defs/identifier"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://[^\\s]+$"
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 1900,
+            "maximum": 2100
+          },
+          "venue": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "paper",
+              "technical_report"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "url",
+          "year",
+          "venue",
+          "kind"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "search_family": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "common.schema.json#/$defs/identifier"
+            },
+            "label": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "id",
+            "label"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "code_links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "pattern": "^https?://[^\\s]+$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "implementation",
+              "project",
+              "artifact"
+            ]
+          }
+        },
+        "required": [
+          "url",
+          "label",
+          "kind"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "provenance": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "source_id": {
+              "$ref": "common.schema.json#/$defs/identifier"
+            },
+            "filename": {
+              "const": "human-harness-corpus.md"
+            },
+            "sha256": {
+              "$ref": "common.schema.json#/$defs/sha256"
+            },
+            "line_start": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "line_end": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "heading": {
+              "type": "string",
+              "minLength": 1
+            },
+            "section_sha256": {
+              "$ref": "common.schema.json#/$defs/sha256"
+            },
+            "metadata_source": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "$ref": "common.schema.json#/$defs/relative_path"
+                },
+                "url": {
+                  "type": "string",
+                  "pattern": "^https://[^\\s]+$"
+                },
+                "sha256": {
+                  "$ref": "common.schema.json#/$defs/sha256"
+                }
+              },
+              "required": [
+                "path",
+                "url",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "description_basis": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "source_id",
+            "filename",
+            "sha256",
+            "line_start",
+            "line_end",
+            "heading",
+            "section_sha256",
+            "metadata_source",
+            "description_basis"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "attribution": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "organizations",
+            "authors",
+            "team"
+          ]
+        },
+        "display": {
+          "type": "string",
+          "minLength": 1
+        },
+        "organizations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "source_url": {
+          "type": "string",
+          "pattern": "^https://[^\\s]+$"
+        },
+        "source_locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checked_at": {
+          "type": "string",
+          "pattern": "^20\\d\\d-\\d{2}-\\d{2}$"
+        }
+      },
+      "required": [
+        "kind",
+        "display",
+        "organizations",
+        "authors",
+        "source_url",
+        "source_locator",
+        "evidence_note",
+        "checked_at"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "organizations",
+                  "team"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "organizations": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "authors"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "authors": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "runtime_readiness": {
+      "const": "not_verified"
+    },
+    "adapter_validation": {
+      "const": "source_and_fixture_tests"
+    },
+    "native_adapters": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "common.schema.json#/$defs/native_adapter"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "description",
+    "repository",
+    "registration_status",
+    "adapter_status",
+    "capabilities",
+    "supported_protocols",
+    "limitations"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "record_kind": {
+            "const": "research_work"
+          }
+        },
+        "required": [
+          "record_kind"
+        ]
+      },
+      "then": {
+        "required": [
+          "papers",
+          "search_family",
+          "code_links",
+          "provenance"
+        ],
+        "properties": {
+          "repository": {
+            "type": "null"
+          },
+          "registration_status": {
+            "const": "literature"
+          },
+          "papers": {
+            "minItems": 1
+          },
+          "provenance": {
+            "type": "object"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "repository": {
+            "$ref": "common.schema.json#/$defs/repository"
+          },
+          "registration_status": {
+            "const": "planned"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "adapter_status": {
+            "const": "native_cli"
+          }
+        },
+        "required": [
+          "adapter_status"
+        ]
+      },
+      "then": {
+        "required": [
+          "runtime_readiness",
+          "adapter_validation"
+        ],
+        "properties": {
+          "record_kind": {
+            "const": "system_registration"
+          },
+          "repository": {
+            "$ref": "common.schema.json#/$defs/repository"
+          },
+          "capabilities": {
+            "properties": {
+              "native_run": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "capabilities": {
+            "properties": {
+              "native_run": {
+                "const": false
+              }
+            }
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "runtime_readiness"
+              ]
+            },
+            {
+              "required": [
+                "adapter_validation"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "ahe",
+      "name": "AHE",
+      "participant_ids": [
+        "ahe"
+      ],
+      "repository": {
+        "url": "https://github.com/china-qijizhifeng/agentic-harness-engineering",
+        "commit": "8b2a55d97590363fe50c3cc6b5e833b020a4bb4c"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare Python >=3.13 and pyproject.toml dependencies; configure E2B/model environment names explicitly.",
+        "Overlay configs/base.yaml with actual dataset/template paths and bounded max_iterations/timeouts; source defaults contain placeholders."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "d1404dcdb97e84a6f990ed3d205226d481d2bbb857b13f00585c3b863e217d35",
+        "README.md": "cf1706a1e0e2f1f0212a6155d6f40522a3f89e9dc86a6e693bee3dfb2ad8d787",
+        "configs/base.yaml": "78df5645ab0305635706e07a2245ad4eff75a5efbfb2b5cb83dbba48908dbb94",
+        "evolve.py": "68a1b3cef899f0939d0c62023958b9bff26bee671c345b79da95cf7883122a32"
+      },
+      "profiles": [
+        {
+          "id": "harness-evolution",
+          "description": "AHE evaluate/analyze/improve harness loop with Harbor verifier rewards",
+          "invocation": {
+            "kind": "script",
+            "target": "evolve.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--config",
+            "configs/base.yaml"
+          ],
+          "output": null,
+          "required_files": [
+            "evolve.py",
+            "configs/base.yaml"
+          ],
+          "config_files": [
+            "configs/base.yaml"
+          ],
+          "result_globs": [
+            "experiments/**/*.json",
+            "experiments/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "AHE evaluate/analyze/improve harness loop with Harbor verifier rewards Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "evolve.py"
+            ]
+          },
+          "argument_help": [
+            "--config configs/base.yaml; configure datasets, model, iteration and time budgets in the staged YAML."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Requires prebuilt E2B templates, Harbor datasets and native NexAU dependencies.",
+            "Optional webhook notifications must be disabled unless separately authorized."
+          ]
+        }
+      ]
+    }
+  ]
+}

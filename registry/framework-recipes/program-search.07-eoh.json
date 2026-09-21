@@ -1,0 +1,78 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "eoh",
+      "name": "EoH",
+      "participant_ids": [
+        "eoh"
+      ],
+      "repository": {
+        "url": "https://github.com/FeiLiu36/EoH",
+        "commit": "472545785c936dcfc863d2bc0d6109cf23c7ce62"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the pinned eoh/ Python package and its online-bin-packing dependencies."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "1126322e2cc8d165adc4c792eeb195717de2bcc7b39be1ce77959d78e87ef685",
+        "eoh/src/eoh/config.py": "a8efc2b362d13e8f439776e99b3ec2fb753f5d54c7a731eebfaf70e0fc581e50",
+        "eoh/src/eoh/eoh/eoh.py": "c257afe3aacbc5b37dd2c25e5fe037bc0df4af21f6e319b5662234cd7870f7fd",
+        "eoh/src/eoh/run.py": "3d1813a00cc9ae15d1a842dc050e8ca05de98b59dfb9d4b177a242be3c50fa11",
+        "examples/bp_online/get_instance.py": "a42983866e16cf13073b17277d4b53afba3a5a543be58240bdd71963f789975d",
+        "examples/bp_online/prob.py": "5ad146c68768f6d710f8928fc2b1c80cd83e12c31a58d106a06848655c3a1181",
+        "examples/bp_online/runEoH.py": "6012eae228b3e2b6c2fcb63be52537572837814761949e98817a6ad1bebdde12"
+      },
+      "profiles": [
+        {
+          "id": "online-bin-packing",
+          "description": "Native EoH.run uses BPONLINE.evaluate_program; the driver only supplies parameters and environment credentials.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.eoh"
+          },
+          "cwd": "examples/bp_online",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "eoh/src/eoh/run.py",
+            "eoh/src/eoh/config.py",
+            "examples/bp_online/runEoH.py",
+            "examples/bp_online/prob.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native EoH.run uses BPONLINE.evaluate_program; the driver only supplies parameters and environment credentials.",
+            "evidence": [
+              "examples/bp_online/prob.py",
+              "examples/bp_online/get_instance.py",
+              "eoh/src/eoh/eoh/eoh.py"
+            ]
+          },
+          "argument_help": [
+            "Required: --endpoint ENDPOINT --model MODEL --population N --generations N --samples N",
+            "Optional: --samplers N --evaluators N --eval-timeout SECONDS; OPENAI_API_KEY is environment-only."
+          ],
+          "limitations": [
+            "This is the current pinned EoH online-bin-packing implementation, not the absent original EvolCAF example."
+          ],
+          "python_paths": [
+            "eoh/src",
+            "examples/bp_online"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "miprov2-gateway-gsm8k",
+      "name": "DSPy MIPROv2 \u00b7 GSM8K gateway pilot",
+      "participant_ids": [
+        "mipro"
+      ],
+      "repository": {
+        "url": "https://github.com/stanfordnlp/dspy",
+        "commit": "40a6e168914a7b81a78b1a081d93f26de18c8d0d"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the pinned native source from a separate build copy into an isolated environment; retain pip freeze and pip check evidence.",
+        "Supply the immutable GSM8K pilot bundle via request.inputs and scoped OPENAI_API_KEY environment reference."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "fc84421fcf968a696680dacf66ad53db769f699f557690127c5ccb3f6358cfdb",
+        "pyproject.toml": "1ed7f5f4a2282f6b21869fd24d64f7aa2e6c362cea7ef06ad578f1a38bfe64c3",
+        "dspy/teleprompt/mipro_optimizer_v2.py": "6bf7632836d3a54ab0da3f38a8f1963813472312e9c0e3f2ff19b4377af407f3",
+        "dspy/teleprompt/utils.py": "6242237a2a734dc363db03d6e9263c88d6f48c2f45e1eceee5a62af556df7e4e",
+        "dspy/clients/base_lm.py": "95d9e304da17617003379b4badfdb7b20b25057f0c4dfcf103a4e486397443f7",
+        "dspy/clients/execution.py": "f208a60195c06783c97f035067de8e63011dad1d5797108344b308869ffe9194",
+        "dspy/adapters/chat_adapter.py": "3bf82a959573e95ea60e4d7ef9c818d67a5066f7c1775cff0423203329f699a8",
+        "dspy/adapters/json_adapter.py": "da1992790eac516c287ffb1da6788ba48cb53951bab1aafc490ccd6bcc0074a3",
+        "dspy/propose/grounded_proposer.py": "c9900b74c0997410f915f2a470d39dcd9d55c1fa8b9cdf35799915ec0b1617e3",
+        "dspy/primitives/module.py": "e0eecbef0b9acb828618a59c6710beee40f569a84267e3c46eb7797af0ca7809"
+      },
+      "profiles": [
+        {
+          "id": "gsm8k-prompt-pilot",
+          "description": "Native prompt optimization on eight train and eight validation examples, with a separate eight-example official-test heldout assessed only after optimization.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.mipro_gateway_pilot"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--dataset",
+            "arena-inputs/gsm8k-prompt-pilot-v1.json"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "LICENSE",
+            "pyproject.toml",
+            "dspy/teleprompt/mipro_optimizer_v2.py",
+            "dspy/teleprompt/utils.py",
+            "dspy/clients/base_lm.py",
+            "dspy/clients/execution.py",
+            "dspy/adapters/chat_adapter.py",
+            "dspy/adapters/json_adapter.py",
+            "dspy/propose/grounded_proposer.py",
+            "dspy/primitives/module.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Official GSM8K extract_answer/is_correct metric supplied through the native optimizer API; heldout outputs and scores are stored separately from native validation selection.",
+            "evidence": [
+              "dspy/teleprompt/mipro_optimizer_v2.py",
+              "dspy/teleprompt/utils.py",
+              "dspy/clients/base_lm.py",
+              "dspy/clients/execution.py",
+              "dspy/adapters/chat_adapter.py",
+              "dspy/adapters/json_adapter.py",
+              "dspy/propose/grounded_proposer.py",
+              "dspy/primitives/module.py"
+            ]
+          },
+          "argument_help": [
+            "--model EXACT_REVIEWED_ID; request.inputs must map arena-inputs/gsm8k-prompt-pilot-v1.json to the pinned dataset bundle."
+          ],
+          "limitations": [
+            "This is a tiny integration pilot with genuine public data, not the original GEPA or MIPRO paper protocol and not evidence of model-pretraining disjointness.",
+            "Native search methods and response parsing remain; a sequential local-gateway transport preserves exact model identity and n choices. SDK retries are zero; sampling/token controls are recorded but not enforced.",
+            "A separate 128-request admission limit and 2400-second outer deadline bound the pilot. Budget exhaustion is not native completion.",
+            "Only train and validation reach optimization. Seed and selected programs use heldout only after optimization; no heldout score influences selection.",
+            "Provider token usage is retained when returned; cost remains unknown. Native GEPA TrackingLM estimates are not billing evidence.",
+            "The integration uses pinned DSPy MIPROv2 and its supported BaseLM interface; it does not claim reproduction of the original MIPRO 2024 implementation."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONUNBUFFERED": "1",
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "LITELLM_LOCAL_MODEL_COST_MAP": "True",
+            "DSPY_CACHEDIR": "{output}/dspy-cache"
+          }
+        }
+      ]
+    }
+  ]
+}

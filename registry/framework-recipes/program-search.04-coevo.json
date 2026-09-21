@@ -1,0 +1,151 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "coevo",
+      "name": "CoEvo",
+      "participant_ids": [
+        "coevo"
+      ],
+      "repository": {
+        "url": "https://github.com/pgg3/CoEvo",
+        "commit": "dcad65e9799961cf67cf29865ff41dda2902a808"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install from pinned CoEvo/ package root with its declared evotoolkit dependency; prepare tokenizer cache."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "CoEvo/pyproject.toml": "6478b50b447129b7f3600556d43a20430355ce73f12221fbae5b43bfef9dfd0b",
+        "CoEvo/src/coevo/core/coevo_interface.py": "f91d41e1eec2eea1d3ea1492a4202b353ad9b37f54ada34dcadc61ed64fbd4f5",
+        "CoEvo/src/coevo/core/coevo_method.py": "41482e7245bbc1b210bbb1eb1649d8d391e1e51a4eec5cd54dd1de35402b8872",
+        "CoEvo/src/coevo/tasks/oscillation_1.py": "06eebc3983918402990c3d0ec31ffec35736b4451c94a0f3bf0a0bbd4bd341fe",
+        "LICENSE": "18580b487940efb327fc42a3d005a3fc4d2cdaeb16dd9212285e038583104eb4",
+        "data/oscillation_1/train.csv": "a846b36b931dee4e2335faf9fb4195a7a8d1b4e4430e915266ef45fcd2e07ee7",
+        "main_run.py": "3024283a03a6a4eeda5e55668518b3a81b02545423c54df13f883da5b6fadbf4",
+        "model_config.json": "5e4d6e29d6ca6a9072962abece386ae6942713f37fcd205f70b9947b598c47c8",
+        "CoEvo/src/coevo/core/summarizer.py": "6d407a4bc5bd1342b894314b029fde95ae7c97f1325225196c4c1735dbabf7f7"
+      },
+      "profiles": [
+        {
+          "id": "oscillation",
+          "description": "Native CoEvoMethod.run searches its multi-representation solution chains and invokes Oscillation1Task evaluation.",
+          "invocation": {
+            "kind": "script",
+            "target": "main_run.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--task",
+            "oscillation_1",
+            "--mode",
+            "coevo"
+          ],
+          "output": null,
+          "required_files": [
+            "main_run.py",
+            "CoEvo/src/coevo/core/coevo_method.py",
+            "CoEvo/src/coevo/core/coevo_interface.py",
+            "data/oscillation_1/train.csv",
+            "model_config.json"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native CoEvoMethod.run searches its multi-representation solution chains and invokes Oscillation1Task evaluation.",
+            "evidence": [
+              "CoEvo/src/coevo/tasks/oscillation_1.py",
+              "CoEvo/pyproject.toml"
+            ]
+          },
+          "argument_help": [
+            "--max_gen N --pop_size N",
+            "Configure API_URL, API_KEY and MODEL as explicit environment variables; avoid model_config.json secrets."
+          ],
+          "limitations": [
+            "Requires pinned CoEvo package and external evotoolkit dependency; native train.csv is used unchanged.",
+            "Native summarizer loads the openai-community/gpt2 tokenizer; cache/data setup must be prepared.",
+            "The evidence-hashed placeholder model_config.json is removed only from the isolated workspace before launch, so the unchanged native program uses explicit API_URL/API_KEY/MODEL environment variables."
+          ],
+          "python_paths": [
+            "CoEvo/src"
+          ],
+          "remove_files": [
+            "model_config.json"
+          ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Bounded native CPU pilot through the private OpenAI-compatible gateway; original optimizer and evaluator.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.cpu_program_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "coevo",
+            "--task",
+            "oscillation_1",
+            "--mode",
+            "coevo"
+          ],
+          "output": null,
+          "required_files": [
+            "main_run.py",
+            "CoEvo/src/coevo/core/coevo_method.py",
+            "CoEvo/src/coevo/core/coevo_interface.py",
+            "data/oscillation_1/train.csv",
+            "model_config.json"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native CoEvoMethod.run searches its multi-representation solution chains and invokes Oscillation1Task evaluation.",
+            "evidence": [
+              "CoEvo/src/coevo/tasks/oscillation_1.py",
+              "CoEvo/pyproject.toml"
+            ]
+          },
+          "argument_help": [
+            "--max_gen N --pop_size N",
+            "Configure API_URL, API_KEY and MODEL as explicit environment variables; avoid model_config.json secrets.",
+            "--model ALIAS --tls-ca PUBLIC_CA --hf-cache ABSOLUTE_CACHE --hf-manifest STAGED_MANIFEST --max_gen 1 --pop_size 2"
+          ],
+          "limitations": [
+            "Requires pinned CoEvo package and external evotoolkit dependency; native train.csv is used unchanged.",
+            "Native summarizer loads the openai-community/gpt2 tokenizer; cache/data setup must be prepared.",
+            "The evidence-hashed placeholder model_config.json is removed only from the isolated workspace before launch, so the unchanged native program uses explicit API_URL/API_KEY/MODEL environment variables.",
+            "Native evotoolkit uses verified HTTPS via the loopback TLS relay. The reviewed GPT-2 tokenizer and model weights must be cached and hash-verified offline.",
+            "The task timeout_seconds value is not enforced by native Oscillation1Task; only the outer process/cgroup wall limit stops a hung candidate. Native evaluations are sequential."
+          ],
+          "python_paths": [
+            "CoEvo/src"
+          ],
+          "remove_files": [
+            "model_config.json"
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1"
+          },
+          "protected_args": [
+            "--engine"
+          ]
+        }
+      ]
+    }
+  ]
+}

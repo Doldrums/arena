@@ -1,0 +1,354 @@
+/* Arena's shared visual system. Loaded after the feature styles.
+   SF Pro Text is resolved from the user's operating system; no font is shipped. */
+@font-face {
+  font-family: "SF Pro Text";
+  src: local("SF Pro Text Regular"), local("SFProText-Regular"), local("SF Pro Text");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SF Pro Text";
+  src: local("SF Pro Text Medium"), local("SFProText-Medium");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SF Pro Text";
+  src: local("SF Pro Text Semibold"), local("SFProText-Semibold");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SF Pro Text";
+  src: local("SF Pro Text Bold"), local("SFProText-Bold");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+:root {
+  --font-sans: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --bg: #f5f5f6;
+  --surface: #fff;
+  --text: #202024;
+  --muted: #77777e;
+  --border: #e5e5e8;
+  --accent: #7655ac;
+  --accent-soft: #eee7f8;
+  --selected: #e9e2f5;
+  --blue: #416ab8;
+  --green: #337653;
+  --red: #b2474d;
+  --yellow: #e8c46d;
+  --peach: #f6d398;
+  --lavender: #d8c1fb;
+  --mint: #b9e89c;
+  --sky: #abccff;
+  --field-green: #3aaf76;
+  --field-green-light: #b9e89c;
+  --field-blue: #2875f0;
+  --field-blue-light: #abccff;
+  --field-lilac: #842bd9;
+  --field-lilac-light: #d8c1fb;
+  --field-amber: #e9ad48;
+  --field-amber-light: #f9d791;
+  --card-radius: 28px;
+  --control-radius: 14px;
+  --card-shadow: 0 2px 4px #38342503, 0 10px 30px #38342504, inset 0 1px 0 #ffffffd9;
+  --control-shadow: 0 2px 5px #24243508, inset 0 1px 0 #fff;
+}
+body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: -0.015em;
+  background: var(--bg);
+  color: var(--text);
+}
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-sans);
+}
+h1,
+h2,
+h3,
+h4 {
+  color: var(--text);
+  font-weight: 600;
+}
+h1 {
+  letter-spacing: -1.25px;
+}
+h2 {
+  letter-spacing: -0.45px;
+}
+h3 {
+  letter-spacing: -0.25px;
+}
+::selection {
+  background: #e5daf7;
+  color: #282138;
+}
+:is(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid #65519a;
+  outline-offset: 4px;
+}
+button,
+a,
+input,
+select,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+button,
+a {
+  touch-action: manipulation;
+}
+.skip {
+  background: var(--lavender);
+  border-radius: 12px;
+  box-shadow: var(--control-shadow);
+  z-index: 40;
+}
+.inline-link {
+  color: var(--blue);
+  font-size: 12px;
+}
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  font-weight: 600;
+  color: #6c6873;
+  margin-bottom: 10px;
+}
+.subtitle {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.page-heading {
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.page-heading h1 {
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.page-heading .button {
+  flex-shrink: 0;
+}
+.page-footer {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-top: 26px;
+}
+/* Full-width catalog shell: a quiet masthead and a floating tab control. */
+.arena-shell {
+  min-height: 100vh;
+}
+.arena-masthead {
+  max-width: 1512px;
+  margin: 0 auto;
+  padding: 24px 40px;
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr);
+  align-items: center;
+  gap: 24px;
+  min-height: 102px;
+}
+.arena-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.9px;
+  line-height: 1.15;
+}
+.arena-brand > span:not(.arena-brand-mark):not(.brand-mark) {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.arena-brand small {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #807a85;
+  line-height: 1.35;
+}
+.arena-brand-mark {
+  height: 41px;
+  width: 41px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(140deg, #f6d19b, #e5c5c9 60%, #cdb7e9);
+  box-shadow:
+    inset 0 1px 1px #ffffffbf,
+    0 3px 8px #6e53620c;
+  color: #654b62;
+}
+.arena-brand-mark svg {
+  height: 23px;
+  width: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.arena-brand .brand-mark,
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background:
+    radial-gradient(ellipse at 68% 90%, #f2aa42, transparent 85%),
+    linear-gradient(145deg, #ffe2a8, #edbb76);
+  font-size: 30px;
+  color: #44313f;
+  font-weight: 600;
+  box-shadow:
+    inset 0 1px 1px #ffffffc7,
+    0 3px 8px #6e53620c;
+}
+.brand-caption {
+  font-size: 9px;
+  color: #6c6873;
+  letter-spacing: 1.7px;
+  line-height: 1.5;
+  font-weight: 500;
+  margin-top: 3px;
+}
+.arena-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 19px;
+  background: #eeeef0;
+  box-shadow:
+    inset 0 1px 4px #39342208,
+    0 1px 0 #ffffffb8;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.arena-tabs > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 9px 19px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #71717b;
+  white-space: nowrap;
+  transition:
+    background 0.16s,
+    color 0.16s,
+    box-shadow 0.16s;
+}
+.arena-tabs > a:hover {
+  color: var(--text);
+  background: #ffffff65;
+}
+.arena-tabs > a[aria-current="page"] {
+  background: #252529;
+  color: #fff;
+  box-shadow:
+    0 2px 5px #20202412,
+    0 1px 2px #2020240a;
+}
+.arena-tabs > a[aria-current="page"] > span:not(:empty) {
+  background: #ffffff1a;
+  color: #ededf1;
+}
+.arena-tabs svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.arena-tabs > a > span,
+.arena-tabs > a > small {
+  color: #7b758c;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.arena-tabs > a > span:not(:empty) {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #f3f1f6;
+  font-variant-numeric: tabular-nums;
+}
+.arena-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 13px;
+  min-width: 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+.arena-header-actions .connection-dot {
+  width: 6px;
+  height: 6px;
+}
+.arena-header-actions .inline-link,
+.arena-header-actions > a {
+  font-size: 12px;
+}
+.arena-header-actions .footer-note {
+  font-size: 10px;
+}
+.arena-live-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 10px;
+  color: #746c7c;
+}
+.arena-header-actions .button {
+  font-size: 11px;
+  padding: 10px 14px;
+  min-height: 42px;
+}
+.arena-canvas {
+  padding: 26px 40px 38px;
+  max-width: 1432px;
+  width: 100%;
+  margin: auto;
+  min-width: 0;
+}
+.arena-canvas .arena-page-heading .subtitle {
+  max-width: 680px;
+}
+.arena-canvas .arena-page-heading {
+  margin-bottom: 28px;
+}
+.arena-breadcrumbs {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 24px;
+}

@@ -1,0 +1,129 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "promptagent-penguins-gateway",
+      "name": "PromptAgent \u00b7 native penguins MCTS gateway pilot",
+      "participant_ids": [
+        "promptagent"
+      ],
+      "repository": {
+        "url": "https://github.com/XinyuanWangCS/PromptAgent",
+        "commit": "2edfc9e4462a6af97dc973442d074de9b3e876b2"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Isolated Python3.11 CPU environment with torch,numpy,pytz,tqdm,PyYAML and modern OpenAI/httpx. Preserve exact freeze and pip-check; unused GPU providers are disabled explicitly.",
+        "Review actual-native SDK fixtures for all 7 aliases, bounded retry/failure paths and unprivileged plans before operator admission."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "requirements.txt": "24fcdd1c89c129658bec6c3f9063d11913207119d9d319989932009c362b59e6",
+        "example_config.yaml": "f52594cf512d503003c821727fa767006761f5bdd05a2749350ae8105de8eaee",
+        "datasets/penguins_in_a_table.json": "f743ab0bd8d500798fc0ab83fdd3547b924e9c1acb15ca11b65ac228c0ab557a",
+        "src/main.py": "e3007e46387cff6002b563ccc8116e6cd0e25bc1735627ee75c96b1a1a1c29a5",
+        "src/prompt_optim_agent/__init__.py": "ec7c95c44f4cab359ca28683d7b31d62acb8c8758cf383c42638cbf2dcb933ec",
+        "src/prompt_optim_agent/agent.py": "706b3aa71faf21b137cbb9c15f3a1ad2283541f2ba0773490246a3f8e6ff90c8",
+        "src/prompt_optim_agent/language_model/__init__.py": "a56dd35bd401368834967a72061436a33f8400ad665a7c3ea4e0fa840bdb3de2",
+        "src/prompt_optim_agent/language_model/ct_model.py": "b3c1b5391de4c05c9df79ef2b1808a8fdca117b0d564419db2280d848cf1e459",
+        "src/prompt_optim_agent/language_model/hf_text2text_model.py": "7f349afa636d3374eaf895be950528243581c7a65297b1dc74dfa4969b361c9d",
+        "src/prompt_optim_agent/language_model/hf_textgeneration_model.py": "19be02b3aefdf261208048e020bb0aef74436948ba55fa2efaa49e943c218b6a",
+        "src/prompt_optim_agent/language_model/openai_model.py": "8eea4a7c64b51e4672a52213f60c4f6d304c6c648131923ee189355dc909ac08",
+        "src/prompt_optim_agent/language_model/palm_model.py": "0db724f774ec556cb3ebd1443cd7b384abddc031d8142fa661209635b0c0996f",
+        "src/prompt_optim_agent/language_model/vllm.py": "9afa7cacfcfe34526b61e5f7aca29b5226f70c0d2f0bd1b3e316447463a2dfcf",
+        "src/prompt_optim_agent/search_algo/__init__.py": "fc28c803c42a767fd5da9e0c465c1e13a0c497ea1a3ad225a6c911930acb7315",
+        "src/prompt_optim_agent/search_algo/base_algo.py": "834ae34f3799467e51551ba1556265f6d79744340cb01f4198fcf28240a14987",
+        "src/prompt_optim_agent/search_algo/beam_search.py": "7755b140e6b7a05a76440936833256854ae8260373bb8e182936f572c8495f86",
+        "src/prompt_optim_agent/search_algo/mcts.py": "c83fd88a10fe2379eeaeb19ae3a30852a31037f313ab7adc323b85ea0a2325f8",
+        "src/prompt_optim_agent/test_helper.py": "ed751655d6f373a3878f2e95a83e942ae72f6d20be15364985cd8a24c6114104",
+        "src/prompt_optim_agent/utils.py": "3690700448d9d569aae8c2d6903e5973694428a227f1c6b21a14a46bd347113b",
+        "src/prompt_optim_agent/world_model/__init__.py": "0394d6c3ee6910757645b2401789e8d73631c9afeba1227a286e1d72f1554eb2",
+        "src/prompt_optim_agent/world_model/beam_world_model.py": "2126720dd717ad2122c0f75d0a77404e6e138ac0a915ddb0107515a5b0059d47",
+        "src/prompt_optim_agent/world_model/gradient_descent.py": "aaa74e2495187fab0bbd76826b74c7eb1d79fb74fcdd1b62897998271632fbaa",
+        "src/prompt_optim_agent/world_model/prompts/__init__.py": "dfa69e2c63320eb0de62065c913db3cb8edddd5f596cd2a305a28a187876c875",
+        "src/prompt_optim_agent/world_model/prompts/gradient_descent_prompts.py": "dbb15aae3ba1bc39f1cc220143d02575ce02375f03e92634656af53aed5ad1d6",
+        "src/prompt_optim_agent/world_model/prompts/log_prompt_templates.py": "d6c31440e3798833b61bee6323a6fb5f9d68e0e5abef2d8b947743aa0fb3ee1c",
+        "src/prompt_optim_agent/world_model/world_model.py": "bdf94ce8d727b491758f2b450cc2e0d37245a2f2cb92edd8ee02874c4402ae3f",
+        "src/tasks/__init__.py": "8137f6426ce73d180ee5e64bb4b853c5e9f1638cd844607ee766129785193c34",
+        "src/tasks/base_task.py": "49fe885b6fae68a3749b5ad482e40453e2e41df318564906d9e3ab5dc8006c20",
+        "src/tasks/bigbench.py": "92a78af2524deea54b58d5bd9aead9eca9491f2758dfe80ad28648e648fbeee3",
+        "src/tasks/biosses.py": "35cbdfe0d4b107fb9abad0487ab3f2171e210e3f3a2d5064250b30576bd08426",
+        "src/tasks/cb.py": "24e24129c3a2f53d05fa2d1fdfa00a79a61f263e5eeba2bc05da6e33e443a0c7",
+        "src/tasks/epistemic.py": "fd15604fa746a53a9f00e807858bf95961c7cf48761be86b70853bd164f57446",
+        "src/tasks/med_qa.py": "a8cb5d0f6d2f19e379485e9d46c2aff372ef2102b28495fea4e735a8112f92f3",
+        "src/tasks/ncbi.py": "90933ae9964462593e9c4eeb3e8fe66dc703b05b67668f37cff90257d1e29456",
+        "src/tasks/object_counting.py": "34d111119a8b3444f59cb88a18679929ae89884eb7488654051b19405e636f8c",
+        "src/tasks/subj.py": "9939adb27226750d864b22522a2172a014960765c53e7f4689b150e8f06384bd",
+        "src/tasks/trec.py": "59d515276da7b60db988834e4f7a0336d7a7a332385f2206de92678c186dc8fd",
+        "src/test.py": "2fdc111d1cfec3909ab4e3a253364d74d9d24deddcf6f28aabc123ad25b7eec9"
+      },
+      "profiles": [
+        {
+          "id": "penguins-mcts-pilot",
+          "description": "Native two-iteration MCTS prompt search on bundled penguins with disjoint reward and frozen heldout splits.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.promptagent_penguins_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--preparation",
+            "arena-inputs/promptagent-preparation.json",
+            "--dependencies",
+            "arena-inputs/promptagent-dependencies.txt"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "promptagent-pilot"
+          },
+          "required_files": [
+            "src/prompt_optim_agent/search_algo/mcts.py",
+            "src/prompt_optim_agent/language_model/openai_model.py",
+            "datasets/penguins_in_a_table.json"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "promptagent-pilot/**/*.json",
+            "promptagent-pilot/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Unchanged BIG-bench option parsing/exact accuracy on native seeded 8 train / 4 reward / 4 heldout; native MCTS rewards choose paths/nodes before post-search heldout evaluation.",
+            "evidence": [
+              "src/tasks/bigbench.py",
+              "src/tasks/base_task.py",
+              "src/prompt_optim_agent/world_model/world_model.py",
+              "src/prompt_optim_agent/search_algo/mcts.py",
+              "datasets/penguins_in_a_table.json"
+            ]
+          },
+          "argument_help": [
+            "--model EXACT_REVIEWED_ID; two hashed preparation inputs required.",
+            "Two MCTS iterations, width 2 / depth 2, training batch 2, requested one prompt per expansion; all native model roles share the exact alias."
+          ],
+          "limitations": [
+            "Provider-only source ports: change OpenAI constructor import and disable unused unconditional provider imports. Hashes recorded; native MCTS/UCB/gradient prompts/parser/reward/evaluator unchanged.",
+            "Native infinite API retry loop is bounded to2 attempts per logical call and96 total SDK admissions, SDK retries 0, request 330 seconds, outer 2400 seconds. Errors are sanitized before native backoff logging.",
+            "Native benchmark has 149 bundled examples; tiny 16-example disjoint subset is integration evidence, not paper reproduction or canonical Arena evaluation.",
+            "Heldout evaluates native reward-selected paths only after optimization. Observer hashes frozen prompt/reward/search state; test scores must not be used for further selection.",
+            "Native temperatures 0/1 are recorded but unenforced by current gateway. Request bounds are not token or monetary budgets.",
+            "Only CPU/OpenAI native dependency path installed; unused vLLM/HF/PaLM/CT providers are unavailable in this profile."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONUNBUFFERED": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "python_paths": [
+            "src"
+          ]
+        }
+      ]
+    }
+  ]
+}

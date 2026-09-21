@@ -1,0 +1,69 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "llamea-bo",
+      "name": "LLaMEA-BO",
+      "participant_ids": [
+        "llamea-bo"
+      ],
+      "repository": {
+        "url": "https://github.com/Ewendawi/LLaMEA-BO",
+        "commit": "938b4d780aa0cbf9f7c941ebab61dadfa9157185"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "pip install poetry (cwd .)",
+        "poetry install (cwd .)"
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "06dcddbb6908a0c6dd4a9e8ec822eea41d5a460a53089fecccc8a68049e99241",
+        "README.md": "e2b737ec929a7da32e404e35149a437c7724e3b0f52a2a9feb130b824a3882af",
+        "llamevol/evaluator/ioh_evaluator.py": "e66044a580c99a88fa3922f7042c33ee319f5f52bf1c09dbf070794c5a6e414f",
+        "llamevol/llamevol.py": "91fc051933eb1c6827d3997aaa60d5a5772c459a46f5f45ec22f19bfe23eb76a",
+        "run_es_search.py": "356168139663230b86cc94719bd3c90440da337ac0ddbc7f066cc7f0f93bd917"
+      },
+      "profiles": [
+        {
+          "id": "native-es",
+          "description": "Native LLaMEA-BO evolution with environment-only Gemini credentials.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.llamea_bo"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "run_es_search.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "exp_es_search/**/*.json",
+            "exp_es_search/**/*.jsonl",
+            "exp_es_search/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Released IOH/BBOB evaluator: budget=100, dim=5, fixed ten-problem training selection, three repeats.",
+            "evidence": [
+              "run_es_search.py",
+              "llamevol/llamevol.py",
+              "llamevol/evaluator/ioh_evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "--parents 1 --offspring 1 --elitist --populations 4",
+            "Explicit environment_names: GEMINI_API_KEY."
+          ],
+          "limitations": [
+            "Native model is gemini-2.0-flash and native evaluator configuration is fixed by run_exp; the bridge does not claim model/budget parity with other methods.",
+            "Population pickle files are not loaded by Arena."
+          ]
+        }
+      ]
+    }
+  ]
+}

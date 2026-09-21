@@ -1,0 +1,70 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "llamea-mobo",
+      "name": "LLaMEA-MOBO",
+      "participant_ids": [
+        "llamea-mobo"
+      ],
+      "repository": {
+        "url": "https://github.com/glatq/LLaMEA-MOO",
+        "commit": "18861aa47f17905c28aa33c5a9f33df3a893d191"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "conda env create -f environment.yml (cwd .)",
+        "poetry install (cwd .)"
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "06dcddbb6908a0c6dd4a9e8ec822eea41d5a460a53089fecccc8a68049e99241",
+        "README.md": "202f2b8cf7455dcebab9069859cb6d73cb7e983ec96afc7894f11a86031cde43",
+        "conf/config.yaml": "d11fa5c1f56d8db5ec9edb12f11e5b0436f59cbc2e06996923a97d3cd7859e70",
+        "llamevol/llamevol.py": "d110f60699cc0e0105b298ebf2d58f1e1f60c9c2dd2fc2f2eff726e34ea59326",
+        "run_es_search.py": "0d8ae6c9b07ee304fd3710524effb8c843bcb0f0e5082137a59fdaf86a8d9d1a"
+      },
+      "profiles": [
+        {
+          "id": "native-mo-search",
+          "description": "Released multiobjective Bayesian-optimizer evolution.",
+          "invocation": {
+            "kind": "script",
+            "target": "run_es_search.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "mode=mo"
+          ],
+          "output": null,
+          "required_files": [],
+          "config_files": [
+            "conf/config.yaml"
+          ],
+          "result_globs": [
+            "exp_mo_es_search/**/*.json",
+            "exp_mo_es_search/**/*.jsonl",
+            "exp_mo_es_search/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native MOO evaluator, feasibility and hypervolume/AOCC logic with released configurations.",
+            "evidence": [
+              "run_es_search.py",
+              "llamevol/llamevol.py"
+            ]
+          },
+          "argument_help": [
+            "mo_search.n_population=4 mo_search.n_parent=1 mo_search.n_offspring=1",
+            "Keep llm.api_key null; configure native environment/Vertex credentials."
+          ],
+          "limitations": [
+            "Native run_exp prints llm.api_key; never place a literal key in configuration. Provider environment credentials are required.",
+            "Multiobjective/native metrics are not flattened to an Arena scalar fitness."
+          ]
+        }
+      ]
+    }
+  ]
+}

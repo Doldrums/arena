@@ -1,0 +1,135 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "base",
+      "name": "BaSE",
+      "participant_ids": [
+        "base"
+      ],
+      "repository": {
+        "url": "https://github.com/keruiwu/self-evolving-allocation",
+        "commit": "ae7b5da1db39c0fd826adda7893c99d5bda5ac1b"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install pinned requirements.txt in a dedicated environment; configure the selected model endpoint through its native environment variables."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "9f1abe28a25b5f6f95c58a81a647de3fa72ff6388d228c59bddd079255709989",
+        "base/arms.py": "2a13ea34ec3f50e1df16d32dc4eac4b0e7a967bbe23eb3b3fddff851856ea4b2",
+        "base/runner.py": "7bfaad8ce4404089fb93d9de48603d47c09b9bdea70dc85deb9cd47b419b4167",
+        "core/evaluator.py": "a1f2fb297269b7c0b9f4f8d9e50cedc849cd76543d0edac20d4566325d57e8b7",
+        "core/tasks.py": "92833909b4713b670260dc9fda97692952e90799d9216e44f214b0216435dd40",
+        "run_base.py": "ab872bf0b01a3f350aec52e6e877f6551e4f83eec7e7a0882c51724632840cde",
+        "tasks/circle_packing/evaluator.py": "a1708613eefca455f8198dc46743a76e97b760b15f99ee6c3009d6803eda6812",
+        "base/policies.py": "62be0c3091495b864cd4bbc4142d9c6d636e73289c3b154c91991384a05b8577",
+        "core/models.py": "8177c7f331e943e5dbc9ce5a2f3d12acdb7fb674d0bf509d97434f3dcdaae15b",
+        "core/llm.py": "765e2668dd46b5e450582ae34b4ecf7920fda9c5a9a04642f6e73fb95d89d6bc",
+        "core/greedy.py": "671fb3174063df7ef508daeb6811c171188d7ddf46cf4db4563eae06457fb9fd",
+        "core/flops.py": "45c336c6606cb36e369253e40ce4dcb1e58f7b2e7ef22af84e28e92f5ece9bb7"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing",
+          "description": "Native BaSE live greedy arms call the task evaluator and save per-arm results and allocation trace.",
+          "invocation": {
+            "kind": "script",
+            "target": "run_base.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--task",
+            "cp",
+            "--algo",
+            "ucb"
+          ],
+          "output": {
+            "flag": "--out-dir",
+            "path": "results"
+          },
+          "required_files": [
+            "run_base.py",
+            "base/runner.py",
+            "base/arms.py",
+            "core/tasks.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native BaSE live greedy arms call the task evaluator and save per-arm results and allocation trace.",
+            "evidence": [
+              "core/evaluator.py",
+              "tasks/circle_packing/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "Required: --model MODEL --T ROUNDS --N CHILDREN",
+            "Optional: --n-arms N --bandit-seed N; model names are those in core/models.py."
+          ],
+          "limitations": [
+            "Native FLOP estimates and API call counts are retained as reported; Arena does not convert them into verified spend."
+          ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Small native CPU pilot through the private OpenAI-compatible gateway; exact API model identity.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.base_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "run_base.py",
+            "base/runner.py",
+            "base/arms.py",
+            "core/tasks.py",
+            "base/policies.py",
+            "core/models.py",
+            "core/llm.py",
+            "core/greedy.py",
+            "core/flops.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native BaSE live greedy arms call the task evaluator and save per-arm results and allocation trace.",
+            "evidence": [
+              "core/evaluator.py",
+              "tasks/circle_packing/evaluator.py"
+            ]
+          },
+          "argument_help": [
+            "--model exact gateway model ID; --rounds 1..8 (one child per round, two native arms)."
+          ],
+          "limitations": [
+            "Native FLOP estimates and API call counts are retained as reported; Arena does not convert them into verified spend.",
+            "Opaque API parameter counts and all FLOPs are explicitly null. Native UCB allocations and candidate scores are unchanged. Sampling seed is recorded but not provider-enforced; temperature/top_p/token limits follow gateway codex-native policy. Native retries can exceed nominal proposal calls."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "rankevolve",
+      "name": "RankEvolve",
+      "participant_ids": [
+        "rankevolve"
+      ],
+      "repository": {
+        "url": "https://github.com/fangchenli/ranking-evolved",
+        "commit": "8f664bcd5123bac2397f0c1bfbdb347ca3233483"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare Python >=3.11, pinned project dependencies, retrieval datasets and evaluator system prerequisites."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "aa65ead545f8467f5bf6d71a07da62429fa17d5fec5381d33205c05cd9ea89d3",
+        "src/ranking_evolved/cli.py": "5f65e0fbbf8969c52ab6a0e6001b9dddcf0bd9015e0f67cc831aeaaa35d362da",
+        "src/ranking_evolved/core/controller.py": "c12e7e56239b0eac76ce13041ecd31547fe25de8ee05976945065218c2afbd1c",
+        "tasks/bm25/configs/freeform_latency_aware.yaml": "d71b1408dbe4ab6f81fa5e97a192e01b1c3e6b5d0406461b58e973254cfbffdf",
+        "tasks/bm25/evaluator.py": "c63a3aa45265b18edbbc705eeb929a4f2a28cee88b316fe1f963be198c596c4b",
+        "tasks/bm25/seeds/freeform.py": "423084a12afd49b21b558848b47de6fe8475f8493c9dfe4f1a707d08ceeca473"
+      },
+      "profiles": [
+        {
+          "id": "bm25-latency",
+          "description": "Native RankEvolve uses its configured BM25 evaluator and stores run.db, trace.jsonl and experiment summaries.",
+          "invocation": {
+            "kind": "module",
+            "target": "ranking_evolved.cli"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "run",
+            "--config",
+            "tasks/bm25/configs/freeform_latency_aware.yaml"
+          ],
+          "output": null,
+          "required_files": [
+            "src/ranking_evolved/cli.py",
+            "tasks/bm25/seeds/freeform.py"
+          ],
+          "config_files": [
+            "tasks/bm25/configs/freeform_latency_aware.yaml"
+          ],
+          "result_globs": [
+            "output/**/*.json",
+            "output/**/*.jsonl",
+            "output/**/*.db"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native RankEvolve uses its configured BM25 evaluator and stores run.db, trace.jsonl and experiment summaries.",
+            "evidence": [
+              "tasks/bm25/evaluator.py",
+              "src/ranking_evolved/core/controller.py"
+            ]
+          },
+          "argument_help": [
+            "--max-iterations N --replay",
+            "Provide OPENAI_API_KEY explicitly; native EVAL_* variables control dataset selection and evaluator resources."
+          ],
+          "limitations": [
+            "BRIGHT/BEIR/TREC inputs and Java/Lucene dependencies must be provisioned. Native data downloads may occur during an explicit run.",
+            "The pinned repository points to a newer upstream repository, but this recipe deliberately retains the registered historical source pin.",
+            "No resume profile or reuse of committed output directories is claimed."
+          ],
+          "protected_args": [
+            "--resume"
+          ]
+        }
+      ]
+    }
+  ]
+}

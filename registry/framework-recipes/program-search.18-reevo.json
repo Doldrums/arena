@@ -1,0 +1,147 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "reevo",
+      "name": "ReEvo",
+      "participant_ids": [
+        "reevo"
+      ],
+      "repository": {
+        "url": "https://github.com/ai4co/reevo",
+        "commit": "6dce18257da5e11db2d138e417a2fffc5c72d05f"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the pinned requirements.txt and native task dependencies; provide explicitly allowed provider credentials."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "6e9394ee2d42f54bb6cb88a8695e7dca34de2788897a182ceea907844f25667c",
+        "cfg/config.yaml": "bdc3fc9afbe187d8dc741cebc0a32894eb128cbf6dd67c6189e36c9b3be2e888",
+        "cfg/llm_client/openai.yaml": "f15143c217cc9cc755b6a3952b157779acc8589ea0bbf9c3eace6ad7b449ef43",
+        "cfg/problem/bpp_online.yaml": "248826948095d691f5f25056f295de9cbb8ff5790562c20987b7bba14adbddf1",
+        "main.py": "5c187e1a34a34a106d1ed675628ae74a872b6200d6c4d0960e92719868ccde30",
+        "problems/bpp_online/eval.py": "4fa8b4e6f74afa0715e6411d7eb75809c7f35aadaa1435027f9c5f00d1a7bac1",
+        "reevo.py": "9530188250e1731358e2ac1c23a5ab67daca3f6dd1f888fcccc28da29c555118",
+        "utils/utils.py": "392d1642f63eb2a64e09a43bc649a8abe3d35fcb68df0ea5b658843524dbc74f",
+        "utils/llm_client/openai.py": "e4c84e1db20fa8f907b2df3b3a4949d79e527ec6729379d4ca993a704dc093cb",
+        "utils/llm_client/base.py": "5503fdcd65e15ad8aab0c1546521f5e63a1f3218aaa1e7432aeca697884b2ef3"
+      },
+      "profiles": [
+        {
+          "id": "online-bin-packing",
+          "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+          "invocation": {
+            "kind": "script",
+            "target": "main.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "algorithm=reevo",
+            "problem=bpp_online"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "reevo.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/problem/bpp_online.yaml",
+            "cfg/llm_client/openai.yaml"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "Hydra overrides: max_fe=N pop_size=N init_pop_size=N timeout=N",
+            "Choose a native model via model=... (HSEvo) or llm_client.model=... (ReEvo/MCTS-AHD)."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred."
+          ],
+          "protected_args": [
+            "--config-path",
+            "--config-name",
+            "--config-dir"
+          ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Small native CPU pilot through the private OpenAI-compatible gateway; exact API model identity.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.cpu_heuristic_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "reevo",
+            "--",
+            "algorithm=reevo",
+            "problem=bpp_online"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "reevo.py",
+            "utils/utils.py",
+            "utils/llm_client/openai.py",
+            "utils/llm_client/base.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/problem/bpp_online.yaml",
+            "cfg/llm_client/openai.yaml"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt",
+            "arena-provider-seam.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "The pilot uses reviewed cfg overlays; native Hydra command line options remain native."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred.",
+            "Native max_fe is not a strict API-call cap; retries and a complete generation can overshoot. The admitted wall timeout remains authoritative. API sampling controls are recorded as unenforced by the Codex-native gateway.",
+            "The native OpenAIClient transport expands n choices into ordered sequential n=1 requests; native reflection/selection/mutation/evaluation remain unchanged."
+          ],
+          "protected_args": [
+            "--config-path",
+            "--config-name",
+            "--config-dir"
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "gepa",
+      "name": "GEPA",
+      "participant_ids": [
+        "gepa"
+      ],
+      "repository": {
+        "url": "https://github.com/gepa-ai/gepa",
+        "commit": "15ee314f9c7d34ec153b809d401f42f55c4dcd76"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "python -m pip install -e ."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "10c47467a961feb40adf3294fe27dd9cba79d4d1b7cf27173b1c34586d4126c3",
+        "README.md": "10d7f30035b21bb38fde51fb3ccc0fc64d5e8b64ab51c09731606132782a57b2",
+        "src/gepa/api.py": "304b7f10faea546c0eac7161890625bebbdea784eaafb09838e944f8477ec1fd",
+        "src/gepa/core/adapter.py": "c32c4c2ea8ed9fc4f2c65e8d28184e3f63e10e39546a865e556d351f547d88b5",
+        "src/gepa/core/result.py": "77ee61655eb71f5eb259f2394bcd7f83cdc1cd4980aa55cdbdae781b6fd43d63"
+      },
+      "profiles": [
+        {
+          "id": "native-api",
+          "description": "GEPA native optimize API with an explicit research factory.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.gepa"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "src/gepa/api.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "**/*.json",
+            "**/*.jsonl",
+            "**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native adapter/evaluator scores and validation fronts; no Arena canonical score or original artifact replication is inferred.",
+            "evidence": [
+              "src/gepa/api.py",
+              "src/gepa/core/result.py",
+              "src/gepa/core/adapter.py"
+            ]
+          },
+          "argument_help": [
+            "--factory inputs/gepa_factory.py:build --max-metric-calls 100",
+            "Stage factory and all data in request.inputs; the factory returns native optimize keyword arguments."
+          ],
+          "limitations": [
+            "Factory code executes only during explicit run and is trusted research code. Credentials come from the explicitly passed environment.",
+            "Native GEPA may store binary state; Arena never unpickles it."
+          ]
+        }
+      ]
+    }
+  ]
+}

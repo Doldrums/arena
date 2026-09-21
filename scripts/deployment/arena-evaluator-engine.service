@@ -1,0 +1,35 @@
+[Unit]
+Description=Empira canonical evaluator for approved private engines
+After=docker.service arena-engine-staging.service
+Requires=docker.service arena-engine-staging.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/opt/arena/venv/bin/python -m arena.evaluator_proxy --config /etc/arena/evaluator-engine.json
+Environment=PYTHONDONTWRITEBYTECODE=1
+UMask=0077
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=45
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictNamespaces=yes
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=CAP_CHOWN CAP_DAC_OVERRIDE CAP_FOWNER
+ReadWritePaths=/run/arena-evaluator-engine /run/arena-engine/staging
+InaccessiblePaths=/etc/arena/provider -/etc/arena/admin-access.json -/etc/arena/agent-access.json -/etc/arena/worker.env
+InaccessiblePaths=-/srv/arena/control/queue.sqlite -/srv/arena/control/queue.sqlite-wal -/srv/arena/control/queue.sqlite-shm
+MemoryMax=512M
+CPUQuota=100%
+TasksMax=128
+
+[Install]
+WantedBy=multi-user.target

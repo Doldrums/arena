@@ -1,0 +1,105 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "gea",
+      "name": "GEA",
+      "participant_ids": [
+        "gea"
+      ],
+      "repository": {
+        "url": "https://github.com/UCSB-AI/GEA",
+        "commit": "d185edffd1f9fbd2297f4de8c6c9f94547448b6d"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Install requirements.txt; prepare Docker and the pinned SWE-bench/Polyglot data and harness described by README.",
+        "Native OPENAI_API_KEY/ANTHROPIC_API_KEY names must be explicitly allowed."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "GEA_outer.py": "fbb7c72f528a244c2eba97ee02b7216aa510b9d1d1e58d1594a88ff27ce81db0",
+        "LICENSE": "84b7504ce8dda1f37f592cdf67ad21371864583720d79ea289b0b0c75bfcdb17",
+        "README.md": "6b1bc47a227e9d9a93f943d91db11984fe52abdb17e44a90beeff828302fb83c",
+        "self_improve_step.py": "f9ad17a153382d9ab62678dd956e4ef40ae86f17bba3cf0c3329af23c9a7e158"
+      },
+      "profiles": [
+        {
+          "id": "swe-bench",
+          "description": "GEA group/self-improvement search with native swe-bench coding-episode evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "GEA_outer.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "GEA_outer.py",
+            "self_improve_step.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "output_dgm/**/dgm_metadata.jsonl",
+            "output_dgm/**/metadata.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "GEA group/self-improvement search with native swe-bench coding-episode evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "GEA_outer.py",
+              "self_improve_step.py"
+            ]
+          },
+          "argument_help": [
+            "--max_generation N --selfimprove_size N --selfimprove_workers N --coding_agent MODEL"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Initial cached scores are upstream baselines, not evaluation receipts from this run.",
+            "Docker workloads require native cleanup; neither benchmark is a canonical Arena suite evaluator."
+          ]
+        },
+        {
+          "id": "polyglot",
+          "description": "GEA group/self-improvement search with native polyglot coding-episode evaluation",
+          "invocation": {
+            "kind": "script",
+            "target": "GEA_outer.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--polyglot"
+          ],
+          "output": null,
+          "required_files": [
+            "GEA_outer.py",
+            "self_improve_step.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "output_dgm/**/dgm_metadata.jsonl",
+            "output_dgm/**/metadata.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "GEA group/self-improvement search with native polyglot coding-episode evaluation Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "GEA_outer.py",
+              "self_improve_step.py"
+            ]
+          },
+          "argument_help": [
+            "--max_generation N --selfimprove_size N --selfimprove_workers N --coding_agent MODEL"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Initial cached scores are upstream baselines, not evaluation receipts from this run.",
+            "Docker workloads require native cleanup; neither benchmark is a canonical Arena suite evaluator."
+          ]
+        }
+      ]
+    }
+  ]
+}

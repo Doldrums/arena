@@ -1,0 +1,71 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "omni-epic",
+      "name": "OMNI-EPIC",
+      "participant_ids": [
+        "omni-epic"
+      ],
+      "repository": {
+        "url": "https://github.com/maxencefaldor/omni-epic",
+        "commit": "af2a3c64f40bc48178c08e1beb76a0aafdd2a167"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare requirements.txt and native Apptainer/simulator/GPU setup described by README; all external resources remain user-provisioned."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "0dbca49f46eae5f8e960f1006fdc91c32f942a67795c289893a35d6a00cee2e9",
+        "README.md": "62885bd3d7f713b34108cc9d55efee61f92516bad21e133590e81f9f16d0d713",
+        "configs/omni_epic.yaml": "e75c3fd5150698f4bea0c9b12be859348531107ec0bc46196fb3446b301d6b7e",
+        "main_dreamer.py": "ec809b460a0312e13c465adfe1501bd8c576a53b11c5194e32a2f7c2fc706b62",
+        "main_omni_epic.py": "1b77c8dc5046e8571786b43ed7193f26f6ad03fe226ea313e904ac6257ba3212"
+      },
+      "profiles": [
+        {
+          "id": "open-ended-generation",
+          "description": "OMNI-EPIC native environment generation, simulator execution and Dreamer training",
+          "invocation": {
+            "kind": "script",
+            "target": "main_omni_epic.py"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "main_omni_epic.py",
+            "main_dreamer.py",
+            "configs/omni_epic.yaml"
+          ],
+          "config_files": [
+            "configs/omni_epic.yaml"
+          ],
+          "result_globs": [
+            "output/omni_epic/**/archive.jsonl",
+            "output/omni_epic/**/metadata.json",
+            "output/omni_epic/**/metrics.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "OMNI-EPIC native environment generation, simulator execution and Dreamer training Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "main_omni_epic.py",
+              "main_dreamer.py"
+            ]
+          },
+          "argument_help": [
+            "Native Hydra overrides such as iterations=N and robot=NAME; keep hydra.run.dir inside the isolated workspace."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Requires prepared simulator/GPU/Apptainer and model environment; generation metrics are not a fixed Arena task score.",
+            "Hydra changes native working directory and preserves the upstream output/archive layout."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "ael-harness",
+      "name": "AEL-harness",
+      "participant_ids": [
+        "ael-harness"
+      ],
+      "repository": {
+        "url": "https://github.com/WujiangXu/AEL",
+        "commit": "c95f5f961667e7df4bdddf750b22332158951bf2"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install requirements.txt and the native package in the chosen environment; use the released local financial data and an explicitly chosen model."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "1d0dde41ece0f9620937f1a81a67e295ace0eae180c009d862006e8f3b288458",
+        "README.md": "b83143fb0f78cfbfc3edad0a02f9d681434792c3b64c470758f1856e0305c6ad",
+        "ael/benchmarks/portfolio_runner.py": "41e05d5a9b9535b85197a3dc8c2ee87c8a09c53403f52d3c9c80f494d62bba13",
+        "experiments/configs/incremental/step3_tool_memory_reflect.yaml": "14fadbbead59bfb51bfc34645ee2043e7b7855ce80317007a05b9d1d53d21468",
+        "experiments/run_experiment.py": "2b31271a8f8b960f3609a6815d4da45152cdc3df7023431c99b31b6f3fa6d9a6",
+        "experiments/run_portfolio.py": "d528310cf07d8825fa84e38380b70cd83e46f278ed9bff89004d16a2f96bf807"
+      },
+      "profiles": [
+        {
+          "id": "portfolio",
+          "description": "AEL portfolio allocation with native evolution and backtest return/Sharpe/drawdown metrics",
+          "invocation": {
+            "kind": "script",
+            "target": "experiments/run_portfolio.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--config",
+            "experiments/configs/incremental/step3_tool_memory_reflect.yaml"
+          ],
+          "output": null,
+          "required_files": [
+            "experiments/run_portfolio.py",
+            "experiments/run_experiment.py",
+            "experiments/configs/incremental/step3_tool_memory_reflect.yaml"
+          ],
+          "config_files": [
+            "experiments/configs/incremental/step3_tool_memory_reflect.yaml"
+          ],
+          "result_globs": [
+            "logs/**/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "AEL portfolio allocation with native evolution and backtest return/Sharpe/drawdown metrics Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "ael/benchmarks/portfolio_runner.py"
+            ]
+          },
+          "argument_help": [
+            "--seed N --model PROVIDER/MODEL --max-episodes N",
+            "This pinned parser has no --dataset flag despite the catalog command example."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Precomputed source logs are not new evaluations; compare against the initial workspace artifact baseline.",
+            "Only the released portfolio runner is covered; paper support-ticket/bandit/classification tasks are not implied."
+          ]
+        }
+      ]
+    }
+  ]
+}

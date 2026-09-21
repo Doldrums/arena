@@ -1,0 +1,98 @@
+{
+  "schema": "arena.mgsm-adas-pilot/1",
+  "repository": "https://github.com/google-research/url-nlp",
+  "commit": "452a21ad3dae5668c06ceeac21ff073e1e40f9be",
+  "license": "CC-BY-4.0",
+  "attribution": "Shi et al. (2022), Language Models are Multilingual Chain-of-Thought Reasoners; MGSM, derived from GSM8K (Cobbe et al., 2021).",
+  "paper": "https://arxiv.org/abs/2210.03057",
+  "source_files": {
+    "mgsm/LICENSE": {
+      "sha256": "c97deeeca4ae375a0334bc7f7af5f707aabfcec959c53c783b9f8771d28fd5b3",
+      "url": "https://raw.githubusercontent.com/google-research/url-nlp/452a21ad3dae5668c06ceeac21ff073e1e40f9be/mgsm/LICENSE"
+    },
+    "mgsm/README.md": {
+      "sha256": "1739f020c71250a9b664b3bbad88c70c288ce82b6049599c7691ddd42e6b420b",
+      "url": "https://raw.githubusercontent.com/google-research/url-nlp/452a21ad3dae5668c06ceeac21ff073e1e40f9be/mgsm/README.md"
+    },
+    "mgsm/mgsm_en.tsv": {
+      "sha256": "50021d0f28cc957edcb44e7806425b1c7fbd648ddcb9e0a8ec689d10e57d40fa",
+      "url": "https://raw.githubusercontent.com/google-research/url-nlp/452a21ad3dae5668c06ceeac21ff073e1e40f9be/mgsm/mgsm_en.tsv"
+    },
+    "mgsm/mgsm_es.tsv": {
+      "sha256": "5bd27ebdf00140cec845c5298dc17715f5cd57d8edda6df1976db40bf3f0750a",
+      "url": "https://raw.githubusercontent.com/google-research/url-nlp/452a21ad3dae5668c06ceeac21ff073e1e40f9be/mgsm/mgsm_es.tsv"
+    }
+  },
+  "selection": {
+    "unit": "zero-based parallel source row, shared across languages",
+    "optimization": [
+      [
+        "en",
+        0
+      ],
+      [
+        "es",
+        1
+      ]
+    ],
+    "heldout": [
+      [
+        "en",
+        2
+      ],
+      [
+        "es",
+        3
+      ]
+    ],
+    "policy": "First four base problem identities, alternating English and Spanish, fixed before any run; heldout evaluated only after optimization-only selection."
+  },
+  "metric": {
+    "source": "https://github.com/ShengranHu/ADAS/blob/2702bee8fefda42255efc5be9f60e3bd3db96ae4/_mgsm/utils.py",
+    "source_sha256": "b294dc54f685fe14704154356da47b69bda7c254b8a1e06c4297d3169379ba2c",
+    "function": "score_mgsm",
+    "semantics": "Native exact string equality after comma removal and trailing decimal-zero stripping; no substring, whitespace or final-answer extraction."
+  },
+  "splits": {
+    "optimization": [
+      {
+        "id": "mgsm:0:en",
+        "problem_id": "mgsm:0",
+        "language": "en",
+        "row": 0,
+        "question": "Janet’s ducks lay 16 eggs per day. She eats three for breakfast every morning and bakes muffins for her friends every day with four. She sells the remainder at the farmers' market daily for $2 per fresh duck egg. How much in dollars does she make every day at the farmers' market?",
+        "answer": "18",
+        "source_line_sha256": "a2c80a0aea3b6eef48c2228c6bffc69fd377a43ad61721265922e9fed774e1fb"
+      },
+      {
+        "id": "mgsm:1:es",
+        "problem_id": "mgsm:1",
+        "language": "es",
+        "row": 1,
+        "question": "Una bata lleva 2 rollos de tela azul y la mitad de esa cantidad de tela blanca. ¿Cuántos rollos se necesitan en total?",
+        "answer": "3",
+        "source_line_sha256": "72318627e8f23e32b698c4f86db334617a0aa3f7aa9e8751c32d2b4ed0d8c951"
+      }
+    ],
+    "heldout": [
+      {
+        "id": "mgsm:2:en",
+        "problem_id": "mgsm:2",
+        "language": "en",
+        "row": 2,
+        "question": "Josh decides to try flipping a house.  He buys a house for $80,000 and then puts in $50,000 in repairs.  This increased the value of the house by 150%.  How much profit did he make?",
+        "answer": "70000",
+        "source_line_sha256": "125ae1ce823e475165757d64eb497b5a615acd6120cfaa41f2473b6d7af3fc3a"
+      },
+      {
+        "id": "mgsm:3:es",
+        "problem_id": "mgsm:3",
+        "language": "es",
+        "row": 3,
+        "question": "James decide correr 3 carreras de velocidad 3 veces por semana. Corre 60 metros en cada carrera de velocidad. ¿Cuántos metros corre en total por semana?",
+        "answer": "540",
+        "source_line_sha256": "59784d3c647f286716ae72082b93ce39c686f77369d8bd1b9c7b988f843f50fb"
+      }
+    ]
+  }
+}

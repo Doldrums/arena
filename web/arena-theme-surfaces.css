@@ -1,0 +1,378 @@
+/* Tactile controls stay flat enough to read clearly against the soft surfaces. */
+.button {
+  min-height: 42px;
+  padding: 10px 16px;
+  border-radius: var(--control-radius);
+  border: 1px solid #e5e5eb;
+  background: #fff;
+  box-shadow: var(--control-shadow);
+  font-size: 12px;
+  font-weight: 500;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.button:hover {
+  background: #f8f7fb;
+  border-color: #d9d4e5;
+  box-shadow:
+    0 3px 8px #24243509,
+    inset 0 1px 0 #fff;
+}
+.button.primary {
+  color: #fff;
+  border: 1px solid #252529;
+  background: #252529;
+  box-shadow:
+    inset 0 1px 0 #ffffff14,
+    0 3px 7px #2020240e;
+}
+.button.primary:hover {
+  background: #3a3a40;
+  border-color: #3a3a40;
+}
+.button.primary:active,
+.button:active {
+  box-shadow: inset 0 1px 3px #53435812;
+}
+.button svg {
+  width: 15px;
+  height: 15px;
+}
+.icon-button {
+  height: 40px;
+  width: 40px;
+  border-radius: 13px;
+  color: #74707f;
+}
+.icon-button:hover {
+  background: var(--accent-soft);
+}
+.search-box {
+  border: 1px solid #e5e2da;
+  border-radius: 14px;
+  background: #f7f7f8;
+  min-height: 44px;
+  padding: 10px 13px;
+  gap: 9px;
+  box-shadow: inset 0 1px 2px #24243503;
+}
+.search-box input {
+  font-size: 13px;
+  color: var(--text);
+}
+.search-box input::placeholder {
+  color: #81818a;
+}
+.search-box svg {
+  height: 17px;
+  width: 17px;
+  color: #939099;
+}
+.search-box:focus-within {
+  border-color: #a797c7;
+  background: #fff;
+  box-shadow: 0 0 0 3px #eae4f880;
+}
+.arena-select-label {
+  gap: 7px;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.arena-select-label select,
+.table-toolbar input,
+.code-select {
+  min-height: 42px;
+  border: 1px solid #e5e2da;
+  border-radius: 12px;
+  background: #f7f7f8;
+  padding: 10px 28px 10px 12px;
+  font-size: 12px;
+  color: #494650;
+}
+.segmented {
+  padding: 4px;
+  gap: 3px;
+  background: #eeeef0;
+  border-radius: 13px;
+  box-shadow: inset 0 1px 3px #39342206;
+}
+.segmented button {
+  min-height: 40px;
+  padding: 7px 13px;
+  border-radius: 9px;
+  font-size: 11px;
+  color: #777380;
+}
+.segmented button.active {
+  background: #fff;
+  box-shadow: 0 1px 4px #2623380d;
+  color: var(--text);
+}
+.badge {
+  font-size: 10px;
+  line-height: 1.5;
+  font-weight: 500;
+  padding: 4px 9px;
+  border-radius: 8px;
+  background: #eeeef2;
+  color: #67646e;
+}
+.badge.success {
+  background: #e6f1e9;
+  color: #397453;
+}
+.badge.blue {
+  background: #e7edf9;
+  color: #526995;
+}
+.badge.warning {
+  background: #fbf0da;
+  color: #886728;
+}
+.badge.negative {
+  background: #f9e7e7;
+  color: #a64b51;
+}
+.badge.neutral,
+.arena-shell .badge.success {
+  background: #efeff3;
+  color: #706b78;
+}
+.count-pill,
+.section-label span {
+  border-radius: 7px;
+  background: #ece9f3;
+  color: #6d5c89;
+  padding: 2px 7px;
+}
+/* White reading surfaces with colored corner light; color is decorative only. */
+.panel,
+.metric {
+  border: 1px solid #ffffffc4;
+  border-radius: var(--card-radius);
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+}
+.metrics {
+  gap: 18px;
+  margin-bottom: 26px;
+}
+.metric {
+  padding: 23px 24px 21px;
+  position: relative;
+  overflow: hidden;
+}
+.metric-label {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #686270;
+  white-space: normal;
+  min-height: 18px;
+  gap: 12px;
+}
+.metric-value {
+  font-family: var(--font-sans);
+  font-size: 39px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -1.8px;
+  margin: 15px 0 11px;
+  font-variant-numeric: tabular-nums;
+}
+.metric-foot {
+  font-size: 11px;
+  line-height: 1.65;
+  color: #4c4551;
+}
+.metric-foot.positive {
+  color: var(--green);
+}
+.metric .tiny-label {
+  color: #6a6172;
+  font-size: 9px;
+  letter-spacing: 0.7px;
+}
+.arena-metrics .metric {
+  --metric-radius: var(--card-radius);
+  min-height: 156px;
+  isolation: isolate;
+}
+.field-card,
+.arena-metrics .metric {
+  --field-gradient:
+    radial-gradient(ellipse at 28% 110%, var(--field-main) 0%, transparent 64%),
+    radial-gradient(ellipse at 95% -30%, #ffffffb3 0%, transparent 53%),
+    linear-gradient(135deg, var(--field-light), var(--field-main));
+}
+.arena-metrics .metric {
+  background:
+    linear-gradient(108deg, #fffffffa 12%, #fffffff0 44%, #ffffff00 100%), var(--field-gradient);
+  border-color: #fff;
+}
+.arena-metrics .metric:nth-child(4n + 1):not([data-tone]),
+.arena-metrics .metric[data-tone="peach"] {
+  --field-main: var(--field-amber);
+  --field-light: var(--field-amber-light);
+}
+.arena-metrics .metric:nth-child(4n + 2):not([data-tone]),
+.arena-metrics .metric[data-tone="lavender"] {
+  --field-main: var(--field-lilac);
+  --field-light: var(--field-lilac-light);
+}
+.arena-metrics .metric:nth-child(4n + 3):not([data-tone]),
+.arena-metrics .metric[data-tone="mint"] {
+  --field-main: var(--field-green);
+  --field-light: var(--field-green-light);
+}
+.arena-metrics .metric:nth-child(4n + 4):not([data-tone]),
+.arena-metrics .metric[data-tone="sky"] {
+  --field-main: var(--field-blue);
+  --field-light: var(--field-blue-light);
+}
+.arena-metrics .metric > .metric-label,
+.arena-metrics .metric > .metric-value,
+.arena-metrics .metric > .metric-foot {
+  position: relative;
+  z-index: 1;
+}
+.arena-metric-icon {
+  height: 30px;
+  width: 30px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: #ffffffb3;
+  color: #706176;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px #51443f05;
+}
+.arena-metric-icon svg {
+  height: 17px;
+  width: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.arena-metric-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  padding: 3px 7px;
+  border-radius: 7px;
+  background: #ffffff80;
+  color: #655c6c;
+}
+.arena-widget-visual {
+  position: absolute;
+  right: 22px;
+  top: 20px;
+  display: grid;
+  place-items: center;
+  height: 36px;
+  width: 36px;
+  border-radius: 12px;
+  background: #ffffff5c;
+  color: #857484;
+  box-shadow: inset 0 1px 0 #ffffff72;
+  pointer-events: none;
+}
+.arena-widget-visual svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.arena-metrics .metric:has(.arena-widget-visual) .metric-label {
+  padding-right: 43px;
+}
+/* A single, quiet orange companion. Its eyes are decorative, never a control. */
+.arena-curious-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  clip-path: inset(0 round var(--metric-radius));
+  pointer-events: none;
+  z-index: 0;
+}
+.arena-curious-glow:before {
+  content: "";
+  position: absolute;
+  width: 138px;
+  height: 124px;
+  right: -10px;
+  bottom: -30px;
+  background: radial-gradient(
+    ellipse at 54% 64%,
+    #ffb957 0%,
+    #f9c96bbd 27%,
+    #ffdc8d66 46%,
+    #ffdc8d00 72%
+  );
+}
+.arena-curious-eye {
+  position: absolute;
+  right: 45px;
+  bottom: 28px;
+  width: 8px;
+  height: 13px;
+  border-radius: 48%;
+  background: #fff;
+  transform: rotate(8deg);
+  box-shadow: 0 1px 2px #e49c4420;
+}
+.arena-curious-eye + .arena-curious-eye {
+  right: 29px;
+  bottom: 26px;
+  height: 12px;
+  transform: rotate(12deg);
+}
+.arena-metrics .metric:not(:first-child) .arena-curious-glow {
+  display: none;
+}
+.arena-metrics .metric:has(.arena-curious-glow) > .metric-foot {
+  max-width: calc(100% - 44px);
+}
+.panel-heading {
+  padding: 24px 26px 0;
+  gap: 16px;
+}
+.panel-heading h2 {
+  font-size: 16px;
+}
+.panel-heading p {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.error-banner,
+.insights-unavailable {
+  border-radius: 18px;
+}
+.empty-main .empty-symbol {
+  border-radius: 24px;
+  background: linear-gradient(140deg, var(--peach), var(--lavender));
+  color: #766389;
+}
+dialog {
+  border-color: #fff;
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow: 0 24px 80px #22213524;
+}
+dialog::backdrop {
+  background: #34304445;
+  backdrop-filter: blur(5px);
+}
+dialog pre {
+  border-radius: 13px;
+  background: #f2f1f6;
+}

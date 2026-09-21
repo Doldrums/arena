@@ -1,0 +1,156 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "funsearch-re-implementation",
+      "name": "FunSearch re-implementation",
+      "participant_ids": [
+        "funsearch-re-implementation"
+      ],
+      "repository": {
+        "url": "https://github.com/kitft/funsearch",
+        "commit": "cec37d84b474ea6bbd66f6defad8f5b5758449ff"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Install the pinned Python project and prepare its chosen native sandbox dependencies; Docker is needed for Docker sandbox profiles."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "8c6db340475136df3c1201d458fa5755698eace76e510471ecc9d857d6083dac",
+        "examples/cap_set_spec.py": "9fcaa7871b7c1df860eed724a375a95a264245d1c154672edf75bda27e47128a",
+        "funsearch/__main__.py": "27bc72fdf59bd115d661bbe53a3317a40eb163b6a34143984a4a7b37d94ad007",
+        "funsearch/async_agents.py": "f2d1b641204001314b1dcac656f7042e291ec050d48a339767793049d24c8db3",
+        "funsearch/evaluator.py": "e00ff3cb3f6164f42b4ece852ce941c0c0bb4eba214f943938deab9af958be5f",
+        "funsearch/logging_stats.py": "ba0a5d45c2f40926b250817b3e2954b8e20d8b1c5b0f43c9422800407596b197",
+        "funsearch/sandbox.py": "af79a7376158c4f94d4626fb6db60f753f770dae9bb625ec58a78a2fa45f9ac1",
+        "funsearch/models.py": "0d96b599416cb2ffecdac28f0ded63e181bd9bcb7a3d279c64f0a3cde442e989",
+        "funsearch/config.py": "3eb780da5a65b8c613cdf3aa3a9cf165323aea66a24e80d8fbf77e2e03a36879",
+        "funsearch/sampler.py": "392465793908f7ae981b0525e4db8faf5b460243434009122ff8a0f5b8d815d0",
+        "funsearch/code_manipulation.py": "ec9f773abc3d1916c2a09a804dfa6449502abc537e80a3bf4d124ca950310118",
+        "funsearch/programs_database.py": "21a1a3f2c661072689aa0735a068a8b6111be6127356e2b595cd974e4add87cf",
+        "funsearch/utilities/parse_specfile.py": "baec34a51012fc6247ecd3b04b80bc41fdab6e27c02e611edcecc723825c608e"
+      },
+      "profiles": [
+        {
+          "id": "cap-set",
+          "description": "The kitft re-implementation runs its own async FunSearch samplers and sandbox evaluator on a cap-set specification.",
+          "invocation": {
+            "kind": "module",
+            "target": "funsearch"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "runasync",
+            "examples/cap_set_spec.py",
+            "8"
+          ],
+          "output": {
+            "flag": "--output_path",
+            "path": "results"
+          },
+          "required_files": [
+            "funsearch/__main__.py",
+            "funsearch/async_agents.py",
+            "examples/cap_set_spec.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "data/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "The kitft re-implementation runs its own async FunSearch samplers and sandbox evaluator on a cap-set specification.",
+            "evidence": [
+              "funsearch/evaluator.py",
+              "funsearch/sandbox.py",
+              "funsearch/logging_stats.py"
+            ]
+          },
+          "argument_help": [
+            "--model MODEL --iterations N --duration SECONDS --samplers N --evaluators N",
+            "Explicit provider environment variables; WANDB_MODE=offline is available for local logging."
+          ],
+          "limitations": [
+            "This is kitft/funsearch, not a claim to run the unreleased original DeepMind training setup.",
+            "Native backup pickle files are never deserialized by Arena artifact readers.",
+            "Native usage logs also default to data/usage; they are inventoried separately."
+          ],
+          "protected_args": [
+            "--load_backup",
+            "--envfile"
+          ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Native kitft cap-set pipeline with the exact gateway model, a bounded sample budget and Linux namespace scorer.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.funsearch_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "reimplementation"
+          ],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "funsearch/__main__.py",
+            "funsearch/async_agents.py",
+            "examples/cap_set_spec.py",
+            "funsearch/models.py",
+            "funsearch/config.py",
+            "funsearch/sampler.py",
+            "funsearch/code_manipulation.py",
+            "funsearch/programs_database.py",
+            "funsearch/utilities/parse_specfile.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.csv",
+            "results/**/*.log",
+            "data/**/*.jsonl",
+            "data/backups/**/*.pickle"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native reconstruction, scoring specification, admission and island database are unchanged; the supplied sandbox executes each reconstructed program in a credential-free network-isolated Linux namespace with a deadline.",
+            "evidence": [
+              "funsearch/evaluator.py",
+              "funsearch/sandbox.py",
+              "funsearch/logging_stats.py",
+              "examples/cap_set_spec.py"
+            ]
+          },
+          "argument_help": [
+            "--model exact gateway ID; --max-samples 1..8. A separately hashed request.executables.bubblewrap is required."
+          ],
+          "limitations": [
+            "Single sampler/evaluator, two islands. This is a small integration pilot, not reproduction of published research budgets.",
+            "Original profile uses the supplied constant-weight admissible-set specification at (9,5); kitft uses its supplied cap-set specification at n=6. These are distinct tasks and scores.",
+            "Kitft native connectivity validation is one additional actual model call; its unused runasync --iterations flag is not treated as a sample cap. Budget cancellation invokes native run_agents cleanup and drains its evaluator queue.",
+            "Namespaces isolate credentials, network and filesystem mounts; worker cgroups provide the outer CPU/memory/process envelope. Native scores remain noncanonical."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          },
+          "executable_args": {
+            "bubblewrap": "--bubblewrap"
+          }
+        }
+      ]
+    }
+  ]
+}

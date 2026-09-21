@@ -1,0 +1,136 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "eoh-s",
+      "name": "EoH-S",
+      "participant_ids": [
+        "eoh-s"
+      ],
+      "repository": {
+        "url": "https://github.com/FeiLiu36/EoH-S",
+        "commit": "8310b056ab0d4ea83d194f1d9e8c7873c0a3b892"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "cd code && pip install . (bundled LLM4AD platform)",
+        "Set the HttpsApi host/key/model in the run script"
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "f40e6c230bd9db6db3957698144916b749e0e84669b61fe8a4bd8507483026b2",
+        "code/LICENSE": "7720014ff3c9115b87cad0113ceb2560298537f02ff6088b5a491cd59b683b79",
+        "code/llm4ad/method/eohs/eohs.py": "96ca5020c831ed0f4a87fba67f1c8346f62d56fe18d9cb4faee03580fda81b2f",
+        "code/llm4ad/method/eohs/profiler.py": "63417966e7d0a8f7265d37a3f5597d944852b6d3dea020004639284a1abba823",
+        "examples/training/obp_set/run_eohs.py": "6325b1faa0dac97e1f4e5f24fadaf0be679cca11009874d143315373989a49ef",
+        "code/llm4ad/method/eohs/population.py": "242a2b4813d529ff75214dd6a0d2e8a348bf9cfae14e15e277815b1887c3063b",
+        "code/llm4ad/task/optimization/online_bin_packing_set/evaluation.py": "1709d5904c400cec5009ab8390882e59b94ab481505be8f46033ff3a167a1a21",
+        "code/llm4ad/task/optimization/online_bin_packing_set/template.py": "6207a211c65a8013417aab155d0a037d4c6ba0ae7e9bfa61c7a225f975637658",
+        "code/llm4ad/tools/llm/llm_api_https.py": "1048f628fca49fa052572bb2ddce769693894000a9c1fd9a59621c1175b8b624",
+        "code/llm4ad/tools/profiler/profile.py": "e67d77c569c27aacb1a1f0e30ff6aaef1c73818a63f9bb8a200ad6356145dae0",
+        "datasets/obp/dataset_100_2k_128_5_80_training.pkl": "6ef362b59973163225579e26e5e49f6196579287ff7a3eab0609693db4e25513"
+      },
+      "profiles": [
+        {
+          "id": "native-set-search",
+          "description": "Released EoH-S whole heuristic-set evolution with an explicit native task factory.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.eoh_s"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "code/llm4ad/method/eohs/eohs.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "**/*.json",
+            "**/*.jsonl",
+            "**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native set-evaluation classes score complementary heuristic sets; this is not single-candidate evaluation substituted for EoH-S.",
+            "evidence": [
+              "code/llm4ad/method/eohs/eohs.py",
+              "code/llm4ad/method/eohs/profiler.py",
+              "examples/training/obp_set/run_eohs.py"
+            ]
+          },
+          "argument_help": [
+            "--factory inputs/eoh_s_factory.py:build --max-samples 100 --generations 10 --population 10 --workers 1",
+            "Factory returns native llm and evaluation objects; use released OBP/CVRP/TSP set classes and stage datasets explicitly."
+          ],
+          "limitations": [
+            "Dataset pickle files are native task inputs, only hashed by Arena; execution of trusted native tasks occurs only on explicit run.",
+            "Bundled LLM4AD file headers add research/commercial-use language despite the MIT LICENSE file; review upstream terms before redistribution."
+          ],
+          "python_paths": [
+            "code"
+          ]
+        },
+        {
+          "id": "gateway-obp-set-pilot",
+          "description": "Native EoHS complementary heuristic-set search and packaged online bin packing training evaluator; list-valued native scores retained.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.eohs_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "results"
+          },
+          "required_files": [
+            "code/llm4ad/method/eohs/eohs.py",
+            "code/llm4ad/method/eohs/population.py",
+            "code/llm4ad/task/optimization/online_bin_packing_set/evaluation.py",
+            "code/llm4ad/task/optimization/online_bin_packing_set/template.py",
+            "code/llm4ad/tools/llm/llm_api_https.py",
+            "code/llm4ad/tools/profiler/profile.py",
+            "datasets/obp/dataset_100_2k_128_5_80_training.pkl"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/**/*.json",
+            "results/**/*.jsonl",
+            "results/**/*.log",
+            "results/**/*.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native EoHS complementary heuristic-set search and packaged online bin packing training evaluator; list-valued native scores retained.",
+            "evidence": [
+              "code/llm4ad/method/eohs/eohs.py",
+              "code/llm4ad/method/eohs/population.py",
+              "code/llm4ad/task/optimization/online_bin_packing_set/evaluation.py",
+              "code/llm4ad/task/optimization/online_bin_packing_set/template.py",
+              "code/llm4ad/tools/llm/llm_api_https.py",
+              "code/llm4ad/tools/profiler/profile.py",
+              "datasets/obp/dataset_100_2k_128_5_80_training.pkl"
+            ]
+          },
+          "argument_help": [
+            "--model gpt-5.6-sol; scoped OPENAI_API_KEY via explicit environment_names.",
+            "--tls-ca arena-inputs/worker-ca.pem (hashed public trust-bundle input)."
+          ],
+          "limitations": [
+            "Native evaluation only; canonical_evaluation=false. Pilot budgets do not reproduce paper-scale experiments.",
+            "No provider token/temperature enforcement; native retry/parse behavior can exceed nominal sample count; outer timeout applies.",
+            "Preserves upstream n_instances=32 and its n>n_instances break (up to33 dataset entries), native training split and complementary population management. Native LLM4AD research-use/citation terms apply."
+          ],
+          "python_paths": [
+            "code"
+          ]
+        }
+      ]
+    }
+  ]
+}

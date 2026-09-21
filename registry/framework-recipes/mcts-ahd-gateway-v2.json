@@ -1,0 +1,116 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "mcts-ahd-gateway-v2",
+      "name": "MCTS-AHD \u00b7 bounded gateway pilot v2",
+      "participant_ids": [
+        "mcts-ahd"
+      ],
+      "repository": {
+        "url": "https://github.com/zz1358m/MCTS-AHD-master",
+        "commit": "ee9c4f424503c65a5fd2b899e6620ce86079fedb"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the pinned requirements.txt and native task dependencies; provide explicitly allowed provider credentials."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "f5560dc0c076b07104774f13f5543d9af309dbb23eab3c44b04260974f0e4da7",
+        "cfg/config.yaml": "e255bc4a781d8db9e1edb5db033ee7a820f42c6e2959936554ecb56d5c0b8e2a",
+        "cfg/llm_client/openai.yaml": "bf0fcdb1c94fc125e62d18a2e5f08debf9af3145231b543c94a737cf3f8f76b6",
+        "cfg/problem/bpp_online.yaml": "248826948095d691f5f25056f295de9cbb8ff5790562c20987b7bba14adbddf1",
+        "main.py": "3b7d820cac801da0d31914147bdde28035bc1f071ebb7afab8c53c9f244516a1",
+        "problems/bpp_online/eval.py": "507cfc8cfebba2dfa20ad926df222eb3a473353e528a1c6ea15711d6d7bc58fc",
+        "source/mcts_ahd.py": "70122ce89fcae1c7c39d18db676fd874b79e9000b32d91abc2154e5a3eacf51d",
+        "utils/utils.py": "0b9cfa62adcde5046d1b90808e6477928940ef1462602b82685296831285a0b9",
+        "utils/llm_client/openai.py": "e4c84e1db20fa8f907b2df3b3a4949d79e527ec6729379d4ca993a704dc093cb",
+        "utils/llm_client/base.py": "5503fdcd65e15ad8aab0c1546521f5e63a1f3218aaa1e7432aeca697884b2ef3",
+        "source/interface_LLM.py": "556300f6fe49f0afc0c5398f7f351c784d3d868a1bb7b95b16ff5a91712ef243",
+        "source/evolution_interface.py": "7bc8661d5b7200dbb15290f8225b7fb4eec49ca3dbc946d3e563bcf116e56135",
+        "ahd_adapter.py": "a6ee7526d19f38e868124a7d9ff31f82cc60a9cfe3103bbc717d0fc58ed27cc9",
+        "source/evolution.py": "45deb5af2e0bfe7bce31a60003b1d4d0946affbf6a9ceed943a544d76512048c",
+        "source/getParas.py": "a65afbb1119f33553e631cd42babf4af1f9930ebf97d7ccc92ec815cd9327065",
+        "problem_adapter.py": "5e12d1fd312dc48bacbc4e32b843089ad1434f8ec99c7db3d22a55209c6cbfa5",
+        "prompts/bpp_online/func_signature.txt": "1fe62833cda697a5ba228b2782f9965abf9e11cc969dba2b60934b3dbcf0d58c"
+      },
+      "profiles": [
+        {
+          "id": "gateway-cpu-pilot-v2",
+          "description": "Bounded native MCTS-AHD BPP pilot with evaluator-compatible priority_v2 prompt and explicit proposal admission limits.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.mcts_ahd_gateway_v2"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--attempt-budget",
+            "8",
+            "--init-attempt-budget",
+            "3"
+          ],
+          "output": null,
+          "required_files": [
+            "ahd_adapter.py",
+            "main.py",
+            "problem_adapter.py",
+            "problems/bpp_online/eval.py",
+            "prompts/bpp_online/func_signature.txt",
+            "source/evolution.py",
+            "source/evolution_interface.py",
+            "source/getParas.py",
+            "source/interface_LLM.py",
+            "source/mcts_ahd.py",
+            "utils/llm_client/base.py",
+            "utils/llm_client/openai.py",
+            "utils/utils.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/llm_client/openai.yaml",
+            "prompts/bpp_online/func_signature.txt"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt",
+            "arena-provider-seam-v2.json",
+            "arena-attempt-budget-v2.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "No extra native overrides: v2 fixes max_fe=4, initialization/population=2, evaluation timeout60; total proposal attempts8 and initialization attempts3. Exact model is selected by the pinned configuration overlay."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred.",
+            "The pinned OpenAI YAML has a placeholder credential. Supply a secret-free config overlay using ${oc.env:OPENAI_API_KEY}; do not put credentials in JSON specs or config files.",
+            "Versioned pilot hooks change the prompt function name to priority_v{version} and bound entry to native proposal operators. Search operators, parser, scoring, tree selection and validation remain native.",
+            "Budget exhaustion exits75 and retains partial evidence; it is not native completion. Proposal attempts are not API calls: native parser/SDK retries and post-thought requests remain.",
+            "The native max_fe target4 is checked between full tree rounds: healthy initialization2 plus first-round5 candidate attempts totals7. The explicit8-attempt cap bounds retry overshoot; initialization is separately capped3 to retain first-round capacity.",
+            "Gateway temperature/max_tokens/top_p controls are recorded but not enforced."
+          ],
+          "protected_args": [
+            "--attempt-budget",
+            "--init-attempt-budget"
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

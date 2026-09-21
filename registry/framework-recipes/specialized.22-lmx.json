@@ -1,0 +1,60 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "lmx",
+      "name": "LMX",
+      "participant_ids": [
+        "lmx"
+      ],
+      "repository": {
+        "url": "https://github.com/jal278/lmx",
+        "commit": "b8fec5dd16451cf7afb6e02ac621b71d5bdfee7f"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c1d2dea6b4ce2362d2ba6ae0c2d6a01a73fd01cc0a17388be1de25215c5ff65e",
+        "README.md": "593f0d9144da95ea33147bb7d08527261dc144bd3b3c88f9ec290913e1e422f8",
+        "scripts/symbolic_regression.py": "8df4c6ffb35d78c40067f157bd71f25fc75a67b1d96fcdcbc1cedbf329147f40"
+      },
+      "profiles": [
+        {
+          "id": "symbolic-regression",
+          "description": "Released LMX symbolic-regression crossover/population loop.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.lmx"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "scripts/symbolic_regression.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "results/*.csv"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native symbolic expression R2/complexity selection and CSV population history; no canonical Arena metric mapping.",
+            "evidence": [
+              "scripts/symbolic_regression.py"
+            ]
+          },
+          "argument_help": [
+            "--dataset_name banana --max_generations 10 --exp_id arena --device_idx 0",
+            "Stage pmlb/datasets/<dataset>/<dataset>.tsv.gz; provide model weights/cache in the execution environment."
+          ],
+          "limitations": [
+            "Pinned script hardcodes the actual generator to facebook/galactica-1.3b even when --lm_name=pythia; use the default galactica and retain this provenance.",
+            "Native script standardizes held-out labels independently; metrics are retained as released and not claimed to validate fair cross-method performance."
+          ]
+        }
+      ]
+    }
+  ]
+}

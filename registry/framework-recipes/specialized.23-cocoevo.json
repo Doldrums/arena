@@ -1,0 +1,74 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "cocoevo",
+      "name": "CoCoEvo",
+      "participant_ids": [
+        "cocoevo"
+      ],
+      "repository": {
+        "url": "https://github.com/lbaf23/llm-cocoevo",
+        "commit": "504355b568b2a0cbd4054783c80bac9c76a4de6d"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "pip install -r requirements.txt",
+        "Download test.jsonl from https://huggingface.co/datasets/lbaf23/LeetCode-Contest into data/leetcode_contest.jsonl"
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "52da14b5d273420d92b77fda6efd3e1168128ea601cb6136be04c04ae7d7a748",
+        "code_evaluator/py_asserts_evaluator.py": "ac78772bde1661f1ffa85cbf9fd30f96420dff8fcbc6e21400d75f1a1b9817e8",
+        "code_models/api_models.py": "b79c5e0c9ed862103b7bca1c4702dddcd237608c6e137fa853f991b3012157f4",
+        "coevod.py": "6e717ddb77ab480af7126b921cc35ec901e1c11880e20953496344722495b677",
+        "config/config-leetcode-contest-qwen2.5-coder-32b.json": "82f18f0d6e26d130d45166ba1e6f6c8ea4a9b15f36bac2222e32a4c94fa05d80",
+        "running_utils.py": "29f3daced7b770c0a611d830a1ad190f4ade5b59b3f2788078f22ebe4ef3d726"
+      },
+      "profiles": [
+        {
+          "id": "coevolution",
+          "description": "Native CoCoEvo co-evolution of programs and generated tests.",
+          "invocation": {
+            "kind": "script",
+            "target": "coevod.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--run_type",
+            "coevo"
+          ],
+          "output": null,
+          "required_files": [],
+          "config_files": [
+            "config/config-leetcode-contest-qwen2.5-coder-32b.json"
+          ],
+          "result_globs": [
+            "result/**/*.json",
+            "result/**/*.jsonl",
+            "logs/**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native code/test population evaluation; contest private-test evaluation is a separate upstream submission workflow.",
+            "evidence": [
+              "coevod.py",
+              "running_utils.py",
+              "code_evaluator/py_asserts_evaluator.py",
+              "code_models/api_models.py"
+            ]
+          },
+          "argument_help": [
+            "--config config/config-leetcode-contest-qwen2.5-coder-32b.json --start 0 --end 1",
+            "Stage contest data and use OPENAI_API_KEY/OPENAI_BASE_URL environment variables; set code/test generation budgets in configuration."
+          ],
+          "limitations": [
+            "No paper performance claim: released code needs the separately downloaded contest data and a compatible code-model endpoint.",
+            "Native generated code executes within the native framework process environment; it is not automatically the Arena Docker evaluator."
+          ]
+        }
+      ]
+    }
+  ]
+}

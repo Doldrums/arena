@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Doldrums/arena/raw/main/schemas/common.schema.json",
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nullable_text": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\]+$"
+    },
+    "repository": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "pattern": "^https://github\\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      },
+      "required": [
+        "url",
+        "commit"
+      ],
+      "additionalProperties": false
+    },
+    "direction": {
+      "enum": [
+        "maximize",
+        "minimize",
+        null
+      ]
+    },
+    "native_adapter": {
+      "type": "object",
+      "properties": {
+        "engine": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repository": {
+          "$ref": "common.schema.json#/$defs/repository"
+        },
+        "profiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/identifier"
+          }
+        },
+        "evaluation": {
+          "const": "native"
+        },
+        "runtime_readiness": {
+          "const": "not_verified"
+        }
+      },
+      "required": [
+        "engine",
+        "name",
+        "repository",
+        "profiles",
+        "evaluation",
+        "runtime_readiness"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

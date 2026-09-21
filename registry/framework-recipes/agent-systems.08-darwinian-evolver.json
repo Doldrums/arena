@@ -1,0 +1,154 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "darwinian-evolver",
+      "name": "Darwinian Evolver",
+      "participant_ids": [
+        "darwinian-evolver"
+      ],
+      "repository": {
+        "url": "https://github.com/imbue-ai/darwinian_evolver",
+        "commit": "7f12365d2059c47e29068a5a6f498a293148d2a9"
+      },
+      "status": "source_verified",
+      "license": "AGPL-3.0",
+      "setup": [
+        "Prepare the pyproject.toml environment and the selected problem/model dependencies; the parrot example does not establish ARC or coding-task conformance."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+        "README.md": "c236340f2c4de9e23e92d477e67901916cb32d482269516ff534b87c20627404",
+        "darwinian_evolver/__main__.py": "149f8126677503982b7970c3c5ff0663292dcc84820b0f1f41c73c1c1231585c",
+        "darwinian_evolver/evolve_problem_loop.py": "668952f5950d1695b946fdf1e150250d26ab46a3848efc34001156692c6e6af2",
+        "darwinian_evolver/problems/circle_packing.py": "a95d3137e531ee75e00d9456c167b9c98959991bbae272bf1c27e20ea602ec4d",
+        "darwinian_evolver/problems/multiplication_verifier.py": "d0b3ce8ee1b8bcb7f5143965bc8aebfa482ab935278b0222be98f57273af50be",
+        "darwinian_evolver/problems/parrot.py": "f594d1285e02b2b0dd7a5fb266f91f8a1419034acc00c2f753b2a7c930543aac",
+        "darwinian_evolver/problems/registry.py": "f7bb04e3e587264865db1f23769b35a18fcc5352fbbf0c770962797f96a42a12"
+      },
+      "profiles": [
+        {
+          "id": "parrot",
+          "description": "Darwinian Evolver parrot native organism mutation/evaluation loop",
+          "invocation": {
+            "kind": "module",
+            "target": "darwinian_evolver"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "parrot"
+          ],
+          "output": {
+            "flag": "--output_dir",
+            "path": "native"
+          },
+          "required_files": [
+            "darwinian_evolver/__main__.py",
+            "darwinian_evolver/problems/registry.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/results.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Darwinian Evolver parrot native organism mutation/evaluation loop Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "darwinian_evolver/evolve_problem_loop.py",
+              "darwinian_evolver/problems/parrot.py"
+            ]
+          },
+          "argument_help": [
+            "--num_iterations N --mutator_concurrency N --evaluator_concurrency N"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Pickle snapshots remain native opaque artifacts and are never deserialized by Arena.",
+            "S3 upload is not part of this local profile."
+          ]
+        },
+        {
+          "id": "circle-packing",
+          "description": "Darwinian Evolver circle_packing native organism mutation/evaluation loop",
+          "invocation": {
+            "kind": "module",
+            "target": "darwinian_evolver"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "circle_packing"
+          ],
+          "output": {
+            "flag": "--output_dir",
+            "path": "native"
+          },
+          "required_files": [
+            "darwinian_evolver/__main__.py",
+            "darwinian_evolver/problems/registry.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/results.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Darwinian Evolver circle_packing native organism mutation/evaluation loop Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "darwinian_evolver/evolve_problem_loop.py",
+              "darwinian_evolver/problems/circle_packing.py"
+            ]
+          },
+          "argument_help": [
+            "--num_iterations N --mutator_concurrency N --evaluator_concurrency N"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Pickle snapshots remain native opaque artifacts and are never deserialized by Arena.",
+            "S3 upload is not part of this local profile."
+          ]
+        },
+        {
+          "id": "multiplication-verifier",
+          "description": "Darwinian Evolver multiplication_verifier native organism mutation/evaluation loop",
+          "invocation": {
+            "kind": "module",
+            "target": "darwinian_evolver"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "multiplication_verifier"
+          ],
+          "output": {
+            "flag": "--output_dir",
+            "path": "native"
+          },
+          "required_files": [
+            "darwinian_evolver/__main__.py",
+            "darwinian_evolver/problems/registry.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/results.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Darwinian Evolver multiplication_verifier native organism mutation/evaluation loop Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "darwinian_evolver/evolve_problem_loop.py",
+              "darwinian_evolver/problems/multiplication_verifier.py"
+            ]
+          },
+          "argument_help": [
+            "--num_iterations N --mutator_concurrency N --evaluator_concurrency N"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Pickle snapshots remain native opaque artifacts and are never deserialized by Arena.",
+            "S3 upload is not part of this local profile."
+          ]
+        }
+      ]
+    }
+  ]
+}

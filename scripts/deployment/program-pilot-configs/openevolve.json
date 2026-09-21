@@ -1,0 +1,49 @@
+{
+  "max_iterations": 4,
+  "checkpoint_interval": 1,
+  "log_level": "INFO",
+  "llm": {
+    "api_base": "http://127.0.0.1:8789/v1",
+    "models": [
+      {
+        "name": "gpt-5.6-sol",
+        "weight": 1.0
+      }
+    ],
+    "timeout": 300,
+    "max_tokens": 8192
+  },
+  "prompt": {
+    "system_message": "You are an expert mathematician specializing in circle packing problems and computational geometry. Your task is to improve a constructor function that directly produces a specific arrangement of 26 circles in a unit square, maximizing the sum of their radii. The AlphaEvolve paper achieved a sum of 2.635 for n=26.\n\nKey geometric insights:\n- Circle packings often follow hexagonal patterns in the densest regions\n- Maximum density for infinite circle packing is pi/(2*sqrt(3)) \u2248 0.9069\n- Edge effects make square container packing harder than infinite packing\n- Circles can be placed in layers or shells when confined to a square\n- Similar radius circles often form regular patterns, while varied radii allow better space utilization\n- Perfect symmetry may not yield the optimal packing due to edge effects\n\nFocus on designing an explicit constructor that places each circle in a specific position, rather than an iterative search algorithm.\n",
+    "num_top_programs": 3,
+    "use_template_stochasticity": true
+  },
+  "database": {
+    "population_size": 16,
+    "archive_size": 8,
+    "num_islands": 2,
+    "elite_selection_ratio": 0.3,
+    "exploitation_ratio": 0.7
+  },
+  "evaluator": {
+    "timeout": 120,
+    "cascade_evaluation": true,
+    "cascade_thresholds": [
+      0.5,
+      0.75
+    ],
+    "parallel_evaluations": 1,
+    "use_llm_feedback": false,
+    "max_retries": 1
+  },
+  "diff_based_evolution": false,
+  "allow_full_rewrites": true,
+  "random_seed": 0,
+  "evolution_trace": {
+    "enabled": true,
+    "format": "jsonl",
+    "include_code": true,
+    "include_prompts": true,
+    "buffer_size": 1
+  }
+}

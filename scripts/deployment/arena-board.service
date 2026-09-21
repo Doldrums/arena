@@ -1,0 +1,26 @@
+[Unit]
+Description=Empira private board and authenticated queue API
+After=network-online.target
+
+[Service]
+Type=simple
+User=arena
+Group=arena
+ExecStart=/opt/arena/venv/bin/python -m arena.control serve --config /srv/arena/configs/control.json --port 8080 --observe /srv/arena/control/runs
+Restart=on-failure
+RestartSec=3
+UMask=0077
+Environment=PYTHONDONTWRITEBYTECODE=1
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+ReadWritePaths=/srv/arena/control
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+MemoryMax=3G
+
+[Install]
+WantedBy=multi-user.target

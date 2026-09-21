@@ -1,0 +1,109 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "mce-artifact",
+      "name": "MCE artifact profiles",
+      "participant_ids": [
+        "mce"
+      ],
+      "repository": {
+        "url": "https://github.com/metaevo-ai/mce-artifact",
+        "commit": "c63300daef93404e22e2569b3d08e72843e7123b"
+      },
+      "status": "source_verified",
+      "license": null,
+      "setup": [
+        "Prepare pyproject.toml dependencies and the selected env data; configure native model credentials only through explicit environment names."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "README.md": "0eba48d2842f057b126a57e7e06ede090d50aa4b45ba179e5f3bdba337a85237",
+        "mce/eval.py": "e14f20ffbe38b94e11ffca3f0fcde30ef7d537a478eb2ef9e67c5685da61c2f1",
+        "mce/main.py": "38b5fc6b06b12ee57fb57779a22d9c2c8ae10fb3b245110387a09dc8d912d05b",
+        "mce/main_online.py": "c651d0288225da6520bb5eb63707e07bf4492d9f6a3514f3e12800c5aa1635e5"
+      },
+      "profiles": [
+        {
+          "id": "skill-evolution",
+          "description": "MCE native meta-context/skill evolution with train/validation feedback",
+          "invocation": {
+            "kind": "module",
+            "target": "mce.main"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--workspace",
+            "path": "native"
+          },
+          "required_files": [
+            "mce/main.py",
+            "mce/eval.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/**/*.json",
+            "native/**/*.jsonl",
+            "logs/**/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "MCE native meta-context/skill evolution with train/validation feedback Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "mce/main.py",
+              "mce/eval.py"
+            ]
+          },
+          "argument_help": [
+            "--env NAME --train-data PATH --val-data PATH --iterations N --model MODEL",
+            "Stage explicit dataset inputs; each supported environment has its own native metric."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "The artifact repository and primary framework are distinct pins; evaluation/task coverage follows that exact tree.",
+            "Native E2B mode requires separate prepared service credentials."
+          ]
+        },
+        {
+          "id": "online-adaptation",
+          "description": "MCE artifact online adaptation over an explicitly supplied test stream",
+          "invocation": {
+            "kind": "module",
+            "target": "mce.main_online"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--workspace",
+            "path": "native"
+          },
+          "required_files": [
+            "mce/main_online.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/**/*.json",
+            "native/**/*.jsonl",
+            "logs/**/*.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "MCE artifact online adaptation over an explicitly supplied test stream Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "mce/main_online.py",
+              "mce/eval.py"
+            ]
+          },
+          "argument_help": [
+            "--env NAME --test-data PATH --test-limit N --model MODEL"
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "This is explicitly online learning on the supplied test stream; it is not an untouched held-out evaluation."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "g-del-agent",
+      "name": "Gödel Agent",
+      "participant_ids": [
+        "g-del-agent"
+      ],
+      "repository": {
+        "url": "https://github.com/Arvid-pku/Godel_Agent",
+        "commit": "bbb508796be31c7140cdfc7106efd830a1324242"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Prepare requirements.txt and MGSM data; explicitly allow OPENAI_API_KEY in environment_names."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "d4070ba091149475b67735e20e47871db3979799b9bc70c2d67c611b5f131d65",
+        "README.md": "b50291960a251832fe82e9b069159dbc43fd5f08201bb5981a2eb321df6bf00a",
+        "src/agent_module.py": "e1607b421951860652c8f394f417874e2a15112ffa8de565ff2efb474f41c0cf",
+        "src/goal_prompt.md": "b94b2abfed9db9d99532b3a583e17decff81a50b2cbf5dfed3e1b0bcf74a6e0f",
+        "src/main.py": "c8a73835068bf4259f5dba0e1059bd80457c12c19d3bf07f7c3b49c9e2a8b4f3",
+        "src/task_mgsm.py": "085de0c567a02f55dc87b5966cee883f7c62b53c4b3da244b54c5b373a418fe8"
+      },
+      "profiles": [
+        {
+          "id": "mgsm-self-evolution",
+          "description": "Gödel Agent native MGSM self-referential evolution loop",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.godel_agent"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": null,
+          "required_files": [
+            "src/main.py",
+            "src/agent_module.py",
+            "src/goal_prompt.md"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "**/*.json",
+            "**/*.jsonl",
+            "**/*.log"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Gödel Agent native MGSM self-referential evolution loop Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "src/main.py",
+              "src/agent_module.py",
+              "src/task_mgsm.py"
+            ]
+          },
+          "argument_help": [
+            "No native CLI options; model, goal and MGSM task are fixed by this pinned implementation."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "Driver creates a temporary 0600 src/key.env from explicitly inherited OPENAI_API_KEY, never reports/hashes it, and removes it after normal/error/signal exit.",
+            "SIGKILL or host failure can prevent secret-file cleanup; use a private disposable workspace.",
+            "Self-modifying code executes under the native framework; the profile is MGSM-specific, not every task in the paper."
+          ]
+        }
+      ]
+    }
+  ]
+}

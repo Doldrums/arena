@@ -1,0 +1,154 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "mcts-ahd",
+      "name": "MCTS-AHD",
+      "participant_ids": [
+        "mcts-ahd"
+      ],
+      "repository": {
+        "url": "https://github.com/zz1358m/MCTS-AHD-master",
+        "commit": "ee9c4f424503c65a5fd2b899e6620ce86079fedb"
+      },
+      "status": "source_verified",
+      "license": "MIT",
+      "setup": [
+        "Install the pinned requirements.txt and native task dependencies; provide explicitly allowed provider credentials."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "f5560dc0c076b07104774f13f5543d9af309dbb23eab3c44b04260974f0e4da7",
+        "cfg/config.yaml": "e255bc4a781d8db9e1edb5db033ee7a820f42c6e2959936554ecb56d5c0b8e2a",
+        "cfg/llm_client/openai.yaml": "bf0fcdb1c94fc125e62d18a2e5f08debf9af3145231b543c94a737cf3f8f76b6",
+        "cfg/problem/bpp_online.yaml": "248826948095d691f5f25056f295de9cbb8ff5790562c20987b7bba14adbddf1",
+        "main.py": "3b7d820cac801da0d31914147bdde28035bc1f071ebb7afab8c53c9f244516a1",
+        "problems/bpp_online/eval.py": "507cfc8cfebba2dfa20ad926df222eb3a473353e528a1c6ea15711d6d7bc58fc",
+        "source/mcts_ahd.py": "70122ce89fcae1c7c39d18db676fd874b79e9000b32d91abc2154e5a3eacf51d",
+        "utils/utils.py": "0b9cfa62adcde5046d1b90808e6477928940ef1462602b82685296831285a0b9",
+        "utils/llm_client/openai.py": "e4c84e1db20fa8f907b2df3b3a4949d79e527ec6729379d4ca993a704dc093cb",
+        "utils/llm_client/base.py": "5503fdcd65e15ad8aab0c1546521f5e63a1f3218aaa1e7432aeca697884b2ef3",
+        "source/interface_LLM.py": "556300f6fe49f0afc0c5398f7f351c784d3d868a1bb7b95b16ff5a91712ef243",
+        "source/evolution_interface.py": "7bc8661d5b7200dbb15290f8225b7fb4eec49ca3dbc946d3e563bcf116e56135",
+        "ahd_adapter.py": "a6ee7526d19f38e868124a7d9ff31f82cc60a9cfe3103bbc717d0fc58ed27cc9"
+      },
+      "profiles": [
+        {
+          "id": "online-bin-packing",
+          "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+          "invocation": {
+            "kind": "script",
+            "target": "main.py"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "algorithm=mcts_ahd",
+            "problem=bpp_online"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "source/mcts_ahd.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/problem/bpp_online.yaml",
+            "cfg/llm_client/openai.yaml"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "Hydra overrides: max_fe=N pop_size=N init_pop_size=N timeout=N",
+            "Choose a native model via model=... (HSEvo) or llm_client.model=... (ReEvo/MCTS-AHD)."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred.",
+            "The pinned OpenAI YAML has a placeholder credential. Supply a secret-free config overlay using ${oc.env:OPENAI_API_KEY}; do not put credentials in JSON specs or config files."
+          ],
+          "protected_args": [
+            "--config-path",
+            "--config-name",
+            "--config-dir"
+          ]
+        },
+        {
+          "id": "gateway-cpu-pilot",
+          "description": "Small native CPU pilot through the private OpenAI-compatible gateway; exact API model identity.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.cpu_heuristic_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [
+            "--engine",
+            "mcts-ahd",
+            "--",
+            "algorithm=mcts_ahd",
+            "problem=bpp_online"
+          ],
+          "output": null,
+          "required_files": [
+            "main.py",
+            "source/mcts_ahd.py",
+            "utils/utils.py",
+            "utils/llm_client/openai.py",
+            "utils/llm_client/base.py",
+            "source/interface_LLM.py",
+            "source/evolution_interface.py",
+            "ahd_adapter.py"
+          ],
+          "config_files": [
+            "cfg/config.yaml",
+            "cfg/problem/bpp_online.yaml",
+            "cfg/llm_client/openai.yaml"
+          ],
+          "result_globs": [
+            "outputs/**/*.json",
+            "outputs/**/*.log",
+            "outputs/**/*.txt",
+            "arena-provider-seam.json"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Native heuristic evolution invokes problems/bpp_online/eval.py for training and the native validation pass.",
+            "evidence": [
+              "problems/bpp_online/eval.py"
+            ]
+          },
+          "argument_help": [
+            "The pilot uses reviewed cfg overlays; native Hydra command line options remain native."
+          ],
+          "limitations": [
+            "Native code rewrites problems/bpp_online/gpt.py; the recipe runs only in the isolated source workspace.",
+            "Native evaluator and validation scores remain separate native artifacts; no canonical Arena score is inferred.",
+            "The pinned OpenAI YAML has a placeholder credential. Supply a secret-free config overlay using ${oc.env:OPENAI_API_KEY}; do not put credentials in JSON specs or config files.",
+            "Native max_fe is not a strict API-call cap; retries and a complete generation can overshoot. The admitted wall timeout remains authoritative. API sampling controls are recorded as unenforced by the Codex-native gateway."
+          ],
+          "protected_args": [
+            "--config-path",
+            "--config-name",
+            "--config-dir"
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONDONTWRITEBYTECODE": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

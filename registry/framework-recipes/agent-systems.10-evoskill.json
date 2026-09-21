@@ -1,0 +1,79 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "evoskill",
+      "name": "EvoSkill",
+      "participant_ids": [
+        "evoskill"
+      ],
+      "repository": {
+        "url": "https://github.com/sentient-agi/EvoSkill",
+        "commit": "36f6f04952293d7054145550c2b9f0b0411bff1c"
+      },
+      "status": "source_verified",
+      "license": "Apache-2.0",
+      "setup": [
+        "Prepare Python >=3.12 and native dependencies. Configure OfficeQA data and the required model/agent CLI.",
+        "Use the pinned example project and credential-free TOML overlays; explicitly select native local/Docker/remote mode."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "README.md": "47fc136a6ff491a5d2d0a2979ac2ae70e65bbeb5be4b1b4136462b9b33f32217",
+        "examples/officeqa/.evoskill/config.toml": "4bb8e50a163e38adb7b241ae2810445a4b2cb9cc69c9134d946dc3426c489777",
+        "examples/officeqa/.evoskill/task.md": "a46d9dfde6c5905d5edc57e43478c9e3fccc4a4196845c698bf157523c739c1f",
+        "pyproject.toml": "2d4f329ba9251a35889c895a7bc144d98489a67ca96017403b39e5f0b49ebd0f",
+        "src/cli/commands/run.py": "907fd9a3f2311fdafd5cedf523bcf1d199baafa67df2026c0eadb57928496d59",
+        "src/cli/main.py": "46fe798e1c1d99a4f21d6a82b16b76143b2d7ff83d33700cd33f6aa1be12cfee",
+        "src/evaluation/evaluate.py": "e8588158181777d56209807c2b01dcf9a573cc5cc0d47a05b1a99cbde9ee0280",
+        "src/loop/runner.py": "59e9546d57bdaac79ac7d4b9c75a2069b908280fbad5234ab9a48897ecb268d6"
+      },
+      "profiles": [
+        {
+          "id": "officeqa-skill-loop",
+          "description": "EvoSkill OfficeQA self-improvement loop through the real Click run command",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.evoskill"
+          },
+          "cwd": "examples/officeqa",
+          "fixed_args": [
+            "run"
+          ],
+          "output": null,
+          "required_files": [
+            "src/cli/main.py",
+            "examples/officeqa/.evoskill/config.toml",
+            "examples/officeqa/.evoskill/task.md"
+          ],
+          "config_files": [
+            "examples/officeqa/.evoskill/config.toml"
+          ],
+          "result_globs": [
+            "examples/officeqa/.evoskill/loop_checkpoint.json",
+            "examples/officeqa/.evoskill/**/*.json",
+            "examples/officeqa/.evoskill/**/*.jsonl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "EvoSkill OfficeQA self-improvement loop through the real Click run command Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "src/cli/commands/run.py",
+              "src/loop/runner.py",
+              "src/evaluation/evaluate.py"
+            ]
+          },
+          "argument_help": [
+            "--config PATH --verbose; local execution, loop/model limits and dataset choices come from the TOML."
+          ],
+          "limitations": [
+            "Source and fixture checks only; dependencies, paid model calls and native end-to-end execution are not verified. Native metrics are not canonical Arena task receipts.",
+            "The native project registry writes Git branches/tags and needs prepared OfficeQA data plus the chosen agent CLI.",
+            "This profile delegates the full native loop; no synthetic skill search is introduced."
+          ]
+        }
+      ]
+    }
+  ]
+}

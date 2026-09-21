@@ -1,0 +1,190 @@
+/* Neutral selection and reading surfaces inside the native experiment tools. */
+.arena-native tr.interactive.selected {
+  background: #f1f1f2;
+}
+.arena-native .methods-lab.selected {
+  background: #f3f3f4;
+  border-left-color: #73737b;
+}
+.arena-native .methods-tab.active {
+  border-bottom-color: #53535c;
+}
+.arena-native .rc-cell-row.selected {
+  background: #f1f1f2;
+  box-shadow: inset 3px 0 #77777f;
+}
+.arena-native .rc-next-decision {
+  border-left-color: #b1b1b8;
+}
+.arena-native .methods-run-policy > .methods-status {
+  background: #f1f1f2;
+  border-color: #dedee2;
+  color: #74747b;
+}
+.arena-native .preview-stage,
+.arena-native .storage-stage {
+  background: #fff;
+}
+.arena-native .preview-pause,
+.arena-native .preview-full {
+  color: #74747b;
+}
+.arena-native .preview-pause:hover:not(:disabled),
+.arena-native .preview-full:hover {
+  background: #f0f0f2;
+  color: #3d3d45;
+}
+.arena-native .preview-pause:disabled {
+  color: #a2a2a9;
+}
+.arena-native .territory-view-switch button {
+  color: #797980;
+}
+.arena-native .territory-view-switch button:hover {
+  color: #45454d;
+  background: #ededf0;
+}
+.arena-native .territory-view-switch button[aria-pressed="true"],
+.arena-native .territory-view-switch button.active,
+.arena-native .territory-view-switch button.is-active {
+  background: #fff;
+  border-color: #dedee2;
+  color: #42424a;
+}
+.arena-native .territory-display-modes button[aria-pressed="true"],
+.arena-native .storage-toolbar button[aria-pressed="true"] {
+  background: #eeeef0;
+  border-color: #d8d8de;
+  color: #4c4c55;
+}
+.arena-native .storage-camera input {
+  accent-color: #787880;
+}
+.arena-native .territory-island[aria-pressed="true"] {
+  background: #f2f2f4;
+}
+.arena-native .architecture-node.selected {
+  border-color: #76767e;
+  background: #f1f1f3;
+  box-shadow: 0 0 0 1px #76767e;
+}
+.arena-native .graph-inspector {
+  border-color: #e1e1e5;
+  background: #fafafa;
+}
+.arena-native .graph-reset {
+  color: #74747d;
+}
+.arena-native .graph-features li {
+  border-color: #e1e1e5;
+  color: #707079;
+}
+.arena-native .graph-connection-note {
+  border-left-color: #c9c9cf;
+}
+.arena-native .graph-connection-note strong {
+  color: #6f6f78;
+}
+.arena-native .wf-model .wf-bubble {
+  background: #f5f5f6;
+  border-color: #e6e6ea;
+}
+.arena-native .wf-tool .wf-bubble,
+.arena-native .wf-task .wf-bubble {
+  background: #fafafa;
+  border-color: #e7e7eb;
+}
+@media (min-width: 1600px) {
+  .arena-canvas {
+    padding-top: 34px;
+  }
+  .arena-masthead {
+    padding-top: 30px;
+    padding-bottom: 27px;
+  }
+  .arena-metrics .metric {
+    min-height: 170px;
+  }
+  .arena-metrics .metric-value {
+    font-size: 43px;
+  }
+}
+@media (max-width: 1180px) {
+  .arena-masthead {
+    padding: 22px 28px;
+    gap: 18px;
+    grid-template-columns: minmax(130px, 1fr) auto minmax(110px, 1fr);
+  }
+  .arena-tabs > a {
+    padding: 9px 13px;
+  }
+  .arena-header-actions {
+    gap: 9px;
+    font-size: 10px;
+  }
+  .arena-canvas {
+    padding: 24px 28px 32px;
+  }
+  .metric {
+    padding: 21px 20px;
+  }
+  .metric-value {
+    font-size: 35px;
+  }
+  .insights-panel {
+    padding: 23px 22px;
+  }
+  .arena-participant {
+    padding: 21px;
+  }
+}
+@media (max-width: 1050px) {
+  .arena-masthead {
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+  }
+  .arena-tabs {
+    grid-column: 1/-1;
+    grid-row: 2;
+    justify-self: center;
+  }
+  .arena-header-actions {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+@media (max-width: 900px) {
+  .arena-masthead {
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    padding: 22px 24px 15px;
+  }
+  .arena-tabs {
+    grid-column: 1/-1;
+    grid-row: 2;
+    justify-self: center;
+  }
+  .arena-header-actions {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 11px;
+  }
+  .arena-canvas {
+    padding: 23px 24px 30px;
+  }
+  .arena-page-heading h1 {
+    font-size: 31px;
+  }
+  .arena-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .arena-metrics .metric {
+    min-height: 150px;
+  }
+  .arena-native .metric-value {
+    font-size: 29px;
+  }
+  .arena-native .metric {
+    padding: 19px 17px;
+  }
+}
