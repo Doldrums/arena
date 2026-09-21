@@ -6,7 +6,12 @@ Empira connects scientific tasks, research systems and experiment records to stu
 
 Researchers can inspect the problems a system works on, follow changes to its code and research process, and examine results alongside the resources used to obtain them. Frameworks keep their own search algorithms, memory and learning mechanisms.
 
-Built by the [CPIL Research Group](https://cpil-lab.github.io/) at [MBZUAI](https://mbzuai.ac.ae/).
+<p>
+  Made by
+  <a href="https://cpil-lab.github.io/"><img src="web/brand/cpil.png" alt="CPIL logo" width="48" height="48" align="middle"> CPIL Research Group</a>
+  at
+  <a href="https://mbzuai.ac.ae/"><img src="web/brand/mbzuai.png" alt="MBZUAI logo" width="48" height="48" align="middle"> MBZUAI</a>.
+</p>
 
 [Research board](https://research-arena.small-pine-3af7.workers.dev) · [Contributing](CONTRIBUTING.md) · [Local setup](#quick-start)
 
@@ -92,11 +97,3 @@ npm run typecheck
 ```
 
 CI also checks generated registry snapshots and package/Worker builds. See the [complete check list](CONTRIBUTING.md#checks). Default tests use fixtures and local transports; Linux execution conformance has separate opt-in checks.
-
-## Attribution and licensing
-
-The observer and experiment UI originate from the private `Doldrums/sciel` repository. Baseline hashes are preserved in `registry/provenance/sciel-extraction.json`; this repository grants no new open-source license to that material.
-
-Task metadata derives from `IMRUNya/autoresearch-tasks` at the revision recorded in `registry/task-sources/autoresearch-tasks.json`. External implementations, datasets and evaluators retain their original terms.
-
-The [CPIL mark](https://cpil-lab.github.io/images/brand/cpil-lab-concept.png) and the MBZUAI avatar from its [official media package](https://staticcdn.mbzuai.ac.ae/mbzuaiwpprd01/2026/02/MBZUAI-Avatars.zip) were retrieved unchanged on 2026-09-21 and belong to their respective organizations. SF Pro resolves from local installation; no font binaries are distributed.
