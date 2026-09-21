@@ -116,7 +116,7 @@ class DashboardServerTests(unittest.TestCase):
                            ("/arena-workspace.css", "text/css"),
                            ("/arena-results-showcase.js", "javascript"), ("/arena-results-showcase.css", "text/css"),
                            ("/arena-results-overview.js", "javascript"), ("/arena-results-overview.css", "text/css"),
-                           ("/results-research.js", "javascript"),
+                           ("/results-research.js", "javascript"), ("/results-efficiency.js", "javascript"), ("/results-rsi.js", "javascript"),
                            ("/arena.js", "javascript"), ("/arena.css", "text/css"),
                            ("/arena-insights.js", "javascript"), ("/arena-insights.css", "text/css"),
                            ("/arena-atlas.js", "javascript"), ("/arena-atlas.css", "text/css"),

@@ -6,6 +6,8 @@ import {JSDOM} from 'jsdom';
 const html = readFileSync(new URL('../../web/experiment-results.html',import.meta.url),'utf8').replace('data-results-app="true"','data-results-app="test"');
 const source = readFileSync(new URL('../../web/arena-results.js',import.meta.url),'utf8').replace(/^import .*$/gm,'').replace(/^export /gm,'');
 const researchSource = readFileSync(new URL('../../web/results-research.js',import.meta.url),'utf8').replace(/^export /gm,'');
+const efficiencySource = readFileSync(new URL('../../web/results-efficiency.js',import.meta.url),'utf8').replace(/^export /gm,'');
+const rsiSource = readFileSync(new URL('../../web/results-rsi.js',import.meta.url),'utf8').replace(/^export /gm,'');
 const overviewSource = readFileSync(new URL('../../web/arena-results-overview.js',import.meta.url),'utf8').replace(/^import .*$/gm,'').replace(/^export /gm,'');
 const publishedSample = JSON.parse(readFileSync(new URL('../../registry/results-overview.json',import.meta.url),'utf8'));
 const run = {
@@ -30,6 +32,8 @@ function mount({rows=[run],initialKey='test-private-key',responseStatus=200,resp
     return {ok:responseStatus===200,status:responseStatus,json:async()=>({schema:'arena.results/1',generated_at:1789958000,scope:'owner',runs:rows,total:rows.length,truncated:false,notes:[],...responseExtra})};
   };
   w.eval(`{${researchSource};window.researchSummary=researchSummary;}`);
+  w.eval(`{${efficiencySource};window.researchEfficiencyPanel=researchEfficiencyPanel;}`);
+  w.eval(`{${rsiSource};window.researchRsiPanel=researchRsiPanel;}`);
   w.eval(`{${overviewSource};window.initResultsOverview=initResultsOverview;}`);
   w.eval(`${source};window.mountResults=initResults;`);
   const app = w.mountResults({doc,fetcher,storage,pollMs:0});

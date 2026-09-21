@@ -1,4 +1,6 @@
 import {researchSummary} from './results-research.js';
+import {researchEfficiencyPanel} from './results-efficiency.js';
+import {researchRsiPanel} from './results-rsi.js';
 
 const numeric = value => typeof value === 'number' && Number.isFinite(value);
 const fmt = value => numeric(value) ? new Intl.NumberFormat('en', {maximumSignificantDigits:5}).format(value) : 'Not recorded';
@@ -146,23 +148,24 @@ export function initResultsOverview({doc=document,fetcher=(...args)=>fetch(...ar
     panel.append(el('p','overview-results-note','Initial and result values use the same metric within each run. Native protocols stay separate; shared task names do not establish equivalent evaluation conditions.'));
     return panel;
   }
-  const modelLabel=value=>({'gpt-6-astra':'GPT-6 Astra','gpt-5.6-sol':'GPT-5.6 Sol','gpt-5.6-terra':'GPT-5.6 Terra','gpt-5.6-luna':'GPT-5.6 Luna','gpt-5.5':'GPT-5.5','anthropic/claude-opus-5':'Claude Opus 5'})[value]||value;
+  const modelLabel=value=>({'gpt-6-astra':'GPT-6 Astra','gpt-5.6-sol':'GPT-5.6 Sol','gpt-5.6-terra':'GPT-5.6 Terra','gpt-5.6-luna':'GPT-5.6 Luna','gpt-5.5':'GPT-5.5','anthropic/claude-opus-5':'Claude Opus 5','google/gemini-2.5-flash':'Gemini 2.5 Flash'})[value]||value;
   const researchModels=r=>r.models.length?r.models.map(modelLabel).join(' + '):'Model not recorded';
+  const researchContract=r=>JSON.stringify([r.task_id,r.metric,r.direction,r.units,r.protocol]);
   const elapsed=value=>!numeric(value)?'Not recorded':value<60?`${fmt(value)} s`:value<3600?minutes(value):`${fmt(value/3600)} h`;
-  function researchPlot(title,description){
-    const panel=el('section','overview-research-chart');panel.append(el('h3','',title),el('p','overview-note',description));
+  function researchPlot(title,description,headingTag='h3'){
+    const panel=el('section','overview-research-chart');panel.append(el(headingTag,'',title),el('p','overview-note',description));
     const svg=doc.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 620 310');svg.setAttribute('role','group');svg.setAttribute('aria-label',title);svg.classList.add('overview-research-plot');
     const draw=(tag,attrs,text,parent=svg)=>{const n=doc.createElementNS(svg.namespaceURI,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;parent.append(n);return n;};
     const detail=el('p','overview-chart-detail','Select a point for its measurements.');detail.setAttribute('role','status');panel.append(svg,detail);
     const point=(attrs,row,extra='')=>{
-      const text=`${researchModels(row)} · ${scoreNumber(row.best_score)} · ${elapsed(row.to_best_wall_seconds)} to this run’s best · ${row.state}${extra}`;
-      const n=draw('circle',{...attrs,tabindex:0,role:'button','aria-label':text});draw('title',{},text,n);
+      const text=`${researchModels(row)} · ${scoreNumber(row.best_score)} · ${elapsed(row.to_best_wall_seconds)} to this run’s best · ${row.state} · evaluator ${row.protocol.slice(0,8)}${extra}`;
+      const n=draw('circle',{...attrs,tabindex:0,role:'button','aria-label':text,'data-research-protocol':row.protocol});draw('title',{},text,n);
       const show=()=>{detail.textContent=text;};n.addEventListener('click',show);n.addEventListener('focus',show);n.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();show();}});return n;
     };
     return {panel,svg,draw,point,detail};
   }
   function researchTimeChart(rows,summary,context){
-    const plot=researchPlot('Quality & elapsed time','Each point is a run’s best result at its recorded elapsed time.');
+    const plot=researchPlot('Quality & elapsed time','Selected evaluator and model filter. Each point is a run’s best result at its recorded elapsed time.');
     const {panel,svg,draw,point}=plot;
     const points=rows.filter(r=>r.measurement_status==='measured'&&numeric(r.best_score)&&numeric(r.to_best_wall_seconds)&&r.to_best_wall_seconds>=0);
     if(!points.length){svg.remove();plot.detail.textContent='Paired result and elapsed-time measurements have not been recorded.';return panel;}
@@ -180,13 +183,15 @@ export function initResultsOverview({doc=document,fetcher=(...args)=>fetch(...ar
     points.forEach(r=>point({cx:x(r.to_best_wall_seconds),cy:y(r.best_score),r:summary.frontier.includes(r)?6:4.5,class:`overview-research-dot${summary.frontier.includes(r)?' on-frontier':''}`},r));
     panel.append(el('p','overview-note',`${points.length} / ${rows.length} runs have paired values. Amber connects the observed frontier. Elapsed time includes pauses; each point is the time of that run’s final recorded best.`));return panel;
   }
-  function researchModelChart(summary,context){
-    const plot=researchPlot('Results across models','All measured outcomes, with the median and best result for each model configuration.');
+  function researchModelFacet(rows,selectedContract){
+    const context=rows[0],summary=researchSummary(rows),selected=researchContract(context)===selectedContract;
+    const plot=researchPlot(`Evaluator ${context.protocol.slice(0,8)}${selected?' · selected':''}`,`${metricName(context.metric)} · ${context.direction==='maximize'?'higher':'lower'} is better · ${context.units.replace(/_/g,' ')} · ${rows.length} recorded runs`, 'h4');
     const {panel,svg,draw,point}=plot,groups=summary.groups;
-    const rows=groups.flatMap(g=>g.rows).filter(r=>r.measurement_status==='measured'&&numeric(r.best_score));
-    if(!rows.length){svg.remove();plot.detail.textContent='Model-level measurements have not been recorded.';return panel;}
-    const values=rows.map(r=>r.best_score),lo=Math.min(...values),hi=Math.max(...values),pad=(hi-lo)*.07||Math.max(Math.abs(hi)*.01,.001);
-    const height=Math.max(310,groups.length*48+90);svg.setAttribute('viewBox',`0 0 620 ${height}`);
+    panel.className='overview-model-facet';panel.dataset.researchContract=researchContract(context);panel.dataset.researchProtocol=context.protocol;
+    const measuredRows=rows.filter(r=>r.measurement_status==='measured'&&numeric(r.best_score));
+    if(!measuredRows.length){svg.remove();plot.detail.textContent=`${groups.map(g=>researchModels(g.rows[0])).join(' · ')}: measurements have not been recorded.`;return panel;}
+    const values=measuredRows.map(r=>r.best_score),lo=Math.min(...values),hi=Math.max(...values),pad=(hi-lo)*.07||Math.max(Math.abs(hi)*.01,.001);
+    const height=Math.max(190,groups.length*48+90);svg.setAttribute('viewBox',`0 0 620 ${height}`);
     const x=v=>167+(v-lo+pad)/(hi-lo+2*pad)*407,top=45,bottom=height-51,gap=(bottom-top)/Math.max(groups.length,1);
     for(let i=0;i<4;i++){const value=lo-pad+(hi-lo+2*pad)*i/3;draw('line',{x1:x(value),x2:x(value),y1:top-15,y2:bottom,class:'overview-grid'});draw('text',{x:x(value),y:height-25,'text-anchor':'middle',class:'overview-axis'},fmt(value));}
     draw('text',{x:167,y:18,class:'overview-axis'},metricName(context.metric));
@@ -195,23 +200,34 @@ export function initResultsOverview({doc=document,fetcher=(...args)=>fetch(...ar
       draw('text',{x:153,y:y+4,'text-anchor':'end',class:'overview-model-label'},label.length>23?label.slice(0,21)+'…':label);
       const measured=g.rows.filter(r=>r.measurement_status==='measured'&&numeric(r.best_score));
       measured.forEach((r,j)=>point({cx:x(r.best_score),cy:y+((j%5)-2)*3,r:3.8,class:'overview-research-dot overview-model-dot'},r));
+      if(!measured.length)draw('text',{x:167,y:y+4,class:'overview-axis'},'No measured result');
       if(numeric(g.median))draw('line',{x1:x(g.median),x2:x(g.median),y1:y-13,y2:y+13,class:'overview-median-mark'});
       if(g.best)point({cx:x(g.best.best_score),cy:y,r:6,class:'overview-research-dot on-frontier'},g.best,` · best of ${g.rows.length} recorded runs`);
     });
-    panel.append(el('p','overview-note','Amber: best recorded. Black mark: median. All recorded outcomes remain in the distribution; these are observations, not estimates from independent repeated trials.'));return panel;
+    return panel;
+  }
+  function researchModelChart(taskRows,context){
+    const panel=el('section','overview-research-chart overview-model-comparison'),groups=new Map();
+    for(const row of taskRows){const key=researchContract(row);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(row);}
+    const models=new Set(taskRows.map(r=>r.models.join(' + ')).filter(Boolean));
+    panel.dataset.evaluatorGroups=String(groups.size);
+    panel.append(el('h3','','Results across models'),el('p','overview-note',`${models.size} model configurations across ${groups.size} evaluator groups for ${context.task_name}. Every measured outcome for this task is included, regardless of the model filter above.`));
+    const selected=researchContract(context),ordered=[...groups].sort(([a],[b])=>Number(b===selected)-Number(a===selected)||a.localeCompare(b));
+    for(const [,rows] of ordered)panel.append(researchModelFacet(rows,selected));
+    panel.append(el('p','overview-note overview-model-scope','Each evaluator group has its own score axis. Amber: best recorded; black mark: median within that model and evaluator. Groups are not pooled or ranked against each other. Recorded runs are observations, not estimates from independent repeated trials.'));return panel;
   }
   function researchResults(){
     const research=data.research;if(!research?.runs?.length)return null;
     const [panel,head]=card('SCiEL · Research results');panel.classList.add('overview-table-card','overview-research-results');
     head.append(el('span','overview-note',`${research.measured} measured / ${research.total} recorded runs`));
     const groups=new Map();
-    for(const r of research.runs){const key=JSON.stringify([r.task_id,r.metric,r.direction,r.protocol]);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(r);}
+    for(const r of research.runs){const key=researchContract(r);if(!groups.has(key))groups.set(key,[]);groups.get(key).push(r);}
     if(!groups.has(researchGroup))researchGroup=[...groups].sort((a,b)=>a[1][0].task_name.localeCompare(b[1][0].task_name)||new Set(b[1].flatMap(r=>r.models)).size-new Set(a[1].flatMap(r=>r.models)).size)[0][0];
     const controls=el('div','overview-result-controls');const label=el('label','overview-select','Task / evaluator'),select=el('select');select.dataset.overviewFocus='research-task';
     for(const [key,rows] of groups){const r=rows[0],o=el('option','',`${r.task_name} · ${r.protocol.slice(0,6)} · ${rows.length} runs`);o.value=key;select.append(o);}select.value=researchGroup;
     select.addEventListener('change',()=>{researchGroup=select.value;researchModel='all';researchPage=0;render();});label.append(select);controls.append(label);
     const groupMembers=groups.get(researchGroup),modelKey=r=>r.models.join(' + ')||'Model not recorded';
-    const modelControl=el('label','overview-select','Model'),modelSelect=el('select');modelSelect.dataset.overviewFocus='research-model';
+    const modelControl=el('label','overview-select','Model in selected evaluator'),modelSelect=el('select');modelSelect.dataset.overviewFocus='research-model';
     const modelOptions=[...new Set(groupMembers.map(modelKey))].sort();if(researchModel!=='all'&&!modelOptions.includes(researchModel))researchModel='all';
     for(const key of ['all',...modelOptions]){const option=el('option','',key==='all'?'All models':researchModels(groupMembers.find(r=>modelKey(r)===key)));option.value=key;modelSelect.append(option);}modelSelect.value=researchModel;modelSelect.addEventListener('change',()=>{researchModel=modelSelect.value;researchPage=0;render();});modelControl.append(modelSelect);controls.append(modelControl);
     const budgetControl=el('label','overview-select','Elapsed checkpoint'),budgetSelect=el('select');budgetSelect.dataset.overviewFocus='research-budget';
@@ -219,6 +235,7 @@ export function initResultsOverview({doc=document,fetcher=(...args)=>fetch(...ar
     const modeLabel=el('label','overview-select','Show'),mode=el('select');mode.dataset.overviewFocus='research-mode';
     for(const [value,text] of [['best','Best recorded per model'],['all','Every recorded run']]){const o=el('option','',text);o.value=value;mode.append(o);}mode.value=researchAll?'all':'best';mode.addEventListener('change',()=>{researchAll=mode.value==='all';researchPage=0;render();});modeLabel.append(mode);controls.append(modeLabel);panel.append(controls);
     const members=groupMembers.filter(r=>researchModel==='all'||modelKey(r)===researchModel),context=members[0],sign=context.direction==='minimize'?-1:1;
+    const taskRows=research.runs.filter(r=>r.task_id===context.task_id);
     const models=r=>r.models.length?r.models.join(' + '):'Model not recorded';
     const buckets=new Map();for(const r of members){const key=models(r);if(!buckets.has(key))buckets.set(key,[]);buckets.get(key).push(r);}
     const compare=(a,b)=>numeric(a.best_score)&&numeric(b.best_score)?sign*(b.best_score-a.best_score):numeric(a.best_score)?-1:numeric(b.best_score)?1:0;
@@ -226,16 +243,18 @@ export function initResultsOverview({doc=document,fetcher=(...args)=>fetch(...ar
     const representatives=summary.groups.map(g=>g.best||g.rows[0]);
     const rows=(researchAll?[...members]:representatives).sort((a,b)=>models(a).localeCompare(models(b))||compare(a,b));
     const best=summary.best,budgetBest=summary.bestWithinBudget;
-    const headline=el('div','overview-research-highlight');headline.append(el('p','overview-note',`${metricName(context.metric)} · ${context.direction==='maximize'?'higher':'lower'} is better · ${context.units.replace(/_/g,' ')}. One task and evaluator contract; ${members.length} recorded runs. Paused and stopped runs retain their measurements.`));panel.append(headline);
+    const headline=el('div','overview-research-highlight');headline.append(el('p','overview-note',`${metricName(context.metric)} · ${context.direction==='maximize'?'higher':'lower'} is better · ${context.units.replace(/_/g,' ')}. Metrics, elapsed-time chart and table use evaluator ${context.protocol.slice(0,8)} and the selected model filter: ${members.length} recorded runs. Paused and stopped runs retain their measurements.`));panel.append(headline);
     const metrics=el('div','overview-research-metrics');
     const metric=(key,label,value,note)=>{const item=el('article','overview-research-metric');item.dataset.researchMetric=key;item.append(el('span','',label),el('strong','',value),el('small','',note));metrics.append(item);};
-    metric('best','Best recorded',scoreNumber(best?.best_score),best?`${researchModels(best)} · ${elapsed(best.to_best_wall_seconds)} to best`:'Measurement not recorded');
-    metric('budget',`Recorded within ${elapsed(researchBudget)}`,scoreNumber(budgetBest?.best_score),budgetBest?`${researchModels(budgetBest)} · ${elapsed(budgetBest.to_best_wall_seconds)} to final recorded best`:'No timed best result within this checkpoint');
+    metric('best','Best recorded',scoreNumber(best?.best_score),best?`${elapsed(best.to_best_wall_seconds)} to best · selected evaluator`:'Measurement not recorded');
+    metric('budget',`Recorded within ${elapsed(researchBudget)}`,scoreNumber(budgetBest?.best_score),budgetBest?`${elapsed(budgetBest.to_best_wall_seconds)} to final recorded best · selected evaluator`:'No timed best result within this checkpoint');
     metric('improved','Runs improving the initial solution',`${summary.improved} / ${summary.paired}`,`${summary.paired} paired initial/best measurements · ${summary.recorded} recorded runs`);
     const improvingModels=summary.groups.filter(g=>g.improved>0&&g.rows.some(r=>r.models.length)).length;
     metric('models','Models with recorded improvement',`${improvingModels} / ${summary.modelCount}`,'At least one improved outcome per model configuration');
     panel.append(metrics);
-    const charts=el('div','overview-research-charts');charts.append(researchTimeChart(members,summary,context),researchModelChart(summary,context));panel.append(charts);
+    const efficiency=researchEfficiencyPanel(doc,taskRows),charts=el('div',`overview-research-charts${efficiency?' has-efficiency':''}`);
+    charts.append(researchTimeChart(members,summary,context));if(efficiency)charts.append(efficiency);
+    charts.append(researchModelChart(taskRows,context));panel.append(charts);
     const evidenceHead=el('div','overview-research-evidence-heading');evidenceHead.append(el('h3','','Recorded outcomes'),el('p','overview-note',researchAll?'Every run in the selected group.':'Best outcome per model. Initial score and elapsed time belong to that same run.'));panel.append(evidenceHead);
     const wrap=el('div','overview-table-scroll');wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','SCiEL recorded research outcomes');const table=el('table','overview-table overview-research-table'),thead=el('thead'),tr=el('tr');
     for(const text of ['Model','Initial','Best recorded','Change','Elapsed to best','Total recorded tokens','Run status']){const th=el('th','',text);th.scope='col';tr.append(th);}thead.append(tr);table.append(thead);const body=el('tbody');researchPage=Math.min(researchPage,Math.max(0,Math.ceil(rows.length/8)-1));
@@ -259,6 +278,7 @@ export function initResultsOverview({doc=document,fetcher=(...args)=>fetch(...ar
     const focused=content.contains(doc.activeElement)?doc.activeElement.dataset.overviewFocus:null;
     const scrolls=[...content.querySelectorAll('.overview-table-scroll')].map(n=>n.scrollLeft);
     content.replaceChildren();if(!data.summary.runs&&!data.research?.runs?.length){content.append(el('div','showcase-empty','No published results yet.'));return;}
+    const rsi=data.research?researchRsiPanel(doc,data.research.runs):null;if(rsi)content.append(rsi);
     const research=researchResults();if(research)content.append(research);
     if(data.summary.runs){
       const integration=el('details','overview-integrations');integration.open=integrationOpen||!research;integration.addEventListener('toggle',()=>{if(integration.isConnected)integrationOpen=integration.open;});

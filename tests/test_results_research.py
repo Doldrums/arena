@@ -242,3 +242,129 @@ def test_published_tokens_must_match_complete_receipt_usage():
     result["runs"][0]["tokens"] = 1499
     with pytest.raises(RegistryError):
         validate_results_research(result)
+
+
+def with_best_receipts(source=None):
+    source = source or run()
+    evidence = dict(program_id="private-program", evaluation_id="private-evaluation",
+                    source_sha256="c" * 64, metric_display=deepcopy(source["best"]))
+    source["effort"]["best_evaluation"] = evidence
+    source["effort"]["to_best"] = dict(status="complete", history_complete=True,
+        physical_llm_calls=4, dispatched_llm_calls=4, pending_llm_calls=0,
+        wall_seconds=250, wall_scope=WALL_SCOPE, cutoff_kind="evaluation_completed",
+        cutoff_at="2026-09-20T19:53:07.574686+00:00",
+        **{key: evidence[key] for key in ("program_id", "evaluation_id", "source_sha256")})
+    return source
+
+
+def test_publishes_only_receipt_bound_counts_through_the_same_best_evaluation():
+    source = with_best_receipts()
+    source["effort"]["usage"] = physical_usage()
+    source["effort"]["usage"].update(physical_llm_calls=19, unpriced_llm_calls=19)
+    before = deepcopy(source)
+    result = build_results_research(payload(source))
+    row = result["runs"][0]
+    assert row["effort_to_best"] == dict(scope="current_run_through_best_evaluation",
+        physical_llm_calls=4, dispatched_llm_calls=4, pending_llm_calls=0,
+        history_complete=True, elapsed_seconds=250)
+    assert row["usage"]["physical_llm_calls"] == 19
+    assert row["tokens"] == 1500  # Full-run tokens never become tokens to best.
+    encoded = json.dumps(result)
+    for private in ("private-program", "private-evaluation", "c" * 64, "cutoff_at"):
+        assert private not in encoded
+    assert source == before
+
+
+@pytest.mark.parametrize("mutation", [
+    lambda r: r["effort"]["to_best"].update(program_id="different-program"),
+    lambda r: r["effort"]["to_best"].update(evaluation_id="different-evaluation"),
+    lambda r: r["effort"]["to_best"].update(source_sha256="d" * 64),
+    lambda r: r["effort"]["best_evaluation"].update(source_sha256="not-a-hash"),
+    lambda r: r["effort"]["best_evaluation"]["metric_display"].update(value=2.61),
+    lambda r: r["effort"]["best_evaluation"]["metric_display"].update(metric_sha256="d" * 64),
+    lambda r: r["effort"].pop("best_evaluation"),
+    lambda r: r["effort"].pop("to_best"),
+    lambda r: r["effort"]["to_best"].update(wall_seconds=251),
+    lambda r: r["effort"]["to_best"].update(wall_scope="CPU seconds"),
+    lambda r: r["effort"]["to_best"].update(cutoff_kind="program_created"),
+    lambda r: r["effort"]["to_best"].update(cutoff_at="2026-09-20T19:53:07"),
+    lambda r: r["effort"]["to_best"].update(cutoff_at="not-time"),
+    lambda r: r["effort"]["to_best"].update(status="unverified"),
+    lambda r: r["effort"]["to_best"].update(history_complete=False),
+    lambda r: r["effort"]["to_best"].update(pending_llm_calls=1, dispatched_llm_calls=5),
+    lambda r: r["effort"]["to_best"].update(physical_llm_calls=True),
+    lambda r: r["effort"]["to_best"].update(dispatched_llm_calls=3),
+    lambda r: r["effort"]["to_best"].update(pending_llm_calls=-1),
+    lambda r: r["effort"]["to_best"].update(prompt="private"),
+])
+def test_rejects_unbound_or_inconsistent_best_receipt_evidence(mutation):
+    source = with_best_receipts()
+    mutation(source)
+    with pytest.raises(RegistryError):
+        build_results_research(payload(source))
+
+
+def test_partial_receipts_keep_explicit_pending_and_history_coverage():
+    source = with_best_receipts()
+    source["effort"]["to_best"].update(status="partial", history_complete=False,
+                                     pending_llm_calls=1, dispatched_llm_calls=5)
+    row = build_results_research(payload(source))["runs"][0]
+    assert row["effort_to_best"]["history_complete"] is False
+    assert row["effort_to_best"]["pending_llm_calls"] == 1
+    assert row["effort_to_best"]["physical_llm_calls"] == 4
+
+
+@pytest.mark.parametrize("mutation", [
+    lambda r: r["effort_to_best"].update(scope="all_prior_research"),
+    lambda r: r["effort_to_best"].update(elapsed_seconds=251),
+    lambda r: r["effort_to_best"].update(history_complete=1),
+    lambda r: r["effort_to_best"].update(dispatched_llm_calls=3),
+    lambda r: r["effort_to_best"].update(program_id="private"),
+    lambda r: r["effort_to_best"].update(tokens=1234),
+    lambda r: r.update(usage=physical_usage() | {"physical_llm_calls": 3, "unpriced_llm_calls": 3}, tokens=1500),
+])
+def test_public_effort_to_best_validator_rejects_unscoped_private_or_inconsistent_claims(mutation):
+    result = build_results_research(payload(with_best_receipts()))
+    mutation(result["runs"][0])
+    with pytest.raises(RegistryError):
+        validate_results_research(result)
+
+
+def test_no_effort_to_best_without_a_measured_best():
+    source = with_best_receipts()
+    source["best"].update(status="unknown", value=None)
+    source["effort"]["best_evaluation"]["metric_display"] = deepcopy(source["best"])
+    with pytest.raises(RegistryError):
+        build_results_research(payload(source))
+
+
+def self_improvement():
+    return dict(schema="sciel-self-improvement/1", scope="recorded_run", coverage="complete",
+        cells_created=3, cell_revisions=5, tools_registered=2, tools_executed=1,
+        tool_executions=8, shared_observation_deliveries=12)
+
+
+def test_native_self_improvement_counters_remain_separate_from_search_effort():
+    source = with_best_receipts()
+    source["self_improvement"] = self_improvement()
+    before = deepcopy(source)
+    row = build_results_research(payload(source))["runs"][0]
+    assert row["self_improvement"] == self_improvement()
+    assert row["effort_to_best"]["physical_llm_calls"] == 4
+    assert source == before
+
+
+@pytest.mark.parametrize("field,value", [
+    ("scope", "lifetime_research"), ("coverage", "verified"), ("cells_created", -1),
+    ("tool_executions", True), ("program_id", "private-program"),
+])
+def test_research_projection_and_public_validator_reject_invalid_rsi_evidence(field, value):
+    source = run()
+    source["self_improvement"] = self_improvement()
+    public = build_results_research(payload(source))
+    source["self_improvement"][field] = value
+    public["runs"][0]["self_improvement"][field] = value
+    with pytest.raises(RegistryError):
+        build_results_research(payload(source))
+    with pytest.raises(RegistryError):
+        validate_results_research(public)

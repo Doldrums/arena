@@ -10,9 +10,11 @@ import hashlib
 import json
 import math
 import re
+from datetime import datetime
 
 from .observers.sciel.compat.measurement import validate_metric_context
 from .registry import RegistryError
+from .results_rsi import validate_self_improvement
 
 INPUT_SCHEMA = "arena.research-observer-input/1"
 MAX_RUNS = 500
@@ -30,6 +32,11 @@ _USAGE_FIELDS = {"scope", "billing_mode", "prompt_tokens", "completion_tokens",
                  "token_usage_complete", "physical_llm_calls", "unpriced_llm_calls"}
 _EFFORT_FIELDS = {"models", "total_wall_seconds", "total_wall_scope",
                   "to_best_wall_seconds", "to_best_wall_scope"}
+_TO_BEST_FIELDS = {"scope", "physical_llm_calls", "dispatched_llm_calls",
+                   "pending_llm_calls", "history_complete", "elapsed_seconds"}
+_PRIVATE_TO_BEST_FIELDS = {"status", "history_complete", "physical_llm_calls",
+    "dispatched_llm_calls", "pending_llm_calls", "wall_seconds", "wall_scope",
+    "program_id", "evaluation_id", "source_sha256", "cutoff_kind", "cutoff_at"}
 
 
 def _require(condition, message):
@@ -125,6 +132,73 @@ def _usage(value):
     return checked
 
 
+def _effort_to_best(value, *, best, elapsed):
+    """Counters through the same measured best, including every run branch."""
+    _fields(value, _TO_BEST_FIELDS)
+    _require(value["scope"] == "current_run_through_best_evaluation",
+             "invalid effort-to-best scope")
+    _require(type(value["history_complete"]) is bool, "invalid physical history coverage")
+    completed, dispatched, pending = (_usage_count(value[key]) for key in
+        ("physical_llm_calls", "dispatched_llm_calls", "pending_llm_calls"))
+    _require(completed + pending == dispatched, "inconsistent effort-to-best call counts")
+    wall = _number(value["elapsed_seconds"], nonnegative=True)
+    _require(best is not None and elapsed is not None and wall == elapsed,
+             "effort-to-best does not match the measured best time")
+    return dict(value)
+
+
+def _project_effort_to_best(effort, metric, best_display, *, best, elapsed):
+    """Cross-check the receipt cutoff against independently projected program evidence.
+
+    The native observer authenticates physical receipts. This publication layer
+    binds that projection to the selected program's saved evaluation and metric;
+    identities and source hashes are validation inputs, never public fields.
+    """
+    value, evidence = effort["to_best"], effort["best_evaluation"]
+    _fields(value, _PRIVATE_TO_BEST_FIELDS)
+    _fields(evidence, {"program_id", "evaluation_id", "source_sha256", "metric_display"})
+    for key in ("program_id", "evaluation_id"):
+        ident = evidence[key]
+        _require(type(ident) is str and 0 < len(ident) <= 256 and value[key] == ident,
+                 "effort-to-best evaluation identity mismatch")
+    source = evidence["source_sha256"]
+    _require(type(source) is str and bool(_HASH.fullmatch(source))
+             and value["source_sha256"] == source, "effort-to-best source mismatch")
+    _display(evidence["metric_display"], metric, best_display["label"], best_display["units"])
+    _require(evidence["metric_display"] == best_display,
+             "effort-to-best measurement mismatch")
+    _require(value["cutoff_kind"] == "evaluation_completed",
+             "effort-to-best is not bound to evaluation completion")
+    try:
+        cutoff = datetime.fromisoformat(value["cutoff_at"].replace("Z", "+00:00"))
+        valid_cutoff = cutoff.tzinfo is not None and cutoff.utcoffset() is not None
+    except (TypeError, AttributeError, ValueError, OverflowError):
+        valid_cutoff = False
+    _require(valid_cutoff, "invalid effort-to-best cutoff")
+    _require(value["status"] in ("complete", "partial"), "invalid receipt projection status")
+    _require(value["status"] != "complete" or
+             value["history_complete"] is True and value["pending_llm_calls"] == 0,
+             "complete receipt projection has incomplete history")
+    checked = _effort_to_best(dict(
+        scope="current_run_through_best_evaluation",
+        **{key: value[key] for key in ("physical_llm_calls", "dispatched_llm_calls",
+                                      "pending_llm_calls", "history_complete")},
+        elapsed_seconds=_wall(value["wall_seconds"], value["wall_scope"])),
+        best=best, elapsed=elapsed)
+    usage = effort.get("usage")
+    if usage is not None and usage["token_usage_complete"]:
+        _require(checked["physical_llm_calls"] <= usage["physical_llm_calls"],
+                 "effort-to-best exceeds complete total receipts")
+    return checked
+
+
+def _self_improvement(value):
+    _require(type(value) is dict, "invalid self-improvement evidence")
+    checked = validate_self_improvement(value)
+    _require(checked is not None, "invalid self-improvement evidence")
+    return checked
+
+
 def build_results_research(payload):
     """Project ``arena.research-observer-input/1`` into a public research section.
 
@@ -132,7 +206,9 @@ def build_results_research(payload):
     metric and seed/best displays, and actual-model/elapsed-time effort fields.
     Optional physical receipt usage keeps subscription calls distinct from
     missing pricing. Tokens cover the full recorded run, never time-to-best;
-    costs are not published or inferred from subscription usage.
+    costs are not published or inferred from subscription usage. Optional
+    effort-to-best requires a matching program, source and saved evaluation;
+    its counters cover only this run, not any work preceding a warm start.
     """
     _fields(payload, {"schema", "source_generated_at", "total", "runs"})
     _require(payload["schema"] == INPUT_SCHEMA, "unsupported observer input schema")
@@ -144,7 +220,8 @@ def build_results_research(payload):
               "measured": 0, "runs": []}
     seen = set()
     for row in payload["runs"]:
-        _fields(row, {"id", "task_id", "state", "metric", "seed", "best", "effort"})
+        _fields(row, {"id", "task_id", "state", "metric", "seed", "best", "effort"}
+                | ({"self_improvement"} if "self_improvement" in row else set()))
         ident = row["id"]
         _require(type(ident) is str and 0 < len(ident) <= 128 and ident not in seen,
                  "duplicate or invalid observer identity")
@@ -166,7 +243,10 @@ def build_results_research(payload):
         best = _display(row["best"], metric, label, units)
         effort = row["effort"]
         _require(type(effort) is dict, "unsupported effort object")
-        _fields(effort, _EFFORT_FIELDS | ({"usage"} if "usage" in effort else set()))
+        additions = {"usage"} if "usage" in effort else set()
+        if "to_best" in effort or "best_evaluation" in effort:
+            additions |= {"to_best", "best_evaluation"}
+        _fields(effort, _EFFORT_FIELDS | additions)
         usage = _usage(effort["usage"]) if "usage" in effort else None
         protocol = hashlib.sha256(json.dumps(
             ["arena.native-research-protocol/1", metric["task_hash"], metric["sha256"]],
@@ -183,6 +263,11 @@ def build_results_research(payload):
             projected["usage"] = usage
             if usage["token_usage_complete"]:
                 projected["tokens"] = usage["prompt_tokens"] + usage["completion_tokens"]
+        if "to_best" in effort:
+            projected["effort_to_best"] = _project_effort_to_best(
+                effort, metric, row["best"], best=best, elapsed=projected["to_best_wall_seconds"])
+        if "self_improvement" in row:
+            projected["self_improvement"] = _self_improvement(row["self_improvement"])
         result["runs"].append(projected)
         result["measured"] += best is not None
     result["runs"].sort(key=lambda row: (row["task_id"], row["protocol"], tuple(row["models"]),
@@ -201,7 +286,9 @@ def validate_results_research(value):
     protocols = {}
     for row in value["runs"]:
         _require(type(row) is dict, "unsupported published run")
-        _fields(row, _RUN_FIELDS | ({"usage"} if "usage" in row else set()))
+        _fields(row, _RUN_FIELDS | ({"usage"} if "usage" in row else set())
+                | ({"effort_to_best"} if "effort_to_best" in row else set())
+                | ({"self_improvement"} if "self_improvement" in row else set()))
         task = _identifier(row["task_id"])
         _require(row["task_name"] == _task_title(task), "unreviewed task title")
         _identifier(row["metric"])
@@ -226,6 +313,13 @@ def validate_results_research(value):
         if total_wall is not None and best_wall is not None:
             _require(best_wall <= total_wall, "time to best exceeds total elapsed time")
         usage = _usage(row["usage"]) if "usage" in row else None
+        if "self_improvement" in row:
+            _self_improvement(row["self_improvement"])
+        if "effort_to_best" in row:
+            to_best = _effort_to_best(row["effort_to_best"], best=best, elapsed=best_wall)
+            if usage is not None and usage["token_usage_complete"]:
+                _require(to_best["physical_llm_calls"] <= usage["physical_llm_calls"],
+                         "effort-to-best exceeds complete total receipts")
         expected_tokens = (usage["prompt_tokens"] + usage["completion_tokens"]
                            if usage is not None and usage["token_usage_complete"] else None)
         _require(row["tokens"] == expected_tokens

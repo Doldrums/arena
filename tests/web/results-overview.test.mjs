@@ -5,13 +5,15 @@ import {JSDOM} from 'jsdom';
 const html=readFileSync(new URL('../../web/results.html',import.meta.url),'utf8').replace('data-results-showcase="true"','data-results-showcase="test"');
 const source=readFileSync(new URL('../../web/arena-results-overview.js',import.meta.url),'utf8').replace(/^import .*$/gm,'').replace(/^export /gm,'');
 const researchSource=readFileSync(new URL('../../web/results-research.js',import.meta.url),'utf8').replace(/^export /gm,'');
+const efficiencySource=readFileSync(new URL('../../web/results-efficiency.js',import.meta.url),'utf8').replace(/^export /gm,'');
+const rsiSource=readFileSync(new URL('../../web/results-rsi.js',import.meta.url),'utf8').replace(/^export /gm,'');
 const sample=JSON.parse(readFileSync(new URL('../../registry/results-overview.json',import.meta.url),'utf8'));
 const copy=v=>JSON.parse(JSON.stringify(v));
 const flush=async()=>{for(let i=0;i<5;i++)await new Promise(r=>setImmediate(r));};
 function mount({key='',confirmed=false,fetcher,timeout=5000}={}){
  const dom=new JSDOM(html,{url:'http://arena.test/results',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window,doc=w.document,calls=[];
  if(confirmed)doc.body.dataset.resultsAccess='connected';
- const storage={getItem:()=>key};w.eval(`(()=>{${researchSource};window.researchSummary=researchSummary;})();${source};window.mount=initResultsOverview;`);
+ const storage={getItem:()=>key};w.eval(`(()=>{${researchSource};window.researchSummary=researchSummary;})();(()=>{${efficiencySource};window.researchEfficiencyPanel=researchEfficiencyPanel;})();(()=>{${rsiSource};window.researchRsiPanel=researchRsiPanel;})();${source};window.mount=initResultsOverview;`);
  const app=w.mount({doc,storage,pollMs:0,requestTimeoutMs:timeout,fetcher:async(path,options)=>{calls.push({path,options});return fetcher?fetcher(path,options,calls.length):{ok:true,json:async()=>copy(sample)};}});
  return {doc,w,app,calls,root:doc.getElementById('results-overview'),close(){app.destroy();w.close();}};
 }
@@ -93,9 +95,9 @@ test('research leads with measured quality, explicit elapsed checkpoints and all
   await flush();assert.equal(t.root.querySelector('.overview-content').firstElementChild.classList.contains('overview-research-results'),true);
   const metric=key=>t.root.querySelector(`[data-research-metric=${key}] strong`).textContent;
   assert.equal(metric('best'),'2.65');assert.equal(metric('budget'),'2.6');assert.equal(metric('improved'),'3 / 3');assert.equal(metric('models'),'2 / 2');
-  assert.equal(t.root.querySelectorAll('.overview-research-plot').length,2);assert.equal(t.root.querySelectorAll('.overview-model-dot').length,3,'all measured runs remain visible, not only each model best');
+  assert.equal(t.root.querySelectorAll('.overview-research-plot').length,3);assert.equal(t.root.querySelectorAll('.overview-model-dot').length,4,'all task measurements remain visible in separate evaluator facets');
   const budget=t.root.querySelector('[data-overview-focus=research-budget]');budget.focus();budget.value='900';budget.dispatchEvent(new t.w.Event('change'));assert.equal(metric('budget'),'2.63');assert.equal(t.doc.activeElement.dataset.overviewFocus,'research-budget');
-  const model=t.root.querySelector('[data-overview-focus=research-model]');model.value='model-b';model.dispatchEvent(new t.w.Event('change'));assert.equal(metric('best'),'2.63');assert.equal(metric('improved'),'1 / 1');assert.equal(t.root.querySelectorAll('.overview-model-dot').length,1);
+  const model=t.root.querySelector('[data-overview-focus=research-model]');model.value='model-b';model.dispatchEvent(new t.w.Event('change'));assert.equal(metric('best'),'2.63');assert.equal(metric('improved'),'1 / 1');assert.equal(t.root.querySelectorAll('.overview-model-dot').length,4,'model filter scopes headline evidence, not the task-wide model chart');
   assert.match(t.root.querySelector('.overview-research-results').textContent,/earlier outcomes from runs with a later best are not reconstructed/);
   assert.ok(t.root.querySelector('.overview-integrations'));assert.match(t.root.querySelector('.overview-integrations summary').textContent,/Framework integration results/);
  }finally{t.close();}
@@ -105,4 +107,85 @@ test('research token labels keep total receipt usage separate from elapsed-to-be
  const p=copy(sample),row={task_id:'oe/circle_packing',task_name:'Circle packing',metric:'sum_radii',direction:'maximize',units:'unit_square_side_length',protocol:'a'.repeat(64),models:['model-a'],state:'paused',seed_score:1,best_score:2.6,total_wall_seconds:1000,to_best_wall_seconds:120,wall_scope:'elapsed_including_pauses',tokens:300,source:'native_observer',measurement_status:'measured',usage:{scope:'total_physical_receipts',billing_mode:'subscription_unpriced',prompt_tokens:200,completion_tokens:100,token_usage_complete:true,physical_llm_calls:2,unpriced_llm_calls:2}};
  p.research={source_generated_at:p.generated_at,total:1,measured:1,runs:[row]};
  const t=mount({fetcher:async()=>({ok:true,json:async()=>p})});try{await flush();const table=t.root.querySelector('.overview-research-table');assert.match(table.textContent,/Total recorded tokens/);assert.match(table.textContent,/300/);assert.match(table.textContent,/Subscription · USD not supplied/);assert.match(table.textContent,/Total run receipts, not tokens to best/);assert.doesNotMatch(table.textContent,/\$0/);}finally{t.close();}
+});
+
+test('task-wide model facets reveal Gemini and Opus without mixing their evaluator into headline evidence',async()=>{
+ const p=copy(sample),protocolA='a'.repeat(64),protocolB='b'.repeat(64);
+ const base={task_id:'oe/circle_packing',task_name:'Circle packing',metric:'sum_radii',direction:'maximize',units:'unit_square_side_length',protocol:protocolA,models:['gpt-6-astra'],state:'paused',seed_score:1,best_score:2.6,total_wall_seconds:2000,to_best_wall_seconds:120,wall_scope:'elapsed_including_pauses',tokens:null,source:'native_observer',measurement_status:'measured'};
+ const first=['gpt-6-astra','gpt-5.5','gpt-5.6-sol','gpt-5.6-terra','gpt-5.6-luna'].map((model,i)=>({...base,models:[model],best_score:2.6-i*.01}));
+ const second=[{...base,protocol:protocolB,models:['google/gemini-2.5-flash'],best_score:99},{...base,protocol:protocolB,models:['anthropic/claude-opus-5'],best_score:98}];
+ p.research={source_generated_at:p.generated_at,total:8,measured:8,runs:[...first,...second,{...base,task_id:'oe/other',task_name:'Other task',models:['other-model'],best_score:1000}]};
+ const t=mount({fetcher:async()=>({ok:true,json:async()=>p})});try{
+  await flush();
+  const modelChart=()=>t.root.querySelector('.overview-model-comparison');
+  const best=()=>t.root.querySelector('[data-research-metric=best]');
+  assert.equal(best().querySelector('strong').textContent,'2.6');
+  assert.doesNotMatch(best().textContent,/Astra/);
+  assert.doesNotMatch(t.root.querySelector('[data-research-metric=budget]').textContent,/Astra/);
+  assert.match(modelChart().textContent,/7 model configurations across 2 evaluator groups/);
+  assert.match(modelChart().textContent,/Gemini 2.5 Flash/);assert.match(modelChart().textContent,/Claude Opus 5/);
+  assert.doesNotMatch(modelChart().textContent,/other-model/);
+  const facets=[...modelChart().querySelectorAll('.overview-model-facet')];
+  assert.equal(facets.length,2);assert.equal(facets[0].dataset.researchProtocol,protocolA);
+  assert.deepEqual(facets.map(f=>f.querySelectorAll('.overview-model-dot').length),[5,2]);
+  for(const facet of facets){
+   assert.ok([...facet.querySelectorAll('.overview-research-dot')].every(dot=>dot.dataset.researchProtocol===facet.dataset.researchProtocol));
+   assert.equal(facet.querySelectorAll('.overview-median-mark').length,facet.querySelectorAll('.overview-model-label').length);
+  }
+  const gemini=facets[1].querySelector('.overview-model-dot[aria-label^="Gemini"]');
+  gemini.dispatchEvent(new t.w.Event('focus'));
+  assert.match(facets[1].querySelector('.overview-chart-detail').textContent,/Gemini 2.5 Flash · 99.*evaluator bbbbbbbb/);
+  assert.match(modelChart().textContent,/Groups are not pooled or ranked/);
+  let filter=t.root.querySelector('[data-overview-focus=research-model]');filter.value='gpt-5.6-luna';filter.dispatchEvent(new t.w.Event('change'));
+  assert.equal(best().querySelector('strong').textContent,'2.56');
+  assert.equal(modelChart().querySelectorAll('.overview-model-dot').length,7);
+  assert.equal(t.root.querySelectorAll('.overview-research-row').length,1);
+  assert.match(t.root.querySelector('.overview-research-row').textContent,/gpt-5.6-luna/);
+  assert.doesNotMatch(t.root.querySelector('.overview-research-table').textContent,/Gemini|Opus|99|98/);
+  const time=t.root.querySelector('.overview-research-charts>.overview-research-chart:not(.overview-model-comparison)');
+  assert.equal(time.querySelectorAll('.overview-research-dot').length,1);
+  const evaluator=t.root.querySelector('[data-overview-focus=research-task]');
+  evaluator.value=[...evaluator.options].find(o=>JSON.parse(o.value).includes(protocolB)).value;evaluator.dispatchEvent(new t.w.Event('change'));
+  assert.equal(best().querySelector('strong').textContent,'99');
+  assert.equal(t.root.querySelectorAll('.overview-research-row').length,2);
+  assert.equal(modelChart().querySelectorAll('.overview-model-dot').length,7);
+  assert.equal(modelChart().querySelector('.overview-model-facet').dataset.researchProtocol,protocolB);
+ }finally{t.close();}
+});
+
+test('model facets keep a repeated model median separate for different protocols and units',async()=>{
+ const p=copy(sample),base={task_id:'oe/circle_packing',task_name:'Circle packing',metric:'sum_radii',direction:'maximize',units:'unit_square_side_length',protocol:'a'.repeat(64),models:['same-model'],state:'paused',seed_score:1,best_score:2,total_wall_seconds:1000,to_best_wall_seconds:120,wall_scope:'elapsed_including_pauses',tokens:null,source:'native_observer',measurement_status:'measured'};
+ p.research={source_generated_at:p.generated_at,total:5,measured:5,runs:[base,{...base,best_score:4},{...base,protocol:'b'.repeat(64),best_score:80},{...base,protocol:'b'.repeat(64),best_score:100},{...base,units:'different_units',best_score:999}]};
+ const t=mount({fetcher:async()=>({ok:true,json:async()=>p})});try{
+  await flush();
+  const facets=[...t.root.querySelectorAll('.overview-model-facet')];
+  assert.equal(facets.length,3);assert.equal(new Set(facets.map(f=>f.dataset.researchContract)).size,3);
+  assert.equal(t.root.querySelectorAll('[data-overview-focus=research-task] option').length,3);
+  assert.equal(t.root.querySelectorAll('.overview-model-dot').length,5);
+  for(const facet of facets){assert.equal(facet.querySelectorAll('.overview-median-mark').length,1);assert.equal(facet.querySelectorAll('.on-frontier').length,1);}
+  assert.match(facets.find(f=>f.dataset.researchContract.includes('different_units')).textContent,/different units/);
+ }finally{t.close();}
+});
+
+test('recorded research-process activity leads the overview and retains all-run scope when score filters change',async()=>{
+ const p=copy(sample),base={task_id:'oe/circle_packing',task_name:'Circle packing',metric:'sum_radii',direction:'maximize',units:'unit_square_side_length',protocol:'a'.repeat(64),models:['model-a'],state:'paused',seed_score:1,best_score:2,total_wall_seconds:1000,to_best_wall_seconds:120,wall_scope:'elapsed_including_pauses',tokens:null,source:'native_observer',measurement_status:'measured'};
+ const process={schema:'sciel-self-improvement/1',scope:'recorded_run',coverage:'complete',cells_created:3,cell_revisions:1,tools_registered:4,tools_executed:2,tool_executions:8,shared_observation_deliveries:5};
+ p.research={source_generated_at:p.generated_at,total:2,measured:2,runs:[{...base,self_improvement:process},{...base,models:['model-b'],self_improvement:{...process,coverage:'partial',cells_created:2,tools_registered:1,tools_executed:1,tool_executions:2}}]};
+ const t=mount({fetcher:async()=>({ok:true,json:async()=>p})});try{
+  await flush();
+  const first=()=>t.root.querySelector('.overview-content').firstElementChild;
+  assert.equal(first().classList.contains('overview-rsi'),true);
+  assert.equal(first().nextElementSibling.classList.contains('overview-research-results'),true);
+  assert.equal(first().querySelector('[data-rsi-metric=cells_created] strong').textContent,'5');
+  assert.equal(first().querySelector('[data-rsi-metric=tools_registered] strong').textContent,'5');
+  assert.equal(first().querySelector('[data-rsi-metric=tool_executions] strong').textContent,'10');
+  assert.match(first().textContent,/Across all 2 recorded runs and all models/);
+  const model=t.root.querySelector('[data-overview-focus=research-model]');model.value='model-a';model.dispatchEvent(new t.w.Event('change'));
+  assert.equal(t.root.querySelectorAll('.overview-research-row').length,1);
+  assert.equal(first().querySelector('[data-rsi-metric=cells_created] strong').textContent,'5');
+  assert.equal(first().querySelectorAll('.overview-rsi-details tbody tr').length,2);
+  assert.match(first().querySelector('.overview-rsi-details').textContent,/1 complete retained histories; 1 partial histories/);
+  assert.match(first().querySelector('.overview-rsi-details').textContent,/not globally unique inventions/);
+  assert.equal(first().querySelector('a').getAttribute('href'),'/experiments');
+ }finally{t.close();}
 });
