@@ -145,9 +145,9 @@ two IDs, `model_patch_paths=[]`, `max_workers=1`, `num_evals=1`,
 Collect native `utils.evo_utils.get_all_performance` and record its submitted,
 resolved, unresolved and empty-patch IDs. Require exactly the two intended task
 IDs and retain native chat, patch and test logs. A failed or incomplete baseline
-must not become a valid initial score. If both exercises are solved, native
-failure-driven diagnosis has no unresolved task; report that scope limitation
-rather than inventing a failure or changing task selection silently.
+must not become a valid initial score. If both exercises are solved, preserve
+the native `choose_selfimproves` fallback to resolved task IDs; do not invent a
+failure or change the task selection rule.
 
 Place this fresh archive at the isolated workspace's `initial_polyglot` and
 replace its `small.json` with the hash-recorded two-ID subset. Then use native
@@ -234,3 +234,54 @@ consistency, and that native runtime `pip install` succeeds with `PIP_NO_INDEX=1
 because requirements are already installed. It does not execute an optimizer,
 coding exercise, evaluator or model request. The resulting build receipt still
 has `broker_approved: false`; image publication is not run admission.
+
+Actual Docker conformance found that its archive API cannot serve this layout:
+uploads fail with `container rootfs is marked read-only`, and downloads cannot
+see files created inside the live tmpfs. The broker must translate these native
+SDK operations into fixed, bounded exec-tar import/export for allowed paths,
+validate archive members, and require the real exec exit code. General native
+exec stdin remains disabled. Image conformance uses the equivalent fixed upload
+for the reviewed framework files; it does not establish SDK-through-proxy
+readiness. That separate check remains required before run admission.
+
+## Native runtime profile
+
+The existing `dgm` adapter accepts the additional explicit profile
+`gateway-polyglot-pilot`. Its request contains `python`, `benchmark: polyglot`,
+`profile`, one exact `model`, `preparation_dir`, and `dependency_freeze`.
+Legacy DGM requests keep their existing behavior. The profile fixes one native
+generation, one self-improvement attempt/worker, one repeat, shallow evaluation
+and no full evaluation. A control run reserves four CPUs, 16 GiB, 1024 PIDs,
+two evaluation slots and a 3600-second outer timeout. The initial baseline uses
+one evaluator; native child evaluation can use two. Native tool loops/retries
+remain native and are bounded by the process/container deadlines.
+
+Planning verifies and fingerprints the complete prepared input trees, all three
+provider overlays, image recipes, preparation manifest, dependency freeze and
+Arena driver/helper. Launch clones the original exact DGM source, stages those
+inputs, and calls `arena.frameworks.drivers.dgm_pilot`. The wrapper requires an
+admitted control run and fixes `DOCKER_HOST` to
+`unix:///run/arena-dgm/docker.sock`; the host diagnosis client uses the local
+gateway, while the broker supplies the reviewed internal relay to containers.
+One exact model is used for diagnosis, coding and self-improvement. Credentials
+remain inherited environment values and are absent from the plans.
+
+The wrapper removes only the isolated clone's cached `initial_polyglot`, then
+calls the actual `polyglot.harness.harness` for the two prepared tasks. It
+requires completed per-task native reports, matching IDs/model identities,
+conversation logs and evaluation logs where a nonempty patch was evaluated.
+A completed score of zero is accepted; an incomplete/error report prevents the
+search from starting. The native `get_all_performance` supplies the fresh
+metadata. The unchanged `DGM_outer.py` then consumes that real initial archive.
+
+The baseline proof hashes the actual reports, metadata and logs. The result
+reader labels the initial archive fresh only when the runtime plan, preparation
+hash, proof and copied run-local artifacts agree. Missing or changed evidence
+gets an unverified label and partial result, while legacy archives remain
+labelled cached. All results remain native, unaudited and noncanonical.
+
+`scripts/deployment/prepare_dgm_runtime_pilots.py` creates seven pure RunSpecs
+and plan receipts under a new private destination. Templates initially remain
+blocked pending operator review of image approval and SDK-through-proxy
+conformance. Preparing a template never executes a baseline, model or search,
+and never modifies the active control configuration.

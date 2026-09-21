@@ -190,11 +190,69 @@ def _performance(value):
     return result
 
 
+def _pilot_plan(reader):
+    """Only a hash-consistent runtime plan can enable fresh-baseline labels."""
+    try:
+        plan = _decoder().decode(reader.read(reader.root / ".arena/plan.json", _MAX_JSON))
+    except FileNotFoundError:
+        return None
+    if type(plan) is not dict or plan.get("command", {}).get("pilot_profile") != "gateway-polyglot-pilot":
+        return None
+    payload = {key: value for key, value in plan.items() if key != "sha256"}
+    digest = hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+    command = plan["command"]
+    if (plan.get("schema") != "arena.native-plan/1" or plan.get("framework") != "dgm"
+            or plan.get("source", {}).get("commit") != COMMIT or digest != plan.get("sha256")
+            or not any(item.get("sha256") == command.get("preparation_sha256")
+                       and Path(item.get("path", "")).name == "preparation.json" for item in plan.get("inputs", []))):
+        raise ValueError("DGM gateway plan provenance is inconsistent")
+    return command
+
+
+def _fresh_baseline(reader, initial, plan):
+    from .drivers.dgm_pilot import TASKS, baseline_complete
+    proof_path = reader.root / "workspace/dgm/.arena-pilot/baseline-proof.json"
+    proof = _decoder().decode(reader.read(proof_path, _MAX_JSON))
+    if (type(proof) is not dict or proof.get("schema") != "arena.dgm-fresh-baseline/1"
+            or proof.get("profile") != plan["pilot_profile"] or proof.get("model") != plan["model"]
+            or proof.get("task_ids") != list(TASKS) or proof.get("source_commit") != COMMIT
+            or proof.get("preparation_sha256") != plan["preparation_sha256"]
+            or proof.get("native_baseline_completed") is not True or proof.get("canonical_evaluation") is not False
+            or type(proof.get("files")) is not dict or not 1 <= len(proof["files"]) <= 4096):
+        raise ValueError("DGM fresh-baseline proof does not match this run")
+    content = {}
+    for name, expected in proof["files"].items():
+        relative = PurePosixPath(name)
+        if (relative.is_absolute() or ".." in relative.parts or str(relative) != name or "\\" in name
+                or not re.fullmatch(r"[a-f0-9]{64}", expected)):
+            raise ValueError("DGM fresh-baseline proof contains an invalid artifact path/hash")
+        value = reader.read(initial / name, _MAX_JOURNAL)
+        if hashlib.sha256(value.encode()).hexdigest() != expected:
+            raise ValueError("DGM fresh-baseline artifact hash mismatch")
+        if name.endswith(".json"):
+            content[name] = _decoder().decode(value)
+    report_name = plan["model"] + "_0.0.json"
+    if proof.get("report") != report_name or report_name not in content or "metadata.json" not in content:
+        raise ValueError("DGM fresh-baseline proof lacks the actual report and metadata")
+    baseline_complete(content[report_name], initial / "predictions" / (plan["model"] + "_0"))
+    performance = content["metadata.json"].get("overall_performance")
+    if (content["metadata.json"].get("run_id") != "initial" or type(performance) is not dict or performance != proof.get("native_performance")
+            or performance.get("total_submitted_instances") != 2
+            or performance.get("total_resolved_instances") != content[report_name]["resolved_instances"]
+            or performance.get("accuracy_score") != content[report_name]["resolved_instances"] / 2):
+        raise ValueError("DGM fresh baseline does not retain native report totals")
+    return {"model": plan["model"], "task_ids": list(TASKS), "cached_initial": False,
+            "provenance": "fresh_native_two_task", "canonical_evaluation": False,
+            "overall_performance": _performance(performance)}
+
+
 class DGMAdapter:
     id = "dgm"
     commit = COMMIT
 
     def prepare(self, source_dir: Path, request: dict, output_dir: Path) -> dict:
+        if type(request) is dict and "profile" in request:
+            return self._prepare_gateway(source_dir, request, output_dir)
         allowed = {"python", "benchmark", "max_generation", "selfimprove_size", "selfimprove_workers",
                    "num_swe_evals", "choose_selfimproves_method", "update_archive", "shallow_eval",
                    "no_full_eval", "eval_noise", "run_baseline", "swe_bench_dir",
@@ -273,6 +331,43 @@ class DGMAdapter:
                 "expected_artifacts": ["workspace/dgm/output_dgm/*/dgm_metadata.jsonl",
                                        "workspace/dgm/output_dgm/*/*/metadata.json"]}
 
+    def _prepare_gateway(self, source_dir, request, output_dir):
+        from .drivers import dgm_pilot as pilot
+        allowed = {"python", "benchmark", "profile", "model", "preparation_dir", "dependency_freeze"}
+        if (set(request) != allowed or request["profile"] != pilot.PROFILE
+                or request["benchmark"] != "polyglot" or request["model"] not in pilot.MODELS):
+            raise ValueError("DGM gateway pilot requires its fixed two-task profile and an exact reviewed model")
+        source = _path(source_dir, "source_dir", directory=True)
+        prepared = _path(request["preparation_dir"], "preparation_dir", directory=True)
+        freeze = _path(request["dependency_freeze"], "dependency_freeze")
+        if (source / ".env").exists() or (source / ".env").is_symlink():
+            raise ValueError("DGM pilot credentials must come only from the worker environment")
+        pilot.validate_preparation(source, prepared, freeze)
+        native = prepared / "native-inputs/polyglot"
+        plan = self.prepare(source, {"python": request["python"], "benchmark": "polyglot", "max_generation": 1,
+            "polyglot_metadata": str(native / "polyglot_benchmark_metadata.json"),
+            "polyglot_benchmark_dir": str(native / "polyglot-benchmark")}, output_dir)
+        staging = [(prepared / "preparation.json", "preparation.json"),
+                   (prepared / "native-inputs", "native-inputs"),
+                   (prepared / "provider-overlays", "provider-overlays"),
+                   (prepared / "native-image-recipes.json", "native-image-recipes.json"),
+                   (freeze, "dependencies.txt")]
+        workspace = Path(plan["cwd"])
+        plan["argv"] = [request["python"], "-m", "arena.frameworks.drivers.dgm_pilot", "--model", request["model"]]
+        plan["workspace_inputs"] = [{"source": str(path), "destination": ".arena-pilot/" + name} for path, name in staging]
+        plan["input_paths"] = [str(path) for path, _ in staging] + [str(Path(pilot.__file__)), str(Path(pilot.__file__).with_name("dgm_gateway.py"))]
+        plan["env"].update(PYTHONPATH=os.pathsep.join((str(workspace), str(Path(__file__).resolve().parents[2]))),
+            DOCKER_HOST=pilot.DOCKER_HOST, ARENA_DGM_MODEL=request["model"], ARENA_DGM_GATEWAY_URL=pilot.GATEWAY,
+            OMP_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1", MKL_NUM_THREADS="1")
+        plan["pilot_profile"] = pilot.PROFILE
+        plan["model"] = request["model"]
+        plan["preparation_sha256"] = pilot.sha(prepared / "preparation.json")
+        plan["source_evidence"] = {name: pilot.sha(source / name) for name in
+            (*pilot.SOURCE_HASHES, "DGM_outer.py", "polyglot/harness.py", "utils/evo_utils.py")}
+        plan["expected_artifacts"] += ["workspace/dgm/.arena-pilot/baseline-proof.json",
+                                       "workspace/dgm/initial_polyglot/*.json"]
+        return plan
+
     def read_results(self, output_dir: Path) -> dict:
         root = _path(output_dir, "output_dir", directory=True).resolve()
         reader = _Reader(root)
@@ -280,6 +375,10 @@ class DGMAdapter:
                   "canonical_evaluation": False, "status": "missing", "native": {"runs": []},
                   "artifacts": reader.artifacts,
                   "warnings": ["DGM native accuracy is unaudited; evaluation validity is unknown. Cached initial results are not a fresh Arena evaluation."]}
+        pilot_plan = _pilot_plan(reader)
+        if pilot_plan:
+            result["warnings"] = ["DGM native accuracy is unaudited; evaluation validity is unknown. Fresh-baseline labels require matching run-local proof and native reports."]
+            result["native"]["profile"] = pilot_plan["pilot_profile"]
         runs_dir = root / "workspace/dgm/output_dgm"
         reader.check_path(runs_dir)
         if not runs_dir.exists():
@@ -336,6 +435,18 @@ class DGMAdapter:
                     continue
                 record = {"run_id": member, "cached_initial": member == "initial",
                           "validity": "unknown", "overall_performance": _performance(metadata.get("overall_performance"))}
+                if member == "initial" and pilot_plan:
+                    record["cached_initial"] = None
+                    try:
+                        verified = _fresh_baseline(reader, run / member, pilot_plan)
+                    except (FileNotFoundError, ValueError, UnicodeDecodeError, RecursionError, TypeError):
+                        partial = True
+                        record["baseline_provenance"] = "unverified"
+                        result["warnings"].append(f"{run.name}/initial: fresh-baseline proof is missing or inconsistent.")
+                    else:
+                        record["cached_initial"] = False
+                        record["baseline_provenance"] = verified["provenance"]
+                        result["native"]["fresh_baseline"] = verified
                 parent = metadata.get("parent_commit")
                 if type(parent) is str and _MEMBER_ID.fullmatch(parent):
                     record["parent_commit"] = parent

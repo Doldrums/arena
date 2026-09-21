@@ -1,7 +1,7 @@
 # DGM Docker capability
 
 `arena.dgm_proxy` is a separate privileged service for the pinned DGM two-task
-Polyglot pilot. Its implementation and tests do not deploy resources, build
+Polyglot pilot. Importing its module and running its inert tests do not deploy resources, build
 images, run native code, or call a model. The existing canonical evaluator and
 SCiEL broker are unchanged.
 
@@ -33,6 +33,7 @@ An operator supplies root-owned mode-0600 `/etc/arena/dgm-proxy.json` containing
 | `images` | Actual immutable image approvals, described below |
 | `container_cpus` | `4` for the approved pilot |
 | `container_memory_mb` | `8192` for the approved pilot |
+| `container_pids` | `512` for the approved pilot |
 
 Each `images` item has exactly `alias`, `reference`, `image_id`, `parent`, and
 `runnable`. `reference` is an actual repository `@sha256:` digest; `image_id` is
@@ -155,6 +156,22 @@ their bounded native names. Downloaded members must match the daemon's requested
 archive root, so a different relative target cannot be substituted.
 Host state access uses held directory descriptors without symlink traversal.
 
+On the reviewed Docker daemon, its archive endpoints reject writes when the
+root filesystem is read-only and fail to observe files in the live tmpfs mount
+view on reads. The proxy therefore uses fixed, internal exec commands: tar
+imports already sanitized bytes into the allowed directory, while stat and tar
+export the actual live files. The SDK stat header comes from actual container
+stat output. Each command must finish with inspected exit code zero before a
+successful response is sent. Caller-controlled interactive stdin remains
+unavailable; only this internal archive transport accepts bounded input.
+
+Archive commands have a 120-second deadline (30 seconds for stat), at most two
+concurrent transfers, 32 MiB stdout for export, and 64 KiB stderr. Docker stream
+frames are checked and demultiplexed; incomplete output, failed commands or a
+lost client remove the owned container and record failure. Actual exported and
+repacked hashes are journaled separately. No raw archive daemon success or file
+existence is synthesized.
+
 Docker exec uses actual hijacked multiplexed stdout/stderr, with a 4 MiB output
 limit. A lost client, attempted stdin, exceeded output/deadline, cancellation or
 expired admission causes deletion of the owned container. Every two seconds a
@@ -185,3 +202,6 @@ existence does not mean a DGM pilot is admitted or proven by a native run.
 Before deployment, actual built image IDs/digests, parent creation times, fixed
 bridge ID and root approval are required. Then run offline image/bootstrap and
 SDK conformance before separately authorizing any research/model execution.
+The `gateway-polyglot-pilot` profile additionally binds its native request model
+to the queue model, so the host outer loop and broker-created children cannot
+receive different operator-selected models.

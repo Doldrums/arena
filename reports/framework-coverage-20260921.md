@@ -2,7 +2,7 @@
 
 This is a source/interface inventory, not a leaderboard or a statement that research runs have completed. All joins use explicit participant IDs. A task evaluator, baseline repository, result notebook and search engine are different artifacts.
 
-The registry contains **99 participant records** and **98 distinct paper IDs**. It has **3 direct adapters** and **105 recipe records** (including explicit blockers and artifact interfaces). Multiple recipe records can belong to one work.
+The registry contains **99 participant records** and **98 distinct paper IDs**. It has **3 direct adapters** and **107 recipe records** (including explicit blockers and artifact interfaces). Multiple recipe records can belong to one work.
 
 | Participant coverage | Count |
 | --- | ---: |
@@ -76,7 +76,7 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 | [Gödel Agent](https://arxiv.org/pdf/2410.04444) (`g-del-agent`) | Native source interface present | [`g-del-agent`](https://github.com/Arvid-pku/Godel_Agent/tree/bbb508796be31c7140cdfc7106efd830a1324242) (source_verified; 1 profile(s)) |
 | [GAAPO](https://arxiv.org/pdf/2504.07157) (`gaapo`) | Recorded implementation/integration blocker | `gaapo`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
 | [GEA](https://arxiv.org/pdf/2602.04837) (`gea`) | Native source interface present | [`gea`](https://github.com/UCSB-AI/GEA/tree/d185edffd1f9fbd2297f4de8c6c9f94547448b6d) (source_verified; 2 profile(s)) |
-| [GEPA](https://arxiv.org/pdf/2507.19457) (`gepa`) | Native source interface present | [`gepa`](https://github.com/gepa-ai/gepa/tree/15ee314f9c7d34ec153b809d401f42f55c4dcd76) (source_verified; 1 profile(s)); [`gepa-artifact`](https://github.com/gepa-ai/gepa-artifact/tree/cbefbc1aa0f43dd39874ec4bf42211365dbda42e): Official reproduction artifact, kept separate from the GEPA library runner. Requires modified DSPy/Arbor forks and benchmark-specific configurations; command generation alone is not a search run. |
+| [GEPA](https://arxiv.org/pdf/2507.19457) (`gepa`) | Native source interface present | [`gepa`](https://github.com/gepa-ai/gepa/tree/15ee314f9c7d34ec153b809d401f42f55c4dcd76) (source_verified; 1 profile(s)); [`gepa-artifact`](https://github.com/gepa-ai/gepa-artifact/tree/cbefbc1aa0f43dd39874ec4bf42211365dbda42e): Official reproduction artifact, kept separate from the GEPA library runner. Requires modified DSPy/Arbor forks and benchmark-specific configurations; command generation alone is not a search run.; [`gepa-gateway-gsm8k`](https://github.com/gepa-ai/gepa/tree/15ee314f9c7d34ec153b809d401f42f55c4dcd76) (source_verified; 1 profile(s)) |
 | [HSEvo](https://arxiv.org/pdf/2412.14995) (`hsevo`) | Native source interface present | [`hsevo`](https://github.com/datphamvn/HSEvo/tree/f3afffabc2b458fddf70a42a8678758039671297) (source_verified; 2 profile(s)) |
 | [HSI](https://arxiv.org/pdf/2608.08466) (`hsi`) | Native source interface present | [`hsi`](https://github.com/TailinZhou/hsi/tree/97a022b9a9c260c0498806fc9826ebf22e753ed9) (source_verified; 1 profile(s)) |
 | [HyperAgents](https://arxiv.org/pdf/2603.19461) (`hyperagents`) | Native source interface present | [`hyperagents`](https://github.com/facebookresearch/Hyperagents/tree/59a68f672dfb92c74aeb7e61535d776fb36e172d) (source_verified; 1 profile(s)) |
@@ -100,7 +100,7 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 | [Meta-Harness](https://arxiv.org/pdf/2603.28052) (`meta-harness`) | Artifact interface only | [`meta-harness`](https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact/tree/57fefdb2ff84af3fd81b69d67814acbe69bd0743) (artifact_only; 1 profile(s)) |
 | [META-TTL](https://arxiv.org/pdf/2604.00830) (`meta-ttl`) | Native source interface present | [`meta-ttl`](https://github.com/zzzlou/meta-ttl/tree/b72db4b77e9ae01aec1cbfd36ae0edae902b6468) (source_verified; 2 profile(s)) |
 | [Mind Evolution](https://arxiv.org/pdf/2501.09891) (`mind-evolution`) | Recorded implementation/integration blocker | `mind-evolution`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
-| [MIPRO](https://arxiv.org/pdf/2406.11695) (`mipro`) | Native source interface present | [`mipro`](https://github.com/stanfordnlp/dspy/tree/40a6e168914a7b81a78b1a081d93f26de18c8d0d) (source_verified; 1 profile(s)) |
+| [MIPRO](https://arxiv.org/pdf/2406.11695) (`mipro`) | Native source interface present | [`mipro`](https://github.com/stanfordnlp/dspy/tree/40a6e168914a7b81a78b1a081d93f26de18c8d0d) (source_verified; 1 profile(s)); [`miprov2-gateway-gsm8k`](https://github.com/stanfordnlp/dspy/tree/40a6e168914a7b81a78b1a081d93f26de18c8d0d) (source_verified; 1 profile(s)) |
 | [OMNI-EPIC](https://arxiv.org/pdf/2405.15568) (`omni-epic`) | Native source interface present | [`omni-epic`](https://github.com/maxencefaldor/omni-epic/tree/af2a3c64f40bc48178c08e1beb76a0aafdd2a167) (source_verified; 1 profile(s)) |
 | [Pairwise Validator](https://arxiv.org/pdf/2607.14408) (`pairwise-validator`) | Recorded implementation/integration blocker | `pairwise-validator`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
 | [PDR](https://arxiv.org/pdf/2607.28268) (`pdr`) | Recorded implementation/integration blocker | `pdr`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
@@ -135,14 +135,16 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 
 Snapshot bindings:
 
-- `registry/participants.json`: `50f3372019573df1b02343a35afd3782f29218e1c87ba13f4543b4a906a9b59e`
+- `registry/participants.json`: `e5ca98e8078a524a39fac79b19f14a924e785cbd5ae815beb04ae74acc4c9155`
 - `registry/framework-recipes/additional.json`: `c6e50ba51ab3415abcd7a553fe8eb1641e655f7e3d1d0c01bbc22e6b447309d0`
 - `registry/framework-recipes/agent-systems.json`: `fd3b88aada8ff990030cf4c8f10951a828cd7bc26a149de6c8894daf112efce9`
 - `registry/framework-recipes/coevo-observed-v2.json`: `1bbe5359406607369cd76248b77e82b29ba20d24044f4475d889faf0743833ff`
 - `registry/framework-recipes/community.json`: `e29e8fadfd1addacdd6accf955accb5c5ae0bf3c762ea432f955e1cca95f2c79`
 - `registry/framework-recipes/darwinian-evolver-gateway.json`: `0d92caff918f98786c9d1df2dc51b71b4771b749791f881c458badf1ff1a87f6`
 - `registry/framework-recipes/funsearch-original.json`: `1bdc224fe22875789a83095961817e209d3c83be87067d0483758ebebbcdda95`
+- `registry/framework-recipes/gepa-gateway-gsm8k.json`: `d721326429b0d6b86a145a25f3a9b94d8c04bed1f8d04da91b888250dbc4d3ef`
 - `registry/framework-recipes/mcts-ahd-gateway-v2.json`: `0dd35584bd030f2c453e7e9cb8428ca7d2ca53a6cbad8ec2b8e6f8f4f46c90cc`
+- `registry/framework-recipes/miprov2-gateway-gsm8k.json`: `9413c460d4265cdf7e53952cd429db011a5b96d4712d08dff8805d4b5e4e5e39`
 - `registry/framework-recipes/program-search.json`: `9ab7bee1603dcb95692a2fd169b39ba9e5e3d0ca9f5528e53b787d0774a5f95b`
 - `registry/framework-recipes/specialized.json`: `07c51f6dae2b37520ce51ed9e72745ab6ada06d12a9bae07d946e22f17d8d737`
 - `registry/framework-recipes/unavailable.json`: `38671bfbde81c4b7420b0e5cd6e19d9593e51ed60c5942e8c784490e79b14ee0`

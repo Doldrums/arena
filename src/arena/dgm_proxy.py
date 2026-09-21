@@ -9,7 +9,7 @@ from __future__ import annotations
 import argparse
 import base64
 from dataclasses import MISSING, dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 import hashlib
 import hmac
 import http.client
@@ -26,6 +26,7 @@ import socket
 import socketserver
 import sqlite3
 import stat
+import struct
 import subprocess
 import tarfile
 import threading
@@ -191,6 +192,9 @@ def admission(config, run_id):
             and spec["output_dir"] == "{output_dir}")
     require(snapshot["cgroup_root"] == "/sys/fs/cgroup" + config.cgroup_root)
     require(template["model"] == row["model"] and row["model"] in config.models)
+    if spec["request"].get("profile") == "gateway-polyglot-pilot":
+        require(spec["request"].get("model") == row["model"],
+                "Native outer-loop model differs from the admitted container model")
     seconds = row["timeout_seconds"]
     require(type(seconds) is int and 1 <= seconds <= config.max_seconds and spec["timeout_seconds"] == seconds)
     limits = {"cpus": config.container_cpus, "memory_mb": config.container_memory_mb, "pids": config.container_pids}
@@ -284,7 +288,7 @@ def route(method, target):
     if action == "archive":
         require(method in {"GET", "PUT"} and set(query) <= {"path", "noOverwriteDirNonDir", "copyUIDGID"}
                 and "path" in query and query.get("copyUIDGID", "0") in {"0", "false"})
-        require(query.get("noOverwriteDirNonDir", "0") in {"0", "1", "false", "true"})
+        require(query.get("noOverwriteDirNonDir", "0") in {"0", "false"})
         container_path(query["path"])
         action = "archive_get" if method == "GET" else "archive_put"
     elif action == "logs":
@@ -561,7 +565,131 @@ class Proxy:
         self.delete(record)
         raise Denied("Approved image bootstrap did not become ready")
 
-    def dispatch(self, method, target, raw, run_id, admitted):
+    def fixed_exec(self, record, command, *, input_bytes=b"", maximum=4096, seconds=120, client=None):
+        """Trusted archive I/O only; this is never a caller-selected stdin API.
+
+        Docker's archive endpoints cannot access the live tmpfs view of an RO
+        container. Execute fixed stat/tar commands inside that owned container,
+        retaining the actual daemon exit status and multiplex protocol.
+        """
+        require(len(input_bytes) <= MAX_TAR and maximum <= MAX_TAR)
+        deadline = min(record["expires"], time.time() + seconds)
+        def connected():
+            require(client is None or not select.select([client], [], [], 0)[0],
+                    "Archive client disconnected or attempted extra input")
+        upstream = None; completed = False
+        try:
+            connected()
+            status, _, raw = self.request("POST", "/containers/" + record["id"] + "/exec", encoded({
+                "User": "0:0", "Privileged": False, "Tty": False, "WorkingDir": "/",
+                "AttachStdin": bool(input_bytes), "AttachStdout": True, "AttachStderr": True, "Cmd": command}))
+            require(status == 201)
+            ident = json_object(raw).get("Id"); require(type(ident) is str and HEX.fullmatch(ident))
+            upstream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            upstream.settimeout(min(30, max(0.1, deadline - time.time())))
+            upstream.connect(str(self.config.docker_socket))
+            body = b'{"Detach":false,"Tty":false}'
+            upstream.sendall(("POST /exec/" + ident + "/start HTTP/1.1\r\nHost: localhost\r\n"
+                              "Connection: Upgrade\r\nUpgrade: tcp\r\nContent-Type: application/json\r\n"
+                              "Content-Length: " + str(len(body)) + "\r\n\r\n").encode() + body)
+            header = b""
+            while b"\r\n\r\n" not in header:
+                connected()
+                require(time.time() < deadline, "Archive command exceeded its deadline")
+                if not select.select([upstream], [], [], min(1, max(0, deadline - time.time())))[0]: continue
+                part = upstream.recv(4096); require(part and len(header) + len(part) <= 32768)
+                header += part
+            first, buffer = header.split(b"\r\n\r\n", 1)
+            require(first.startswith((b"HTTP/1.1 101 ", b"HTTP/1.1 200 ")))
+            upstream.setblocking(False)
+            output = bytearray(); errors = 0; wire_size = len(buffer); sent = 0; shut = False
+            while time.time() < deadline and not self.stop_event.is_set():
+                connected()
+                while len(buffer) >= 8:
+                    stream, size = struct.unpack(">BxxxI", buffer[:8])
+                    require(stream in {1, 2} and size <= (maximum if stream == 1 else 65536))
+                    if len(buffer) < 8 + size: break
+                    payload = buffer[8:8 + size]; buffer = buffer[8 + size:]
+                    if stream == 1:
+                        output.extend(payload); require(len(output) <= maximum)
+                    else:
+                        errors += len(payload); require(errors <= 65536)
+                if sent == len(input_bytes) and not shut:
+                    upstream.shutdown(socket.SHUT_WR); shut = True
+                reads, writes, _ = select.select([upstream], [upstream] if sent < len(input_bytes) else [], [], min(1, max(0, deadline - time.time())))
+                if writes:
+                    try: sent += upstream.send(input_bytes[sent:sent + 65536])
+                    except BlockingIOError: pass
+                if reads:
+                    try: part = upstream.recv(65536)
+                    except BlockingIOError: continue
+                    if not part:
+                        require(not buffer and sent == len(input_bytes), "Incomplete Docker archive exec stream")
+                        break
+                    wire_size += len(part); require(wire_size <= maximum + 65536 + 1024 * 1024)
+                    buffer += part
+            else:
+                raise Denied("Archive command exceeded its deadline")
+            while time.time() < deadline:
+                connected()
+                inspection = self.request("GET", "/exec/" + ident + "/json")
+                require(inspection[0] == 200)
+                info = json_object(inspection[2])
+                if not info.get("Running"):
+                    require(info.get("ExitCode") == 0, "Native archive command failed")
+                    completed = True
+                    return bytes(output)
+                time.sleep(0.05)
+            raise Denied("Archive command completion is unconfirmed")
+        finally:
+            if upstream is not None: upstream.close()
+            if not completed: self.delete(record)
+
+    def archive(self, record, action, path, raw, client=None):
+        container_path(path)
+        transfer = {"operation": action, "path": path, "status": "started"}
+        with self.lock:
+            require(self.records.get(record["record_id"]) is record and record["state"] != "removed")
+            require(len(record["transfers"]) < 1024)
+            record["transfers"].append(transfer); self.persist(record)
+        try:
+            if action == "archive_put":
+                clean = sanitize_tar(raw)
+                transfer.update(bytes=len(clean), sha256=hashlib.sha256(clean).hexdigest(),
+                                wire_sha256=hashlib.sha256(raw).hexdigest())
+                self.persist(record)
+                self.fixed_exec(record, ["/bin/tar", "--no-same-owner", "-xf", "-", "-C", path],
+                                input_bytes=clean, maximum=4096, client=client)
+                response = 200, {"Content-Type": "application/json"}, b""
+            else:
+                stat_bytes = self.fixed_exec(record, ["/usr/bin/stat", "-c", "%s %f %Y", "--", path], seconds=30, client=client)
+                values = stat_bytes.decode("ascii").strip().split()
+                require(len(values) == 3 and values[0].isdigit() and re.fullmatch(r"[0-9a-fA-F]+", values[1])
+                        and re.fullmatch(r"-?[0-9]+", values[2]))
+                size, mode, modified = int(values[0]), int(values[1], 16), int(values[2])
+                require(stat.S_ISREG(mode) or stat.S_ISDIR(mode), "Only native regular files/directories may be exported")
+                require(size <= MAX_EXPANDED)
+                root = PurePosixPath(path)
+                exported = self.fixed_exec(record, ["/bin/tar", "--format=pax", "-cf", "-", "-C", str(root.parent), "--", root.name], maximum=MAX_TAR, client=client)
+                clean = sanitize_tar(exported, root.name)
+                item = {"name": root.name, "size": size, "mode": (mode & 0o777) | (1 << 31 if stat.S_ISDIR(mode) else 0),
+                        "mtime": datetime.fromtimestamp(modified, timezone.utc).isoformat().replace("+00:00", "Z"), "linkTarget": ""}
+                transfer.update(bytes=len(clean), sha256=hashlib.sha256(clean).hexdigest(),
+                                wire_sha256=hashlib.sha256(exported).hexdigest())
+                response = 200, {"Content-Type": "application/x-tar", "X-Docker-Container-Path-Stat": base64.b64encode(encoded(item)).decode()}, clean
+            transfer["status"] = 200
+            self.persist(record)
+            return response
+        except BaseException:
+            transfer["status"] = "failed"
+            try: self.delete(record)
+            finally:
+                # persist writes the journal only. A confirmed delete's removed
+                # state/capability removal is retained alongside this failure.
+                self.persist(record)
+            raise
+
+    def dispatch(self, method, target, raw, run_id, admitted, client=None):
         version, action, ident, query = route(method, target)
         require(action in {"create", "exec", "exec_start", "archive_put"} or not raw)
         if action in {"_ping", "version"}:
@@ -571,7 +699,10 @@ class Proxy:
             return result({k: data[k] for k in ("CgroupDriver", "CgroupVersion")}, status)
         if action == "image":
             native = self.image(ident)
-            return result({k: native[k] for k in ("Id", "Created", "RepoTags", "RepoDigests", "Os", "Architecture")})
+            bindings = [b for b in self.config.images if b["image_id"] == native["Id"]]
+            return result({**{k: native[k] for k in ("Id", "Created", "Os", "Architecture")},
+                           "RepoTags": [b["alias"] for b in bindings],
+                           "RepoDigests": [b["reference"] for b in bindings]})
         if action == "images":
             status, _, native = self.request("GET", "/images/json?all=1")
             require(status == 200)
@@ -602,27 +733,7 @@ class Proxy:
             self.delete(record)
             return 204, {}, b""
         if action.startswith("archive_"):
-            native_path = prefix + "/archive?" + urlencode({"path": query["path"]})
-            if action == "archive_put":
-                clean = sanitize_tar(raw)
-                response = self.request("PUT", native_path, clean, content_type="application/x-tar")
-            else:
-                response = self.request("GET", native_path, maximum=MAX_TAR)
-                if response[0] != 200: return response
-                headers = {k: v for k, v in response[1].items() if k.lower() in {"content-type", "x-docker-container-path-stat"}}
-                stat_headers = [v for k, v in headers.items() if k.lower() == "x-docker-container-path-stat"]
-                require(len(stat_headers) == 1 and len(stat_headers[0]) <= 8192)
-                item = json_object(base64.b64decode(stat_headers[0], validate=True))
-                require(not item.get("linkTarget") and type(item.get("name")) is str
-                        and item["name"] == PurePosixPath(query["path"]).name)
-                clean = sanitize_tar(response[2], item["name"])
-                response = response[0], headers, clean
-            with self.lock:
-                require(len(record["transfers"]) < 1024)
-                record["transfers"].append({"operation": action, "path": query["path"], "bytes": len(clean),
-                                            "sha256": hashlib.sha256(clean).hexdigest(), "status": response[0]})
-                self.persist(record)
-            return response
+            return self.archive(record, action, query["path"], raw, client)
         suffix = "/" + action + ("?" + urlencode(query) if query else "")
         response = self.request(method, prefix + suffix, maximum=MAX_STREAM if action == "logs" else MAX_JSON,
                                 timeout=min(30 if action != "wait" else self.config.max_seconds, max(1, record["expires"] - time.time())))
@@ -656,23 +767,33 @@ class Handler(BaseHTTPRequestHandler):
 
     def handle_request(self):
         self.close_connection = True; self.upgraded = False
+        archive_slot = False; archive_record = None
         try:
             proxy = self.server.proxy
             require(not self.headers.get_all("Transfer-Encoding") and not self.headers.get_all("Expect"))
             lengths = self.headers.get_all("Content-Length", []); require(len(lengths) <= 1)
             length = int(lengths[0]) if lengths else 0
-            _, action, _, _ = route(self.command, self.path)
+            _, action, ident, _ = route(self.command, self.path)
+            if action.startswith("archive_"):
+                archive_slot = self.server.archive_slots.acquire(blocking=False)
+                require(archive_slot, "Archive I/O capacity reached")
             require(0 <= length <= (MAX_TAR if action == "archive_put" else MAX_JSON))
             run_id = peer_run(self.connection, proxy.config)
             admitted = admission(proxy.config, run_id)
+            if action.startswith("archive_"): archive_record = proxy.owned(ident, run_id)
             raw = self.rfile.read(length); require(len(raw) == length)
-            response = proxy.dispatch(self.command, self.path, raw, run_id, admitted)
+            response = proxy.dispatch(self.command, self.path, raw, run_id, admitted, self.connection)
             if type(response) is dict: self.stream_exec(response["stream"], response["record"])
             else: self.reply(*response)
         except (ValueError, KeyError, TypeError, OSError, http.client.HTTPException, sqlite3.Error):
+            if archive_record is not None:
+                try: proxy.delete(archive_record)
+                except (ValueError, OSError, http.client.HTTPException): pass
             if not self.upgraded:
                 try: self.reply(*result({"message": "DGM proxy denied or could not safely complete the request"}, 403))
                 except OSError: pass
+        finally:
+            if archive_slot: self.server.archive_slots.release()
 
     def stream_exec(self, path, record):
         """Real Docker hijack, stdout/stderr direction only, no interactive stdin."""
@@ -720,6 +841,7 @@ class Server(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
 
     def __init__(self, config):
         self.proxy = Proxy(config); self.slots = threading.BoundedSemaphore(32)
+        self.archive_slots = threading.BoundedSemaphore(2)
         super().__init__(str(config.socket_path), Handler)
 
     def process_request(self, request, address):
