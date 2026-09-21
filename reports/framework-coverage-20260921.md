@@ -2,7 +2,7 @@
 
 This is a source/interface inventory, not a leaderboard or a statement that research runs have completed. All joins use explicit participant IDs. A task evaluator, baseline repository, result notebook and search engine are different artifacts.
 
-The registry contains **99 participant records** and **98 distinct paper IDs**. It has **3 direct adapters** and **102 recipe records** (including explicit blockers and artifact interfaces). Multiple recipe records can belong to one work.
+The registry contains **99 participant records** and **98 distinct paper IDs**. It has **3 direct adapters** and **105 recipe records** (including explicit blockers and artifact interfaces). Multiple recipe records can belong to one work.
 
 | Participant coverage | Count |
 | --- | ---: |
@@ -45,10 +45,10 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 | [CoCoEvo](https://arxiv.org/pdf/2502.10802) (`cocoevo`) | Native source interface present | [`cocoevo`](https://github.com/lbaf23/llm-cocoevo/tree/504355b568b2a0cbd4054783c80bac9c76a4de6d) (source_verified; 1 profile(s)) |
 | [CodeEvolve](https://arxiv.org/pdf/2510.14150) (`codeevolve`) | Native source interface present | [`codeevolve`](https://github.com/inter-co/science-codeevolve/tree/c077959e1ab24b060aaa6d4c563bca2e9cbe8617) (source_verified; 2 profile(s)) |
 | [CodeEvolve, Salesforce](https://arxiv.org/pdf/2605.04677) (`codeevolve-salesforce`) | Recorded implementation/integration blocker | `codeevolve-salesforce`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
-| [CoEvo](https://arxiv.org/pdf/2412.18890) (`coevo`) | Native source interface present | [`coevo`](https://github.com/pgg3/CoEvo/tree/dcad65e9799961cf67cf29865ff41dda2902a808) (source_verified; 2 profile(s)) |
+| [CoEvo](https://arxiv.org/pdf/2412.18890) (`coevo`) | Native source interface present | [`coevo`](https://github.com/pgg3/CoEvo/tree/dcad65e9799961cf67cf29865ff41dda2902a808) (source_verified; 2 profile(s)); [`coevo-observed-v2`](https://github.com/pgg3/CoEvo/tree/dcad65e9799961cf67cf29865ff41dda2902a808) (source_verified; 1 profile(s)) |
 | [Constitutional Evolution](https://arxiv.org/pdf/2602.00755) (`constitutional-evolution`) | Recorded implementation/integration blocker | `constitutional-evolution`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
 | [CORAL](https://arxiv.org/pdf/2604.01658) (`coral`) | Native source interface present | [`coral`](https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408) (source_verified; 1 profile(s)) |
-| [Darwinian Evolver](https://imbue.com/blog/2026-02-27-darwinian-evolver) (`darwinian-evolver`) | Native source interface present | [`darwinian-evolver`](https://github.com/imbue-ai/darwinian_evolver/tree/7f12365d2059c47e29068a5a6f498a293148d2a9) (source_verified; 3 profile(s)) |
+| [Darwinian Evolver](https://imbue.com/blog/2026-02-27-darwinian-evolver) (`darwinian-evolver`) | Native source interface present | [`darwinian-evolver`](https://github.com/imbue-ai/darwinian_evolver/tree/7f12365d2059c47e29068a5a6f498a293148d2a9) (source_verified; 3 profile(s)); [`darwinian-evolver-gateway`](https://github.com/imbue-ai/darwinian_evolver/tree/7f12365d2059c47e29068a5a6f498a293148d2a9) (source_verified; 1 profile(s)) |
 | [DEEVO](https://arxiv.org/pdf/2506.00178) (`deevo`) | Recorded implementation/integration blocker | `deevo`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
 | [Deliberate Evolution](https://arxiv.org/pdf/2606.04360) (`deliberate-evolution`) | Recorded implementation/integration blocker | [`deliberate-evolution`](https://github.com/Xinyu-Pang/Deliberate-Evolution/tree/18ae1f1c33a0dfa3c81298bba035036d3b23ecaf): The pinned repository contains only README.md and states that code, benchmarks and reproduction instructions will be added later. No implementation entrypoint is available. |
 | [DGA2D](https://arxiv.org/pdf/2608.00700) (`dga2d`) | Recorded implementation/integration blocker | `dga2d`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
@@ -95,7 +95,7 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 | [LoongFlow](https://arxiv.org/pdf/2512.24077) (`loongflow`) | Native source interface present | [`loongflow`](https://github.com/baidu-baige/LoongFlow/tree/945c78bc1554f8281aac40320b3599bd68d528d7) (source_verified; 2 profile(s)) |
 | [Magellan](https://arxiv.org/pdf/2601.21096) (`magellan`) | Recorded implementation/integration blocker | `magellan`: No runnable implementation source and immutable revision were verified from the inspected paper/project links. This is an audit limitation, not a claim that no implementation exists. |
 | [MCE](https://arxiv.org/pdf/2601.21557) (`mce`) | Native source interface present | [`mce`](https://github.com/metaevo-ai/meta-context-engineering/tree/c4b7a7c2ce3ffc4bf4a74c52d2dd8a9a8fb14c30) (source_verified; 1 profile(s)); [`mce-artifact`](https://github.com/metaevo-ai/mce-artifact/tree/c63300daef93404e22e2569b3d08e72843e7123b) (source_verified; 2 profile(s)) |
-| [MCTS-AHD](https://arxiv.org/pdf/2501.08603) (`mcts-ahd`) | Native source interface present | [`mcts-ahd`](https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb) (source_verified; 2 profile(s)) |
+| [MCTS-AHD](https://arxiv.org/pdf/2501.08603) (`mcts-ahd`) | Native source interface present | [`mcts-ahd`](https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb) (source_verified; 2 profile(s)); [`mcts-ahd-gateway-v2`](https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb) (source_verified; 1 profile(s)) |
 | [MEoH](https://arxiv.org/pdf/2409.16867) (`meoh`) | Native source interface present | [`meoh`](https://github.com/Optima-CityU/LLM4AD/tree/ffb6acf64497be93932c98d25369352efd3865cf) (source_verified; 1 profile(s)) |
 | [Meta-Harness](https://arxiv.org/pdf/2603.28052) (`meta-harness`) | Artifact interface only | [`meta-harness`](https://github.com/stanford-iris-lab/meta-harness-tbench2-artifact/tree/57fefdb2ff84af3fd81b69d67814acbe69bd0743) (artifact_only; 1 profile(s)) |
 | [META-TTL](https://arxiv.org/pdf/2604.00830) (`meta-ttl`) | Native source interface present | [`meta-ttl`](https://github.com/zzzlou/meta-ttl/tree/b72db4b77e9ae01aec1cbfd36ae0edae902b6468) (source_verified; 2 profile(s)) |
@@ -135,11 +135,14 @@ The registry contains **99 participant records** and **98 distinct paper IDs**. 
 
 Snapshot bindings:
 
-- `registry/participants.json`: `766f305f88910ba257f7881ed4af1a63c8f62a524d066640eecb9d6f67a86361`
+- `registry/participants.json`: `50f3372019573df1b02343a35afd3782f29218e1c87ba13f4543b4a906a9b59e`
 - `registry/framework-recipes/additional.json`: `c6e50ba51ab3415abcd7a553fe8eb1641e655f7e3d1d0c01bbc22e6b447309d0`
 - `registry/framework-recipes/agent-systems.json`: `fd3b88aada8ff990030cf4c8f10951a828cd7bc26a149de6c8894daf112efce9`
+- `registry/framework-recipes/coevo-observed-v2.json`: `1bbe5359406607369cd76248b77e82b29ba20d24044f4475d889faf0743833ff`
 - `registry/framework-recipes/community.json`: `e29e8fadfd1addacdd6accf955accb5c5ae0bf3c762ea432f955e1cca95f2c79`
+- `registry/framework-recipes/darwinian-evolver-gateway.json`: `0d92caff918f98786c9d1df2dc51b71b4771b749791f881c458badf1ff1a87f6`
 - `registry/framework-recipes/funsearch-original.json`: `1bdc224fe22875789a83095961817e209d3c83be87067d0483758ebebbcdda95`
+- `registry/framework-recipes/mcts-ahd-gateway-v2.json`: `0dd35584bd030f2c453e7e9cb8428ca7d2ca53a6cbad8ec2b8e6f8f4f46c90cc`
 - `registry/framework-recipes/program-search.json`: `9ab7bee1603dcb95692a2fd169b39ba9e5e3d0ca9f5528e53b787d0774a5f95b`
 - `registry/framework-recipes/specialized.json`: `07c51f6dae2b37520ce51ed9e72745ab6ada06d12a9bae07d946e22f17d8d737`
 - `registry/framework-recipes/unavailable.json`: `38671bfbde81c4b7420b0e5cd6e19d9593e51ed60c5942e8c784490e79b14ee0`

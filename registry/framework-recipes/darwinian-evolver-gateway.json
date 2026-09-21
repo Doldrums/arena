@@ -1,0 +1,87 @@
+{
+  "schema": "arena.framework-recipes/1",
+  "recipes": [
+    {
+      "id": "darwinian-evolver-gateway",
+      "name": "Darwinian Evolver \u00b7 gateway pilot",
+      "participant_ids": [
+        "darwinian-evolver"
+      ],
+      "repository": {
+        "url": "https://github.com/imbue-ai/darwinian_evolver",
+        "commit": "7f12365d2059c47e29068a5a6f498a293148d2a9"
+      },
+      "status": "source_verified",
+      "license": "AGPL-3.0",
+      "setup": [
+        "Prepare a separate Python environment matching pyproject.toml, plus SciPy for the native constructor task. Record a dependency freeze."
+      ],
+      "blocked_reason": null,
+      "evidence": {
+        "LICENSE": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+        "README.md": "c236340f2c4de9e23e92d477e67901916cb32d482269516ff534b87c20627404",
+        "darwinian_evolver/__main__.py": "149f8126677503982b7970c3c5ff0663292dcc84820b0f1f41c73c1c1231585c",
+        "darwinian_evolver/evolve_problem_loop.py": "668952f5950d1695b946fdf1e150250d26ab46a3848efc34001156692c6e6af2",
+        "darwinian_evolver/problems/circle_packing.py": "a95d3137e531ee75e00d9456c167b9c98959991bbae272bf1c27e20ea602ec4d",
+        "darwinian_evolver/problems/multiplication_verifier.py": "d0b3ce8ee1b8bcb7f5143965bc8aebfa482ab935278b0222be98f57273af50be",
+        "darwinian_evolver/problems/parrot.py": "f594d1285e02b2b0dd7a5fb266f91f8a1419034acc00c2f753b2a7c930543aac",
+        "darwinian_evolver/problems/registry.py": "f7bb04e3e587264865db1f23769b35a18fcc5352fbbf0c770962797f96a42a12",
+        "darwinian_evolver/cli_common.py": "fd8d51b14e50fbc886f332fdd47e07cd62b3ac94e0245ffc283006a6d1870271",
+        "darwinian_evolver/evolver.py": "2a69eaec615553b8ce601dd63adec95011f8f9a2cab8ac50c7947adeb97dce97",
+        "darwinian_evolver/population.py": "057ecbfb519a52a3d129ac0d7461e1bcf4e3d0e1d7d868343c870b2bb8cf0079",
+        "darwinian_evolver/learning_log.py": "8a9f05e0eb18e5efe413144e26713d713d35bd65888858be78db60cd0f78ca37"
+      },
+      "profiles": [
+        {
+          "id": "circle-packing-pilot",
+          "description": "Pinned native circle-packing search using the exact selected gateway model and ancestor learning log.",
+          "invocation": {
+            "kind": "driver",
+            "target": "arena.frameworks.drivers.darwinian_gateway"
+          },
+          "cwd": ".",
+          "fixed_args": [],
+          "output": {
+            "flag": "--output",
+            "path": "native"
+          },
+          "required_files": [
+            "darwinian_evolver/__main__.py",
+            "darwinian_evolver/problems/registry.py"
+          ],
+          "config_files": [],
+          "result_globs": [
+            "native/results.jsonl",
+            "native/provider-seam.json",
+            "native/snapshots/*.pkl"
+          ],
+          "evaluation": {
+            "mode": "native",
+            "description": "Darwinian Evolver circle_packing native organism mutation/evaluation loop Metrics and validity retain the native evaluator contract.",
+            "evidence": [
+              "darwinian_evolver/evolve_problem_loop.py",
+              "darwinian_evolver/problems/circle_packing.py"
+            ]
+          },
+          "argument_help": [
+            "--model EXACT_REVIEWED_ID --iterations 4"
+          ],
+          "limitations": [
+            "Pinned native search, prompt/parser and evaluator; only SDK endpoint/model binding differs. Native scores are not canonical Arena receipts.",
+            "Four iterations, one parent and one mutator/evaluator worker; ancestor learning log; unchanged packaged seed. This is not the paper protocol.",
+            "Native Anthropic Messages interface is translated by the local gateway; exact selected model is preserved, max_tokens is recorded but not enforced.",
+            "Native pickle snapshots remain opaque; Arena never deserializes them. No S3 upload or snapshot resume is exposed.",
+            "Native evaluator executes trusted research code under the admitted outer cgroup; this profile does not provide a hostile-code sandbox."
+          ],
+          "environment": {
+            "OMP_NUM_THREADS": "1",
+            "OPENBLAS_NUM_THREADS": "1",
+            "MKL_NUM_THREADS": "1",
+            "NUMEXPR_NUM_THREADS": "1",
+            "PYTHONUNBUFFERED": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

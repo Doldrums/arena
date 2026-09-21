@@ -49,7 +49,7 @@ Cancelled run: `4c35e2423b68411395d5b49fd1aa98d5`.
 At the pinned native source, `prompts/bpp_online/func_signature.txt` requested
 `priority`, while `problems/bpp_online/eval.py:9` imported `priority_v2`.
 Generated candidates followed the requested name. Of 35 inspected distinct
-evaluation stderr files, 32 reported the import failure and three reported
+evaluation logs, 32 reported the import failure and three reported
 indentation errors. At cancellation, all 92 recorded evaluation attempts had
 non-finite failure fitness and initialization had not completed.
 
