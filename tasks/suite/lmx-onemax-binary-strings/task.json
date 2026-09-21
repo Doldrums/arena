@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "id": "lmx-onemax-binary-strings",
+  "name": "OneMax binary strings",
+  "description": "OneMax binary strings: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "lmx"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2302.12170",
+      "type": "paper",
+      "locator": "Sections 4.1–4.5"
+    },
+    {
+      "url": "https://github.com/jal278/lmx/tree/b8fec5dd16451cf7afb6e02ac621b71d5bdfee7f",
+      "type": "repository",
+      "locator": "scripts/binary_strings.ipynb"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "OneMax binary strings",
+    "notes": [
+      "Task-specific LLMs and/or diffusion models"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "domain-specific fitness / QD score",
+    "paper_direction": null,
+    "direction": "maximize",
+    "benchmark": "OneMax binary strings",
+    "protocol": "specified_only",
+    "source_locator": "Sections 4.1–4.5"
+  },
+  "execution": {
+    "repository": "https://github.com/jal278/lmx",
+    "commit": "b8fec5dd16451cf7afb6e02ac621b71d5bdfee7f",
+    "upstream_path": "scripts/binary_strings.ipynb",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Repository provides research scripts/notebooks but no complete environment lock or per-domain reproduction command; script arguments and model/data availability require configuration.",
+      "The notebook cannot safely be executed top-to-bottom unchanged: cell6 serializes res_dict, assigned only inside disabled if False code; later cells use other undefined experiment variables. order_experiment/order_parents.py one_max is a separate parent-ordering experiment, not a substitute for the paper OneMax evolution condition."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "onemax",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "OneMax binary strings",
+    "slug": "onemax-binary-strings",
+    "description": "OneMax binary strings: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "OneMax binary strings",
+    "dataset": "OneMax binary strings",
+    "metric": "domain-specific fitness / QD score",
+    "direction": null,
+    "source_url": "https://arxiv.org/pdf/2302.12170",
+    "source_locator": "Sections 4.1–4.5",
+    "upstream_path": "scripts/binary_strings.ipynb",
+    "requirements": [
+      "Task-specific LLMs and/or diffusion models"
+    ],
+    "execution_notes": [
+      "Repository provides research scripts/notebooks but no complete environment lock or per-domain reproduction command; script arguments and model/data availability require configuration.",
+      "The notebook cannot safely be executed top-to-bottom unchanged: cell6 serializes res_dict, assigned only inside disabled if False code; later cells use other undefined experiment variables. order_experiment/order_parents.py one_max is a separate parent-ordering experiment, not a substitute for the paper OneMax evolution condition."
+    ],
+    "implementation_status": "source_path_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,309 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-bench-prompt-optimization-ifeval",
+  "name": "SCiEL: prompt optimization on ifeval",
+  "description": "Evolve a text prompt for the task model on the google/IFEval dataset (train split). Instruction-following with multiple verifiable constraints per prompt; binary success. The pinned evaluator sends each sampled example to the configured task model and reports accuracy as combined_score.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "prompt_optimization",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/llm_prompt_optimization/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/llm_prompt_optimization/ifeval_prompt.txt",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/llm_prompt_optimization/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU plus a hosted or local OpenAI-compatible task model endpoint.",
+    "dependencies": [
+      "datasets",
+      "openai",
+      "pyyaml",
+      "tqdm"
+    ],
+    "environment_variables": [
+      "OPENAI_API_KEY",
+      "OPENEVOLVE_PROMPT"
+    ],
+    "datasets": "Hugging Face dataset google/IFEval, train split; the source config samples up to 200 examples and stage-2 evaluation uses 40.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "The evaluator instantiates an OpenAI client at import time and queries the task model for every sampled example; every evaluation is a paid or locally hosted model call.",
+      "OPENEVOLVE_PROMPT must name the prompt file so the evaluator selects the matching *_prompt_dataset.yaml configuration."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example llm_prompt_optimization",
+    "paper_metric": null,
+    "source_locator": "examples/llm_prompt_optimization/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/llm_prompt_optimization",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "../../openevolve-run.py",
+          "ifeval_prompt.txt",
+          "evaluator.py",
+          "--config",
+          "config.yaml",
+          "--iterations",
+          "50"
+        ],
+        "cwd": "examples/llm_prompt_optimization",
+        "environment": {
+          "OPENEVOLVE_PROMPT": "ifeval_prompt.txt"
+        },
+        "source_url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/llm_prompt_optimization/run_evolution.sh",
+        "notes": "Original prompt-evolution search from run_evolution.sh. Every candidate evaluation queries the task model configured in config.yaml through the OpenAI-compatible endpoint; paid model calls and OPENAI_API_KEY are required."
+      },
+      {
+        "argv": [
+          "python",
+          "evaluate_prompts.py",
+          "--dataset",
+          "ifeval",
+          "--prompt-type",
+          "baseline"
+        ],
+        "cwd": "examples/llm_prompt_optimization",
+        "source_url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/llm_prompt_optimization/evaluate_prompts.py",
+        "notes": "Baseline prompt evaluation on the GEPA benchmark dataset through OpenRouter; requires OPENAI_API_KEY and makes paid model calls. Does not perform evolution."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "The evaluator instantiates an OpenAI client at import time and queries the task model for every sampled example; every evaluation is a paid or locally hosted model call.",
+      "OPENEVOLVE_PROMPT must name the prompt file so the evaluator selects the matching *_prompt_dataset.yaml configuration."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Command-only or blocked interface; see limitations for why no direct candidate evaluator is registered."
+    ],
+    "model_calls": "task_evaluator",
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "ifeval_prompt.txt",
+      "callable": "evaluate",
+      "env": {
+        "OPENEVOLVE_PROMPT": "ifeval_prompt.txt",
+        "OPENAI_API_KEY": "${OPENROUTER_API_KEY}"
+      },
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "env:OPENROUTER_API_KEY",
+        "network:huggingface datasets",
+        "network:openrouter",
+        "py:datasets",
+        "py:numpy",
+        "py:openai",
+        "py:tqdm",
+        "py:yaml"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "No direct candidate evaluator adapter is registered: the pinned task evaluator itself performs model calls, which the no-model-call seed-check contract of this repository excludes. The original search and baseline commands are recorded instead.",
+    "Task-model choice, endpoint and sampling temperature are set in the source config.yaml; scores are not comparable across models or endpoints."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "Accuracy is measured on the first 40 examples of the (possibly streaming) dataset order, not on a fixed held-out split.",
+      "Stage-1 and stage-2 evaluations sample different subset sizes; combined_score from different stages is not comparable."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/llm_prompt_optimization/README.md": "a8624d2180c63a2a9b2a5d89d2347fe590ae05323a1bcf9f4fef859f3c5e61c3",
+    "examples/llm_prompt_optimization/config.yaml": "b4f6627404adcafc347082214053210668426cb0bc2326305d0f55aeb2ed3692",
+    "examples/llm_prompt_optimization/config_qwen3_baseline.yaml": "b2aa36eb5068779d219babdaadcdc20d8c8179cdf846533b88d51ed1a73e3e87",
+    "examples/llm_prompt_optimization/config_qwen3_evolution.yaml": "3c66077b5780f14e11ce24494f64e867024921087aa11ad95068be3bd0d45441",
+    "examples/llm_prompt_optimization/dataset_settings.yaml": "5169cc93807ebc6b2e51044ec04dc1c3262ac4f89b669729304457281e283f19",
+    "examples/llm_prompt_optimization/emotion_prompt.txt": "2a794d31529f5b235e1718093dfe7e93d3119d5ddf927144c70678c9008b28ff",
+    "examples/llm_prompt_optimization/emotion_prompt_dataset.yaml": "c8d386a3501d3912109742a3095b082e6716ef02c118f4ea1cf68091de55c1ee",
+    "examples/llm_prompt_optimization/evaluate_prompts.py": "fc7e98ea39b45694c6422cac0f1dcd5c163d32ab4d2661fa53fb4653dbef4903",
+    "examples/llm_prompt_optimization/evaluation_results_baseline_20250809_070942.json": "ce5fdae43c35770eca06b73bedee76695d22499470e62a1ee37f7d588031afbf",
+    "examples/llm_prompt_optimization/evaluation_results_evolved_20250809_103002.json": "5ab75f451dd02cf37663b2e1d96b64d531485e55bc1194f9d317f98a70c394f3",
+    "examples/llm_prompt_optimization/evaluator.py": "6e703d4330198e288bcd39edb412e072c3282af1c55755f1a232b520a79d111c",
+    "examples/llm_prompt_optimization/gsm8k_prompt.txt": "f6139dc266051e45bc9656ad9ad96e06cfb99dd9129d948ca2a903042eb62b41",
+    "examples/llm_prompt_optimization/gsm8k_prompt_dataset.yaml": "ae72808175a8679966f00dc9572cb136e762656d29d706c64d8c12038fa35fe4",
+    "examples/llm_prompt_optimization/hotpotqa_prompt.txt": "d647486aba65b8a32f04cdee80f30c69c175f1fcb729980be5980ffd5cf4fbb4",
+    "examples/llm_prompt_optimization/hotpotqa_prompt_dataset.yaml": "4669f834d53fb4dac7e5a0d0b26efe6cedf779be98ec9f858a4e363942cc4c09",
+    "examples/llm_prompt_optimization/hover_prompt.txt": "74cc1cfb4fad42f16ef3945a2cf912121aa9df368e3e7387434eb5e6d305e0da",
+    "examples/llm_prompt_optimization/hover_prompt_dataset.yaml": "c201d0806135107d58653c9c85b335c9d73315c519af99daaf26a38023369043",
+    "examples/llm_prompt_optimization/ifeval_prompt.txt": "7ec33116d80eba4e2a20211630eb34894b14e0628dda999b9e4a6e0b09925715",
+    "examples/llm_prompt_optimization/ifeval_prompt_dataset.yaml": "b6848e3852ccf0b64e828bb5507cc80f07406b3914d295669519a27b8f8cbd24",
+    "examples/llm_prompt_optimization/initial_prompt.txt": "27e4f8b932b882cffe67078439737ddc55014fbaf5224abf1b46ee867861232f",
+    "examples/llm_prompt_optimization/initial_prompt_dataset.yaml": "b25fa8a355d80cbb08a1bdbc2cd9c232d3cafc567cb5c54aa18621a3f7524ac1",
+    "examples/llm_prompt_optimization/requirements.txt": "37aa3dfd2f97cad6858b59227ff6454dc2e82acec1f1096de4cf0a51a0973f58",
+    "examples/llm_prompt_optimization/run_evolution.sh": "0ea06771c5fc894038d7d814fcb5cd41d3151617bfb8f67868fa74b4391702cc",
+    "examples/llm_prompt_optimization/templates/evaluation.txt": "4079661c68ebd45a2441c6b026612a19182ecd29e8a284c031c7f759dd45b097",
+    "examples/llm_prompt_optimization/templates/evaluator_system_message.txt": "a7797a35f3b366086c94a2bcb1c9bb2e213b8fa739d8330fa2043dda44e7e40d",
+    "examples/llm_prompt_optimization/templates/full_rewrite_user.txt": "9e3ccc1ac3f9cf1f5d9a44afe5171d5a9fdc2affeb4ecc9cdf6acf7cbeb8284d"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/llm_prompt_optimization/evaluator.py",
+      "signature": "prompt_path",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "prompt text file -> task model chat completion per sampled example -> parsed answer compared with the dataset target"
+    ],
+    "baseline_path": "examples/llm_prompt_optimization/ifeval_prompt.txt",
+    "baseline_functions": {},
+    "parameters": {
+      "dataset_name": "google/IFEval",
+      "split": "train",
+      "max_samples": 200,
+      "stage2_samples": 40,
+      "prompt_file": "examples/llm_prompt_optimization/ifeval_prompt.txt",
+      "dataset_config": "examples/llm_prompt_optimization/ifeval_prompt_dataset.yaml"
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "return_branches": [
+      {
+        "function": "evaluate_prompt",
+        "line": 453,
+        "expression": "accuracy, correct, total"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 497,
+        "expression": "{ \"combined_score\": accuracy, \"prompt_length\": prompt_length, \"reasoning_strategy\": reasoning_sophistication, }"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 518,
+        "expression": "{ \"combined_score\": 0.0, \"prompt_length\": prompt_length, \"reasoning_strategy\": reasoning_sophistication, \"error\": str(e), }"
+      },
+      {
+        "function": "evaluate_stage2",
+        "line": 567,
+        "expression": "{ \"combined_score\": accuracy, \"prompt_length\": prompt_length, \"reasoning_strategy\": reasoning_sophistication, }"
+      },
+      {
+        "function": "evaluate_stage2",
+        "line": 588,
+        "expression": "{ \"combined_score\": 0.0, \"prompt_length\": prompt_length, \"reasoning_strategy\": reasoning_sophistication, \"error\": str(e), }"
+      },
+      {
+        "function": "evaluate",
+        "line": 607,
+        "expression": "evaluate_stage2(prompt_path)"
+      }
+    ],
+    "validity_key": null,
+    "validity_semantics": "No validity signal; accuracy is judged by the pinned parser against dataset labels and the task model's outputs are not deterministic.",
+    "error_key": null,
+    "declared_requirements": [
+      "openai",
+      "tqdm",
+      "datasets",
+      "pyyaml"
+    ],
+    "evaluator_imports": [
+      "datasets",
+      "openai",
+      "os",
+      "re",
+      "sys",
+      "time",
+      "tqdm",
+      "traceback",
+      "yaml"
+    ],
+    "baseline_imports": [],
+    "source_config_path": "examples/llm_prompt_optimization/config.yaml",
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 50,
+      "checkpoint_interval": 10,
+      "diff_based_evolution": false,
+      "language": "text",
+      "evaluator": {
+        "timeout": 1800,
+        "max_retries": 3,
+        "cascade_evaluation": true,
+        "cascade_thresholds": [
+          0.9
+        ],
+        "parallel_evaluations": 4
+      },
+      "database": {
+        "population_size": 1000,
+        "num_islands": 4,
+        "archive_size": 100
+      },
+      "llm": {
+        "api_base": "https://generativelanguage.googleapis.com/v1beta/openai/",
+        "models": [
+          "gemini-2.5-flash-lite"
+        ],
+        "timeout": 150
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "paid_model_calls",
+    "recommended_smoke_outer_timeout_seconds": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "network"
+    ],
+    "cost": "slow",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

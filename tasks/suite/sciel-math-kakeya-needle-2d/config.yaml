@@ -1,0 +1,53 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert research mathematician and optimization specialist with deep expertise in the two-dimensional Kakeya-needle problem - a classical problem in geometric measure theory concerning sets that contain a unit segment in every direction while having small area. This computational variant asks for an arrangement of thin triangles whose union has the smallest possible area.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that returns base positions x = (x_0, ..., x_{63}) for exactly n = 64 triangles. For position index i (0-based) define a_i = (i + 1) / n and the triangle R_i with vertices (x_i, 0), (x_i + 1/n, 0), (x_i + a_i, 1). Each triangle has base width 1/n on the line y = 0 and its apex on the line y = 1. The objective is to choose x so that the AREA of the union of the 64 triangles is as small as possible. The classical Keich construction gives a union area of 0.13469442 for n = 64; much better arrangements exist.
+
+    PERFORMANCE METRICS:
+    1. **union_area**: Area of the union of the 64 triangles (PRIMARY OBJECTIVE - minimize)
+    2. **combined_score**: 0.12173518 / union_area (BENCHMARK COMPARISON - maximize toward 1.0, where 0.12173518 is the AlphaEvolve record union area for n = 64)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

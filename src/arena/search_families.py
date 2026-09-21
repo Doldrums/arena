@@ -1,6 +1,8 @@
 """Source-declared research-family links, never framework execution claims."""
 from __future__ import annotations
 
+from .task_sources import source_url
+
 from copy import deepcopy
 from pathlib import Path
 
@@ -52,7 +54,7 @@ def validate_sources(data, catalog):
     for source in files:
         _require(set(source) == {"path", "url", "sha256"}, "Invalid source-file evidence fields")
         _hash(source["sha256"], _SHA256, "search-family source SHA256")
-        expected = f"{binding['repository']['url']}/blob/{binding['repository']['commit']}/{source['path']}"
+        expected = source_url(binding, source["path"])
         _require(source["url"] == expected, "Search-family evidence URL must match pinned source")
     papers = data.get("papers")
     _require(type(papers) is list and bool(papers), "Missing captured paper records")

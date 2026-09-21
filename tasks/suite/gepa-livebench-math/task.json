@@ -1,0 +1,261 @@
+{
+  "schema_version": "1.0",
+  "id": "gepa-livebench-math",
+  "name": "LiveBench-Math",
+  "description": "LiveBench-Math",
+  "paper_ids": [
+    "gepa",
+    "pairwise-validator"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2507.19457",
+      "type": "paper",
+      "locator": "Section 4 evaluation and benchmark appendix"
+    },
+    {
+      "url": "https://github.com/gepa-ai/gepa-artifact/tree/cbefbc1aa0f43dd39874ec4bf42211365dbda42e",
+      "type": "repository",
+      "locator": "gepa_artifact/benchmarks/livebench_math"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2607.14408",
+      "type": "paper",
+      "locator": "Section 5, Table 1 task inventory"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "benchmark data",
+      "LLM credentials",
+      "OPENAI_API_KEY and WANDB_API_KEY are asserted even for baseline mode. Setup requires the patched DSPy fork installed by setup_gepa_repo.sh, uv sync, dataset access, and benchmark-specific retrieval services. See benchmark program source."
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "task-specific score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "LiveBench-Math",
+    "protocol": "upstream",
+    "source_locator": "Section 4 evaluation and benchmark appendix"
+  },
+  "execution": {
+    "repository": "https://github.com/gepa-ai/gepa-artifact",
+    "commit": "cbefbc1aa0f43dd39874ec4bf42211365dbda42e",
+    "upstream_path": "gepa_artifact/benchmarks/livebench_math",
+    "commands": [
+      {
+        "argv": [
+          "uv",
+          "run",
+          "python",
+          "-m",
+          "scripts.run_experiments",
+          "--bm_idx",
+          "4",
+          "--benchmark_name",
+          "LiveBenchMathBench",
+          "--num_threads",
+          "1",
+          "--program_idx",
+          "0",
+          "--prog_name",
+          "CoT",
+          "--opt_idx",
+          "0",
+          "--optim_name",
+          "Baseline",
+          "--lm_config",
+          "{\"name\":\"gpt-41-mini\",\"model\":\"openai/gpt-4.1-mini-2025-04-14\",\"api_key\":\"env:OPENAI_API_KEY\",\"temperature\":1.0}",
+          "--seed",
+          "0"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/gepa-ai/gepa-artifact/blob/cbefbc1aa0f43dd39874ec4bf42211365dbda42e/scripts/run_experiments.py",
+        "notes": "Task-specific original artifact Baseline evaluation. Benchmark index/order, program0 class and LM config verified in get_benchmarks(), benchmark __init__.py files and LM_CONFIGS[1]. Uses paid model calls; OPENAI_API_KEY and WANDB_API_KEY required. Does not perform GEPA optimization."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "bash setup_gepa_repo.sh",
+      "uv sync"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "bash setup_gepa_repo.sh",
+      "uv sync"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Exact source-valid per-task Baseline command with explicit benchmark/program selectors. Full GEPA runs additionally require optimizer budget/cache configuration; baseline evaluation alone does not reproduce optimized paper results."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "LiveBench-Math",
+    "slug": "livebench-math",
+    "description": "LiveBench-Math",
+    "benchmark": "LiveBench-Math",
+    "dataset": null,
+    "metric": "task-specific score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2507.19457",
+    "source_locator": "Section 4 evaluation and benchmark appendix",
+    "upstream_path": "gepa_artifact/benchmarks/livebench_math",
+    "requirements": [
+      "benchmark data",
+      "LLM credentials",
+      "OPENAI_API_KEY and WANDB_API_KEY are asserted even for baseline mode. Setup requires the patched DSPy fork installed by setup_gepa_repo.sh, uv sync, dataset access, and benchmark-specific retrieval services. See benchmark program source."
+    ],
+    "execution_notes": "Exact source-valid per-task Baseline command with explicit benchmark/program selectors. Full GEPA runs additionally require optimizer budget/cache configuration; baseline evaluation alone does not reproduce optimized paper results.",
+    "run_commands": [
+      {
+        "argv": [
+          "uv",
+          "run",
+          "python",
+          "-m",
+          "scripts.run_experiments",
+          "--bm_idx",
+          "4",
+          "--benchmark_name",
+          "LiveBenchMathBench",
+          "--num_threads",
+          "1",
+          "--program_idx",
+          "0",
+          "--prog_name",
+          "CoT",
+          "--opt_idx",
+          "0",
+          "--optim_name",
+          "Baseline",
+          "--lm_config",
+          "{\"name\":\"gpt-41-mini\",\"model\":\"openai/gpt-4.1-mini-2025-04-14\",\"api_key\":\"env:OPENAI_API_KEY\",\"temperature\":1.0}",
+          "--seed",
+          "0"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/gepa-ai/gepa-artifact/blob/cbefbc1aa0f43dd39874ec4bf42211365dbda42e/scripts/run_experiments.py",
+        "notes": "Task-specific original artifact Baseline evaluation. Benchmark index/order, program0 class and LM config verified in get_benchmarks(), benchmark __init__.py files and LM_CONFIGS[1]. Uses paid model calls; OPENAI_API_KEY and WANDB_API_KEY required. Does not perform GEPA optimization."
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "pairwise-validator-livebench-math",
+      "paper_ids": [
+        "pairwise-validator"
+      ],
+      "name": "LiveBench-Math",
+      "description": "LiveBench-Math task evaluated in Reward-Free Evolving Agents via Pairwise Validator.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2607.14408",
+          "type": "paper",
+          "locator": "Section 5, Table 1 task inventory"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "GEPA",
+          "Task data",
+          "LLM credentials"
+        ]
+      },
+      "evaluation": {
+        "metric": "benchmark-specific test score",
+        "paper_metric": "benchmark-specific test score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "LiveBench-Math",
+        "protocol": "specified_only",
+        "source_locator": "Section 5, Table 1 task inventory"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": []
+      },
+      "limitations": [
+        "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

@@ -60,6 +60,20 @@ def test_actual_cli_shape_is_rebuilt_not_forwarded(setup):
     assert checked["HostConfig"]["Mounts"] == []  # rewritten only after safe snapshot
 
 
+
+def test_environment_order_is_canonicalized_without_allowing_duplicates_or_overrides(setup):
+    config, body, *_ = setup
+    expected = list(body["Env"])
+    body["Env"].reverse()
+    checked, _, _ = ep.canonical_config(body, NAME, RUN, config)
+    assert checked["Env"] == expected
+    for environment in ([expected[0], expected[0]], expected + [expected[1]],
+                        [expected[0], "PYTHONPYCACHEPREFIX=/tasks"], [expected[0], None]):
+        body["Env"] = environment
+        with pytest.raises(ep.Denied):
+            ep.canonical_config(body, NAME, RUN, config)
+
+
 def test_registered_engine_identity_requires_actual_container_cgroup(setup, monkeypatch):
     config, *_ = setup
     registry = config.staging_root.parent / "engine-registry"; registry.mkdir()
@@ -415,6 +429,7 @@ def test_real_docker_cli_completes_against_inert_daemon_and_publishes_before_exi
             "--read-only", "--cpus", "1", "--memory", "2g", "--pids-limit", "128", "--cap-drop", "ALL",
             "--security-opt", "no-new-privileges", "--user", body["User"],
             "--tmpfs", "/tmp:rw,nosuid,nodev,size=268435456", "--env", "PYTHONDONTWRITEBYTECODE=1",
+            "--env", "PYTHONPYCACHEPREFIX=/tmp/arena-pycache",
             "--workdir", "/tmp", "--cgroup-parent", "/arena-workers/arena-control-" + RUN,
             "--label", "arena.evaluator=canonical-v1", "--label", "arena.control-run=" + RUN]
     for mount in body["HostConfig"]["Mounts"]:

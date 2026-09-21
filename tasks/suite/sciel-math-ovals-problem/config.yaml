@@ -1,0 +1,61 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in differential geometry, the calculus of variations and spectral optimization, working on the Ovals problem - finding a convex planar curve together with a periodic weight function that minimizes a curvature-weighted Rayleigh quotient.
+
+    PROBLEM SPECIFICATION:
+    For a fixed n, your task is to design a constructor function that returns three real 1D arrays x, y and phi, each of length n. These are interpreted as samples at the equally spaced parameters t_k = 2*pi*k/n (k = 0..n-1). Interpolating them periodically yields smooth periodic functions f, g and h on [0, 2*pi]. Consider the planar curve t -> (f(t), g(t)), reparametrize it by arc-length s (rescaled so the total length is 2*pi), and let kappa(s) be its curvature. The objective to MINIMIZE is the Rayleigh quotient
+
+        I = integral_0^{2*pi} [ h'(s)^2 + (kappa(s) * h(s))^2 ] ds / integral_0^{2*pi} h(s)^2 ds.
+
+    HARD CONSTRAINT:
+    The curve must be convex: the signed curvature of t -> (f(t), g(t)) must be strictly positive everywhere. Non-convex curves, degenerate (near-zero speed) curves and near-zero weight functions are infeasible and score 0.
+
+    SCALES:
+    Keep f, g, h and their derivatives tame (avoid large values and sharp spikes), and keep the endpoint gaps |x[0]-x[-1]|, |y[0]-y[-1]|, |phi[0]-phi[-1]| small so the periodic interpolants stay smooth near 0 and 2*pi.
+
+    PERFORMANCE METRICS:
+    1. **rayleigh_quotient**: The objective value I (PRIMARY OBJECTIVE - minimize; the unit circle with constant weight gives exactly 1.0)
+    2. **combined_score**: 1.0 / rayleigh_quotient (BENCHMARK COMPARISON - maximize; since the raw problem is a minimization, higher combined_score means a smaller, better Rayleigh quotient, with 1.0 corresponding to the baseline circle)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible (non-convex / degenerate) configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

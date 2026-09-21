@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "id": "codeevolve-salesforce-composedapiname-equals",
+  "name": "ComposedApiName.equals",
+  "description": "ComposedApiName.equals",
+  "paper_ids": [
+    "codeevolve-salesforce"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2605.04677",
+      "type": "paper",
+      "locator": "Section 5 Table 2"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "proprietary Salesforce source",
+      "production trace replay"
+    ]
+  },
+  "evaluation": {
+    "metric": "baseline / optimized execution time",
+    "paper_metric": "baseline / optimized execution time",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Salesforce Monolith Java hotspots",
+    "protocol": "specified_only",
+    "source_locator": "Section 5 Table 2"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Task source is proprietary and was not publicly linked."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "internal:Salesforce monolith"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "internal",
+      "unsupported_reason": "Evaluation depends on a proprietary internal system (Salesforce Monolith Java hotspots) that is not public."
+    }
+  },
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "ComposedApiName.equals",
+    "slug": "composedapiname-equals",
+    "description": "ComposedApiName.equals",
+    "benchmark": "Salesforce Monolith Java hotspots",
+    "dataset": null,
+    "metric": "baseline / optimized execution time",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2605.04677",
+    "source_locator": "Section 5 Table 2",
+    "upstream_path": null,
+    "requirements": [
+      "proprietary Salesforce source",
+      "production trace replay"
+    ],
+    "execution_notes": "Task source is proprietary and was not publicly linked."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "proprietary",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

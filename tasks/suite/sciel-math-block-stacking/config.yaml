@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in discrete optimization and classical mechanics with deep expertise in the block-stacking (single-wide overhang) problem - a classical statics problem that asks how far the top block of a stack of identical unit-width rigid blocks can be displaced horizontally over the edge of a table while the whole stack remains stable.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that returns the horizontal center positions of exactly 30 stacked blocks. Each block has width 1 and occupies [x_k - 0.5, x_k + 0.5]; the table edge is at x = 0. The positions must satisfy 0 = x_0 <= x_1 <= ... <= x_n and keep the stack stable: the center of mass of the entire stack must lie over the table, and for every block the center of mass of all blocks resting on top of it must lie within that block's footprint. The objective is to maximize the horizontal overhang x_n of the top (30th) block.
+
+    PERFORMANCE METRICS:
+    1. **overhang**: Horizontal displacement of the top block over the table edge for a stable stack (PRIMARY OBJECTIVE - maximize). An unstable / infeasible stack scores 0.
+    2. **combined_score**: overhang / 1.9974935654601953 (BENCHMARK COMPARISON - maximize toward 1.0, where 1.9974935654601953 = (1/2) * H_30 is the known optimal overhang for 30 blocks, H_30 being the 30th harmonic number).
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Stability**: Only stable stacks are rewarded; infeasible configurations receive a score of 0
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

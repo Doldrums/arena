@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "id": "qdaif-poetry-genre-and-tone",
+  "name": "Poetry genre and tone",
+  "description": "Poetry genre and tone: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "qdaif"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2310.13032",
+      "type": "paper",
+      "locator": "Sections 4.1–4.4"
+    },
+    {
+      "url": "https://github.com/CarperAI/OpenELM/tree/c844e149e3f59fef546e0bc55f4e12e0f192feb9",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Poetry genre and tone",
+    "notes": [
+      "Language-model inference and judge"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "quality-diversity score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Poetry genre and tone",
+    "protocol": "specified_only",
+    "source_locator": "Sections 4.1–4.4"
+  },
+  "execution": {
+    "repository": "https://github.com/CarperAI/OpenELM",
+    "commit": "c844e149e3f59fef546e0bc55f4e12e0f192feb9",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Companion qdaif_scripts_data repository links results data on Google Drive; no LICENSE file was found in that repository. It does not provide one verified end-to-end paper-task CLI.",
+    "No SPDX license identification verified for https://github.com/qdaif/qdaif_scripts_data.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Poetry genre and tone",
+    "slug": "poetry-genre-and-tone",
+    "description": "Poetry genre and tone: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "Poetry genre and tone",
+    "dataset": "Poetry genre and tone",
+    "metric": "quality-diversity score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2310.13032",
+    "source_locator": "Sections 4.1–4.4",
+    "upstream_path": null,
+    "requirements": [
+      "Language-model inference and judge"
+    ],
+    "execution_notes": [],
+    "implementation_status": "paper_inventory_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

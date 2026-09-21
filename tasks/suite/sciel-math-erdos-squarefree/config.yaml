@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert combinatorial number theorist and optimization specialist with deep expertise in the Erdos square-free problem - a problem in extremal number theory that asks for the largest subset A of {1, ..., N} such that a*b + 1 is not square-free for every pair of elements a, b in A (an integer is square-free if no perfect square greater than 1 divides it).
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that generates a maximum-size subset of {1, ..., 500} with the property that, for all pairs a, b in the subset, a*b + 1 is divisible by some perfect square (i.e. is NOT square-free). A useful building block is to use an arithmetic residue class: if a and b are both congruent to 7 modulo 25 then a*b + 1 is divisible by 25 and is therefore never square-free. The objective is to make the subset as large (dense) as possible while keeping the number of square-free violations at zero.
+
+    PERFORMANCE METRICS:
+    1. **subset_score**: density - violations, where density = |A| / 500 and violations is the number of unordered pairs whose product plus one is square-free (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: subset_score / 0.04 (BENCHMARK COMPARISON - maximize toward 1.0, where 0.04 is the density of the 7 mod 25 residue-class construction, which has 20 elements and zero violations for N = 500)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Validity**: Return distinct integers in {1, ..., 500}; any square-free pair a*b + 1 counts as a penalizing violation
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

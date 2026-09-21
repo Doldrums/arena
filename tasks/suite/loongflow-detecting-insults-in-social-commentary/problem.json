@@ -1,0 +1,73 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "dataset:MLE-bench",
+    "hardware:gpu"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "dataset",
+  "unsupported_reason": "MLE-bench competitions require the Kaggle data and model training; neither is redistributed.",
+  "protocol_description": "Not executable in this suite: MLE-bench competitions require the Kaggle data and model training; neither is redistributed.",
+  "id": "loongflow-detecting-insults-in-social-commentary",
+  "name": "detecting-insults-in-social-commentary",
+  "paper_ids": [
+    "loongflow"
+  ],
+  "description": "Predict whether a text comment is insulting.",
+  "benchmark": "MLE-bench",
+  "paper_metric": "ROC AUC",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2512.24077",
+      "type": "paper",
+      "locator": "Table 2"
+    },
+    {
+      "url": "https://github.com/baidu-baige/LoongFlow/tree/945c78bc1554f8281aac40320b3599bd68d528d7",
+      "type": "repository",
+      "locator": "agents/ml_agent/examples/mlebench/eval_program.py"
+    }
+  ],
+  "limitations": [
+    "Direct CPU checks found upstream square seed rejected by strict overlap test and rectangle seed incompatible with its evaluator. Original Autocorrelation II and Erdos overlap seeds passed; a new simple square grid fixture passed. These are integration checks, not reproduced paper results.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "loongflow",
+      "title": "LoongFlow: Directed Evolutionary Search via a Cognitive Plan-Execute-Summarize Paradigm",
+      "url": "https://arxiv.org/pdf/2512.24077"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "model",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "gpu",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

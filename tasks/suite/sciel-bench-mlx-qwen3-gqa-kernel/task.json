@@ -1,0 +1,317 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-bench-mlx-qwen3-gqa-kernel",
+  "name": "SCiEL: MLX Metal GQA attention kernel for Qwen3-0.6B",
+  "description": "Evolve a custom Metal kernel (CustomGQAAttention) for grouped-query attention in Qwen3-0.6B-bf16 on Apple Silicon. The pinned evaluator validates the kernel, checks bfloat16 correctness against MLX's scaled_dot_product_attention and benchmarks decode/prefill throughput through mlx_lm.generate in a subprocess hook; final_score is a safety-adjusted performance score.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "gpu_kernel",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/mlx_metal_kernel_opt/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/mlx_metal_kernel_opt/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/mlx_metal_kernel_opt/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "Apple Silicon GPU (Metal) with unified memory; MLX is not available on other platforms.",
+    "dependencies": [
+      "PyYAML",
+      "mlx",
+      "mlx-lm",
+      "numpy",
+      "psutil",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Model weights mlx-community/Qwen3-0.6B-bf16 from the Hugging Face Hub; benchmark prompts are defined in qwen3_benchmark_suite.py.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Install mlx and mlx-lm on an Apple Silicon machine; network access is needed for the model download."
+    ]
+  },
+  "evaluation": {
+    "metric": "final_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example mlx_metal_kernel_opt",
+    "paper_metric": null,
+    "source_locator": "examples/mlx_metal_kernel_opt/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/mlx_metal_kernel_opt",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/mlx_metal_kernel_opt/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/mlx_metal_kernel_opt",
+      "score_key": "final_score",
+      "score_direction": "maximize",
+      "status_key": "success",
+      "status_success_value": true,
+      "error_key": "error",
+      "baseline_path": "examples/mlx_metal_kernel_opt/initial_program.py",
+      "dependencies": [
+        "mlx",
+        "mlx-lm",
+        "numpy",
+        "PyYAML",
+        "psutil",
+        "scipy"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply task validity; preserve unknown validity unless the original evaluator exposes an explicit signal.",
+        "The evaluate function accepts a program path (it reads the file when the argument is an existing path) or program text.",
+        "The first evaluation downloads mlx-community/Qwen3-0.6B-bf16 from the Hugging Face Hub."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Install mlx and mlx-lm on an Apple Silicon machine; network access is needed for the model download."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "final_score",
+      "error_key": "error",
+      "requires": [
+        "network:huggingface mlx-community/Qwen3-0.6B-bf16",
+        "platform:darwin-arm64",
+        "py:mlx",
+        "py:mlx_lm",
+        "py:numpy",
+        "py:psutil",
+        "py:scipy",
+        "py:yaml"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "Hardware-specific: results depend on the Apple GPU generation, MLX version and thermal state; the source README reports the best evolved kernel was slower than the MLX baseline."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "Throughput is measured on the local GPU with a subprocess hook; noise and background load affect scores."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/mlx_metal_kernel_opt/EVOLUTION_ANALYSIS.md": "d1d6cd1f158aa59c1d2a02c0102b5e435e7264a390e49cba5380870b62ddcec4",
+    "examples/mlx_metal_kernel_opt/README.md": "de9545f8a5b84680faa8efc02e0a34bafcca5f9efe4acf44928e2c180f0d05c7",
+    "examples/mlx_metal_kernel_opt/best_program.py": "b3d403bcd1fd49c089da4f243a9488a570c92c1e5d91a37e4026510c5540606c",
+    "examples/mlx_metal_kernel_opt/best_program_info.json": "e795271aecd8fb063cd5971d5545c9e08089c78fbadd37565919f035803431a6",
+    "examples/mlx_metal_kernel_opt/config.yaml": "cc9c8066b11d393276e1ef92e3825e5b0cf922bf4aeffdb9056a95a15d269de0",
+    "examples/mlx_metal_kernel_opt/evaluator.py": "0123e15b1cae0d0b0d7a72e1cfcf86201c5976ecd63a46632a505fe438ad6baa",
+    "examples/mlx_metal_kernel_opt/initial_program.py": "3d146efb633e52ff9bf1144087593e38f8c7f840c9c087c89cea8c4e42b3fc7b",
+    "examples/mlx_metal_kernel_opt/mlx_lm_generate_with_hook.py": "cee9d38ca8418ca0a1587ac71176a44ec7a424574d1e6070c076beecd9def24b",
+    "examples/mlx_metal_kernel_opt/quick_benchmark_test.py": "3dfe91946a493e9ef1985236cb9df7b0262473ecba1b8105ab7bec775cb46a5f",
+    "examples/mlx_metal_kernel_opt/quick_demo.py": "ce531abaa3ece9b38eb7b286178b68018ec81c61a66f5d409b74e8cafef3f096",
+    "examples/mlx_metal_kernel_opt/qwen3_benchmark_suite.py": "d2af0795087791b861a9cbee811c1c81b479ac5b84b30d05d16eff26dfa32d3f",
+    "examples/mlx_metal_kernel_opt/requirements.txt": "714251863ccf97d741a7b75148d2118212147a66d78a51e3bf6ea80d8b292fac",
+    "examples/mlx_metal_kernel_opt/run_benchmarks.py": "da2a4bcca531bece68a3c937eda1c610bc997b8d9e6b818c60a29f7c09ce99fa",
+    "examples/mlx_metal_kernel_opt/run_evolve_experiment.sh": "614c608bfc80c6e338b69cbd89c720ec6ce70242d92c856e9e9cf8f7a810bdf4",
+    "examples/mlx_metal_kernel_opt/test_optimized_attention.py": "80ebc9853003856a4a19f4bd7deb7f5f36242e33afe6af1330dfb18d55b7ccd1"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/mlx_metal_kernel_opt/evaluator.py",
+      "signature": "program_text: str",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "class CustomGQAAttention(...) extracted from the program text with a Metal kernel source; validated, instantiated and hooked into mlx_lm.models.qwen3 during generation benchmarks"
+    ],
+    "baseline_path": "examples/mlx_metal_kernel_opt/initial_program.py",
+    "baseline_functions": {
+      "qwen3_custom_gqa_attention": {
+        "signature": "queries, keys, values, scale=1.0, mask=None",
+        "docstring": "Custom Metal kernel implementation for Qwen3 GQA attention.\n\nArgs:\n    queries: [B, num_heads=16, L, head_dim=128]\n    keys: [B, num_kv_heads=8, L, head_dim=128]\n    values: [B, num_kv_heads=8, L, head_dim=128]\n    scale: Attention scaling factor (1/sqrt(head_dim))\n    mask: Attention mask (None, \"causal\", or boolean tensor)\n\nReturns:\n    Attention output [B, num_heads=16, L, head_dim=128]"
+      },
+      "create_metal_qwen3_optimization_hook": {
+        "signature": "",
+        "docstring": "Create hooks to replace Qwen3's attention with Metal kernel optimized version."
+      },
+      "benchmark_metal_gqa_optimization": {
+        "signature": "",
+        "docstring": "Benchmark Metal kernel optimized GQA attention against MLX baseline."
+      },
+      "test_metal_gqa_correctness": {
+        "signature": "",
+        "docstring": "Test that Metal kernel implementation produces correct results."
+      }
+    },
+    "parameters": {
+      "model": "mlx-community/Qwen3-0.6B-bf16",
+      "query_heads": 16,
+      "kv_heads": 8,
+      "head_dim": 128,
+      "benchmark_source": "qwen3_benchmark_suite.py"
+    },
+    "score_key": "final_score",
+    "score_direction": "maximize",
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 1442,
+        "expression": "evaluator.evaluate(program_text)"
+      },
+      {
+        "function": "evaluate",
+        "line": 211,
+        "expression": "result"
+      },
+      {
+        "function": "evaluate",
+        "line": 134,
+        "expression": "self._create_comprehensive_failure_result( f\"Program extraction failed: {extraction_result['error']}\" )"
+      },
+      {
+        "function": "evaluate",
+        "line": 152,
+        "expression": "self._create_comprehensive_failure_result( f\"Memory-safe correctness test failed: {correctness_result['error']}\" )"
+      },
+      {
+        "function": "evaluate",
+        "line": 158,
+        "expression": "self._create_comprehensive_failure_result( f\"Correctness score too low: {correctness_score:.3f} (required: 0.90)\" )"
+      },
+      {
+        "function": "evaluate",
+        "line": 166,
+        "expression": "self._create_comprehensive_failure_result( \"Failed to measure baseline performance with GPU protection\" )"
+      },
+      {
+        "function": "evaluate",
+        "line": 176,
+        "expression": "self._create_comprehensive_failure_result( f\"Command-buffer-protected benchmarking failed: {benchmark_result['error']}\" )"
+      },
+      {
+        "function": "evaluate",
+        "line": 219,
+        "expression": "self._create_comprehensive_failure_result(error_msg)"
+      }
+    ],
+    "validity_key": "success",
+    "validity_semantics": "success is an explicit boolean; a false value with an error message marks a failed evaluation. Correctness against the MLX baseline is part of the pipeline but performance ranking is timing-based.",
+    "error_key": "error",
+    "declared_requirements": [
+      "mlx>=0.12.0",
+      "mlx-lm>=0.18.0",
+      "numpy>=1.21.0",
+      "pyyaml>=6.0",
+      "psutil>=5.8.0",
+      "scipy>=1.7.0"
+    ],
+    "evaluator_imports": [
+      "json",
+      "math",
+      "mlx",
+      "mlx_lm",
+      "numpy",
+      "os",
+      "qwen3_benchmark_suite",
+      "subprocess",
+      "sys",
+      "tempfile",
+      "threading",
+      "time",
+      "traceback",
+      "typing"
+    ],
+    "baseline_imports": [
+      "math",
+      "mlx",
+      "mlx_lm",
+      "numpy",
+      "time",
+      "typing"
+    ],
+    "source_config_path": "examples/mlx_metal_kernel_opt/config.yaml",
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 25,
+      "checkpoint_interval": 5,
+      "diff_based_evolution": true,
+      "evaluator": {
+        "timeout": 900,
+        "cascade_evaluation": false,
+        "parallel_evaluations": 1
+      },
+      "database": {
+        "population_size": 25,
+        "num_islands": 3,
+        "archive_size": 12
+      },
+      "llm": {
+        "api_base": "https://generativelanguage.googleapis.com/v1beta/openai/",
+        "models": [
+          "gemini-2.5-flash",
+          "gemini-2.5-pro"
+        ],
+        "timeout": 900
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "apple_gpu",
+    "recommended_smoke_outer_timeout_seconds": 900
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "kernel",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "network"
+    ],
+    "cost": "slow",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

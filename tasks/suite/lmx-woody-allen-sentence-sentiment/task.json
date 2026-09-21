@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "id": "lmx-woody-allen-sentence-sentiment",
+  "name": "Woody Allen sentence sentiment",
+  "description": "Woody Allen sentence sentiment: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "lmx"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2302.12170",
+      "type": "paper",
+      "locator": "Sections 4.1–4.5"
+    },
+    {
+      "url": "https://github.com/jal278/lmx/tree/b8fec5dd16451cf7afb6e02ac621b71d5bdfee7f",
+      "type": "repository",
+      "locator": "scripts/lmx_sentiment_demo.ipynb"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Woody Allen sentence sentiment",
+    "notes": [
+      "Task-specific LLMs and/or diffusion models"
+    ]
+  },
+  "evaluation": {
+    "metric": "domain-specific fitness / QD score",
+    "paper_metric": "domain-specific fitness / QD score",
+    "paper_direction": null,
+    "direction": null,
+    "benchmark": "Woody Allen sentence sentiment",
+    "protocol": "specified_only",
+    "source_locator": "Sections 4.1–4.5"
+  },
+  "execution": {
+    "repository": "https://github.com/jal278/lmx",
+    "commit": "b8fec5dd16451cf7afb6e02ac621b71d5bdfee7f",
+    "upstream_path": "scripts/lmx_sentiment_demo.ipynb",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "The notebook default selects Homer Simpson via negative_quotes[1]; this task needs index2 as recorded in configuration_recipe.",
+      "Notebook setup is interactive and unpinned, includes pip-install magics and TensorFlow imports; no verified unattended execution command is supplied. It also passes device=0 to SentenceTransformer, requiring compatibility checking."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "dataset:Woody Allen sentence sentiment"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_api",
+      "unsupported_reason": "Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the Woody Allen sentence sentiment benchmark. The suite embeds neither model calls nor the benchmark data."
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Woody Allen sentence sentiment",
+    "slug": "woody-allen-sentence-sentiment",
+    "description": "Woody Allen sentence sentiment: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "Woody Allen sentence sentiment",
+    "dataset": "Woody Allen sentence sentiment",
+    "metric": "domain-specific fitness / QD score",
+    "direction": null,
+    "source_url": "https://arxiv.org/pdf/2302.12170",
+    "source_locator": "Sections 4.1–4.5",
+    "upstream_path": "scripts/lmx_sentiment_demo.ipynb",
+    "requirements": [
+      "Task-specific LLMs and/or diffusion models"
+    ],
+    "execution_notes": [
+      "The notebook default selects Homer Simpson via negative_quotes[1]; this task needs index2 as recorded in configuration_recipe.",
+      "Notebook setup is interactive and unpinned, includes pip-install magics and TensorFlow imports; no verified unattended execution command is supplied. It also passes device=0 to SentenceTransformer, requiring compatibility checking."
+    ],
+    "implementation_status": "source_path_only",
+    "configuration_recipe": {
+      "notebook": "scripts/lmx_sentiment_demo.ipynb",
+      "cell_index": 6,
+      "target_sentence": "negative_quotes[2]",
+      "sentiment": "positive",
+      "seeds": "negative_quotes",
+      "budget_evaluations": 2500,
+      "batch_size": 64,
+      "evidence_cells": [
+        1,
+        3,
+        4,
+        6,
+        8
+      ]
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "protocol": "recreated_verified",
+  "family": "erdos_minimum_overlap",
+  "direction": "minimize",
+  "contract": "construct() -> sequence of step heights in [0, 1] whose sum is exactly len/2; score is the upper bound on C5",
+  "parameters": {
+    "steps": 100,
+    "published": 0.38092303510845016
+  },
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 120,
+  "notes": [
+    "Verification reimplemented from the AlphaEvolve mathematical_results notebook; the published construction reproduces the published value exactly with this evaluator (see tests/test_suite.py)."
+  ],
+  "protocol_description": "Reimplemented in this repository and cross-checked against the paper's published constructions/values.",
+  "id": "alphaevolve-erdos-minimum-overlap",
+  "name": "Erdos minimum overlap",
+  "paper_ids": [
+    "alphaevolve",
+    "coral",
+    "eurekagent",
+    "loongflow"
+  ],
+  "description": "Choose equal-width step heights h on [0,2], bounded between 0 and 1 with integral 1, to minimize the maximum overlap of h with shifted 1-h.",
+  "benchmark": "Erdos minimum overlap",
+  "paper_metric": "2*max(correlate(h,1-h,full))/N upper bound",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2506.13131",
+      "type": "paper",
+      "locator": "Appendix B.5"
+    },
+    {
+      "url": "https://github.com/google-deepmind/alphaevolve_results/tree/4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+      "type": "repository",
+      "locator": "mathematical_results.ipynb"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1, Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/math/erdos_min_overlap"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2606.13662",
+      "type": "paper",
+      "locator": "Sections 4.1–4.2"
+    },
+    {
+      "url": "https://github.com/THU-Team-Eureka/EurekAgent/blob/fb96df897dfb99797a77623aa0dd9ee178fe89d2/examples/erdos_min_overlap/SUBMISSION_FORMAT.md",
+      "type": "repository",
+      "locator": "Exact JSON submission contract used for recovered seed"
+    },
+    {
+      "url": "https://github.com/THU-Team-Eureka/EurekAgent/tree/fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+      "type": "repository",
+      "locator": "examples/erdos_min_overlap"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2512.24077",
+      "type": "paper",
+      "locator": "Table 1"
+    },
+    {
+      "url": "https://github.com/baidu-baige/LoongFlow/tree/945c78bc1554f8281aac40320b3599bd68d528d7",
+      "type": "repository",
+      "locator": "agents/math_agent/examples/minimum_overlap_problem/eval_program.py"
+    }
+  ],
+  "limitations": [
+    "Paper reports over 50 mathematical problems but explicitly details 13 families in Appendix B. Unpublished full task inventory and internal Google assets prevent a complete runnable reproduction.",
+    "Official result notebook provides mathematical constructions and verification, but no AlphaEvolve search implementation. It publishes a subset of all evaluated problems; the full >50 mathematical problem inventory is not disclosed.",
+    "Paper Appendix B.3 writes max(abs(autoconvolution)); notebook B.3 reported 1.4557 construction computes abs(max(autoconvolution)). The notebook separately verifies the max(abs(...)) variant at 1.4688. These are not interchangeable metrics.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "alphaevolve",
+      "title": "AlphaEvolve: A coding agent for scientific and algorithmic discovery",
+      "url": "https://arxiv.org/pdf/2506.13131"
+    },
+    {
+      "id": "coral",
+      "title": "CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery",
+      "url": "https://arxiv.org/pdf/2604.01658"
+    },
+    {
+      "id": "eurekagent",
+      "title": "EurekAgent: Agent Environment Engineering is All You Need For Autonomous Scientific Discovery",
+      "url": "https://arxiv.org/pdf/2606.13662"
+    },
+    {
+      "id": "loongflow",
+      "title": "LoongFlow: Directed Evolutionary Search via a Cognitive Plan-Execute-Summarize Paradigm",
+      "url": "https://arxiv.org/pdf/2512.24077"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Bound Erdős' minimum-overlap constant for a set and translations of its complement.",
+    "importance_rationale": "Determining this extremal constant advances a named problem in combinatorial number theory and analysis. The task seeks explicit feasible constructions relevant to its upper bound.",
+    "papers": [
+      {
+        "title": "Erdős' minimum overlap problem",
+        "url": "https://arxiv.org/abs/2201.05704",
+        "task_relation": "White develops a stronger lower bound for the same minimum-overlap constant. The local task instead searches bounded step-function constructions yielding upper bounds; both address the constant itself, and this paper is not claimed to supply the local construction.",
+        "primary_goal": "Improve rigorous bounds on Erdős' minimum-overlap problem.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

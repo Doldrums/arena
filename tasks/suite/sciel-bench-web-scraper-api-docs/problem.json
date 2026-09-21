@@ -1,0 +1,95 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "py:bs4",
+    "py:lxml",
+    "py:numpy"
+  ],
+  "timeout": 600,
+  "notes": [],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "combined_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/web_scraper_optillm",
+    "files_sha256": {
+      "README.md": "067522858490346701d737173443d5422fb4b26f498e4215ecc32901ec3b9120",
+      "config.yaml": "89cd764a6ca4263c7a4e9d2ba761610e48a9e36a49fddba7e11710ae4be4885e",
+      "evaluator.py": "8ed53956b546541ca0e73e884f4e24835b3ee54ac7b3218bb61db56170d740f0",
+      "initial_program.py": "f30af2503f6a3021f3b116265bdacf628b81373d5d8f532220607c677a102bb4",
+      "requirements.txt": "16ff4ac5ad244a951a1c314b2cdcc08d57e68efbe17c41ebf6f962e42c0c9cca"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/web_scraper_optillm` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-bench-web-scraper-api-docs",
+  "name": "SCiEL: API documentation scraper",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Extract function names, signatures and parameters from embedded HTML documentation snippets (three fixed test pages covering Requests, BeautifulSoup and a generic layout) and format them. combined_score weights accuracy 0.4, completeness 0.3 and robustness 0.3.",
+  "benchmark": "SCiEL source example web_scraper_optillm",
+  "paper_metric": "combined_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/web_scraper_optillm/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/web_scraper_optillm/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/web_scraper_optillm/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The evaluator imports the candidate by module name after inserting its directory into sys.path; candidates named like an installed module shadow it."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

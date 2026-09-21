@@ -1,0 +1,92 @@
+{
+  "protocol": "recreated",
+  "family": "science_earth_irrigation",
+  "direction": "maximize",
+  "contract": "irrigate(observed_weather_history, soil_state, crop_stage, remaining_water) -> irrigation mm. AquaCrop-OSPy3.0.12 wheat on Tunis1981/82,1983/84,1985/86 and SandyLoam/ClayLoam. API reveals only past weather and current soil; daily<=25mm, seasonal<=150mm. Maximize mean simulated dry yield tonnes/ha; independent simulator tracks actual water. No salinity/fertility/weed stress or measured field-benefit claim.",
+  "parameters": {},
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "py:aquacrop"
+  ],
+  "timeout": 180,
+  "notes": [
+    "Independent candidate/evaluator implementation with attributed source data or fixed scientific simulators. See docs/EARTH_EXPANSION.md for setup, units, splits, licenses and scientific limits. Public cases are development benchmarks; freezing candidates and new cases is required for generalization claims."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-earth-irrigation-policies",
+  "name": "Earth science: Water-efficient irrigation policies",
+  "paper_ids": [
+    "science-earth_expansion"
+  ],
+  "description": "Water-efficient irrigation policies with an explicit candidate interface, physical units, independent evaluator and source-traceable observations or numerical model.",
+  "benchmark": "Earth science: Water-efficient irrigation policies",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://pure.manchester.ac.uk/ws/files/48339277/AquaCropOS_Foster.pdf",
+      "type": "paper",
+      "locator": "Scientific process, benchmark motivation and evaluation assumptions."
+    },
+    {
+      "url": "https://github.com/aquacropos/aquacrop",
+      "type": "repository",
+      "locator": "Original source data/model; local candidate and evaluator are independently implemented."
+    },
+    {
+      "url": "https://agupubs.onlinelibrary.wiley.com/doi/10.1002/2014WR015620",
+      "type": "paper",
+      "title": "Modeling irrigation behavior in groundwater systems",
+      "locator": "Develops irrigation decision models coupling crop response, water availability and economic objectives. The local water-budget policy search uses AquaCrop simulations with its own objective and weather cases."
+    }
+  ],
+  "limitations": [
+    "Bounded adaptation; no complete source-paper score reproduction or novel scientific discovery claimed.",
+    "Public evaluation cases are development instances; independent generalization requires frozen candidates and new cases.",
+    "AquaCrop-OSPy3.0.12 and bundled Tunis weather; simulated wheat yield."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-earth_expansion",
+      "title": "Earth and environmental science: source-based research tasks",
+      "url": "https://doi.org/10.1071/WF14130"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Choose irrigation timing and amounts that sustain wheat yield while conserving water.",
+    "importance_rationale": "Water-efficient crop management addresses the competition between agricultural production and limited water resources.",
+    "papers": [
+      {
+        "title": "AquaCrop modeling to explore optimal irrigation of winter wheat for improving grain yield and water productivity",
+        "url": "https://www.sciencedirect.com/science/article/pii/S0378377422001275",
+        "primary_goal": "Determine winter-wheat irrigation schedules that improve grain yield and water productivity under varying weather conditions.",
+        "task_relation": "The paper directly optimizes wheat irrigation using AquaCrop and weather records. The local policy problem uses the same crop-model family with Tunis weather and its own water budget; it does not validate regional field recommendations or reproduce the paper's sixty-year study.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The supporting paper's main goal is an agricultural water-management decision, rather than introducing the AquaCrop software.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "policy",
+    "domain": "natural_science",
+    "area": "earth_and_environment",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

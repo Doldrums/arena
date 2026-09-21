@@ -1,0 +1,89 @@
+{
+  "protocol": "recreated",
+  "family": "science_physics_calochallenge_photon_showers",
+  "direction": "minimize",
+  "contract": "fit_showers(training) -> sampler(incident_energies, rng). Training contains showers, incident_energies and voxel geometry from official CaloChallenge Dataset 1 photons. Return nonnegative (event,voxel) deposits in MeV. Independent source-file events are held out. Score per-energy standardized Wasserstein of shower response, sparsity, layer fractions, centroids and widths. Classifier AUC and generation time are separate diagnostics. Compact CPU adaptation, not full challenge leaderboard.",
+  "parameters": {
+    "proposal_id": "P04"
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "py:sklearn",
+    "file:data/physics-expansion/P04/manifest.json",
+    "file:data/physics-expansion/P04/benchmark.npz"
+  ],
+  "timeout": 300,
+  "notes": [
+    "Independent SCIEL scientific adaptation. Required source packs never fall back to toy data. Fixture tests are distinct from source-data execution. See docs/PHYSICS_EXPANSION.md."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-physics-calochallenge-photon-showers",
+  "name": "CaloChallenge photon shower generation",
+  "paper_ids": [
+    "science-physics_expansion"
+  ],
+  "description": "fit_showers(training) -> sampler(incident_energies, rng). Training contains showers, incident_energies and voxel geometry from official CaloChallenge Dataset 1 photons. Return nonnegative (event,voxel) deposits in MeV. Independent source-file events are held out. Score per-energy standardized Wasserstein of shower response, sparsity, layer fractions, centroids and widths. Classifier AUC and generation time are separate diagnostics. Compact CPU adaptation, not full challenge leaderboard.",
+  "benchmark": "CaloChallenge photon shower generation",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2410.21611",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: CaloChallenge photon shower generation"
+    },
+    {
+      "url": "https://zenodo.org/records/8099322",
+      "type": "archive",
+      "locator": "dataset_1_photons_1.hdf5 and dataset_1_photons_2.hdf5, independent training/reference files."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Run scripts/prepare_physics_expansion.py --calo."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-physics_expansion",
+      "title": "Physics and astrophysics research: source-based research tasks",
+      "url": "https://arxiv.org/abs/1904.06778v3"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "CaloFlow: Fast and Accurate Generation of Calorimeter Showers with Normalizing Flows",
+        "url": "https://arxiv.org/abs/2106.05285",
+        "task_relation": "The local task generates nonnegative showers conditioned on photon energy using a CaloChallenge source dataset and a CPU-oriented feature-Wasserstein score. Those data, restrictions, and score do not reproduce the CaloFlow experiment.",
+        "primary_goal": "Accelerate calorimeter shower simulation while retaining realistic shower distributions and correlations.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Generate accurate conditional calorimeter showers at lower computational cost than detailed particle-transport simulation.",
+    "importance_rationale": "Fast, faithful detector-response simulation is the primary target of CaloFlow research.",
+    "reason": "This is a direct proposed solution to detector simulation, replacing reliance on the CaloChallenge benchmark paper alone.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "particle_physics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

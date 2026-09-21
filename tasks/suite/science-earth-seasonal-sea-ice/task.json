@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "id": "science-earth-seasonal-sea-ice",
+  "name": "Earth science: Seasonal Arctic sea-ice probabilities",
+  "description": "Seasonal Arctic sea-ice probabilities with an explicit candidate interface, physical units, independent evaluator and source-traceable observations or numerical model.",
+  "paper_ids": [
+    "science-earth_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://www.nature.com/articles/s41467-021-25257-4",
+      "type": "paper",
+      "locator": "Scientific process, benchmark motivation and evaluation assumptions."
+    },
+    {
+      "url": "https://github.com/tom-andersson/icenet-paper",
+      "type": "repository",
+      "locator": "Original source data/model; local candidate and evaluator are independently implemented."
+    },
+    {
+      "url": "https://nsidc.org/data/g02202/versions/2",
+      "type": "corpus",
+      "locator": "Meier et al.2013, G02202 Version2 DOI10.7265/N55M63M1. Source monthly unedited CDR concentration, flags, projection and license; exact18files pinned locally."
+    },
+    {
+      "url": "https://essd.copernicus.org/articles/5/311/2013/",
+      "type": "paper",
+      "locator": "Peng et al.2013 NOAA/NSIDC CDR algorithms, monthly concentrations, quality limitations and reproducibility."
+    },
+    {
+      "url": "https://www.ncei.noaa.gov/data/sea-ice-concentration/access/",
+      "type": "archive",
+      "locator": "Official NOAA NCEI v02r00 monthly files: July-December2013/2014 and January/March/June2014/2015. SHA256 pins in data/science/earth_expansion/seaice_sources.json."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "18 pinned official NOAA/NSIDC monthly satellite CDR files(~67MB), prepared E08 source bundle(~61MB), six forecasts on full native448x304 maps.",
+    "preparation_dependencies": [
+      "netCDF4",
+      "pyproj==3.7.2"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Earth science: Seasonal Arctic sea-ice probabilities",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_earth_ice",
+    "science_family": "science_earth_ice",
+    "parameters": {},
+    "interface": "forecast_ice(history, past_climate_covariates, lead_months) -> (448,304) probabilities in[0,1] for monthly concentration>=0.15. Six actual NOAA/NSIDC G02202 v02r00 forecasts: July-December2013/2014 monthly histories predict next-year January/March/June at1/3/6-month leads. Native25km grid; area-weighted Brier over valid ocean north of60N using ellipsoidal cell areas, projected-km symmetric edge-distance diagnostic. Land/coast/pole-hole/missing flags excluded. Zeros outside supplied history_ocean_mask are placeholders. No future fields cross API. Historical NOAA observational adaptation, not original IceNet OSISAF data or leaderboard reproduction.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "area": "earth_and_environment",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none"
+    },
+    "proposal_id": "E08",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "setup": {
+      "command": "python scripts/prepare_earth_expansion.py --proposal E08",
+      "documentation": "docs/EARTH_EXPANSION.md"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy",
+        "netCDF4(preparation)",
+        "pyproj3.7.2(preparation)"
+      ],
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false
+    },
+    "setup_instructions": [
+      "python scripts/prepare_earth_expansion.py --proposal E08",
+      "docs/EARTH_EXPANSION.md"
+    ],
+    "additional_requires": [
+      "file:../../.cache/science-earth/E08.json",
+      "file:../../.cache/science-earth/E08.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_earth_ice",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-earth/E08.json",
+        "file:../../.cache/science-earth/E08.manifest.json"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Historical NOAA/NSIDC G02202 v02r00 observational adaptation, not the original IceNet OSISAF dataset or full-paper score reproduction.",
+    "Six fixed public chronological development cases at1/3/6-month leads; independent generalization requires frozen candidates and unseen years.",
+    "Version2 is superseded and is not current operational data. Satellite retrieval and summer melt uncertainty remain; pole-hole, land/coastal and missing cells are excluded.",
+    "Only valid Arctic ocean north of60N is scored; historical invalid cells have explicit masked zero placeholders. Edge diagnostic uses projected, not great-circle, distances."
+  ],
+  "validation": {
+    "level": "source_subset_run",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "benchmark_validated": true,
+    "fixture_tests_are_benchmark_validation": false,
+    "evidence": "validation/seaice-source-run.json",
+    "tests": "tests/test_science_earth_expansion.py; tests/test_science_seaice_source.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "area": "earth_and_environment",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Forecast seasonal Arctic sea-ice occurrence probabilities.",
+    "importance_rationale": "Sea-ice forecasts support understanding and planning around changing Arctic marine conditions.",
+    "papers": [
+      {
+        "title": "Seasonal Arctic sea ice forecasting with probabilistic deep learning",
+        "url": "https://www.nature.com/articles/s41467-021-25257-4",
+        "primary_goal": "Predict Arctic sea-ice conditions months ahead with calibrated spatial probabilities.",
+        "task_relation": "The local task forecasts satellite-observed ice on six historical cases at one-, three- and six-month leads. It uses NOAA/NSIDC Version 2 CDR rather than the paper's original source and does not establish operational skill or generalization across unseen years.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited primary paper develops or applies a solution to the stated scientific problem; its task is not merely an agent or general-purpose framework evaluation. Support concerns the scientific problem family, not a claim of new discovery or full-paper reproduction by this local task.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

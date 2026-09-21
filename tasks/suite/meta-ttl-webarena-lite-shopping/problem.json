@@ -1,0 +1,73 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "service:llm_api",
+    "env:OPENROUTER_API_KEY",
+    "environment:WebArena-Lite"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "llm_agent_env",
+  "unsupported_reason": "Candidates are LLM agents scored inside the WebArena-Lite environment (tools, web, games or code sandboxes); the environment and model access are external.",
+  "protocol_description": "Not executable in this suite: Candidates are LLM agents scored inside the WebArena-Lite environment (tools, web, games or code sandboxes); the environment and model access are external.",
+  "id": "meta-ttl-webarena-lite-shopping",
+  "name": "WebArena-Lite Shopping",
+  "paper_ids": [
+    "meta-ttl"
+  ],
+  "description": "WebArena-Lite Shopping task evaluated in Learning to Learn-at-Test-Time: Language Agents with Learnable Adaptation Policies.",
+  "benchmark": "WebArena-Lite",
+  "paper_metric": "W-AUC and task success rate",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.00830",
+      "type": "paper",
+      "locator": "Section 4.1"
+    },
+    {
+      "url": "https://github.com/zzzlou/meta-ttl/tree/b72db4b77e9ae01aec1cbfd36ae0edae902b6468",
+      "type": "repository",
+      "locator": "webarena/evaluate_webarena.py"
+    }
+  ],
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "meta-ttl",
+      "title": "Learning to Learn-at-Test-Time: Language Agents with Learnable Adaptation Policies",
+      "url": "https://arxiv.org/pdf/2604.00830"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

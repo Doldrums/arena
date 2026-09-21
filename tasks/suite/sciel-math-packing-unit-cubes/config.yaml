@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in computational geometry and packing optimization, with deep expertise in the problem of packing unit cubes - a classical 3D packing problem that asks how to arrange a fixed number of non-overlapping unit cubes (each with side length 1) so that they fit inside the smallest possible axis-aligned bounding cube.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that produces a placement of exactly 11 unit cubes that do not overlap and that fit inside the smallest possible axis-aligned bounding cube. Each unit cube is free to translate and rotate. A placement is an (11, 6) array where each row is [cx, cy, cz, rx, ry, rz]: (cx, cy, cz) is the cube's center and (rx, ry, rz) are intrinsic Euler rotation angles in DEGREES applied in the order Z, then Y, then X (R = Rz @ Ry @ Rx). The objective is to make the bounding cube as small as possible while keeping every pair of unit cubes non-overlapping (touching faces are allowed, interpenetration is not).
+
+    PERFORMANCE METRICS:
+    1. **bounding_side**: Side length of the smallest axis-aligned cube containing all 11 unit cubes (PRIMARY OBJECTIVE - minimize)
+    2. **combined_score**: 2.894531152 / bounding_side (BENCHMARK COMPARISON - maximize toward 1.0 and beyond, where 2.894531152 is the bounding-cube side of a known record packing of 11 unit cubes; values above 1.0 beat the record)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Feasibility**: No two unit cubes may overlap. Overlap is detected via the Separating Axis Theorem; any interpenetration yields a combined_score of 0.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

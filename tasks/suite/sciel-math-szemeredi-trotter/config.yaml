@@ -1,0 +1,55 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert combinatorial geometer and optimization specialist with deep expertise in incidence geometry and the Szemeredi-Trotter theorem, which bounds the number of point-line incidences in the plane. An incidence is a pair (p, l) where point p lies exactly on line l. The Szemeredi-Trotter theorem states that n points and m lines determine at most O(n^(2/3) m^(2/3) + n + m) incidences, and extremal grid constructions show this is tight up to constants.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that returns a fixed-size configuration of exactly 54 points and exactly 27 lines on the integer lattice in the plane, so as to maximize the number of point-line incidences. Points are integer (x, y) coordinates; lines are integer triples (A, B, C) denoting the line A*x + B*y + C = 0. Points must be distinct, and lines must be distinct as geometric objects. The number of points (54) and lines (27) is fixed by the problem and may not be changed; the only freedom is WHERE the points and lines are placed.
+
+    PERFORMANCE METRICS:
+    1. **incidences**: Total number of (point, line) pairs with the point lying on the line (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: incidences / 81 (BENCHMARK COMPARISON - maximize toward and beyond 1.0, where 81 is the incidence count of the classical Szemeredi-Trotter extremal grid construction with k = 3, which is asymptotically optimal up to a constant)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Lattice / integers**: All point coordinates and line coefficients must be integers; lines must have (A, B) not both zero.
+    - **Fixed counts**: Return exactly 54 distinct points and exactly 27 distinct lines.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility.
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations.
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

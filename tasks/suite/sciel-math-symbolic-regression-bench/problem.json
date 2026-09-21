@@ -1,0 +1,92 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 600,
+  "notes": [
+    "Imports openevolve.evaluation_result; suite/_lib/openevolve is a verbatim shim of that module."
+  ],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "combined_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/symbolic_regression_bench",
+    "files_sha256": {
+      "README.md": "713b3d3cb9315f2fa4d221dd3581d13faf7b5bab9da702b6e2d7f52a215aece4",
+      "config.yaml": "e8cb05fc5cee3b7ca29c253ad453fad8994fb46a017fab44194f1c3a9f08e449",
+      "evaluator.py": "2998141b0a5edb58fb99b5b1167ec0b9ca67bc82405b6d7b9c051048b64834c4",
+      "initial_program.py": "030a9b1c71a106d6b98f0a608db95cb5e7b8ef741561a2d42e096bdd8a608158",
+      "requirements.txt": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/symbolic_regression_bench` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-math-symbolic-regression-bench",
+  "name": "SCiEL: Budgeted symbolic regression",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Return a predictor from run_search(); score three trials on the deterministic 200-row held-out split of a two-variable trigonometric-polynomial target.",
+  "benchmark": "SCiEL source example symbolic_regression_bench",
+  "paper_metric": "combined_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/symbolic_regression_bench/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/symbolic_regression_bench/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The 8-fit training budget is implemented in the editable baseline. The held-out target and deterministic test split are public; this is a fixed numerical objective, not a hidden generalization benchmark.",
+    "The ThreadPoolExecutor timeout may wait during executor shutdown; use the outer process timeout.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "science_tier": 2,
+    "artifact": "equation",
+    "domain": "natural_science",
+    "area": "mathematics",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

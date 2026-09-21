@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in additive combinatorics and number theory with deep expertise in Sidon sets (also known as B_2 sets) - a classical topic concerning sets of integers whose pairwise differences (equivalently, pairwise sums) are all distinct.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that generates a set of distinct non-negative integers, all within the range [0, 60], forming a Sidon set: every pairwise difference |a_i - a_j| (for i < j) must be distinct. Maximize the number of elements in the set.
+
+    PERFORMANCE METRICS:
+    1. **set_size**: Number of elements in the set (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: set_size / 8 (BENCHMARK COMPARISON - maximize above 1.0)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Validity**: All elements must be distinct integers in [0, 60], and all pairwise differences must be distinct, otherwise the score is zero.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of construction failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

@@ -1,0 +1,234 @@
+{
+  "schema_version": "1.0",
+  "id": "l-autoda-cifar-10-decision-based-adversarial-attack",
+  "name": "CIFAR-10 decision-based adversarial attack",
+  "description": "CIFAR-10 decision-based adversarial attack: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "l-autoda"
+  ],
+  "kind": "upstream",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2401.15335",
+      "type": "paper",
+      "locator": "Section 5.1"
+    },
+    {
+      "url": "https://github.com/pgg3/L-AutoDA/tree/f35ca7915c60425e884325f08e9203091c39da82",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "100 randomly selected CIFAR-10 images per class and ResNet18 target",
+    "notes": [
+      "PyTorch",
+      "CIFAR-10",
+      "ResNet18 checkpoint"
+    ]
+  },
+  "evaluation": {
+    "metric": "mean/median L2 adversarial perturbation versus query count",
+    "paper_metric": "mean/median L2 adversarial perturbation versus query count",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "CIFAR-10 decision-based adversarial attack",
+    "protocol": "upstream",
+    "source_locator": "Section 5.1"
+  },
+  "execution": {
+    "repository": "https://github.com/pgg3/L-AutoDA",
+    "commit": "f35ca7915c60425e884325f08e9203091c39da82",
+    "upstream_path": null,
+    "commands": [
+      {
+        "argv": [
+          "uv",
+          "run",
+          "python",
+          "run_attack.py",
+          "--dataset",
+          "cifar10",
+          "--model",
+          "Standard",
+          "--atk_type",
+          "L2",
+          "--atk_budget",
+          "1000"
+        ],
+        "cwd": ".",
+        "notes": "Standalone decision-based attack evaluation with the shipped heuristic (no model calls; downloads a RobustBench CIFAR-10 model, PyTorch).",
+        "source_url": "https://github.com/pgg3/L-AutoDA/blob/f35ca7915c60425e884325f08e9203091c39da82/README.md"
+      },
+      {
+        "argv": [
+          "uv",
+          "run",
+          "python",
+          "run.py",
+          "--api_url",
+          "${LLM_API_URL}",
+          "--api_key",
+          "${LLM_API_KEY}",
+          "--llm_model",
+          "${LLM_MODEL}",
+          "--dataset",
+          "cifar10",
+          "--atk_step",
+          "300",
+          "--pop_size",
+          "5",
+          "--max_generations",
+          "10",
+          "--output_path",
+          "./results"
+        ],
+        "cwd": ".",
+        "notes": "EvoEngineer search for attack heuristics. Model-driven search: requires LLM API credentials and incurs cost; never run by seed checks.",
+        "source_url": "https://github.com/pgg3/L-AutoDA/blob/f35ca7915c60425e884325f08e9203091c39da82/README.md"
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "pip install uv; uv sync (resolves PyTorch cu128)",
+      "Original standalone implementation is on the v1 branch"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install uv; uv sync (resolves PyTorch cu128)",
+      "Original standalone implementation is on the v1 branch"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Source pinned on 2026-09-19; see docs/TASKS.md."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "hardware:gpu",
+        "dataset:CIFAR-10 decision-based adversarial attack"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "gpu",
+      "unsupported_reason": "Fitness is accelerator wall-clock or model training on GPU hardware (CIFAR-10 decision-based adversarial attack); it cannot be measured on a CPU-only suite."
+    }
+  },
+  "limitations": [
+    "No official runnable repository was verified from the paper/project sources examined.",
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "The matching pgg3/L-AutoDA repository has no README/license in the inspected tree; run_attack.py defaults to BoundaryAttack and evaluates only one batch, so it is not a paper evaluation command without changes.",
+    "Official L-AutoDA release pinned; the attack evaluation needs PyTorch and RobustBench model downloads.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "CIFAR-10 decision-based adversarial attack",
+    "slug": "cifar-10-decision-based-adversarial-attack",
+    "description": "CIFAR-10 decision-based adversarial attack: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "CIFAR-10 decision-based adversarial attack",
+    "dataset": "100 randomly selected CIFAR-10 images per class and ResNet18 target",
+    "metric": "mean/median L2 adversarial perturbation versus query count",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2401.15335",
+    "source_locator": "Section 5.1",
+    "upstream_path": null,
+    "requirements": [
+      "PyTorch",
+      "CIFAR-10",
+      "ResNet18 checkpoint"
+    ],
+    "execution_notes": [
+      "Source pinned on 2026-09-19; see docs/TASKS.md."
+    ],
+    "implementation_status": "paper_inventory_only",
+    "run_commands": [
+      {
+        "argv": [
+          "uv",
+          "run",
+          "python",
+          "run_attack.py",
+          "--dataset",
+          "cifar10",
+          "--model",
+          "Standard",
+          "--atk_type",
+          "L2",
+          "--atk_budget",
+          "1000"
+        ],
+        "cwd": ".",
+        "notes": "Standalone decision-based attack evaluation with the shipped heuristic (no model calls; downloads a RobustBench CIFAR-10 model, PyTorch).",
+        "source_url": "https://github.com/pgg3/L-AutoDA/blob/f35ca7915c60425e884325f08e9203091c39da82/README.md"
+      },
+      {
+        "argv": [
+          "uv",
+          "run",
+          "python",
+          "run.py",
+          "--api_url",
+          "${LLM_API_URL}",
+          "--api_key",
+          "${LLM_API_KEY}",
+          "--llm_model",
+          "${LLM_MODEL}",
+          "--dataset",
+          "cifar10",
+          "--atk_step",
+          "300",
+          "--pop_size",
+          "5",
+          "--max_generations",
+          "10",
+          "--output_path",
+          "./results"
+        ],
+        "cwd": ".",
+        "notes": "EvoEngineer search for attack heuristics. Model-driven search: requires LLM API credentials and incurs cost; never run by seed checks.",
+        "source_url": "https://github.com/pgg3/L-AutoDA/blob/f35ca7915c60425e884325f08e9203091c39da82/README.md"
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "gpu",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

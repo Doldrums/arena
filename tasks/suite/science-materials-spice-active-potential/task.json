@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0",
+  "id": "science-materials-spice-active-potential",
+  "name": "SPICE label-efficient molecular potentials",
+  "description": "acquire(unlabeled_geometries, observations, budget)->unused indices; fit(observations)->object with potential(atomic_numbers, coordinates_angstrom)->(energy_ev, forces_ev_angstrom). Eight precomputed quantum-label queries from12 source acquisition geometries in the bounded pilot;14 evaluation geometries hold out entire ligand groups. Score force RMSE/(1 eV/Angstrom) + molecule-centered relative-energy RMSE/(1 eV) on source-group holdouts. Independent finite differences check force/energy consistency, rigid-motion symmetries, net force/torque; short evaluator-controlled trajectories check numerical stability. All units are explicit and a test fixture never substitutes for SPICE.",
+  "paper_ids": [
+    "science-materials_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1038/s41597-022-01882-6",
+      "type": "paper",
+      "locator": "SPICE quantum chemistry dataset; energy/force target definitions and molecular coverage."
+    },
+    {
+      "url": "https://github.com/openmm/spice-dataset",
+      "type": "repository",
+      "locator": "Official source generation scripts and units."
+    },
+    {
+      "url": "https://zenodo.org/records/10975225",
+      "type": "benchmark",
+      "locator": "Versioned SPICE quantum labels; conversion to eV/Angstrom and whole-molecule holdouts required."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; GPU optional for learned candidate methods",
+    "dependencies": [
+      "numpy",
+      "rdkit"
+    ],
+    "environment_variables": [],
+    "datasets": "SPICE2.0.1 actual source HDF5 energy/gradient labels:12 acquisition geometries and14 held-out geometries from four complete ligand groups; --spice uses about10MB of explicit HTTP source ranges."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "SPICE label-efficient molecular potentials",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_materials_spice_active_potential",
+    "science_family": "science_materials_spice_active_potential",
+    "parameters": {
+      "proposal_id": "C10",
+      "budget": 8,
+      "data_sha256": "3f07257780621a13f47a7f1df2d78170979f6c3cb6e89c778777bdcbb917b5f5"
+    },
+    "interface": "acquire(unlabeled_geometries, observations, budget)->unused indices; fit(observations)->object with potential(atomic_numbers, coordinates_angstrom)->(energy_ev, forces_ev_angstrom). Eight precomputed quantum-label queries from12 source acquisition geometries in the bounded pilot;14 evaluation geometries hold out entire ligand groups. Score force RMSE/(1 eV/Angstrom) + molecule-centered relative-energy RMSE/(1 eV) on source-group holdouts. Independent finite differences check force/energy consistency, rigid-motion symmetries, net force/torque; short evaluator-controlled trajectories check numerical stability. All units are explicit and a test fixture never substitutes for SPICE.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "model",
+      "domain": "natural_science",
+      "data": "public_benchmark",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "chemistry"
+    },
+    "proposal_id": "C10",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL contracts, evaluator logic and tests are independently implemented. Reused scientific engines and reference data are separately attributed in reuse_scope; author-code availability alone is not classified as evaluator reuse.",
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "reuse_scope": "RDKit periodic-table atomic masses in evaluator-owned Verlet consistency check"
+    },
+    "additional_requires": [
+      "file:data/materials-expansion/C10/dataset.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_materials_spice_active_potential",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:rdkit",
+        "file:data/materials-expansion/C10/dataset.json"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent SCIEL adaptation of a cited scientific problem; no claim to reproduce author leaderboard scores.",
+    "Candidate and evaluator run in one Python process; data access is separated by API, not an OS sandbox. Isolate evaluator data for adversarial or held-out evaluation.",
+    "Bounded eight-query interaction-complex pilot:12 training geometries and14 evaluation geometries, entire ligand groups held out. Not full SPICE training or leaderboard reproduction.",
+    "Retrieved HDF5 ranges and normalized bundle are SHA256-pinned; full37.5GB source-file checksum was not verified. Unit conversions are verified against HDF5 units."
+  ],
+  "validation": {
+    "level": "source_seed_executed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_materials_expansion.py",
+    "evidence": "validation/materials-expansion-report.json",
+    "benchmark_verified": true
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "model",
+    "domain": "natural_science",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "chemistry",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Learn molecular energies and forces with limited expensive quantum-chemical labels.",
+    "importance_rationale": "Accurate molecular potentials can make physically informed molecular simulation less costly.",
+    "papers": [],
+    "reason": "SPICE is a dataset paper. The inspected active-learning ANI study (Less is more: sampling chemical space with active learning) pursues transferable molecular potentials, but the current eight-query pilot has only twelve acquisition and fourteen evaluation geometries. This review did not establish that this restricted pilot preserves that substantive research objective rather than primarily testing an acquisition interface; no transferable-potential result follows from the pilot. No qualifying primary-goal evidence is established for this local task in this review; this is not a finding that the broader subject is unimportant.",
+    "verification_basis": "Local task contract and cited source purpose reviewed; background or benchmark citations were not promoted to primary-problem evidence.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

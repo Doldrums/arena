@@ -1,0 +1,236 @@
+{
+  "schema_version": "1.0",
+  "id": "llamea-hpo-bbob-continuous-optimization",
+  "name": "BBOB continuous optimization",
+  "description": "BBOB continuous optimization: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "llamea-hpo"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2410.16309",
+      "type": "paper",
+      "locator": "Sections 4.1–4.3"
+    },
+    {
+      "url": "https://zenodo.org/api/records/14917719/files/LLaMEA-HPO.zip/content",
+      "type": "archive",
+      "locator": "run_BBOB_HPO.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "24 BBOB noiseless functions, 3 instances, 3 random seeds, dimension 5 during search",
+    "notes": [
+      "Python3.10",
+      "Poetry1.7.1 or newer",
+      "Dependencies installed from archived pyproject.toml and poetry.lock",
+      "OPENAI_API_KEY",
+      "Access to the default gpt-4o-2024-05-13 model, or an explicitly configured compatible model"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "normalized AOCC",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "BBOB continuous optimization",
+    "protocol": "upstream",
+    "source_locator": "Sections 4.1–4.3"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": "run_BBOB_HPO.py",
+    "commands": [
+      {
+        "argv": [
+          "poetry",
+          "run",
+          "python",
+          "run_BBOB_HPO.py"
+        ],
+        "cwd": ".",
+        "kind": "search_and_hyperparameter_optimization",
+        "source_url": "https://zenodo.org/records/14917719",
+        "evidence_path": "README.md and run_BBOB_HPO.py",
+        "verification": "source_inspected_not_executed",
+        "notes": "Run only in the extracted, SHA256-verified paper archive. Full API-funded search and SMAC HPO, not a smoke test."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "poetry install"
+    ],
+    "task_setup_instructions": [
+      "poetry install"
+    ],
+    "framework_setup_instructions": [],
+    "setup_steps": [
+      {
+        "argv": [
+          "poetry",
+          "install"
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [
+      "This task selects the frozen paper reproduction archive at Zenodo 14917719. The later GitHub implementation is retained only as a source reference.",
+      "The paper Zenodo archive was downloaded, its published MD5 verified, and source inspected. It provides the exact run_BBOB_HPO.py script and frozen library; see archive_execution. Commands run in the extracted paper archive; the current GitHub checkout is a separate, later implementation.",
+      "Archive README specifies Poetry1.7.1+ and Python3.10. Run poetry install, configure OPENAI_API_KEY, then poetry run python run_BBOB_HPO.py. Default model is gpt-4o-2024-05-13; verify availability before running.",
+      "The archived full search incurs API calls and substantial SMAC/benchmark compute. It creates experiment logs/results; paper result plotting is also available as plot_BBOB.py.",
+      "Source is pinned by the archive SHA256. Archived scripts start the full experiment immediately when invoked; use the command preview to inspect settings before executing."
+    ],
+    "archive_source": {
+      "url": "https://zenodo.org/api/records/14917719/files/LLaMEA-HPO.zip/content",
+      "sha256": "3eed0623a74c498fa9c7bf064ca7aa5efe219dcd0743561eff3ae7118ee8d806",
+      "strip_prefix": "",
+      "license": "CC-BY-4.0"
+    },
+    "suite": {
+      "protocol": "recreated",
+      "family": "bbob_optimizer",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Exact paper archive, three entrypoint scripts and lockfile were inspected; API-funded searches and benchmark outcomes were not executed or reproduced.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "BBOB continuous optimization",
+    "slug": "bbob-continuous-optimization",
+    "description": "BBOB continuous optimization: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "BBOB continuous optimization",
+    "dataset": "24 BBOB noiseless functions, 3 instances, 3 random seeds, dimension 5 during search",
+    "metric": "normalized AOCC",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2410.16309",
+    "source_locator": "Sections 4.1–4.3",
+    "upstream_path": "run_BBOB_HPO.py",
+    "requirements": [
+      "Python3.10",
+      "Poetry1.7.1 or newer",
+      "Dependencies installed from archived pyproject.toml and poetry.lock",
+      "OPENAI_API_KEY",
+      "Access to the default gpt-4o-2024-05-13 model, or an explicitly configured compatible model"
+    ],
+    "execution_notes": [
+      "This task selects the frozen paper reproduction archive at Zenodo 14917719. The later GitHub implementation is retained only as a source reference.",
+      "The paper Zenodo archive was downloaded, its published MD5 verified, and source inspected. It provides the exact run_BBOB_HPO.py script and frozen library; see archive_execution. Commands run in the extracted paper archive; the current GitHub checkout is a separate, later implementation.",
+      "Archive README specifies Poetry1.7.1+ and Python3.10. Run poetry install, configure OPENAI_API_KEY, then poetry run python run_BBOB_HPO.py. Default model is gpt-4o-2024-05-13; verify availability before running.",
+      "The archived full search incurs API calls and substantial SMAC/benchmark compute. It creates experiment logs/results; paper result plotting is also available as plot_BBOB.py.",
+      "Source is pinned by the archive SHA256. Archived scripts start the full experiment immediately when invoked; use the command preview to inspect settings before executing."
+    ],
+    "implementation_status": "source_verified_archive_command_requires_setup",
+    "archive_execution": {
+      "artifact_url": "https://zenodo.org/api/records/14917719/files/LLaMEA-HPO.zip/content",
+      "sha256": "3eed0623a74c498fa9c7bf064ca7aa5efe219dcd0743561eff3ae7118ee8d806",
+      "argv": [
+        "poetry",
+        "run",
+        "python",
+        "run_BBOB_HPO.py"
+      ],
+      "cwd": ".",
+      "kind": "search_and_hyperparameter_optimization",
+      "setup_steps": [
+        {
+          "argv": [
+            "poetry",
+            "install"
+          ],
+          "cwd": "."
+        }
+      ],
+      "requirements": [
+        "Python3.10",
+        "Poetry1.7.1 or newer",
+        "OPENAI_API_KEY"
+      ],
+      "evidence_path": "README.md and run_BBOB_HPO.py",
+      "verification": "source_inspected_not_executed",
+      "runner_status": "source_inspected_archive_plan"
+    },
+    "archive_source": {
+      "url": "https://zenodo.org/api/records/14917719/files/LLaMEA-HPO.zip/content",
+      "sha256": "3eed0623a74c498fa9c7bf064ca7aa5efe219dcd0743561eff3ae7118ee8d806",
+      "strip_prefix": "",
+      "license": "CC-BY-4.0"
+    },
+    "run_commands": [
+      {
+        "argv": [
+          "poetry",
+          "run",
+          "python",
+          "run_BBOB_HPO.py"
+        ],
+        "cwd": ".",
+        "kind": "search_and_hyperparameter_optimization",
+        "source_url": "https://zenodo.org/records/14917719",
+        "evidence_path": "README.md and run_BBOB_HPO.py",
+        "verification": "source_inspected_not_executed",
+        "notes": "Run only in the extracted, SHA256-verified paper archive. Full API-funded search and SMAC HPO, not a smoke test."
+      }
+    ],
+    "setup_commands": [
+      "poetry install"
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "poetry",
+          "install"
+        ],
+        "cwd": "."
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -120,7 +120,7 @@ def test_wrapper_score_is_not_presented_as_paper_cost(snapshot):
 
 
 @pytest.mark.parametrize("mutation", [
-    lambda d: d["catalog_binding"]["repository"].update(commit="0" * 40),
+    lambda d: d["catalog_binding"].update(manifest_sha256="0" * 64),
     lambda d: d["catalog_binding"].update(catalog_sha256="0" * 64),
     lambda d: d["tasks"].pop(),
     lambda d: d["tasks"].append(deepcopy(d["tasks"][0])),
@@ -160,10 +160,11 @@ def test_isolated_snapshot_return_and_offline_cli(snapshot):
 def test_no_local_workstation_paths_or_unpinned_source_links(snapshot):
     raw = json.dumps(snapshot)
     assert not any(path in raw for path in ("/Users/", "/home/", "/tmp/", "OPENROUTER_API_KEY="))
-    commit = snapshot["catalog_binding"]["repository"]["commit"]
+    from arena.task_sources import source_url
+    binding = snapshot["catalog_binding"]
     for row in snapshot["tasks"]:
         for item in row["anchors"]:
-            assert f"/blob/{commit}/" in item["source"]["url"]
+            assert item["source"]["url"] == source_url(binding, item["source"]["path"])
             assert len(item["source"]["sha256"]) == 64
 
 
@@ -172,10 +173,15 @@ def test_new_science_receipts_are_bound_to_current_code_and_not_arena_results(sn
                if item["source"]["path"] == "validation/science-expansion-report.json"]
     assert len(science) == 45
     for row, item in science:
-        identity = item["execution_identity"]
-        assert identity["source_execution"] is True and identity["fixture_only"] is False
-        assert identity["evaluator_source"] == row["evaluation"]["evaluator_source"]
-        assert identity["candidate_sha256"] == identity["candidate_source"]["sha256"]
+        if item.get("code_verification") == "historical_code_changed":
+            assert "execution_identity" not in item
+            assert item["historical_code"]["changed_paths"]
+            assert item["historical_code"]["import_source"]["path"] == "import-receipt.json"
+        else:
+            identity = item["execution_identity"]
+            assert identity["source_execution"] is True and identity["fixture_only"] is False
+            assert identity["evaluator_source"] == row["evaluation"]["evaluator_source"]
+            assert identity["candidate_sha256"] == identity["candidate_source"]["sha256"]
         assert item["validity"] is True
         assert item["reproduction"] == "not_recorded"
         assert item["automatic_comparison"] is False
@@ -205,9 +211,10 @@ def test_lennard_jones_reference_preserves_signed_energy_and_putative_scope(snap
     lambda a: a.pop("execution_identity"),
     lambda a: a.update(validity=None),
 ])
-def test_science_reader_rejects_unbound_or_fixture_receipts(snapshot, catalog, mutation):
-    data = deepcopy(snapshot)
-    item = anchor(data, "science-biology-proteingym-fitness", "recorded_seed_baseline")
+def test_science_reader_rejects_unbound_or_fixture_receipts(source_fixture, mutation):
+    builder, source, catalog, *_ = source_fixture
+    data = builder.build(source, catalog)
+    item = anchor(data, "science-new", "recorded_seed_baseline")
     mutation(item)
     with pytest.raises(RegistryError):
         validate_references(data, catalog)
@@ -262,7 +269,7 @@ def source_fixture(tmp_path):
           "mode": "science_expansion_validation", "tasks": [science_row, {"id": "science-blocked", "status": "blocked"}]})
     write("validation/alphaevolve-notebook-reference.json", {"results": []})
     write("validation/tensor-exact.json", {"published_decompositions": []})
-    binding = {"id": "autoresearch-tasks", "repository": {"url": builder.REPOSITORY},
+    binding = {"id": "legacy-fixture", "repository": {"url": "https://github.com/example/tasks"},
                "catalog_path": "catalog/tasks.json", "index_path": "suite/index.json"}
     catalog = {"sources": [binding], "tasks": tasks}
 
@@ -289,6 +296,42 @@ def test_builder_uses_catalog_pin_and_leaves_uncovered_or_changed_tasks_empty(so
     for task_id in ("absent", "changed", "science-blocked"):
         assert task(data, task_id)["anchors"] == []
     assert data["summary"]["tasks_with_recorded_baseline"] == 2
+
+
+def test_imported_refactor_keeps_historical_score_without_current_code_claim(source_fixture, tmp_path, monkeypatch):
+    import shutil
+    builder, source, catalog, *_ = source_fixture
+    local = tmp_path / "tasks"
+    shutil.copytree(source, local, ignore=shutil.ignore_patterns(".git"))
+    originals = {path.relative_to(local).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+                 for path in local.rglob("*") if path.is_file()}
+    changed = "suite/science-new/evaluator.py"
+    (local / changed).write_text("raise AssertionError('adapted evaluator must never execute')\n")
+    (local / "import-receipt.json").write_text(json.dumps({"upstream_hashes": originals}))
+    registry = tmp_path / "registry"
+    registry.mkdir()
+    files = {path.relative_to(local).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+             for path in local.rglob("*") if path.is_file()}
+    manifest = json.dumps({"schema": "arena.task-library/1", "files": files}).encode()
+    (registry / "task-library-manifest.json").write_bytes(manifest)
+    old = catalog["sources"][0]
+    binding = {"id": "arena-tasks", "kind": "bundled", "root_path": "tasks",
+               "repository_url": "https://github.com/Doldrums/arena", "revision": "main",
+               "manifest_path": "registry/task-library-manifest.json",
+               "manifest_sha256": hashlib.sha256(manifest).hexdigest(),
+               **{key: old[key] for key in ("catalog_path", "index_path", "catalog_sha256", "index_sha256")}}
+    catalog["sources"] = [binding]
+    monkeypatch.setattr(subprocess, "Popen", lambda *args, **kwargs: pytest.fail("No task execution or Git"))
+    result = builder.build(local, catalog, registry_root=registry)
+    recorded = anchor(result, "science-new", "recorded_seed_baseline")
+    assert recorded["value"] == 2.0
+    assert recorded["code_verification"] == "historical_code_changed"
+    assert recorded["historical_code"]["changed_paths"] == [changed]
+    assert "execution_identity" not in recorded
+    assert recorded["historical_code"]["evaluator_sha256"] == originals[changed]
+    recorded["execution_identity"] = {"source_execution": True}
+    with pytest.raises(RegistryError, match="cannot claim current execution identity"):
+        validate_references(result, catalog)
 
 
 def test_immutable_reference_evidence_ignores_local_git_blob_replacements(source_fixture):

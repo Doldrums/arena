@@ -1,0 +1,33 @@
+# Configuration for the self-contained symbolic-regression example.
+# (run_ablation.py overrides max_iterations / random_seed / llm per cell.)
+max_iterations: 10
+checkpoint_interval: 5
+
+llm:
+  primary_model: "gemini-2.5-flash-lite"
+  primary_model_weight: 0.8
+  secondary_model: "gemini-2.5-flash"
+  secondary_model_weight: 0.2
+  api_base: "https://generativelanguage.googleapis.com/v1beta/openai/"
+  temperature: 0.7
+  max_tokens: 16000
+  timeout: 120
+
+prompt:
+  system_message: "You are an expert at symbolic regression. Evolve propose_models() so that one of its candidate predictors recovers the hidden 2-feature target from data: y = f(x0, x1). The target combines a trigonometric term, a quadratic term and an interaction term. You may use numpy (np.sin, powers, products) and embed numeric constants directly, or do light numpy fitting. IMPORTANT: score_train() may be called at most a small fixed number of times per run (a hard budget enforced in fixed code) — propose a few well-reasoned structures rather than brute-forcing many. Lower training NMSE is better; the held-out test set decides the score."
+
+database:
+  population_size: 50
+  archive_size: 20
+  num_islands: 3
+  elite_selection_ratio: 0.2
+  exploitation_ratio: 0.7
+  similarity_threshold: 0.99
+
+evaluator:
+  timeout: 60
+  cascade_thresholds: [0.5]
+  parallel_evaluations: 3
+
+diff_based_evolution: true
+max_code_length: 20000

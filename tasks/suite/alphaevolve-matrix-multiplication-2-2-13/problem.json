@@ -1,0 +1,91 @@
+{
+  "protocol": "recreated_verified",
+  "family": "matmul_tensor",
+  "direction": "minimize",
+  "contract": "construct() -> {'U', 'V', 'W'}: factor matrices of shapes (n*m, rank), (m*p, rank), (p*n, rank) with integer/half-integer entries that exactly decompose the matrix multiplication tensor; score is the rank",
+  "parameters": {
+    "dimensions": [
+      2,
+      2,
+      13
+    ],
+    "coefficient_domain": "real_half_integers",
+    "published": 46
+  },
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 120,
+  "notes": [
+    "Exact verification of the decomposition with integer arithmetic (reimplementation of AlphaEvolve Appendix A); the published rank is the paper's reported rank.",
+    "Exact verification with integer arithmetic (in-repo reimplementation of AlphaEvolve Appendix A)."
+  ],
+  "protocol_description": "Reimplemented in this repository and cross-checked against the paper's published constructions/values.",
+  "id": "alphaevolve-matrix-multiplication-2-2-13",
+  "name": "Matrix multiplication 2,2,13",
+  "paper_ids": [
+    "alphaevolve"
+  ],
+  "description": "Find a rank-minimal exact tensor decomposition for multiplying a 2 by 2 matrix by a 2 by 13 matrix. The output factor follows the official trace convention W[k*n+i,r].",
+  "benchmark": "matrix multiplication tensor <2,2,13>",
+  "paper_metric": "tensor rank",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2506.13131",
+      "type": "paper",
+      "locator": "Appendix A, Table 3"
+    },
+    {
+      "url": "https://github.com/google-deepmind/alphaevolve_results/tree/4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "Independent exact task evaluator derived from Appendix A; does not reproduce AlphaEvolve search or its learned constructions.",
+    "Coefficient domain matches reported integer/half-integer (or Gaussian half-integer) representation; it is not unrestricted tensor rank over every scalar field."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "alphaevolve",
+      "title": "AlphaEvolve: A coding agent for scientific and algorithmic discovery",
+      "url": "https://arxiv.org/pdf/2506.13131"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Find exact low-rank bilinear algorithms with real half-integer coefficients for multiplying 2×2 and 2×13 matrices.",
+    "importance_rationale": "Reducing exact scalar-multiplication complexity advances algebraic complexity and can reduce a core cost of scientific linear algebra. This local task seeks a verifiable tensor decomposition; a lower local rank alone does not prove a faster practical implementation.",
+    "papers": [
+      {
+        "title": "Discovering faster matrix multiplication algorithms with reinforcement learning",
+        "url": "https://doi.org/10.1038/s41586-022-05172-4",
+        "task_relation": "The paper searches for exact low-rank matrix-multiplication tensor decompositions over real and finite-field arithmetic. This task uses real half-integer coefficients and fixes dimensions to (2, 2, 13); the citation establishes the primary research problem, not a claim that this exact local coefficient domain or size is a new published result.",
+        "primary_goal": "Discover and verify more efficient matrix-multiplication algorithms, rather than measure general agent performance.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

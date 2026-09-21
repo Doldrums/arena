@@ -1,0 +1,275 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-bench-sldbench-easy-question-scaling-law",
+  "name": "SCiEL: SLDBench easy question scaling law",
+  "description": "Discover a symbolic scaling law and a parameter-fitting routine for SLDBench task easy_question_scaling_law. Brier score as a function of log training FLOPs for easy questions; included in the source loader but not part of the paper's seven core tasks. Programs are fitted on smaller-scale training groups and scored on held-out larger-scale test groups by combined_score = 1/(1+NMSE).",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "scaling_law_discovery",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/sldbench/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/sldbench/init_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/sldbench/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; network access to the Hugging Face Hub on first use.",
+    "dependencies": [
+      "datasets",
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Hugging Face dataset pkuHaowei/sldbench, configuration easy_question_scaling_law, train and test splits grouped by the source loader. Features ['log_flops']; target brier_score.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Task data are downloaded from the Hugging Face Hub by the pinned data loader; the dataset revision is not pinned by the source and is not included here."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example sldbench",
+    "paper_metric": null,
+    "source_locator": "examples/sldbench/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/sldbench",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/sldbench/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/sldbench",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": "examples/sldbench/init_program.py",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "datasets"
+      ],
+      "environment": {
+        "EVAL_TASK_NAME": "easy_question_scaling_law"
+      },
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply task validity; preserve unknown validity unless the original evaluator exposes an explicit signal.",
+        "EVAL_TASK_NAME=easy_question_scaling_law selects the task; the pinned evaluator otherwise infers it from the candidate's file or parent directory name.",
+        "The first evaluation downloads the pkuHaowei/sldbench Hugging Face dataset; later runs use the local Hugging Face cache."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Task data are downloaded from the Hugging Face Hub by the pinned data loader; the dataset revision is not pinned by the source and is not included here."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "runtime_download": {
+      "source": "huggingface:pkuHaowei/sldbench",
+      "approximate_bytes": 5000000,
+      "note": "small public dataset; cached by Hugging Face after the first evaluation"
+    },
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {
+        "EVAL_TASK_NAME": "easy_question_scaling_law"
+      },
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "network:huggingface pkuHaowei/sldbench",
+        "py:datasets",
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The task YAML configurations referenced by the source README (examples/sldbench/configs/) are absent at the pinned commit; only the shared evaluator, seed and data loader are pinned.",
+    "The Hugging Face dataset revision is selected by the upstream loader at run time; results can drift if the hub dataset changes."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "The 600-second fitting timeout uses a ThreadPoolExecutor; a timed-out fit is reported but the worker thread is not terminated.",
+      "Held-out extrapolation groups come from the same public dataset the candidate may read at fitting time; the split is enforced by the loader, not by isolation."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/sldbench/README.md": "abb9e2089a43c558612efa35723be751d918b049b81252ee21245518dc00e461",
+    "examples/sldbench/data_loader.py": "eff552c3060d425ff8d9165d26b306a72bdf664104b5dba4d607062710dbc1db",
+    "examples/sldbench/evaluator.py": "b59767b35bee120cdf651ceb26dcd6d550192c0b237f90399dd7f01067082f2f",
+    "examples/sldbench/init_program.py": "73a2e2205eafb96103a08ec3da62f33bbcec83bf1ec8601d100daaf73f9a641c",
+    "examples/sldbench/run.sh": "0221b4ff7f859e3ddbe6cbe54bdaa8619da190765370a62a63d58a1b109c94ed"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/sldbench/evaluator.py",
+      "signature": "program_path: str, verbose: bool=False",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.fit_scaling_law(X_train, y_train) -> params, per training group",
+      "program.scaling_law_func(X_test, params) -> predictions, per held-out test group"
+    ],
+    "baseline_path": "examples/sldbench/init_program.py",
+    "baseline_functions": {
+      "scaling_law_func": {
+        "signature": "data_points, params",
+        "docstring": null
+      },
+      "fit_scaling_law": {
+        "signature": "data_points, loss_values",
+        "docstring": null
+      }
+    },
+    "parameters": {
+      "task_name": "easy_question_scaling_law",
+      "feature_names": [
+        "log_flops"
+      ],
+      "target_name": "brier_score",
+      "combined_score": "1/(1+NMSE) aggregated over held-out test groups",
+      "fit_timeout_seconds": 600
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "return_branches": [
+      {
+        "function": "evaluate_core",
+        "line": 207,
+        "expression": "{\"fitted_params\": new_fitted_params_map}"
+      },
+      {
+        "function": "evaluate_core",
+        "line": 235,
+        "expression": "calculate_final_metrics( final_predictions, final_true_values, )"
+      },
+      {
+        "function": "evaluate_core",
+        "line": 242,
+        "expression": "get_failure_result(str(e))"
+      },
+      {
+        "function": "evaluate_core",
+        "line": 201,
+        "expression": "get_failure_result(\"No training data found.\")"
+      },
+      {
+        "function": "evaluate_core",
+        "line": 212,
+        "expression": "get_failure_result(\"fitted_params_map is required for evaluation.\")"
+      },
+      {
+        "function": "evaluate_core",
+        "line": 216,
+        "expression": "get_failure_result(\"No test data found.\")"
+      },
+      {
+        "function": "evaluate_core",
+        "line": 230,
+        "expression": "get_failure_result(\"No predictions were generated for the test set.\")"
+      },
+      {
+        "function": "evaluate",
+        "line": 287,
+        "expression": "test_result"
+      },
+      {
+        "function": "evaluate",
+        "line": 271,
+        "expression": "get_failure_result(f\"Fitting failed: {error}\")"
+      },
+      {
+        "function": "evaluate",
+        "line": 265,
+        "expression": "get_failure_result(str(e))"
+      }
+    ],
+    "validity_key": null,
+    "validity_semantics": "No explicit validity signal; a failure branch returns combined_score 0.0 with an error message, otherwise validity is unknown.",
+    "error_key": "error",
+    "declared_requirements": [],
+    "evaluator_imports": [
+      "argparse",
+      "concurrent",
+      "data_loader",
+      "importlib",
+      "numpy",
+      "os",
+      "pathlib",
+      "sys",
+      "traceback",
+      "typing"
+    ],
+    "baseline_imports": [
+      "numpy",
+      "scipy"
+    ],
+    "source_config_path": null,
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {},
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "cpu_with_network_dataset",
+    "recommended_smoke_outer_timeout_seconds": 120
+  },
+  "labels": {
+    "scientific_contribution": "discovery",
+    "science_tier": 1,
+    "artifact": "equation",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "real_measurements",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "network"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

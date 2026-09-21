@@ -1,0 +1,82 @@
+{
+  "protocol": "recreated",
+  "family": "lsr_equation",
+  "direction": "minimize",
+  "contract": "equation(X: np.ndarray[n, d], params: np.ndarray[10]) -> np.ndarray[n]; columns of X follow the instance's input_vars; parameters are fitted by BFGS on the train split. Score: mean NMSE on the test split over the selected LLM-SRBench instances",
+  "parameters": {
+    "subset": "lsr_transform",
+    "instance_id": "i.37.4_0_1",
+    "max_instances": 4,
+    "seed": 0
+  },
+  "requires": [
+    "py:numpy",
+    "py:datasets",
+    "network:huggingface pkuHaowei/llm-srbench",
+    "py:scipy"
+  ],
+  "timeout": 900,
+  "notes": [
+    "Data from the public LLM-SRBench mirror pkuHaowei/llm-srbench; the fitting loop follows the LLM-SR evaluator. Whole-subset tasks use a seeded sample of four instances."
+  ],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "drsr-lsr-transform-i-37-4-0-1",
+  "name": "LSR-Transform I.37.4_0_1",
+  "paper_ids": [
+    "drsr"
+  ],
+  "description": "LSR-Transform I.37.4_0_1 task evaluated in DrSR: LLM based Scientific Equation Discovery with Dual Reasoning from Data and Experience.",
+  "benchmark": "LSR-Transform I.37.4_0_1",
+  "paper_metric": "normalized mean squared error",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2506.04282",
+      "type": "paper",
+      "locator": "Section 4.1 and Appendix B"
+    },
+    {
+      "url": "https://github.com/pgg3/CoEvo/tree/dcad65e9799961cf67cf29865ff41dda2902a808",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "arXiv HTML unavailable; full PDF retrieved and text extracted.",
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "pgg3/CoEvo is pinned only as the paper-cited LLM-SR benchmark source; DrSR's own code has not been released.",
+    "LSR-Transform and LSR-Synth evaluation needs the LLM-SRBench package and its datasets, which are not pinned here; DrSR itself has no public implementation.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "drsr",
+      "title": "DrSR: LLM based Scientific Equation Discovery with Dual Reasoning from Data and Experience",
+      "url": "https://arxiv.org/pdf/2506.04282"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "science_tier": 2,
+    "artifact": "equation",
+    "domain": "natural_science",
+    "area": "physics",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "network"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

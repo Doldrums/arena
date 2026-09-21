@@ -1,0 +1,60 @@
+# Earth source-data tasks E01–E06
+
+Implemented 2026-09-20 from the approved expansion roadmap. All six task interfaces, independent evaluators, initial candidates, provenance records, labels and tests are present. **Four have passed real source-data runs; two require source acquisition or a verified upstream forward simulator.** No synthetic test fixture is counted as a measured benchmark run.
+
+## Duplicate audit and labels
+
+The existing catalog contained Lorenz-96 assimilation and closure experiments, plus Climate-FEVER document retrieval. None matches catchment hydrology, tower carbon flux, operational weather calibration, seismic inversion, long-term emissions response or satellite ocean reconstruction. E01–E06 are distinct new families; climate retrieval is not physical climate modeling.
+
+Every task is labeled `area=earth_and_environment`, `domain=natural_science`, `scientific_contribution=method`. Evaluators and seeds are independently written from the cited specifications. They reuse official scientific data, not copied upstream implementations. CAMELS, FLUXNET and OceanBench target measurements; WeatherBench verification uses reanalysis; OpenFWI and ClimateBench use upstream physical simulations. These evidence types remain distinct in each result and task record.
+
+## Actual source runs
+
+| Proposal | Source protocol actually staged | Initial score | Status |
+|---|---|---:|---|
+| E01 CAMELS | Four measured CAMELS-US/Daymet basins, two used for calibration in 2000–2001 and two different basins evaluated in 2002 after forcing-only warm-up | Basin-mean NSE **−0.001728** | Source run passed |
+| E02 FLUXNET | Half-hourly measured carbon exchange, QC flags and whole-site/year splits required | — | Requires setup; official download endpoint returned HTTP 403 |
+| E03 WeatherBench | IFS 50-member ensembles, 24-hour temperature forecasts, 12 monthly initializations in 2018 for calibration and 12 in 2019 for evaluation, ERA5 matched by valid time | CRPS **0.359055 K** | Source run passed |
+| E04 OpenFWI | Source seismic traces, geological velocity arrays and a validated source-matching forward simulator required | — | Requires setup; no reduced source model/simulator staged |
+| E05 ClimateBench | Complete historical/SSP126/SSP370/SSP585 training scenarios; wholly withheld SSP245; temperature and precipitation anomalies on an area-coarsened grid | Mean total NRMSE **1.196577** | Source run passed |
+| E06 OceanBench | Measured January 2017 Gulf Stream Jason2N observations; complete Jason3 satellite held out | Independent-track RMSE **0.090427 m** | Source run passed |
+
+Source run records and per-case metrics: [earth-data-source-runs.json](../validation/earth-data-source-runs.json). The four evaluator runs together take less than one second on this host; initial data extraction and download are separate costs. A valid seed can have poor predictive skill: E01's score near zero is not claimed to be a high-quality hydrological model.
+
+## Scientific details and limits
+
+**E01 — Catchment hydrology.** The immutable [NeuralHydrology source subset](https://github.com/neuralhydrology/neuralhydrology/tree/37568bcb2a207a82b92cac3e4ef52fb8fc8662b5/test/test_data/camels_us) contains real CAMELS observations rather than artificially generated test arrays. Source discharge in cubic feet per second is converted using the forcing-file area in square meters to millimeters per day. Only unestimated USGS `A` observations score. Basin IDs `01022500`/`01547700` train; `02064000`/`03015500` evaluate. The candidate receives current/past precipitation, temperature and radiation and an evolving water state, never future meteorology or evaluation discharge. The independently checked daily balance is previous storage + precipitation − discharge − evapotranspiration = new storage. The seed calibrates snow/soil reservoir recession and evaporation parameters on training basins. The four-basin subset does not establish generalization over the full CAMELS geography. [CAMELS paper](https://hess.copernicus.org/articles/21/5293/2017/).
+
+**E02 — Ecosystem flux.** The adapter accepts net ecosystem carbon exchange in its declared source units and supports negative fluxes. It scores only half-hourly or hourly `NEE_VUT_REF_QC == 0` measured targets; interpolated/gap-filled values cannot improve the score. Whole towers and year blocks must be separated before staging. The initial candidate has a temperature-dependent respiration term and saturating light-response term. The remaining work is obtaining a permitted historical FLUXNET source subset and its metadata. The attempted official download endpoint returned HTTP 403; no assumption about an account requirement is made from that response alone. [Dataset and quality definitions](https://fluxnet.org/data/fluxnet2015-dataset/), [paper](https://doi.org/10.1038/s41597-020-0534-3).
+
+**E03 — Weather uncertainty.** The full 50-member forecast ensemble is preserved. CRPS is independently computed as `mean(abs(X−y)) − 0.5*mean(abs(X−X′))`; an exact sorted formulation avoids a large pairwise tensor. Source Zarr chunks are fetched directly and their hashes pinned; no forecast model is trained or invoked. Each forecast initialization plus its declared 24-hour lead is checked against the ERA5 time coordinate. Sixty-four locations span the 64×32 grid and use cosine-latitude weights. The extreme threshold comes only from the 2018 training data. The single initialization per month is a compact source protocol, insufficient by itself for a robust rare-event reliability claim. ERA5 is reanalysis, not independent raw measurements. The IFS/TIGGE source has research-use restrictions. [Official data guide and licenses](https://weatherbench2.readthedocs.io/en/latest/data-guide.html).
+
+**E04 — Seismic inversion.** The complete candidate API, velocity/shape validation, forward-oracle budget, normalized velocity error, structural-gradient diagnostic and independent waveform check are implemented. The forward simulator is a setup-owned Python module whose SHA256 is verified before import; it is not candidate-supplied. It must reproduce the selected OpenFWI source geometry, discretization, source signature and units before the task is source-validated. The [official smallest Vel release is 43 GB](https://openfwi-lanl.github.io/docs/data.html), with CC BY-NC-SA 4.0 terms. A reviewable reduced complete-geology subset and compatible validated simulator remain absent. A tiny locally generated wave problem would not validate this promised OpenFWI task, so none is substituted.
+
+**E05 — Long-term climate.** Source data are the versioned [ClimateBench release 7064308](https://zenodo.org/records/7064308). Only needed scenario members are extracted from the streamed archives. The source-member mean matches upstream missing-value semantics: SSP370 has only one available member after two members end early, so missing members are omitted rather than replaced with invented fields. Coarsening uses cosine-latitude area weights and 12×12 blocks, producing 8×12 grids; input and output coordinates are checked. Temperature anomalies retain kelvin; precipitation anomalies are converted from source flux units to mm/day and may legitimately be negative. The candidate sees cumulative CO2, methane emissions and global source aerosol-emission proxies. The initial method fits spatial response patterns with a 30-year lag basis. Evaluation uses 2080–2100 only, with spatial NRMSE of the time-mean pattern plus five times NRMSE of annual global means, following the [authors' pinned score definitions](https://github.com/duncanwp/ClimateBench/blob/085c0b5b20761446fabe05bbc58b9a5440e9c25f/analysis_notebooks/paper_figures.ipynb). The score is a two-variable coarse-resolution adaptation, not the original four-variable leaderboard and not observed future climate.
+
+**E06 — Ocean reconstruction.** The [immutable OceanBench registry](https://github.com/quentinf00/oceanbench-data-registry/tree/b678399e9264e8a1a04384cb4c1ca71a2773f302) provides content-addressed DVC objects with upstream MD5 checksums; local SHA256 checks are also recorded. Two actual satellite sources total about 29 MB. The candidate receives Jason2N filtered sea-level anomalies in meters, coordinates and time; Jason3 labels remain evaluation-only. Time is normalized to days since 2017-01-01, and source-order decimation selects every fourth sample. This is retrospective real observing-system evaluation, not an observing-system simulation with full ocean truth. Independent-track RMSE is reported; full-field gradients or resolved spectral scales are not claimed from this sparse reference. The seed uses space-time inverse-distance interpolation. [OceanBench paper](https://arxiv.org/abs/2309.15599).
+
+## Reproduce and verify
+
+Runtime: Python 3.10+, NumPy and SciPy. Preparation additionally uses netCDF4 and numcodecs 0.16.3. The standard source cache and bundle paths are local and ignored by Git; [sources.json](../data/science/earth_data/sources.json) pins 70 downloaded objects/archive members. Evaluators never use the network.
+
+```bash
+.cache/sciel-env/bin/python scripts/prepare_earth_data.py --all
+.cache/sciel-env/bin/python -m unittest discover -s tests -p test_science_earth_data.py -v
+```
+
+`--all` prepares E01/E03/E05/E06. `--offline` verifies and reuses cached bytes. E05 streams a training archive of about 839 MB and a test archive of about 74 MB, extracting only declared scenario files. The other protocols use much smaller source subsets. Every prepared bundle has a companion SHA256 manifest. Missing or modified data produces a setup/validation failure; it never triggers artificial fallback data.
+
+The library supports a `SCIEL_EARTH_DATA` directory override. Standard generated suite prerequisites point at the default `.cache/science-earth-data` location; a custom deployment must update those preflight requirements consistently.
+
+[17 scientific tests pass](../validation/earth-data-tests.txt), covering exact known NSE values, water-balance rejection, causal information boundaries, exclusion of gap-filled flux targets, CRPS agreement with brute-force pairwise computation, climate spatial-versus-global error separation, invalid velocity outputs and forward-call budgets, ocean units, source checksums and actual group/time/scenario splits. Tiny arrays and the toy forward module in those tests are explicitly fixtures and are never counted as source benchmark evidence.
+
+## Reviewed bundle setup for E02/E04
+
+`--import-bundle /path/to/reviewed-source-bundle.json` stages an already prepared source bundle. It requires `schema_version:1`, `proposal_id`, `source_kind`, source URLs/SHA256 hashes, an explicit `split_description`, and nonempty `cases`.
+
+- **E02:** Each case has `training_sites`, `evaluation_sites`, and positive `training_target_std` computed only from training observations. Each site supplies `id`, `meteorology`, `flux`, `quality_flag`, `evaluation_mask`, and `metadata` with units and ecosystem/time conventions. Meteorological columns begin with air temperature in Celsius and incoming shortwave radiation in W/m². Supply whole-site/year splits and retain quality provenance; do not relabel gap-filled outputs as observations.
+- **E04:** Each case supplies `id`, `traces`, `velocity`, `velocity_bounds`, `geometry` including `grid_shape`/units/source-receiver coordinates, and `forward_model:{path,sha256}` exporting `simulate(velocity,geometry)`. Optional `budget` limits candidate forward calls. Geometry and source data must agree with a verified upstream run. The trusted simulator is owned by the evaluator setup; the candidate supplies only a velocity field.
+
+Per-task source locators, status, adaptations and labels are in [earth_data.json](../catalog/science/earth_data.json). The remaining Earth proposals E07–E12 have separate implementations and documentation.

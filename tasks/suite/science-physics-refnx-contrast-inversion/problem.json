@@ -1,0 +1,88 @@
+{
+  "protocol": "recreated",
+  "family": "science_physics_refnx_contrast_inversion",
+  "direction": "minimize",
+  "contract": "infer_profile(training_contrasts, bounds, metadata) -> 32..4096 posterior rows [oxide thickness A, film thickness A, dry film SLD 1e-6/A^2, solvent fraction, roughness A, background]. Independent Parratt recursion with Nevot-Croce roughness and Gaussian Q-resolution predicts the wholly held-out contrast. Score posterior predictive normalized residual plus simulation-track CRPS. Source experimental contrasts are one physical sample, no cross-sample generalization claim.",
+  "parameters": {
+    "proposal_id": "P13"
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "file:data/physics-expansion/P13/manifest.json",
+    "file:data/physics-expansion/P13/benchmark.npz"
+  ],
+  "timeout": 300,
+  "notes": [
+    "Independent SCIEL scientific adaptation. Required source packs never fall back to toy data. Fixture tests are distinct from source-data execution. See docs/PHYSICS_EXPANSION.md."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-physics-refnx-contrast-inversion",
+  "name": "refnx contrast reflectometry inversion",
+  "paper_ids": [
+    "science-physics_expansion"
+  ],
+  "description": "infer_profile(training_contrasts, bounds, metadata) -> 32..4096 posterior rows [oxide thickness A, film thickness A, dry film SLD 1e-6/A^2, solvent fraction, roughness A, background]. Independent Parratt recursion with Nevot-Croce roughness and Gaussian Q-resolution predicts the wholly held-out contrast. Score posterior predictive normalized residual plus simulation-track CRPS. Source experimental contrasts are one physical sample, no cross-sample generalization claim.",
+  "benchmark": "refnx contrast reflectometry inversion",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1107/S1600576718017296",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: refnx contrast reflectometry inversion"
+    },
+    {
+      "url": "https://github.com/refnx/refnx/tree/02b9bd11b439e8db8b319e6c25c7ee94b5033451/examples/global_fitting_motofit",
+      "type": "archive",
+      "locator": "Three measured contrasts e361r/e365r/e366r and source Motofit multilayer/global pilot files."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Run scripts/prepare_physics_expansion.py --refnx; experimental source is one sample with three contrasts."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-physics_expansion",
+      "title": "Physics and astrophysics research: source-based research tasks",
+      "url": "https://arxiv.org/abs/1904.06778v3"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Fast and Reliable Probabilistic Reflectometry Inversion with Prior-Amortized Neural Posterior Estimation",
+        "url": "https://arxiv.org/abs/2407.18648",
+        "task_relation": "The local refnx task infers six layered-sample parameters and predicts a held-out contrast using three curves from one physical sample plus simulated training tracks. These contrast and parameter choices are a restricted local inverse problem, not the source paper's complete datasets or method.",
+        "primary_goal": "Recover probabilistic thin-film structural information from ambiguous X-ray and neutron reflectometry data.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Infer uncertain thin-film structure and composition from reflectometry measurements.",
+    "importance_rationale": "Resolving ambiguous structural inversions with calibrated posterior information is the paper's principal physical inference problem.",
+    "reason": "The evidence directly targets reflectometry inversion; a reflectometry software paper alone would not establish the label.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "physics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

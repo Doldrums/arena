@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0",
+  "id": "science-biology-beeline-regulatory-network",
+  "name": "Biology: Regulatory network inference from expression",
+  "description": "Rank directed regulator-target hypotheses from the official BEELINE GSD expression example and score all allowed edges using tie-aware average precision.",
+  "paper_ids": [
+    "science-biology_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://www.nature.com/articles/s41592-019-0690-6",
+      "type": "paper",
+      "locator": "BEELINE Methods: simulated/curated networks and precision-recall evaluation."
+    },
+    {
+      "url": "https://github.com/Murali-group/Beeline",
+      "type": "repository",
+      "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned source-derived bundle B11.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Automatic compact-source staging available."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Biology: Regulatory network inference from expression",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_biology_b11",
+    "science_family": "science_biology_b11",
+    "parameters": {},
+    "interface": "infer_network(expression, genes, allowed_regulators, optional_ordering) -> list(regulator,target,finite_score). expression cells x genes. No self edges/unknown IDs/duplicates. Unsubmitted edges tie below submitted scores. Maximize tie-grouped average precision across all allowed directed edges; incomplete biological references caveat retained.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "biology"
+    },
+    "proposal_id": "B11",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "additional_requires": [
+      "file:../../.cache/science-biology/B11.json",
+      "file:../../.cache/science-biology/B11.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_biology_b11",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-biology/B11.json",
+        "file:../../.cache/science-biology/B11.manifest.json"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Initial official example uses simulated expression grounded in a curated developmental network, not measured expression. One complete network, no cross-network generalization claim. All genes permitted as regulators; no true-regulator list leaked.",
+    "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+    "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+  ],
+  "validation": {
+    "level": "source_subset_run",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "evidence": "validation/biology-expansion-source-runs.json",
+    "tests": "tests/test_science_biology_expansion.py",
+    "benchmark_validated": true,
+    "fixture_tests_are_benchmark_validation": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "biology",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Infer directed gene-regulatory interactions from expression measurements.",
+    "importance_rationale": "Understanding transcriptional regulation is a substantive biological goal, but that does not by itself validate a synthetic benchmark adaptation.",
+    "papers": [],
+    "reason": "The local task uses the official BEELINE GSD synthetic expression example. The cited BEELINE paper primarily evaluates network-inference methods. GENIE3 addresses regulatory inference more broadly, but this review did not establish that the particular synthetic GSD instance addresses a substantive biological question rather than serving as a method testbed. No qualifying primary-goal evidence is established for this local task in this review; this is not a finding that the broader subject is unimportant.",
+    "verification_basis": "Local task contract and cited source purpose reviewed; background or benchmark citations were not promoted to primary-problem evidence.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

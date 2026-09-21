@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "id": "science-physics-ngeht-closure-imaging",
+  "name": "ngEHT closure-constrained imaging",
+  "description": "reconstruct(visibilities, array_metadata, noise) -> nonnegative square image in Jy per pixel with calibrated total flux. Source data supply uv wavelengths, amplitudes, signed closure triangles and phases. Independent direct Fourier transform checks amplitude/closure likelihood and fixed-centre, resolution-matched image NRMSE. Source models/schedules split. Official ngEHT permission required before staging restricted challenge files.",
+  "paper_ids": [
+    "science-physics_expansion"
+  ],
+  "kind": "native",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2212.11355",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: ngEHT closure-constrained imaging"
+    },
+    {
+      "url": "https://challenge.ngeht.org/challenge1/",
+      "type": "archive",
+      "locator": "Challenge 1 data/model download permission is limited to invited participants; no unrestricted mirror assumed."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; source-data preparation may require substantial disk space",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Source restricted to challenge participants; obtain explicit source permission/credentials, then curate fixed-FOV visibilities/closure/model data."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "ngEHT closure-constrained imaging",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_physics_ngeht_closure_imaging",
+    "science_family": "science_physics_ngeht_closure_imaging",
+    "parameters": {
+      "proposal_id": "P09"
+    },
+    "interface": "reconstruct(visibilities, array_metadata, noise) -> nonnegative square image in Jy per pixel with calibrated total flux. Source data supply uv wavelengths, amplitudes, signed closure triangles and phases. Independent direct Fourier transform checks amplitude/closure likelihood and fixed-centre, resolution-matched image NRMSE. Source models/schedules split. Official ngEHT permission required before staging restricted challenge files.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "cosmology_and_astrophysics"
+    },
+    "proposal_id": "P09",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "requires_setup",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_physics_ngeht_closure_imaging",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:data/physics-expansion/P09/manifest.json",
+        "file:data/physics-expansion/P09/benchmark.npz"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Source restricted to challenge participants; obtain explicit source permission/credentials, then curate fixed-FOV visibilities/closure/model data."
+  ],
+  "validation": {
+    "level": "adapter_unit_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_physics_expansion.py",
+    "evidence": "validation/physics-expansion-report.json",
+    "benchmark_verified": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "cosmology_and_astrophysics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Interferometric Imaging Directly with Closure Phases and Closure Amplitudes",
+        "url": "https://arxiv.org/abs/1803.07088",
+        "task_relation": "The local ngEHT task reconstructs a nonnegative, flux-constrained image from amplitudes and closure phases. Its fixed resolution, source data, and image score form a restricted adaptation; it does not use all closure-amplitude methods or reproduce an observed black-hole image.",
+        "primary_goal": "Develop interferometric image reconstruction using closure quantities that are insensitive to station-based calibration errors.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Recover astronomical brightness structure from sparse interferometric observations with calibration-robust constraints.",
+    "importance_rationale": "Reconstructing images despite station calibration uncertainty is the direct astronomical inverse problem studied in the paper.",
+    "reason": "The source solves an observational imaging problem; importance is not inferred from an ngEHT dataset description.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

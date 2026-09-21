@@ -1,0 +1,77 @@
+{
+  "protocol": "recreated",
+  "family": "science_tcs_expansion_xor",
+  "direction": "minimize",
+  "contract": "synthesize(matrix, depth_limit) -> {'gates': [[wire, wire], ...], 'outputs': [wire,...]}. Input wires are 0..n-1, constant-zero wire is n, gate k (zero-based) produces wire n+1+k. Exact symbolic GF(2) verification; depth <=16. Minimize mean gate-count / independent-row baseline over 8x8,12x16,16x16 binary maps.",
+  "parameters": {},
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 60,
+  "notes": [
+    "Native bounded research instances derived from the cited mathematical model, not an upstream benchmark-score reproduction. Public seeds are development instances; freeze candidates and use new graph/stream/matrix families for independent generalization."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-tcs-xor-circuit-synthesis",
+  "name": "Theoretical computer science: Exact XOR-circuit synthesis",
+  "paper_ids": [
+    "science-tcs_expansion"
+  ],
+  "description": "Exact XOR-circuit synthesis under a bounded candidate interface with independent verification; generated mathematical instances, no external dataset.",
+  "benchmark": "Theoretical computer science: Exact XOR-circuit synthesis",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://www.nist.gov/publications/new-combinational-logic-minimization-technique-applications-cryptology",
+      "type": "paper",
+      "locator": "Boyar and Peralta: straight-line XOR circuits for linear maps over GF(2)."
+    }
+  ],
+  "limitations": [
+    "This is a bounded native adaptation, not the paper's experimental score or an asymptotic guarantee.",
+    "Public development generators can be inspected; independent generalization requires fresh instances after freezing the candidate."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-tcs_expansion",
+      "title": "Algorithms and theoretical computer science: source-based research tasks",
+      "url": "https://www.nist.gov/publications/new-combinational-logic-minimization-technique-applications-cryptology"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "A New Combinational Logic Minimization Technique with Applications to Cryptology",
+        "url": "https://www.nist.gov/publications/new-combinational-logic-minimization-technique-applications-cryptology",
+        "task_relation": "The local task isolates XOR straight-line synthesis for generated GF(2) matrices and verifies exact equivalence. It omits nonlinear gates and full cryptographic designs, so it does not establish an AES implementation improvement.",
+        "primary_goal": "Reduce combinational circuit size, including the gate cost of linear transformations used in cryptographic implementations.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Minimize the number of XOR gates needed to implement a specified binary linear transformation.",
+    "importance_rationale": "Reducing linear-circuit complexity is a central component of the cited circuit-minimization research.",
+    "reason": "Circuit minimization is a substantive engineering and theoretical-computing target of the source, not merely an example supplied to a generic agent.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "theoretical_computer_science",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

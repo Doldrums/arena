@@ -1,0 +1,321 @@
+{
+  "schema_version": "1.0",
+  "id": "mipro-hover",
+  "name": "HoVer",
+  "description": "HoVer: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "mipro",
+    "gepa",
+    "pairwise-validator"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2406.11695",
+      "type": "paper",
+      "locator": "Table 1 and Appendices A/E"
+    },
+    {
+      "url": "https://github.com/stanfordnlp/dspy/tree/40a6e168914a7b81a78b1a081d93f26de18c8d0d",
+      "type": "repository",
+      "locator": null
+    },
+    {
+      "url": "https://arxiv.org/pdf/2507.19457",
+      "type": "paper",
+      "locator": "Section 4 evaluation and benchmark appendix"
+    },
+    {
+      "url": "https://github.com/gepa-ai/gepa-artifact/tree/cbefbc1aa0f43dd39874ec4bf42211365dbda42e",
+      "type": "repository",
+      "locator": "gepa_artifact/benchmarks/hover"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2607.14408",
+      "type": "paper",
+      "locator": "Section 5, Table 1 task inventory"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "HoVer",
+    "notes": [
+      "DSPy",
+      "LM inference backend",
+      "Dataset and retrieval index as relevant"
+    ]
+  },
+  "evaluation": {
+    "metric": "Recall@21",
+    "paper_metric": "Recall@21",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "HoVer",
+    "protocol": "specified_only",
+    "source_locator": "Table 1 and Appendices A/E"
+  },
+  "execution": {
+    "repository": "https://github.com/stanfordnlp/dspy",
+    "commit": "40a6e168914a7b81a78b1a081d93f26de18c8d0d",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "pip install -e ."
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -e ."
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "dataset:HoVer"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_api",
+      "unsupported_reason": "Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the HoVer benchmark. The suite embeds neither model calls nor the benchmark data."
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Current DSPy repository has MIPROv2 optimizer but the seven original 2024 benchmark drivers were not located in the inspected tree; API library availability alone does not make original tasks executable.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "HoVer",
+    "slug": "hover",
+    "description": "HoVer: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "HoVer",
+    "dataset": "HoVer",
+    "metric": "Recall@21",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2406.11695",
+    "source_locator": "Table 1 and Appendices A/E",
+    "upstream_path": null,
+    "requirements": [
+      "DSPy",
+      "LM inference backend",
+      "Dataset and retrieval index as relevant"
+    ],
+    "execution_notes": [],
+    "implementation_status": "paper_inventory_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "gepa-hover",
+      "paper_ids": [
+        "gepa"
+      ],
+      "name": "HoVer",
+      "description": "HoVer",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2507.19457",
+          "type": "paper",
+          "locator": "Section 4 evaluation and benchmark appendix"
+        },
+        {
+          "url": "https://github.com/gepa-ai/gepa-artifact/tree/cbefbc1aa0f43dd39874ec4bf42211365dbda42e",
+          "type": "repository",
+          "locator": "gepa_artifact/benchmarks/hover"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "benchmark data",
+          "LLM credentials",
+          "OPENAI_API_KEY and WANDB_API_KEY are asserted even for baseline mode. Setup requires the patched DSPy fork installed by setup_gepa_repo.sh, uv sync, dataset access, and benchmark-specific retrieval services. See benchmark program source."
+        ]
+      },
+      "evaluation": {
+        "metric": "task-specific score",
+        "paper_metric": "task-specific score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "HoVer",
+        "protocol": "upstream",
+        "source_locator": "Section 4 evaluation and benchmark appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/gepa-ai/gepa-artifact",
+        "commit": "cbefbc1aa0f43dd39874ec4bf42211365dbda42e",
+        "upstream_path": "gepa_artifact/benchmarks/hover",
+        "commands": [
+          {
+            "argv": [
+              "uv",
+              "run",
+              "python",
+              "-m",
+              "scripts.run_experiments",
+              "--bm_idx",
+              "0",
+              "--benchmark_name",
+              "hoverBench",
+              "--num_threads",
+              "1",
+              "--program_idx",
+              "0",
+              "--prog_name",
+              "HoverMultiHop",
+              "--opt_idx",
+              "0",
+              "--optim_name",
+              "Baseline",
+              "--lm_config",
+              "{\"name\":\"gpt-41-mini\",\"model\":\"openai/gpt-4.1-mini-2025-04-14\",\"api_key\":\"env:OPENAI_API_KEY\",\"temperature\":1.0}",
+              "--seed",
+              "0"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/gepa-ai/gepa-artifact/blob/cbefbc1aa0f43dd39874ec4bf42211365dbda42e/scripts/run_experiments.py",
+            "notes": "Task-specific original artifact Baseline evaluation. Benchmark index/order, program0 class and LM config verified in get_benchmarks(), benchmark __init__.py files and LM_CONFIGS[1]. Uses paid model calls; OPENAI_API_KEY and WANDB_API_KEY required. Does not perform GEPA optimization."
+          }
+        ],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "bash setup_gepa_repo.sh",
+          "uv sync"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "bash setup_gepa_repo.sh",
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Exact source-valid per-task Baseline command with explicit benchmark/program selectors. Full GEPA runs additionally require optimizer budget/cache configuration; baseline evaluation alone does not reproduce optimized paper results."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "pairwise-validator-hover",
+      "paper_ids": [
+        "pairwise-validator"
+      ],
+      "name": "HoVer",
+      "description": "HoVer task evaluated in Reward-Free Evolving Agents via Pairwise Validator.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2607.14408",
+          "type": "paper",
+          "locator": "Section 5, Table 1 task inventory"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "GEPA",
+          "Task data",
+          "LLM credentials"
+        ]
+      },
+      "evaluation": {
+        "metric": "benchmark-specific test score",
+        "paper_metric": "benchmark-specific test score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "HoVer",
+        "protocol": "specified_only",
+        "source_locator": "Section 5, Table 1 task inventory"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": []
+      },
+      "limitations": [
+        "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

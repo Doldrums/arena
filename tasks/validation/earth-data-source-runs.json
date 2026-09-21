@@ -1,0 +1,107 @@
+{
+  "note": "Actual source-derived measured/reanalysis/upstream climate simulations; never unit fixtures. Bounded adaptations, not original full leaderboard reproduction.",
+  "runs": [
+    {
+      "proposal_id": "E01",
+      "success": true,
+      "score": -0.0017277683156635693,
+      "elapsed_seconds": 0.05868187500163913,
+      "details": {
+        "basins": [
+          {
+            "basin": "02064000",
+            "nse": -0.345766655499961,
+            "rmse_mm_day": 0.8940229011404164,
+            "high_flow_bias_mm_day": 0.3684683836435661,
+            "low_flow_bias_mm_day": -0.03447935153685454,
+            "cumulative_discharge_bias_mm": 87.94180731802811,
+            "max_daily_balance_residual_mm": 1.4210854715202004e-14
+          },
+          {
+            "basin": "03015500",
+            "nse": 0.34231111886863386,
+            "rmse_mm_day": 1.9543469744691089,
+            "high_flow_bias_mm_day": -4.687525036897936,
+            "low_flow_bias_mm_day": -0.16056701382748317,
+            "cumulative_discharge_bias_mm": -177.68848617980493,
+            "max_daily_balance_residual_mm": 5.684341886080802e-14
+          }
+        ],
+        "forcing_semantics": "retrospective same-day meteorology, causal state update; not a future-weather forecast",
+        "source_kind": "measured",
+        "split_description": "Official NeuralHydrology distribution of measured CAMELS-US/Daymet subset. Training basins01022500/01547700 years2000\u20132001; unseen basins02064000/03015500 evaluated only in2002 after full2000\u20132001 forcing warmup. Only unestimated USGSA discharge observations score. No hydro/runoff-derived attributes provided.",
+        "fixture_validation": false
+      }
+    },
+    {
+      "proposal_id": "E03",
+      "success": true,
+      "score": 0.35905544405824413,
+      "elapsed_seconds": 0.01860524999210611,
+      "details": {
+        "cases": [
+          {
+            "region_lead": "IFS50 t2m24h monthly2019 lowres global sample",
+            "crps": 0.35905544405824413,
+            "raw_crps": 0.36378429672373763,
+            "extreme_brier": 0.023038659717122642,
+            "extreme_threshold_from_training": 300.7155197143555
+          }
+        ],
+        "truth_kind": "ERA5 reanalysis, not raw independent measurements",
+        "source_kind": "reanalysis",
+        "split_description": "WeatherBench2 IFS50-member2m-temperature forecasts at24h on64\u00d732 grid. One initialization/month in2018 for calibration; corresponding months in2019 for evaluation, eight longitudes\u00d7eight latitudes. Valid times are explicitly matched to ERA5. Training-only95th-percentile threshold. Small chronological source subset, not full leaderboard/reliability claim. TIGGE research-use restrictions apply.",
+        "fixture_validation": false
+      }
+    },
+    {
+      "proposal_id": "E05",
+      "success": true,
+      "score": 1.196577073265695,
+      "elapsed_seconds": 0.03284829200129025,
+      "details": {
+        "variables": [
+          {
+            "scenario": "ssp245",
+            "variable": "tas",
+            "spatial_nrmse": 0.07336921096570555,
+            "global_nrmse": 0.06706068808659367,
+            "total_nrmse": 0.40867265139867387
+          },
+          {
+            "scenario": "ssp245",
+            "variable": "pr",
+            "spatial_nrmse": 0.9372848888926952,
+            "global_nrmse": 0.2094393212480042,
+            "total_nrmse": 1.9844814951327163
+          }
+        ],
+        "metric": "ClimateBench spatialNRMSE+5*globalNRMSE, mean across declared variables; source coarse-grid adaptation",
+        "source_kind": "upstream_simulation",
+        "split_description": "Complete SSP245 withheld; historical,SSP126,SSP370,SSP585 train. Available-source-member mean (SSP370 has missing members after2054), cos-latitude area-weighted12\u00d712 block coarsening to8\u00d712; tas/pr anomalies only. Evaluate2080\u20132100 with published spatialNRMSE+5globalNRMSE definitions. Independent simulations, not observations or full-resolution four-variable leaderboard.",
+        "fixture_validation": false
+      }
+    },
+    {
+      "proposal_id": "E06",
+      "success": true,
+      "score": 0.09042748827446048,
+      "elapsed_seconds": 0.037969416996929795,
+      "details": {
+        "regions": [
+          {
+            "region": "GulfStream January2017 Jason2N toJason3",
+            "rmse_m": 0.09042748827446048,
+            "mae_m": 0.0573646610096089,
+            "bias_m": 0.0011297838696155296,
+            "verification_regime": "OSE measured entire independentJason3 satellite withheld"
+          }
+        ],
+        "interpretation": "OSE measured independent-track error has incomplete truth; OSSE full-field truth must be labeled separately",
+        "source_kind": "measured",
+        "split_description": "Real GulfStream OceanBenchOSE: source Jason2N observations reconstruct source Jason3 points for January2017. Whole satellite withheld, source-order decimation every4 samples. Retrospective same-time independent-track validation; no full-field/OSSE truth, held-out-year transfer or resolved spectral-scale claim. FilteredSLA meters, not absolute dynamic topography.",
+        "fixture_validation": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,358 @@
+{
+  "created_at": "2026-09-20T19:14:27+00:00",
+  "scope": "Independent bounded review of biology, physics, Earth and materials expansion evaluator contracts and readiness claims; all expansion regression suites executed, with targeted follow-up verification.",
+  "findings_fixed": [
+    {
+      "proposal_id": "B10",
+      "issue": "Candidate kinetic problem and measurements shared nested data with the evaluator forward configuration and fitting oracle.",
+      "reproduction": "The same parameter vector scored 1.0 before candidate mutation and 0.0 after changing a nested condition scale. Candidate edits to measurements also changed oracle targets.",
+      "fix": "Deep-copy the public problem and training measurements before candidate invocation.",
+      "regression": "test_kinetic_candidate_cannot_change_oracle_targets_or_conditions"
+    },
+    {
+      "proposal_id": "P04",
+      "issue": "Candidate training geometry shared the geometry used to compute evaluation features.",
+      "reproduction": "Identical generated showers scored 0.07603586507839177 before mutation and 0.03425375978927863 after zeroing passed x coordinates.",
+      "fix": "Pass a deep copy of geometry to fit_showers.",
+      "regression": "test_shower_candidate_cannot_change_scoring_geometry"
+    },
+    {
+      "proposal_id": "P07",
+      "issue": "Candidate uncertainty metadata shared the delay uncertainties used by independent posterior predictive scoring.",
+      "reproduction": "The regression changes the supplied delay uncertainty; identical posterior samples previously received a different score.",
+      "fix": "Deep-copy public likelihood metadata and pass an independent PSF array.",
+      "regression": "test_lens_candidate_cannot_change_likelihood_uncertainty"
+    },
+    {
+      "proposal_id": "P09",
+      "issue": "Candidate array configuration was the same object used for flux constraints and image scoring.",
+      "reproduction": "Candidate changed declared flux from 1 to 2 and returned an image with flux 2; the pre-fix evaluator accepted it.",
+      "fix": "Pass a deep copy of the array configuration and retain canonical constraints.",
+      "regression": "test_imaging_candidate_cannot_relax_flux_constraint"
+    },
+    {
+      "proposal_id": "P12",
+      "issue": "The shallow-copied quantum model retained references to evaluator robustness intervals.",
+      "reproduction": "An identical quantum seed pulse scored 0.062278705175584585 before mutation and 0.03336786943313075 after collapsing detuning and drive-scale intervals to nominal conditions.",
+      "fix": "Deep-copy the candidate hardware model.",
+      "regression": "test_quantum_candidate_cannot_remove_robustness_cases"
+    },
+    {
+      "proposal_id": "C10",
+      "issue": "The evaluator retained the candidate force-output array across subsequent potential calls. Correct candidates reusing a force buffer were falsely rejected.",
+      "reproduction": "An exact translation/rotation-invariant harmonic pair potential with an internal reused force array failed with forces lack rotational equivariance. The identical algorithm allocating new arrays passed.",
+      "fix": "Copy the initial force result before finite-difference and rotated calls.",
+      "regression": "test_potential_may_reuse_force_output_buffer"
+    },
+    {
+      "proposal_id": "E04",
+      "issue": "Candidate geometry and the bounded forward oracle shared one mutable dictionary, allowing candidate input edits to change the oracle physical model.",
+      "reproduction": "Changing public geometry scale from 1 to 0 changed the oracle result from [[2.0]] to [[0.0]] for the same velocity. Final scoring used canonical geometry, so this was oracle inconsistency rather than final-score corruption.",
+      "fix": "Pass an independent deep copy of geometry to the candidate; keep canonical geometry inside the forward oracle.",
+      "regression": "test_seismic_candidate_cannot_change_forward_oracle_geometry"
+    }
+  ],
+  "verification": {
+    "command": ".cache/sciel-env/bin/python -m unittest discover -s tests -p 'test_science_*expansion.py' -v",
+    "tests_passed": 112,
+    "tests_failed": 0,
+    "test_seconds": 11.282,
+    "pre_fix_regression_sensitivity": {
+      "method": "In-memory modules with only the five isolation fixes reversed; repository files unchanged.",
+      "tests_run": 5,
+      "expected_failures": 5,
+      "errors": 0
+    },
+    "followup_suites": [
+      {
+        "command": ".cache/sciel-env/bin/python -m unittest discover -s tests -p test_science_materials_expansion.py -v",
+        "tests_passed": 32,
+        "tests_failed": 0,
+        "seconds": 7.909
+      },
+      {
+        "command": ".cache/sciel-env/bin/python -m unittest discover -s tests -p test_science_earth_data.py -v",
+        "tests_passed": 18,
+        "tests_failed": 0,
+        "seconds": 0.141
+      }
+    ],
+    "followup_pre_fix_regression_sensitivity": {
+      "method": "In-memory modules with only the two follow-up fixes reversed; repository files unchanged.",
+      "tests_run": 2,
+      "expected_assertion_failures": 1,
+      "expected_candidate_validation_errors": 1
+    }
+  },
+  "source_package_runs": [
+    {
+      "id": "science-biology-petab-kinetic-inference",
+      "proposal_id": "B10",
+      "protocol": "recreated",
+      "area": "biology",
+      "python": "/Users/imran.turganov/code/research/ACLR/autoresearch-tasks/.cache/sciel-env/bin/python",
+      "status": "ok",
+      "score": 7.829625363203309,
+      "valid": true,
+      "seconds": 1.265,
+      "reason": null,
+      "file_sha256": {
+        ".cache/science-biology/B10.json": "6c811a3b6696a4e15d2da43f761bb9d4ee86a176afce78d142203a98ea5cd855",
+        ".cache/science-biology/B10.manifest.json": "18399e00e67bd5d4e570f87b6c8cb21ee1ddaad17c222fac69781d4c8a8aec1a",
+        "scripts/science_biology_expansion.py": "87dc926c4112c742ccad967b4bbea29ed22347747467b48e7445d89ab7398576",
+        "suite/_lib/autoresearch_suite/runtime.py": "e5274a3bab8202885a7d57e009e8f74075fc206d0f52c70cf5ce917f7f1a4248",
+        "suite/_lib/autoresearch_suite/science_biology_expansion.py": "21fc782f327d04fd427721be657a47b5d6eca6173cb4861190fc714dbfe6b625",
+        "suite/_lib/autoresearch_suite/science_biology_petab.py": "a5e2effab1d18d1a3e6609fcc161117402fdf047bc3a063b38f75ac8c098e3e2",
+        "suite/science-biology-petab-kinetic-inference/evaluator.py": "b6f33b69690e07469e419cb41d100aa6f189a66e1e6fde0357ba1b217786282b",
+        "suite/science-biology-petab-kinetic-inference/initial_program.py": "26b1cf13e0712296d77cea572471a6ed0cfee6998a2dccbff81df0a111415010"
+      },
+      "candidate_sha256": "26b1cf13e0712296d77cea572471a6ed0cfee6998a2dccbff81df0a111415010",
+      "evaluator_sha256": "b6f33b69690e07469e419cb41d100aa6f189a66e1e6fde0357ba1b217786282b",
+      "source_execution": true,
+      "fixture_only": false,
+      "result": {
+        "combined_score": -7.829625363203309,
+        "score": 7.829625363203309,
+        "direction": "minimize",
+        "valid": true,
+        "error": null,
+        "models": [
+          {
+            "model": "Brannmark_JBC2010",
+            "heldout_condition_nll": 7.829625363203309,
+            "objective_calls": 46
+          }
+        ],
+        "uncertainty_note": "interval format validated, not calibrated without coverage experiments",
+        "source_kind": "measured",
+        "prepared_source_count": 5,
+        "split_description": "Whole insulin-dose conditions Dose_01,Dose_10 held out; remaining dose/time-course conditions train. Source nominal fitted parameters stripped. All concentrations reequilibrated from conserved source pool totals. Independent SBML reaction transcription; source simulatedData is not benchmark truth.",
+        "fixture_validation": false,
+        "elapsed_seconds": 0.886056
+      }
+    },
+    {
+      "id": "science-physics-calochallenge-photon-showers",
+      "proposal_id": "P04",
+      "protocol": "recreated",
+      "area": "particle_physics",
+      "python": "/Users/imran.turganov/code/research/ACLR/autoresearch-tasks/.cache/sciel-env/bin/python",
+      "status": "ok",
+      "score": 0.1433975384868703,
+      "valid": true,
+      "seconds": 0.801,
+      "reason": null,
+      "file_sha256": {
+        "scripts/science_physics_expansion.py": "e1e0e119f7f3a23dd0a2d5cd531d81b78449bfb8b5947dfab47fbcbab3ccc684",
+        "suite/_lib/autoresearch_suite/runtime.py": "e5274a3bab8202885a7d57e009e8f74075fc206d0f52c70cf5ce917f7f1a4248",
+        "suite/_lib/autoresearch_suite/science_physics_expansion.py": "b39d00d1957a85a59af7289ffd57e23c06a7e726ebde7ec7b55ea12f88a9fc6a",
+        "suite/_lib/data/physics-expansion/P04/benchmark.npz": "a170a7ba9ab59b097cad9c24ec4619aaf8a5adc5af7da202969eacd189d0f3e9",
+        "suite/_lib/data/physics-expansion/P04/manifest.json": "e7686f54a58bfbc187d01f3e14f75acf8533308d2a8553872335e69b673b926f",
+        "suite/science-physics-calochallenge-photon-showers/evaluator.py": "d21184ff0d35123ca3c9d0d4ac7a4555b1f22aba76b5c3814bbfc2498e35753a",
+        "suite/science-physics-calochallenge-photon-showers/initial_program.py": "48b4d599d69404f5076836294de67f69e8063e18dfeece7c67a8b43c9a2356fd"
+      },
+      "candidate_sha256": "48b4d599d69404f5076836294de67f69e8063e18dfeece7c67a8b43c9a2356fd",
+      "evaluator_sha256": "d21184ff0d35123ca3c9d0d4ac7a4555b1f22aba76b5c3814bbfc2498e35753a",
+      "source_execution": true,
+      "fixture_only": false,
+      "result": {
+        "combined_score": -0.1433975384868703,
+        "score": 0.1433975384868703,
+        "direction": "minimize",
+        "valid": true,
+        "error": null,
+        "metric": "mean_per_energy_standardized_feature_Wasserstein",
+        "classifier_auc_diagnostic": 0.504345703125,
+        "sampling_seconds": 0.01289595800335519,
+        "showers": 1920,
+        "adaptation": "CPU source-data subset; independent HLF-inspired metric, not the full CaloChallenge leaderboard",
+        "source_data_sha256": "a170a7ba9ab59b097cad9c24ec4619aaf8a5adc5af7da202969eacd189d0f3e9",
+        "source_kind": "source_simulation",
+        "elapsed_seconds": 0.392225
+      }
+    },
+    {
+      "id": "science-physics-tdlmc-distance-posterior",
+      "proposal_id": "P07",
+      "protocol": "recreated",
+      "area": "cosmology_and_astrophysics",
+      "python": "/Users/imran.turganov/code/research/ACLR/autoresearch-tasks/.cache/sciel-env/bin/python",
+      "status": "blocked",
+      "score": null,
+      "valid": null,
+      "seconds": null,
+      "reason": "Missing requirements: file:data/physics-expansion/P07/manifest.json, file:data/physics-expansion/P07/benchmark.npz",
+      "file_sha256": {
+        "scripts/science_physics_expansion.py": "e1e0e119f7f3a23dd0a2d5cd531d81b78449bfb8b5947dfab47fbcbab3ccc684",
+        "suite/_lib/autoresearch_suite/runtime.py": "e5274a3bab8202885a7d57e009e8f74075fc206d0f52c70cf5ce917f7f1a4248",
+        "suite/_lib/autoresearch_suite/science_physics_expansion.py": "b39d00d1957a85a59af7289ffd57e23c06a7e726ebde7ec7b55ea12f88a9fc6a",
+        "suite/science-physics-tdlmc-distance-posterior/evaluator.py": "040142d8a74ac4c0d3dac39c789c5918be237482712817bd2c2a58482819fefc",
+        "suite/science-physics-tdlmc-distance-posterior/initial_program.py": "b27948d4a232e19c94d1b0fa2acca3b2194fbd4d7f87fe9e6bcc16445d52b7ef"
+      },
+      "candidate_sha256": "b27948d4a232e19c94d1b0fa2acca3b2194fbd4d7f87fe9e6bcc16445d52b7ef",
+      "evaluator_sha256": "040142d8a74ac4c0d3dac39c789c5918be237482712817bd2c2a58482819fefc",
+      "source_execution": true,
+      "fixture_only": false,
+      "unmet_requirements": [
+        "file:data/physics-expansion/P07/manifest.json",
+        "file:data/physics-expansion/P07/benchmark.npz"
+      ]
+    },
+    {
+      "id": "science-physics-ngeht-closure-imaging",
+      "proposal_id": "P09",
+      "protocol": "recreated",
+      "area": "cosmology_and_astrophysics",
+      "python": "/Users/imran.turganov/code/research/ACLR/autoresearch-tasks/.cache/sciel-env/bin/python",
+      "status": "blocked",
+      "score": null,
+      "valid": null,
+      "seconds": null,
+      "reason": "Missing requirements: file:data/physics-expansion/P09/manifest.json, file:data/physics-expansion/P09/benchmark.npz",
+      "file_sha256": {
+        "scripts/science_physics_expansion.py": "e1e0e119f7f3a23dd0a2d5cd531d81b78449bfb8b5947dfab47fbcbab3ccc684",
+        "suite/_lib/autoresearch_suite/runtime.py": "e5274a3bab8202885a7d57e009e8f74075fc206d0f52c70cf5ce917f7f1a4248",
+        "suite/_lib/autoresearch_suite/science_physics_expansion.py": "b39d00d1957a85a59af7289ffd57e23c06a7e726ebde7ec7b55ea12f88a9fc6a",
+        "suite/science-physics-ngeht-closure-imaging/evaluator.py": "cc3611a2fd9b702b7c7e0d011360b4d3efd739053dedb5d4ab3a32a29fea466e",
+        "suite/science-physics-ngeht-closure-imaging/initial_program.py": "ac8bbd144efa1ca8c6d31c8417b39d3ca234ef05c3cf5845f6bba59c5a1e60ea"
+      },
+      "candidate_sha256": "ac8bbd144efa1ca8c6d31c8417b39d3ca234ef05c3cf5845f6bba59c5a1e60ea",
+      "evaluator_sha256": "cc3611a2fd9b702b7c7e0d011360b4d3efd739053dedb5d4ab3a32a29fea466e",
+      "source_execution": true,
+      "fixture_only": false,
+      "unmet_requirements": [
+        "file:data/physics-expansion/P09/manifest.json",
+        "file:data/physics-expansion/P09/benchmark.npz"
+      ]
+    },
+    {
+      "id": "science-physics-robust-transmon-control",
+      "proposal_id": "P12",
+      "protocol": "recreated",
+      "area": "quantum_information",
+      "python": "/Users/imran.turganov/code/research/ACLR/autoresearch-tasks/.cache/sciel-env/bin/python",
+      "status": "ok",
+      "score": 0.062278705175584585,
+      "valid": true,
+      "seconds": 0.424,
+      "reason": null,
+      "file_sha256": {
+        "scripts/science_physics_expansion.py": "e1e0e119f7f3a23dd0a2d5cd531d81b78449bfb8b5947dfab47fbcbab3ccc684",
+        "suite/_lib/autoresearch_suite/runtime.py": "e5274a3bab8202885a7d57e009e8f74075fc206d0f52c70cf5ce917f7f1a4248",
+        "suite/_lib/autoresearch_suite/science_physics_expansion.py": "b39d00d1957a85a59af7289ffd57e23c06a7e726ebde7ec7b55ea12f88a9fc6a",
+        "suite/science-physics-robust-transmon-control/evaluator.py": "df9bc8c36ccf57a01237a22a7c65fd298a2d740ecf498af8e53c3e3d5cfbc5ae",
+        "suite/science-physics-robust-transmon-control/initial_program.py": "8d799524f44f7d39971d249c8aa3edaef3b25b860282dd150da5e321aafaddc1"
+      },
+      "candidate_sha256": "8d799524f44f7d39971d249c8aa3edaef3b25b860282dd150da5e321aafaddc1",
+      "evaluator_sha256": "df9bc8c36ccf57a01237a22a7c65fd298a2d740ecf498af8e53c3e3d5cfbc5ae",
+      "source_execution": true,
+      "fixture_only": false,
+      "result": {
+        "combined_score": -0.062278705175584585,
+        "score": 0.062278705175584585,
+        "direction": "minimize",
+        "valid": true,
+        "error": null,
+        "metric": "mean_plus_worst_robust_average_gate_infidelity",
+        "mean_infidelity": 0.020726426388027734,
+        "worst_infidelity": 0.04155227878755685,
+        "mean_leakage": 2.55176887282006e-06,
+        "independent_integration_max_error": 6.250062072931235e-10,
+        "seconds": 0.04528204200323671,
+        "physical_model": "three-level Duffing transmon with Lindblad relaxation/dephasing; no hardware claim",
+        "elapsed_seconds": 0.045425
+      }
+    },
+    {
+      "id": "science-earth-openfwi-seismic-inversion",
+      "proposal_id": "E04",
+      "protocol": "recreated",
+      "area": "earth_and_environment",
+      "python": "/Users/imran.turganov/code/research/ACLR/autoresearch-tasks/.cache/sciel-env/bin/python",
+      "status": "blocked",
+      "score": null,
+      "valid": null,
+      "seconds": null,
+      "reason": "Missing requirements: file:../../.cache/science-earth-data/E04.json, file:../../.cache/science-earth-data/E04.manifest.json",
+      "file_sha256": {
+        "scripts/science_earth_data.py": "c515d593885a46c39ddd80f52973303eda239db1870bce0cbdf18b641e82a276",
+        "suite/_lib/autoresearch_suite/runtime.py": "e5274a3bab8202885a7d57e009e8f74075fc206d0f52c70cf5ce917f7f1a4248",
+        "suite/_lib/autoresearch_suite/science_earth_data.py": "5cb28a18c99ec6612451f7f5ac3b85b4e37a8b5dfe06c087fe8b243c1969d3bc",
+        "suite/science-earth-openfwi-seismic-inversion/evaluator.py": "407bedd5c7dc5fca76f9dc84945158f96fd9f2c0232b5f60e300ba6c2f353884",
+        "suite/science-earth-openfwi-seismic-inversion/initial_program.py": "1133fe686a79bb48ebbe7950363b64eec1f1e55e0ed6674a0a4929cdb0e9fce1"
+      },
+      "candidate_sha256": "1133fe686a79bb48ebbe7950363b64eec1f1e55e0ed6674a0a4929cdb0e9fce1",
+      "evaluator_sha256": "407bedd5c7dc5fca76f9dc84945158f96fd9f2c0232b5f60e300ba6c2f353884",
+      "source_execution": true,
+      "fixture_only": false,
+      "unmet_requirements": [
+        "file:../../.cache/science-earth-data/E04.json",
+        "file:../../.cache/science-earth-data/E04.manifest.json"
+      ]
+    },
+    {
+      "id": "science-materials-spice-active-potential",
+      "proposal_id": "C10",
+      "protocol": "recreated",
+      "area": "chemistry",
+      "python": "/Users/imran.turganov/code/research/ACLR/autoresearch-tasks/.cache/sciel-env/bin/python",
+      "status": "ok",
+      "score": 0.6735044138030362,
+      "valid": true,
+      "seconds": 0.583,
+      "reason": null,
+      "file_sha256": {
+        "scripts/science_materials_expansion.py": "7447fffb613928cb401ba6a2c06726f2dbab6a08126a9649641dea295b227335",
+        "suite/_lib/autoresearch_suite/materials_battery_forward.py": "f933b93ab756ccb5c09de4b56a1cb73447e79a6855e9c15fe12f8c6c1e11e9d9",
+        "suite/_lib/autoresearch_suite/materials_nasicon.py": "131617c2ca98801123b9914b0ed84ba6618933809985901dc7cda542e2023289",
+        "suite/_lib/autoresearch_suite/runtime.py": "e5274a3bab8202885a7d57e009e8f74075fc206d0f52c70cf5ce917f7f1a4248",
+        "suite/_lib/autoresearch_suite/science_materials_expansion.py": "4861de14c5d22079f24d0fa912b9c1fa17b96c76d0dff16e287ff835c5662491",
+        "suite/_lib/data/materials-expansion/C10/dataset.json": "3f07257780621a13f47a7f1df2d78170979f6c3cb6e89c778777bdcbb917b5f5",
+        "suite/science-materials-spice-active-potential/evaluator.py": "631726256bbe082d4c3e896804f580d396b7f0bdd2245fa7233f58c6d0585fde",
+        "suite/science-materials-spice-active-potential/initial_program.py": "d6de4bf8ae99f46b43e068d8709e1781b4cca9d1ace3ad1d895804032ac30335"
+      },
+      "candidate_sha256": "d6de4bf8ae99f46b43e068d8709e1781b4cca9d1ace3ad1d895804032ac30335",
+      "evaluator_sha256": "631726256bbe082d4c3e896804f580d396b7f0bdd2245fa7233f58c6d0585fde",
+      "source_execution": true,
+      "fixture_only": false,
+      "result": {
+        "combined_score": -0.6735044138030362,
+        "score": 0.6735044138030362,
+        "direction": "minimize",
+        "valid": true,
+        "error": null,
+        "force_rmse_ev_angstrom": 0.4922017848601158,
+        "relative_energy_rmse_ev": 0.18130262894292037,
+        "label_queries": 8,
+        "scalarization": "force_RMSE/(1_eV/Angstrom)+relative_energy_RMSE/(1_eV)",
+        "elapsed_seconds": 0.522982
+      }
+    }
+  ],
+  "file_sha256": {
+    "suite/_lib/autoresearch_suite/science_biology_expansion.py": "21fc782f327d04fd427721be657a47b5d6eca6173cb4861190fc714dbfe6b625",
+    "suite/_lib/autoresearch_suite/science_physics_expansion.py": "b39d00d1957a85a59af7289ffd57e23c06a7e726ebde7ec7b55ea12f88a9fc6a",
+    "tests/test_science_biology_expansion.py": "fa71a12b4a8d923d66579748d506cce1dccb66f73db8d9aab9a355f26c8c102b",
+    "tests/test_science_physics_expansion.py": "33218b59d42a6bb1543a66b6770c8a55c6cbac8faa886b31ae96042e9ccc5ce9",
+    "suite/_lib/autoresearch_suite/science_materials_expansion.py": "4861de14c5d22079f24d0fa912b9c1fa17b96c76d0dff16e287ff835c5662491",
+    "suite/_lib/autoresearch_suite/science_earth_data.py": "5cb28a18c99ec6612451f7f5ac3b85b4e37a8b5dfe06c087fe8b243c1969d3bc",
+    "tests/test_science_materials_expansion.py": "e7fc5f059593803f5784038ba3a2eed004f1b400280cf61a0e3c4cf176bd2583",
+    "tests/test_science_earth_data.py": "90b2911946aeaa61768089d2a14c2a2b94f33bcbdfd72ece5b1c0b52c853e887"
+  },
+  "limits": [
+    "This is a bounded correctness review, not validation of every scientific claim or a reproduction of full published benchmarks.",
+    "P07, P09 and E04 remain setup-blocked; their new integrity regressions use explicit checker fixtures, not claimed source executions.",
+    "Candidate Python code still operates under the documented trusted/cooperative interface, not an OS security boundary.",
+    "Missing source data must remain distinct from implemented evaluator code and from successful source execution."
+  ],
+  "updated_at": "2026-09-20T19:17:36+00:00",
+  "readiness_review": {
+    "scope": "Earth E01-E12 and materials C01-C12 catalog/setup/contract inspection against staged normalized data and explicit model tasks.",
+    "observations": [
+      "Earth FLUXNET E02, OpenFWI E04 and methane E12 remain requires_setup; GEOM C02 and NMR C07 remain requires_setup.",
+      "Declared numerical models are identified as simulations or bounded local adaptations rather than measured scientific validation.",
+      "C08 now has a staged measured HKUST-A dataset and explicit source-reported annotation scope; the catalog does not claim all unreported impurities are absent.",
+      "No additional established readiness misrepresentation was found in this bounded inspection. Implementation presence still does not prove complete-paper reproduction."
+    ]
+  }
+}

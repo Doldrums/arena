@@ -1,0 +1,83 @@
+{
+  "protocol": "recreated",
+  "family": "bbob_optimizer",
+  "direction": "maximize",
+  "contract": "class Optimizer: __init__(self, budget, dim); __call__(self, func) evaluates func(x) at most budget times within [-5, 5]^dim (LLaMEA contract). Score: mean area over the log convergence curve (AOCC) over instances",
+  "parameters": {
+    "fid": 6,
+    "dim": 5,
+    "budget": 500
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 300,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "llamea-bo-bbob-f6",
+  "name": "BBOB f6",
+  "paper_ids": [
+    "llamea-bo"
+  ],
+  "description": "BBOB f6 task evaluated in LLaMEA-BO: A Large Language Model Evolutionary Algorithm for Automatically Generating Bayesian Optimization Algorithms.",
+  "benchmark": "COCO BBOB",
+  "paper_metric": "mean normalized area over log convergence curve",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2505.21034",
+      "type": "paper",
+      "locator": "Section 4, generalization benchmarks"
+    },
+    {
+      "url": "https://github.com/Ewendawi/LLaMEA-BO/blob/938b4d780aa0cbf9f7c941ebab61dadfa9157185/llamevol/evaluator/evaluator_result.py",
+      "type": "repository",
+      "locator": "ConvergenceCurveAnalyzer.calculate_aoc; EvaluatorBasicResult.update_aoc"
+    },
+    {
+      "url": "https://pypi.org/project/ioh/0.3.18/",
+      "type": "benchmark",
+      "locator": "Pinned IOH BBOB objective implementation"
+    },
+    {
+      "url": "https://github.com/Ewendawi/LLaMEA-BO/tree/938b4d780aa0cbf9f7c941ebab61dadfa9157185",
+      "type": "repository",
+      "locator": "llamevol/evaluator/ioh_evaluator.py"
+    }
+  ],
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "llamea-bo",
+      "title": "LLaMEA-BO: A Large Language Model Evolutionary Algorithm for Automatically Generating Bayesian Optimization Algorithms",
+      "url": "https://arxiv.org/pdf/2505.21034"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

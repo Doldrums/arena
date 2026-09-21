@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "id": "science-earth-openfwi-seismic-inversion",
+  "name": "Earth and environment: OpenFWI subsurface seismic inversion",
+  "description": "Reconstruct a positive subsurface velocity field from simulated seismic traces, independently checking velocity structure and a pinned source-matching wave forward model.",
+  "paper_ids": [
+    "science-earth_data"
+  ],
+  "kind": "native",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2111.02926",
+      "type": "paper",
+      "locator": "OpenFWI dataset geometry, synthetic geological models, wave simulation and inversion metrics."
+    },
+    {
+      "url": "https://openfwi-lanl.github.io/docs/data.html",
+      "type": "benchmark",
+      "locator": "Official source data/evaluation reference; evaluator and seed independently written."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "SHA256-locked source bundle E04.json in .cache/science-earth-data. No source OpenFWI velocity/trace subset or verified source-matching forward simulator staged. Official smallestVel family43GB; prepare a licensed reduced complete-geology subset and validated simulator; no toy substitution.",
+    "preparation_dependencies": [
+      "netCDF4",
+      "numcodecs==0.16.3"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Earth and environment: OpenFWI subsurface seismic inversion",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_earth_e04",
+    "science_family": "science_earth_e04",
+    "parameters": {},
+    "interface": "invert_seismograms(traces,source_receiver_geometry,forward_oracle,budget) -> positive velocity grid in m/s. geometry includes grid_shape and velocity_bounds. Independent source-matching trusted forward solver is checksum-pinned. Enforce oracle-call limit, velocity bounds; primary velocity NRMSE, gradient and forward-waveform diagnostics. Requires actual OpenFWI arrays/geometry/simulator; no toy PDE fallback.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "earth_and_environment"
+    },
+    "proposal_id": "E04",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "requires_setup",
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_code_used": false,
+      "note": "Local evaluator, candidate interface and seed recreated from scientific specifications; official benchmark data are reused."
+    },
+    "additional_requires": [
+      "file:../../.cache/science-earth-data/E04.json",
+      "file:../../.cache/science-earth-data/E04.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_earth_e04",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-earth-data/E04.json",
+        "file:../../.cache/science-earth-data/E04.manifest.json"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Needs actual OpenFWI arrays and a validated source-matching forward simulator; smallest advertisedVel dataset43GB. No locally generated toy wavefields substituted. Source data areCC-BY-NC-SA4.0; no field-survey truth claim.",
+    "Source data remain local caches with immutable revisions/content hashes and no evaluator network access. Public subsets are development-visible; freeze candidates before wider generalization tests.",
+    "Improved source benchmark performance is a scientific-method contribution, not alone a new discovery or operational forecast validation."
+  ],
+  "validation": {
+    "level": "unit_tests_only",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "benchmark_validated": false,
+    "fixture_tests_are_benchmark_validation": false,
+    "evidence": "docs/EARTH_DATA.md",
+    "tests": "tests/test_science_earth_data.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "area": "earth_and_environment",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Infer subsurface seismic velocity structure from recorded waveforms.",
+    "importance_rationale": "Seismic velocity reconstruction helps investigate the structure and properties of the subsurface.",
+    "papers": [
+      {
+        "title": "InversionNet: A Real-Time and Accurate Full Waveform Inversion with CNNs and Continuous CRFs",
+        "url": "https://arxiv.org/abs/1811.07875",
+        "primary_goal": "Reconstruct subsurface velocity models from seismic waveforms while addressing computational and resolution limitations of inversion.",
+        "task_relation": "The local task retains the physical waveform-to-velocity inverse problem with a forward-wave consistency check on simulated source traces. It does not establish performance on measured field seismic data or reproduce the paper's full study.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "A domain-specific seismic inverse solver is the evidence; the OpenFWI benchmark introduction alone is excluded.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

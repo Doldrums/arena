@@ -1,0 +1,67 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "toolchain:FlowRepair 19 faulty Stateflow models"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "toolchain",
+  "unsupported_reason": "Evaluation depends on an external toolchain (FlowRepair 19 faulty Stateflow models) that is not bundled.",
+  "protocol_description": "Not executable in this suite: Evaluation depends on an external toolchain (FlowRepair 19 faulty Stateflow models) that is not bundled.",
+  "id": "llm-flowrepair-elevator-3",
+  "name": "elevator_3",
+  "paper_ids": [
+    "llm-flowrepair"
+  ],
+  "description": "elevator_3 task evaluated in Hype Meets Reality: Large Language Models as Mutators in Search-based Automated Program Repair of Simulink-Stateflow Models.",
+  "benchmark": "FlowRepair 19 faulty Stateflow models",
+  "paper_metric": "plausible and valid patch counts across five runs",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2608.19347",
+      "type": "paper",
+      "locator": "Section IV-B; Tables II-IV"
+    }
+  ],
+  "limitations": [
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "llm-flowrepair",
+      "title": "Hype Meets Reality: Large Language Models as Mutators in Search-based Automated Program Repair of Simulink-Stateflow Models",
+      "url": "https://arxiv.org/pdf/2608.19347"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

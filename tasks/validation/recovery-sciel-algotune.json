@@ -1,0 +1,1344 @@
+{
+  "schema_version": "1.0",
+  "evidence_kind": "Eight exact AlgoTune seed evaluations through SCiEL",
+  "historical_recovery_check": true,
+  "authoritative_current_run": "Use the final recovery campaign report for current manifest/runtime fingerprints.",
+  "source_sha256": "d767a55a4b8735254bf34c07c8a823d49498461bd9bc276a5486138245eef768",
+  "path_sanitization": {
+    "${REPOSITORY}": "repository root",
+    "${SCIEL_ROOT}": "external pinned SCiEL source",
+    "${WORKSPACE}": "task workspace",
+    "${HOME}": "user home directory",
+    "${TEMP}": "temporary directory"
+  },
+  "results": [
+    {
+      "task_id": "sciel-math-algotune-affine-transform-2d",
+      "mode": "sciel_evaluator_smoke",
+      "score": 1.0113074927096821,
+      "valid": null,
+      "sciel_exercised": true,
+      "sciel_source": {
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "tracked_modified": false,
+        "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+      },
+      "llm_calls_requested": false,
+      "logs": {
+        "stdout": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-affine-transform-2d/evaluator_smoke.stdout.log",
+        "stderr": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-affine-transform-2d/evaluator_smoke.stderr.log"
+      },
+      "status": "unverified",
+      "metric": "speedup_score",
+      "direction": "maximize",
+      "combined_score": 1.0113074927096821,
+      "sciel_metrics": {
+        "combined_score": 1.0113074927096821,
+        "evaluation_failed": 0.0,
+        "validity_known": 0.0,
+        "original_score": 1.0113074927096821
+      },
+      "evolution_exercised": false,
+      "mutations": 0,
+      "task_result": {
+        "schema_version": "1.0",
+        "task_id": "sciel-math-algotune-affine-transform-2d",
+        "mode": "upstream",
+        "status": "completed",
+        "valid": null,
+        "score": 1.0113074927096821,
+        "source_type": "git",
+        "repository": "https://github.com/luciferkonn/SCiEL",
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "metric": "speedup_score",
+        "direction": "maximize",
+        "candidate_sha256": "23f91e5ce840f88253c623fbe97bbcdad9efec48910984fd0c725a824b5f06b8",
+        "evaluator_sha256": "46f900814b53bfb66ab3791d7d129736df09461fbcba5398fbeda605a8573714",
+        "evaluator_scope": "repository",
+        "implementation_label": "Official SCiEL evaluator with pinned AlgoTune registry discovery",
+        "repository_asset_sha256": {
+          "adapters/recovered/sciel_algotune/sources.json": "b2cce5f39130d796ca8f7c3c8b23f3b9b298f7b32ff28597f83fe4490587f060",
+          "adapters/recovered/sciel_algotune/vendor/LICENSE": "06027a4230b1df2d71ce945b081fb814335d13b98b5509e453f15f60ab55d90d",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/__init__.py": "d9f2d2b4359440585d5c2741bb2f7f8dfb3a8b366b171719950c392d03e93e0b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/base.py": "f5a6cc1448b7e20b16c810f51d6b7d3fc72a078a64640d9b5508002063e4f852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_cmplx_scipy_fftpack/fft_cmplx_scipy_fftpack.py": "0881c9dc4daca33855a8740c4f37e6256a8a96d5f26fde6b8f45274f9ad06852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_convolution/fft_convolution.py": "37fb937accc0acbb1b3064b4d8b8e38721a84cefd00f35ae5b2b18c81931aa99",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/affine_transform_2d/affine_transform_2d.py": "3d18b2fc9510ee553bdeff3a77695612d0eebb459a5e20f390552d1117109f3c",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/eigenvectors_complex/eigenvectors_complex.py": "53918617d7d167203030c0fd88f527347baae36286f6591fe6fddc38646381f5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/convolve2d_full_fill/convolve2d_full_fill.py": "7e6dd7a54db13c3f432e7c653a9429bb59277c6fe9e4b77b60ae4e5bb75911e6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/lu_factorization/lu_factorization.py": "fbfc1888abed01adaeda466c1c5e649f7d415da37b0ac18950e3fd487bc1698f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/psd_cone_projection/psd_cone_projection.py": "4aa87a75a1d1ab8dadf16e51b081122e7ed5f88f8a64ad272295be5fbf7a323b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/polynomial_real/polynomial_real.py": "964bfa9fd415bf3eb9914676992c6f658f375961c1b559672289fbc9d3c8615e",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml": "a3a6ef799524d8d1c70503edf1c69a2d4e6016da3a67eb34895aaa81bbfb6739",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/loader.py": "798f77515fb3889030ff3b63d070310b4ad42e870999c85b9e2a9788d0d885d6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/timing_config.py": "0a7fd8fc20631f4293cde64150f6bce9b4885f06da23963990f7d32860b01a53",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/error_utils.py": "ac6edeff4f56ee601abd564d5a46f0568c4ecdad14033ee9d4f7450b59019a59",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/isolated_benchmark.py": "b9eb48eb036860c76f87cf9103ca4502408e6ad35a38a9c692376166ffaeba49",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/casting.py": "68ace78c3e820ced43193abc1b6cd5ebc147c9ec13a936a6c781bb1bf6639390",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/streaming_json.py": "69b8c4da9745a3fe25af943975cea33293c35c2a43e0c6fea22f88c3269843c4",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/robust_tempdir.py": "2f80c1951307d4e37d55a9129eedf79500e02a586201b06668138b2e33b56233",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/utils.py": "4c604eac9cc7d3bd5f2df1d90a936865e1f57b423669c37199d20f98151f5e8a",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/multiprocessing_utils.py": "006b690e0cc6fec1176bab7ccb8b1da8d7e7a3cb437732f5912a7eddc7fbe2c5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/hf_datasets.py": "ea0f64be967ce6880fb6fc5a3d5b4bf02a537b0435754662ece4b5ac5bddc66f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/serialization.py": "de2603e0893a29c9c5255d1afc5bd1948d900f56892c0807a33b4c9f70372646"
+        },
+        "started_at": "2026-09-19T12:29:37.220065+00:00",
+        "actual_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "working_tree_modified": false,
+        "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "upstream_result": {
+          "correctness_score": 1.0,
+          "performance_score": 0.6880495163993597,
+          "reliability_score": 1.0,
+          "combined_score": 0.9376099032798719,
+          "speedup_score": 1.0113074927096821,
+          "success_rate": 1.0,
+          "baseline_comparison": {
+            "mean_speedup": 1.0113074927096821,
+            "median_speedup": 1.0240476724987995,
+            "success_rate": 1.0,
+            "baseline_times": [
+              0.42974998359568417,
+              0.4841249901801348,
+              0.4304169851820916,
+              0.47733300016261637,
+              0.47195798833854496
+            ],
+            "evolved_times": [
+              0.4394160059746355,
+              0.4647919849958271,
+              0.41649999911896884,
+              0.4873340076301247,
+              0.4608750168699771
+            ],
+            "speedups": [
+              0.9780025710317224,
+              1.0415949624959244,
+              1.0334141322750579,
+              0.9794781252469069,
+              1.0240476724987995
+            ],
+            "num_valid_solutions": 5,
+            "num_total_trials": 5
+          },
+          "dependency_provenance": {
+            "repository": "https://github.com/oripress/AlgoTune",
+            "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+            "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+          }
+        },
+        "diagnostic_tail": "Attempting to load config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nSuccessfully loaded config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nWarning: Could not find AlgoTune installation\nWarning: Could not setup AlgoTune paths\nSuccessfully loaded affine_transform_2d task from registry\n",
+        "finished_at": "2026-09-19T12:29:37.813453+00:00"
+      },
+      "upstream_result": {
+        "correctness_score": 1.0,
+        "performance_score": 0.6880495163993597,
+        "reliability_score": 1.0,
+        "combined_score": 0.9376099032798719,
+        "speedup_score": 1.0113074927096821,
+        "success_rate": 1.0,
+        "baseline_comparison": {
+          "mean_speedup": 1.0113074927096821,
+          "median_speedup": 1.0240476724987995,
+          "success_rate": 1.0,
+          "baseline_times": [
+            0.42974998359568417,
+            0.4841249901801348,
+            0.4304169851820916,
+            0.47733300016261637,
+            0.47195798833854496
+          ],
+          "evolved_times": [
+            0.4394160059746355,
+            0.4647919849958271,
+            0.41649999911896884,
+            0.4873340076301247,
+            0.4608750168699771
+          ],
+          "speedups": [
+            0.9780025710317224,
+            1.0415949624959244,
+            1.0334141322750579,
+            0.9794781252469069,
+            1.0240476724987995
+          ],
+          "num_valid_solutions": 5,
+          "num_total_trials": 5
+        },
+        "dependency_provenance": {
+          "repository": "https://github.com/oripress/AlgoTune",
+          "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+          "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+        }
+      },
+      "engine_evaluator_file": "engine/openevolve/evaluator.py",
+      "python_version": "3.12.14",
+      "exit_code": 0
+    },
+    {
+      "task_id": "sciel-math-algotune-convolve2d-full-fill",
+      "mode": "sciel_evaluator_smoke",
+      "score": 1.0023041251990914,
+      "valid": null,
+      "sciel_exercised": true,
+      "sciel_source": {
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "tracked_modified": false,
+        "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+      },
+      "llm_calls_requested": false,
+      "logs": {
+        "stdout": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-convolve2d-full-fill/evaluator_smoke.stdout.log",
+        "stderr": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-convolve2d-full-fill/evaluator_smoke.stderr.log"
+      },
+      "status": "unverified",
+      "metric": "speedup_score",
+      "direction": "maximize",
+      "combined_score": 1.0023041251990914,
+      "sciel_metrics": {
+        "combined_score": 1.0023041251990914,
+        "evaluation_failed": 0.0,
+        "validity_known": 0.0,
+        "original_score": 1.0023041251990914
+      },
+      "evolution_exercised": false,
+      "mutations": 0,
+      "task_result": {
+        "schema_version": "1.0",
+        "task_id": "sciel-math-algotune-convolve2d-full-fill",
+        "mode": "upstream",
+        "status": "completed",
+        "valid": null,
+        "score": 1.0023041251990914,
+        "source_type": "git",
+        "repository": "https://github.com/luciferkonn/SCiEL",
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "metric": "speedup_score",
+        "direction": "maximize",
+        "candidate_sha256": "e264c8e2d3264bfeba7f9d1273f6d56a39fe5893be309bfa50a7b5e9cbda7cf1",
+        "evaluator_sha256": "46f900814b53bfb66ab3791d7d129736df09461fbcba5398fbeda605a8573714",
+        "evaluator_scope": "repository",
+        "implementation_label": "Official SCiEL evaluator with pinned AlgoTune registry discovery",
+        "repository_asset_sha256": {
+          "adapters/recovered/sciel_algotune/sources.json": "b2cce5f39130d796ca8f7c3c8b23f3b9b298f7b32ff28597f83fe4490587f060",
+          "adapters/recovered/sciel_algotune/vendor/LICENSE": "06027a4230b1df2d71ce945b081fb814335d13b98b5509e453f15f60ab55d90d",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/__init__.py": "d9f2d2b4359440585d5c2741bb2f7f8dfb3a8b366b171719950c392d03e93e0b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/base.py": "f5a6cc1448b7e20b16c810f51d6b7d3fc72a078a64640d9b5508002063e4f852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_cmplx_scipy_fftpack/fft_cmplx_scipy_fftpack.py": "0881c9dc4daca33855a8740c4f37e6256a8a96d5f26fde6b8f45274f9ad06852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_convolution/fft_convolution.py": "37fb937accc0acbb1b3064b4d8b8e38721a84cefd00f35ae5b2b18c81931aa99",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/affine_transform_2d/affine_transform_2d.py": "3d18b2fc9510ee553bdeff3a77695612d0eebb459a5e20f390552d1117109f3c",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/eigenvectors_complex/eigenvectors_complex.py": "53918617d7d167203030c0fd88f527347baae36286f6591fe6fddc38646381f5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/convolve2d_full_fill/convolve2d_full_fill.py": "7e6dd7a54db13c3f432e7c653a9429bb59277c6fe9e4b77b60ae4e5bb75911e6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/lu_factorization/lu_factorization.py": "fbfc1888abed01adaeda466c1c5e649f7d415da37b0ac18950e3fd487bc1698f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/psd_cone_projection/psd_cone_projection.py": "4aa87a75a1d1ab8dadf16e51b081122e7ed5f88f8a64ad272295be5fbf7a323b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/polynomial_real/polynomial_real.py": "964bfa9fd415bf3eb9914676992c6f658f375961c1b559672289fbc9d3c8615e",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml": "a3a6ef799524d8d1c70503edf1c69a2d4e6016da3a67eb34895aaa81bbfb6739",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/loader.py": "798f77515fb3889030ff3b63d070310b4ad42e870999c85b9e2a9788d0d885d6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/timing_config.py": "0a7fd8fc20631f4293cde64150f6bce9b4885f06da23963990f7d32860b01a53",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/error_utils.py": "ac6edeff4f56ee601abd564d5a46f0568c4ecdad14033ee9d4f7450b59019a59",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/isolated_benchmark.py": "b9eb48eb036860c76f87cf9103ca4502408e6ad35a38a9c692376166ffaeba49",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/casting.py": "68ace78c3e820ced43193abc1b6cd5ebc147c9ec13a936a6c781bb1bf6639390",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/streaming_json.py": "69b8c4da9745a3fe25af943975cea33293c35c2a43e0c6fea22f88c3269843c4",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/robust_tempdir.py": "2f80c1951307d4e37d55a9129eedf79500e02a586201b06668138b2e33b56233",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/utils.py": "4c604eac9cc7d3bd5f2df1d90a936865e1f57b423669c37199d20f98151f5e8a",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/multiprocessing_utils.py": "006b690e0cc6fec1176bab7ccb8b1da8d7e7a3cb437732f5912a7eddc7fbe2c5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/hf_datasets.py": "ea0f64be967ce6880fb6fc5a3d5b4bf02a537b0435754662ece4b5ac5bddc66f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/serialization.py": "de2603e0893a29c9c5255d1afc5bd1948d900f56892c0807a33b4c9f70372646"
+        },
+        "started_at": "2026-09-19T12:29:37.220064+00:00",
+        "actual_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "working_tree_modified": false,
+        "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "upstream_result": {
+          "correctness_score": 1.0,
+          "performance_score": 0.03169745226615608,
+          "reliability_score": 1.0,
+          "combined_score": 0.8063394904532312,
+          "speedup_score": 1.0023041251990914,
+          "success_rate": 1.0,
+          "baseline_comparison": {
+            "mean_speedup": 1.0023041251990914,
+            "median_speedup": 1.0016956535798072,
+            "success_rate": 1.0,
+            "baseline_times": [
+              30.72329200222157,
+              30.41020900127478,
+              30.697375012096018,
+              30.644790997030213,
+              30.618707998655736
+            ],
+            "evolved_times": [
+              30.38362500956282,
+              30.410957988351583,
+              30.859999998938292,
+              30.592916009481996,
+              30.498541018459946
+            ],
+            "speedups": [
+              1.0111792780667825,
+              0.9999753711449311,
+              0.9947302337379174,
+              1.0016956535798072,
+              1.0039400894660193
+            ],
+            "num_valid_solutions": 5,
+            "num_total_trials": 5
+          },
+          "dependency_provenance": {
+            "repository": "https://github.com/oripress/AlgoTune",
+            "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+            "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+          }
+        },
+        "diagnostic_tail": "Attempting to load config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nSuccessfully loaded config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nWarning: Could not find AlgoTune installation\nWarning: Could not setup AlgoTune paths\nSuccessfully loaded convolve2d_full_fill task from registry\n",
+        "finished_at": "2026-09-19T12:29:39.623571+00:00"
+      },
+      "upstream_result": {
+        "correctness_score": 1.0,
+        "performance_score": 0.03169745226615608,
+        "reliability_score": 1.0,
+        "combined_score": 0.8063394904532312,
+        "speedup_score": 1.0023041251990914,
+        "success_rate": 1.0,
+        "baseline_comparison": {
+          "mean_speedup": 1.0023041251990914,
+          "median_speedup": 1.0016956535798072,
+          "success_rate": 1.0,
+          "baseline_times": [
+            30.72329200222157,
+            30.41020900127478,
+            30.697375012096018,
+            30.644790997030213,
+            30.618707998655736
+          ],
+          "evolved_times": [
+            30.38362500956282,
+            30.410957988351583,
+            30.859999998938292,
+            30.592916009481996,
+            30.498541018459946
+          ],
+          "speedups": [
+            1.0111792780667825,
+            0.9999753711449311,
+            0.9947302337379174,
+            1.0016956535798072,
+            1.0039400894660193
+          ],
+          "num_valid_solutions": 5,
+          "num_total_trials": 5
+        },
+        "dependency_provenance": {
+          "repository": "https://github.com/oripress/AlgoTune",
+          "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+          "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+        }
+      },
+      "engine_evaluator_file": "engine/openevolve/evaluator.py",
+      "python_version": "3.12.14",
+      "exit_code": 0
+    },
+    {
+      "task_id": "sciel-math-algotune-eigenvectors-complex",
+      "mode": "sciel_evaluator_smoke",
+      "score": 1.0315271322027288,
+      "valid": null,
+      "sciel_exercised": true,
+      "sciel_source": {
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "tracked_modified": false,
+        "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+      },
+      "llm_calls_requested": false,
+      "logs": {
+        "stdout": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-eigenvectors-complex/evaluator_smoke.stdout.log",
+        "stderr": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-eigenvectors-complex/evaluator_smoke.stderr.log"
+      },
+      "status": "unverified",
+      "metric": "speedup_score",
+      "direction": "maximize",
+      "combined_score": 1.0315271322027288,
+      "sciel_metrics": {
+        "combined_score": 1.0315271322027288,
+        "evaluation_failed": 0.0,
+        "validity_known": 0.0,
+        "original_score": 1.0315271322027288
+      },
+      "evolution_exercised": false,
+      "mutations": 0,
+      "task_result": {
+        "schema_version": "1.0",
+        "task_id": "sciel-math-algotune-eigenvectors-complex",
+        "mode": "upstream",
+        "status": "completed",
+        "valid": null,
+        "score": 1.0315271322027288,
+        "source_type": "git",
+        "repository": "https://github.com/luciferkonn/SCiEL",
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "metric": "speedup_score",
+        "direction": "maximize",
+        "candidate_sha256": "4a795f6877c9433435867267a7caa9db1470930e3566fdcbf21af2df097588b0",
+        "evaluator_sha256": "46f900814b53bfb66ab3791d7d129736df09461fbcba5398fbeda605a8573714",
+        "evaluator_scope": "repository",
+        "implementation_label": "Official SCiEL evaluator with pinned AlgoTune registry discovery",
+        "repository_asset_sha256": {
+          "adapters/recovered/sciel_algotune/sources.json": "b2cce5f39130d796ca8f7c3c8b23f3b9b298f7b32ff28597f83fe4490587f060",
+          "adapters/recovered/sciel_algotune/vendor/LICENSE": "06027a4230b1df2d71ce945b081fb814335d13b98b5509e453f15f60ab55d90d",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/__init__.py": "d9f2d2b4359440585d5c2741bb2f7f8dfb3a8b366b171719950c392d03e93e0b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/base.py": "f5a6cc1448b7e20b16c810f51d6b7d3fc72a078a64640d9b5508002063e4f852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_cmplx_scipy_fftpack/fft_cmplx_scipy_fftpack.py": "0881c9dc4daca33855a8740c4f37e6256a8a96d5f26fde6b8f45274f9ad06852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_convolution/fft_convolution.py": "37fb937accc0acbb1b3064b4d8b8e38721a84cefd00f35ae5b2b18c81931aa99",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/affine_transform_2d/affine_transform_2d.py": "3d18b2fc9510ee553bdeff3a77695612d0eebb459a5e20f390552d1117109f3c",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/eigenvectors_complex/eigenvectors_complex.py": "53918617d7d167203030c0fd88f527347baae36286f6591fe6fddc38646381f5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/convolve2d_full_fill/convolve2d_full_fill.py": "7e6dd7a54db13c3f432e7c653a9429bb59277c6fe9e4b77b60ae4e5bb75911e6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/lu_factorization/lu_factorization.py": "fbfc1888abed01adaeda466c1c5e649f7d415da37b0ac18950e3fd487bc1698f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/psd_cone_projection/psd_cone_projection.py": "4aa87a75a1d1ab8dadf16e51b081122e7ed5f88f8a64ad272295be5fbf7a323b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/polynomial_real/polynomial_real.py": "964bfa9fd415bf3eb9914676992c6f658f375961c1b559672289fbc9d3c8615e",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml": "a3a6ef799524d8d1c70503edf1c69a2d4e6016da3a67eb34895aaa81bbfb6739",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/loader.py": "798f77515fb3889030ff3b63d070310b4ad42e870999c85b9e2a9788d0d885d6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/timing_config.py": "0a7fd8fc20631f4293cde64150f6bce9b4885f06da23963990f7d32860b01a53",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/error_utils.py": "ac6edeff4f56ee601abd564d5a46f0568c4ecdad14033ee9d4f7450b59019a59",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/isolated_benchmark.py": "b9eb48eb036860c76f87cf9103ca4502408e6ad35a38a9c692376166ffaeba49",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/casting.py": "68ace78c3e820ced43193abc1b6cd5ebc147c9ec13a936a6c781bb1bf6639390",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/streaming_json.py": "69b8c4da9745a3fe25af943975cea33293c35c2a43e0c6fea22f88c3269843c4",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/robust_tempdir.py": "2f80c1951307d4e37d55a9129eedf79500e02a586201b06668138b2e33b56233",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/utils.py": "4c604eac9cc7d3bd5f2df1d90a936865e1f57b423669c37199d20f98151f5e8a",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/multiprocessing_utils.py": "006b690e0cc6fec1176bab7ccb8b1da8d7e7a3cb437732f5912a7eddc7fbe2c5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/hf_datasets.py": "ea0f64be967ce6880fb6fc5a3d5b4bf02a537b0435754662ece4b5ac5bddc66f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/serialization.py": "de2603e0893a29c9c5255d1afc5bd1948d900f56892c0807a33b4c9f70372646"
+        },
+        "started_at": "2026-09-19T12:29:38.271156+00:00",
+        "actual_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "working_tree_modified": false,
+        "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "upstream_result": {
+          "correctness_score": 1.0,
+          "performance_score": 0.7986780514271132,
+          "reliability_score": 1.0,
+          "combined_score": 0.9597356102854225,
+          "speedup_score": 1.0315271322027288,
+          "success_rate": 1.0,
+          "baseline_comparison": {
+            "mean_speedup": 1.0315271322027288,
+            "median_speedup": 1.031889484245257,
+            "success_rate": 1.0,
+            "baseline_times": [
+              0.26454200269654393,
+              0.2737079921644181,
+              0.24245900567620993,
+              0.27099999715574086,
+              0.2486669982317835
+            ],
+            "evolved_times": [
+              0.24341599782928824,
+              0.26341702323406935,
+              0.24029199266806245,
+              0.26262502069585025,
+              0.2509579935576767
+            ],
+            "speedups": [
+              1.0867897141340386,
+              1.0390672129082725,
+              1.0090182489399093,
+              1.031889484245257,
+              0.9908710007861669
+            ],
+            "num_valid_solutions": 5,
+            "num_total_trials": 5
+          },
+          "dependency_provenance": {
+            "repository": "https://github.com/oripress/AlgoTune",
+            "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+            "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+          }
+        },
+        "diagnostic_tail": "Attempting to load config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nSuccessfully loaded config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nWarning: Could not find AlgoTune installation\nWarning: Could not setup AlgoTune paths\nSuccessfully loaded eigenvectors_complex task from registry\n",
+        "finished_at": "2026-09-19T12:29:38.686076+00:00"
+      },
+      "upstream_result": {
+        "correctness_score": 1.0,
+        "performance_score": 0.7986780514271132,
+        "reliability_score": 1.0,
+        "combined_score": 0.9597356102854225,
+        "speedup_score": 1.0315271322027288,
+        "success_rate": 1.0,
+        "baseline_comparison": {
+          "mean_speedup": 1.0315271322027288,
+          "median_speedup": 1.031889484245257,
+          "success_rate": 1.0,
+          "baseline_times": [
+            0.26454200269654393,
+            0.2737079921644181,
+            0.24245900567620993,
+            0.27099999715574086,
+            0.2486669982317835
+          ],
+          "evolved_times": [
+            0.24341599782928824,
+            0.26341702323406935,
+            0.24029199266806245,
+            0.26262502069585025,
+            0.2509579935576767
+          ],
+          "speedups": [
+            1.0867897141340386,
+            1.0390672129082725,
+            1.0090182489399093,
+            1.031889484245257,
+            0.9908710007861669
+          ],
+          "num_valid_solutions": 5,
+          "num_total_trials": 5
+        },
+        "dependency_provenance": {
+          "repository": "https://github.com/oripress/AlgoTune",
+          "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+          "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+        }
+      },
+      "engine_evaluator_file": "engine/openevolve/evaluator.py",
+      "python_version": "3.12.14",
+      "exit_code": 0
+    },
+    {
+      "task_id": "sciel-math-algotune-fft-cmplx-scipy-fftpack",
+      "mode": "sciel_evaluator_smoke",
+      "score": 1.1821177587729685,
+      "valid": null,
+      "sciel_exercised": true,
+      "sciel_source": {
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "tracked_modified": false,
+        "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+      },
+      "llm_calls_requested": false,
+      "logs": {
+        "stdout": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-fft-cmplx-scipy-fftpack/evaluator_smoke.stdout.log",
+        "stderr": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-fft-cmplx-scipy-fftpack/evaluator_smoke.stderr.log"
+      },
+      "status": "unverified",
+      "metric": "speedup_score",
+      "direction": "maximize",
+      "combined_score": 1.1821177587729685,
+      "sciel_metrics": {
+        "combined_score": 1.1821177587729685,
+        "evaluation_failed": 0.0,
+        "validity_known": 0.0,
+        "original_score": 1.1821177587729685
+      },
+      "evolution_exercised": false,
+      "mutations": 0,
+      "task_result": {
+        "schema_version": "1.0",
+        "task_id": "sciel-math-algotune-fft-cmplx-scipy-fftpack",
+        "mode": "upstream",
+        "status": "completed",
+        "valid": null,
+        "score": 1.1821177587729685,
+        "source_type": "git",
+        "repository": "https://github.com/luciferkonn/SCiEL",
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "metric": "speedup_score",
+        "direction": "maximize",
+        "candidate_sha256": "2e2678bf34ceac9fb0b32d11bef6d73c7174ef66cb6ed9e6cf18bd98789e32be",
+        "evaluator_sha256": "46f900814b53bfb66ab3791d7d129736df09461fbcba5398fbeda605a8573714",
+        "evaluator_scope": "repository",
+        "implementation_label": "Official SCiEL evaluator with pinned AlgoTune registry discovery",
+        "repository_asset_sha256": {
+          "adapters/recovered/sciel_algotune/sources.json": "b2cce5f39130d796ca8f7c3c8b23f3b9b298f7b32ff28597f83fe4490587f060",
+          "adapters/recovered/sciel_algotune/vendor/LICENSE": "06027a4230b1df2d71ce945b081fb814335d13b98b5509e453f15f60ab55d90d",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/__init__.py": "d9f2d2b4359440585d5c2741bb2f7f8dfb3a8b366b171719950c392d03e93e0b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/base.py": "f5a6cc1448b7e20b16c810f51d6b7d3fc72a078a64640d9b5508002063e4f852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_cmplx_scipy_fftpack/fft_cmplx_scipy_fftpack.py": "0881c9dc4daca33855a8740c4f37e6256a8a96d5f26fde6b8f45274f9ad06852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_convolution/fft_convolution.py": "37fb937accc0acbb1b3064b4d8b8e38721a84cefd00f35ae5b2b18c81931aa99",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/affine_transform_2d/affine_transform_2d.py": "3d18b2fc9510ee553bdeff3a77695612d0eebb459a5e20f390552d1117109f3c",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/eigenvectors_complex/eigenvectors_complex.py": "53918617d7d167203030c0fd88f527347baae36286f6591fe6fddc38646381f5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/convolve2d_full_fill/convolve2d_full_fill.py": "7e6dd7a54db13c3f432e7c653a9429bb59277c6fe9e4b77b60ae4e5bb75911e6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/lu_factorization/lu_factorization.py": "fbfc1888abed01adaeda466c1c5e649f7d415da37b0ac18950e3fd487bc1698f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/psd_cone_projection/psd_cone_projection.py": "4aa87a75a1d1ab8dadf16e51b081122e7ed5f88f8a64ad272295be5fbf7a323b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/polynomial_real/polynomial_real.py": "964bfa9fd415bf3eb9914676992c6f658f375961c1b559672289fbc9d3c8615e",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml": "a3a6ef799524d8d1c70503edf1c69a2d4e6016da3a67eb34895aaa81bbfb6739",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/loader.py": "798f77515fb3889030ff3b63d070310b4ad42e870999c85b9e2a9788d0d885d6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/timing_config.py": "0a7fd8fc20631f4293cde64150f6bce9b4885f06da23963990f7d32860b01a53",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/error_utils.py": "ac6edeff4f56ee601abd564d5a46f0568c4ecdad14033ee9d4f7450b59019a59",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/isolated_benchmark.py": "b9eb48eb036860c76f87cf9103ca4502408e6ad35a38a9c692376166ffaeba49",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/casting.py": "68ace78c3e820ced43193abc1b6cd5ebc147c9ec13a936a6c781bb1bf6639390",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/streaming_json.py": "69b8c4da9745a3fe25af943975cea33293c35c2a43e0c6fea22f88c3269843c4",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/robust_tempdir.py": "2f80c1951307d4e37d55a9129eedf79500e02a586201b06668138b2e33b56233",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/utils.py": "4c604eac9cc7d3bd5f2df1d90a936865e1f57b423669c37199d20f98151f5e8a",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/multiprocessing_utils.py": "006b690e0cc6fec1176bab7ccb8b1da8d7e7a3cb437732f5912a7eddc7fbe2c5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/hf_datasets.py": "ea0f64be967ce6880fb6fc5a3d5b4bf02a537b0435754662ece4b5ac5bddc66f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/serialization.py": "de2603e0893a29c9c5255d1afc5bd1948d900f56892c0807a33b4c9f70372646"
+        },
+        "started_at": "2026-09-19T12:29:39.146753+00:00",
+        "actual_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "working_tree_modified": false,
+        "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "upstream_result": {
+          "correctness_score": 1.0,
+          "performance_score": 0.9140667308283936,
+          "reliability_score": 1.0,
+          "combined_score": 0.9828133461656786,
+          "speedup_score": 1.1821177587729685,
+          "success_rate": 1.0,
+          "baseline_comparison": {
+            "mean_speedup": 1.1821177587729685,
+            "median_speedup": 1.162971925771547,
+            "success_rate": 1.0,
+            "baseline_times": [
+              0.13183298869989812,
+              0.10733300587162375,
+              0.12962499749846756,
+              0.0917089928407222,
+              0.09720900561660528
+            ],
+            "evolved_times": [
+              0.10508301784284413,
+              0.09229200077243149,
+              0.0934590061660856,
+              0.08908301242627203,
+              0.09029201464727521
+            ],
+            "speedups": [
+              1.254560360048468,
+              1.162971925771547,
+              1.3869717089448987,
+              1.0294779031706356,
+              1.0766068959292936
+            ],
+            "num_valid_solutions": 5,
+            "num_total_trials": 5
+          },
+          "dependency_provenance": {
+            "repository": "https://github.com/oripress/AlgoTune",
+            "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+            "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+          }
+        },
+        "diagnostic_tail": "Attempting to load config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nSuccessfully loaded config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nWarning: Could not find AlgoTune installation\nWarning: Could not setup AlgoTune paths\nSuccessfully loaded fft_cmplx_scipy_fftpack task from registry\n",
+        "finished_at": "2026-09-19T12:29:39.648965+00:00"
+      },
+      "upstream_result": {
+        "correctness_score": 1.0,
+        "performance_score": 0.9140667308283936,
+        "reliability_score": 1.0,
+        "combined_score": 0.9828133461656786,
+        "speedup_score": 1.1821177587729685,
+        "success_rate": 1.0,
+        "baseline_comparison": {
+          "mean_speedup": 1.1821177587729685,
+          "median_speedup": 1.162971925771547,
+          "success_rate": 1.0,
+          "baseline_times": [
+            0.13183298869989812,
+            0.10733300587162375,
+            0.12962499749846756,
+            0.0917089928407222,
+            0.09720900561660528
+          ],
+          "evolved_times": [
+            0.10508301784284413,
+            0.09229200077243149,
+            0.0934590061660856,
+            0.08908301242627203,
+            0.09029201464727521
+          ],
+          "speedups": [
+            1.254560360048468,
+            1.162971925771547,
+            1.3869717089448987,
+            1.0294779031706356,
+            1.0766068959292936
+          ],
+          "num_valid_solutions": 5,
+          "num_total_trials": 5
+        },
+        "dependency_provenance": {
+          "repository": "https://github.com/oripress/AlgoTune",
+          "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+          "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+        }
+      },
+      "engine_evaluator_file": "engine/openevolve/evaluator.py",
+      "python_version": "3.12.14",
+      "exit_code": 0
+    },
+    {
+      "task_id": "sciel-math-algotune-fft-convolution",
+      "mode": "sciel_evaluator_smoke",
+      "score": 1.1184797126395067,
+      "valid": null,
+      "sciel_exercised": true,
+      "sciel_source": {
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "tracked_modified": false,
+        "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+      },
+      "llm_calls_requested": false,
+      "logs": {
+        "stdout": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-fft-convolution/evaluator_smoke.stdout.log",
+        "stderr": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-fft-convolution/evaluator_smoke.stderr.log"
+      },
+      "status": "unverified",
+      "metric": "speedup_score",
+      "direction": "maximize",
+      "combined_score": 1.1184797126395067,
+      "sciel_metrics": {
+        "combined_score": 1.1184797126395067,
+        "evaluation_failed": 0.0,
+        "validity_known": 0.0,
+        "original_score": 1.1184797126395067
+      },
+      "evolution_exercised": false,
+      "mutations": 0,
+      "task_result": {
+        "schema_version": "1.0",
+        "task_id": "sciel-math-algotune-fft-convolution",
+        "mode": "upstream",
+        "status": "completed",
+        "valid": null,
+        "score": 1.1184797126395067,
+        "source_type": "git",
+        "repository": "https://github.com/luciferkonn/SCiEL",
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "metric": "speedup_score",
+        "direction": "maximize",
+        "candidate_sha256": "32c138326b7aeba1e32ae3d9cd6403133ecb87f8107d02500ff81bd9632c98b8",
+        "evaluator_sha256": "46f900814b53bfb66ab3791d7d129736df09461fbcba5398fbeda605a8573714",
+        "evaluator_scope": "repository",
+        "implementation_label": "Official SCiEL evaluator with pinned AlgoTune registry discovery",
+        "repository_asset_sha256": {
+          "adapters/recovered/sciel_algotune/sources.json": "b2cce5f39130d796ca8f7c3c8b23f3b9b298f7b32ff28597f83fe4490587f060",
+          "adapters/recovered/sciel_algotune/vendor/LICENSE": "06027a4230b1df2d71ce945b081fb814335d13b98b5509e453f15f60ab55d90d",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/__init__.py": "d9f2d2b4359440585d5c2741bb2f7f8dfb3a8b366b171719950c392d03e93e0b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/base.py": "f5a6cc1448b7e20b16c810f51d6b7d3fc72a078a64640d9b5508002063e4f852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_cmplx_scipy_fftpack/fft_cmplx_scipy_fftpack.py": "0881c9dc4daca33855a8740c4f37e6256a8a96d5f26fde6b8f45274f9ad06852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_convolution/fft_convolution.py": "37fb937accc0acbb1b3064b4d8b8e38721a84cefd00f35ae5b2b18c81931aa99",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/affine_transform_2d/affine_transform_2d.py": "3d18b2fc9510ee553bdeff3a77695612d0eebb459a5e20f390552d1117109f3c",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/eigenvectors_complex/eigenvectors_complex.py": "53918617d7d167203030c0fd88f527347baae36286f6591fe6fddc38646381f5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/convolve2d_full_fill/convolve2d_full_fill.py": "7e6dd7a54db13c3f432e7c653a9429bb59277c6fe9e4b77b60ae4e5bb75911e6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/lu_factorization/lu_factorization.py": "fbfc1888abed01adaeda466c1c5e649f7d415da37b0ac18950e3fd487bc1698f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/psd_cone_projection/psd_cone_projection.py": "4aa87a75a1d1ab8dadf16e51b081122e7ed5f88f8a64ad272295be5fbf7a323b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/polynomial_real/polynomial_real.py": "964bfa9fd415bf3eb9914676992c6f658f375961c1b559672289fbc9d3c8615e",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml": "a3a6ef799524d8d1c70503edf1c69a2d4e6016da3a67eb34895aaa81bbfb6739",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/loader.py": "798f77515fb3889030ff3b63d070310b4ad42e870999c85b9e2a9788d0d885d6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/timing_config.py": "0a7fd8fc20631f4293cde64150f6bce9b4885f06da23963990f7d32860b01a53",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/error_utils.py": "ac6edeff4f56ee601abd564d5a46f0568c4ecdad14033ee9d4f7450b59019a59",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/isolated_benchmark.py": "b9eb48eb036860c76f87cf9103ca4502408e6ad35a38a9c692376166ffaeba49",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/casting.py": "68ace78c3e820ced43193abc1b6cd5ebc147c9ec13a936a6c781bb1bf6639390",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/streaming_json.py": "69b8c4da9745a3fe25af943975cea33293c35c2a43e0c6fea22f88c3269843c4",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/robust_tempdir.py": "2f80c1951307d4e37d55a9129eedf79500e02a586201b06668138b2e33b56233",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/utils.py": "4c604eac9cc7d3bd5f2df1d90a936865e1f57b423669c37199d20f98151f5e8a",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/multiprocessing_utils.py": "006b690e0cc6fec1176bab7ccb8b1da8d7e7a3cb437732f5912a7eddc7fbe2c5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/hf_datasets.py": "ea0f64be967ce6880fb6fc5a3d5b4bf02a537b0435754662ece4b5ac5bddc66f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/serialization.py": "de2603e0893a29c9c5255d1afc5bd1948d900f56892c0807a33b4c9f70372646"
+        },
+        "started_at": "2026-09-19T12:29:40.092350+00:00",
+        "actual_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "working_tree_modified": false,
+        "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "upstream_result": {
+          "correctness_score": 1.0,
+          "performance_score": 0.9113894418020155,
+          "reliability_score": 1.0,
+          "combined_score": 0.9822778883604031,
+          "speedup_score": 1.1184797126395067,
+          "success_rate": 1.0,
+          "baseline_comparison": {
+            "mean_speedup": 1.1184797126395067,
+            "median_speedup": 1.1436499481091182,
+            "success_rate": 1.0,
+            "baseline_times": [
+              0.11870899470523,
+              0.11787499533966184,
+              0.12075001723133028,
+              0.09470799705013633,
+              0.07804197957739234
+            ],
+            "evolved_times": [
+              0.10854200809262693,
+              0.08354199235327542,
+              0.10558302165009081,
+              0.07499998901039362,
+              0.11454199557192624
+            ],
+            "speedups": [
+              1.09366867990803,
+              1.410967012148835,
+              1.1436499481091182,
+              1.2627734790335974,
+              0.6813394439979541
+            ],
+            "num_valid_solutions": 5,
+            "num_total_trials": 5
+          },
+          "dependency_provenance": {
+            "repository": "https://github.com/oripress/AlgoTune",
+            "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+            "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+          }
+        },
+        "diagnostic_tail": "Attempting to load config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nSuccessfully loaded config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nWarning: Could not find AlgoTune installation\nWarning: Could not setup AlgoTune paths\nSuccessfully loaded fft_convolution task from registry\n",
+        "finished_at": "2026-09-19T12:29:40.920947+00:00"
+      },
+      "upstream_result": {
+        "correctness_score": 1.0,
+        "performance_score": 0.9113894418020155,
+        "reliability_score": 1.0,
+        "combined_score": 0.9822778883604031,
+        "speedup_score": 1.1184797126395067,
+        "success_rate": 1.0,
+        "baseline_comparison": {
+          "mean_speedup": 1.1184797126395067,
+          "median_speedup": 1.1436499481091182,
+          "success_rate": 1.0,
+          "baseline_times": [
+            0.11870899470523,
+            0.11787499533966184,
+            0.12075001723133028,
+            0.09470799705013633,
+            0.07804197957739234
+          ],
+          "evolved_times": [
+            0.10854200809262693,
+            0.08354199235327542,
+            0.10558302165009081,
+            0.07499998901039362,
+            0.11454199557192624
+          ],
+          "speedups": [
+            1.09366867990803,
+            1.410967012148835,
+            1.1436499481091182,
+            1.2627734790335974,
+            0.6813394439979541
+          ],
+          "num_valid_solutions": 5,
+          "num_total_trials": 5
+        },
+        "dependency_provenance": {
+          "repository": "https://github.com/oripress/AlgoTune",
+          "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+          "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+        }
+      },
+      "engine_evaluator_file": "engine/openevolve/evaluator.py",
+      "python_version": "3.12.14",
+      "exit_code": 0
+    },
+    {
+      "task_id": "sciel-math-algotune-lu-factorization",
+      "mode": "sciel_evaluator_smoke",
+      "score": 1.1790634425773356,
+      "valid": null,
+      "sciel_exercised": true,
+      "sciel_source": {
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "tracked_modified": false,
+        "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+      },
+      "llm_calls_requested": false,
+      "logs": {
+        "stdout": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-lu-factorization/evaluator_smoke.stdout.log",
+        "stderr": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-lu-factorization/evaluator_smoke.stderr.log"
+      },
+      "status": "unverified",
+      "metric": "speedup_score",
+      "direction": "maximize",
+      "combined_score": 1.1790634425773356,
+      "sciel_metrics": {
+        "combined_score": 1.1790634425773356,
+        "evaluation_failed": 0.0,
+        "validity_known": 0.0,
+        "original_score": 1.1790634425773356
+      },
+      "evolution_exercised": false,
+      "mutations": 0,
+      "task_result": {
+        "schema_version": "1.0",
+        "task_id": "sciel-math-algotune-lu-factorization",
+        "mode": "upstream",
+        "status": "completed",
+        "valid": null,
+        "score": 1.1790634425773356,
+        "source_type": "git",
+        "repository": "https://github.com/luciferkonn/SCiEL",
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "metric": "speedup_score",
+        "direction": "maximize",
+        "candidate_sha256": "9c8096ef63fe4f9fef02ea11b2e810e06ef527a1a6297cf6b080d27384ac1f02",
+        "evaluator_sha256": "46f900814b53bfb66ab3791d7d129736df09461fbcba5398fbeda605a8573714",
+        "evaluator_scope": "repository",
+        "implementation_label": "Official SCiEL evaluator with pinned AlgoTune registry discovery",
+        "repository_asset_sha256": {
+          "adapters/recovered/sciel_algotune/sources.json": "b2cce5f39130d796ca8f7c3c8b23f3b9b298f7b32ff28597f83fe4490587f060",
+          "adapters/recovered/sciel_algotune/vendor/LICENSE": "06027a4230b1df2d71ce945b081fb814335d13b98b5509e453f15f60ab55d90d",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/__init__.py": "d9f2d2b4359440585d5c2741bb2f7f8dfb3a8b366b171719950c392d03e93e0b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/base.py": "f5a6cc1448b7e20b16c810f51d6b7d3fc72a078a64640d9b5508002063e4f852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_cmplx_scipy_fftpack/fft_cmplx_scipy_fftpack.py": "0881c9dc4daca33855a8740c4f37e6256a8a96d5f26fde6b8f45274f9ad06852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_convolution/fft_convolution.py": "37fb937accc0acbb1b3064b4d8b8e38721a84cefd00f35ae5b2b18c81931aa99",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/affine_transform_2d/affine_transform_2d.py": "3d18b2fc9510ee553bdeff3a77695612d0eebb459a5e20f390552d1117109f3c",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/eigenvectors_complex/eigenvectors_complex.py": "53918617d7d167203030c0fd88f527347baae36286f6591fe6fddc38646381f5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/convolve2d_full_fill/convolve2d_full_fill.py": "7e6dd7a54db13c3f432e7c653a9429bb59277c6fe9e4b77b60ae4e5bb75911e6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/lu_factorization/lu_factorization.py": "fbfc1888abed01adaeda466c1c5e649f7d415da37b0ac18950e3fd487bc1698f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/psd_cone_projection/psd_cone_projection.py": "4aa87a75a1d1ab8dadf16e51b081122e7ed5f88f8a64ad272295be5fbf7a323b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/polynomial_real/polynomial_real.py": "964bfa9fd415bf3eb9914676992c6f658f375961c1b559672289fbc9d3c8615e",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml": "a3a6ef799524d8d1c70503edf1c69a2d4e6016da3a67eb34895aaa81bbfb6739",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/loader.py": "798f77515fb3889030ff3b63d070310b4ad42e870999c85b9e2a9788d0d885d6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/timing_config.py": "0a7fd8fc20631f4293cde64150f6bce9b4885f06da23963990f7d32860b01a53",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/error_utils.py": "ac6edeff4f56ee601abd564d5a46f0568c4ecdad14033ee9d4f7450b59019a59",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/isolated_benchmark.py": "b9eb48eb036860c76f87cf9103ca4502408e6ad35a38a9c692376166ffaeba49",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/casting.py": "68ace78c3e820ced43193abc1b6cd5ebc147c9ec13a936a6c781bb1bf6639390",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/streaming_json.py": "69b8c4da9745a3fe25af943975cea33293c35c2a43e0c6fea22f88c3269843c4",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/robust_tempdir.py": "2f80c1951307d4e37d55a9129eedf79500e02a586201b06668138b2e33b56233",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/utils.py": "4c604eac9cc7d3bd5f2df1d90a936865e1f57b423669c37199d20f98151f5e8a",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/multiprocessing_utils.py": "006b690e0cc6fec1176bab7ccb8b1da8d7e7a3cb437732f5912a7eddc7fbe2c5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/hf_datasets.py": "ea0f64be967ce6880fb6fc5a3d5b4bf02a537b0435754662ece4b5ac5bddc66f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/serialization.py": "de2603e0893a29c9c5255d1afc5bd1948d900f56892c0807a33b4c9f70372646"
+        },
+        "started_at": "2026-09-19T12:29:40.109994+00:00",
+        "actual_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "working_tree_modified": false,
+        "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "upstream_result": {
+          "correctness_score": 1.0,
+          "performance_score": 0.926382225748088,
+          "reliability_score": 1.0,
+          "combined_score": 0.9852764451496175,
+          "speedup_score": 1.1790634425773356,
+          "success_rate": 1.0,
+          "baseline_comparison": {
+            "mean_speedup": 1.1790634425773356,
+            "median_speedup": 1.1319399493103526,
+            "success_rate": 1.0,
+            "baseline_times": [
+              0.10295899119228125,
+              0.11191601515747607,
+              0.09762498666532338,
+              0.07179100066423416,
+              0.08004202391020954
+            ],
+            "evolved_times": [
+              0.09095799759961665,
+              0.0958339951466769,
+              0.09041698649525642,
+              0.06354099605232477,
+              0.05775000317953527
+            ],
+            "speedups": [
+              1.1319399493103526,
+              1.167811223837482,
+              1.0797195355592293,
+              1.1298375084506964,
+              1.3860089957289186
+            ],
+            "num_valid_solutions": 5,
+            "num_total_trials": 5
+          },
+          "dependency_provenance": {
+            "repository": "https://github.com/oripress/AlgoTune",
+            "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+            "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+          }
+        },
+        "diagnostic_tail": "Attempting to load config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nSuccessfully loaded config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nWarning: Could not find AlgoTune installation\nWarning: Could not setup AlgoTune paths\nSuccessfully loaded lu_factorization task from registry\n",
+        "finished_at": "2026-09-19T12:29:40.562840+00:00"
+      },
+      "upstream_result": {
+        "correctness_score": 1.0,
+        "performance_score": 0.926382225748088,
+        "reliability_score": 1.0,
+        "combined_score": 0.9852764451496175,
+        "speedup_score": 1.1790634425773356,
+        "success_rate": 1.0,
+        "baseline_comparison": {
+          "mean_speedup": 1.1790634425773356,
+          "median_speedup": 1.1319399493103526,
+          "success_rate": 1.0,
+          "baseline_times": [
+            0.10295899119228125,
+            0.11191601515747607,
+            0.09762498666532338,
+            0.07179100066423416,
+            0.08004202391020954
+          ],
+          "evolved_times": [
+            0.09095799759961665,
+            0.0958339951466769,
+            0.09041698649525642,
+            0.06354099605232477,
+            0.05775000317953527
+          ],
+          "speedups": [
+            1.1319399493103526,
+            1.167811223837482,
+            1.0797195355592293,
+            1.1298375084506964,
+            1.3860089957289186
+          ],
+          "num_valid_solutions": 5,
+          "num_total_trials": 5
+        },
+        "dependency_provenance": {
+          "repository": "https://github.com/oripress/AlgoTune",
+          "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+          "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+        }
+      },
+      "engine_evaluator_file": "engine/openevolve/evaluator.py",
+      "python_version": "3.12.14",
+      "exit_code": 0
+    },
+    {
+      "task_id": "sciel-math-algotune-polynomial-real",
+      "mode": "sciel_evaluator_smoke",
+      "score": 1.006850242053325,
+      "valid": null,
+      "sciel_exercised": true,
+      "sciel_source": {
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "tracked_modified": false,
+        "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+      },
+      "llm_calls_requested": false,
+      "logs": {
+        "stdout": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-polynomial-real/evaluator_smoke.stdout.log",
+        "stderr": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-polynomial-real/evaluator_smoke.stderr.log"
+      },
+      "status": "unverified",
+      "metric": "speedup_score",
+      "direction": "maximize",
+      "combined_score": 1.006850242053325,
+      "sciel_metrics": {
+        "combined_score": 1.006850242053325,
+        "evaluation_failed": 0.0,
+        "validity_known": 0.0,
+        "original_score": 1.006850242053325
+      },
+      "evolution_exercised": false,
+      "mutations": 0,
+      "task_result": {
+        "schema_version": "1.0",
+        "task_id": "sciel-math-algotune-polynomial-real",
+        "mode": "upstream",
+        "status": "completed",
+        "valid": null,
+        "score": 1.006850242053325,
+        "source_type": "git",
+        "repository": "https://github.com/luciferkonn/SCiEL",
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "metric": "speedup_score",
+        "direction": "maximize",
+        "candidate_sha256": "a81941e8a14ba343ed11b7dcdc48e74034ab620330e19e0fc07f91bbd3138842",
+        "evaluator_sha256": "46f900814b53bfb66ab3791d7d129736df09461fbcba5398fbeda605a8573714",
+        "evaluator_scope": "repository",
+        "implementation_label": "Official SCiEL evaluator with pinned AlgoTune registry discovery",
+        "repository_asset_sha256": {
+          "adapters/recovered/sciel_algotune/sources.json": "b2cce5f39130d796ca8f7c3c8b23f3b9b298f7b32ff28597f83fe4490587f060",
+          "adapters/recovered/sciel_algotune/vendor/LICENSE": "06027a4230b1df2d71ce945b081fb814335d13b98b5509e453f15f60ab55d90d",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/__init__.py": "d9f2d2b4359440585d5c2741bb2f7f8dfb3a8b366b171719950c392d03e93e0b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/base.py": "f5a6cc1448b7e20b16c810f51d6b7d3fc72a078a64640d9b5508002063e4f852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_cmplx_scipy_fftpack/fft_cmplx_scipy_fftpack.py": "0881c9dc4daca33855a8740c4f37e6256a8a96d5f26fde6b8f45274f9ad06852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_convolution/fft_convolution.py": "37fb937accc0acbb1b3064b4d8b8e38721a84cefd00f35ae5b2b18c81931aa99",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/affine_transform_2d/affine_transform_2d.py": "3d18b2fc9510ee553bdeff3a77695612d0eebb459a5e20f390552d1117109f3c",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/eigenvectors_complex/eigenvectors_complex.py": "53918617d7d167203030c0fd88f527347baae36286f6591fe6fddc38646381f5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/convolve2d_full_fill/convolve2d_full_fill.py": "7e6dd7a54db13c3f432e7c653a9429bb59277c6fe9e4b77b60ae4e5bb75911e6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/lu_factorization/lu_factorization.py": "fbfc1888abed01adaeda466c1c5e649f7d415da37b0ac18950e3fd487bc1698f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/psd_cone_projection/psd_cone_projection.py": "4aa87a75a1d1ab8dadf16e51b081122e7ed5f88f8a64ad272295be5fbf7a323b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/polynomial_real/polynomial_real.py": "964bfa9fd415bf3eb9914676992c6f658f375961c1b559672289fbc9d3c8615e",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml": "a3a6ef799524d8d1c70503edf1c69a2d4e6016da3a67eb34895aaa81bbfb6739",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/loader.py": "798f77515fb3889030ff3b63d070310b4ad42e870999c85b9e2a9788d0d885d6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/timing_config.py": "0a7fd8fc20631f4293cde64150f6bce9b4885f06da23963990f7d32860b01a53",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/error_utils.py": "ac6edeff4f56ee601abd564d5a46f0568c4ecdad14033ee9d4f7450b59019a59",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/isolated_benchmark.py": "b9eb48eb036860c76f87cf9103ca4502408e6ad35a38a9c692376166ffaeba49",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/casting.py": "68ace78c3e820ced43193abc1b6cd5ebc147c9ec13a936a6c781bb1bf6639390",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/streaming_json.py": "69b8c4da9745a3fe25af943975cea33293c35c2a43e0c6fea22f88c3269843c4",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/robust_tempdir.py": "2f80c1951307d4e37d55a9129eedf79500e02a586201b06668138b2e33b56233",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/utils.py": "4c604eac9cc7d3bd5f2df1d90a936865e1f57b423669c37199d20f98151f5e8a",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/multiprocessing_utils.py": "006b690e0cc6fec1176bab7ccb8b1da8d7e7a3cb437732f5912a7eddc7fbe2c5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/hf_datasets.py": "ea0f64be967ce6880fb6fc5a3d5b4bf02a537b0435754662ece4b5ac5bddc66f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/serialization.py": "de2603e0893a29c9c5255d1afc5bd1948d900f56892c0807a33b4c9f70372646"
+        },
+        "started_at": "2026-09-19T12:29:41.072097+00:00",
+        "actual_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "working_tree_modified": false,
+        "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "upstream_result": {
+          "correctness_score": 1.0,
+          "performance_score": 0.007061756144067843,
+          "reliability_score": 1.0,
+          "combined_score": 0.8014123512288135,
+          "speedup_score": 1.006850242053325,
+          "success_rate": 1.0,
+          "baseline_comparison": {
+            "mean_speedup": 1.006850242053325,
+            "median_speedup": 1.0056344593926039,
+            "success_rate": 1.0,
+            "baseline_times": [
+              145.80987498629838,
+              144.49062501080334,
+              143.81041697924957,
+              142.1885830059182,
+              132.44220800697803
+            ],
+            "evolved_times": [
+              145.0394999992568,
+              145.55149999796413,
+              140.8762079954613,
+              141.3919159967918,
+              131.16133300354704
+            ],
+            "speedups": [
+              1.0053114840236317,
+              0.9927113428087266,
+              1.0208282791362668,
+              1.0056344593926039,
+              1.0097656449053956
+            ],
+            "num_valid_solutions": 5,
+            "num_total_trials": 5
+          },
+          "dependency_provenance": {
+            "repository": "https://github.com/oripress/AlgoTune",
+            "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+            "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+          }
+        },
+        "diagnostic_tail": "Attempting to load config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nSuccessfully loaded config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nWarning: Could not find AlgoTune installation\nWarning: Could not setup AlgoTune paths\nSuccessfully loaded polynomial_real task from registry\n",
+        "finished_at": "2026-09-19T12:29:47.926237+00:00"
+      },
+      "upstream_result": {
+        "correctness_score": 1.0,
+        "performance_score": 0.007061756144067843,
+        "reliability_score": 1.0,
+        "combined_score": 0.8014123512288135,
+        "speedup_score": 1.006850242053325,
+        "success_rate": 1.0,
+        "baseline_comparison": {
+          "mean_speedup": 1.006850242053325,
+          "median_speedup": 1.0056344593926039,
+          "success_rate": 1.0,
+          "baseline_times": [
+            145.80987498629838,
+            144.49062501080334,
+            143.81041697924957,
+            142.1885830059182,
+            132.44220800697803
+          ],
+          "evolved_times": [
+            145.0394999992568,
+            145.55149999796413,
+            140.8762079954613,
+            141.3919159967918,
+            131.16133300354704
+          ],
+          "speedups": [
+            1.0053114840236317,
+            0.9927113428087266,
+            1.0208282791362668,
+            1.0056344593926039,
+            1.0097656449053956
+          ],
+          "num_valid_solutions": 5,
+          "num_total_trials": 5
+        },
+        "dependency_provenance": {
+          "repository": "https://github.com/oripress/AlgoTune",
+          "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+          "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+        }
+      },
+      "engine_evaluator_file": "engine/openevolve/evaluator.py",
+      "python_version": "3.12.14",
+      "exit_code": 0
+    },
+    {
+      "task_id": "sciel-math-algotune-psd-cone-projection",
+      "mode": "sciel_evaluator_smoke",
+      "score": 1.0729523275401998,
+      "valid": null,
+      "sciel_exercised": true,
+      "sciel_source": {
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "tracked_modified": false,
+        "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+      },
+      "llm_calls_requested": false,
+      "logs": {
+        "stdout": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-psd-cone-projection/evaluator_smoke.stdout.log",
+        "stderr": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-algotune-psd-cone-projection/evaluator_smoke.stderr.log"
+      },
+      "status": "unverified",
+      "metric": "speedup_score",
+      "direction": "maximize",
+      "combined_score": 1.0729523275401998,
+      "sciel_metrics": {
+        "combined_score": 1.0729523275401998,
+        "evaluation_failed": 0.0,
+        "validity_known": 0.0,
+        "original_score": 1.0729523275401998
+      },
+      "evolution_exercised": false,
+      "mutations": 0,
+      "task_result": {
+        "schema_version": "1.0",
+        "task_id": "sciel-math-algotune-psd-cone-projection",
+        "mode": "upstream",
+        "status": "completed",
+        "valid": null,
+        "score": 1.0729523275401998,
+        "source_type": "git",
+        "repository": "https://github.com/luciferkonn/SCiEL",
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "metric": "speedup_score",
+        "direction": "maximize",
+        "candidate_sha256": "25108ba45452374c28c2da7fec059192bd7a8ffcc9a0c426265305423d85b4aa",
+        "evaluator_sha256": "46f900814b53bfb66ab3791d7d129736df09461fbcba5398fbeda605a8573714",
+        "evaluator_scope": "repository",
+        "implementation_label": "Official SCiEL evaluator with pinned AlgoTune registry discovery",
+        "repository_asset_sha256": {
+          "adapters/recovered/sciel_algotune/sources.json": "b2cce5f39130d796ca8f7c3c8b23f3b9b298f7b32ff28597f83fe4490587f060",
+          "adapters/recovered/sciel_algotune/vendor/LICENSE": "06027a4230b1df2d71ce945b081fb814335d13b98b5509e453f15f60ab55d90d",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/__init__.py": "d9f2d2b4359440585d5c2741bb2f7f8dfb3a8b366b171719950c392d03e93e0b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/base.py": "f5a6cc1448b7e20b16c810f51d6b7d3fc72a078a64640d9b5508002063e4f852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_cmplx_scipy_fftpack/fft_cmplx_scipy_fftpack.py": "0881c9dc4daca33855a8740c4f37e6256a8a96d5f26fde6b8f45274f9ad06852",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_convolution/fft_convolution.py": "37fb937accc0acbb1b3064b4d8b8e38721a84cefd00f35ae5b2b18c81931aa99",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/affine_transform_2d/affine_transform_2d.py": "3d18b2fc9510ee553bdeff3a77695612d0eebb459a5e20f390552d1117109f3c",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/eigenvectors_complex/eigenvectors_complex.py": "53918617d7d167203030c0fd88f527347baae36286f6591fe6fddc38646381f5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/convolve2d_full_fill/convolve2d_full_fill.py": "7e6dd7a54db13c3f432e7c653a9429bb59277c6fe9e4b77b60ae4e5bb75911e6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/lu_factorization/lu_factorization.py": "fbfc1888abed01adaeda466c1c5e649f7d415da37b0ac18950e3fd487bc1698f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/psd_cone_projection/psd_cone_projection.py": "4aa87a75a1d1ab8dadf16e51b081122e7ed5f88f8a64ad272295be5fbf7a323b",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/polynomial_real/polynomial_real.py": "964bfa9fd415bf3eb9914676992c6f658f375961c1b559672289fbc9d3c8615e",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml": "a3a6ef799524d8d1c70503edf1c69a2d4e6016da3a67eb34895aaa81bbfb6739",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/loader.py": "798f77515fb3889030ff3b63d070310b4ad42e870999c85b9e2a9788d0d885d6",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/timing_config.py": "0a7fd8fc20631f4293cde64150f6bce9b4885f06da23963990f7d32860b01a53",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/error_utils.py": "ac6edeff4f56ee601abd564d5a46f0568c4ecdad14033ee9d4f7450b59019a59",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/isolated_benchmark.py": "b9eb48eb036860c76f87cf9103ca4502408e6ad35a38a9c692376166ffaeba49",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/casting.py": "68ace78c3e820ced43193abc1b6cd5ebc147c9ec13a936a6c781bb1bf6639390",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/streaming_json.py": "69b8c4da9745a3fe25af943975cea33293c35c2a43e0c6fea22f88c3269843c4",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/robust_tempdir.py": "2f80c1951307d4e37d55a9129eedf79500e02a586201b06668138b2e33b56233",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/utils.py": "4c604eac9cc7d3bd5f2df1d90a936865e1f57b423669c37199d20f98151f5e8a",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/multiprocessing_utils.py": "006b690e0cc6fec1176bab7ccb8b1da8d7e7a3cb437732f5912a7eddc7fbe2c5",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/hf_datasets.py": "ea0f64be967ce6880fb6fc5a3d5b4bf02a537b0435754662ece4b5ac5bddc66f",
+          "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/serialization.py": "de2603e0893a29c9c5255d1afc5bd1948d900f56892c0807a33b4c9f70372646"
+        },
+        "started_at": "2026-09-19T12:29:41.429103+00:00",
+        "actual_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "working_tree_modified": false,
+        "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "upstream_result": {
+          "correctness_score": 1.0,
+          "performance_score": 0.6020336576355121,
+          "reliability_score": 1.0,
+          "combined_score": 0.9204067315271024,
+          "speedup_score": 1.0729523275401998,
+          "success_rate": 1.0,
+          "baseline_comparison": {
+            "mean_speedup": 1.0729523275401998,
+            "median_speedup": 1.05046156536394,
+            "success_rate": 1.0,
+            "baseline_times": [
+              0.6857919797766954,
+              0.6930420058779418,
+              0.672124995617196,
+              0.7879170007072389,
+              0.7067080005072057
+            ],
+            "evolved_times": [
+              0.6697080098092556,
+              0.6597499886993319,
+              0.6502910109702498,
+              0.6550840043928474,
+              0.6705419800709933
+            ],
+            "speedups": [
+              1.02401639181831,
+              1.05046156536394,
+              1.0335757134553796,
+              1.202772461888312,
+              1.0539355051750576
+            ],
+            "num_valid_solutions": 5,
+            "num_total_trials": 5
+          },
+          "dependency_provenance": {
+            "repository": "https://github.com/oripress/AlgoTune",
+            "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+            "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+          }
+        },
+        "diagnostic_tail": "Attempting to load config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nSuccessfully loaded config from: ${REPOSITORY}/adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml\nWarning: Could not find AlgoTune installation\nWarning: Could not setup AlgoTune paths\nSuccessfully loaded psd_cone_projection task from registry\n",
+        "finished_at": "2026-09-19T12:29:41.937416+00:00"
+      },
+      "upstream_result": {
+        "correctness_score": 1.0,
+        "performance_score": 0.6020336576355121,
+        "reliability_score": 1.0,
+        "combined_score": 0.9204067315271024,
+        "speedup_score": 1.0729523275401998,
+        "success_rate": 1.0,
+        "baseline_comparison": {
+          "mean_speedup": 1.0729523275401998,
+          "median_speedup": 1.05046156536394,
+          "success_rate": 1.0,
+          "baseline_times": [
+            0.6857919797766954,
+            0.6930420058779418,
+            0.672124995617196,
+            0.7879170007072389,
+            0.7067080005072057
+          ],
+          "evolved_times": [
+            0.6697080098092556,
+            0.6597499886993319,
+            0.6502910109702498,
+            0.6550840043928474,
+            0.6705419800709933
+          ],
+          "speedups": [
+            1.02401639181831,
+            1.05046156536394,
+            1.0335757134553796,
+            1.202772461888312,
+            1.0539355051750576
+          ],
+          "num_valid_solutions": 5,
+          "num_total_trials": 5
+        },
+        "dependency_provenance": {
+          "repository": "https://github.com/oripress/AlgoTune",
+          "commit": "dff9914c10800c7a031c9e8c3d4d1c8cd1b38906",
+          "adapter_change": "Explicit registry discovery; original evaluator and YAML unchanged"
+        }
+      },
+      "engine_evaluator_file": "engine/openevolve/evaluator.py",
+      "python_version": "3.12.14",
+      "exit_code": 0
+    }
+  ]
+}

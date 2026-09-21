@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "id": "science-materials-pfhub-spinodal-dynamics",
+  "name": "PFHub spinodal decomposition integration",
+  "description": "evolve_composition(initial_field, parameters, times) -> array (len(times),N,N). Integrate dc/dt=M*L[f'(c)-kappa*L(c)] using the specified second-order periodic discrete Laplacian on [0,200)^2; f=rho*(c-alpha)^2*(c-beta)^2 with alpha=.3,beta=.7,rho=5,M=5,kappa=2. Score candidate wall time only when RMSE<=2e-5 versus independent DOP853, mass drift<1e-9 and discrete free energy never increases. Two fixed meshes 48 and 64, published initial condition and a phase-shift adaptation, times 1,5,20. These are explicit short-horizon, fixed-mesh adaptations, not a reproduction of PFHub equilibrium results.",
+  "paper_ids": [
+    "science-materials_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1610.00622",
+      "type": "paper",
+      "locator": "Benchmark problems for numerical implementations of phase field models, spinodal decomposition."
+    },
+    {
+      "url": "https://pages.nist.gov/pfhub/benchmarks/benchmark1.ipynb/",
+      "type": "benchmark",
+      "locator": "Benchmark 1, free energy and dynamics, parameter table, initial condition and square-periodic case 1a. Our mesh/time/phase-shift choices are local adaptations."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "No external dataset; specified PFHub-equation simulation"
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "PFHub spinodal decomposition integration",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_materials_pfhub_spinodal_dynamics",
+    "science_family": "science_materials_pfhub_spinodal_dynamics",
+    "parameters": {
+      "proposal_id": "C06"
+    },
+    "interface": "evolve_composition(initial_field, parameters, times) -> array (len(times),N,N). Integrate dc/dt=M*L[f'(c)-kappa*L(c)] using the specified second-order periodic discrete Laplacian on [0,200)^2; f=rho*(c-alpha)^2*(c-beta)^2 with alpha=.3,beta=.7,rho=5,M=5,kappa=2. Score candidate wall time only when RMSE<=2e-5 versus independent DOP853, mass drift<1e-9 and discrete free energy never increases. Two fixed meshes 48 and 64, published initial condition and a phase-shift adaptation, times 1,5,20. These are explicit short-horizon, fixed-mesh adaptations, not a reproduction of PFHub equilibrium results.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "materials_science"
+    },
+    "proposal_id": "C06",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL contracts, evaluator logic and tests are independently implemented. Reused scientific engines and reference data are separately attributed in reuse_scope; author-code availability alone is not classified as evaluator reuse.",
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "reuse_scope": "No upstream scientific evaluator or model implementation; source numerical data and standard numerical libraries only"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_materials_pfhub_spinodal_dynamics",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent SCIEL adaptation of a cited scientific problem; no claim to reproduce author leaderboard scores.",
+    "Candidate and evaluator run in one Python process; data access is separated by API, not an OS sandbox. Isolate evaluator data for adversarial or held-out evaluation.",
+    "Fixed-mesh 48/64-point periodic short-horizon adaptation (times 1,5,20), with a second phase-shifted initial field. Does not reproduce PFHub equilibrium or nonperiodic/geometric cases.",
+    "The reference resolves time integration of the specified spatial discretization; it is not claimed to be a continuum grid-converged reference."
+  ],
+  "validation": {
+    "level": "source_seed_executed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_materials_expansion.py",
+    "evidence": "validation/materials-expansion-report.json",
+    "benchmark_verified": true
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "area": "materials_science",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Solve Cahn-Hilliard phase-separation dynamics while retaining conservation and energy dissipation.",
+    "importance_rationale": "Phase-field dynamics describe the development of material microstructures during separation of mixtures.",
+    "papers": [
+      {
+        "title": "Applications of semi-implicit Fourier-spectral method to phase field equations",
+        "url": "https://doi.org/10.1016/S0010-4655(97)00115-X",
+        "primary_goal": "Accurately and efficiently simulate physical phase-field evolution, including Cahn-Hilliard spinodal decomposition.",
+        "task_relation": "The local task evolves the same physical equation class on fixed two-dimensional periodic finite-difference meshes. Its short times and discrete operator differ from the paper's Fourier method; runtime gains are meaningful only after local trajectory, mass and energy checks.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited method is designed to solve phase-evolution equations, not to assess a general agent. PFHub benchmark metadata alone is not used as evidence.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0",
+  "id": "science-tcs-ramsey-5-5",
+  "name": "Ramsey graphs for R(5,5): large graphs with no K5 and no independent 5-set",
+  "description": "Construct a graph on as many vertices as possible with no clique of size 5 and no independent set of size 5. Every such graph on n vertices proves R(5,5) > n. The best known construction is Exoo's 42-vertex graph (R(5,5) >= 43) and Angeltveit and McKay proved R(5,5) <= 46, so the exact value is open. The seed is the Paley graph on 37 vertices, verified (5,5)-free by the evaluator.",
+  "paper_ids": [
+    "science-tcs"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2409.15709",
+      "type": "paper",
+      "locator": "Angeltveit and McKay, R(5,5) <= 46: the current upper bound and a summary of the lower bound 43 (Exoo 1989)."
+    },
+    {
+      "url": "https://www.cs.rit.edu/~spr/ElJC/sur.pdf",
+      "type": "benchmark",
+      "locator": "Radziszowski, Small Ramsey Numbers (dynamic survey): R(5,5) bounds 43..46."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "None downloaded; mathematical constructions or locally generated synthetic instances."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Ramsey graphs for R(5,5): large graphs with no K5 and no independent 5-set",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_ramsey",
+    "science_family": "science_ramsey",
+    "parameters": {
+      "clique": 5,
+      "independent": 5,
+      "max_vertices": 45
+    },
+    "interface": "construct() -> (n, edges): the number of vertices and a list of (i, j) pairs with 0 <= i < j < n. The graph must contain no clique of size CLIQUE and no independent set of size INDEPENDENT; n must be at most MAX_VERTICES. Score: n, maximized (each valid graph proves R(CLIQUE, INDEPENDENT) > n).",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "theoretical_computer_science"
+    },
+    "proposal_id": "T02",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_ramsey",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Exoo's 42-vertex graph is not embedded; the evaluator only certifies candidate graphs, so the reference label is none.",
+    "A valid graph on 43 or more vertices would refute the conjecture R(5,5) = 43 and must be independently verified."
+  ],
+  "validation": {
+    "level": "source_reviewed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "theoretical_computer_science",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "R(5,5) ≤ 46",
+        "url": "https://arxiv.org/abs/2409.15709",
+        "task_relation": "The local task constructs valid graphs to obtain lower bounds on the same number. It studies the complementary construction direction and cannot reproduce the paper's upper-bound proof or certify optimality from a valid submission alone.",
+        "primary_goal": "Prove an improved upper bound on the diagonal Ramsey number R(5,5).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Determine the diagonal Ramsey number R(5,5) through graphs avoiding both five-cliques and five-vertex independent sets.",
+    "importance_rationale": "Determining bounds on R(5,5) is the primary extremal graph-theory problem in the cited proof.",
+    "reason": "The evidence concerns the same named mathematical quantity. The distinction between lower-bound constructions and an upper-bound theorem is explicit.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

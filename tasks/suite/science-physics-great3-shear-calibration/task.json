@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "id": "science-physics-great3-shear-calibration",
+  "name": "GREAT3 weak-lensing shear calibration",
+  "description": "estimate_shear(images, psf, metadata) -> [g1,g2] per GREAT3 subfield. Images have (galaxy,y,x) axes; PSF is a source stamp. Noise-cancellation groups remain intact. Independent evaluator rotates shear into PSF frame and computes official ground constant-shear Qc with multiplicative/additive bias diagnostics. No variable-shear claim.",
+  "paper_ids": [
+    "science-physics_expansion"
+  ],
+  "kind": "native",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://academic.oup.com/mnras/article/450/3/2963/1064967",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: GREAT3 weak-lensing shear calibration"
+    },
+    {
+      "url": "https://github.com/barnabytprowe/great3-public",
+      "type": "archive",
+      "locator": "Constant ground branch metric and noise-cancellation groups; Qc normalization 1.232."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; source-data preparation may require substantial disk space",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Prepare complete GREAT3 subfields, source shears/PSF angles and disjoint noise-cancellation group labels; official legacy data host timed out during audit."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "GREAT3 weak-lensing shear calibration",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_physics_great3_shear_calibration",
+    "science_family": "science_physics_great3_shear_calibration",
+    "parameters": {
+      "proposal_id": "P01"
+    },
+    "interface": "estimate_shear(images, psf, metadata) -> [g1,g2] per GREAT3 subfield. Images have (galaxy,y,x) axes; PSF is a source stamp. Noise-cancellation groups remain intact. Independent evaluator rotates shear into PSF frame and computes official ground constant-shear Qc with multiplicative/additive bias diagnostics. No variable-shear claim.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "cosmology_and_astrophysics"
+    },
+    "proposal_id": "P01",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "requires_setup",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_physics_great3_shear_calibration",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:data/physics-expansion/P01/manifest.json",
+        "file:data/physics-expansion/P01/benchmark.npz"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Prepare complete GREAT3 subfields, source shears/PSF angles and disjoint noise-cancellation group labels; official legacy data host timed out during audit."
+  ],
+  "validation": {
+    "level": "adapter_unit_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_physics_expansion.py",
+    "evidence": "validation/physics-expansion-report.json",
+    "benchmark_verified": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "cosmology_and_astrophysics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Practical Weak Lensing Shear Measurement with Metacalibration",
+        "url": "https://arxiv.org/abs/1702.02601",
+        "task_relation": "The local GREAT3 constant-ground image and PSF task addresses this shear-calibration problem. Its particular branch, Qc score, and compute restrictions are local evaluation choices; it does not reproduce the paper's complete analysis.",
+        "primary_goal": "Develop and validate shear measurements that correct measurement response, selection effects, and correlated noise.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Infer weak gravitational lensing shear from noisy, PSF-convolved galaxy images while controlling calibration bias.",
+    "importance_rationale": "Shear measurement and its calibration are the central research problem in metacalibration, rather than incidental tests of a general model.",
+    "reason": "The paper proposes a solution to biased astronomical shear estimation. The GREAT3 dataset paper alone is not the importance evidence.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

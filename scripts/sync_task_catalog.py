@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create reviewed metadata from a local GitHub checkout at an exact commit.
+"""Create reviewed metadata from the bundled tasks or a legacy pinned checkout.
 
 No fetch, install, evaluator import, task execution, credentials or run results.
 The generated diff must be submitted with its registration in a registry PR.
@@ -18,6 +18,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from arena.registry import (RegistryError, build_catalog, validate_registration, validate_registry)
 from arena.participant_corpus import expected_participants
+from arena.task_sources import registration_source
+from arena.task_source_reader import TaskSourceReader
 
 
 def _write(path, value):
@@ -60,16 +62,19 @@ def synchronize(checkout, registration, registry_root):
     registered = [json.loads(path.read_text()) for path in sorted((registry_root / "task-sources").glob("*.json"))]
     if len(registered) != 1 or registered[0] != registration:
         raise RegistryError("This initial importer supports exactly one matching task collection; multi-source merging is not implemented. No snapshots were changed.")
-    commit = registration["repository"]["commit"]
-    source = {"id": registration["snapshot_source_id"], "repository": registration["repository"],
-              "catalog_path": registration["manifest_path"], "index_path": "suite/index.json"}
+    source = registration_source(registration)
+    reader = TaskSourceReader(checkout, source, registry_root=registry_root, require_clean=False)
     contents = {}
     for key in ("catalog", "index"):
-        # Read committed Git objects, not potentially modified working-tree files.
-        content = subprocess.check_output(["git", "-C", str(checkout), "show", f"{commit}:{source[key + '_path']}"], stderr=subprocess.PIPE)
+        content = reader.read(source[key + "_path"])
         source[key + "_sha256"] = hashlib.sha256(content).hexdigest()
         contents[key] = json.loads(content)
-    problems = _problem_files(checkout, commit, contents["catalog"])
+    if source.get("kind") == "bundled":
+        problems = {record["id"]: reader.read(f"suite/{record['id']}/problem.json")
+                    for record in contents["catalog"]
+                    if f"suite/{record['id']}/problem.json" in reader.paths}
+    else:
+        problems = _problem_files(checkout, registration["repository"]["commit"], contents["catalog"])
     catalog = build_catalog(contents["catalog"], contents["index"], source, problems)
     participants = expected_participants(registry_root)
     _write(registry_root / "catalog.json", catalog)
@@ -79,9 +84,9 @@ def synchronize(checkout, registration, registry_root):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("checkout", type=Path)
+    parser.add_argument("checkout", type=Path, nargs="?", default=ROOT / "tasks")
     parser.add_argument("--registry-root", type=Path, default=ROOT / "registry")
-    parser.add_argument("--registration", default="task-sources/autoresearch-tasks.json")
+    parser.add_argument("--registration", default="task-sources/arena-tasks.json")
     args = parser.parse_args(argv)
     try:
         registration = json.loads((args.registry_root / args.registration).read_text())

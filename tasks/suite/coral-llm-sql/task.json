@@ -1,0 +1,439 @@
+{
+  "schema_version": "1.0",
+  "id": "coral-llm-sql",
+  "name": "LLM-SQL",
+  "description": "LLM-SQL",
+  "paper_ids": [
+    "coral",
+    "adaevolve",
+    "evox"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1 and Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/ADRS/llm_sql"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/ADRS/llm_sql"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "pandas",
+      "networkx>=3.2,<3.4"
+    ],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "Docker",
+      "task-specific data"
+    ],
+    "required_files": [
+      "examples/ADRS/llm_sql/taskdata/datasets/BIRD.csv",
+      "examples/ADRS/llm_sql/taskdata/datasets/PDMX.csv",
+      "examples/ADRS/llm_sql/taskdata/datasets/beer.csv",
+      "examples/ADRS/llm_sql/taskdata/datasets/movies.csv",
+      "examples/ADRS/llm_sql/taskdata/datasets/products.csv"
+    ],
+    "required_file_hashes": {
+      "examples/ADRS/llm_sql/taskdata/datasets/movies.csv": "959ea9a5fce0be9cd5f4527d5e1e5da99c8ead9a598ac5a13554d754f79b3541",
+      "examples/ADRS/llm_sql/taskdata/datasets/beer.csv": "4682ba58e198962b26725c3d7a67f7ac53118c183c771d3ad3d8db21c80581c3",
+      "examples/ADRS/llm_sql/taskdata/datasets/BIRD.csv": "2abc187b259c8aa0bf43acb0a4252b957a353af88b3842a622cbab845876b485",
+      "examples/ADRS/llm_sql/taskdata/datasets/PDMX.csv": "975c70d830ec04bcea184103062e5fedec19e32ef5fc50bced223d5622eefd61",
+      "examples/ADRS/llm_sql/taskdata/datasets/products.csv": "465d51b3e9f88eda523454a45effe5ed33ef0e3078e6033ee1f9faa74954967b"
+    }
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "evaluator combined score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "ADRS",
+    "protocol": "upstream",
+    "source_locator": "Section 4.1 and Table 1"
+  },
+  "execution": {
+    "repository": "https://github.com/Human-Agent-Society/CORAL",
+    "commit": "0123dfb939b35228cf2c1fde224cd0561e727408",
+    "upstream_path": "examples/ADRS/llm_sql",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/ADRS/llm_sql/taskdata/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/ADRS/llm_sql/seed",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "examples/ADRS/llm_sql/seed/initial_program.py",
+      "dependencies": [
+        "pandas",
+        "networkx>=3.2,<3.4"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+    },
+    "setup_instructions": [
+      "python -m pip install pandas 'networkx>=3.2,<3.4'",
+      "Obtain movies.csv, beer.csv, BIRD.csv, PDMX.csv, products.csv using pinned SkyDiscover benchmarks/ADRS/llm_sql/evaluator/download_dataset.sh; copy datasets/ into examples/ADRS/llm_sql/taskdata/. The grader documentation refers to an obsolete eval/ directory; taskdata/evaluator.py resolves datasets relative to __file__."
+    ],
+    "task_setup_instructions": [
+      "python -m pip install pandas 'networkx>=3.2,<3.4'",
+      "Obtain movies.csv, beer.csv, BIRD.csv, PDMX.csv, products.csv using pinned SkyDiscover benchmarks/ADRS/llm_sql/evaluator/download_dataset.sh; copy datasets/ into examples/ADRS/llm_sql/taskdata/. The grader documentation refers to an obsolete eval/ directory; taskdata/evaluator.py resolves datasets relative to __file__."
+    ],
+    "framework_setup_instructions": [
+      "uv sync --extra dev"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct source evaluator adapter; Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "adrs_llm_sql",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:pandas",
+        "file:vendor/adrs/llm_sql/datasets/BIRD.csv"
+      ],
+      "timeout": 900
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "LLM-SQL",
+    "slug": "llm-sql",
+    "description": "LLM-SQL",
+    "benchmark": "ADRS",
+    "dataset": null,
+    "metric": "evaluator combined score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2604.01658",
+    "source_locator": "Section 4.1 and Table 1",
+    "upstream_path": "examples/ADRS/llm_sql",
+    "requirements": [
+      "Docker",
+      "task-specific data"
+    ],
+    "execution_notes": "Direct source evaluator adapter; Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass.",
+    "upstream_evaluator_paths": [
+      "examples/ADRS/llm_sql/grader/src/llm_sql_grader/grader.py",
+      "examples/ADRS/llm_sql/taskdata/evaluator.py"
+    ],
+    "upstream_seed_paths": [
+      "examples/ADRS/llm_sql/seed/initial_program.py"
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/ADRS/llm_sql/taskdata/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/ADRS/llm_sql/seed",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "examples/ADRS/llm_sql/seed/initial_program.py",
+      "dependencies": [
+        "pandas",
+        "networkx>=3.2,<3.4"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+    },
+    "execution_sources": [
+      "https://github.com/Human-Agent-Society/CORAL/blob/0123dfb939b35228cf2c1fde224cd0561e727408/examples/ADRS/llm_sql/taskdata/evaluator.py"
+    ],
+    "setup_commands": [
+      "python -m pip install pandas 'networkx>=3.2,<3.4'",
+      "Obtain movies.csv, beer.csv, BIRD.csv, PDMX.csv, products.csv using pinned SkyDiscover benchmarks/ADRS/llm_sql/evaluator/download_dataset.sh; copy datasets/ into examples/ADRS/llm_sql/taskdata/. The grader documentation refers to an obsolete eval/ directory; taskdata/evaluator.py resolves datasets relative to __file__."
+    ],
+    "required_files": [
+      "examples/ADRS/llm_sql/taskdata/datasets/BIRD.csv",
+      "examples/ADRS/llm_sql/taskdata/datasets/PDMX.csv",
+      "examples/ADRS/llm_sql/taskdata/datasets/beer.csv",
+      "examples/ADRS/llm_sql/taskdata/datasets/movies.csv",
+      "examples/ADRS/llm_sql/taskdata/datasets/products.csv"
+    ],
+    "required_file_hashes": {
+      "examples/ADRS/llm_sql/taskdata/datasets/movies.csv": "959ea9a5fce0be9cd5f4527d5e1e5da99c8ead9a598ac5a13554d754f79b3541",
+      "examples/ADRS/llm_sql/taskdata/datasets/beer.csv": "4682ba58e198962b26725c3d7a67f7ac53118c183c771d3ad3d8db21c80581c3",
+      "examples/ADRS/llm_sql/taskdata/datasets/BIRD.csv": "2abc187b259c8aa0bf43acb0a4252b957a353af88b3842a622cbab845876b485",
+      "examples/ADRS/llm_sql/taskdata/datasets/PDMX.csv": "975c70d830ec04bcea184103062e5fedec19e32ef5fc50bced223d5622eefd61",
+      "examples/ADRS/llm_sql/taskdata/datasets/products.csv": "465d51b3e9f88eda523454a45effe5ed33ef0e3078e6033ee1f9faa74954967b"
+    },
+    "dataset_assets": {
+      "lock": "catalog/adrs-data-lock.json",
+      "repository": "https://huggingface.co/datasets/f20180301/adrs-data",
+      "commit": "f1dd6c53d739c308f150bb7ff9483c60ad364832",
+      "setup": "python3 scripts/prepare_adrs_data.py"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "adaevolve-llm-sql",
+      "paper_ids": [
+        "adaevolve"
+      ],
+      "name": "LLM-SQL",
+      "description": "LLM-SQL",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.20133",
+          "type": "paper",
+          "locator": "Systems results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/ADRS/llm_sql"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "pandas",
+          "networkx>=3.2,<3.4"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "task-specific dependencies and data",
+          "No LLM/API call needed for direct candidate evaluation. External dataset download required."
+        ],
+        "required_files": [
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/BIRD.csv",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/PDMX.csv",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/beer.csv",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/movies.csv",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/products.csv"
+        ],
+        "required_file_hashes": {
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/movies.csv": "959ea9a5fce0be9cd5f4527d5e1e5da99c8ead9a598ac5a13554d754f79b3541",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/beer.csv": "4682ba58e198962b26725c3d7a67f7ac53118c183c771d3ad3d8db21c80581c3",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/BIRD.csv": "2abc187b259c8aa0bf43acb0a4252b957a353af88b3842a622cbab845876b485",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/PDMX.csv": "975c70d830ec04bcea184103062e5fedec19e32ef5fc50bced223d5622eefd61",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/products.csv": "465d51b3e9f88eda523454a45effe5ed33ef0e3078e6033ee1f9faa74954967b"
+        }
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "evaluator combined score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ADRS",
+        "protocol": "upstream",
+        "source_locator": "Systems results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/ADRS/llm_sql",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/ADRS/llm_sql/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/ADRS/llm_sql/evaluator",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/ADRS/llm_sql/initial_program.py",
+          "dependencies": [
+            "pandas",
+            "networkx>=3.2,<3.4"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+        },
+        "setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/llm_sql/evaluator/requirements.txt",
+          "bash benchmarks/ADRS/llm_sql/evaluator/download_dataset.sh"
+        ],
+        "task_setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/llm_sql/evaluator/requirements.txt",
+          "bash benchmarks/ADRS/llm_sql/evaluator/download_dataset.sh"
+        ],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Direct source evaluator adapter; Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "evox-llm-sql",
+      "paper_ids": [
+        "evox"
+      ],
+      "name": "LLM-SQL",
+      "description": "LLM-SQL",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.23413",
+          "type": "paper",
+          "locator": "Systems results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/ADRS/llm_sql"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "pandas",
+          "networkx>=3.2,<3.4"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "task-specific dependencies and data",
+          "No LLM/API call needed for direct candidate evaluation. External dataset download required."
+        ],
+        "required_files": [
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/BIRD.csv",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/PDMX.csv",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/beer.csv",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/movies.csv",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/products.csv"
+        ],
+        "required_file_hashes": {
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/movies.csv": "959ea9a5fce0be9cd5f4527d5e1e5da99c8ead9a598ac5a13554d754f79b3541",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/beer.csv": "4682ba58e198962b26725c3d7a67f7ac53118c183c771d3ad3d8db21c80581c3",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/BIRD.csv": "2abc187b259c8aa0bf43acb0a4252b957a353af88b3842a622cbab845876b485",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/PDMX.csv": "975c70d830ec04bcea184103062e5fedec19e32ef5fc50bced223d5622eefd61",
+          "benchmarks/ADRS/llm_sql/evaluator/datasets/products.csv": "465d51b3e9f88eda523454a45effe5ed33ef0e3078e6033ee1f9faa74954967b"
+        }
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "evaluator combined score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ADRS",
+        "protocol": "upstream",
+        "source_locator": "Systems results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/ADRS/llm_sql",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/ADRS/llm_sql/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/ADRS/llm_sql/evaluator",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/ADRS/llm_sql/initial_program.py",
+          "dependencies": [
+            "pandas",
+            "networkx>=3.2,<3.4"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+        },
+        "setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/llm_sql/evaluator/requirements.txt",
+          "bash benchmarks/ADRS/llm_sql/evaluator/download_dataset.sh"
+        ],
+        "task_setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/llm_sql/evaluator/requirements.txt",
+          "bash benchmarks/ADRS/llm_sql/evaluator/download_dataset.sh"
+        ],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Direct source evaluator adapter; Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass."
+        ]
+      },
+      "limitations": [
+        "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

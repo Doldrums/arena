@@ -1,0 +1,316 @@
+{
+  "schema_version": "1.0",
+  "label": "Source recovery: CoEvo, DrSR, Station, MEoH, AgenticOptimization seeds through the SCiEL facade",
+  "source_report": "runs/recovered-sources-20260919/report.json",
+  "created_at": "2026-09-19T16:47:05.072719+00:00",
+  "finished_at": "2026-09-19T16:47:15.301464+00:00",
+  "finished": true,
+  "settings": {
+    "workers": 2,
+    "timeout": 250,
+    "context": {
+      "framework": "SCiEL",
+      "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+      "tracked_modified": false,
+      "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0",
+      "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "adapter_files_sha256": {
+        "sciel.py": "e909506ed380bc84362b17def66581bd8e0648f984853e7e83702be79ae31752",
+        "sciel_worker.py": "e47318a860b035fab0194d067908b88acf2584c7d841813a516b64524391961e",
+        "runner.py": "a48c8b154e11729f86c4052dbcbd78b0c24444db6073b9f39e97d3ca3e2f1aee",
+        "bridge.py": "9c31e4b2962a486fd73d3fd3246730fbee52c5ccbed93d8d4f4275297fdb739f",
+        "worker.py": "a359c63c3c0b2bead9f06157ef747b10a28ff86deb805b6dcac5f6c4c9d1f389",
+        "judge.py": "d35fb108b9a23be87dea5df454399c508dd9fff20eefadbf0275e552400c0b38",
+        "native.py": "233e5ab23d84d5c99688f518324d298fc576c261bcd23de35161760806c77201",
+        "tensor_task.py": "4ee221ca2f91be75eadfbfa3545413b16f9629e3542459720f29b87bb725a662"
+      },
+      "mode": "seed_evaluator",
+      "model_calls": 0,
+      "evaluation_timeout": 240
+    }
+  },
+  "runtime": {
+    "executable": "/Users/imran.turganov/code/research/ACLR/autoresearch-tasks/.cache/sciel-env/bin/python",
+    "resolved_executable": "/Users/imran.turganov/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+    "available": true,
+    "sha256": "ac60cfe0268614638d0ffa35f3b0284fc7b3a11482723793455e17eeb278509e",
+    "venv_config_sha256": "611bef4eaa37d92b4941a57be94b7c3c649ae3d6ae14a6a03063c164565b1b62"
+  },
+  "summary": {
+    "total": 13,
+    "by_status": {
+      "completed": 13
+    },
+    "blocked_by_reason": {},
+    "verified_valid": 13,
+    "unknown_validity": 0,
+    "executed": 13,
+    "model_calls": 0
+  },
+  "by_paper": {
+    "agentic-optimization": {
+      "completed": 1
+    },
+    "coevo": {
+      "completed": 4
+    },
+    "drsr": {
+      "completed": 4
+    },
+    "meoh": {
+      "completed": 2
+    },
+    "the-station": {
+      "completed": 2
+    }
+  },
+  "results": [
+    {
+      "task_id": "agentic-optimization-circle-packing-26",
+      "kind": "upstream",
+      "paper_ids": [
+        "agentic-optimization"
+      ],
+      "status": "completed",
+      "score": 1.2536352060166884,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Original task scoring pipeline (program loader, run_packing, analyze_output with the strict fixed-center LP safety score) run in-process without the control plane or its worker spawn; original public seed",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "250bd6f94d965a9e04dc85c4514cb4d0c6730b978964d6ae4de8d80253682ae0",
+      "evaluator_sha256": "706d1b049cea5c110001a5213bb99d6b964b65e8cdc2b43fcf9269cec18882d1",
+      "started_at": "2026-09-19T16:47:05.080525+00:00",
+      "finished_at": "2026-09-19T16:47:06.119810+00:00"
+    },
+    {
+      "task_id": "coevo-e-coli-growth",
+      "kind": "upstream",
+      "paper_ids": [
+        "coevo"
+      ],
+      "status": "completed",
+      "score": 0.01671888730083305,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Original pinned CoEvo task evaluator on the training split; evotoolkit base classes stubbed when the package is absent; original program template as seed",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "c6b9a104c8d2f3a6f38e31fb632de30534970d9399153cdededd0a71bd48cbb2",
+      "evaluator_sha256": "e6378b5f619e2a75dea5f0c75f097eb4c52ce229f91c184bb218acc0e5f6f409",
+      "started_at": "2026-09-19T16:47:05.086629+00:00",
+      "finished_at": "2026-09-19T16:47:06.335802+00:00"
+    },
+    {
+      "task_id": "coevo-oscillation-1",
+      "kind": "upstream",
+      "paper_ids": [
+        "coevo"
+      ],
+      "status": "completed",
+      "score": 0.00041851087854000575,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Original pinned CoEvo task evaluator on the training split; evotoolkit base classes stubbed when the package is absent; original program template as seed",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "7a7a09f8b749392d190625799874e4957f7bddda925f60d8fa11e1f62b63b202",
+      "evaluator_sha256": "e6378b5f619e2a75dea5f0c75f097eb4c52ce229f91c184bb218acc0e5f6f409",
+      "started_at": "2026-09-19T16:47:06.124524+00:00",
+      "finished_at": "2026-09-19T16:47:07.272024+00:00"
+    },
+    {
+      "task_id": "coevo-oscillation-2",
+      "kind": "upstream",
+      "paper_ids": [
+        "coevo"
+      ],
+      "status": "completed",
+      "score": 0.03191230698029087,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Original pinned CoEvo task evaluator on the training split; evotoolkit base classes stubbed when the package is absent; original program template as seed",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "87be7b3c40b73a844be4061c549d755e6fc85c204610ec7a3694de0f112d1c9c",
+      "evaluator_sha256": "e6378b5f619e2a75dea5f0c75f097eb4c52ce229f91c184bb218acc0e5f6f409",
+      "started_at": "2026-09-19T16:47:06.341497+00:00",
+      "finished_at": "2026-09-19T16:47:07.577860+00:00"
+    },
+    {
+      "task_id": "coevo-stress-strain",
+      "kind": "upstream",
+      "paper_ids": [
+        "coevo"
+      ],
+      "status": "completed",
+      "score": 0.19053426759408812,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Original pinned CoEvo task evaluator on the training split; evotoolkit base classes stubbed when the package is absent; original program template as seed",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "e679a53543b0bf11758a7e4816935009efd2c426c00717296094466355ff2aaa",
+      "evaluator_sha256": "e6378b5f619e2a75dea5f0c75f097eb4c52ce229f91c184bb218acc0e5f6f409",
+      "started_at": "2026-09-19T16:47:07.277347+00:00",
+      "finished_at": "2026-09-19T16:47:08.516962+00:00"
+    },
+    {
+      "task_id": "drsr-e-coli-growth",
+      "kind": "upstream",
+      "paper_ids": [
+        "drsr"
+      ],
+      "status": "completed",
+      "score": 0.01671888730083305,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Recreated protocol: the pinned CoEvo LLM-SR task evaluator and benchmark data stand in for DrSR's unreleased evaluation code",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "c6b9a104c8d2f3a6f38e31fb632de30534970d9399153cdededd0a71bd48cbb2",
+      "evaluator_sha256": "e6378b5f619e2a75dea5f0c75f097eb4c52ce229f91c184bb218acc0e5f6f409",
+      "started_at": "2026-09-19T16:47:07.585498+00:00",
+      "finished_at": "2026-09-19T16:47:08.820659+00:00"
+    },
+    {
+      "task_id": "drsr-oscillation-1",
+      "kind": "upstream",
+      "paper_ids": [
+        "drsr"
+      ],
+      "status": "completed",
+      "score": 0.00041851087854000575,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Recreated protocol: the pinned CoEvo LLM-SR task evaluator and benchmark data stand in for DrSR's unreleased evaluation code",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "7a7a09f8b749392d190625799874e4957f7bddda925f60d8fa11e1f62b63b202",
+      "evaluator_sha256": "e6378b5f619e2a75dea5f0c75f097eb4c52ce229f91c184bb218acc0e5f6f409",
+      "started_at": "2026-09-19T16:47:08.524705+00:00",
+      "finished_at": "2026-09-19T16:47:09.663875+00:00"
+    },
+    {
+      "task_id": "drsr-oscillation-2",
+      "kind": "upstream",
+      "paper_ids": [
+        "drsr"
+      ],
+      "status": "completed",
+      "score": 0.03191230698029087,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Recreated protocol: the pinned CoEvo LLM-SR task evaluator and benchmark data stand in for DrSR's unreleased evaluation code",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "87be7b3c40b73a844be4061c549d755e6fc85c204610ec7a3694de0f112d1c9c",
+      "evaluator_sha256": "e6378b5f619e2a75dea5f0c75f097eb4c52ce229f91c184bb218acc0e5f6f409",
+      "started_at": "2026-09-19T16:47:08.827361+00:00",
+      "finished_at": "2026-09-19T16:47:09.965964+00:00"
+    },
+    {
+      "task_id": "drsr-stress-strain",
+      "kind": "upstream",
+      "paper_ids": [
+        "drsr"
+      ],
+      "status": "completed",
+      "score": 0.19053426759408812,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Recreated protocol: the pinned CoEvo LLM-SR task evaluator and benchmark data stand in for DrSR's unreleased evaluation code",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "e679a53543b0bf11758a7e4816935009efd2c426c00717296094466355ff2aaa",
+      "evaluator_sha256": "e6378b5f619e2a75dea5f0c75f097eb4c52ce229f91c184bb218acc0e5f6f409",
+      "started_at": "2026-09-19T16:47:09.670511+00:00",
+      "finished_at": "2026-09-19T16:47:11.009894+00:00"
+    },
+    {
+      "task_id": "meoh-online-bin-packing",
+      "kind": "upstream",
+      "paper_ids": [
+        "meoh"
+      ],
+      "status": "completed",
+      "score": -2091.8,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Original pinned LLM4AD task evaluator; MEoH's second objective (evaluation time) recorded but not optimized; original template program as seed",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "6017fa7a58adcfbacfc9ecb3c82705d34abbc204396ba256037a4541fea4dbd2",
+      "evaluator_sha256": "e80bbb4b68b254b56a1da7cb97e31c0f0258093c41055863734d4d63124679df",
+      "started_at": "2026-09-19T16:47:09.974035+00:00",
+      "finished_at": "2026-09-19T16:47:14.527365+00:00"
+    },
+    {
+      "task_id": "meoh-traveling-salesman-problem",
+      "kind": "upstream",
+      "paper_ids": [
+        "meoh"
+      ],
+      "status": "completed",
+      "score": -6.8239686184057184,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Original pinned LLM4AD task evaluator; MEoH's second objective (evaluation time) recorded but not optimized; original template program as seed",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "70abdd1e34465c4fa054bd82ae984f3a43b0bdfc74dcc81521b0b9032bc482a3",
+      "evaluator_sha256": "e80bbb4b68b254b56a1da7cb97e31c0f0258093c41055863734d4d63124679df",
+      "started_at": "2026-09-19T16:47:11.018035+00:00",
+      "finished_at": "2026-09-19T16:47:14.551270+00:00"
+    },
+    {
+      "task_id": "the-station-circle-packing-n-26",
+      "kind": "upstream",
+      "paper_ids": [
+        "the-station"
+      ],
+      "status": "completed",
+      "score": 2.1580000000000004,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Official Station Task1Evaluator._evaluate extracted unchanged from the pinned evaluator; independently written trivial seed",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "67af94a598ac308b642839be148ae73b0344ff5165047fb12ba2f50e5ced8252",
+      "evaluator_sha256": "75cf32b37cc8fd92a4b21b94efda2292fd59ddfbd153ba80faadb76ddddf6816",
+      "started_at": "2026-09-19T16:47:14.535577+00:00",
+      "finished_at": "2026-09-19T16:47:15.262465+00:00"
+    },
+    {
+      "task_id": "the-station-circle-packing-n-32",
+      "kind": "upstream",
+      "paper_ids": [
+        "the-station"
+      ],
+      "status": "completed",
+      "score": 2.656,
+      "valid": true,
+      "reason_code": "valid_output",
+      "reasons": [],
+      "implementation_label": "Official Station Task1Evaluator._evaluate extracted unchanged from the pinned evaluator; independently written trivial seed",
+      "sciel_exercised": true,
+      "error": null,
+      "candidate_sha256": "267128aeb0e3be1c067ac5636d20899c0d61a3e647d0eb9d4c5744effe10b408",
+      "evaluator_sha256": "75cf32b37cc8fd92a4b21b94efda2292fd59ddfbd153ba80faadb76ddddf6816",
+      "started_at": "2026-09-19T16:47:14.559175+00:00",
+      "finished_at": "2026-09-19T16:47:15.295992+00:00"
+    }
+  ]
+}

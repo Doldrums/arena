@@ -1,0 +1,32 @@
+"""Terminal-Bench 2.0 (Meta-Harness).
+
+Protocol: unsupported (llm_agent_env).
+Candidates are LLM agents scored inside the terminal-bench@2.0 environment (tools, web, games or code sandboxes); the environment and model access are external.
+
+The evaluator therefore returns a failure result with ``unsupported: true``
+so that harnesses can recognise the task; the interface the paper expects from
+a candidate is documented in initial_program.py and README.md.
+"""
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+SUITE_LIB = Path(__file__).resolve().parents[1] / "_lib"
+if str(SUITE_LIB) not in sys.path:
+    sys.path.insert(0, str(SUITE_LIB))
+
+from autoresearch_suite import runtime  # noqa: E402
+
+DIRECTION = "maximize"
+CATEGORY = 'llm_agent_env'
+REASON = 'Candidates are LLM agents scored inside the terminal-bench@2.0 environment (tools, web, games or code sandboxes); the environment and model access are external.'
+REQUIRES = ["service:llm_api", "env:OPENROUTER_API_KEY", "environment:terminal-bench@2.0"]
+
+
+def evaluate(program_path="initial_program.py"):
+    return runtime.failure("unsupported in this suite: " + REASON, DIRECTION, unsupported=True, category=CATEGORY, requires=REQUIRES)
+
+
+if __name__ == "__main__":
+    sys.exit(runtime.main(evaluate))

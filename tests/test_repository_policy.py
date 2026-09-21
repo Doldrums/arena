@@ -47,6 +47,19 @@ def test_only_explicit_data_and_lockfiles_escape_line_count(tmp_path):
     assert any("unreviewed/package-lock.json" in failure for failure in failures)
 
 
+def test_task_records_are_data_but_evaluators_headers_and_configs_are_source(tmp_path):
+    paths = files(tmp_path, {name: "\n" * 501 for name in [
+        "tasks/suite/example/problem.json", "tasks/suite/example/task.json",
+        "tasks/catalog/tasks.json", "tasks/validation/seed-results.json",
+        "registry/task-library-manifest.json", "tasks/suite/example/evaluator.py",
+        "tasks/suite/example/config.yaml", "tasks/suite/example/seed.cpp",
+        "tasks/suite/_lib/vendor/helper.hpp",
+    ]})
+    failures = policy.check_paths(tmp_path, paths)
+    assert len(failures) == 4
+    assert all("501 physical lines" in failure for failure in failures)
+
+
 def test_exact_markdown_locations_and_no_docs_or_reports(tmp_path):
     paths = files(tmp_path, {name: "content" for name in [
         "README.md", "CONTRIBUTING.md", "AGENTS.md", "nested/README.md", "notes.MD",

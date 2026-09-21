@@ -1,0 +1,89 @@
+{
+  "protocol": "recreated",
+  "family": "science_physics_tdlmc_distance_posterior",
+  "direction": "minimize",
+  "contract": "infer_distance(image, psf, time_delays, kinematics, metadata) -> 32..4096 joint physical posterior samples; first column time-delay distance Mpc, others named bounded lens/source nuisances. Metadata includes evaluator-owned lenstronomy forward callable and budget. TDLMC Rungs 1 or 2 whole systems only. Relative distance CRPS plus independent image/delay/dynamical forward-likelihood penalty; bias, interval width and coverage reported.",
+  "parameters": {
+    "proposal_id": "P07"
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "file:../../.cache/physics-env/bin/python",
+    "file:data/physics-expansion/P07/manifest.json",
+    "file:data/physics-expansion/P07/benchmark.npz"
+  ],
+  "timeout": 900,
+  "notes": [
+    "Independent SCIEL scientific adaptation. Required source packs never fall back to toy data. Fixture tests are distinct from source-data execution. See docs/PHYSICS_EXPANSION.md."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-physics-tdlmc-distance-posterior",
+  "name": "TDLMC time-delay distance posterior",
+  "paper_ids": [
+    "science-physics_expansion"
+  ],
+  "description": "infer_distance(image, psf, time_delays, kinematics, metadata) -> 32..4096 joint physical posterior samples; first column time-delay distance Mpc, others named bounded lens/source nuisances. Metadata includes evaluator-owned lenstronomy forward callable and budget. TDLMC Rungs 1 or 2 whole systems only. Relative distance CRPS plus independent image/delay/dynamical forward-likelihood penalty; bias, interval width and coverage reported.",
+  "benchmark": "TDLMC time-delay distance posterior",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2006.08619",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: TDLMC time-delay distance posterior"
+    },
+    {
+      "url": "https://tdlmc.github.io/download.html",
+      "type": "archive",
+      "locator": "Rung 1 or 2 blinded images, PSF, delays, kinematics and open-box distances; omit Rung 3."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Curate Rung 1/2 source cases and model/kinematics priors, install lenstronomy and verify forward rendering against source."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-physics_expansion",
+      "title": "Physics and astrophysics research: source-based research tasks",
+      "url": "https://arxiv.org/abs/1904.06778v3"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "H0LiCOW XIII. A 2.4% measurement of H0 from lensed quasars: 5.3σ tension between early and late-Universe probes",
+        "url": "https://arxiv.org/abs/1907.04869",
+        "task_relation": "The local TDLMC task infers a distance posterior from simulated imaging, delays, PSFs, and kinematics. It isolates a lens-inference subproblem; its likelihood assumptions and posterior score do not reproduce the six-quasar observational analysis or its cosmological conclusions.",
+        "primary_goal": "Measure the Hubble constant and constrain cosmology using time-delay distances from gravitationally lensed quasars.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Infer time-delay distances from strongly lensed quasars to constrain the cosmic expansion rate.",
+    "importance_rationale": "Lensing distances and the resulting cosmological constraints are the primary scientific measurements in H0LiCOW XIII.",
+    "reason": "The evidence directly studies the physical quantity estimated by the task; a time-delay challenge announcement alone is insufficient.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "cosmology_and_astrophysics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  }
+}

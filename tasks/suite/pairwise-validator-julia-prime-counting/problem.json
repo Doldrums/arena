@@ -1,0 +1,85 @@
+{
+  "protocol": "original",
+  "family": "shinka_julia",
+  "direction": "maximize",
+  "contract": "A Julia program reading queries from argv[1] and writing prime counts to argv[2]; score = 100 * accuracy - runtime seconds (ShinkaEvolve evaluator)",
+  "parameters": {
+    "queries": "100 .. 25000"
+  },
+  "requires": [
+    "bin:julia"
+  ],
+  "timeout": 300,
+  "notes": [
+    "Pairwise Validator evaluates the ShinkaEvolve julia_prime_counting example; the evaluator is that example's, verbatim."
+  ],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.jl",
+    "score_key": "score",
+    "error_key": "error",
+    "validity_key": "valid"
+  },
+  "origin": {
+    "repository": "https://github.com/SakanaAI/ShinkaEvolve",
+    "path": "examples/julia_prime_counting",
+    "files_sha256": {
+      "evaluate.py": "530fec55490e0618cdc7c778c120f5a792257b59b9539ad23d6f3b8983c97f59",
+      "initial.jl": "b802a41cdf6f86a50d359487a596269232a66ec483837d5f3b8fe2a5b9b6a1ee"
+    }
+  },
+  "protocol_description": "Verbatim ShinkaEvolve evaluator called through a thin wrapper.",
+  "id": "pairwise-validator-julia-prime-counting",
+  "name": "julia_prime_counting",
+  "paper_ids": [
+    "pairwise-validator"
+  ],
+  "description": "julia_prime_counting task evaluated in Reward-Free Evolving Agents via Pairwise Validator.",
+  "benchmark": "ADRS / ShinkaEvolve",
+  "paper_metric": "upstream task score",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2607.14408",
+      "type": "paper",
+      "locator": "Section 5.4, Table 5"
+    }
+  ],
+  "limitations": [
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.jl",
+  "papers": [
+    {
+      "id": "pairwise-validator",
+      "title": "Reward-Free Evolving Agents via Pairwise Validator",
+      "url": "https://arxiv.org/pdf/2607.14408"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "numerical_computing",
+    "area": "scientific_computing",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

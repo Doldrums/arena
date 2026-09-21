@@ -1,0 +1,93 @@
+{
+  "protocol": "recreated",
+  "family": "science_materials_nmr_structure_elucidation",
+  "direction": "maximize",
+  "contract": "elucidate(h_spectrum, c_spectrum, metadata, k) -> list of one to k distinct molecular SMILES. Metadata may include formula and target-free candidate_smiles. Score exact RDKit-canonical molecular graph recovery in top five; top1 is diagnostic. Enforce valid connected graph and supplied formula. Stereochemistry is ignored only when source labels do not resolve it. Simulated and experimental source subsets must remain separate.",
+  "parameters": {
+    "proposal_id": "C07"
+  },
+  "requires": [
+    "py:numpy",
+    "py:rdkit",
+    "file:data/materials-expansion/C07/dataset.json"
+  ],
+  "timeout": 180,
+  "notes": [
+    "Independently implemented SCIEL adaptation. Source bundles are required except the specified PFHub and Cantera simulations; no generated replacement data. See docs/MATERIALS_EXPANSION.md for provenance, exact setup blockers and validation scope."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-materials-nmr-structure-elucidation",
+  "name": "NMR molecular structure elucidation",
+  "paper_ids": [
+    "science-materials_expansion"
+  ],
+  "description": "elucidate(h_spectrum, c_spectrum, metadata, k) -> list of one to k distinct molecular SMILES. Metadata may include formula and target-free candidate_smiles. Score exact RDKit-canonical molecular graph recovery in top five; top1 is diagnostic. Enforce valid connected graph and supplied formula. Stereochemistry is ignored only when source labels do not resolve it. Simulated and experimental source subsets must remain separate.",
+  "benchmark": "NMR molecular structure elucidation",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11613330/",
+      "type": "paper",
+      "locator": "NMR2Struct structure elucidation; simulated release distinct from experimental validation."
+    },
+    {
+      "url": "https://github.com/MarklandGroup/NMR2Struct",
+      "type": "repository",
+      "locator": "Official inference and preprocessing implementation."
+    },
+    {
+      "url": "https://zenodo.org/records/13892026",
+      "type": "benchmark",
+      "locator": "Official large spectrum dataset; license and subset provenance must be captured before staging."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation of a cited scientific problem; no claim to reproduce author leaderboard scores.",
+    "Candidate and evaluator run in one Python process; data access is separated by API, not an OS sandbox. Isolate evaluator data for adversarial or held-out evaluation.",
+    "Stage licensed NMR2Struct spectrum subset, exact molecular graph labels, scaffold groups and target-free candidate graph library. Full archive is about 30 GB; experimental subset not verified."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-materials_expansion",
+      "title": "Chemistry and materials research: source-based research tasks",
+      "url": "https://doi.org/10.1021/jacs.2c08592"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Infer molecular connectivity from routine one-dimensional NMR spectra.",
+    "importance_rationale": "Chemical structure identification is needed to characterize synthesized or isolated compounds.",
+    "papers": [
+      {
+        "title": "Accurate and Efficient Structure Elucidation from Routine One-Dimensional NMR Spectra Using Multitask Machine Learning",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11613330/",
+        "primary_goal": "Recover chemical structures from one-dimensional proton and carbon NMR measurements.",
+        "task_relation": "The local task returns ranked molecular graphs from corresponding spectral inputs, separating simulated and experimental subsets. Restricted candidate libraries and top-five graph matching do not establish full stereochemical elucidation or general identification of unknown compounds.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited primary paper develops or applies a solution to the stated scientific problem; its task is not merely an agent or general-purpose framework evaluation. Support concerns the scientific problem family, not a claim of new discovery or full-paper reproduction by this local task.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "model",
+    "domain": "natural_science",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "chemistry",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  }
+}

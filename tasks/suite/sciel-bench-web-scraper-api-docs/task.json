@@ -1,0 +1,295 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-bench-web-scraper-api-docs",
+  "name": "SCiEL: API documentation scraper",
+  "description": "Extract function names, signatures and parameters from embedded HTML documentation snippets (three fixed test pages covering Requests, BeautifulSoup and a generic layout) and format them. combined_score weights accuracy 0.4, completeness 0.3 and robustness 0.3.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "program_synthesis",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/web_scraper_optillm/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/web_scraper_optillm/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/web_scraper_optillm/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "beautifulsoup4",
+      "lxml"
+    ],
+    "environment_variables": [],
+    "datasets": "Three HTML snippets embedded in the pinned evaluator.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "The source seed imports BeautifulSoup; install beautifulsoup4 (and lxml from the example requirements) in the evaluation environment."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example web_scraper_optillm",
+    "paper_metric": null,
+    "source_locator": "examples/web_scraper_optillm/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/web_scraper_optillm",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/web_scraper_optillm/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/web_scraper_optillm",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": "examples/web_scraper_optillm/initial_program.py",
+      "dependencies": [
+        "beautifulsoup4",
+        "lxml"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply task validity; preserve unknown validity unless the original evaluator exposes an explicit signal.",
+        "The test HTML is embedded in the pinned evaluator; no network fetch happens during evaluation. The optillm proxy in the source README is only used by the original search loop."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "The source seed imports BeautifulSoup; install beautifulsoup4 (and lxml from the example requirements) in the evaluation environment."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "py:bs4",
+        "py:lxml",
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The evaluator imports the candidate by module name after inserting its directory into sys.path; candidates named like an installed module shadow it."
+  ],
+  "validation": {
+    "level": "integration_smoke",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "Name matching accepts substring matches in either direction and awards half credit when fewer parameters are extracted; scores are lenient and not independently verified.",
+      "The evaluator's completeness term assumes about 20 expected functions although the embedded test pages define fewer; full completeness is unreachable with the pinned pages."
+    ],
+    "execution_tested": true,
+    "execution_evidence": {
+      "task_id": "sciel-bench-web-scraper-api-docs",
+      "date": "2026-09-19",
+      "mode": "original seed, original pinned evaluator",
+      "model_calls": 0,
+      "direct_evaluation": {
+        "command": "run.py evaluate sciel-bench-web-scraper-api-docs --python .cache/sciel-env/bin/python",
+        "status": "completed",
+        "score": 0.6863888888888889,
+        "valid": null,
+        "metric": "combined_score",
+        "direction": "maximize",
+        "upstream_result": {
+          "accuracy": 0.7222222222222222,
+          "completeness": 0.325,
+          "robustness": 1.0,
+          "parsing_errors": 0.0,
+          "total_score": 0.0,
+          "combined_score": 0.6863888888888889
+        },
+        "started_at": "2026-09-19T15:29:55.458584+00:00",
+        "finished_at": "2026-09-19T15:29:55.584623+00:00"
+      },
+      "sciel_facade_check": {
+        "command": "run.py smoke sciel-bench-web-scraper-api-docs",
+        "status": "unverified",
+        "score": 0.6863888888888889,
+        "valid": null,
+        "reason_code": "validity_not_reported",
+        "combined_score": 0.6863888888888889,
+        "engine_evaluator_file": "engine/openevolve/evaluator.py",
+        "python_version": "3.12.14",
+        "sciel_source": {
+          "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+          "tracked_modified": false,
+          "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+        }
+      },
+      "score": 0.6863888888888889,
+      "valid": null,
+      "sciel_exercised": true,
+      "candidate_sha256": "f30af2503f6a3021f3b116265bdacf628b81373d5d8f532220607c677a102bb4",
+      "evaluator_sha256": "8ed53956b546541ca0e73e884f4e24835b3ee54ac7b3218bb61db56170d740f0",
+      "source_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+      "runtime_executable_sha256": "ac60cfe0268614638d0ffa35f3b0284fc7b3a11482723793455e17eeb278509e",
+      "runs_directory": "runs/sciel-examples-20260919 (git-ignored; per-task JSON and smoke reports)"
+    }
+  },
+  "source_hashes": {
+    "examples/web_scraper_optillm/README.md": "067522858490346701d737173443d5422fb4b26f498e4215ecc32901ec3b9120",
+    "examples/web_scraper_optillm/config.yaml": "89cd764a6ca4263c7a4e9d2ba761610e48a9e36a49fddba7e11710ae4be4885e",
+    "examples/web_scraper_optillm/evaluator.py": "8ed53956b546541ca0e73e884f4e24835b3ee54ac7b3218bb61db56170d740f0",
+    "examples/web_scraper_optillm/initial_program.py": "f30af2503f6a3021f3b116265bdacf628b81373d5d8f532220607c677a102bb4",
+    "examples/web_scraper_optillm/requirements.txt": "16ff4ac5ad244a951a1c314b2cdcc08d57e68efbe17c41ebf6f962e42c0c9cca"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/web_scraper_optillm/evaluator.py",
+      "signature": "program_path: str",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.scrape_api_docs(html_content) -> list of dicts with name, signature, parameters",
+      "program.extract_parameters(signature) -> list of parameter names (used when a doc lacks parameters)",
+      "program.format_documentation(docs) -> str"
+    ],
+    "baseline_path": "examples/web_scraper_optillm/initial_program.py",
+    "baseline_functions": {
+      "scrape_api_docs": {
+        "signature": "html_content: str",
+        "docstring": "Extract API documentation from HTML content.\n\nArgs:\n    html_content: Raw HTML content of a documentation page\n\nReturns:\n    List of dictionaries containing function documentation"
+      },
+      "extract_parameters": {
+        "signature": "signature: str",
+        "docstring": "Extract parameter information from a function signature.\n\nArgs:\n    signature: Function signature string\n\nReturns:\n    List of parameter dictionaries"
+      },
+      "format_documentation": {
+        "signature": "api_docs: List[Dict[str, any]]",
+        "docstring": "Format extracted documentation into a readable string.\n\nArgs:\n    api_docs: List of API documentation dictionaries\n\nReturns:\n    Formatted documentation string"
+      }
+    },
+    "parameters": {
+      "test_cases": 3,
+      "expected_functions_for_full_completeness": 20,
+      "weights": {
+        "accuracy": 0.4,
+        "completeness": 0.3,
+        "robustness": 0.3
+      }
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 99,
+        "expression": "metrics"
+      },
+      {
+        "function": "evaluate",
+        "line": 102,
+        "expression": "{ \"accuracy\": 0.0, \"completeness\": 0.0, \"robustness\": 0.0, \"parsing_errors\": 1.0, \"combined_score\": 0.0, \"error\": str(e), \"traceback\": traceback.format_exc(), \"stage\": \"program_import\", }"
+      },
+      {
+        "function": "evaluate_extraction",
+        "line": 298,
+        "expression": "correct, expected_count"
+      }
+    ],
+    "validity_key": null,
+    "validity_semantics": "No explicit validity signal; import failure returns combined_score 0.0 with an error field, otherwise validity is unknown.",
+    "error_key": "error",
+    "declared_requirements": [
+      "beautifulsoup4>=4.12.0",
+      "requests>=2.31.0",
+      "lxml>=4.9.0"
+    ],
+    "evaluator_imports": [
+      "os",
+      "sys",
+      "traceback",
+      "typing"
+    ],
+    "baseline_imports": [
+      "bs4",
+      "re",
+      "typing"
+    ],
+    "source_config_path": "examples/web_scraper_optillm/config.yaml",
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 100,
+      "checkpoint_interval": 10,
+      "evaluator": {
+        "timeout": 300,
+        "max_retries": 3
+      },
+      "database": {
+        "population_size": 50,
+        "num_islands": 3
+      },
+      "llm": {
+        "api_base": "http://localhost:8000/v1",
+        "models": [
+          "readurls-Qwen/Qwen3-1.7B-MLX-bf16",
+          "moa&readurls-Qwen/Qwen3-1.7B-MLX-bf16"
+        ],
+        "timeout": 600
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "cpu",
+    "recommended_smoke_outer_timeout_seconds": 15
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

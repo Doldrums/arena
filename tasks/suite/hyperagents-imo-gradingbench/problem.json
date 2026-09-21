@@ -1,0 +1,73 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "service:llm_api",
+    "env:OPENROUTER_API_KEY",
+    "environment:IMO-GradingBench"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "llm_agent_env",
+  "unsupported_reason": "Candidates are LLM agents scored inside the IMO-GradingBench environment (tools, web, games or code sandboxes); the environment and model access are external.",
+  "protocol_description": "Not executable in this suite: Candidates are LLM agents scored inside the IMO-GradingBench environment (tools, web, games or code sandboxes); the environment and model access are external.",
+  "id": "hyperagents-imo-gradingbench",
+  "name": "IMO-GradingBench",
+  "paper_ids": [
+    "hyperagents"
+  ],
+  "description": "IMO-GradingBench",
+  "benchmark": null,
+  "paper_metric": "agreement with expert grades",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2603.19461",
+      "type": "paper",
+      "locator": "Section 4 and Appendix C"
+    },
+    {
+      "url": "https://github.com/facebookresearch/Hyperagents/tree/59a68f672dfb92c74aeb7e61535d776fb36e172d",
+      "type": "repository",
+      "locator": "domains/imo"
+    }
+  ],
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "hyperagents",
+      "title": "HyperAgents",
+      "url": "https://arxiv.org/pdf/2603.19461"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

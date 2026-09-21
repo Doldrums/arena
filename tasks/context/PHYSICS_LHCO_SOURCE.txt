@@ -1,0 +1,31 @@
+# P06: official LHCO source preparation
+
+The existing collider-anomaly family now has a real source-backed preparation path. It uses the first 50,000 rows of the author-shuffled [LHCO R&D release](https://zenodo.org/records/2629073), simulated with Pythia8 and Delphes3.4.1. These are released collider events, not generated feature mixtures.
+
+`scripts/prepare_physics_lhco.py` reads the compressed HDF5 dataset `df/block0_values` with verified HTTP byte ranges. It retrieves approximately 129 MB instead of the full 2.78 GB archive. Each fetched range and the normalized pack have SHA-256 receipts. The published full-file MD5 is retained as provenance but is not claimed to have been verified on a partial download.
+
+Each event contains up to 700 massless reconstructed particles with `(pT, eta, phi)` coordinates and a separate source truth bit. FastJet 3.5.1.5 reconstructs anti-kT jets with radius 1 and E-scheme recombination. The leading jet must have pT at least 1,300 GeV; both leading jets must satisfy |eta| < 2.5. The two selected jets are then ordered by increasing mass.
+
+Candidate features are the lighter jet mass, the mass difference, each jet's pT-weighted rapidity/azimuth girth, each jet's pT dispersion, and each jet's constituent count. The dijet mass, event identifiers and truth bits are withheld from candidate inputs. FastJet is an explicitly reused scientific preprocessing engine; the SCIEL scoring and splitting logic is independently implemented.
+
+The splits use original source row numbers before any selection:
+
+| Purpose | Source rows | Dijet mass selection | Events |
+|---|---|---|---:|
+| Unsupervised control training | 0–24,999 | [2,500, 3,300) or [3,700, 4,500) GeV | 10,769 |
+| Evaluation | 25,000–44,999 | [2,500, 4,500) GeV | 12,152 |
+| No-signal control | 45,000–49,999 | Same evaluation mass window, source QCD truth only | 2,646 |
+
+Training retains the source's actual contamination without filtering on truth: 450 signal events, recorded only as a preparation diagnostic. Evaluation contains 1,708 signal events and 10,444 background events. No source event appears in two splits.
+
+The IsolationForest seed scores **0.0114869204** under the predefined SIC-at-5%-background metric divided by one plus mass-sculpting chi-square. Its AUROC is 0.5917746774 and disjoint no-signal acceptance is 0.0555555556. The weak baseline is retained as measured; these values are not a claim of discovery or full challenge reproduction. This pilot does not establish cross-generator robustness.
+
+Reproduce from the repository root:
+
+```bash
+.cache/sciel-env/bin/python -m pip install fastjet==3.5.1.5 hdf5plugin==7.1.0
+.cache/sciel-env/bin/python scripts/prepare_physics_lhco.py
+.cache/sciel-env/bin/python -m unittest discover -s tests -p test_science_lhco_source.py -v
+```
+
+The source pack is in `suite/_lib/data/physics-expansion/P06/`. Validation is recorded in `validation/physics-lhco-source-report.json`. Tests independently check two-jet invariant masses, azimuthal rotation, truth-independent features, malformed source events, exact source row ranges, and absence of split overlap. Analytic test particles are never substituted for the official benchmark events.

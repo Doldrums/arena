@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "id": "science-biology-casanovo-peptide-decoding",
+  "name": "Biology: Measured tandem-spectrum peptide reconstruction",
+  "description": "Decode physically mass-consistent peptide sequences from measured fragment spectra and rank confidence under exact-sequence and precision-coverage evaluation.",
+  "paper_ids": [
+    "science-biology_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://www.nature.com/articles/s41467-024-49731-x",
+      "type": "paper",
+      "locator": "Casanovo Methods: de novo sequencing, precursor constraints and precision/coverage evaluation."
+    },
+    {
+      "url": "https://github.com/Noble-Lab/casanovo",
+      "type": "repository",
+      "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned source-derived bundle B12.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Automatic compact-source staging available."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Biology: Measured tandem-spectrum peptide reconstruction",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_biology_b12",
+    "science_family": "science_biology_b12",
+    "parameters": {},
+    "interface": "decode_spectrum(peaks, precursor_mass, charge) -> (unmodified_peptide, confidence0..1). precursor_mass is NEUTRAL mass in Da (not m/z). Standard residues, I/L equivalent, mass error<=50ppm. Empty sequence/confidence0 is abstention. Maximize tie-grouped stepwise precision-coverage area; exact recall diagnostic. Measured-spectrum CPU decoder track, no learned encoder required.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "biology"
+    },
+    "proposal_id": "B12",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "additional_requires": [
+      "file:../../.cache/science-biology/B12.json",
+      "file:../../.cache/science-biology/B12.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_biology_b12",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-biology/B12.json",
+        "file:../../.cache/science-biology/B12.manifest.json"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Classical CPU decoder adaptation of twelve unique unmodified peptides in the official measured mouse sample. Not full nine-species/generalization benchmark or learned-encoder reproduction; I/L are equivalent and precursor mass is neutralDa.",
+    "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+    "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+  ],
+  "validation": {
+    "level": "source_subset_run",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "evidence": "validation/biology-expansion-source-runs.json",
+    "tests": "tests/test_science_biology_expansion.py",
+    "benchmark_validated": true,
+    "fixture_tests_are_benchmark_validation": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "biology",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine peptide amino-acid sequences from tandem mass spectra without requiring a matching sequence database.",
+    "importance_rationale": "De novo peptide sequencing supports protein characterization, including sequences absent from reference databases.",
+    "papers": [
+      {
+        "title": "Sequence-to-sequence translation from mass spectra to peptides with a transformer model",
+        "url": "https://www.nature.com/articles/s41467-024-49731-x",
+        "primary_goal": "Reconstruct peptide sequences directly from measured tandem mass spectra.",
+        "task_relation": "The local task retains measured MS/MS sequence reconstruction, precursor-mass consistency and confidence evaluation. Its selected spectra and scoring are not a full Casanovo reproduction or validation of newly discovered proteins.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited primary paper develops or applies a solution to the stated scientific problem; its task is not merely an agent or general-purpose framework evaluation. Support concerns the scientific problem family, not a claim of new discovery or full-paper reproduction by this local task.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

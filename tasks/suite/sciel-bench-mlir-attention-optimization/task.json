@@ -1,0 +1,249 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-bench-mlir-attention-optimization",
+  "name": "SCiEL: MLIR attention transformation parameters",
+  "description": "Choose MLIR pass-pipeline parameters (tile sizes, vectorization, unrolling, fusion, loop interchange) for a linalg self-attention kernel. The pinned evaluator runs mlir-opt with the chosen pipeline and estimates speedup from IR statistics; error (lower is better) penalizes shortfall from a 1.32x target.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "family": "compiler_optimization",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/attention_optimization/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/attention_optimization/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/attention_optimization/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU with an MLIR/LLVM installation providing mlir-opt.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Pinned MLIR kernels under examples/attention_optimization/mlir.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Install MLIR/LLVM with mlir-opt on PATH."
+    ],
+    "executables": [
+      "mlir-opt"
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "specified_only",
+    "benchmark": "SCiEL source example attention_optimization",
+    "paper_metric": null,
+    "source_locator": "examples/attention_optimization/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/attention_optimization",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "evaluator.py"
+        ],
+        "cwd": "examples/attention_optimization",
+        "source_url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/attention_optimization/evaluator.py",
+        "notes": "Source self-test: evaluates a fixed parameter dictionary through mlir-opt. Requires mlir-opt on PATH; makes no model calls."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Install MLIR/LLVM with mlir-opt on PATH."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Command-only or blocked interface; see limitations for why no direct candidate evaluator is registered."
+    ],
+    "blocked_reason": "The pinned evaluator instantiates its MLIR checker at import time (import fails without mlir-opt on PATH) and only accepts candidate paths that start with /tmp/ and end with .py; any other path raises ValueError inside evaluate and returns error 1000.0. The common runner supplies candidate paths under the repository cache, so no unmodified adapter can reach the scoring branch. Performance is estimated from IR statistics rather than measured, so a repair was not attempted.",
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "bin:mlir-opt",
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The evaluator's own docstring states that real execution failed and that performance is estimated from IR analysis; scores are simulated, not measured kernel runtimes.",
+    "The seed program samples parameters randomly at each call, so repeated evaluations of the same seed differ."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "Candidate path acceptance is restricted to /tmp/*.py, which excludes this runner's candidate locations and macOS temporary directories.",
+      "Speedup is an IR-statistics estimate; no compiled kernel is executed."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/attention_optimization/README.md": "9e435a7ab0ee21eca4c0f0cdbce3fc60598cce58134bc4e00dcf7cd711e90628",
+    "examples/attention_optimization/config.yaml": "5ec2f5ef2217ded2845e4ec1c0ebde42f8e9012baeee87a080a31ad5047053a7",
+    "examples/attention_optimization/evaluator.py": "4ad1f340609b166aa09218a5c13418aa85c7ad9b7817783c5c9a25fc1f73eb86",
+    "examples/attention_optimization/initial_program.py": "5479e1d10f58d0c467b12e0a5e09635f302d2537f949e649a179ea98665620a8",
+    "examples/attention_optimization/legacy/prev_sim__works_evaluator.py": "7e3037946a481ce118700acda8c3708be7ab2af3c0c79f4e33afae6a511698f9",
+    "examples/attention_optimization/mlir/attn.mlir": "35852b28f1c3e5d2b698ea01e54c9bdc0f7c06b26a0bd826c0951936b83fa042",
+    "examples/attention_optimization/mlir/attn_template.mlir": "efe868c6404cb18a5c3412bbfb88d5202b8e403b656b518e58accff752fcfe9a",
+    "examples/attention_optimization/mlir/baseline_attention.mlir": "a5eb6fa766f50863a1d89edd46e15e0fcf3be469a9fe29dffc776a2fd84edba6",
+    "examples/attention_optimization/mlir/baseline_attention_v0.mlir": "30405b91a00d08d5892883459b9ff8feb2849abf9c44e9c79532a62809c7681e",
+    "examples/attention_optimization/mlir/export_mlir.mlir": "72138ebc55c5db574289d81edafab3c8e5557820670489bcf46febd7bd477c60",
+    "examples/attention_optimization/mlir/self_attention_torch_mlir_gen.mlir": "8fb43ee6fb5893785d362c4027ff7147b0b35cb74baff51175829db6a9a5cc62",
+    "examples/attention_optimization/mlir/self_attention_with_consts_torch_dialect.mlir": "6b61de2bdd816d7d5831fa17215da100ecb117f28a5ad2186f2dcff5e61609b3",
+    "examples/attention_optimization/mlir/self_attn_with_consts_linalg_dialect.mlir": "00e960acafefd6430f09ecbdbbe52074802058d647485039f833833b3a96ff94"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/attention_optimization/evaluator.py",
+      "signature": "optimize_attention",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.optimize_attention() -> dict of transformation parameters (tile_size_m, tile_size_n, vectorization, unroll_factor, fusion_strategy, loop_interchange, target_speedup, ...)"
+    ],
+    "baseline_path": "examples/attention_optimization/initial_program.py",
+    "baseline_functions": {
+      "optimize_attention": {
+        "signature": "",
+        "docstring": "Define attention optimization parameters for evolution.\n\nThe goal is to achieve 32% speedup (1.32x) like AlphaEvolve paper\nby optimizing compiler-generated MLIR IR for attention kernels."
+      }
+    },
+    "parameters": {
+      "target_speedup": 1.32,
+      "mlir_file": "mlir/self_attn_with_consts_linalg_dialect.mlir",
+      "metric": "error (minimize)"
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 307,
+        "expression": "evaluator.evaluate(optimize_attention)"
+      },
+      {
+        "function": "evaluate",
+        "line": 291,
+        "expression": "result_data"
+      },
+      {
+        "function": "evaluate",
+        "line": 252,
+        "expression": "{\"error\": 100.0, \"compilation_error\": error}"
+      },
+      {
+        "function": "evaluate",
+        "line": 298,
+        "expression": "{\"error\": 1000.0, \"exception\": error_msg}"
+      }
+    ],
+    "validity_key": null,
+    "validity_semantics": "No validity signal; compilation failure returns error 100.0 with compilation_error, exceptions return error 1000.0 with an exception field.",
+    "error_key": null,
+    "declared_requirements": [],
+    "evaluator_imports": [
+      "json",
+      "os",
+      "pathlib",
+      "random",
+      "re",
+      "shutil",
+      "subprocess",
+      "tempfile",
+      "time",
+      "traceback"
+    ],
+    "baseline_imports": [
+      "json",
+      "random",
+      "sys"
+    ],
+    "source_config_path": "examples/attention_optimization/config.yaml",
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 100,
+      "checkpoint_interval": 10,
+      "diff_based_evolution": true,
+      "evaluator": {
+        "timeout": 60,
+        "cascade_evaluation": true,
+        "cascade_thresholds": [
+          0.5,
+          0.75
+        ],
+        "parallel_evaluations": 4
+      },
+      "database": {
+        "population_size": 50,
+        "num_islands": 3,
+        "archive_size": 20
+      },
+      "llm": {
+        "api_base": null,
+        "models": [
+          "o3",
+          "gpt-4.1-mini"
+        ],
+        "timeout": null
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "heavy_cpu_or_compiler",
+    "recommended_smoke_outer_timeout_seconds": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "configuration",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

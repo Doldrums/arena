@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0",
+  "id": "hyperagents-quadruped-torso-height-reward-design",
+  "name": "Quadruped torso-height reward design",
+  "description": "Quadruped torso-height reward design",
+  "paper_ids": [
+    "hyperagents"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2603.19461",
+      "type": "paper",
+      "locator": "Section 4 and Appendix C"
+    },
+    {
+      "url": "https://github.com/facebookresearch/Hyperagents/tree/59a68f672dfb92c74aeb7e61535d776fb36e172d",
+      "type": "repository",
+      "locator": "domains/genesis"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "Docker",
+      "LLM credentials",
+      "GPU and Genesis simulator"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "torso height",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Section 4 and Appendix C"
+  },
+  "execution": {
+    "repository": "https://github.com/facebookresearch/Hyperagents",
+    "commit": "59a68f672dfb92c74aeb7e61535d776fb36e172d",
+    "upstream_path": "domains/genesis",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "python -m pip install -r requirements.txt",
+      "docker build --network=host -t hyperagents .",
+      "bash setup_initial.sh"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "python -m pip install -r requirements.txt",
+      "docker build --network=host -t hyperagents .",
+      "bash setup_initial.sh"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "gym_reward_design",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:gymnasium",
+        "py:mujoco"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Quadruped torso-height reward design",
+    "slug": "quadruped-torso-height-reward-design",
+    "description": "Quadruped torso-height reward design",
+    "benchmark": null,
+    "dataset": null,
+    "metric": "torso height",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2603.19461",
+    "source_locator": "Section 4 and Appendix C",
+    "upstream_path": "domains/genesis",
+    "requirements": [
+      "Docker",
+      "LLM credentials",
+      "GPU and Genesis simulator"
+    ],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified.",
+    "upstream_evaluator_paths": [
+      "domains/genesis/evaluator.py"
+    ],
+    "upstream_seed_paths": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "reward",
+    "domain": "robotics",
+    "area": "robotics_and_control",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

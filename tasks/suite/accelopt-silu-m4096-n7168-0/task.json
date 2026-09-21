@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "id": "accelopt-silu-m4096-n7168-0",
+  "name": "silu_M4096_N7168_0",
+  "description": "silu_M4096_N7168_0",
+  "paper_ids": [
+    "accelopt"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2511.15915",
+      "type": "paper",
+      "locator": "Section 4 and official NKIBench/summary.json"
+    },
+    {
+      "url": "https://github.com/zhang677/AccelOpt/tree/47e29a7c24704e3c3e534b5bcbf39cfac3f831e3",
+      "type": "repository",
+      "locator": "NKIBench/kernels/silu_M4096_N7168_0.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "14 NKI kernel workloads",
+    "notes": [
+      "AWS Trainium 1 or 2",
+      "Neuron SDK",
+      "NKI",
+      "AWS trn1.32xlarge/Trainium1 and Neuron Ubuntu22.04 AMI with neuronxcc.nki and neuron-profile available. Profiling uses one Neuron core, five correctness seeds, two warmups and ten latency iterations."
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "percentage of theoretical peak throughput / execution latency",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "NKIBench",
+    "protocol": "upstream",
+    "source_locator": "Section 4 and official NKIBench/summary.json"
+  },
+  "execution": {
+    "repository": "https://github.com/zhang677/AccelOpt",
+    "commit": "47e29a7c24704e3c3e534b5bcbf39cfac3f831e3",
+    "upstream_path": "NKIBench/kernels/silu_M4096_N7168_0.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from accelopt.kernel_wrapper import NKIKernel; k=NKIKernel('NKIBench/kernels/silu_M4096_N7168_0.py', 'NKIBench/reference/silu_M4096_N7168_numpy_0.py'); r=k.profile([]); print(r)"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/zhang677/AccelOpt/blob/47e29a7c24704e3c3e534b5bcbf39cfac3f831e3/accelopt/kernel_wrapper.py",
+        "notes": "Exact NKIKernel.profile invocation for the kernel/reference pair declared in NKIBench/summary.json. Runs correctness plus latency profiling on AWS Trainium1; no LLM search. Hardware run not performed. Output is the upstream KernelProperties result (compiled/correct/runnable and latency metadata)."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "Activate the AMI Neuron PyTorch environment (README example /opt/aws_neuronx_venv_pytorch_2_7/bin/activate).",
+      "python setup.py install"
+    ],
+    "task_setup_instructions": [
+      "Activate the AMI Neuron PyTorch environment (README example /opt/aws_neuronx_venv_pytorch_2_7/bin/activate).",
+      "python setup.py install"
+    ],
+    "framework_setup_instructions": [
+      "python -m pip install logfire openai-agents",
+      "python setup.py install"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Exact NKIKernel.profile invocation for the kernel/reference pair declared in NKIBench/summary.json. Runs correctness plus latency profiling on AWS Trainium1; no LLM search. Hardware run not performed. Output is the upstream KernelProperties result (compiled/correct/runnable and latency metadata)."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "kernel_cpu",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:torch"
+      ],
+      "timeout": 1800,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "silu_M4096_N7168_0",
+    "slug": "silu-m4096-n7168-0",
+    "description": "silu_M4096_N7168_0",
+    "benchmark": "NKIBench",
+    "dataset": "14 NKI kernel workloads",
+    "metric": "percentage of theoretical peak throughput / execution latency",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2511.15915",
+    "source_locator": "Section 4 and official NKIBench/summary.json",
+    "upstream_path": "NKIBench/kernels/silu_M4096_N7168_0.py",
+    "requirements": [
+      "AWS Trainium 1 or 2",
+      "Neuron SDK",
+      "NKI",
+      "AWS trn1.32xlarge/Trainium1 and Neuron Ubuntu22.04 AMI with neuronxcc.nki and neuron-profile available. Profiling uses one Neuron core, five correctness seeds, two warmups and ten latency iterations."
+    ],
+    "execution_notes": "Exact NKIKernel.profile invocation for the kernel/reference pair declared in NKIBench/summary.json. Runs correctness plus latency profiling on AWS Trainium1; no LLM search. Hardware run not performed. Output is the upstream KernelProperties result (compiled/correct/runnable and latency metadata).",
+    "upstream_evaluator_paths": [],
+    "upstream_seed_paths": [],
+    "run_commands": [
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from accelopt.kernel_wrapper import NKIKernel; k=NKIKernel('NKIBench/kernels/silu_M4096_N7168_0.py', 'NKIBench/reference/silu_M4096_N7168_numpy_0.py'); r=k.profile([]); print(r)"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/zhang677/AccelOpt/blob/47e29a7c24704e3c3e534b5bcbf39cfac3f831e3/accelopt/kernel_wrapper.py",
+        "notes": "Exact NKIKernel.profile invocation for the kernel/reference pair declared in NKIBench/summary.json. Runs correctness plus latency profiling on AWS Trainium1; no LLM search. Hardware run not performed. Output is the upstream KernelProperties result (compiled/correct/runnable and latency metadata)."
+      }
+    ],
+    "execution_sources": [
+      "https://github.com/zhang677/AccelOpt/blob/47e29a7c24704e3c3e534b5bcbf39cfac3f831e3/NKIBench/summary.json",
+      "https://github.com/zhang677/AccelOpt/blob/47e29a7c24704e3c3e534b5bcbf39cfac3f831e3/tests/test_profile.py"
+    ],
+    "setup_commands": [
+      "Activate the AMI Neuron PyTorch environment (README example /opt/aws_neuronx_venv_pytorch_2_7/bin/activate).",
+      "python setup.py install"
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "kernel",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

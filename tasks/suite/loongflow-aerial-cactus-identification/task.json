@@ -1,0 +1,248 @@
+{
+  "schema_version": "1.0",
+  "id": "loongflow-aerial-cactus-identification",
+  "name": "aerial-cactus-identification",
+  "description": "Classify aerial images for cactus presence using predicted probabilities.",
+  "paper_ids": [
+    "loongflow",
+    "eurekagent"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2512.24077",
+      "type": "paper",
+      "locator": "Table 2"
+    },
+    {
+      "url": "https://github.com/baidu-baige/LoongFlow/tree/945c78bc1554f8281aac40320b3599bd68d528d7",
+      "type": "repository",
+      "locator": "agents/ml_agent/examples/mlebench/eval_program.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2606.13662",
+      "type": "paper",
+      "locator": "Appendix B"
+    },
+    {
+      "url": "https://github.com/THU-Team-Eureka/EurekAgent/tree/fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "aerial-cactus-identification",
+    "notes": [
+      "Kaggle dataset access and competition terms",
+      "MLE-bench",
+      "GPU where applicable"
+    ]
+  },
+  "evaluation": {
+    "metric": "ROC AUC",
+    "paper_metric": "ROC AUC",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "MLE-bench",
+    "protocol": "specified_only",
+    "source_locator": "Table 2"
+  },
+  "execution": {
+    "repository": "https://github.com/baidu-baige/LoongFlow",
+    "commit": "945c78bc1554f8281aac40320b3599bd68d528d7",
+    "upstream_path": "agents/ml_agent/examples/mlebench/eval_program.py",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/baidu-baige/LoongFlow/blob/945c78bc1554f8281aac40320b3599bd68d528d7/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/baidu-baige/LoongFlow/blob/945c78bc1554f8281aac40320b3599bd68d528d7/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper reports gold medal; metric and runtime depend on each competition. Configure competition ID in supplied task config.",
+      "Exact metric verified against official MLE-bench grade.py at https://github.com/openai/mle-bench/blob/507f92e1138bb6e40dac5c6ee7a6758e6424bf97/mlebench/competitions/aerial-cactus-identification/grade.py. This dependency revision was audited; LoongFlow paper did not pin this MLE-bench revision."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "dataset:MLE-bench",
+        "hardware:gpu"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "dataset",
+      "unsupported_reason": "MLE-bench competitions require the Kaggle data and model training; neither is redistributed."
+    }
+  },
+  "limitations": [
+    "Direct CPU checks found upstream square seed rejected by strict overlap test and rectangle seed incompatible with its evaluator. Original Autocorrelation II and Erdos overlap seeds passed; a new simple square grid fixture passed. These are integration checks, not reproduced paper results.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "aerial-cactus-identification",
+    "slug": "aerial-cactus-identification",
+    "description": "Classify aerial images for cactus presence using predicted probabilities.",
+    "benchmark": "MLE-bench",
+    "dataset": "aerial-cactus-identification",
+    "metric": "ROC AUC",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2512.24077",
+    "source_locator": "Table 2",
+    "upstream_path": "agents/ml_agent/examples/mlebench/eval_program.py",
+    "requirements": [
+      "Kaggle dataset access and competition terms",
+      "MLE-bench",
+      "GPU where applicable"
+    ],
+    "execution_notes": [
+      "Paper reports gold medal; metric and runtime depend on each competition. Configure competition ID in supplied task config.",
+      "Exact metric verified against official MLE-bench grade.py at https://github.com/openai/mle-bench/blob/507f92e1138bb6e40dac5c6ee7a6758e6424bf97/mlebench/competitions/aerial-cactus-identification/grade.py. This dependency revision was audited; LoongFlow paper did not pin this MLE-bench revision."
+    ],
+    "setup_commands": [],
+    "run_commands": [],
+    "metric_source_url": "https://github.com/openai/mle-bench/blob/507f92e1138bb6e40dac5c6ee7a6758e6424bf97/mlebench/competitions/aerial-cactus-identification/grade.py",
+    "metric_upstream_repository": {
+      "url": "https://github.com/openai/mle-bench",
+      "commit": "507f92e1138bb6e40dac5c6ee7a6758e6424bf97",
+      "path": "mlebench/competitions/aerial-cactus-identification/grade.py"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "model",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "gpu",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "eurekagent-aerial-cactus-identification",
+      "paper_ids": [
+        "eurekagent"
+      ],
+      "name": "aerial-cactus-identification",
+      "description": "aerial-cactus-identification",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2606.13662",
+          "type": "paper",
+          "locator": "Appendix B"
+        },
+        {
+          "url": "https://github.com/THU-Team-Eureka/EurekAgent/tree/fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+          "type": "repository",
+          "locator": null
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "MLE-Bench",
+          "Kaggle competition data",
+          "single GPU",
+          "24-hour experiment budget"
+        ]
+      },
+      "evaluation": {
+        "metric": "competition score and medal threshold",
+        "paper_metric": "competition score and medal threshold",
+        "paper_direction": null,
+        "direction": null,
+        "benchmark": "MLE-Bench Lite",
+        "protocol": "specified_only",
+        "source_locator": "Appendix B"
+      },
+      "execution": {
+        "repository": "https://github.com/THU-Team-Eureka/EurekAgent",
+        "commit": "fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "uv sync",
+          "bash docker/build.sh"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "uv sync",
+          "bash docker/build.sh"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Task appears in paper; no corresponding example package in inspected EurekAgent tree."
+        ]
+      },
+      "limitations": [
+        "Task appears in the paper MLE evaluation but no corresponding dataset wrapper, run config or evaluator package is present in the pinned public EurekAgent repository.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

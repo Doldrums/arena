@@ -1,0 +1,130 @@
+{
+  "schema_version": "1.0",
+  "id": "science-economics-finite-auction-design",
+  "name": "Economics: Incentive-compatible finite auction design",
+  "description": "Incentive-compatible finite auction design with an explicit candidate API, independently recomputed objective and fixed model/data assumptions.",
+  "paper_ids": [
+    "science-economics_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://proceedings.mlr.press/v97/duetting19a.html",
+      "type": "paper",
+      "locator": "RegretNet research objective; local finite-support mechanism replaces approximate sampled regret with exhaustive deviations."
+    },
+    {
+      "url": "https://github.com/saisrivatsan/deep-opt-auctions",
+      "type": "repository",
+      "locator": "Reference algorithms and source documentation; local evaluator is independently authored."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Generated economic model instances; no external empirical data."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Economics: Incentive-compatible finite auction design",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_economics_auctions",
+    "science_family": "science_economics_auctions",
+    "parameters": {},
+    "interface": "construct_auction(distribution_spec, support, constraints) -> {allocations:(16,2),payments:(16,)}. One additive bidder,two goods,each value in{0,1,2,3},three fixed distributions. Every allowed report is enumerated; require feasible probabilities, nonnegative payments, individual rationality and regret<=1e-8. Maximize expected revenue normalized by an independently solved finite-support mechanism LP. Truthfulness holds only on the declared report/value support.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "finance",
+      "area": "finance",
+      "data": "synthetic",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "proposal_id": "F04",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "reference_libraries": [
+        "numpy",
+        "scipy"
+      ]
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_economics_auctions",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Bounded adaptation specified in the candidate contract; no claim to reproduce full-paper scores.",
+    "Model/simulation scores do not establish empirical policy validity or market returns.",
+    "Public fixed evaluation inputs support development only; freeze candidates and run new cases for generalization."
+  ],
+  "validation": {
+    "level": "source_reviewed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_economics_expansion.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "finance",
+    "area": "finance",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Optimal Auctions through Deep Learning",
+        "url": "https://proceedings.mlr.press/v97/duetting19a.html",
+        "task_relation": "The local task restricts auctions to finite supports and checks deviations exhaustively against an LP reference. These exact finite constraints and distributions differ from the paper's neural mechanisms and approximate training procedure.",
+        "primary_goal": "Find high-revenue incentive-compatible auctions, including settings where analytical optimal mechanisms are unknown.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Design revenue-maximizing auctions subject to incentive-compatibility constraints.",
+    "importance_rationale": "Optimal multi-item mechanism design is the primary economics problem addressed in the paper.",
+    "reason": "The paper attempts to solve a substantive auction-design problem; deep learning is a solution method, not the task's sole justification.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

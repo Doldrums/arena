@@ -1,0 +1,74 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "hardware:Gym-PushT simulation"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "hardware",
+  "unsupported_reason": "Evaluation runs on specialised hardware (Gym-PushT simulation) that this suite cannot provide.",
+  "protocol_description": "Not executable in this suite: Evaluation runs on specialised hardware (Gym-PushT simulation) that this suite cannot provide.",
+  "id": "enpire-gym-pusht-simulation",
+  "name": "Gym-PushT simulation",
+  "paper_ids": [
+    "enpire"
+  ],
+  "description": "Gym-PushT simulation",
+  "benchmark": null,
+  "paper_metric": "task success rate",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2606.19980",
+      "type": "paper",
+      "locator": "Experimental tasks and supplementary experiments"
+    },
+    {
+      "url": "https://github.com/NVlabs/ENPIRE/tree/99ee90acf65b5b18957c8382ad580db999528be3",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Official NVIDIA project page inspected; no repository download link. RoboCasa exact task-instance list was not recovered from text; suite-level task retained.",
+    "Official ENPIRE harness pinned (Apache-2.0); every paper task needs a physical station or a simulator that the release does not bundle.",
+    "The pinned release ships the real-world PushT bridge and a hardware-free hello-environment example, but no gym-pusht simulation task entry point was found.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "enpire",
+      "title": "ENPIRE: Agentic Robot Policy Self-Improvement in the Real World",
+      "url": "https://arxiv.org/pdf/2606.19980"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "policy",
+    "domain": "robotics",
+    "area": "robotics_and_control",
+    "data": "real_measurements",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

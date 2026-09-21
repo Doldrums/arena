@@ -1,0 +1,95 @@
+{
+  "protocol": "recreated",
+  "family": "science_physics_freegsnke_coil_design",
+  "direction": "minimize",
+  "contract": "design_coils(machine, target_boundary, plasma_profile) -> eight bounded active-coil currents in A for the published Anamak geometry. Evaluator runs pinned FreeGSNKE static equilibrium at two grid resolutions, checks nonlinear Grad-Shafranov residual, closed-plasma topology and current bounds, then scores boundary/axis mismatch. Targets/profile cases generated from the specified source model and saved with numerical reference checks. No physical reactor claim.",
+  "parameters": {
+    "proposal_id": "P10"
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "file:../../.cache/physics-env/bin/python",
+    "file:data/physics-expansion/P10/manifest.json",
+    "file:data/physics-expansion/P10/benchmark.npz"
+  ],
+  "timeout": 900,
+  "notes": [
+    "Independent SCIEL scientific adaptation. Required source packs never fall back to toy data. Fixture tests are distinct from source-data execution. See docs/PHYSICS_EXPANSION.md."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-physics-freegsnke-coil-design",
+  "name": "FreeGSNKE tokamak coil design",
+  "paper_ids": [
+    "science-physics_expansion"
+  ],
+  "description": "design_coils(machine, target_boundary, plasma_profile) -> eight bounded active-coil currents in A for the published Anamak geometry. Evaluator runs pinned FreeGSNKE static equilibrium at two grid resolutions, checks nonlinear Grad-Shafranov residual, closed-plasma topology and current bounds, then scores boundary/axis mismatch. Targets/profile cases generated from the specified source model and saved with numerical reference checks. No physical reactor claim.",
+  "benchmark": "FreeGSNKE tokamak coil design",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1063/5.0188467",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: FreeGSNKE tokamak coil design"
+    },
+    {
+      "url": "https://github.com/FusionComputingLab/freegsnke/tree/d755538c0f849e46f0e2407c0dad535eb9a1e228",
+      "type": "repository",
+      "locator": "Version 3.1.0 example07a Anamak geometry and Lao85 profiles, static inverse and forward solves."
+    },
+    {
+      "url": "https://arxiv.org/abs/2501.14682",
+      "type": "paper",
+      "title": "Electromagnetic System Conceptual Design for a Negative Triangularity Tokamak",
+      "locator": "Uses equilibrium modeling to design bounded poloidal-coil currents and configurations that realize target plasma geometries. The local Anamak/FreeGSNKE static inverse problem uses different geometry and does not reproduce the paper's proposed reactor."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Run scripts/prepare_physics_expansion.py --coils with freegsnke==3.1.0 and NumPy<2.5."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-physics_expansion",
+      "title": "Physics and astrophysics research: source-based research tasks",
+      "url": "https://arxiv.org/abs/1904.06778v3"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Electromagnetic System Conceptual Design for a Negative Triangularity Tokamak",
+        "url": "https://arxiv.org/abs/2501.14682",
+        "task_relation": "The local task chooses eight bounded currents for an idealized Anamak geometry using FreeGSNKE static equilibrium checks. The paper studies another device and equilibrium code, with additional engineering considerations; the task is a limited coil-setting problem, not a reactor design validation.",
+        "primary_goal": "Design and assess an electromagnetic coil system capable of supporting the target equilibrium of a proposed tokamak.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Choose tokamak poloidal-field coil settings that produce a desired plasma equilibrium and shape.",
+    "importance_rationale": "Electromagnetic design capable of producing a target plasma geometry is the substantive fusion-engineering problem addressed by the paper.",
+    "reason": "The paper directly pursues magnetic-equilibrium design. A solver-software release is not used as the sole evidence.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "physics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

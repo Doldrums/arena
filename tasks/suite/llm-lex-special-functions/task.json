@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "id": "llm-lex-special-functions",
+  "name": "Special functions",
+  "description": "Special functions task evaluated in Symbolic Regression with Multimodal Large Language Models and Kolmogorov–Arnold Networks.",
+  "paper_ids": [
+    "llm-lex"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2505.07956",
+      "type": "paper",
+      "locator": "Section 2.6"
+    },
+    {
+      "url": "https://github.com/harveyThomas4692/llmlex/tree/9f02b58c5efb6d3c973c2ad2552ecc3a57998f81",
+      "type": "repository",
+      "locator": "Examples/fit_special_functions.ipynb"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "scale-normalized squared fitting error (Equation 3)",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "Special functions",
+    "protocol": "specified_only",
+    "source_locator": "Section 2.6"
+  },
+  "execution": {
+    "repository": "https://github.com/harveyThomas4692/llmlex",
+    "commit": "9f02b58c5efb6d3c973c2ad2552ecc3a57998f81",
+    "upstream_path": "Examples/fit_special_functions.ipynb",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "."
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/harveyThomas4692/llmlex/blob/9f02b58c5efb6d3c973c2ad2552ecc3a57998f81/readme.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "."
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/harveyThomas4692/llmlex/blob/9f02b58c5efb6d3c973c2ad2552ecc3a57998f81/readme.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Official notebooks, not a verified headless evaluation CLI.",
+      "Exact-expression recovery rate is a separate secondary maximized metric; do not combine its direction with fitting error."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "synthetic_equation",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Special functions",
+    "slug": "special-functions",
+    "description": "Special functions task evaluated in Symbolic Regression with Multimodal Large Language Models and Kolmogorov–Arnold Networks.",
+    "benchmark": "Special functions",
+    "dataset": null,
+    "metric": "scale-normalized squared fitting error (Equation 3)",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2505.07956",
+    "source_locator": "Section 2.6",
+    "upstream_path": "Examples/fit_special_functions.ipynb",
+    "requirements": [],
+    "execution_notes": [
+      "Official notebooks, not a verified headless evaluation CLI.",
+      "Exact-expression recovery rate is a separate secondary maximized metric; do not combine its direction with fitting error."
+    ],
+    "setup_commands": [],
+    "run_commands": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "science_tier": 2,
+    "artifact": "equation",
+    "domain": "natural_science",
+    "area": "mathematics",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

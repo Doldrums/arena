@@ -1,0 +1,74 @@
+{
+  "protocol": "recreated",
+  "family": "bo_cost_aware",
+  "direction": "minimize",
+  "contract": "acquisition(mu, sigma, f_best, cost) -> one score per candidate point; the loop stops when accumulated cost exceeds the budget (EvolCAF-style; cost(x) = 1 + mean normalized coordinate, a documented stand-in for the paper's cost functions). Score: mean simple regret",
+  "parameters": {
+    "function": "griewank_2d",
+    "budget": 30
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 300,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "evolcaf-griewank-2d",
+  "name": "Griewank 2D",
+  "paper_ids": [
+    "evolcaf"
+  ],
+  "description": "Griewank 2D: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "benchmark": "cost-aware synthetic black-box optimization",
+  "paper_metric": "optimality gap under cost budget",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2404.16906",
+      "type": "paper",
+      "locator": "Section 4.3 Table 1"
+    },
+    {
+      "url": "https://github.com/FeiLiu36/EoH/tree/472545785c936dcfc863d2bc0d6109cf23c7ce62",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "The paper links examples/user_bo_caf in EoH, which is absent from the current pinned tree. New examples/bo_acquisition is not assumed equivalent to the original cost-aware task suite.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "evolcaf",
+      "title": "Evolve Cost-aware Acquisition Functions Using Large Language Models",
+      "url": "https://arxiv.org/pdf/2404.16906"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "protocol": "recreated",
+  "family": "ode_integrator",
+  "direction": "maximize",
+  "contract": "integrate(f, t_span, y0) -> y(t_end) for an initial-value problem y' = f(t, y); the evaluator counts calls to f. Score: -log10(relative error) - 0.5 * log10(evaluations)",
+  "parameters": {
+    "problem": "stiff_linear_15"
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 300,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "dga2d-ode-solver-15-dimensional-stiff-linear-system",
+  "name": "ODE solver: 15-dimensional stiff linear system",
+  "paper_ids": [
+    "dga2d"
+  ],
+  "description": "ODE solver: 15-dimensional stiff linear system",
+  "benchmark": null,
+  "paper_metric": "-log10(error) - lambda log10(function evaluations)",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2608.00700",
+      "type": "paper",
+      "locator": "Appendix G.1"
+    }
+  ],
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Paper says an anonymized implementation was supplied as supplementary material but no public URL was found in the extracted PDF.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "dga2d",
+      "title": "DGA2D: Directed Graph-Guided Automated Algorithm Design with Large Language Models",
+      "url": "https://arxiv.org/pdf/2608.00700"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "numerical_computing",
+    "area": "scientific_computing",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

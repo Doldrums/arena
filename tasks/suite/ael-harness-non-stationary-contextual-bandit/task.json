@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.0",
+  "id": "ael-harness-non-stationary-contextual-bandit",
+  "name": "Non-stationary contextual bandit",
+  "description": "Non-stationary contextual bandit",
+  "paper_ids": [
+    "ael-harness"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.21725",
+      "type": "paper",
+      "locator": "Mechanism-validation appendices"
+    },
+    {
+      "url": "https://github.com/WujiangXu/AEL/tree/c95f5f961667e7df4bdddf750b22332158951bf2",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Synthetic mechanism-validation stream",
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "cumulative reward",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Mechanism-validation appendices"
+  },
+  "execution": {
+    "repository": "https://github.com/WujiangXu/AEL",
+    "commit": "c95f5f961667e7df4bdddf750b22332158951bf2",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "python -m pip install -e ."
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "python -m pip install -e ."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "contextual_bandit",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Support-ticket, 20Newsgroups and synthetic-bandit scripts were not found by filename in pinned tree; paper says synthetic_crossdomain.py is released, but this filename is absent.",
+    "Named in the paper, but the corresponding task script/config is absent from the pinned public AEL tree; synthetic_crossdomain.py referenced by the paper is not present.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Non-stationary contextual bandit",
+    "slug": "non-stationary-contextual-bandit",
+    "description": "Non-stationary contextual bandit",
+    "benchmark": null,
+    "dataset": "Synthetic mechanism-validation stream",
+    "metric": "cumulative reward",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2604.21725",
+    "source_locator": "Mechanism-validation appendices",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified.",
+    "execution_blocked_reason": "Named in the paper, but the corresponding task script/config is absent from the pinned public AEL tree; synthetic_crossdomain.py referenced by the paper is not present."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

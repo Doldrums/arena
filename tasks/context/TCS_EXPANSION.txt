@@ -1,0 +1,24 @@
+# Theoretical computer science expansion
+
+The five approved proposals are represented by four new task packages and one existing package, T02. Their evaluator and initial-program contracts live in each package's `problem.json` and README. The source papers supply the mathematical problems; these are independently authored, bounded adaptations, not reproductions of published performance tables.
+
+| Proposal | What is evaluated | Independent check and ranking |
+|---|---|---|
+| T01 — XOR circuits | Straight-line circuits for three finite binary linear maps | Evaluate every wire symbolically over GF(2), require the exact target map and depth at most 16, minimize gates relative to an independent-row baseline. No sampled input agreement can substitute for exact equivalence. |
+| T02 — Ramsey constructions | Existing `science-tcs-ramsey-5-5` family | Reuse the existing exhaustive forbidden-clique verifier and construction seed. A valid 37-vertex seed is a regression example, not a new Ramsey bound. This proposal creates no duplicate package. |
+| T03 — Spectral graph lifts | Edge signs for connected two-lifts of finite 3-regular prism graphs | Reconstruct the lift, check connectivity and regularity, recompute the signed-adjacency spectrum, minimize its spectral radius. The candidate receives a copy of the instance. Floating-point spectral evaluation is not an exact certificate of an asymptotic theorem. |
+| T04 — DAG pebbling | Load, store, compute and delete schedules under a fast-memory limit | Replay every action against the original DAG, including storage for newly computed values, require stored outputs, minimize transfers relative to a baseline. Input mutation cannot change the required outputs. |
+| T05 — Streaming sketches | Insertion-only frequency estimates over three streams | Pass at most 1,024 persistent bytes between fresh processes for each 256-item chunk; independently count truth, minimize normalized absolute error and report top-ten recall. Process restarts enforce the cooperative state contract, not isolation from malicious filesystem access. |
+
+T01, T03–T05 carry `area=theoretical_computer_science`, `scientific_contribution=method`, and generated mathematical data labels. T02 retains its existing open-problem label; only a construction exceeding a current, separately checked literature bound would constitute progress on that open problem.
+
+Sources: [Boyar–Peralta circuit synthesis](https://www.nist.gov/publications/new-combinational-logic-minimization-technique-applications-cryptology), [Interlacing Families II](https://annals.math.princeton.edu/2015/182-1/p07), [Hong–Kung pebbling](https://www.eecs.harvard.edu/~htk/publication/1981-stoc-hong-kung.pdf), [Count-Min sketch](https://www.cs.ox.ac.uk/people/graham.cormode/pubs/html/CormodeMuthukrishnan04CMJalg.html). T02's original references remain in its manifest.
+
+Run the generated seeds with:
+
+```sh
+.cache/sciel-env/bin/python scripts/check_science_expansion.py --only '^T' --merge
+PYTHONPATH=tests:src .cache/sciel-env/bin/python -m unittest test_science_tcs_expansion
+```
+
+All five have actual finite, valid seed executions in the [central report](../validation/science-expansion-report.md). A passing weak baseline establishes that the task runs, not that it solves a research problem. Public matrices, graphs, DAGs and streams support development; freeze candidates and select fresh instances before making generalization claims.

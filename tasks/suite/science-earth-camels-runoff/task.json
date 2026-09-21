@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0",
+  "id": "science-earth-camels-runoff",
+  "name": "Earth and environment: Measured rainfall–runoff transfer across catchments",
+  "description": "Calibrate a causal, water-conserving snow/soil runoff model on measured CAMELS catchments and predict discharge in wholly unseen basins and a subsequent year.",
+  "paper_ids": [
+    "science-earth_data"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://hess.copernicus.org/articles/21/5293/2017/",
+      "type": "paper",
+      "locator": "CAMELS-US dataset description, catchment attributes, meteorological forcing and streamflow observations."
+    },
+    {
+      "url": "https://github.com/neuralhydrology/neuralhydrology/tree/37568bcb2a207a82b92cac3e4ef52fb8fc8662b5/test/test_data/camels_us",
+      "type": "repository",
+      "locator": "Official source data/evaluation reference; evaluator and seed independently written."
+    },
+    {
+      "url": "https://hess.copernicus.org/articles/23/5089/2019/",
+      "type": "paper",
+      "title": "Towards learning universal, regional, and local hydrological behaviors via machine learning applied to large-sample datasets",
+      "locator": "Develops rainfall-runoff models across CAMELS catchments and evaluates regional and ungauged-basin transfer. The local four-basin causal water-conserving model is a much smaller task-family adaptation."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "SHA256-locked source bundle E01.json in .cache/science-earth-data. Automatically prepared by scripts/prepare_earth_data.py.",
+    "preparation_dependencies": [
+      "netCDF4",
+      "numcodecs==0.16.3"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Earth and environment: Measured rainfall–runoff transfer across catchments",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_earth_e01",
+    "science_family": "science_earth_e01",
+    "parameters": {},
+    "interface": "fit_runoff(training_basins) -> callable runoff(forcing_history,basin_attributes,state). Daily forcing columns[precipitation_mm,mean_temperature_C,solar_Wm2]. Output dict discharge_mm>=0,evapotranspiration_mm>=0,state with total storage_mm>=0. Enforce storage_previous+P-Q-ET=storage_new to1e-5mm. Retrospective current-day forcing only; full unseen-basin/year holdout. Basin-macro NSE, extremes and water-balance diagnostics.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "earth_and_environment"
+    },
+    "proposal_id": "E01",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_code_used": false,
+      "note": "Local evaluator, candidate interface and seed recreated from scientific specifications; official benchmark data are reused."
+    },
+    "additional_requires": [
+      "file:../../.cache/science-earth-data/E01.json",
+      "file:../../.cache/science-earth-data/E01.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_earth_e01",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-earth-data/E01.json",
+        "file:../../.cache/science-earth-data/E01.manifest.json"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Four source basins2000–2002; two training basins and two wholly unseen evaluation basins. Daily retrospective forcing, not meteorological forecasting. Tiny geographic sample is not the full671-basin benchmark.",
+    "Source data remain local caches with immutable revisions/content hashes and no evaluator network access. Public subsets are development-visible; freeze candidates before wider generalization tests.",
+    "Improved source benchmark performance is a scientific-method contribution, not alone a new discovery or operational forecast validation."
+  ],
+  "validation": {
+    "level": "source_subset_run",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "benchmark_validated": true,
+    "fixture_tests_are_benchmark_validation": false,
+    "evidence": "validation/earth-data-source-runs.json",
+    "tests": "tests/test_science_earth_data.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "simulation",
+    "reference": "none",
+    "area": "earth_and_environment",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Predict catchment runoff across basins from meteorological forcing.",
+    "importance_rationale": "Hydrological prediction supports understanding of basin behavior and estimation of water availability.",
+    "papers": [
+      {
+        "title": "Towards learning universal, regional, and local hydrological behaviors via machine learning applied to large-sample datasets",
+        "url": "https://hess.copernicus.org/articles/23/5089/2019/",
+        "primary_goal": "Predict runoff and investigate hydrological behaviors that transfer across catchments.",
+        "task_relation": "The paper directly models runoff across CAMELS basins. The local water-conserving model uses four observed basins and withheld basins/year; this restricted sample cannot reproduce the paper's broad regional-generalization results.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited primary paper develops or applies a solution to the stated scientific problem; its task is not merely an agent or general-purpose framework evaluation. Support concerns the scientific problem family, not a claim of new discovery or full-paper reproduction by this local task.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

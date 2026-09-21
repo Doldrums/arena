@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0",
+  "id": "science-economics-structural-demand-estimation",
+  "name": "Economics: Structural differentiated-product demand estimation",
+  "description": "Structural differentiated-product demand estimation with an explicit candidate API, independently recomputed objective and fixed model/data assumptions.",
+  "paper_ids": [
+    "science-economics_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1111/1756-2171.12352",
+      "type": "paper",
+      "locator": "Conlon and Gortmaker: BLP random-coefficients GMM; bundled BLP automobile product data."
+    },
+    {
+      "url": "https://github.com/jeffgortmaker/pyblp",
+      "type": "repository",
+      "locator": "Reference algorithms and source documentation; local evaluator is independently authored."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "pandas",
+      "pyblp==1.2.0"
+    ],
+    "environment_variables": [],
+    "datasets": "BLP automobile tables bundled with PyBLP; exact hash reported per run."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Economics: Structural differentiated-product demand estimation",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_economics_demand",
+    "science_family": "science_economics_demand",
+    "parameters": {},
+    "interface": "estimate_demand(products, instrument_columns, model_spec, budget) -> sigma in[0,3] for a single random coefficient on horsepower/weight. Fixed linear controls 1,prices,hpwt,air,mpd,space; source BLP car data on two complete3-year market blocks. Fixed input-derived full-rank instrument span(QR removes exact redundancies),1-step GMM. Candidate9-point quadrature; independent15-point re-evaluation with1e-13 fixed-point tolerance. Minimize mean GMM objective per product, require share residual<1e-8. This is reduced structural-demand estimation, not full BLP replication.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "finance",
+      "area": "finance",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none"
+    },
+    "proposal_id": "F03",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy",
+        "pandas",
+        "pyblp==1.2.0"
+      ],
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "upstream_code_reuse_scope": "PyBLP structural-demand solver, integration, share inversion and bundled observed automobile tables; local market selection, independent stricter re-evaluation and candidate interface are independently authored."
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_economics_demand",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "py:pandas",
+        "py:pyblp"
+      ],
+      "timeout": 180,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Bounded adaptation specified in the candidate contract; no claim to reproduce full-paper scores.",
+    "Model/simulation scores do not establish empirical policy validity or market returns.",
+    "Public fixed evaluation inputs support development only; freeze candidates and run new cases for generalization."
+  ],
+  "validation": {
+    "level": "source_reviewed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_economics_expansion.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "finance",
+    "area": "finance",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Automobile Prices in Market Equilibrium: Part I and II",
+        "url": "https://www.nber.org/papers/w4264",
+        "task_relation": "The local task estimates automobile demand parameters using PyBLP-compatible GMM moments and an independent share calculation. Its demand specification and score isolate part of the original market-equilibrium problem, excluding the paper's full supply and policy analysis.",
+        "primary_goal": "Estimate structural demand and supply parameters for differentiated products and analyze the US automobile market.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Estimate differentiated-product demand and substitution patterns in automobile markets.",
+    "importance_rationale": "Recovering structural demand and cost parameters from automobile-market data is an explicit primary objective of the BLP paper.",
+    "reason": "The original empirical demand paper supplies importance evidence; a PyBLP software paper alone is not used.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

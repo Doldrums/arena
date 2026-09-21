@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from arena.registry import RegistryError, _json, resolve_registry_root
 from arena.participant_corpus import (SOURCE_FILE, DESCRIPTIONS_FILE, ATTRIBUTIONS_FILE, capture_corpus,
-                                     build_participant_catalog, native_recipes_for_participants)
+                                     build_participant_catalog, native_recipes_for_participants, digest)
 
 
 def _write(path, value):
@@ -34,6 +34,11 @@ def main(argv=None):
     try:
         bibliography = _json(root / "search-family-sources.json")
         corpus = capture_corpus(args.corpus.read_bytes(), bibliography) if args.corpus else _json(root / SOURCE_FILE)
+        if not args.check and not args.corpus:
+            # A bundle revision can change while the captured research works do
+            # not. Rebind the bibliography, then validate every title, family,
+            # paper identity and the complete inventory before writing either.
+            corpus = {**corpus, "bibliography_digest": digest(bibliography)}
         declarations = [_json(path) for path in sorted((root / "participants").glob("*.json"))]
         attribution_path = root / ATTRIBUTIONS_FILE
         if not attribution_path.exists() and (root / "participants.json").exists() and any(item.get("attribution") for item in _json(root / "participants.json").get("participants", [])):
@@ -47,7 +52,7 @@ def main(argv=None):
             if view != _json(root / "participants.json"):
                 raise RegistryError("Participant snapshot differs from reviewed sources; regenerate it")
         else:
-            if args.corpus:
+            if args.corpus or corpus != _json(root / SOURCE_FILE):
                 _write(root / SOURCE_FILE, corpus)
             _write(root / "participants.json", view)
         print(json.dumps({"valid": True, **view["summary"]}, sort_keys=True))

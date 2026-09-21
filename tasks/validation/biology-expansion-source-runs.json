@@ -1,0 +1,287 @@
+{
+  "note": "Actual staged source subset runs, separate from unit fixtures. No original leaderboard reproduction claimed.",
+  "runs": [
+    {
+      "proposal_id": "B01",
+      "score": 0.0,
+      "elapsed_seconds": 0.006383792002452537,
+      "success": true,
+      "details": {
+        "assays": [
+          {
+            "assay": "SDA_BACSU_Tsuboyama_2023_1PV0",
+            "spearman": 0.0,
+            "top_decile_recall": 0.3125
+          },
+          {
+            "assay": "RL40A_YEAST_Roscoe_2014",
+            "spearman": 0.0,
+            "top_decile_recall": 0.034482758620689655
+          },
+          {
+            "assay": "BLAT_ECOLX_Jacquier_2013",
+            "spearman": 0.0,
+            "top_decile_recall": 0.42857142857142855
+          }
+        ],
+        "aggregation": "equal assay weight; local supervised protocol, not official ProteinGym leaderboard weighting",
+        "source_kind": "measured",
+        "prepared_source_count": 1,
+        "split_description": "Three public assays; complete mutation positions divisible by five held out within each assay. Initial single-substitution track; no higher-order or protein-transfer claim. Source scores are never supplied for query variants.",
+        "fixture_validation": false
+      }
+    },
+    {
+      "proposal_id": "B02",
+      "score": 0.75,
+      "elapsed_seconds": 0.047960666997823864,
+      "success": true,
+      "details": {
+        "targets": [
+          {
+            "target": "1:Simple Hairpin",
+            "solved": true,
+            "base_pair_distance": 0,
+            "fold_calls": 1,
+            "mfe": -8.899999618530273
+          },
+          {
+            "target": "3:Prion Pseudoknot - Difficulty Level 0",
+            "solved": true,
+            "base_pair_distance": 0,
+            "fold_calls": 1,
+            "mfe": -19.299999237060547
+          },
+          {
+            "target": "8:G-C Placement",
+            "solved": true,
+            "base_pair_distance": 0,
+            "fold_calls": 1,
+            "mfe": -6.199999809265137
+          },
+          {
+            "target": "10:Frog Foot",
+            "solved": false,
+            "base_pair_distance": 4,
+            "fold_calls": 64,
+            "mfe": -2.200000047683716
+          },
+          {
+            "target": "11:InfoRNA test 16",
+            "solved": true,
+            "base_pair_distance": 0,
+            "fold_calls": 5,
+            "mfe": -21.5
+          },
+          {
+            "target": "13:square",
+            "solved": true,
+            "base_pair_distance": 0,
+            "fold_calls": 1,
+            "mfe": -56.400001525878906
+          },
+          {
+            "target": "14:Six legd turtle 2",
+            "solved": true,
+            "base_pair_distance": 0,
+            "fold_calls": 35,
+            "mfe": -5.300000190734863
+          },
+          {
+            "target": "15:Small and Easy 6",
+            "solved": false,
+            "base_pair_distance": 6,
+            "fold_calls": 64,
+            "mfe": -3.799999952316284
+          },
+          {
+            "target": "18:snoRNA SNORD64",
+            "solved": true,
+            "base_pair_distance": 0,
+            "fold_calls": 1,
+            "mfe": -27.399999618530273
+          },
+          {
+            "target": "20:InfoRNA bulge test 9",
+            "solved": true,
+            "base_pair_distance": 0,
+            "fold_calls": 1,
+            "mfe": -33.099998474121094
+          },
+          {
+            "target": "23:Shortie 4",
+            "solved": false,
+            "base_pair_distance": 2,
+            "fold_calls": 64,
+            "mfe": -0.699999988079071
+          },
+          {
+            "target": "25:The Minitsry",
+            "solved": true,
+            "base_pair_distance": 0,
+            "fold_calls": 1,
+            "mfe": -11.0
+          }
+        ],
+        "engine": "ViennaRNA 2.6.4, 37 C, deterministic MFE structure equality",
+        "budget_scope": "provided oracle calls; trusted candidate protocol, not process-level sandbox enforcement",
+        "source_kind": "computational_targets",
+        "prepared_source_count": 1,
+        "split_description": "Eterna100-v2 first twelve source-ordered targets of length <=100. Published sequences/solutions deliberately stripped. Public target validation subset, no concealed-motif generalization claim; 64 oracle calls per target.",
+        "fixture_validation": false
+      }
+    },
+    {
+      "proposal_id": "B07",
+      "score": 7.177909328239386,
+      "elapsed_seconds": 0.007294624985661358,
+      "success": true,
+      "details": {
+        "alignments": [
+          {
+            "alignment": "RAxML-NG prim.phy empirical primate alignment",
+            "negative_log_likelihood_per_site": 7.177909328239386,
+            "taxa": 12,
+            "sites": 898
+          }
+        ],
+        "model": "JC69; no true empirical topology claim; wall deadline enforced by outer runtime",
+        "source_kind": "measured",
+        "prepared_source_count": 1,
+        "split_description": "Complete 12-taxon, 898-site empirical tutorial alignment. Independent JC69 objective, not RAxML GTR+Gamma likelihood or original empirical collection. Public single-alignment initial track; no held-out-clade or true-tree recovery claim.",
+        "fixture_validation": false
+      }
+    },
+    {
+      "proposal_id": "B10",
+      "score": 7.829625363203309,
+      "elapsed_seconds": 1.178868582996074,
+      "success": true,
+      "details": {
+        "models": [
+          {
+            "model": "Brannmark_JBC2010",
+            "heldout_condition_nll": 7.829625363203309,
+            "objective_calls": 46
+          }
+        ],
+        "uncertainty_note": "interval format validated, not calibrated without coverage experiments",
+        "source_kind": "measured",
+        "prepared_source_count": 5,
+        "split_description": "Whole insulin-dose conditions Dose_01,Dose_10 held out; remaining dose/time-course conditions train. Source nominal fitted parameters stripped. All concentrations reequilibrated from conserved source pool totals. Independent SBML reaction transcription; source simulatedData is not benchmark truth.",
+        "fixture_validation": false
+      }
+    },
+    {
+      "proposal_id": "B11",
+      "score": 0.28225415820074895,
+      "elapsed_seconds": 0.009063792007509619,
+      "success": true,
+      "details": {
+        "networks": [
+          {
+            "network": "BEELINE GSD example ex1",
+            "average_precision": 0.28225415820074895,
+            "random_prevalence": 0.2222222222222222,
+            "ap_above_random": 0.06003193597852674,
+            "positive_edges": 76,
+            "possible_edges": 342
+          }
+        ],
+        "metric_note": "tie-grouped stepwise area under precision-recall (average precision); unknown reference edges treated as negatives",
+        "source_kind": "upstream_simulation",
+        "prepared_source_count": 2,
+        "split_description": "Official BEELINE GSD curated-network simulated expression example, one complete network. No edge split exposing reference and no inferred regulator-set leakage (all genes eligible). Not measured expression or cross-network generalization.",
+        "fixture_validation": false
+      }
+    },
+    {
+      "proposal_id": "B12",
+      "score": 0.17324735449735448,
+      "elapsed_seconds": 0.3848162920039613,
+      "success": true,
+      "details": {
+        "spectra": [
+          {
+            "spectrum": "F1:2478",
+            "correct_IL_equivalent": true,
+            "mass_error_ppm": 0.6417969075018335,
+            "abstained": false
+          },
+          {
+            "spectrum": "F1:2484",
+            "correct_IL_equivalent": false,
+            "mass_error_ppm": null,
+            "abstained": true
+          },
+          {
+            "spectrum": "F1:2489",
+            "correct_IL_equivalent": false,
+            "mass_error_ppm": null,
+            "abstained": true
+          },
+          {
+            "spectrum": "F1:2493",
+            "correct_IL_equivalent": false,
+            "mass_error_ppm": 0.3870930469580235,
+            "abstained": false
+          },
+          {
+            "spectrum": "F1:2496",
+            "correct_IL_equivalent": false,
+            "mass_error_ppm": 45.050790455496205,
+            "abstained": false
+          },
+          {
+            "spectrum": "F1:2518",
+            "correct_IL_equivalent": false,
+            "mass_error_ppm": 4.735698218679203,
+            "abstained": false
+          },
+          {
+            "spectrum": "F1:2524",
+            "correct_IL_equivalent": false,
+            "mass_error_ppm": 42.44104547358046,
+            "abstained": false
+          },
+          {
+            "spectrum": "F1:2538",
+            "correct_IL_equivalent": false,
+            "mass_error_ppm": 27.529956084287893,
+            "abstained": false
+          },
+          {
+            "spectrum": "F1:2541",
+            "correct_IL_equivalent": false,
+            "mass_error_ppm": 11.617580395288519,
+            "abstained": false
+          },
+          {
+            "spectrum": "F1:2547",
+            "correct_IL_equivalent": false,
+            "mass_error_ppm": 0.10549443729566631,
+            "abstained": false
+          },
+          {
+            "spectrum": "F1:2558",
+            "correct_IL_equivalent": false,
+            "mass_error_ppm": null,
+            "abstained": true
+          },
+          {
+            "spectrum": "F1:2559",
+            "correct_IL_equivalent": false,
+            "mass_error_ppm": 0.647067659202253,
+            "abstained": false
+          }
+        ],
+        "exact_peptide_recall": 0.08333333333333333,
+        "metric": "stepwise precision-coverage area over all spectra, I/L equivalent; unmodified peptides only",
+        "source_kind": "measured",
+        "prepared_source_count": 1,
+        "split_description": "First twelve unique unmodified peptides satisfying 50ppm precursor consistency from official measured mouse sample. Replicate peptide sequences deduplicated; labels stripped at candidate boundary. CPU classical decoding track; not the full nine-species benchmark or pretrained-model score reproduction.",
+        "fixture_validation": false
+      }
+    }
+  ]
+}

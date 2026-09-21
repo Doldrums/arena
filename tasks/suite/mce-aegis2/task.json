@@ -1,0 +1,189 @@
+{
+  "schema_version": "1.0",
+  "id": "mce-aegis2",
+  "name": "AEGIS2",
+  "description": "AEGIS2 task evaluated in Meta Context Engineering via Agentic Skill Evolution.",
+  "paper_ids": [
+    "mce"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2601.21557",
+      "type": "paper",
+      "locator": "Section 4.1 and Appendix A"
+    },
+    {
+      "url": "https://github.com/metaevo-ai/mce-artifact/tree/c63300daef93404e22e2569b3d08e72843e7123b",
+      "type": "repository",
+      "locator": "env/aegis2/aegis2_environment.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "AEGIS2",
+    "notes": [
+      "uv",
+      "OpenAI/OpenRouter model credentials",
+      "Dependencies in artifact pyproject.toml"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "F1",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "AEGIS2",
+    "protocol": "upstream",
+    "source_locator": "Section 4.1 and Appendix A"
+  },
+  "execution": {
+    "repository": "https://github.com/metaevo-ai/mce-artifact",
+    "commit": "c63300daef93404e22e2569b3d08e72843e7123b",
+    "upstream_path": "env/aegis2/aegis2_environment.py",
+    "commands": [
+      {
+        "argv": [
+          "bash",
+          "scripts/eval_aegis_mce.sh"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/metaevo-ai/mce-artifact/blob/c63300daef93404e22e2569b3d08e72843e7123b/scripts/eval_aegis_mce.sh",
+        "notes": ""
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      {
+        "argv": [
+          "uv",
+          "sync"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/metaevo-ai/mce-artifact/blob/c63300daef93404e22e2569b3d08e72843e7123b/README.md",
+        "notes": ""
+      },
+      {
+        "argv": [
+          "uv",
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/metaevo-ai/mce-artifact/blob/c63300daef93404e22e2569b3d08e72843e7123b/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "uv",
+          "sync"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/metaevo-ai/mce-artifact/blob/c63300daef93404e22e2569b3d08e72843e7123b/README.md",
+        "notes": ""
+      },
+      {
+        "argv": [
+          "uv",
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/metaevo-ai/mce-artifact/blob/c63300daef93404e22e2569b3d08e72843e7123b/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "AEGIS2",
+    "slug": "aegis2",
+    "description": "AEGIS2 task evaluated in Meta Context Engineering via Agentic Skill Evolution.",
+    "benchmark": "AEGIS2",
+    "dataset": "AEGIS2",
+    "metric": "F1",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2601.21557",
+    "source_locator": "Section 4.1 and Appendix A",
+    "upstream_path": "env/aegis2/aegis2_environment.py",
+    "requirements": [
+      "uv",
+      "OpenAI/OpenRouter model credentials",
+      "Dependencies in artifact pyproject.toml"
+    ],
+    "execution_notes": [],
+    "setup_commands": [],
+    "run_commands": [
+      {
+        "argv": [
+          "bash",
+          "scripts/eval_aegis_mce.sh"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/metaevo-ai/mce-artifact/blob/c63300daef93404e22e2569b3d08e72843e7123b/scripts/eval_aegis_mce.sh",
+        "notes": ""
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

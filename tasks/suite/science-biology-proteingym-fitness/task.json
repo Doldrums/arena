@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "id": "science-biology-proteingym-fitness",
+  "name": "Biology: ProteinGym measured protein variant effects",
+  "description": "Fit a mutation-effect model from measured support substitutions and predict complete held-out mutation positions in three ProteinGym assays.",
+  "paper_ids": [
+    "science-biology_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://papers.neurips.cc/paper_files/paper/2023/file/cac723e5ff29f65e3fcbb0739ae91bee-Paper-Datasets_and_Benchmarks.pdf",
+      "type": "paper",
+      "locator": "ProteinGym supervised DMS benchmark definition and evaluation; fitness-rank comparisons."
+    },
+    {
+      "url": "https://github.com/OATML-Markslab/ProteinGym",
+      "type": "repository",
+      "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned source-derived bundle B01.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Automatic compact-source staging available."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Biology: ProteinGym measured protein variant effects",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_biology_b01",
+    "science_family": "science_biology_b01",
+    "parameters": {},
+    "interface": "fit(reference_sequence, support_variants, support_effects) -> model with score(query_variants) returning one finite value per query. Variants use ProteinGym colon-separated substitutions. Score is equal-assay mean Spearman; frozen complete-position holdout, constant predictions score 0. Query labels never passed to candidate.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "model",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "biology"
+    },
+    "proposal_id": "B01",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "additional_requires": [
+      "file:../../.cache/science-biology/B01.json",
+      "file:../../.cache/science-biology/B01.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_biology_b01",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-biology/B01.json",
+        "file:../../.cache/science-biology/B01.manifest.json"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Measured three-assay single-substitution adaptation; does not yet test higher-order epistasis or completely unseen proteins. Equal-assay mean differs from official hierarchical ProteinGym aggregation.",
+    "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+    "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+  ],
+  "validation": {
+    "level": "source_subset_run",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "evidence": "validation/biology-expansion-source-runs.json",
+    "tests": "tests/test_science_biology_expansion.py",
+    "benchmark_validated": true,
+    "fixture_tests_are_benchmark_validation": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "model",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "biology",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Predict how amino-acid substitutions change protein function.",
+    "importance_rationale": "Mutation-effect prediction helps interpret molecular function and prioritize variants for biological experiments.",
+    "papers": [
+      {
+        "title": "Tranception: Protein Fitness Prediction with Autoregressive Transformers and Inference-time Retrieval",
+        "url": "https://proceedings.mlr.press/v162/notin22a.html",
+        "primary_goal": "Predict protein fitness from sequence by combining evolutionary retrieval and a protein sequence model.",
+        "task_relation": "The paper directly predicts measured protein mutation effects. The local task fits support mutations and holds out complete positions in three assays; it is a restricted supervised protocol, not the full Tranception experiment or a disease diagnosis.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The primary objective is the domain problem of protein fitness prediction. The accompanying ProteinGym benchmark alone would not establish this evidence.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "protocol": "recreated",
+  "family": "science_physics_trackml_complete_events",
+  "direction": "maximize",
+  "contract": "assign_tracks(hits, cells, metadata) -> integer track ID for each hit. Input retains complete official TrackML events, source cells and detector geometry. Whole events split, no truth supplied. Score exact strict two-sided majority TrackML weighted score. No artificial helices or hit subsampling.",
+  "parameters": {
+    "proposal_id": "P05"
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "py:sklearn",
+    "file:data/physics-expansion/P05/manifest.json",
+    "file:data/physics-expansion/P05/benchmark.npz"
+  ],
+  "timeout": 300,
+  "notes": [
+    "Independent SCIEL scientific adaptation. Required source packs never fall back to toy data. Fixture tests are distinct from source-data execution. See docs/PHYSICS_EXPANSION.md."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-particle-helical-track-reconstruction",
+  "name": "TrackML complete-event track reconstruction",
+  "paper_ids": [
+    "science-particle",
+    "science-physics_expansion"
+  ],
+  "description": "assign_tracks(hits, cells, metadata) -> integer track ID for each hit. Input retains complete official TrackML events, source cells and detector geometry. Whole events split, no truth supplied. Score exact strict two-sided majority TrackML weighted score. No artificial helices or hit subsampling.",
+  "benchmark": "TrackML complete-event track reconstruction",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1904.06778v3",
+      "type": "paper",
+      "locator": "The Tracking Machine Learning challenge: Accuracy phase; sections 1, 2.1-2.4 describe trajectory association, hit geometry, data and the official scoring problem."
+    },
+    {
+      "url": "https://cds.cern.ch/record/2704180",
+      "type": "benchmark",
+      "locator": "CERN Document Server: TrackML: a tracking Machine Learning challenge; primary CERN-hosted description of the challenge."
+    },
+    {
+      "url": "https://arxiv.org/abs/1904.06778",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: TrackML complete-event track reconstruction"
+    },
+    {
+      "url": "https://github.com/LAL/trackml-library",
+      "type": "archive",
+      "locator": "Complete event hits, cells, truth and detector geometry; strict majority score implementation."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Obtain full official TrackML events/cells/detector, preserve event boundaries; benchmark source files are not staged."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-particle",
+      "title": "Particle physics: source-based research tasks",
+      "url": "https://arxiv.org/abs/1904.06778v3"
+    },
+    {
+      "id": "science-physics_expansion",
+      "title": "Physics and astrophysics research: source-based research tasks",
+      "url": "https://arxiv.org/abs/1904.06778v3"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Performance of a geometric deep learning pipeline for HL-LHC particle tracking",
+        "url": "https://link.springer.com/article/10.1140/epjc/s10052-021-09675-8",
+        "task_relation": "The current local task reconstructs whole TrackML events and uses weighted majority-hit matching. The shared scientific target is hit-to-track assignment; event selection, scoring, compute limits, and the candidate interface are local adaptations.",
+        "primary_goal": "Develop and assess a scalable reconstruction method for complete TrackML detector events under high-luminosity conditions.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Associate detector hits with charged-particle trajectories in dense collider events.",
+    "importance_rationale": "Accurate, scalable track reconstruction supports particle identification and kinematic reconstruction and is itself the paper's target.",
+    "reason": "The source develops a solver for physical track reconstruction, so evidence does not depend on a dataset-release citation or the superseded synthetic-helix task.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "particle_physics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

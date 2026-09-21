@@ -1,0 +1,91 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "bin:Rscript",
+    "py:numpy"
+  ],
+  "timeout": 600,
+  "notes": [
+    "Imports openevolve.evaluation_result; suite/_lib/openevolve is a verbatim shim of that module."
+  ],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.r",
+    "score_key": "score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/r_robust_regression",
+    "files_sha256": {
+      "README.md": "a3e7f265f0dee6bae071474a9aacc3434e5ad1427cec9d14b3dd36b85df7f58b",
+      "config.yaml": "dbe9b134d098999fa0de6dc8a33d339101b6062db717900b9db5d1943cfee0f9",
+      "evaluator.py": "05f0b398ac677bcdbb7737f52041a59559dfed90df8b3eccf4577c4a68f10c9b",
+      "initial_program.r": "34ba74971b8416a443ba5c5e45248148c1fe162a17e4b7614ad1263c10564b27",
+      "requirements.txt": "2c536b6e092693a2f27a8b3e8134333dd30d301927bc649c2eaa7330ee02e349"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/r_robust_regression` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-math-r-robust-regression",
+  "name": "SCiEL: Robust regression in R",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Evaluate an R main() function on four intended synthetic regression cases with outlier fractions 0, 0.1, 0.2 and 0.15. The pinned evaluator has broken CSV path interpolation.",
+  "benchmark": "SCiEL source example r_robust_regression",
+  "paper_metric": "score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/r_robust_regression/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/r_robust_regression/initial_program.r",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "A separately labeled repository adapter repairs original CSV transport. The original source is retained and verified before the repair is applied.",
+    "The original score trusts candidate-provided metrics; no independent validity boolean exists."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.r",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "numerical_computing",
+    "area": "scientific_computing",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

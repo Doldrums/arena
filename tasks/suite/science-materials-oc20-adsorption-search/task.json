@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "id": "science-materials-oc20-adsorption-search",
+  "name": "OC20-Dense catalyst adsorption-site search",
+  "description": "choose_configuration(surface, adsorbate, configurations, observations) -> unused integer configuration index. Observations reveal index, DFT energy_ev and physically_valid after each query. Score fraction of unseen adsorbate/surface groups finding a physically valid configuration within 0.1 eV of the finite OC20-Dense pool minimum after at most ten queries. Candidate may not introduce unvalidated coordinates.",
+  "paper_ids": [
+    "science-materials_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2211.16486",
+      "type": "paper",
+      "locator": "AdsorbML adsorption-energy landscape search and DFT validation."
+    },
+    {
+      "url": "https://opencatalystproject.org/challenge.html",
+      "type": "benchmark",
+      "locator": "Official OC20-Dense downloads and desorption/dissociation/surface-mismatch validity criteria."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "Official AdsorbML mapping+DFT target archive5.1MB; --adsorbml preparation builds32 systems with1918 author-validity-filtered configurations."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "OC20-Dense catalyst adsorption-site search",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_materials_oc20_adsorption_search",
+    "science_family": "science_materials_oc20_adsorption_search",
+    "parameters": {
+      "proposal_id": "C04",
+      "data_sha256": "ecf3b4b78cfb13c2c33f8dff68f6ce382515bd5c18fa02e680eb8588e1572127"
+    },
+    "interface": "choose_configuration(surface, adsorbate, configurations, observations) -> unused integer configuration index. Observations reveal index, DFT energy_ev and physically_valid after each query. Score fraction of unseen adsorbate/surface groups finding a physically valid configuration within 0.1 eV of the finite OC20-Dense pool minimum after at most ten queries. Candidate may not introduce unvalidated coordinates.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "optimizer",
+      "domain": "natural_science",
+      "data": "public_benchmark",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "materials_science"
+    },
+    "proposal_id": "C04",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL contracts, evaluator logic and tests are independently implemented. Reused scientific engines and reference data are separately attributed in reuse_scope; author-code availability alone is not classified as evaluator reuse.",
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "reuse_scope": "No upstream scientific evaluator or model implementation; source numerical data and standard numerical libraries only"
+    },
+    "additional_requires": [
+      "file:data/materials-expansion/C04/dataset.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_materials_oc20_adsorption_search",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "file:data/materials-expansion/C04/dataset.json"
+      ],
+      "timeout": 180,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent SCIEL adaptation of a cited scientific problem; no claim to reproduce author leaderboard scores.",
+    "Candidate and evaluator run in one Python process; data access is separated by API, not an OS sandbox. Isolate evaluator data for adversarial or held-out evaluation.",
+    "Finite-pool metadata replay uses author-filtered DFT-converged valid configurations and adsorption-site metadata; it does not run relaxations or newly validate atomic geometries. No new geometry is accepted."
+  ],
+  "validation": {
+    "level": "source_seed_executed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_materials_expansion.py",
+    "evidence": "validation/materials-expansion-report.json",
+    "benchmark_verified": true
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "optimizer",
+    "domain": "natural_science",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "materials_science",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Find low-energy adsorbate configurations on catalytic surfaces.",
+    "importance_rationale": "Adsorption energies and geometries are central quantities for modeling catalytic reactions.",
+    "papers": [
+      {
+        "title": "AdsorbML: A Leap in Efficiency for Adsorption Energy Calculations using Generalizable Machine Learning Potentials",
+        "url": "https://arxiv.org/abs/2211.16486",
+        "primary_goal": "Find low-energy adsorbate-surface structures while reducing expensive first-principles relaxation calculations.",
+        "task_relation": "The local task chooses among a finite OC20-Dense pool with ten energy queries. It preserves the adsorption-minimum target but omits free geometry generation/relaxation and measures distance to the pool minimum, not a proven global surface minimum.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The paper's central objective is efficient physical adsorption-energy calculation. Its supporting benchmark is not the sole basis for classification.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "network:huggingface mlx-community/Qwen3-0.6B-bf16",
+    "platform:darwin-arm64",
+    "py:mlx",
+    "py:mlx_lm",
+    "py:numpy",
+    "py:psutil",
+    "py:scipy",
+    "py:yaml"
+  ],
+  "timeout": 600,
+  "notes": [],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "final_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/mlx_metal_kernel_opt",
+    "files_sha256": {
+      "EVOLUTION_ANALYSIS.md": "d1d6cd1f158aa59c1d2a02c0102b5e435e7264a390e49cba5380870b62ddcec4",
+      "README.md": "de9545f8a5b84680faa8efc02e0a34bafcca5f9efe4acf44928e2c180f0d05c7",
+      "config.yaml": "cc9c8066b11d393276e1ef92e3825e5b0cf922bf4aeffdb9056a95a15d269de0",
+      "evaluator.py": "0123e15b1cae0d0b0d7a72e1cfcf86201c5976ecd63a46632a505fe438ad6baa",
+      "initial_program.py": "3d146efb633e52ff9bf1144087593e38f8c7f840c9c087c89cea8c4e42b3fc7b",
+      "mlx_lm_generate_with_hook.py": "cee9d38ca8418ca0a1587ac71176a44ec7a424574d1e6070c076beecd9def24b",
+      "quick_benchmark_test.py": "3dfe91946a493e9ef1985236cb9df7b0262473ecba1b8105ab7bec775cb46a5f",
+      "quick_demo.py": "ce531abaa3ece9b38eb7b286178b68018ec81c61a66f5d409b74e8cafef3f096",
+      "qwen3_benchmark_suite.py": "d2af0795087791b861a9cbee811c1c81b479ac5b84b30d05d16eff26dfa32d3f",
+      "requirements.txt": "714251863ccf97d741a7b75148d2118212147a66d78a51e3bf6ea80d8b292fac",
+      "run_benchmarks.py": "da2a4bcca531bece68a3c937eda1c610bc997b8d9e6b818c60a29f7c09ce99fa",
+      "run_evolve_experiment.sh": "614c608bfc80c6e338b69cbd89c720ec6ce70242d92c856e9e9cf8f7a810bdf4",
+      "test_optimized_attention.py": "80ebc9853003856a4a19f4bd7deb7f5f36242e33afe6af1330dfb18d55b7ccd1"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/mlx_metal_kernel_opt` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-bench-mlx-qwen3-gqa-kernel",
+  "name": "SCiEL: MLX Metal GQA attention kernel for Qwen3-0.6B",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Evolve a custom Metal kernel (CustomGQAAttention) for grouped-query attention in Qwen3-0.6B-bf16 on Apple Silicon. The pinned evaluator validates the kernel, checks bfloat16 correctness against MLX's scaled_dot_product_attention and benchmarks decode/prefill throughput through mlx_lm.generate in a subprocess hook; final_score is a safety-adjusted performance score.",
+  "benchmark": "SCiEL source example mlx_metal_kernel_opt",
+  "paper_metric": "final_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/mlx_metal_kernel_opt/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/mlx_metal_kernel_opt/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/mlx_metal_kernel_opt/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "Hardware-specific: results depend on the Apple GPU generation, MLX version and thermal state; the source README reports the best evolved kernel was slower than the MLX baseline."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "kernel",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "network"
+    ],
+    "cost": "slow",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

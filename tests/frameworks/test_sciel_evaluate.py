@@ -25,8 +25,8 @@ def example(tmp_path, monkeypatch):
               "execution": {"kind": "local_trusted", "python": sys.executable},
               "profile": bridge.PROFILE, "receipts_dir": str(tmp_path / "receipts")}
     module = ModuleType("arena.frameworks.evaluation")
-    context = {"source": {"commit": bridge.TASK_COMMIT}, "source_dir": str(source),
-               "problem_sha256": bridge._PROBLEM_SHA256}
+    context = {"source": {"kind": "bundled", "manifest_sha256": "a" * 64}, "source_dir": str(source),
+               "config": config, "problem_sha256": bridge._PROBLEM_SHA256, "evaluator_sha256": bridge._EVALUATOR_SHA256}
     module.validate_config = lambda _: context
     calls = []
     updates = {}
@@ -84,12 +84,12 @@ def test_profile_rejects_unreviewed_tasks_and_options_before_execution(example, 
 
 def test_task_creation_rejects_unreviewed_version_or_modified_seed(example, tmp_path):
     config, source, context, program, _, calls, _ = example
-    context["source"]["commit"] = "0" * 40
+    context["evaluator_sha256"] = "0" * 64
     with pytest.raises(ValueError, match="reviewed task version"):
         bridge.create_task(config, tmp_path / "task")
     with pytest.raises(ValueError, match="reviewed task version"):
         bridge.full(config, program)
-    context["source"]["commit"] = bridge.TASK_COMMIT
+    context["evaluator_sha256"] = bridge._EVALUATOR_SHA256
     (source / "suite/reference-sat/initial_program.py").write_text("changed seed")
     with pytest.raises(ValueError, match="seed digest"):
         bridge.create_task(config, tmp_path / "task")

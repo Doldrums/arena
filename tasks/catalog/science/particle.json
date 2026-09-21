@@ -1,0 +1,39 @@
+[
+  {
+    "id": "science-particle-helical-track-reconstruction",
+    "name": "Particle physics: helical hit association with missing hits and clutter",
+    "description": "Develop a particle-track reconstruction algorithm that associates noisy detector hits into charged-particle trajectories. This CPU-sized synthetic adaptation keeps curved trajectories, missing layers, unrelated hits and increasing occupancy from the TrackML problem setting. The candidate returns track memberships, and an independent evaluator computes signal-hit pair precision, recall and F1. Improvements can come from helix parameterization, Hough voting, sequential fitting, robust rejection or constrained global association.",
+    "family": "science_particle_tracking",
+    "parameters": {"seeds": [3101, 3109, 3121, 3137], "tracks": 40},
+    "sources": [
+      {"url": "https://arxiv.org/abs/1904.06778v3", "type": "paper", "locator": "The Tracking Machine Learning challenge: Accuracy phase; sections 1, 2.1-2.4 describe trajectory association, hit geometry, data and the official scoring problem."},
+      {"url": "https://cds.cern.ch/record/2704180", "type": "benchmark", "locator": "CERN Document Server: TrackML: a tracking Machine Learning challenge; primary CERN-hosted description of the challenge."}
+    ],
+    "limitations": [
+      "Reduced synthetic adaptation, not an official CERN or TrackML benchmark; no official data or scores are reproduced.",
+      "Uniform idealized field, eight cylindrical layers and fewer than one thousand hits per event; no material interactions, endcaps, pileup collision model or calibrated detector units.",
+      "Pair F1 is a local objective and differs from the published weighted majority-match TrackML score; published leaderboard values are not comparable.",
+      "Four fixed public seeds support repeatable development, not a secret test set; independent fresh seeds are needed to assess generalization."
+    ],
+    "labels": {"scientific_contribution": "method", "artifact": "program", "domain": "natural_science", "data": "synthetic", "verification": "simulation", "reference": "none", "area": "particle_physics"}
+  },
+  {
+    "id": "science-particle-collider-anomaly-ranking",
+    "name": "Particle physics: background-aware collider anomaly ranking",
+    "description": "Improve an unsupervised anomaly ranker given a reference background sample and an unlabeled mixture containing localized anomalous overdensities. Inspired by the LHC Olympics collider-search setting, this reduced synthetic task uses nonlinear correlated five-dimensional features and six injected signal modes. Independent evaluation combines tie-aware AUROC with signal efficiency at a conservative 5% background acceptance. Explore covariance models, conditional densities, nearest-neighbor estimators or reference-to-mixture density ratios.",
+    "family": "science_particle_anomaly",
+    "parameters": {"seeds": [4103, 4111, 4127, 4133, 4153, 4157], "n_reference": 1024},
+    "sources": [
+      {"url": "https://arxiv.org/abs/2101.08320", "type": "paper", "locator": "The LHC Olympics 2020: A Community Challenge for Anomaly Detection in High Energy Physics; section 2 (challenge), section 3.2.2 and figure 9 (ROC and signal/background efficiencies)."},
+      {"url": "https://ep-news.web.cern.ch/machine-learning-ushers-new-paradigm-particle-searches-lhc", "type": "benchmark", "locator": "CERN EP newsletter, LHC Olympics 2020 Challenge: reference background, predominantly background black boxes, and localized overdensity searches."}
+    ],
+    "limitations": [
+      "Reduced synthetic adaptation, not an official LHC Olympics or CERN benchmark; no events, pretrained models or numerical published results are reused.",
+      "Five dimensionless illustrative features are not calibrated jet observables and are not a realistic Standard Model event simulation.",
+      "The local equal-weight AUROC/efficiency score is not an official competition ranking or calibrated discovery significance; the injected signal fraction is much larger than typical rare-signal searches.",
+      "The evaluator uses truth to choose a diagnostic efficiency threshold. The candidate does not provide a calibrated false-alarm probability, and a better score does not demonstrate new physics or solve dark matter.",
+      "Reference and evaluation samples are disjoint, but all six seeds and signal modes are public. Generalization requires fresh independent samples."
+    ],
+    "labels": {"scientific_contribution": "method", "artifact": "program", "domain": "natural_science", "data": "synthetic", "verification": "sampled", "reference": "none", "area": "particle_physics"}
+  }
+]

@@ -1,0 +1,53 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert computational geometer and optimization specialist with deep expertise in the moving-sofa problem - a classical open problem in geometry that asks for the largest-area rigid shape ("sofa") that can be maneuvered through an L-shaped corridor of width 1 that makes a single 90-degree turn.
+
+    PROBLEM SPECIFICATION:
+    The sofa is specified implicitly by a motion path. Each path point is a triple (x, y, angle_degrees) describing, at one instant of the move, the position of the corridor's inner corner and the corridor's rotation in the sofa's reference frame. As the corridor sweeps over the plane, the sofa is defined as the intersection of every corridor placement along the path; by construction it therefore always clears the corridor. The evaluator prepends the start state (0, 0, 0), appends the end state (-2, 0, 90), and densifies the path to at most 1-degree rotation steps before computing the intersection area on a fine raster grid. Your task is to design a constructor function that returns a path (an n x 3 numpy array of (x, y, angle_degrees) rows) whose swept-corridor intersection has the largest possible area. Choose n and the path shape freely; smoother paths with monotone rotation from 0 to 90 degrees tend to trace larger sofas.
+
+    PERFORMANCE METRICS:
+    1. **sofa_area**: Area of the swept-corridor intersection, i.e. the area of the sofa (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: sofa_area / 2.2195 (BENCHMARK COMPARISON - maximize toward 1.0, where 2.2195 is the area of Gerver's sofa, the conjectured optimal 2D moving sofa)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

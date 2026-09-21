@@ -1,0 +1,216 @@
+{
+  "schema_version": "1.0",
+  "id": "alphaevolve-matrix-multiplication-2-2-2",
+  "name": "Matrix multiplication 2,2,2",
+  "description": "Find a rank-minimal exact tensor decomposition for multiplying a 2 by 2 matrix by a 2 by 2 matrix. The output factor follows the official trace convention W[k*n+i,r].",
+  "paper_ids": [
+    "alphaevolve"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2506.13131",
+      "type": "paper",
+      "locator": "Appendix A, Table 3"
+    },
+    {
+      "url": "https://github.com/google-deepmind/alphaevolve_results/tree/4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Exact mathematical identity; no dataset required."
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "tensor rank",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "matrix multiplication tensor <2,2,2>",
+    "protocol": "paper_reimplementation",
+    "source_locator": "Appendix A, Table 3",
+    "paper_rank": 7
+  },
+  "execution": {
+    "repository": "https://github.com/google-deepmind/alphaevolve_results",
+    "commit": "4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Paper Appendix A reports exact integer/half-integer decompositions. The reimplementation checks every tensor coefficient with exact integer arithmetic.",
+      "The naive rank n*m*p baseline validates the evaluator; it does not reproduce the paper search or reported rank.",
+      "No factor array for this table entry appears in the official result notebook."
+    ],
+    "native_kind": "matrix-multiplication-rect",
+    "parameters": {
+      "dimensions": [
+        2,
+        2,
+        2
+      ],
+      "coefficient_domain": "real_half_integers"
+    },
+    "interface": "solve(instance) -> {U,V,W}, column factors in trace order; see docs/INTERFACE.md",
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "matmul_tensor",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent exact task evaluator derived from Appendix A; does not reproduce AlphaEvolve search or its learned constructions.",
+    "Coefficient domain matches reported integer/half-integer (or Gaussian half-integer) representation; it is not unrestricted tensor rank over every scalar field."
+  ],
+  "source_specification": {
+    "name": "Matrix multiplication 2,2,2",
+    "slug": "matrix-multiplication-2-2-2",
+    "description": "Find a rank-minimal exact tensor decomposition for multiplying a 2 by 2 matrix by a 2 by 2 matrix. The output factor follows the official trace convention W[k*n+i,r].",
+    "benchmark": "matrix multiplication tensor <2,2,2>",
+    "dataset": "matrix multiplication tensor <2,2,2>",
+    "metric": "tensor rank",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2506.13131",
+    "source_locator": "Appendix A, Table 3",
+    "upstream_path": null,
+    "requirements": [
+      "Python standard library for independent exact evaluator"
+    ],
+    "execution_notes": [
+      "Paper Appendix A reports exact integer/half-integer decompositions. The reimplementation checks every tensor coefficient with exact integer arithmetic.",
+      "The naive rank n*m*p baseline validates the evaluator; it does not reproduce the paper search or reported rank.",
+      "No factor array for this table entry appears in the official result notebook."
+    ],
+    "setup_commands": [],
+    "run_commands": [],
+    "parameters": {
+      "dimensions": [
+        2,
+        2,
+        2
+      ],
+      "coefficient_domain": "real_half_integers",
+      "paper_rank": 7,
+      "naive_rank": 8,
+      "source_locator": "Appendix A, Table 3",
+      "source_url": "https://arxiv.org/html/2506.13131"
+    },
+    "constraints": [
+      "Exact tensor identity sum_r U[a,r]*V[b,r]*W[c,r] = T[a,b,c]",
+      "T[i*m+j,j*p+k,k*n+i]=1; all other entries zero",
+      "U shape (n*m,rank), V shape (m*p,rank), W shape (p*n,rank)",
+      "Half-integer real coefficients; only the three explicitly documented complex shapes permit half-integer real and imaginary parts"
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "published_constructions_cross_checked": 15
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Find exact low-rank bilinear algorithms with real half-integer coefficients for multiplying 2×2 and 2×2 matrices.",
+    "importance_rationale": "Reducing exact scalar-multiplication complexity advances algebraic complexity and can reduce a core cost of scientific linear algebra. This local task seeks a verifiable tensor decomposition; a lower local rank alone does not prove a faster practical implementation.",
+    "papers": [
+      {
+        "title": "Discovering faster matrix multiplication algorithms with reinforcement learning",
+        "url": "https://doi.org/10.1038/s41586-022-05172-4",
+        "task_relation": "The paper searches for exact low-rank matrix-multiplication tensor decompositions over real and finite-field arithmetic. This task uses real half-integer coefficients and fixes dimensions to (2, 2, 2); the citation establishes the primary research problem, not a claim that this exact local coefficient domain or size is a new published result.",
+        "primary_goal": "Discover and verify more efficient matrix-multiplication algorithms, rather than measure general agent performance.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "merged_from": [
+    {
+      "id": "reference-matrix-multiplication-2",
+      "paper_ids": [
+        "alphaevolve"
+      ],
+      "name": "Exact 2x2 matrix multiplication tensor",
+      "description": "Return rank-by-4 integer matrices U,V,W. Compute each scalar product dot(U[r],A.flatten()) * dot(V[r],B.flatten()), distributing with W[r]. Every tensor coefficient is checked exactly.",
+      "kind": "native",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2506.13131",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        }
+      ],
+      "requirements": {
+        "python": ">=3.10",
+        "hardware": "CPU",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "Generated locally with documented seed."
+      },
+      "evaluation": {
+        "metric": "score",
+        "direction": "minimize",
+        "aggregation": "mean",
+        "protocol": "portable_reference",
+        "instance_generation": "src/autoresearch_tasks/native.py",
+        "profiles": [
+          "smoke",
+          "evaluation"
+        ]
+      },
+      "execution": {
+        "native_kind": "matrix-multiplication",
+        "parameters": {
+          "n": 2
+        },
+        "interface": "Return rank-by-4 integer matrices U,V,W. Compute each scalar product dot(U[r],A.flatten()) * dot(V[r],B.flatten()), distributing with W[r]. Every tensor coefficient is checked exactly."
+      },
+      "limitations": [
+        "Portable reference implementation, not a reproduction of the original paper experiment.",
+        "Mathematical validity is checked directly; baseline and search procedure are original to this repository.",
+        "This 2x2 integer-field task does not reproduce the paper's 4x4 complex matrix result."
+      ],
+      "validation": {
+        "level": "automated_tests",
+        "upstream_reproduction": false
+      }
+    }
+  ]
+}

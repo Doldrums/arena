@@ -1,0 +1,60 @@
+[
+  {
+    "id": "science-climate-lorenz96-assimilation",
+    "name": "Climate dynamics: partial-observation Lorenz-96 assimilation",
+    "description": "Design an ensemble analysis update that reconstructs an evolving twenty-variable chaotic state from noisy observations of half its coordinates. The evaluator propagates the ensemble and compares each updated ensemble mean with independent high-accuracy reference trajectories.",
+    "family": "science_lorenz_assimilation",
+    "parameters": {
+      "cycles": 40
+    },
+    "sources": [
+      {
+        "url": "https://gmd.copernicus.org/articles/14/5623/2021/",
+        "type": "paper",
+        "locator": "Tomizawa and Sawada (2021), Combining ensemble Kalman filter and reservoir computing to predict spatiotemporal chaotic systems; Section 2.1 Eq. (1) Lorenz-96 dynamics and Section 2.2 ensemble data assimilation."
+      }
+    ],
+    "limitations": [
+      "Synthetic deterministic twin experiments, not weather observations or the paper's reservoir-computing results.",
+      "Local reduced dimensions, seeds, observation noise, spin-up, perfect-model forcing and short duration are documented in the contract. Longer-horizon stability and forecast skill are not established.",
+      "All evaluation seeds are public. Use fresh seeds and forcing regimes after freezing the candidate for a generalization claim."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "synthetic",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "climate_dynamics"
+    }
+  },
+  {
+    "id": "science-climate-lorenz96-subgrid-closure",
+    "name": "Climate dynamics: unresolved-tendency closure",
+    "description": "Fit a shared degree-five polynomial approximation to the unresolved fast-scale forcing of a two-scale Lorenz-96 model. Train on supplied slow-state/tendency pairs and minimize normalized error on independent validation trajectories, including an unseen forcing regime.",
+    "family": "science_lorenz_closure",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://gmd.copernicus.org/articles/13/2185/2020/",
+        "type": "paper",
+        "locator": "Rasp (2020), Section 4.1 Eqs. (2)-(3), slow/fast model and closure target; Section 2 discusses offline versus online evaluation."
+      }
+    ],
+    "limitations": [
+      "Local polynomial/offline adaptation with reduced K=8,J=4; not the paper's neural-network coupled-training protocol or a score reproduction.",
+      "Training and validation trajectories use distinct initial seeds; F=10 is absent from training, but all generators are public.",
+      "A deterministic local polynomial cannot recover every fast-scale tendency from the slow scalar alone. Lower offline error does not establish stable coupled forecasts or resolve cloud-feedback uncertainty."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "equation",
+      "domain": "natural_science",
+      "data": "synthetic",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "climate_dynamics"
+    }
+  }
+]

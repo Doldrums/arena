@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "id": "science-climate-lorenz96-assimilation",
+  "name": "Climate dynamics: partial-observation Lorenz-96 assimilation",
+  "description": "Design an ensemble analysis update that reconstructs an evolving twenty-variable chaotic state from noisy observations of half its coordinates. The evaluator propagates the ensemble and compares each updated ensemble mean with independent high-accuracy reference trajectories.",
+  "paper_ids": [
+    "science-climate"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://gmd.copernicus.org/articles/14/5623/2021/",
+      "type": "paper",
+      "locator": "Tomizawa and Sawada (2021), Combining ensemble Kalman filter and reservoir computing to predict spatiotemporal chaotic systems; Section 2.1 Eq. (1) Lorenz-96 dynamics and Section 2.2 ensemble data assimilation."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "None downloaded; mathematical constructions or locally generated synthetic instances."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Climate dynamics: partial-observation Lorenz-96 assimilation",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_lorenz_assimilation",
+    "science_family": "science_lorenz_assimilation",
+    "parameters": {
+      "cycles": 40
+    },
+    "interface": "analyze(ensemble, observations, observed_indices, observation_variance) -> updated ensemble with the same (16,20) shape. Lorenz-96 dx_i/dt=(x_(i+1)-x_(i-2))*x_(i-1)-x_i+F with periodic indices, nondimensional units. Evaluator propagates each member by RK4 at dt=0.01 for five steps between updates, then observes even-indexed states with independent N(0,0.49) noise. Three runs F=6,8,10, seeds=181,283,389; 40 updates each. Score is pooled analysis-mean RMSE against independent DOP853 truth over all states and cycles. Output must be finite and within [-100,100]. Use assimilation_case with seeds=41,53,67 for development; no truth or future observations are provided to analyze.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "synthetic",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "climate_dynamics"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_lorenz_assimilation",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Synthetic deterministic twin experiments, not weather observations or the paper's reservoir-computing results.",
+    "Local reduced dimensions, seeds, observation noise, spin-up, perfect-model forcing and short duration are documented in the contract. Longer-horizon stability and forecast skill are not established.",
+    "All evaluation seeds are public. Use fresh seeds and forcing regimes after freezing the candidate for a generalization claim."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "evidence": "validation/science-report.json",
+    "tests": "tests/test_science_climate.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "area": "climate_dynamics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Reconstruct the hidden state of a reduced chaotic Lorenz-96 system from partial noisy observations.",
+    "importance_rationale": "Data assimilation has substantive geoscience uses, but an arbitrary reduced chaotic test does not inherit those uses automatically.",
+    "papers": [],
+    "reason": "The cited paper combines ensemble Kalman filtering and reservoir computing and uses Lorenz-96 as a method demonstration. The local twenty-variable synthetic twin experiment is still a methodological testbed, with no inspected primary paper pursuing its exact state reconstruction as a substantive scientific or real-world question. No qualifying primary-goal evidence is established for this local task in this review; this is not a finding that the broader subject is unimportant.",
+    "verification_basis": "Local task contract and cited source purpose reviewed; background or benchmark citations were not promoted to primary-problem evidence.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_lj_cluster",
+  "direction": "minimize",
+  "contract": "construct() -> array of shape (N, 3): Cartesian coordinates of N atoms in reduced Lennard-Jones units (sigma = 1). Atoms must be at least 0.5 apart. Score: total Lennard-Jones energy 4*sum(r^-12 - r^-6) over all pairs, minimized. science_chemistry.relax(positions) (L-BFGS local relaxation) is available to candidates.",
+  "parameters": {
+    "n": 55,
+    "published": -279.24847
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 120,
+  "notes": [
+    "Exact Lennard-Jones energy; the Cambridge Cluster Database minima for 13, 38 and 55 atoms are reproduced in tests/test_science_chemistry.py by constructing the icosahedral and truncated-octahedral geometries and relaxing them locally (agreement to 1e-6)."
+  ],
+  "protocol_description": "Reimplemented in this repository and cross-checked against the paper's published constructions/values.",
+  "id": "science-chemistry-lennard-jones-55",
+  "name": "Lennard-Jones cluster global minimum, 55 atoms",
+  "paper_ids": [
+    "science-chemistry"
+  ],
+  "description": "Place 55 atoms interacting through the Lennard-Jones potential to minimise the total energy. The global minimum is the complete two-shell Mackay icosahedron (energy -279.248470, Cambridge Cluster Database). The evaluator computes the energy exactly; the seed is a cubic lattice fragment.",
+  "benchmark": "Lennard-Jones cluster global minimum, 55 atoms",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1021/jp970984n",
+      "type": "paper",
+      "locator": "Wales and Doye 1997, basin-hopping global optimisation of Lennard-Jones clusters."
+    },
+    {
+      "url": "https://www-wales.ch.cam.ac.uk/CCD.html",
+      "type": "benchmark",
+      "locator": "Cambridge Cluster Database (LJ table): N=55, point group Ih, energy -279.248470; inspected 2026-09-20."
+    }
+  ],
+  "limitations": [
+    "Putative global minimum, reproduced in tests from the Mackay icosahedron construction plus local relaxation.",
+    "Reaching the database value reproduces a known structure; a lower energy would need independent verification."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-chemistry",
+      "title": "Computational chemistry: source-based research tasks",
+      "url": "https://doi.org/10.1021/jp970984n"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the lowest-energy structure of a 55-atom cluster under the Lennard-Jones interaction model.",
+    "importance_rationale": "Finite-cluster ground states reveal how interatomic interactions and geometric packing shape molecular-scale structures.",
+    "papers": [
+      {
+        "title": "Global Optimization by Basin-Hopping and the Lowest Energy Structures of Lennard-Jones Clusters Containing up to 110 Atoms",
+        "url": "https://pubs.acs.org/doi/full/10.1021/jp970984n",
+        "primary_goal": "Locate low-energy Lennard-Jones cluster structures, including difficult sizes and structures not previously found in unbiased searches.",
+        "task_relation": "The paper explicitly solves Lennard-Jones structural minima for sizes up to 110, including N=55; the local task uses the same physical energy minimization. Reaching the cited known structure is reproduction, and the model is an idealized pair potential rather than a specific experimental material.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "This is a physical cluster-structure optimization study with actual structure results, not a citation that merely uses the cluster as an agent benchmark.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "natural_science",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "area": "chemistry",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

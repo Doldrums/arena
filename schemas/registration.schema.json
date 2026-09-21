@@ -1,54 +1,118 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/Doldrums/arena/raw/main/schemas/registration.schema.json",
-  "type": "object",
-  "properties": {
-    "schema": {
-      "const": "arena.registration/1"
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "arena.registration/1"
+        },
+        "id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "kind": {
+          "const": "task_collection"
+        },
+        "repository": {
+          "$ref": "common.schema.json#/$defs/repository"
+        },
+        "manifest_path": {
+          "$ref": "common.schema.json#/$defs/relative_path"
+        },
+        "tracked_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "access": {
+          "enum": [
+            "github_app_private",
+            "github_app_public"
+          ]
+        },
+        "admission": {
+          "const": "team_registry_pr"
+        },
+        "refresh": {
+          "const": "manual_pinned_snapshot"
+        },
+        "snapshot_source_id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        }
+      },
+      "required": [
+        "schema",
+        "id",
+        "kind",
+        "repository",
+        "manifest_path",
+        "tracked_ref",
+        "access",
+        "admission",
+        "refresh",
+        "snapshot_source_id"
+      ],
+      "additionalProperties": false
     },
-    "id": {
-      "$ref": "common.schema.json#/$defs/identifier"
-    },
-    "kind": {
-      "const": "task_collection"
-    },
-    "repository": {
-      "$ref": "common.schema.json#/$defs/repository"
-    },
-    "manifest_path": {
-      "$ref": "common.schema.json#/$defs/relative_path"
-    },
-    "tracked_ref": {
-      "type": "string",
-      "minLength": 1
-    },
-    "access": {
-      "enum": [
-        "github_app_private",
-        "github_app_public"
-      ]
-    },
-    "admission": {
-      "const": "team_registry_pr"
-    },
-    "refresh": {
-      "const": "manual_pinned_snapshot"
-    },
-    "snapshot_source_id": {
-      "$ref": "common.schema.json#/$defs/identifier"
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "const": "arena.registration/2"
+        },
+        "id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "kind": {
+          "const": "task_collection"
+        },
+        "storage": {
+          "const": "bundled"
+        },
+        "root_path": {
+          "const": "tasks"
+        },
+        "repository_url": {
+          "const": "https://github.com/Doldrums/arena"
+        },
+        "revision": {
+          "const": "main"
+        },
+        "manifest_path": {
+          "const": "registry/task-library-manifest.json"
+        },
+        "manifest_sha256": {
+          "$ref": "common.schema.json#/$defs/sha256"
+        },
+        "catalog_path": {
+          "$ref": "common.schema.json#/$defs/relative_path"
+        },
+        "admission": {
+          "const": "team_registry_pr"
+        },
+        "refresh": {
+          "const": "reviewed_local_snapshot"
+        },
+        "snapshot_source_id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        }
+      },
+      "required": [
+        "schema",
+        "id",
+        "kind",
+        "storage",
+        "root_path",
+        "repository_url",
+        "revision",
+        "manifest_path",
+        "manifest_sha256",
+        "catalog_path",
+        "admission",
+        "refresh",
+        "snapshot_source_id"
+      ],
+      "additionalProperties": false
     }
-  },
-  "required": [
-    "schema",
-    "id",
-    "kind",
-    "repository",
-    "manifest_path",
-    "tracked_ref",
-    "access",
-    "admission",
-    "refresh",
-    "snapshot_source_id"
-  ],
-  "additionalProperties": false
+  ]
 }

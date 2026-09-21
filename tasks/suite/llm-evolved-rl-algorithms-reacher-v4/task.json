@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0",
+  "id": "llm-evolved-rl-algorithms-reacher-v4",
+  "name": "Reacher-v4",
+  "description": "Reacher-v4 task evaluated in Evolutionary Discovery of Reinforcement Learning Algorithms via Large Language Models.",
+  "paper_ids": [
+    "llm-evolved-rl-algorithms"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2603.28416",
+      "type": "paper",
+      "locator": "Section 3; Tables 1, 3 and 4"
+    },
+    {
+      "url": "https://github.com/sygkounas/Designing-and-Evolving-New-Reinforcement-Learning-Algorithms-using-Large-Language-models/tree/b69c4edee1dd37a684c75a1c904190e9a66e1995",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "Gymnasium",
+      "MuJoCo/Box2D for applicable environments"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "mean maximum evaluation episodic return across five training seeds",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Gymnasium",
+    "protocol": "upstream",
+    "source_locator": "Section 3; Tables 1, 3 and 4"
+  },
+  "execution": {
+    "repository": "https://github.com/sygkounas/Designing-and-Evolving-New-Reinforcement-Learning-Algorithms-using-Large-Language-models",
+    "commit": "b69c4edee1dd37a684c75a1c904190e9a66e1995",
+    "upstream_path": null,
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "main.py"
+        ],
+        "cwd": "Revolve",
+        "notes": "Hydra-configured evolution (Revolve/cfg/config.yaml); the environment is selected through cfg.environment.name (Reacher-v4). Each candidate trains on five Gymnasium environments with five seeds. Model-driven search: requires LLM API credentials and incurs cost; never run by seed checks.",
+        "source_url": "https://github.com/sygkounas/Designing-and-Evolving-New-Reinforcement-Learning-Algorithms-using-Large-Language-models/blob/b69c4edee1dd37a684c75a1c904190e9a66e1995/README.md"
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "python -m venv .venv; pip install -r requirements.txt (the README announces requirements.txt but the file is absent at the pinned commit)"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "python -m venv .venv; pip install -r requirements.txt (the README announces requirements.txt but the file is absent at the pinned commit)"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Table 4 abbreviates InvertedPendulum-v4 as InvPendulum-v4. 100 evaluation episodes per selected checkpoint.",
+      "Source pinned on 2026-09-19; see docs/TASKS.md."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "rl_algorithm",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:gymnasium",
+        "py:mujoco"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "Official GECCO 2026 release pinned; packaging is incomplete (no requirements.txt or license at the pinned commit) and every evaluation is a full RL training run.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Reacher-v4",
+    "slug": "reacher-v4",
+    "description": "Reacher-v4 task evaluated in Evolutionary Discovery of Reinforcement Learning Algorithms via Large Language Models.",
+    "benchmark": "Gymnasium",
+    "dataset": null,
+    "metric": "mean maximum evaluation episodic return across five training seeds",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2603.28416",
+    "source_locator": "Section 3; Tables 1, 3 and 4",
+    "upstream_path": null,
+    "requirements": [
+      "Gymnasium",
+      "MuJoCo/Box2D for applicable environments"
+    ],
+    "execution_notes": [
+      "Table 4 abbreviates InvertedPendulum-v4 as InvPendulum-v4. 100 evaluation episodes per selected checkpoint.",
+      "Source pinned on 2026-09-19; see docs/TASKS.md."
+    ],
+    "setup_commands": [],
+    "run_commands": [
+      {
+        "argv": [
+          "python",
+          "main.py"
+        ],
+        "cwd": "Revolve",
+        "notes": "Hydra-configured evolution (Revolve/cfg/config.yaml); the environment is selected through cfg.environment.name (Reacher-v4). Each candidate trains on five Gymnasium environments with five seeds. Model-driven search: requires LLM API credentials and incurs cost; never run by seed checks.",
+        "source_url": "https://github.com/sygkounas/Designing-and-Evolving-New-Reinforcement-Learning-Algorithms-using-Large-Language-models/blob/b69c4edee1dd37a684c75a1c904190e9a66e1995/README.md"
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,35 @@
+# Attribution and source licenses
+
+The research inventory starts from [Someone Wrote the Evaluator: Human Input in Self-Improving LLM Harnesses](https://human-harness-corpus.small-pine-3af7.workers.dev/), retrieved 2026-09-19. The website describes 98 harness–predecessor pairs. `catalog/snapshot.json` records its SHA-256. Factual system metadata and task classifications are attributed in `catalog/corpus.json`; full site or paper text is not redistributed.
+
+Each task links to its paper and, where established, an official repository. Source locations and inspected immutable revisions are recorded in the task manifest and `catalog/upstream-lock.json`. Reproduction ZIPs are pinned by SHA256 in `catalog/archive-lock.json`. Upstream sources are fetched on demand and retain their own licenses. An unknown license is recorded as unknown; it is not assumed to be MIT.
+
+The MIT license applies to original code and documentation written for this repository. It does not relicense papers, datasets, original implementations, benchmark data, trademarks, or third-party artifacts. No paid API credentials or private data are included. Tests and independently written reference baselines are original to this repository.
+
+Repository HEAD snapshots may postdate paper publication. A commit pin prevents future drift; it does not establish that a revision is the exact historical experiment revision. Individual paper notes record known title/version drift and discrepancies between publications and released code.
+
+The 93-task SCiEL supplement (71 mathematical and 22 benchmark-example packages) is separate from the original 98-system corpus.
+Its source is Apache-2.0 at `da80706f98f9bf1295e502544cdf5a9200fe5f57`;
+the retained source contracts and original notices are attributed in
+[SCIEL_MATH.md](docs/SCIEL_MATH.md), [SCIEL_EXAMPLES.md](docs/SCIEL_EXAMPLES.md) and [SCiEL-LICENSE](docs/licenses/SCiEL-LICENSE).
+Public ADRS and EPLB workload files are downloaded separately from pinned
+Hugging Face revisions using `catalog/adrs-data-lock.json` and
+`catalog/eplb-data-lock.json`. These data files are not relicensed or included
+in the distributable source archive.
+
+The recovery adapters are separately attributed. The exact AlgoTune import
+closure includes its MIT license in `adapters/recovered/sciel_algotune/vendor/`.
+The published AlphaEvolve finite-set construction includes the upstream
+Apache-2.0 license and source receipt in `adapters/recovered/sciel_sums_diffs/`.
+The LoongFlow static packing seed adapts published coordinates under Apache-2.0;
+its original license is retained in `docs/licenses/LoongFlow-LICENSE`.
+MetaBO (AGPL-3.0-or-later) is fetched separately as a paper-cited objective
+source for the explicitly recreated FunBO tasks; it is not original FunBO code
+and is not relicensed. BEIR datasets, optimization checkpoints and physical
+simulation data remain separately downloaded artifacts under their source
+licenses. Per-family recovery documents record exact source paths, hashes,
+compatibility changes and protocol differences.
+
+The ten-task science supplement is original implementation work reconstructed from the primary sources listed in `catalog/science/` and [SCIENCE_TASKS.md](docs/SCIENCE_TASKS.md). No paper text, detector data, climate observations or quantum hardware data is redistributed. The sorting-network test retains an attributed mathematical comparator topology from Bert Dobbelaere's author-maintained list; the binary-code test independently implements the polynomial generator specified in ETSI TS 102 361-1 V2.3.1. These are feasible reference constructions, not imported search implementations. All source-specific adaptations and review dates are recorded in the task manifests.
+
+Additions of 2026-09-20 (blocked-group recreations and the extended science supplement): the CPU kernel, learning-to-optimise, text-game, MNIST-1D and Gymnasium reward families are original implementations; the Natural Plan trip-planning parser in `suite/_lib/autoresearch_suite/llm.py` is a port of `evaluate_trip_planning.py` from google-deepmind/natural-plan (Apache-2.0). Jericho game files (Infocom and other interactive-fiction titles hosted in the BYU-PCCL z-machine-games suite), TextWorld-generated games, the Pantheon+ supernova release and the Hugging Face datasets named in `llm_benchmarks.py` are fetched by the prepare scripts or at run time and are not redistributed; they remain under their own licences.

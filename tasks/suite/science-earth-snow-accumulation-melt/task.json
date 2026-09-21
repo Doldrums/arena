@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "id": "science-earth-snow-accumulation-melt",
+  "name": "Earth science: Snow accumulation and melt across sites",
+  "description": "Snow accumulation and melt across sites with an explicit candidate interface, physical units, independent evaluator and source-traceable observations or numerical model.",
+  "paper_ids": [
+    "science-earth_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://gmd.copernicus.org/articles/11/5027/2018/",
+      "type": "paper",
+      "locator": "Scientific process, benchmark motivation and evaluation assumptions."
+    },
+    {
+      "url": "https://doi.pangaea.de/10.1594/PANGAEA.897575",
+      "type": "benchmark",
+      "locator": "Original source data/model; local candidate and evaluator are independently implemented."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Four complete site-winters from ESM-SnowMIP; CC-BY-NC4.0 source observations."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Earth science: Snow accumulation and melt across sites",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_earth_snow",
+    "science_family": "science_earth_snow",
+    "parameters": {},
+    "interface": "snow_step(meteorology, snow_state, site_parameters) -> {swe,melt,sublimation}, all mm water equivalent per step. Hourly snowfall and temperature; melt drains immediately. Enforce exact solid-water balance and nonnegative stores/fluxes. Site-winter macro RMSE against measured ESM-SnowMIP SWE; first31days spin up. Degree-day seed, four whole winters at two sites. This adaptation does not check energy conservation or reproduce every FSM2 process.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "area": "earth_and_environment",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none"
+    },
+    "proposal_id": "E09",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "setup": {
+      "command": "python scripts/prepare_earth_expansion.py --proposal E09",
+      "documentation": "docs/EARTH_EXPANSION.md"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy"
+      ]
+    },
+    "setup_reason": "Four complete site-winters from ESM-SnowMIP; CC-BY-NC4.0 source observations.",
+    "setup_instructions": [
+      "python scripts/prepare_earth_expansion.py --proposal E09",
+      "docs/EARTH_EXPANSION.md"
+    ],
+    "additional_requires": [
+      "file:../../.cache/science-earth/E09.json",
+      "file:../../.cache/science-earth/E09.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_earth_snow",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-earth/E09.json",
+        "file:../../.cache/science-earth/E09.manifest.json"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Bounded adaptation; no complete source-paper score reproduction or novel scientific discovery claimed.",
+    "Public evaluation cases are development instances; independent generalization requires frozen candidates and new cases.",
+    "Four complete site-winters from ESM-SnowMIP; CC-BY-NC4.0 source observations."
+  ],
+  "validation": {
+    "level": "source_reviewed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_earth_expansion.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "area": "earth_and_environment",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Predict snow-water storage and melt timing from meteorological forcing.",
+    "importance_rationale": "Snow accumulation and melt affect seasonal water supply and land-surface energy exchange.",
+    "papers": [],
+    "reason": "The current citation introduces the ESM-SnowMIP intercomparison. The local four-site-winter protocol uses a simplified storage/melt budget without the energy and canopy processes of source snow models. Inspected problem-focused snow-albedo/topography papers address physical processes not represented or directly isolated here, so they were not substituted as generic snow-domain proof. No qualifying primary-goal evidence is established for this local task in this review; this is not a finding that the broader subject is unimportant.",
+    "verification_basis": "Local task contract and cited source purpose reviewed; background or benchmark citations were not promoted to primary-problem evidence.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

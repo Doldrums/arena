@@ -17,8 +17,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from arena.registry import get_catalog
 from arena.references import summarize, validate_references
+from arena.task_source_reader import TaskSourceReader
 
-REPOSITORY = "https://github.com/IMRUNya/autoresearch-tasks"
 LABELS = {
     "circle_packing_square": "Sum of circle radii in the unit square",
     "circle_packing_rectangle": "Sum of circle radii; bounding perimeter ≤ 4",
@@ -52,38 +52,18 @@ PARAMETERS = {
 }
 
 
-def build(source: Path, catalog: dict) -> dict:
-    binding = next(item for item in catalog["sources"] if item["id"] == "autoresearch-tasks")
-    pin = binding["repository"]["commit"]
-    if binding["repository"]["url"] != REPOSITORY or not re.fullmatch(r"[0-9a-f]{40}", pin):
-        raise ValueError("Catalog source does not identify a pinned reference source")
-    # refs/replace can otherwise substitute a blob/tree while HEAD and status
-    # still appear pinned and clean. All provenance reads must use real objects.
-    git = ["git", "--no-replace-objects", "-C", str(source)]
-    revision = subprocess.check_output([*git, "rev-parse", "HEAD"], text=True).strip()
-    if revision != pin:
-        raise ValueError(f"Expected task revision {pin}, got {revision}")
-    if subprocess.check_output([*git, "status", "--porcelain", "--untracked-files=no"], text=True).strip():
-        raise ValueError("Tracked source files are modified; pinned evidence must be clean")
-    # Read immutable blobs, not ignored or untracked files in a checkout. This
-    # also keeps source hashes stable if another process switches its HEAD.
-    tracked = set(subprocess.check_output(
-        [*git, "ls-tree", "-r", "--name-only", pin], text=True).splitlines())
-    blobs = {}
-
-    def contents(path):
-        if path not in tracked:
-            raise ValueError(f"Evidence file is not tracked at the source revision: {path}")
-        if path not in blobs:
-            blobs[path] = subprocess.check_output([*git, "show", f"{pin}:{path}"])
-        return blobs[path]
+def build(source: Path, catalog: dict, *, registry_root=None) -> dict:
+    if len(catalog["sources"]) != 1:
+        raise ValueError("Reference extraction requires one reviewed task collection")
+    binding = catalog["sources"][0]
+    reader = TaskSourceReader(source, binding, registry_root=registry_root)
+    tracked = reader.paths
+    contents = reader.read
 
     def read(path):
         return json.loads(contents(path))
 
-    def evidence(path, locator):
-        return {"path": path, "url": f"{REPOSITORY}/blob/{pin}/{path}",
-                "sha256": hashlib.sha256(contents(path)).hexdigest(), "locator": locator}
+    evidence = reader.evidence
 
     for key in ("catalog", "index"):
         if evidence(binding[f"{key}_path"], "#")["sha256"] != binding[f"{key}_sha256"]:
@@ -104,6 +84,10 @@ def build(source: Path, catalog: dict) -> dict:
     if science_report is not None and science_report.get("mode") != "science_expansion_validation":
         raise ValueError("Unrecognized science execution report mode")
     science = indexed(science_report["tasks"], "science receipt") if science_report else {}
+    imported_hashes = read("import-receipt.json").get("upstream_hashes", {}) if reader.bundled else {}
+    as_of = (max(report["generated"], science_report.get("created_at", "") if science_report else "")[:10]
+             if reader.bundled else subprocess.check_output(
+                 [*reader.git, "show", "-s", "--format=%cs", reader.pin], text=True).strip())
 
     def science_receipt(row, task, evaluator_source):
         """Bind upstream execution claims to code blobs, without executing them.
@@ -123,17 +107,32 @@ def build(source: Path, catalog: dict) -> dict:
             raise ValueError(f"Science receipt score mismatch: {task_id}")
         candidate = evidence(f"suite/{task_id}/initial_program.py", "recorded seed candidate")
         hashes = row.get("file_sha256", {})
+        changed = set()
+
+        def original_digest(path, digest):
+            if not reader.bundled or imported_hashes.get(path) != digest:
+                raise ValueError(f"Science receipt tracked artifact digest mismatch: {task_id}: {path}")
+            changed.add(path)
+
         for key, artifact in (("candidate_sha256", candidate), ("evaluator_sha256", evaluator_source)):
             if row.get(key) != artifact["sha256"] or hashes.get(artifact["path"]) != artifact["sha256"]:
-                raise ValueError(f"Science receipt {key} digest mismatch: {task_id}")
+                if row.get(key) != hashes.get(artifact["path"]):
+                    raise ValueError(f"Science receipt {key} digest mismatch: {task_id}")
+                original_digest(artifact["path"], row.get(key))
         for path, digest in hashes.items():
             if (not re.fullmatch(r"[0-9a-f]{64}", digest) or path.startswith("/")
                     or ".." in path.split("/") or "\\" in path):
                 raise ValueError(f"Invalid science artifact identity: {task_id}")
             if path in tracked and hashlib.sha256(contents(path)).hexdigest() != digest:
-                raise ValueError(f"Science receipt tracked artifact digest mismatch: {task_id}: {path}")
+                original_digest(path, digest)
             if path.endswith(".py") and path not in tracked:
-                raise ValueError(f"Science receipt code is not tracked: {task_id}: {path}")
+                if not reader.bundled:
+                    raise ValueError(f"Science receipt code is not tracked: {task_id}: {path}")
+                original_digest(path, digest)
+        if changed:
+            return {"code_verification": "historical_code_changed", "changed_paths": sorted(changed),
+                    "import_source": evidence("import-receipt.json", "#/upstream_hashes"),
+                    "candidate_sha256": row["candidate_sha256"], "evaluator_sha256": row["evaluator_sha256"]}
         return {
             "source_execution": True, "fixture_only": False,
             "candidate_sha256": candidate["sha256"], "evaluator_sha256": evaluator_source["sha256"],
@@ -289,7 +288,11 @@ def build(source: Path, catalog: dict) -> dict:
                 anchor["notes"].append("status=ok means the evaluator returned a usable score; the report provides no explicit validity signal.")
             if family in RAW_LABELS:
                 anchor["notes"][0] = "The pinned task evaluator exposes this raw metric. Compare only after matching the complete protocol and execution conditions."
-            if identity is not None:
+            if identity is not None and identity.get("code_verification") == "historical_code_changed":
+                anchor["code_verification"] = "historical_code_changed"
+                anchor["historical_code"] = identity
+                anchor["notes"].append("This score belongs to the recorded pre-import code. Arena adapted its implementation; verification of the current code is pending. It is retained as historical evidence, not a result for the current evaluator.")
+            elif identity is not None:
                 anchor["execution_identity"] = identity
                 anchor["notes"] = [
                     "The expansion report records source execution, not a fixture-only test. Candidate, evaluator and recorded tracked-code hashes match the pinned files.",
@@ -302,15 +305,15 @@ def build(source: Path, catalog: dict) -> dict:
             if family == "llm_benchmark":
                 anchor["metric_label"] = "Mean per-item score on the recorded small model sample"
                 anchor["evaluation"].update(case_count=5, case_count_kind="historical_smoke",
-                    source=evidence("docs/RESULTS.md", "Section 1: five-item samples for model-driven tasks"))
+                    source=evidence("context/RESULTS.txt" if reader.bundled else "docs/RESULTS.md",
+                                    "Section 1: five-item samples for model-driven tasks"))
                 anchor["notes"].append("Source reports five-item Gemini 2.5 Flash smoke samples. A value of 1.0 does not mean 100% accuracy on the full named benchmark.")
             anchors.append(anchor)
         tasks.append({"task_id": task_id, "status": "source_reference" if anchors else "missing",
                       "metric": task["metric"], "direction": task["direction"], "protocol": task["protocol"],
                       "evaluation": evaluation, "anchors": anchors})
     result = {
-        "schema": "arena.references/1", "as_of": subprocess.check_output(
-            [*git, "show", "-s", "--format=%cs", pin], text=True).strip(), "catalog_binding": binding,
+        "schema": "arena.references/1", "as_of": as_of, "catalog_binding": binding,
         "summary": summarize(tasks), "tasks": tasks,
         "highlights": [
             {"task_id": "alphaevolve-circle-packing-in-unit-square", "reason": "A published geometric construction bound, with the number of circles and strict verifier scope."},
@@ -333,15 +336,15 @@ def build(source: Path, catalog: dict) -> dict:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("source", type=Path, help="Clean checkout of the pinned task repository")
+    parser.add_argument("source", type=Path, nargs="?", default=ROOT / "tasks", help="Bundled task directory (default: tasks/)")
     parser.add_argument("--registry", type=Path, default=ROOT / "registry")
     parser.add_argument("--check", action="store_true", help="Fail if the committed snapshot differs; do not write files")
     args = parser.parse_args()
-    data = build(args.source.resolve(), get_catalog(args.registry))
+    data = build(args.source.resolve(), get_catalog(args.registry), registry_root=args.registry)
     output = args.registry / "references.json"
     if args.check:
         if not output.is_file() or json.loads(output.read_text()) != data:
-            parser.exit(1, "Reference snapshot is stale; rebuild it from the pinned source checkout.\n")
+            parser.exit(1, "Reference snapshot is stale; rebuild it from the verified task library.\n")
     else:
         output.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
     print(json.dumps(data["summary"], indent=2))

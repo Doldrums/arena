@@ -1,0 +1,269 @@
+{
+  "schema_version": "1.0",
+  "id": "aevo-arc-agi-2",
+  "name": "ARC-AGI-2",
+  "description": "ARC-AGI-2",
+  "paper_ids": [
+    "aevo",
+    "adaevolve",
+    "evox"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2605.13821",
+      "type": "paper",
+      "locator": "Section 5.1; Appendix C.1"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Experimental evaluation and additional-results appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/arc_benchmark"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Experimental evaluation and additional-results appendix"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "exact task accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "ARC-AGI-2",
+    "protocol": "specified_only",
+    "source_locator": "Section 5.1; Appendix C.1"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "arc_solver",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter",
+        "file:data/arc-prize-2025/arc-agi_evaluation_challenges.json"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Paper cites Anthropic original_performance_takehome commit 5452f74; this is a simulated VLIW SIMD optimization problem, not a GPU kernel benchmark.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "ARC-AGI-2",
+    "slug": "arc-agi-2",
+    "description": "ARC-AGI-2",
+    "benchmark": "ARC-AGI-2",
+    "dataset": null,
+    "metric": "exact task accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2605.13821",
+    "source_locator": "Section 5.1; Appendix C.1",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "adaevolve-arc-agi-2",
+      "paper_ids": [
+        "adaevolve"
+      ],
+      "name": "ARC-AGI-2",
+      "description": "ARC-AGI-2",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.20133",
+          "type": "paper",
+          "locator": "Experimental evaluation and additional-results appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/arc_benchmark"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "120 reasoning instances",
+        "notes": [
+          "benchmark dependencies",
+          "task data"
+        ]
+      },
+      "evaluation": {
+        "metric": "official benchmark score",
+        "paper_metric": "official benchmark score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ARC-AGI-2",
+        "protocol": "specified_only",
+        "source_locator": "Experimental evaluation and additional-results appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/arc_benchmark",
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "uv sync"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Public evaluator and config generator exist, but this record covers all120 evaluation tasks. Exact per-task TASK_NUM, generated config and held-out split selection must be expanded before providing a suite-level executable adapter. This is an unimplemented suite adapter, not unavailable source. README evaluator paths lag the evaluator/ directory refactor."
+        ]
+      },
+      "limitations": [
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "evox-arc-agi-2",
+      "paper_ids": [
+        "evox"
+      ],
+      "name": "ARC-AGI-2",
+      "description": "ARC-AGI-2",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.23413",
+          "type": "paper",
+          "locator": "Experimental evaluation and additional-results appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/arc_benchmark"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "120 reasoning instances",
+        "notes": [
+          "benchmark dependencies",
+          "task data"
+        ]
+      },
+      "evaluation": {
+        "metric": "official benchmark score",
+        "paper_metric": "official benchmark score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ARC-AGI-2",
+        "protocol": "specified_only",
+        "source_locator": "Experimental evaluation and additional-results appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/arc_benchmark",
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "uv sync"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Public evaluator and config generator exist, but this record covers all120 evaluation tasks. Exact per-task TASK_NUM, generated config and held-out split selection must be expanded before providing a suite-level executable adapter. This is an unimplemented suite adapter, not unavailable source. README evaluator paths lag the evaluator/ directory refactor."
+        ]
+      },
+      "limitations": [
+        "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

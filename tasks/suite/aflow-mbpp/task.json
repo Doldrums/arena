@@ -1,0 +1,370 @@
+{
+  "schema_version": "1.0",
+  "id": "aflow-mbpp",
+  "name": "MBPP",
+  "description": "MBPP task evaluated in AFlow: Automating Agentic Workflow Generation.",
+  "paper_ids": [
+    "aflow",
+    "evoflow",
+    "polymath",
+    "sepo"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2410.10762",
+      "type": "paper",
+      "locator": "Section 4.1"
+    },
+    {
+      "url": "https://github.com/FoundationAgents/AFlow/tree/3f457218fc716093fe53f6df8a5d5e6379d66346",
+      "type": "repository",
+      "locator": "benchmarks/mbpp.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2502.07373",
+      "type": "paper",
+      "locator": "Section 4.1 and Appendix G.1"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2508.02959",
+      "type": "paper",
+      "locator": "Experiments: Dataset and Evaluation Metrics"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2606.04465",
+      "type": "paper",
+      "locator": "Section 4.1; Appendix B"
+    },
+    {
+      "url": "https://github.com/taowangcheng/SePO/tree/83083782a9487ef61962d933fc72abbe95f9fa76",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "MBPP",
+    "notes": [
+      "LLM API configuration",
+      "Download supplied evaluation datasets"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "pass@1",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "MBPP",
+    "protocol": "upstream",
+    "source_locator": "Section 4.1"
+  },
+  "execution": {
+    "repository": "https://github.com/FoundationAgents/AFlow",
+    "commit": "3f457218fc716093fe53f6df8a5d5e6379d66346",
+    "upstream_path": "benchmarks/mbpp.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "run.py",
+          "--dataset",
+          "MBPP"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/FoundationAgents/AFlow/blob/3f457218fc716093fe53f6df8a5d5e6379d66346/run.py",
+        "notes": "Runs upstream workflow optimization and evaluation for this dataset; requires configured models and data."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/FoundationAgents/AFlow/blob/3f457218fc716093fe53f6df8a5d5e6379d66346/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/FoundationAgents/AFlow/blob/3f457218fc716093fe53f6df8a5d5e6379d66346/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "MBPP",
+    "slug": "mbpp",
+    "description": "MBPP task evaluated in AFlow: Automating Agentic Workflow Generation.",
+    "benchmark": "MBPP",
+    "dataset": "MBPP",
+    "metric": "pass@1",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2410.10762",
+    "source_locator": "Section 4.1",
+    "upstream_path": "benchmarks/mbpp.py",
+    "requirements": [
+      "LLM API configuration",
+      "Download supplied evaluation datasets"
+    ],
+    "execution_notes": [],
+    "setup_commands": [],
+    "run_commands": [
+      {
+        "argv": [
+          "python",
+          "run.py",
+          "--dataset",
+          "MBPP"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/FoundationAgents/AFlow/blob/3f457218fc716093fe53f6df8a5d5e6379d66346/run.py",
+        "notes": "Runs upstream workflow optimization and evaluation for this dataset; requires configured models and data."
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "evoflow-mbpp",
+      "paper_ids": [
+        "evoflow"
+      ],
+      "name": "MBPP",
+      "description": "MBPP task evaluated in EvoFlow: Evolving Diverse Agentic Workflows On The Fly.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2502.07373",
+          "type": "paper",
+          "locator": "Section 4.1 and Appendix G.1"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "benchmark success/solve rate or pass@1",
+        "paper_metric": "benchmark success/solve rate or pass@1",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "MBPP",
+        "protocol": "specified_only",
+        "source_locator": "Section 4.1 and Appendix G.1"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Paper-cited https://github.com/bingreeky/EvoFlow returned HTTP 404 when checked. MATH uses 617 difficulty-5 problems."
+        ]
+      },
+      "limitations": [
+        "Paper-cited repository could not be fully retrieved: bingreeky/EvoFlow (HTTP Error 404: Not Found).",
+        "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "polymath-mbpp",
+      "paper_ids": [
+        "polymath"
+      ],
+      "name": "MBPP",
+      "description": "MBPP: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2508.02959",
+          "type": "paper",
+          "locator": "Experiments: Dataset and Evaluation Metrics"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "MBPP",
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "solve rate",
+        "paper_metric": "solve rate",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "MBPP",
+        "protocol": "specified_only",
+        "source_locator": "Experiments: Dataset and Evaluation Metrics"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": []
+      },
+      "limitations": [
+        "No official runnable repository was verified from the paper/project sources examined.",
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "sepo-mbpp",
+      "paper_ids": [
+        "sepo"
+      ],
+      "name": "MBPP",
+      "description": "MBPP task evaluated in SePO: Self-Evolving Prompt Agent for System Prompt Optimization.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2606.04465",
+          "type": "paper",
+          "locator": "Section 4.1; Appendix B"
+        },
+        {
+          "url": "https://github.com/taowangcheng/SePO/tree/83083782a9487ef61962d933fc72abbe95f9fa76",
+          "type": "repository",
+          "locator": null
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "test accuracy",
+        "paper_metric": "test accuracy",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "MBPP",
+        "protocol": "specified_only",
+        "source_locator": "Section 4.1; Appendix B"
+      },
+      "execution": {
+        "repository": "https://github.com/taowangcheng/SePO",
+        "commit": "83083782a9487ef61962d933fc72abbe95f9fa76",
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Official repository README says code release preparation is in progress; no executable implementation available."
+        ]
+      },
+      "limitations": [
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

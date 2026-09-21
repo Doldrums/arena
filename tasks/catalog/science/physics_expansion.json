@@ -1,0 +1,936 @@
+[
+  {
+    "id": "science-physics-great3-shear-calibration",
+    "name": "GREAT3 weak-lensing shear calibration",
+    "description": "estimate_shear(images, psf, metadata) -> [g1,g2] per GREAT3 subfield. Images have (galaxy,y,x) axes; PSF is a source stamp. Noise-cancellation groups remain intact. Independent evaluator rotates shear into PSF frame and computes official ground constant-shear Qc with multiplicative/additive bias diagnostics. No variable-shear claim.",
+    "proposal_id": "P01",
+    "family": "science_physics_great3_shear_calibration",
+    "status": "requires_setup",
+    "parameters": {
+      "proposal_id": "P01"
+    },
+    "sources": [
+      {
+        "url": "https://academic.oup.com/mnras/article/450/3/2963/1064967",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: GREAT3 weak-lensing shear calibration"
+      },
+      {
+        "url": "https://github.com/barnabytprowe/great3-public",
+        "type": "archive",
+        "locator": "Constant ground branch metric and noise-cancellation groups; Qc normalization 1.232."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Prepare complete GREAT3 subfields, source shears/PSF angles and disjoint noise-cancellation group labels; official legacy data host timed out during audit."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "cosmology_and_astrophysics"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Prepare complete GREAT3 subfields, source shears/PSF angles and disjoint noise-cancellation group labels; official legacy data host timed out during audit."
+    },
+    "validation": {
+      "level": "adapter_unit_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": false
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    }
+  },
+  {
+    "id": "science-physics-mlgwsc-event-search",
+    "name": "MLGWSC gravitational-wave event search",
+    "description": "search(h1, l1, metadata) -> N x 2 GPS time/ranking statistic array. Independent source observing blocks and source injections; triggers clustered and uniquely associated. Score sensitive distance at fixed FAR. At least 10 expected false alarms at the declared FAR must fit in the background duration; tiny noise clips cannot establish rare-event performance.",
+    "proposal_id": "P02",
+    "family": "science_physics_mlgwsc_event_search",
+    "status": "requires_setup",
+    "parameters": {
+      "proposal_id": "P02"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2209.11146",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: MLGWSC gravitational-wave event search"
+      },
+      {
+        "url": "https://github.com/gwastro/ml-mock-data-challenge-1",
+        "type": "archive",
+        "locator": "MLGWSC-1 Dataset 4 source real-noise foreground/background; evaluation sensitive distance."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Prepare source MLGWSC foreground/background with actual injection volume weights and long background; short clips cannot resolve declared FAR."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "cosmology_and_astrophysics"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Prepare source MLGWSC foreground/background with actual injection volume weights and long background; short clips cannot resolve declared FAR."
+    },
+    "validation": {
+      "level": "adapter_unit_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": false
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    }
+  },
+  {
+    "id": "science-physics-experimental-surface-code",
+    "name": "Experimental surface-code logical decoding",
+    "description": "decode(detector_events, metadata) -> shot x observable bits. Metadata includes source detector-error model, code distance and observable count. Train/test acquisition batches disjoint. Score logical failure per complete experimental shot, with Wilson confidence interval and timing. PyMatching baseline uses only error model and detector events.",
+    "proposal_id": "P03",
+    "family": "science_physics_experimental_surface_code",
+    "status": "ready",
+    "parameters": {
+      "proposal_id": "P03"
+    },
+    "sources": [
+      {
+        "url": "https://www.nature.com/articles/s41586-024-08449-y",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: Experimental surface-code logical decoding"
+      },
+      {
+        "url": "https://zenodo.org/records/13273331",
+        "type": "archive",
+        "locator": "google_105Q_surface_code_d3_d5_d7.zip: experimental detection events, acquisition batches and detector-error model."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Compact zero-shot experimental pilot: three complete X-basis 13-cycle acquisitions, no fitted training shots and no logical-per-cycle scaling claim."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "quantum_information"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "pymatching",
+        "stim"
+      ],
+      "environment_variables": [],
+      "datasets": "Run .cache/physics-env/bin/python scripts/prepare_physics_expansion.py --qec: 150,000 actual released shots across three complete distance3/5/7 acquisitions; optional environment prepared with --setup-environment.",
+      "notes": "Normal evaluator dispatches optional solver work to .cache/physics-env. Prepare with scripts/prepare_physics_expansion.py --setup-environment; shared NumPy is not changed."
+    },
+    "validation": {
+      "level": "source_seed_executed",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": true
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "Stim1.15.0 source-circuit parsing/error-model algebra and PyMatching2.3.1 baseline matching"
+    }
+  },
+  {
+    "id": "science-physics-calochallenge-photon-showers",
+    "name": "CaloChallenge photon shower generation",
+    "description": "fit_showers(training) -> sampler(incident_energies, rng). Training contains showers, incident_energies and voxel geometry from official CaloChallenge Dataset 1 photons. Return nonnegative (event,voxel) deposits in MeV. Independent source-file events are held out. Score per-energy standardized Wasserstein of shower response, sparsity, layer fractions, centroids and widths. Classifier AUC and generation time are separate diagnostics. Compact CPU adaptation, not full challenge leaderboard.",
+    "proposal_id": "P04",
+    "family": "science_physics_calochallenge_photon_showers",
+    "status": "ready",
+    "parameters": {
+      "proposal_id": "P04"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2410.21611",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: CaloChallenge photon shower generation"
+      },
+      {
+        "url": "https://zenodo.org/records/8099322",
+        "type": "archive",
+        "locator": "dataset_1_photons_1.hdf5 and dataset_1_photons_2.hdf5, independent training/reference files."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Run scripts/prepare_physics_expansion.py --calo."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "particle_physics"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "sklearn"
+      ],
+      "environment_variables": [],
+      "datasets": "Run scripts/prepare_physics_expansion.py --calo."
+    },
+    "validation": {
+      "level": "source_seed_executed",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": true
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    }
+  },
+  {
+    "id": "science-particle-helical-track-reconstruction",
+    "name": "TrackML complete-event track reconstruction",
+    "description": "assign_tracks(hits, cells, metadata) -> integer track ID for each hit. Input retains complete official TrackML events, source cells and detector geometry. Whole events split, no truth supplied. Score exact strict two-sided majority TrackML weighted score. No artificial helices or hit subsampling.",
+    "proposal_id": "P05",
+    "family": "science_physics_trackml_complete_events",
+    "status": "requires_setup",
+    "parameters": {
+      "proposal_id": "P05"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1904.06778",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: TrackML complete-event track reconstruction"
+      },
+      {
+        "url": "https://github.com/LAL/trackml-library",
+        "type": "archive",
+        "locator": "Complete event hits, cells, truth and detector geometry; strict majority score implementation."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Obtain full official TrackML events/cells/detector, preserve event boundaries; benchmark source files are not staged."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "particle_physics"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "sklearn"
+      ],
+      "environment_variables": [],
+      "datasets": "Obtain full official TrackML events/cells/detector, preserve event boundaries; benchmark source files are not staged."
+    },
+    "validation": {
+      "level": "adapter_unit_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": false
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    },
+    "upgrade_existing": true
+  },
+  {
+    "id": "science-particle-collider-anomaly-ranking",
+    "name": "LHCO control-region collider anomalies",
+    "description": "fit(control_features) -> object with score(events). Input consists of pinned physics features derived from official LHCO Pythia/Delphes events; candidate never receives signal truth. Independent training, test and no-signal source event blocks. Score SIC at 5 percent background divided by one plus mass-sculpting chi-square. Report no-signal acceptance and AUROC; no discovery p value.",
+    "proposal_id": "P06",
+    "family": "science_physics_lhco_control_region_anomalies",
+    "status": "ready",
+    "parameters": {
+      "proposal_id": "P06"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2101.08320",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: LHCO control-region collider anomalies"
+      },
+      {
+        "url": "https://zenodo.org/records/2629073",
+        "type": "archive",
+        "locator": "events_anomalydetection.h5; source Pythia/Delphes constituents and R&D truth."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Bounded first50,000 author-shuffled R&D source events. Training retains actual source signal contamination; no detector-observation discovery or cross-generator generalization claim.",
+      "Retrieved byte ranges and normalized pack are SHA256-verified. Full-source advertised MD5 is preserved but not claimed verified after partial download."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "particle_physics"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "sklearn"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned first50,000 official LHCO R&D source events, FastJet anti-kT features, disjoint control/test/no-signal row blocks. Run scripts/prepare_physics_lhco.py; source protocol and hashes in docs/PHYSICS_LHCO_SOURCE.md."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-lhco-source-report.json",
+      "benchmark_verified": true,
+      "source_subset_run": true,
+      "fixture_tests_are_benchmark_validation": false
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "FastJet3.5.1.5 anti-kT jet preprocessing engine; SCIEL evaluator, split protocol and objective authored locally."
+    },
+    "upgrade_existing": true,
+    "setup": {
+      "command": ".cache/sciel-env/bin/python scripts/prepare_physics_lhco.py",
+      "documentation": "docs/PHYSICS_LHCO_SOURCE.md"
+    }
+  },
+  {
+    "id": "science-physics-tdlmc-distance-posterior",
+    "name": "TDLMC time-delay distance posterior",
+    "description": "infer_distance(image, psf, time_delays, kinematics, metadata) -> 32..4096 joint physical posterior samples; first column time-delay distance Mpc, others named bounded lens/source nuisances. Metadata includes evaluator-owned lenstronomy forward callable and budget. TDLMC Rungs 1 or 2 whole systems only. Relative distance CRPS plus independent image/delay/dynamical forward-likelihood penalty; bias, interval width and coverage reported.",
+    "proposal_id": "P07",
+    "family": "science_physics_tdlmc_distance_posterior",
+    "status": "requires_setup",
+    "parameters": {
+      "proposal_id": "P07"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2006.08619",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: TDLMC time-delay distance posterior"
+      },
+      {
+        "url": "https://tdlmc.github.io/download.html",
+        "type": "archive",
+        "locator": "Rung 1 or 2 blinded images, PSF, delays, kinematics and open-box distances; omit Rung 3."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Curate Rung 1/2 source cases and model/kinematics priors, install lenstronomy and verify forward rendering against source."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "cosmology_and_astrophysics"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "lenstronomy",
+        "astropy"
+      ],
+      "environment_variables": [],
+      "datasets": "Official Rung1 observations and open-box truth downloaded. Validate real-host morphology, astrometry labels, external convergence, aperture dynamics and pixel conventions in a source pack before seed execution.",
+      "notes": "Normal evaluator dispatches optional solver work to .cache/physics-env. Prepare with scripts/prepare_physics_expansion.py --setup-environment; shared NumPy is not changed."
+    },
+    "validation": {
+      "level": "adapter_unit_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": false
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "lenstronomy1.13.5 physical image/Fermat/kinematic forward library"
+    }
+  },
+  {
+    "id": "science-physics-ariel-atmospheric-posterior",
+    "name": "Ariel atmospheric posterior retrieval",
+    "description": "retrieve(spectrum, uncertainty, planet_metadata) -> 32..4096 integer indices into source TauREx forward grid, with repetition. Metadata carries physical parameters, opacity-pinned spectra and prior bounds. Posterior is a declared discrete-grid adaptation. Score generating-truth CRPS, agreement with released nested-sampling reference posterior and independent spectral predictive likelihood. Split entire planets and atmospheric regimes.",
+    "proposal_id": "P08",
+    "family": "science_physics_ariel_atmospheric_posterior",
+    "status": "requires_setup",
+    "parameters": {
+      "proposal_id": "P08"
+    },
+    "sources": [
+      {
+        "url": "https://proceedings.mlr.press/v220/yip23a.html",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: Ariel atmospheric posterior retrieval"
+      },
+      {
+        "url": "https://zenodo.org/records/6770103",
+        "type": "archive",
+        "locator": "Level1/Level2 observations and nested-sampling posterior; exact TauREx opacity/model grid must be curated."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Published tutorial opacity grid is R≈1000 versus source-model R=10000; released radius/mass/gravity units require further validation. The independent likelihood has not reproduced source truth, so no successful seed execution is claimed."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "cosmology_and_astrophysics"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Official ABC Level2 and tutorial archives downloaded and checksum-verified. Source-matched opacity/model conventions remain required: independent generating-truth spectral check fails (chi²/bin92.3; diagnostic radius conversion47.6). See validation/physics-atmosphere-forward-check.json."
+    },
+    "validation": {
+      "level": "adapter_unit_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": false
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "TauREx3.2.4 source-opacity forward-grid preparation; runtime grid metric is local"
+    }
+  },
+  {
+    "id": "science-physics-ngeht-closure-imaging",
+    "name": "ngEHT closure-constrained imaging",
+    "description": "reconstruct(visibilities, array_metadata, noise) -> nonnegative square image in Jy per pixel with calibrated total flux. Source data supply uv wavelengths, amplitudes, signed closure triangles and phases. Independent direct Fourier transform checks amplitude/closure likelihood and fixed-centre, resolution-matched image NRMSE. Source models/schedules split. Official ngEHT permission required before staging restricted challenge files.",
+    "proposal_id": "P09",
+    "family": "science_physics_ngeht_closure_imaging",
+    "status": "requires_setup",
+    "parameters": {
+      "proposal_id": "P09"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2212.11355",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: ngEHT closure-constrained imaging"
+      },
+      {
+        "url": "https://challenge.ngeht.org/challenge1/",
+        "type": "archive",
+        "locator": "Challenge 1 data/model download permission is limited to invited participants; no unrestricted mirror assumed."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Source restricted to challenge participants; obtain explicit source permission/credentials, then curate fixed-FOV visibilities/closure/model data."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "cosmology_and_astrophysics"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Source restricted to challenge participants; obtain explicit source permission/credentials, then curate fixed-FOV visibilities/closure/model data."
+    },
+    "validation": {
+      "level": "adapter_unit_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": false
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    }
+  },
+  {
+    "id": "science-physics-freegsnke-coil-design",
+    "name": "FreeGSNKE tokamak coil design",
+    "description": "design_coils(machine, target_boundary, plasma_profile) -> eight bounded active-coil currents in A for the published Anamak geometry. Evaluator runs pinned FreeGSNKE static equilibrium at two grid resolutions, checks nonlinear Grad-Shafranov residual, closed-plasma topology and current bounds, then scores boundary/axis mismatch. Targets/profile cases generated from the specified source model and saved with numerical reference checks. No physical reactor claim.",
+    "proposal_id": "P10",
+    "family": "science_physics_freegsnke_coil_design",
+    "status": "ready",
+    "parameters": {
+      "proposal_id": "P10"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1063/5.0188467",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: FreeGSNKE tokamak coil design"
+      },
+      {
+        "url": "https://github.com/FusionComputingLab/freegsnke/tree/d755538c0f849e46f0e2407c0dad535eb9a1e228",
+        "type": "repository",
+        "locator": "Version 3.1.0 example07a Anamak geometry and Lao85 profiles, static inverse and forward solves."
+      },
+      {
+        "url": "https://arxiv.org/abs/2501.14682",
+        "type": "paper",
+        "title": "Electromagnetic System Conceptual Design for a Negative Triangularity Tokamak",
+        "locator": "Uses equilibrium modeling to design bounded poloidal-coil currents and configurations that realize target plasma geometries. The local Anamak/FreeGSNKE static inverse problem uses different geometry and does not reproduce the paper's proposed reactor."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Run scripts/prepare_physics_expansion.py --coils with freegsnke==3.1.0 and NumPy<2.5."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "physics"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy>=1.26.4,<2.5 (isolated physics environment)",
+        "scipy",
+        "freegsnke==3.1.0"
+      ],
+      "environment_variables": [],
+      "datasets": "Run scripts/prepare_physics_expansion.py --coils with freegsnke==3.1.0 and NumPy<2.5.",
+      "notes": "Normal evaluator dispatches optional solver work to .cache/physics-env. Prepare with scripts/prepare_physics_expansion.py --setup-environment; shared NumPy is not changed."
+    },
+    "validation": {
+      "level": "source_seed_executed",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": true
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "FreeGSNKE3.1.0/FreeGS4E0.15.0 nonlinear equilibrium engine and standard inverse-solve baseline"
+    }
+  },
+  {
+    "id": "science-physics-jhtdb-subgrid-stress",
+    "name": "JHTDB turbulent subgrid stress",
+    "description": "closure(filtered_velocity, gradients, filter_width) -> N x N x N x 3 x 3 symmetric subgrid stress. Complete periodic source DNS boxes (not wrapped cutouts) supply independent box-filtered ground truth. Whole space-time blocks split. Score stress and energy-transfer errors plus Fourier energy error after evaluator RK2 coarse rollout. Galilean and cyclic rotational consistency and rollout stability required.",
+    "proposal_id": "P11",
+    "family": "science_physics_jhtdb_subgrid_stress",
+    "status": "requires_setup",
+    "parameters": {
+      "proposal_id": "P11"
+    },
+    "sources": [
+      {
+        "url": "https://turbulence.pha.jhu.edu/papers/lietal-jhudatabase2008.pdf",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: JHTDB turbulent subgrid stress"
+      },
+      {
+        "url": "https://turbulence.idies.jhu.edu/datasets",
+        "type": "archive",
+        "locator": "Periodic isotropic DNS velocity fields with whole space-time block holdouts; filter and coarse-flow checks."
+      },
+      {
+        "url": "https://arxiv.org/abs/1806.04482",
+        "type": "paper",
+        "title": "Deep Neural Networks for Data-Driven Turbulence Models",
+        "locator": "Learns unresolved closure terms from filtered direct numerical simulations and evaluates stable large-eddy rollouts. The local JHTDB stress-tensor target, invariance checks and numerical rollout are a distinct task-family adaptation."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Acquire complete periodic JHTDB DNS fields at separated times with source viscosity/spacing; no wrapping arbitrary small cutouts."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "physics"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Acquire complete periodic JHTDB DNS fields at separated times with source viscosity/spacing; no wrapping arbitrary small cutouts."
+    },
+    "validation": {
+      "level": "adapter_unit_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": false
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    }
+  },
+  {
+    "id": "science-physics-robust-transmon-control",
+    "name": "Robust multilevel quantum-control pulses",
+    "description": "pulse(target_gate, hardware_model) -> (80,2) IQ amplitudes rad/ns for 40 ns X-pi gate in a three-level Duffing transmon. Enforce amplitude .4 rad/ns and slew .12 rad/ns/ns including endpoints. Independent Lindblad expm and refined DOP853 evaluate six Bloch states over 3x3 detuning/calibration cases, relaxation and dephasing. Score mean plus worst average gate infidelity; report leakage. Explicit simulation, not QuOCS benchmark reproduction.",
+    "proposal_id": "P12",
+    "family": "science_physics_robust_transmon_control",
+    "status": "ready",
+    "parameters": {
+      "proposal_id": "P12"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2212.11144",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: Robust multilevel quantum-control pulses"
+      },
+      {
+        "url": "https://github.com/Quantum-OCS/QuOCS",
+        "type": "repository",
+        "locator": "Optimal-control problem formulation; independent explicit qutrit/Lindblad adaptation, no author pulse reuse."
+      },
+      {
+        "url": "https://arxiv.org/abs/0901.0534",
+        "type": "paper",
+        "title": "Simple pulses for elimination of leakage in weakly nonlinear qubits",
+        "locator": "Develops control pulses that suppress leakage in multilevel superconducting qubits and evaluates gate error. Local robust pulse optimization across parameter uncertainty extends that same control task."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "No external dataset: fully specified physical-model simulation."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "quantum_information"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "No external dataset: fully specified physical-model simulation."
+    },
+    "validation": {
+      "level": "source_seed_executed",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": true
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    }
+  },
+  {
+    "id": "science-physics-refnx-contrast-inversion",
+    "name": "refnx contrast reflectometry inversion",
+    "description": "infer_profile(training_contrasts, bounds, metadata) -> 32..4096 posterior rows [oxide thickness A, film thickness A, dry film SLD 1e-6/A^2, solvent fraction, roughness A, background]. Independent Parratt recursion with Nevot-Croce roughness and Gaussian Q-resolution predicts the wholly held-out contrast. Score posterior predictive normalized residual plus simulation-track CRPS. Source experimental contrasts are one physical sample, no cross-sample generalization claim.",
+    "proposal_id": "P13",
+    "family": "science_physics_refnx_contrast_inversion",
+    "status": "ready",
+    "parameters": {
+      "proposal_id": "P13"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1107/S1600576718017296",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: refnx contrast reflectometry inversion"
+      },
+      {
+        "url": "https://github.com/refnx/refnx/tree/02b9bd11b439e8db8b319e6c25c7ee94b5033451/examples/global_fitting_motofit",
+        "type": "archive",
+        "locator": "Three measured contrasts e361r/e365r/e366r and source Motofit multilayer/global pilot files."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Run scripts/prepare_physics_expansion.py --refnx; experimental source is one sample with three contrasts."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "physics"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Run scripts/prepare_physics_expansion.py --refnx; experimental source is one sample with three contrasts."
+    },
+    "validation": {
+      "level": "source_seed_executed",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": true
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    }
+  },
+  {
+    "id": "science-physics-xy-critical-monte-carlo",
+    "name": "Critical-regime XY Monte Carlo schedules",
+    "description": "schedule(temperature, lattice_size, budget) -> list of 1..64 kernel names: metropolis, overrelax, wolff, containing a stochastic kernel. Trusted detailed-balance kernels operate classical periodic XY model. Each sweep/cluster is charged N site units (upper bound); warmup counts. Multiple independent chains score squared energy/magnetization errors against long independent reference chains, with reference uncertainty and autocorrelation diagnostics. Fixed-work local adaptation, not a timing leaderboard.",
+    "proposal_id": "P14",
+    "family": "science_physics_xy_critical_monte_carlo",
+    "status": "ready",
+    "parameters": {
+      "proposal_id": "P14"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1103/PhysRevLett.62.361",
+        "type": "paper",
+        "locator": "Scientific problem, assumptions and evaluation methodology: Critical-regime XY Monte Carlo schedules"
+      },
+      {
+        "url": "https://alps.comp-phys.org/tutorials/mcs/",
+        "type": "repository",
+        "locator": "Classical XY Wolff kernel and equilibrium Monte Carlo methodology; independent fixed-work implementation."
+      }
+    ],
+    "limitations": [
+      "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+      "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+      "Run scripts/prepare_physics_expansion.py --xy-reference to create long-chain numerical reference with uncertainty checks."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "physics"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU; source-data preparation may require substantial disk space",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Run scripts/prepare_physics_expansion.py --xy-reference to create long-chain numerical reference with uncertainty checks."
+    },
+    "validation": {
+      "level": "source_seed_executed",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "tests": "tests/test_science_physics_expansion.py",
+      "evidence": "validation/physics-expansion-report.json",
+      "benchmark_verified": true
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "No specialist source-task evaluator or engine code reused; generic NumPy/SciPy and source datasets/mathematical definitions attributed separately."
+    }
+  }
+]

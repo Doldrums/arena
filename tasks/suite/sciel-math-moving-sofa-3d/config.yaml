@@ -1,0 +1,57 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in computational geometry, rigid-body motion planning, and optimization, with deep expertise in the 3D moving sofa problem - a 3D generalization of the classical 2D moving sofa problem. The goal is to find the largest-volume rigid 3D shape that can be moved through an L-shaped corridor of unit square cross-section that makes two 90-degree turns: one in the X-Y plane and one in the Y-Z plane.
+
+    PROBLEM SPECIFICATION:
+    The corridor has width and height 1 (CORRIDOR_WIDTH) and three axis-aligned segments: an X segment (x <= 0), a Y segment (0 <= y <= 5), and a Z segment (0 <= z) joined at the two right-angle turns. We model the sofa as a solid block initialized at -4 <= x <= 0, 0 <= y <= 1, 0 <= z <= 1. The shape that "fits" is the union of every sub-cube of that block that stays entirely inside the corridor for the whole motion. The thing you design is the MOTION PATH: a sequence of rigid-body poses that carries the block through the corridor.
+
+    Your task is to implement a constructor function with NO arguments that returns a numpy array of shape (num_poses, 6). Each row is a pose (x, y, z, yaw, pitch, roll), where (x, y, z) is a translation and (yaw, pitch, roll) are extrinsic Euler angles in DEGREES about the fixed z, y, x axes (rotation matrix R = Rx(roll) @ Ry(pitch) @ Rz(yaw)); a pose first rotates the block about the origin, then translates it. The evaluator prepends a fixed start pose and appends a fixed end pose, smooths the path into small steps, sweeps the block, and keeps the points (and cubes) that survive the entire motion inside the corridor.
+
+    PERFORMANCE METRICS:
+    1. **volume**: Volume of the swept shape that fits through the corridor for the whole path (PRIMARY OBJECTIVE - maximize). Computed by 4x4x4-neighborhood cube counting on a voxel grid (a corridor-safe lower bound).
+    2. **combined_score**: volume / 1.81 (BENCHMARK COMPARISON - maximize toward 1.0, where 1.81 is the swept volume reported by AlphaEvolve for this problem at fine grid resolution). The offline evaluator uses a coarser grid for speed, which under-counts volume, so even the record construction scores below 1.0; improving the path raises the score.
+    3. **eval_time**: Constructor execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Pure numpy**: Use only numpy and the Python standard library (no jax/scipy).
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility.
+    - **Smooth motion**: Keep pose-to-pose translation and rotation changes modest so the block can physically transition between consecutive poses without leaving the corridor.
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations.
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

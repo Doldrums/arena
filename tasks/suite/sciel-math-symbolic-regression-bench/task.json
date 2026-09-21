@@ -1,0 +1,286 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-math-symbolic-regression-bench",
+  "name": "SCiEL: Budgeted symbolic regression",
+  "description": "Return a predictor from run_search(); score three trials on the deterministic 200-row held-out split of a two-variable trigonometric-polynomial target.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "optimization_statistics",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/symbolic_regression_bench/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/symbolic_regression_bench/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
+    "dependencies": [
+      "numpy",
+      "openevolve"
+    ],
+    "environment_variables": [],
+    "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example symbolic_regression_bench",
+    "paper_metric": null,
+    "source_locator": "examples/symbolic_regression_bench/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/symbolic_regression_bench",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/symbolic_regression_bench/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": "examples/symbolic_regression_bench/initial_program.py",
+      "dependencies": [
+        "numpy",
+        "openevolve"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply mathematical validity; preserve unknown validity unless the original evaluator exposes an explicit signal."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The 8-fit training budget is implemented in the editable baseline. The held-out target and deterministic test split are public; this is a fixed numerical objective, not a hidden generalization benchmark.",
+    "The ThreadPoolExecutor timeout may wait during executor shutdown; use the outer process timeout.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "The 8-fit training budget is implemented in the editable baseline. The held-out target and deterministic test split are public; this is a fixed numerical objective, not a hidden generalization benchmark.",
+      "The ThreadPoolExecutor timeout may wait during executor shutdown; use the outer process timeout."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/symbolic_regression_bench/evaluator.py": "2998141b0a5edb58fb99b5b1167ec0b9ca67bc82405b6d7b9c051048b64834c4",
+    "examples/symbolic_regression_bench/config.yaml": "e8cb05fc5cee3b7ca29c253ad453fad8994fb46a017fab44194f1c3a9f08e449",
+    "examples/symbolic_regression_bench/requirements.txt": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc",
+    "examples/symbolic_regression_bench/README.md": "713b3d3cb9315f2fa4d221dd3581d13faf7b5bab9da702b6e2d7f52a215aece4",
+    "examples/symbolic_regression_bench/initial_program.py": "030a9b1c71a106d6b98f0a608db95cb5e7b8ef741561a2d42e096bdd8a608158"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/symbolic_regression_bench/evaluator.py",
+      "signature": "program_path",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.run_search() -> callable predictor(X) returning predictions"
+    ],
+    "baseline_path": "examples/symbolic_regression_bench/initial_program.py",
+    "baseline_functions": {
+      "propose_models": {
+        "signature": "",
+        "docstring": "Return candidate predictors. Seed: one linear model only.\n\nEvolution should grow this into structured candidates, e.g.\nlambda X: a*np.sin(b*X[:, 0]) + c*X[:, 1]**2 + d*X[:, 0]*X[:, 1] + e,\nand may use score_train() (budgeted) to pick the best.",
+        "returns": null
+      },
+      "search_model": {
+        "signature": "",
+        "docstring": "Pick the best proposed model under the training-fit-call budget.",
+        "returns": null
+      },
+      "_hidden_target": {
+        "signature": "X",
+        "docstring": null,
+        "returns": null
+      },
+      "_make_data": {
+        "signature": "",
+        "docstring": null,
+        "returns": null
+      },
+      "_nmse": {
+        "signature": "predict, X, y, y_var",
+        "docstring": null,
+        "returns": null
+      },
+      "score_train": {
+        "signature": "predict",
+        "docstring": "Budgeted training-NMSE scorer: true value for the first MAX_FITS calls\nof a run, then a large error so extra trials cannot improve the result.",
+        "returns": null
+      },
+      "run_search": {
+        "signature": "",
+        "docstring": "Fresh budget per evaluation trial; return the chosen predictor.",
+        "returns": null
+      }
+    },
+    "parameters": {
+      "_SEED": 20260517,
+      "_N": 400,
+      "_OVER": 1000000000.0
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "score_expressions": [],
+    "return_branches": [
+      {
+        "function": "_missing_run_search",
+        "line": 82,
+        "expression": "EvaluationResult(metrics={'test_nmse': _OVER, 'fit_quality': 0.0, 'combined_score': 0.0, 'error': 'Missing run_search function'}, artifacts={'suggestion': 'Program must define run_search() returning a predictor f(X)->y.'})"
+      },
+      {
+        "function": "evaluate",
+        "line": 121,
+        "expression": "EvaluationResult(metrics={'test_nmse': avg_nmse, 'best_test_nmse': best_nmse, 'fit_quality': fit_quality, 'reliability': success_rate, 'combined_score': float(combined)}, artifacts={'avg_test_nmse': f'{avg_nmse:.6g}', 'best_test_nmse': f'{best_nmse:.6g}', 'note': 'lower NMSE is better; combined_score is higher-better and rewards recovering the hidden structure within the training-fit-call budget.'})"
+      },
+      {
+        "function": "evaluate",
+        "line": 100,
+        "expression": "_missing_run_search()"
+      },
+      {
+        "function": "evaluate",
+        "line": 140,
+        "expression": "EvaluationResult(metrics={'test_nmse': _OVER, 'fit_quality': 0.0, 'combined_score': 0.0, 'error': str(e)}, artifacts={'error_type': type(e).__name__, 'full_traceback': traceback.format_exc()})"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 164,
+        "expression": "EvaluationResult(metrics={'test_nmse': nmse, 'combined_score': _score_from_nmse(nmse)})"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 156,
+        "expression": "_missing_run_search()"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 159,
+        "expression": "EvaluationResult(metrics={'test_nmse': _OVER, 'combined_score': 0.0}, artifacts={'error': 'run_search() must return a predictor f(X)->y'})"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 168,
+        "expression": "EvaluationResult(metrics={'test_nmse': _OVER, 'combined_score': 0.0, 'error': str(e)}, artifacts={'full_traceback': traceback.format_exc()})"
+      }
+    ],
+    "metric_assignments": [],
+    "validity_key": null,
+    "validity_semantics": "No independent boolean validity field; zero score, success rate and absence of error do not establish validity.",
+    "error_key": "error",
+    "rng_calls": [
+      "np.random.default_rng"
+    ],
+    "declared_requirements": [
+      "numpy"
+    ],
+    "evaluator_imports": [
+      "concurrent",
+      "importlib",
+      "numpy",
+      "openevolve",
+      "traceback"
+    ],
+    "baseline_imports": [
+      "numpy"
+    ],
+    "source_config_path": "examples/symbolic_regression_bench/config.yaml",
+    "baseline_constants": {
+      "MAX_FITS": 8,
+      "_OVER_BUDGET_ERR": 1000000000.0,
+      "_SEED": 20260517,
+      "_N": 400
+    },
+    "baseline_rng_calls": [
+      "np.random.default_rng(_SEED)"
+    ],
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Some branches return score zero without error; some omit the primary score. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 10,
+      "evaluator": {
+        "timeout": 60,
+        "cascade_thresholds": [
+          0.5
+        ],
+        "parallel_evaluations": 3
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "cpu",
+    "recommended_smoke_outer_timeout_seconds": 15,
+    "trials": 3,
+    "per_trial_timeout_seconds": 10,
+    "seed_fit_calls": 8
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "science_tier": 2,
+    "artifact": "equation",
+    "domain": "natural_science",
+    "area": "mathematics",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

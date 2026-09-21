@@ -1,0 +1,103 @@
+# Chemistry and materials implementation audit
+
+Scope: C01–C12 of `SCIENTIFIC_DATASET_EXPANSION.md`, reviewed 2026-09-20. These are independently written SCIEL adaptations, with source datasets and numerical libraries attributed separately. The SCIEL evaluator code is independently implemented. RDKit, Cantera and PyBOP/PyBaMM scientific engines are explicitly recorded as upstream code reuse; evaluator origin is tracked separately from engine reuse. Availability of an author's implementation does **not** mean that implementation was copied. Existing Lennard-Jones 38/55 tasks remain unchanged.
+
+## Duplicate audit and implementation identity
+
+The catalog was searched by task identifiers, titles, descriptions and scientific operation: reaction-condition queries, conformer ensembles, DFT stability screening, adsorption-site search, porous-material selection, spinodal dynamics, inverse NMR, diffraction phases, chemical mechanism reduction, energy/force potentials, ionic transport and electrochemical inversion. No equivalent family existed. Lennard-Jones optimization evaluates a different potential and scientific artifact from all twelve families. Generic regression, geometry and black-box optimization tasks were not treated as equivalents of source-specific scientific tasks.
+
+The authoritative definitions are `catalog/science/materials_expansion.json`; family contracts/seeds are `scripts/science_materials_expansion.py`; scientific scoring is in `suite/_lib/autoresearch_suite/science_materials_expansion.py`. `validation/materials-expansion-report.json` records actual seed execution separately from unit tests. Per-record status and validation fields are authoritative when this document and a later run differ.
+
+| Proposal | Implementation | Source execution / remaining boundary |
+|---|---|---|
+| C01 | Sequential experiment replay and exact two-objective hypervolume AUC | Full 1,728-experiment EDBO+ BMS campaign staged and executed. Three permutations are robustness replicates, not unseen reaction campaigns. |
+| C02 | RDKit graph/chirality/clash validation and heavy-atom symmetry-aware conformer coverage | 57 complete GEOM-QM9 ensembles / 958 actual conformers from ChoderaLab's published CC0 curation staged and executed. 10 of 67 source ensembles excluded by graph/valence/stereo checks before candidate runs. Secondary-source zero-shot pilot, not full original archive reproduction. |
+| C03 | DFT-hull discovery precision from unrelaxed geometries | 512 real WBM geometries in four 128-candidate pools, selected without target labels. Source-seed execution passed. A bounded zero-shot ranking pilot, not the full Matbench training protocol. |
+| C04 | Finite DFT query replay with physical-validity masks | 32 source adsorption systems / 1,918 author-filtered valid configurations staged and executed. Candidate inputs are adsorption-site/surface metadata. No new atomic geometry or relaxation is evaluated. |
+| C05 | Constrained capacity discovery from independent adsorption labels | 512 ARC-MOF materials with released geometric descriptors and post-combustion VSA outcomes staged and executed. Selectivity ≥10 is a declared local constraint. No topology-transfer claim. |
+| C06 | Conserved Cahn–Hilliard dynamics, independent ODE reference, energy gate, measured candidate runtime | Executed on 48×48 and 64×64 grids. Published PFHub equations and first initial condition; periodic fixed-mesh, short-time protocol is an explicit adaptation. |
+| C07 | Exact molecular-graph recovery, canonicalization, formula and uniqueness checks | NMR2Struct adapter and metrics implemented. Public spectrum archive is 30,224,021,543 bytes, CC BY 4.0; its much smaller substructure-to-structure archive cannot substitute for spectral evidence. Source spectrum/candidate-library curation remains. |
+| C08 | F1 against all source-reported curated experimental phase labels | All 21 HKUST-A opXRD scans staged with full source crystal structures: 13 development and 8 evaluation scans, including actual two-, three- and four-phase mixtures. Compound-connected groups are disjoint. A fixed 25-phase structural reference library contains no held-out measured intensities. Physical exhaustiveness remains unknown; no fabricated completeness Boolean or fraction metric. Seed source F1 0.6422619048. |
+| C09 | Actual Cantera species/reaction reduction with held-out ignition and trajectories | Cantera 3.2.0 hydrogen/oxygen mechanism executed on three withheld conditions. Full-mechanism baseline and a valid smaller mechanism independently checked. |
+| C10 | Acquisition, energy/force fitting, independent derivatives/symmetries and held-out quantum errors | SPICE 2.0.1 source pilot executed: 12 acquisition geometries, 14 held-out geometries, four ligand groups, eight permitted labels. Source-range SHA-256 and explicit unit conversions retained. |
+| C11 | Occupation-dependent NASICON LCE, periodic tagged-ion histories and exact finite-state reference | Published2x1x1 example staged and executed:16 mobile sites, two vacancies,24 undirected hops,64 replicas of1000 events. Independent exact propagation over1680 tagged states. Fixed framework and finite-horizon transport, not bulk conductivity. |
+| C12 | Grouped-SPMe inverse-problem adapter with parameter bounds, solve budget and withheld SOC/time-domain metrics | Actual PyBOP25.6/PyBaMM25.6 model and measured LG M50LT data executed in a separate environment. Five training SOCs, two withheld SOCs and a separate 401-point drive trace. A simple RC or fitted-curve substitute is rejected. |
+
+## Reproduce the completed source preparation and tests
+
+Run from the repository root. Downloads are explicit preparation steps; evaluation is offline. Data are kept in the git-ignored `suite/_lib/data/materials-expansion/` cache and are not silently generated.
+
+```bash
+.cache/sciel-env/bin/python -m pip install numpy scipy rdkit cantera==3.2.0 h5py
+.cache/sciel-env/bin/python scripts/prepare_materials_expansion.py --edbo
+.cache/sciel-env/bin/python scripts/prepare_geom_source.py
+.cache/sciel-env/bin/python scripts/prepare_materials_expansion.py --matbench
+.cache/sciel-env/bin/python scripts/prepare_materials_expansion.py --adsorbml
+.cache/sciel-env/bin/python scripts/prepare_materials_expansion.py --arcmof
+.cache/sciel-env/bin/python scripts/prepare_materials_expansion.py --spice
+.cache/sciel-env/bin/python scripts/prepare_materials_expansion.py --nasicon
+.cache/sciel-env/bin/python -m venv .cache/materials-battery-env
+.cache/materials-battery-env/bin/python -m pip install -r validation/materials-battery-environment.txt
+.cache/sciel-env/bin/python scripts/prepare_materials_expansion.py --battery
+.cache/sciel-env/bin/python -m unittest discover -s tests -p test_science_materials_expansion.py -v
+.cache/sciel-env/bin/python scripts/check_materials_expansion.py
+```
+
+The preparer verifies whole-source SHA-256 for EDBO, Matbench, AdsorbML and ARC-MOF. The SPICE reader uses explicitly bounded HTTP ranges; each retrieved range and the final normalized bundle are hashed. It does **not** claim to have verified the 37.5 GB full-file checksum. Source licenses are EDBO repository MIT, Matbench CC BY 4.0, OC20 CC BY 4.0 with AdsorbML MIT code, ARC-MOF CC BY 4.0, and SPICE CC0. Source references and subset-selection recipes are preserved with the cache.
+
+The current OC20 mapping tarball's MD5 differs from the historical README's tarball hash. All five individual pickle MD5 values still match the README exactly. The preparer pins the actual archive SHA-256 and the two used members' SHA-256 rather than overlooking this discrepancy. Only the explicitly trusted, hash-checked source pickles are deserialized during preparation; evaluators consume JSON.
+
+## Scientific checks and scope
+
+**C01** reveals one permitted experiment at a time, rejects duplicates/out-of-range selections, and integrates normalized Pareto hypervolume through a 32-query trajectory. Yield is maximized; cost is minimized. The maximum uses the full campaign only inside the evaluator. Costs follow source accounting. An all-first-available baseline scores approximately 0.6501901622 across the three declared permutations.
+
+**C02** uses actual GEOM-QM9 coordinates from the [ChoderaLab Modelforge curation](https://zenodo.org/records/20633997), separately attributed from the [original GEOM release](https://doi.org/10.7910/DVN/JNGTDF). The 508,291-byte HDF5 gzip has publisher MD5 `1627bf69a7029b2822733152f8a3e445` and independently verified SHA256 `b16cf4c727fe57e6dfc6309815893d25d5524ba048b346ac5e2fbd2401c72e4c`. Its source atomic order differs from the supplied unmapped SMILES. Every retained frame is independently reconstructed from atomic numbers/coordinates, matched bijectively to the graph with chirality, reordered to explicit-H RDKit order, and checked against the public physical contract. Nanometers convert to Å by exactly 10. Entire ensembles are excluded on source graph/valence/stereochemistry failure before any seed evaluation;57 molecules/958 conformers remain from 67/1000. No reference conformers are generated. This small zero-shot evaluation measures coverage of the released subset, not the complete original ensemble archive or GEOM-Drugs. The 20-conformer seed scores 0.8185583387 coverage at 0.5 Å, with mean matching RMSD 0.2549612069 Å. It retains valid embedded geometries when unconstrained UFF relaxation would invert strained stereocenters. Full exclusion diagnostics and atom maps accompany the cached bundle; reproducible conversion is in `scripts/prepare_geom_source.py`. Original trusted-pickle conversion remains available for a later full source setup.
+
+**C03** supplies only unrelaxed structures, not DFT-relaxed geometry or outcome-derived features. Published MP2020-corrected energy relative to the Materials Project reference hull is the target. The 512 unique-prototype rows are selected by a deterministic source-ID hash, not stability. First-20 baseline precision is 0.1875. DFT stability does not establish synthesizability.
+
+**C04** uses the authors' converged, anomaly-filtered energy targets. Configuration order is independently hashed because the released target list is energy-sorted: preserving source order would leak the answer. All placements of each adsorbate–surface system remain together. The finite-pool success threshold is 0.1 eV; first-ten baseline success is 0.625. This supports metadata-based active query policies, not a fresh DFT or relaxation competition.
+
+**C05** joins source structure identifiers after removing `.cif` and the process simulation `_repeat` suffix; geometric descriptors refer to the original unit cell. No uptake, purity, selectivity or derived process metric appears among candidate descriptors. Source mmol/g converts numerically to mol/kg. First-20 baseline normalized feasible capacity is approximately 0.7249284791.
+
+**C06** evolves the published free energy and mobility with a specified periodic second-order spatial operator. The independently implemented reference uses adaptive DOP853 time integration; the seed uses a second-order Crank–Nicolson/Heun semi-implicit FFT implementation of the same discrete operator. A finite-difference variational check verifies the discrete free-energy gradient. Uniform fields remain exact stationary solutions; wrong dynamics fail the reference gate. The seed passes 2e-5 field-RMSE, 1e-9 mass and monotone-energy thresholds. Time-refinement accuracy of the specified discrete problem is established; continuum mesh convergence and PFHub equilibrium are **not** claimed. The second phase-shifted initial field is explicitly local.
+
+**C07–C08** compare scientific identities, not a vague similarity score. NMR predictions must be connected valid molecular graphs with the declared formula; equivalent SMILES collapse before scoring. XRD phase identifiers must belong to the evaluator's candidate library. C08 evaluates the explicitly declared source-reported HKUST-A annotation set, retaining every released phase while leaving physical exhaustiveness unknown. Missing phase fractions do not become zero fractions.
+
+**C09** candidates return original species and reaction subsets. They cannot change rates, thermochemistry, temperature curves or reference trajectories. Cantera independently constructs and validates the reduced mechanism. Hidden-to-the-API evaluation conditions vary temperature, pressure and equivalence ratio, and compare temperature, H₂/O₂/H₂O/OH histories plus sampled ignition delay. The full model scores zero reduction; removing unused nitrogen gives 9 species and 28 reactions and scores approximately 0.0672413793 while passing the scientific error gate. This compact model is not the full pyMARS publication experiment.
+
+**C10** forces use the negative quantum energy gradient, not the gradient itself. The conversion from bohr/hartree to Å/eV is explicit. Training labels are acquired only through the pool-query interface. Relative-energy centering stays within the same molecular complex; entire ligand groups are held out. Finite-difference derivatives, rigid motions, net force/torque and a short evaluator-controlled velocity-Verlet trajectory check internal physical consistency. These checks do not replace held-out DFT force/energy accuracy. The constant-energy baseline is intentionally weak, but physically consistent.
+
+**C11** reconstructs tagged-ion trajectories from event histories. The source encoding is Na=0/vacancy=1 and Si=0/P=1. Both local cluster expansions retain every published coefficient, decorated basis and orbit; correlations are **sums**, not means. Periodic hop images are reconstructed from the source primitive cell and match the published3.47782Å hop distance. Scalar evaluator rates and vectorized seed rates are independently checked over all120 two-vacancy configurations. Exact sparse tagged-state moment propagation covers1680 states and supplies a1000-event transport reference of4.7912514218e-13m²/s; the seed gives4.7023455114e-13±1.8615428613e-14m²/s. The2000-event reference4.7479963983e-13 exposes finite-horizon dependence. Waiting-time and event-probability laws are independently audited. The source ships identical KRA/site fit coefficients; they are preserved and explicitly disclosed. This benchmark is the declared illustrative source model, not new validation of its fit or an asymptotic/bulk conductivity claim. Restricted ICSD CIF content is not bundled; numerical primitive-cell facts come from the author's JSON.
+
+**C12** only accepts a trusted hash-pinned evaluator adapter declaring the paper's `pybop.GroupedSPMe` model. Whole states of charge and time-domain protocols are held out; adjacent frequencies are not randomly split. Positive physical bounds and a forward-solve budget are enforced. The isolated environment uses the paper's `pybop==25.6`, `pybamm==25.6.0`, `casadi==3.6.7`, `numpy==1.26.4`; its complete **actually executed** dependency versions are frozen in `validation/materials-battery-environment.txt` (ancillary dependencies are not falsely claimed to match every author pin). The trusted model worker disables telemetry and never imports candidate code. The 18-parameter midpoint baseline scores 0.1215170072; normalized held-out impedance RMSEs are 0.1874600196 and 0.2736636233, and normalized measured-voltage RMSE is 0.0124721930. Point-estimate fit quality does not establish identifiability or uncertainty calibration.
+
+## Canonical external bundles
+
+All normalized bundles have schema `sciel-materials-CXX-v1`, provenance with source URL/SHA-256/license, a `training` list, and nonempty `evaluation` list. Cases have `group_id`; `split_group_id` may impose a coarser holdout unit (for example all complexes of a SPICE ligand). Training and evaluation split groups must be disjoint. The preparer validates schemas with:
+
+```bash
+python scripts/prepare_opxrd_source.py
+```
+
+Validation of a schema is **not** a passed scientific benchmark run. Required case fields are explicit in `validate_bundle`; C12 also needs `parameter_bounds`, `model.kind`, trusted adapter path and SHA-256. The evaluator never fills missing source labels with synthetic values. File requirements in the generated task packages ensure missing source caches are reported by preflight.
+
+The runtime currently loads candidate and evaluator in one Python process. Copying candidate arguments avoids accidental label exposure through the interface, but is not a filesystem or process security boundary. For adversarial evaluation, keep evaluator-only labels inaccessible to the candidate process and freeze candidates before drawing new validation instances. Published source data and deterministic public cases can be memorized; these local pilots measure reproducible development, not secret-test performance.
+
+## Validation evidence
+
+The unit suite covers exact hypervolume union; duplicate/nonfinite outputs; group leakage and source hashes; conformer symmetry/chirality/clashes; independent DFT-hull outcomes; invalid adsorption minima; selectivity constraints; conserved phase dynamics and free-energy gradients; exact molecular identities and formulas; incomplete XRD labels; actual Cantera reduction; energy/force derivatives and symmetries; analytic kMC diffusion, source NASICON decorated-LCE scalar/vectorized agreement, species encoding, periodic winding, exact tagged moments and deliberately wrong waiting times; and battery adapter pinning and bounds. Inline analytic cases are explicitly test fixtures. Source-backed seed results are separately recorded, including data identifiers, elapsed time and exact blockers for tasks awaiting setup.
+
+
+## C08 measured HKUST-A source audit
+
+The [opXRD paper, section 3.2](https://doi.org/10.1002/aidi.202500044) identifies HKUST-A as a curated XRed phase-identification subset with refined structural labels and experimental mixtures. We retrieved only its 21 JSON members from [Zenodo record 15298026](https://zenodo.org/records/15298026), retaining the CC-BY 4.0 attribution to Hollarek et al. and the HKUST-A contributors. Every selected member has a pinned SHA256 and ZIP CRC; the byte-range receipt is explicitly not a full 1.4 GB archive checksum. Reproduce with `scripts/prepare_opxrd_source.py`.
+
+All lattice parameters, fractional atomic coordinates, occupancies, angles, intensities and wavelengths come from those source members. No simulated scan or invented mixture is in the bundle. The candidate library contains all 25 distinct refined structures, with exact duplicates and the tiny beta-Sn refinement difference merged. Thirteen development scans and eight evaluation scans have disjoint connected compound groups, keeping shared TiO2 and tin mixture series together. All scans are from the same contributor; laboratory transfer is untested.
+
+The scope is recovery of the curated **source-reported** phase set. Source metadata does not establish that every impurity was reported: `annotation_complete` is `null`, and unreported impurities and all phase fractions remain unknown. The CNRS count of fully specified crystal structures was not used as evidence of exhaustive phase truth. Metadata, evaluator output and contracts state this limitation.
+
+The seed computes approximate kinematic templates from the supplied structures inside the candidate algorithm, with constant atomic-number scattering amplitudes and fixed broadening, then fits nonnegative template weights to the measured scan. Such model predictions are not source observations or Rietveld refinement. Its measured-source macro F1 is **0.6422619047619047** across eight scans; evidence is `validation/opxrd-source-run.json`. Five new tests cover Bragg's law, body-centering extinctions, refinement aliases, source-label scope, malformed outputs, and actual compound separation. Unit fixtures are never reported as measured benchmark execution.
+
+## GEOM source-access retry evidence
+
+On 2026-09-20, the primary direct endpoint `https://dataverse.harvard.edu/api/access/datafile/4327252` and its `?gbrecs=true` download variant both returned HTTP 403 for a 512-byte range request. The author README on `raw.githubusercontent.com/learningmatter-mit/geom/master/README.md` was accessible and still points to the Harvard deposit. No authentication restriction was bypassed and HTTP 403 alone is not described as a requirement for user permission. A separately published scientific curation provided the small source subset used above.

@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0",
+  "id": "science-earth-wildfire-spread-law",
+  "name": "Earth science: Measured wildfire spread laws",
+  "description": "Measured wildfire spread laws with an explicit candidate interface, physical units, independent evaluator and source-traceable observations or numerical model.",
+  "paper_ids": [
+    "science-earth_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1071/WF14130",
+      "type": "paper",
+      "locator": "Scientific process, benchmark motivation and evaluation assumptions."
+    },
+    {
+      "url": "https://github.com/wirc-sjsu/firebench",
+      "type": "repository",
+      "locator": "Original source data/model; local candidate and evaluator are independently implemented."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "CPU, measured Anderson2015 shrubland fires; commercial-use permissions apply."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Earth science: Measured wildfire spread laws",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_earth_fire",
+    "science_family": "science_earth_fire",
+    "parameters": {},
+    "interface": "fit_spread(training_features, training_rates, metadata) -> object.spread_rate(features). Five measured inputs: wind m/s, measurement height m, dead-fuel moisture fraction, fuel height m, dry load kg/m2. Return nonnegative m/s. Equal-country RMSE on complete held-out countries from Anderson2015. Missing inputs excluded; no invented fuel or slope inputs.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "area": "earth_and_environment",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none"
+    },
+    "proposal_id": "E07",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "setup": {
+      "command": "python scripts/prepare_earth_expansion.py --proposal E07",
+      "documentation": "docs/EARTH_EXPANSION.md"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy"
+      ]
+    },
+    "setup_reason": "CPU, measured Anderson2015 shrubland fires; commercial-use permissions apply.",
+    "setup_instructions": [
+      "python scripts/prepare_earth_expansion.py --proposal E07",
+      "docs/EARTH_EXPANSION.md"
+    ],
+    "additional_requires": [
+      "file:../../.cache/science-earth/E07.json",
+      "file:../../.cache/science-earth/E07.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_earth_fire",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-earth/E07.json",
+        "file:../../.cache/science-earth/E07.manifest.json"
+      ],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Bounded adaptation; no complete source-paper score reproduction or novel scientific discovery claimed.",
+    "Public evaluation cases are development instances; independent generalization requires frozen candidates and new cases.",
+    "CPU, measured Anderson2015 shrubland fires; commercial-use permissions apply."
+  ],
+  "validation": {
+    "level": "source_reviewed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_earth_expansion.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "area": "earth_and_environment",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Predict shrubland wildfire spread rates from measured environmental and fuel conditions.",
+    "importance_rationale": "Fire-spread prediction informs understanding of fire behavior and planning for fire hazards.",
+    "papers": [
+      {
+        "title": "A generic, empirical-based model for predicting rate of fire spread in shrublands",
+        "url": "https://doi.org/10.1071/WF14130",
+        "primary_goal": "Develop and validate empirical shrubland fire-spread predictions using measured fires.",
+        "task_relation": "The local task fits spread laws to measured Anderson2015 shrubland observations. It is a bounded source adaptation, not an operational fire forecast or validation for fuels outside the observed conditions.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited primary paper develops or applies a solution to the stated scientific problem; its task is not merely an agent or general-purpose framework evaluation. Support concerns the scientific problem family, not a claim of new discovery or full-paper reproduction by this local task.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

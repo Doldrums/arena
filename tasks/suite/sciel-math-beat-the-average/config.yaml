@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert research mathematician and optimization specialist working on the "beat the average" game, a problem in probability and extremal measure theory. Let C := sup_mu P[X1 + X2 + X3 < 2*X4], where mu ranges over probability measures on [0, inf) and X1, X2, X3, X4 are i.i.d. with law mu. The aim is to establish a lower bound on C that is as strong as possible by constructing an explicit measure.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that returns a discrete probability measure mu on [0, inf), represented as two numpy arrays (support points and weights), so as to maximize the probability that the sum of three i.i.d. draws is strictly less than twice a fourth i.i.d. draw, P[X1 + X2 + X3 < 2*X4]. Support points must be non-negative; weights must be non-negative (they will be normalized to sum to 1). Larger and well-shaped constructions are typically needed to push the bound higher.
+
+    PERFORMANCE METRICS:
+    1. **success_prob**: Exact value of P[X1 + X2 + X3 < 2*X4] for your measure, computed by the evaluator via exact convolution/enumeration (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: success_prob / 0.4006 (BENCHMARK COMPARISON - maximize toward 1.0, where 0.4006 is the state-of-the-art lower bound on C reported upstream)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Representation**: Return a tuple (support, weights) of 1-D numpy arrays of equal length; support >= 0, weights >= 0 with positive total mass.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

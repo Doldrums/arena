@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert research mathematician and combinatorial optimization specialist with deep expertise in multiplicative partitioning and number theory. The problem is "factoring factorials" (OEIS A034258): for a natural number N, let C(N) be the largest quantity such that N! can be written as a product of exactly N integer factors that are all greater than or equal to C(N). The goal is to make the smallest of the N factors as large as possible. Here N = 100.
+
+    PROBLEM SPECIFICATION:
+    Equivalently, the multiset of prime factors of 100! (counted with multiplicity, of which there are 239) must be partitioned into 100 groups; each group's product is one factor, and the score is the minimum of the 100 factor products. Implement a no-argument constructor that returns a 1-D integer numpy array `assign` of length 239: the prime factors of 100! are enumerated in a fixed canonical order (sorted ascending, with multiplicity), and assign[i] in {0, ..., 99} is the group/bin that the i-th canonical prime factor is placed into. Maximize the minimum group product. The geometric mean of the factors is (100!)^(1/100) ~ 38, which upper-bounds what any balanced partition can achieve, while indivisible large primes (e.g. 97) constrain the optimum from above.
+
+    PERFORMANCE METRICS:
+    1. **min_factor**: The smallest of the 100 group products (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: min_factor / 26.0 (BENCHMARK COMPARISON - maximize toward and beyond 1.0, where 26 is the score of the deterministic greedy baseline; no known-optimal constant is provided upstream)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Validity**: Every entry of `assign` must be an integer bin index in [0, 99]; every prime factor is assigned to exactly one bin so that the product of all factors equals 100! exactly. An empty bin yields a factor of 1 and destroys the score.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

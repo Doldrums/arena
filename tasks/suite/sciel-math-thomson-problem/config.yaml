@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in computational physics and discrete geometry with deep expertise in the Thomson problem - a classical problem that asks for the placement of n charged particles on the surface of a unit sphere so as to minimize the total Coulomb (electrostatic) energy.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that generates an optimal arrangement of exactly 12 points on the surface of the unit sphere in R^3. The objective is to minimize the Coulomb energy E = sum over all pairs i<j of 1 / ||x_i - x_j||. For n = 12 the known optimal configuration is the regular icosahedron.
+
+    PERFORMANCE METRICS:
+    1. **energy**: Total Coulomb energy E = sum over i<j of 1 / ||x_i - x_j|| (PRIMARY OBJECTIVE - minimize)
+    2. **combined_score**: 49.165253058 / energy (BENCHMARK COMPARISON - maximize toward 1.0)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **On-sphere placement**: Points are normalized to the unit sphere before scoring, so any nonzero vector is valid, but the geometry of the arrangement determines the energy.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

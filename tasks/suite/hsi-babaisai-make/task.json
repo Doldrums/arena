@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0",
+  "id": "hsi-babaisai-make",
+  "name": "BabaIsAI Make",
+  "description": "BabaIsAI Make",
+  "paper_ids": [
+    "hsi"
+  ],
+  "kind": "upstream",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2608.08466",
+      "type": "paper",
+      "locator": "Section 4"
+    },
+    {
+      "url": "https://github.com/TailinZhou/hsi/tree/97a022b9a9c260c0498806fc9826ebf22e753ed9",
+      "type": "repository",
+      "locator": "benchmark_config_goal/balrog_babaisai_make/config.yaml"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "Python",
+      "BALROG datasets",
+      "LLM API credentials"
+    ]
+  },
+  "evaluation": {
+    "metric": "episode progress / task success",
+    "paper_metric": "episode progress / task success",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "BALROG",
+    "protocol": "upstream",
+    "source_locator": "Section 4"
+  },
+  "execution": {
+    "repository": "https://github.com/TailinZhou/hsi",
+    "commit": "97a022b9a9c260c0498806fc9826ebf22e753ed9",
+    "upstream_path": "benchmark_config_goal/balrog_babaisai_make/config.yaml",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "main.py",
+          "benchmark_config_goal/balrog_babaisai_make/config.yaml"
+        ],
+        "cwd": ".",
+        "source_url": "https://arxiv.org/pdf/2608.08466",
+        "notes": "full_search"
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "python -m pip install -r requirements.txt",
+      "python scripts/download_balrog_data.py"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "python -m pip install -r requirements.txt",
+      "python scripts/download_balrog_data.py"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "environment:BALROG"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_agent_env",
+      "unsupported_reason": "Candidates are LLM agents scored inside the BALROG environment (tools, web, games or code sandboxes); the environment and model access are external."
+    }
+  },
+  "limitations": [
+    "No root license was found in the inspected upstream tree; preserve upstream licensing conditions and do not assume redistribution rights.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "BabaIsAI Make",
+    "slug": "babaisai-make",
+    "description": "BabaIsAI Make",
+    "benchmark": "BALROG",
+    "dataset": null,
+    "metric": "episode progress / task success",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2608.08466",
+    "source_locator": "Section 4",
+    "upstream_path": "benchmark_config_goal/balrog_babaisai_make/config.yaml",
+    "requirements": [
+      "Python",
+      "BALROG datasets",
+      "LLM API credentials"
+    ],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified.",
+    "run_argv": [
+      "python",
+      "main.py",
+      "benchmark_config_goal/balrog_babaisai_make/config.yaml"
+    ],
+    "run_cwd": ".",
+    "run_mode": "full_search",
+    "upstream_evaluator_paths": [],
+    "upstream_seed_paths": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

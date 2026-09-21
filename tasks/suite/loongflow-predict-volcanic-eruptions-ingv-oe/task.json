@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0",
+  "id": "loongflow-predict-volcanic-eruptions-ingv-oe",
+  "name": "predict-volcanic-eruptions-ingv-oe",
+  "description": "Predict time to volcanic eruption from geophysical sensor recordings. The official grader rounds MAE to the nearest integer.",
+  "paper_ids": [
+    "loongflow"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2512.24077",
+      "type": "paper",
+      "locator": "Table 2"
+    },
+    {
+      "url": "https://github.com/baidu-baige/LoongFlow/tree/945c78bc1554f8281aac40320b3599bd68d528d7",
+      "type": "repository",
+      "locator": "agents/ml_agent/examples/mlebench/eval_program.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "predict-volcanic-eruptions-ingv-oe",
+    "notes": [
+      "Kaggle dataset access and competition terms",
+      "MLE-bench",
+      "GPU where applicable"
+    ]
+  },
+  "evaluation": {
+    "metric": "rounded mean absolute error",
+    "paper_metric": "rounded mean absolute error",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "MLE-bench",
+    "protocol": "specified_only",
+    "source_locator": "Table 2"
+  },
+  "execution": {
+    "repository": "https://github.com/baidu-baige/LoongFlow",
+    "commit": "945c78bc1554f8281aac40320b3599bd68d528d7",
+    "upstream_path": "agents/ml_agent/examples/mlebench/eval_program.py",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/baidu-baige/LoongFlow/blob/945c78bc1554f8281aac40320b3599bd68d528d7/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/baidu-baige/LoongFlow/blob/945c78bc1554f8281aac40320b3599bd68d528d7/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper reports gold medal; metric and runtime depend on each competition. Configure competition ID in supplied task config.",
+      "Exact metric verified against official MLE-bench grade.py at https://github.com/openai/mle-bench/blob/507f92e1138bb6e40dac5c6ee7a6758e6424bf97/mlebench/competitions/predict-volcanic-eruptions-ingv-oe/grade.py. This dependency revision was audited; LoongFlow paper did not pin this MLE-bench revision."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "dataset:MLE-bench",
+        "hardware:gpu"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "dataset",
+      "unsupported_reason": "MLE-bench competitions require the Kaggle data and model training; neither is redistributed."
+    }
+  },
+  "limitations": [
+    "Direct CPU checks found upstream square seed rejected by strict overlap test and rectangle seed incompatible with its evaluator. Original Autocorrelation II and Erdos overlap seeds passed; a new simple square grid fixture passed. These are integration checks, not reproduced paper results.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "predict-volcanic-eruptions-ingv-oe",
+    "slug": "predict-volcanic-eruptions-ingv-oe",
+    "description": "Predict time to volcanic eruption from geophysical sensor recordings. The official grader rounds MAE to the nearest integer.",
+    "benchmark": "MLE-bench",
+    "dataset": "predict-volcanic-eruptions-ingv-oe",
+    "metric": "rounded mean absolute error",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2512.24077",
+    "source_locator": "Table 2",
+    "upstream_path": "agents/ml_agent/examples/mlebench/eval_program.py",
+    "requirements": [
+      "Kaggle dataset access and competition terms",
+      "MLE-bench",
+      "GPU where applicable"
+    ],
+    "execution_notes": [
+      "Paper reports gold medal; metric and runtime depend on each competition. Configure competition ID in supplied task config.",
+      "Exact metric verified against official MLE-bench grade.py at https://github.com/openai/mle-bench/blob/507f92e1138bb6e40dac5c6ee7a6758e6424bf97/mlebench/competitions/predict-volcanic-eruptions-ingv-oe/grade.py. This dependency revision was audited; LoongFlow paper did not pin this MLE-bench revision."
+    ],
+    "setup_commands": [],
+    "run_commands": [],
+    "metric_source_url": "https://github.com/openai/mle-bench/blob/507f92e1138bb6e40dac5c6ee7a6758e6424bf97/mlebench/competitions/predict-volcanic-eruptions-ingv-oe/grade.py",
+    "metric_upstream_repository": {
+      "url": "https://github.com/openai/mle-bench",
+      "commit": "507f92e1138bb6e40dac5c6ee7a6758e6424bf97",
+      "path": "mlebench/competitions/predict-volcanic-eruptions-ingv-oe/grade.py"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "model",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "gpu",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

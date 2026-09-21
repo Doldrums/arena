@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in extremal graph theory and the theory of graph limits (graphons), working on Sidorenko's conjecture - a central open problem stating that for every bipartite graph H and every graphon W, the homomorphism density satisfies t(H, W) >= t(K2, W)^|E(H)|, where K2 is a single edge. Equivalently, the Sidorenko ratio t(H, W) / t(K2, W)^|E(H)| is at least 1 for all graphons.
+
+    PROBLEM SPECIFICATION:
+    Fix H = K_{5,5} minus a perfect matching: the bipartite graph on 10 vertices (left part {0,1,2,3,4}, right part {5,6,7,8,9}) where each left vertex is joined to exactly 4 of the 5 right vertices, giving 20 edges (4-regular bipartite). Your task is to design a constructor function that returns a graphon W, represented as a symmetric n x n "step graphon" matrix M with entries in [0, 1]: the unit square [0,1]^2 is split into n equal blocks per axis, and W equals M[i, j] on block (i, j). The objective is to make the Sidorenko ratio t(H, W) / t(K2, W)^|E(H)| as small as possible - the constant graphon gives exactly 1, and any value strictly below 1 would be a celebrated counterexample to Sidorenko's conjecture.
+
+    PERFORMANCE METRICS:
+    1. **sidorenko_ratio**: t(H, W) / t(K2, W)^|E(H)| where |E(H)| = 20 (PRIMARY OBJECTIVE - minimize; computed exactly for the step graphon)
+    2. **combined_score**: 1.0 / sidorenko_ratio (BENCHMARK COMPARISON - maximize toward 1.0; the benchmark 1.0 is the conjectured optimal/record value, attained by the constant graphon. A combined_score > 1.0 would mean a ratio below 1, i.e. a counterexample)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Representation**: Return a symmetric numpy matrix with all entries in [0, 1]; non-symmetric inputs are symmetrized, out-of-range inputs are rejected.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility.
+    - **Error handling**: Graceful handling of degenerate graphons (e.g. all-zero, which makes the ratio undefined).
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

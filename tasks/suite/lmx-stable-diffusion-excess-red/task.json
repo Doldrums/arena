@@ -1,0 +1,193 @@
+{
+  "schema_version": "1.0",
+  "id": "lmx-stable-diffusion-excess-red",
+  "name": "Stable Diffusion excess red",
+  "description": "Stable Diffusion excess red: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "lmx"
+  ],
+  "kind": "upstream",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2302.12170",
+      "type": "paper",
+      "locator": "Sections 4.1–4.5"
+    },
+    {
+      "url": "https://github.com/jal278/lmx/tree/b8fec5dd16451cf7afb6e02ac621b71d5bdfee7f",
+      "type": "repository",
+      "locator": "scripts/stablediffusion.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Stable Diffusion excess red",
+    "notes": [
+      "Task-specific LLMs and/or diffusion models",
+      "Python with pandas, numpy, torch, transformers, diffusers, Pillow, tqdm, graphviz and parquet support",
+      "CUDA GPU0 with memory for Pythia2.8B and Stable Diffusion1.4",
+      "Access to EleutherAI/pythia-2.8b-deduped and CompVis/stable-diffusion-v1-4 fp16 weights",
+      "Download Gustavosta/Stable-Diffusion-Prompts train.parquet to scripts/train.parquet",
+      "Create scripts/results/ before running"
+    ]
+  },
+  "evaluation": {
+    "metric": "domain-specific fitness / QD score",
+    "paper_metric": "domain-specific fitness / QD score",
+    "paper_direction": null,
+    "direction": null,
+    "benchmark": "Stable Diffusion excess red",
+    "protocol": "upstream",
+    "source_locator": "Sections 4.1–4.5"
+  },
+  "execution": {
+    "repository": "https://github.com/jal278/lmx",
+    "commit": "b8fec5dd16451cf7afb6e02ac621b71d5bdfee7f",
+    "upstream_path": "scripts/stablediffusion.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "-c",
+          "from stablediffusion import run_experiment, compute_fitness; run_experiment(name='autoresearch_excess_r', fitness_fun=lambda image: compute_fitness(image, 'r'), pop_size=20, max_generations=100, num_parents_for_crossover=4, baseline=False, use_prefix=True, use_header=True, init_seed=99, sd_inference_steps=10, color='r', random_candidate_prob=0.05)"
+        ],
+        "cwd": "scripts",
+        "kind": "prompt_search_and_image_evaluation",
+        "requirements": [
+          "Python with pandas, numpy, torch, transformers, diffusers, Pillow, tqdm, graphviz and parquet support",
+          "CUDA GPU0 with memory for Pythia2.8B and Stable Diffusion1.4",
+          "Access to EleutherAI/pythia-2.8b-deduped and CompVis/stable-diffusion-v1-4 fp16 weights",
+          "Download Gustavosta/Stable-Diffusion-Prompts train.parquet to scripts/train.parquet",
+          "Create scripts/results/ before running"
+        ],
+        "evidence_path": "scripts/stablediffusion.py",
+        "source_url": "https://github.com/jal278/lmx/blob/b8fec5dd16451cf7afb6e02ac621b71d5bdfee7f/scripts/stablediffusion.py",
+        "verification": "source_inspected_not_executed"
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Calls the original run_experiment function with color=r and the matching original compute_fitness objective, rather than the script CLI that unconditionally runs all three colors.",
+      "This catalog-authored invocation is derived from the function signature and __main__ defaults; it has not been executed.",
+      "use_header=True selects the documented color-conditioned prompt variant and avoids an upstream UnboundLocalError: new_prompt uses color_name even when use_header=False. This is an explicit experiment configuration, not a claim to every paper condition.",
+      "Budget is100 generations, population20, parents4 and10 diffusion inference steps; source saves CSV/images/pickles under scripts/results/. No environment lock is released.",
+      "Python with pandas, numpy, torch, transformers, diffusers, Pillow, tqdm, graphviz and parquet support",
+      "CUDA GPU0 with memory for Pythia2.8B and Stable Diffusion1.4",
+      "Access to EleutherAI/pythia-2.8b-deduped and CompVis/stable-diffusion-v1-4 fp16 weights",
+      "Download Gustavosta/Stable-Diffusion-Prompts train.parquet to scripts/train.parquet",
+      "Create scripts/results/ before running",
+      "Upstream operation: prompt_search_and_image_evaluation"
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "hardware:gpu",
+        "model:stable-diffusion"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "gpu",
+      "unsupported_reason": "Fitness is the colour statistics of images generated by Stable Diffusion."
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Stable Diffusion excess red",
+    "slug": "stable-diffusion-excess-red",
+    "description": "Stable Diffusion excess red: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "Stable Diffusion excess red",
+    "dataset": "Stable Diffusion excess red",
+    "metric": "domain-specific fitness / QD score",
+    "direction": null,
+    "source_url": "https://arxiv.org/pdf/2302.12170",
+    "source_locator": "Sections 4.1–4.5",
+    "upstream_path": "scripts/stablediffusion.py",
+    "requirements": [
+      "Task-specific LLMs and/or diffusion models",
+      "Python with pandas, numpy, torch, transformers, diffusers, Pillow, tqdm, graphviz and parquet support",
+      "CUDA GPU0 with memory for Pythia2.8B and Stable Diffusion1.4",
+      "Access to EleutherAI/pythia-2.8b-deduped and CompVis/stable-diffusion-v1-4 fp16 weights",
+      "Download Gustavosta/Stable-Diffusion-Prompts train.parquet to scripts/train.parquet",
+      "Create scripts/results/ before running"
+    ],
+    "execution_notes": [
+      "Calls the original run_experiment function with color=r and the matching original compute_fitness objective, rather than the script CLI that unconditionally runs all three colors.",
+      "This catalog-authored invocation is derived from the function signature and __main__ defaults; it has not been executed.",
+      "use_header=True selects the documented color-conditioned prompt variant and avoids an upstream UnboundLocalError: new_prompt uses color_name even when use_header=False. This is an explicit experiment configuration, not a claim to every paper condition.",
+      "Budget is100 generations, population20, parents4 and10 diffusion inference steps; source saves CSV/images/pickles under scripts/results/. No environment lock is released.",
+      "Python with pandas, numpy, torch, transformers, diffusers, Pillow, tqdm, graphviz and parquet support",
+      "CUDA GPU0 with memory for Pythia2.8B and Stable Diffusion1.4",
+      "Access to EleutherAI/pythia-2.8b-deduped and CompVis/stable-diffusion-v1-4 fp16 weights",
+      "Download Gustavosta/Stable-Diffusion-Prompts train.parquet to scripts/train.parquet",
+      "Create scripts/results/ before running",
+      "Upstream operation: prompt_search_and_image_evaluation"
+    ],
+    "implementation_status": "source_verified_command_requires_setup",
+    "execution": {
+      "argv": [
+        "python",
+        "-c",
+        "from stablediffusion import run_experiment, compute_fitness; run_experiment(name='autoresearch_excess_r', fitness_fun=lambda image: compute_fitness(image, 'r'), pop_size=20, max_generations=100, num_parents_for_crossover=4, baseline=False, use_prefix=True, use_header=True, init_seed=99, sd_inference_steps=10, color='r', random_candidate_prob=0.05)"
+      ],
+      "cwd": "scripts",
+      "kind": "prompt_search_and_image_evaluation",
+      "requirements": [
+        "Python with pandas, numpy, torch, transformers, diffusers, Pillow, tqdm, graphviz and parquet support",
+        "CUDA GPU0 with memory for Pythia2.8B and Stable Diffusion1.4",
+        "Access to EleutherAI/pythia-2.8b-deduped and CompVis/stable-diffusion-v1-4 fp16 weights",
+        "Download Gustavosta/Stable-Diffusion-Prompts train.parquet to scripts/train.parquet",
+        "Create scripts/results/ before running"
+      ],
+      "evidence_path": "scripts/stablediffusion.py",
+      "source_url": "https://github.com/jal278/lmx/blob/b8fec5dd16451cf7afb6e02ac621b71d5bdfee7f/scripts/stablediffusion.py",
+      "verification": "source_inspected_not_executed"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "none",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "gpu",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

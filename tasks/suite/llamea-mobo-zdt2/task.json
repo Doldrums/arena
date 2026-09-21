@@ -1,0 +1,193 @@
+{
+  "schema_version": "1.0",
+  "id": "llamea-mobo-zdt2",
+  "name": "ZDT2",
+  "description": "ZDT2 task evaluated in LLM-Driven Evolutionary Generation of Multi-Objective Bayesian Optimization Algorithms.",
+  "paper_ids": [
+    "llamea-mobo"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2607.08791",
+      "type": "paper",
+      "locator": "Section IV.2 and Table 1"
+    },
+    {
+      "url": "https://github.com/glatq/LLaMEA-MOO/tree/18861aa47f17905c28aa33c5a9f33df3a893d191",
+      "type": "repository",
+      "locator": "benchmark_best_codes.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "normalized hypervolume",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "pymoo ZDT/DTLZ/WFG and RE engineering suites",
+    "protocol": "specified_only",
+    "source_locator": "Section IV.2 and Table 1"
+  },
+  "execution": {
+    "repository": "https://github.com/glatq/LLaMEA-MOO",
+    "commit": "18861aa47f17905c28aa33c5a9f33df3a893d191",
+    "upstream_path": "benchmark_best_codes.py",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      {
+        "argv": [
+          "conda",
+          "env",
+          "create",
+          "-f",
+          "environment.yml"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/glatq/LLaMEA-MOO/blob/18861aa47f17905c28aa33c5a9f33df3a893d191/README.md",
+        "notes": ""
+      },
+      {
+        "argv": [
+          "poetry",
+          "install"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/glatq/LLaMEA-MOO/blob/18861aa47f17905c28aa33c5a9f33df3a893d191/README.md",
+        "notes": "Activate llamevol environment before installation."
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "conda",
+          "env",
+          "create",
+          "-f",
+          "environment.yml"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/glatq/LLaMEA-MOO/blob/18861aa47f17905c28aa33c5a9f33df3a893d191/README.md",
+        "notes": ""
+      },
+      {
+        "argv": [
+          "poetry",
+          "install"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/glatq/LLaMEA-MOO/blob/18861aa47f17905c28aa33c5a9f33df3a893d191/README.md",
+        "notes": "Activate llamevol environment before installation."
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "400 function evaluations; 5 repetitions; exact dimensions and reference points in Table 1. Paper-cited publication branch pinned rather than main.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "moo_optimizer",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "ZDT2",
+    "slug": "zdt2",
+    "description": "ZDT2 task evaluated in LLM-Driven Evolutionary Generation of Multi-Objective Bayesian Optimization Algorithms.",
+    "benchmark": "pymoo ZDT/DTLZ/WFG and RE engineering suites",
+    "dataset": null,
+    "metric": "normalized hypervolume",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2607.08791",
+    "source_locator": "Section IV.2 and Table 1",
+    "upstream_path": "benchmark_best_codes.py",
+    "requirements": [],
+    "execution_notes": [
+      "400 function evaluations; 5 repetitions; exact dimensions and reference points in Table 1. Paper-cited publication branch pinned rather than main.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables.",
+      "Benchmark commands need no LLM API. Three synthetic/engineering suite commands plus explicit Improved-Scalarized-EI seed rerun are required for paper tables."
+    ],
+    "setup_commands": [],
+    "run_commands": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "optimizer",
+    "domain": "continuous_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.0",
+  "id": "autorise-autorise-frontier",
+  "name": "AutoRISE-Frontier",
+  "description": "AutoRISE-Frontier",
+  "paper_ids": [
+    "autorise"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.22871",
+      "type": "paper",
+      "locator": "Section 4.3"
+    },
+    {
+      "url": "https://github.com/Tele-EVOL/TeleAI-Safety/tree/ae8509926ae91fd36d68c5a252787b70b73e7d21",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "200 distilled prompts across 8 categories; development targets: GPT-5.4, o4-mini",
+    "notes": [
+      "target and judge model API endpoints"
+    ]
+  },
+  "evaluation": {
+    "metric": "three-judge majority attack success rate",
+    "paper_metric": "three-judge majority attack success rate",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Section 4.3"
+  },
+  "execution": {
+    "repository": "https://github.com/Tele-EVOL/TeleAI-Safety",
+    "commit": "ae8509926ae91fd36d68c5a252787b70b73e7d21",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Paper says benchmarks and code will be released on publication; linked TeleAI-Safety repository is a comparator, not a verified AutoRISE implementation."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "environment:AutoRISE-Frontier"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_agent_env",
+      "unsupported_reason": "Candidates are LLM agents scored inside the AutoRISE-Frontier environment (tools, web, games or code sandboxes); the environment and model access are external."
+    }
+  },
+  "limitations": [
+    "No root license was found in the inspected upstream tree; preserve upstream licensing conditions and do not assume redistribution rights.",
+    "Linked TeleAI-Safety repository is a benchmark repository; do not claim it contains the AutoRISE framework.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "AutoRISE-Frontier",
+    "slug": "autorise-frontier",
+    "description": "AutoRISE-Frontier",
+    "benchmark": null,
+    "dataset": "200 distilled prompts across 8 categories; development targets: GPT-5.4, o4-mini",
+    "metric": "three-judge majority attack success rate",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2604.22871",
+    "source_locator": "Section 4.3",
+    "upstream_path": null,
+    "requirements": [
+      "target and judge model API endpoints"
+    ],
+    "execution_notes": "Paper says benchmarks and code will be released on publication; linked TeleAI-Safety repository is a comparator, not a verified AutoRISE implementation."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

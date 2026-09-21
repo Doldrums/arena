@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "id": "mipro-scone",
+  "name": "ScoNe",
+  "description": "ScoNe: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "mipro"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2406.11695",
+      "type": "paper",
+      "locator": "Table 1 and Appendices A/E"
+    },
+    {
+      "url": "https://github.com/stanfordnlp/dspy/tree/40a6e168914a7b81a78b1a081d93f26de18c8d0d",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "ScoNe",
+    "notes": [
+      "DSPy",
+      "LM inference backend",
+      "Dataset and retrieval index as relevant"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "exact match",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "ScoNe",
+    "protocol": "specified_only",
+    "source_locator": "Table 1 and Appendices A/E"
+  },
+  "execution": {
+    "repository": "https://github.com/stanfordnlp/dspy",
+    "commit": "40a6e168914a7b81a78b1a081d93f26de18c8d0d",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "pip install -e ."
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -e ."
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Current DSPy repository has MIPROv2 optimizer but the seven original 2024 benchmark drivers were not located in the inspected tree; API library availability alone does not make original tasks executable.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "ScoNe",
+    "slug": "scone",
+    "description": "ScoNe: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "ScoNe",
+    "dataset": "ScoNe",
+    "metric": "exact match",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2406.11695",
+    "source_locator": "Table 1 and Appendices A/E",
+    "upstream_path": null,
+    "requirements": [
+      "DSPy",
+      "LM inference backend",
+      "Dataset and retrieval index as relevant"
+    ],
+    "execution_notes": [],
+    "implementation_status": "paper_inventory_only"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

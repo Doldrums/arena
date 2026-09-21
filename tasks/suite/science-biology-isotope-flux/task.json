@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "id": "science-biology-isotope-flux",
+  "name": "Biology: Isotope-constrained metabolic flux inference",
+  "description": "Infer steady-state reaction fluxes and uncertainty intervals from isotope measurements using a verified source-specific atom-mapping forward model.",
+  "paper_ids": [
+    "science-biology_expansion"
+  ],
+  "kind": "native",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/j.ymben.2024.03.005",
+      "type": "paper",
+      "locator": "Theorell et al. model/likelihood formulation, metabolic flux posterior inference; Supplementary Data1 model files."
+    },
+    {
+      "url": "https://github.com/JuBiotech/Supplement-to-Theorell-et-al.-Metabolic_Engineering-2024",
+      "type": "repository",
+      "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned source-derived bundle B05.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Requires a validated atom-mapping isotope forward simulator for the source FML models plus observed isotope blocks; source MATLAB/FML results cannot be treated as flux truth."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Biology: Isotope-constrained metabolic flux inference",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_biology_b05",
+    "science_family": "science_biology_b05",
+    "parameters": {},
+    "interface": "infer_fluxes(network, atom_maps, training_measurements, training_objective, budget) -> {fluxes,intervals}. network includes stoichiometry, bounds, feasible_initial_fluxes. Enforce S@v tolerance1e-6 and flux bounds. Trusted source-specific isotope simulator produces held-out Gaussian NLL. intervals nflux x2 must contain estimates. Forward-model source/hash required; no synthetic fallback.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "optimizer",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "biology"
+    },
+    "proposal_id": "B05",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "requires_setup",
+    "provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "additional_requires": [
+      "file:../../.cache/science-biology/B05.json",
+      "file:../../.cache/science-biology/B05.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_biology_b05",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-biology/B05.json",
+        "file:../../.cache/science-biology/B05.manifest.json"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Source FML atom-map models require a verified isotope simulator port; generic linear surrogates are not substituted. Adapter enforces flux constraints and held-out likelihood but interval calibration requires separate known-flux experiments.",
+    "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+    "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+  ],
+  "validation": {
+    "level": "unit_tests_only",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "evidence": "docs/BIOLOGY_EXPANSION.md",
+    "tests": "tests/test_science_biology_expansion.py",
+    "benchmark_validated": false,
+    "fixture_tests_are_benchmark_validation": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "optimizer",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "simulation",
+    "reference": "none",
+    "area": "biology",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Infer intracellular metabolic reaction rates and uncertainty from isotope-labeling observations.",
+    "importance_rationale": "Metabolic fluxes describe how cells process nutrients and support quantitative understanding of metabolism.",
+    "papers": [
+      {
+        "title": "BayFlux: A Bayesian method to quantify metabolic Fluxes and their uncertainty at the genome scale",
+        "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011111",
+        "primary_goal": "Infer probability distributions of metabolic fluxes consistent with experimental isotope and physiological measurements.",
+        "task_relation": "BayFlux directly solves isotope-constrained flux inference with uncertainty. The local task uses a separately specified atom-mapping model and source measurements; its restricted steady-state network and intervals do not reproduce the paper's genome-scale experiments.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited primary paper develops or applies a solution to the stated scientific problem; its task is not merely an agent or general-purpose framework evaluation. Support concerns the scientific problem family, not a claim of new discovery or full-paper reproduction by this local task.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

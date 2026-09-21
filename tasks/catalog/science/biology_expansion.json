@@ -1,0 +1,813 @@
+[
+  {
+    "id": "science-biology-proteingym-fitness",
+    "proposal_id": "B01",
+    "name": "Biology: ProteinGym measured protein variant effects",
+    "description": "Fit a mutation-effect model from measured support substitutions and predict complete held-out mutation positions in three ProteinGym assays.",
+    "family": "science_biology_b01",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://papers.neurips.cc/paper_files/paper/2023/file/cac723e5ff29f65e3fcbb0739ae91bee-Paper-Datasets_and_Benchmarks.pdf",
+        "type": "paper",
+        "locator": "ProteinGym supervised DMS benchmark definition and evaluation; fitness-rank comparisons."
+      },
+      {
+        "url": "https://github.com/OATML-Markslab/ProteinGym",
+        "type": "repository",
+        "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+      }
+    ],
+    "status": "ready",
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned source-derived bundle B01.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Automatic compact-source staging available."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "evidence": "validation/biology-expansion-source-runs.json",
+      "tests": "tests/test_science_biology_expansion.py",
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false
+    },
+    "limitations": [
+      "Measured three-assay single-substitution adaptation; does not yet test higher-order epistasis or completely unseen proteins. Equal-assay mean differs from official hierarchical ProteinGym aggregation.",
+      "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+      "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "model",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "biology"
+    },
+    "requires": [
+      "file:../../.cache/science-biology/B01.json",
+      "file:../../.cache/science-biology/B01.manifest.json"
+    ]
+  },
+  {
+    "id": "science-biology-eterna-rna-design",
+    "proposal_id": "B02",
+    "name": "Biology: Eterna RNA inverse folding",
+    "description": "Search for RNA sequences whose independently evaluated minimum-free-energy structures match Eterna100-v2 targets under a folding-call budget.",
+    "family": "science_biology_b02",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4833017/",
+        "type": "paper",
+        "locator": "Eterna100 benchmark target construction and RNA secondary-structure inverse-design protocol."
+      },
+      {
+        "url": "https://github.com/eternagame/eterna100-benchmarking",
+        "type": "repository",
+        "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+      }
+    ],
+    "status": "ready",
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "reuse_scope": "ViennaRNA folding engine; local objective and seed"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "ViennaRNA==2.6.4"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned source-derived bundle B02.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Automatic compact-source staging available."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "evidence": "validation/biology-expansion-source-runs.json",
+      "tests": "tests/test_science_biology_expansion.py",
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false
+    },
+    "limitations": [
+      "Twelve public length<=100 Eterna100-v2 targets, 64 oracle calls each. Thermodynamic folding is not experimental structure confirmation; no concealed-motif generalization claim. Exact pinned engine required.",
+      "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+      "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "public_benchmark",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "biology"
+    },
+    "requires": [
+      "file:../../.cache/science-biology/B02.json",
+      "file:../../.cache/science-biology/B02.manifest.json"
+    ]
+  },
+  {
+    "id": "science-biology-gears-perturbation",
+    "proposal_id": "B03",
+    "name": "Biology: Perturb-seq response generalization",
+    "description": "Predict expression shifts for complete held-out genetic perturbations using measured GEARS study pseudobulks and training-only gene selection.",
+    "family": "science_biology_b03",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://www.nature.com/articles/s41587-023-01905-6",
+        "type": "paper",
+        "locator": "GEARS Methods: data processing, perturbation splits and combinatorial prediction."
+      },
+      {
+        "url": "https://github.com/snap-stanford/GEARS",
+        "type": "repository",
+        "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+      },
+      {
+        "url": "https://doi.org/10.1038/s41587-025-02777-8",
+        "type": "paper",
+        "locator": "Systema: correcting shared perturbation effects and reporting perturbation-specific evaluation."
+      }
+    ],
+    "status": "requires_setup",
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned source-derived bundle B03.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Official GEARS Dataverse metadata endpoints6154020/6154417/6154416 returnedHTTP403. Obtain source h5ad and run --h5ad conversion."
+    },
+    "validation": {
+      "level": "unit_tests_only",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "evidence": "docs/BIOLOGY_EXPANSION.md",
+      "tests": "tests/test_science_biology_expansion.py",
+      "benchmark_validated": false,
+      "fixture_tests_are_benchmark_validation": false
+    },
+    "limitations": [
+      "Independent training-mean-normalized error and retrieval metric inspired by Systema; not the entire published GEARS/Systema metric suite. Official Dataverse source access returned403 during preparation.",
+      "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+      "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "model",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "biology"
+    },
+    "setup_blocker": "Official GEARS Dataverse metadata endpoints6154020/6154417/6154416 returnedHTTP403. Obtain source h5ad and run --h5ad conversion.",
+    "requires": [
+      "file:../../.cache/science-biology/B03.json",
+      "file:../../.cache/science-biology/B03.manifest.json"
+    ]
+  },
+  {
+    "id": "the-station-single-cell-batch-integration",
+    "proposal_id": "B04",
+    "name": "Biology: Single-cell batch integration: public scIB adaptation",
+    "description": "Integrate measured count matrices across experimental batches while preserving cell-type neighborhoods and rare populations under a declared transductive protocol.",
+    "family": "science_biology_b04",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://www.nature.com/articles/s41592-021-01336-8",
+        "type": "paper",
+        "locator": "scIB Methods: joint evaluation of biological conservation and batch correction."
+      },
+      {
+        "url": "https://github.com/theislab/scib",
+        "type": "repository",
+        "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+      },
+      {
+        "url": "https://ndownloader.figshare.com/files/24539828",
+        "type": "benchmark",
+        "locator": "Original scIB pancreas h5ad; rawcounts and genuine technology/cell-type annotations. Pinned SHA256 in data/science/biology_expansion/sources.json."
+      }
+    ],
+    "status": "ready",
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned measured source bundle B04.json plus SHA256 receipt; automatically prepared by scripts/prepare_biology_expansion.py."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "evidence": "validation/science-expansion-report.json",
+      "tests": "tests/test_science_biology_expansion.py",
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false
+    },
+    "limitations": [
+      "Measured scIB human-pancreas study:1000 hash-selected cells and500variable genes from raw-count layer,9genuine technology batches. Transductive local metrics, no fullscIB/Station score reproduction or cross-study claim.",
+      "Canonical Station upgrade using an explicitly adapted public scIB-style60/40 score. Does not reproduce the private Station evaluator or complete scIB metric suite; no trajectory conservation claim.",
+      "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+      "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "biology"
+    },
+    "upgrade_existing": true,
+    "setup_blocker": "Requires official measured scIB study h5ad with batch/cell-type annotations; no compatible study file staged.",
+    "requires": [
+      "file:../../.cache/science-biology/B04.json",
+      "file:../../.cache/science-biology/B04.manifest.json"
+    ]
+  },
+  {
+    "id": "science-biology-isotope-flux",
+    "proposal_id": "B05",
+    "name": "Biology: Isotope-constrained metabolic flux inference",
+    "description": "Infer steady-state reaction fluxes and uncertainty intervals from isotope measurements using a verified source-specific atom-mapping forward model.",
+    "family": "science_biology_b05",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/j.ymben.2024.03.005",
+        "type": "paper",
+        "locator": "Theorell et al. model/likelihood formulation, metabolic flux posterior inference; Supplementary Data1 model files."
+      },
+      {
+        "url": "https://github.com/JuBiotech/Supplement-to-Theorell-et-al.-Metabolic_Engineering-2024",
+        "type": "repository",
+        "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+      }
+    ],
+    "status": "requires_setup",
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned source-derived bundle B05.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Requires a validated atom-mapping isotope forward simulator for the source FML models plus observed isotope blocks; source MATLAB/FML results cannot be treated as flux truth."
+    },
+    "validation": {
+      "level": "unit_tests_only",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "evidence": "docs/BIOLOGY_EXPANSION.md",
+      "tests": "tests/test_science_biology_expansion.py",
+      "benchmark_validated": false,
+      "fixture_tests_are_benchmark_validation": false
+    },
+    "limitations": [
+      "Source FML atom-map models require a verified isotope simulator port; generic linear surrogates are not substituted. Adapter enforces flux constraints and held-out likelihood but interval calibration requires separate known-flux experiments.",
+      "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+      "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "optimizer",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "biology"
+    },
+    "setup_blocker": "Requires a validated atom-mapping isotope forward simulator for the source FML models plus observed isotope blocks; source MATLAB/FML results cannot be treated as flux truth.",
+    "requires": [
+      "file:../../.cache/science-biology/B05.json",
+      "file:../../.cache/science-biology/B05.manifest.json"
+    ]
+  },
+  {
+    "id": "science-biology-spatial-deconvolution",
+    "proposal_id": "B06",
+    "name": "Biology: Spatial transcriptomic cell abundance inference",
+    "description": "Infer nonnegative spatial cell counts from reference expression signatures and evaluate separate held-out genes using a count likelihood.",
+    "family": "science_biology_b06",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://www.nature.com/articles/s41587-021-01139-4",
+        "type": "paper",
+        "locator": "cell2location Methods: reference signatures, spatial count decomposition and constructed-mixture validation."
+      },
+      {
+        "url": "https://github.com/vitkl/cell2location_paper",
+        "type": "repository",
+        "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+      }
+    ],
+    "status": "requires_setup",
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned source-derived bundle B06.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Requires matched measured spatial counts and reference signatures with absolute scale and independent gene blocks; selected upstream inferred-abundance outputs are not ground truth."
+    },
+    "validation": {
+      "level": "unit_tests_only",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "evidence": "docs/BIOLOGY_EXPANSION.md",
+      "tests": "tests/test_science_biology_expansion.py",
+      "benchmark_validated": false,
+      "fixture_tests_are_benchmark_validation": false
+    },
+    "limitations": [
+      "Fixed absolute-scale signatures and local Poisson likelihood are a reduced adaptation; full cell2location accounts for additional technical variation. Real-tissue abundance truth is not assumed.",
+      "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+      "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "biology"
+    },
+    "setup_blocker": "Requires matched measured spatial counts and reference signatures with absolute scale and independent gene blocks; selected upstream inferred-abundance outputs are not ground truth.",
+    "requires": [
+      "file:../../.cache/science-biology/B06.json",
+      "file:../../.cache/science-biology/B06.manifest.json"
+    ]
+  },
+  {
+    "id": "science-biology-phylogenetic-likelihood",
+    "proposal_id": "B07",
+    "name": "Biology: Empirical phylogenetic tree likelihood search",
+    "description": "Construct a valid evolutionary tree for an empirical DNA alignment; an independently written pruning evaluator recomputes its JC69 likelihood.",
+    "family": "science_biology_b07",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6821337/",
+        "type": "paper",
+        "locator": "RAxML-NG paper: maximum-likelihood phylogenetic inference; local evaluator uses fixedJC69 rather than upstream GTR+Gamma."
+      },
+      {
+        "url": "https://github.com/amkozlov/ng-tutorial",
+        "type": "repository",
+        "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+      }
+    ],
+    "status": "ready",
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned source-derived bundle B07.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Automatic compact-source staging available."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "evidence": "validation/biology-expansion-source-runs.json",
+      "tests": "tests/test_science_biology_expansion.py",
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false
+    },
+    "limitations": [
+      "One complete empirical12-taxon898-site primate tutorial alignment. Not the full paper alignment collection, hidden-clade transfer, or empirical true-tree recovery. Independent JC69 score is not numerically comparable with upstreamGTR+Gamma.",
+      "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+      "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "biology"
+    },
+    "requires": [
+      "file:../../.cache/science-biology/B07.json",
+      "file:../../.cache/science-biology/B07.manifest.json"
+    ]
+  },
+  {
+    "id": "science-biology-cami-metagenome-assembly",
+    "proposal_id": "B08",
+    "name": "Biology: Reference-aware environmental metagenome assembly",
+    "description": "Reconstruct microbial contigs from CAMI-derived reads and score genome recovery with independent reference-aware misassembly and sequence-error penalties.",
+    "family": "science_biology_b08",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://www.nature.com/articles/s41592-022-01431-4",
+        "type": "paper",
+        "locator": "CAMI II Methods: simulated community datasets and assembly evaluation."
+      },
+      {
+        "url": "https://github.com/CAMI-challenge/second_challenge_evaluation",
+        "type": "repository",
+        "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+      }
+    ],
+    "status": "requires_setup",
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "reuse_scope": "metaQUAST assembly evaluation engine after source setup; local candidate interface and composite objective"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned source-derived bundle B08.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Requires reduced CAMI read/reference community plus metaQUAST5.3.0; neither source community nor aligner staged."
+    },
+    "validation": {
+      "level": "unit_tests_only",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "evidence": "docs/BIOLOGY_EXPANSION.md",
+      "tests": "tests/test_science_biology_expansion.py",
+      "benchmark_validated": false,
+      "fixture_tests_are_benchmark_validation": false
+    },
+    "limitations": [
+      "Requires source CAMI reads/reference genomes and metaQUAST5.3.0. No locally generated substitute is scored as CAMI. Local composite score differs from paper multi-metric ranking; correctedNA50 is diagnostic.",
+      "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+      "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "biology"
+    },
+    "setup_blocker": "Requires reduced CAMI read/reference community plus metaQUAST5.3.0; neither source community nor aligner staged.",
+    "requires": [
+      "file:../../.cache/science-biology/B08.json",
+      "file:../../.cache/science-biology/B08.manifest.json"
+    ]
+  },
+  {
+    "id": "science-biology-fmd-microscopy-denoising",
+    "proposal_id": "B09",
+    "name": "Biology: Measured fluorescence microscopy denoising",
+    "description": "Recover calibrated fluorescence intensities from real noisy acquisitions, using averaged acquired exposures as imperfect reference images.",
+    "family": "science_biology_b09",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://openaccess.thecvf.com/content_CVPR_2019/papers/Zhang_A_Poisson-Gaussian_Denoising_Dataset_With_Real_Fluorescence_Microscopy_Images_CVPR_2019_paper.pdf",
+        "type": "paper",
+        "locator": "FMD dataset acquisition/averaging and PSNR/SSIM evaluation sections."
+      },
+      {
+        "url": "https://github.com/yinhaoz/denoising-fluorescence",
+        "type": "repository",
+        "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+      }
+    ],
+    "status": "ready",
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned measured source bundle B09.json plus SHA256 receipt; automatically prepared by scripts/prepare_biology_expansion.py."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "evidence": "validation/science-expansion-report.json",
+      "tests": "tests/test_science_biology_expansion.py",
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false
+    },
+    "limitations": [
+      "Twelve official FMD test_mix fields, fixed128x128central crops from measured noisy/averaged-reference images. No generated noise; bounded crop protocol, not fullpaper leaderboard.",
+      "Full fields/repeated exposures must remain grouped. Averaged references are not exact clean images; staging must document whether the input exposure contributes to the reference. No synthetic noise replacement.",
+      "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+      "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "biology"
+    },
+    "setup_blocker": "Requires FMD acquired noisy/reference image pairs and specimen/exposure metadata; published code contains no directly staged measured image pairs.",
+    "requires": [
+      "file:../../.cache/science-biology/B09.json",
+      "file:../../.cache/science-biology/B09.manifest.json"
+    ]
+  },
+  {
+    "id": "science-biology-petab-kinetic-inference",
+    "proposal_id": "B10",
+    "name": "Biology: PEtab biochemical kinetic parameter inference",
+    "description": "Fit mechanistic biochemical ODE parameters from measured signaling trajectories and predict complete held-out stimulation conditions with an independent source-model solver.",
+    "family": "science_biology_b10",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://doi.org/10.1371/journal.pcbi.1008646",
+        "type": "paper",
+        "locator": "PEtab specification: parameters, measurements, observables, condition-dependent simulation and noise likelihood. Brannmark_JBC2010 model in official collection."
+      },
+      {
+        "url": "https://github.com/Benchmarking-Initiative/Benchmark-Models-PEtab",
+        "type": "repository",
+        "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+      },
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2888430/",
+        "type": "paper",
+        "title": "Mass and Information Feedbacks through Receptor Endocytosis Govern Insulin Signaling as Revealed Using a Parameter-free Modeling Framework",
+        "locator": "Fits and tests quantitative insulin-signaling models against phosphorylation observations. The local PEtab Brannmark_JBC2010 parameter-inference problem uses this biological model, with a restricted inference protocol."
+      }
+    ],
+    "status": "ready",
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned source-derived bundle B10.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Automatic compact-source staging available."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "evidence": "validation/biology-expansion-source-runs.json",
+      "tests": "tests/test_science_biology_expansion.py",
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false,
+      "independent_reference_crosscheck": "validation/biology-petab-crosscheck.json"
+    },
+    "limitations": [
+      "Source Brannmark insulin-signaling SBML transcribed independently and integrated bySciPyBDF. Source-fitted nominal parameters are excluded from candidate inputs. Bounds-wide intervals are only a valid seed, not calibrated uncertainty.",
+      "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+      "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "optimizer",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "biology"
+    },
+    "requires": [
+      "file:../../.cache/science-biology/B10.json",
+      "file:../../.cache/science-biology/B10.manifest.json"
+    ]
+  },
+  {
+    "id": "science-biology-beeline-regulatory-network",
+    "proposal_id": "B11",
+    "name": "Biology: Regulatory network inference from expression",
+    "description": "Rank directed regulator-target hypotheses from the official BEELINE GSD expression example and score all allowed edges using tie-aware average precision.",
+    "family": "science_biology_b11",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://www.nature.com/articles/s41592-019-0690-6",
+        "type": "paper",
+        "locator": "BEELINE Methods: simulated/curated networks and precision-recall evaluation."
+      },
+      {
+        "url": "https://github.com/Murali-group/Beeline",
+        "type": "repository",
+        "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+      }
+    ],
+    "status": "ready",
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned source-derived bundle B11.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Automatic compact-source staging available."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "evidence": "validation/biology-expansion-source-runs.json",
+      "tests": "tests/test_science_biology_expansion.py",
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false
+    },
+    "limitations": [
+      "Initial official example uses simulated expression grounded in a curated developmental network, not measured expression. One complete network, no cross-network generalization claim. All genes permitted as regulators; no true-regulator list leaked.",
+      "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+      "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "biology"
+    },
+    "requires": [
+      "file:../../.cache/science-biology/B11.json",
+      "file:../../.cache/science-biology/B11.manifest.json"
+    ]
+  },
+  {
+    "id": "science-biology-casanovo-peptide-decoding",
+    "proposal_id": "B12",
+    "name": "Biology: Measured tandem-spectrum peptide reconstruction",
+    "description": "Decode physically mass-consistent peptide sequences from measured fragment spectra and rank confidence under exact-sequence and precision-coverage evaluation.",
+    "family": "science_biology_b12",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://www.nature.com/articles/s41467-024-49731-x",
+        "type": "paper",
+        "locator": "Casanovo Methods: de novo sequencing, precursor constraints and precision/coverage evaluation."
+      },
+      {
+        "url": "https://github.com/Noble-Lab/casanovo",
+        "type": "repository",
+        "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+      }
+    ],
+    "status": "ready",
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "environment_variables": [],
+      "datasets": "Pinned source-derived bundle B12.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Automatic compact-source staging available."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-20",
+      "evidence": "validation/biology-expansion-source-runs.json",
+      "tests": "tests/test_science_biology_expansion.py",
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false
+    },
+    "limitations": [
+      "Classical CPU decoder adaptation of twelve unique unmodified peptides in the official measured mouse sample. Not full nine-species/generalization benchmark or learned-encoder reproduction; I/L are equivalent and precursor mass is neutralDa.",
+      "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+      "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "biology"
+    },
+    "requires": [
+      "file:../../.cache/science-biology/B12.json",
+      "file:../../.cache/science-biology/B12.manifest.json"
+    ]
+  }
+]

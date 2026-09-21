@@ -1,0 +1,77 @@
+[
+  {
+    "id": "science-quantum-qaoa-maxcut",
+    "name": "Quantum information: fixed-depth QAOA parameter design",
+    "description": "Design graph-dependent two-layer QAOA angles maximizing the mean ratio of the independently simulated expected cut to the exact classical optimum on six small graphs. The circuit architecture is fixed; the candidate controls its parameter-selection algorithm.",
+    "family": "science_qaoa",
+    "parameters": {
+      "layers": 2,
+      "seed": 713
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1411.4028v1",
+        "type": "paper",
+        "locator": "Farhi, Goldstone and Gutmann (2014), Sections I-II, Eqs. (2)-(7), (11)-(12): phase separator, mixer, expected cost and MaxCut Hamiltonian."
+      }
+    ],
+    "limitations": [
+      "Independent ideal statevector reimplementation, not quantum hardware or a reproduction of the paper tables.",
+      "Evaluation sizes, graph generator and two-layer budget are local choices. Small graphs can be solved classically; an improved score does not establish quantum advantage.",
+      "Public deterministic validation graphs are separate from development seed 113, not hidden. Assess generalization only on fresh graphs after freezing the candidate."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "optimizer",
+      "domain": "natural_science",
+      "data": "synthetic",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "quantum_information"
+    }
+  },
+  {
+    "id": "science-quantum-ising-vqe",
+    "name": "Quantum information: shallow-circuit Ising ground states",
+    "description": "Optimize parameters of a fixed three-layer Ry/CZ circuit to approximate ground states of open transverse-field Ising chains. The evaluator builds each state itself and minimizes the mean energy gap per spin relative to an independent exact eigensolution.",
+    "family": "science_vqe_ising",
+    "parameters": {
+      "layers": 3,
+      "qubits": [
+        4,
+        6
+      ],
+      "fields": [
+        0.45,
+        1.0,
+        1.65
+      ]
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1304.3061v3",
+        "type": "paper",
+        "locator": "Peruzzo et al. (2014), variational eigenvalue estimation and Rayleigh-Ritz energy minimization."
+      },
+      {
+        "url": "https://arxiv.org/abs/1704.05018v2",
+        "type": "paper",
+        "locator": "Kandala et al. (2017), hardware-efficient variational circuits and quantum magnetism application; motivation rather than a copied ansatz."
+      }
+    ],
+    "limitations": [
+      "The open Ising Hamiltonian, exact Ry/CZ ansatz, field values and statevector simulator are local reduced choices, not the molecular experiments in the papers.",
+      "No noise, measurement cost or hardware connectivity penalty is modeled. A lower circuit energy does not establish a new physical ground-state result or quantum advantage.",
+      "The minimum within the restricted ansatz can exceed the exact ground energy; zero error is not assumed reachable."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "optimizer",
+      "domain": "natural_science",
+      "data": "synthetic",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "quantum_information"
+    }
+  }
+]

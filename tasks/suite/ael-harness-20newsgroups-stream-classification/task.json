@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "id": "ael-harness-20newsgroups-stream-classification",
+  "name": "20Newsgroups stream classification",
+  "description": "20Newsgroups stream classification",
+  "paper_ids": [
+    "ael-harness"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.21725",
+      "type": "paper",
+      "locator": "Cross-domain appendix"
+    },
+    {
+      "url": "https://github.com/WujiangXu/AEL/tree/c95f5f961667e7df4bdddf750b22332158951bf2",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "classification accuracy",
+    "paper_metric": "classification accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "20Newsgroups",
+    "protocol": "specified_only",
+    "source_locator": "Cross-domain appendix"
+  },
+  "execution": {
+    "repository": "https://github.com/WujiangXu/AEL",
+    "commit": "c95f5f961667e7df4bdddf750b22332158951bf2",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "python -m pip install -e ."
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "python -m pip install -e ."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper task identified; evaluator invocation not yet verified."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "dataset:20Newsgroups"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "dataset",
+      "unsupported_reason": "The AEL harness task needs its market / ticket / 20Newsgroups data streams, which are not distributed with the pinned tree."
+    }
+  },
+  "limitations": [
+    "Support-ticket, 20Newsgroups and synthetic-bandit scripts were not found by filename in pinned tree; paper says synthetic_crossdomain.py is released, but this filename is absent.",
+    "Named in the paper, but the corresponding task script/config is absent from the pinned public AEL tree; synthetic_crossdomain.py referenced by the paper is not present.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "20Newsgroups stream classification",
+    "slug": "20newsgroups-stream-classification",
+    "description": "20Newsgroups stream classification",
+    "benchmark": "20Newsgroups",
+    "dataset": null,
+    "metric": "classification accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2604.21725",
+    "source_locator": "Cross-domain appendix",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": "Paper task identified; evaluator invocation not yet verified.",
+    "execution_blocked_reason": "Named in the paper, but the corresponding task script/config is absent from the pinned public AEL tree; synthetic_crossdomain.py referenced by the paper is not present."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

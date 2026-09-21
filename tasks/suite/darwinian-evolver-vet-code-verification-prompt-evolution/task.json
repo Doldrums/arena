@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "id": "darwinian-evolver-vet-code-verification-prompt-evolution",
+  "name": "Vet code-verification prompt evolution",
+  "description": "Vet code-verification prompt evolution",
+  "paper_ids": [
+    "darwinian-evolver"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://imbue.com/blog/2026-02-27-darwinian-evolver",
+      "type": "paper",
+      "locator": "Blog optimization use cases"
+    },
+    {
+      "url": "https://github.com/imbue-ai/darwinian_evolver/tree/7f12365d2059c47e29068a5a6f498a293148d2a9",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "private or supplied code verification dataset"
+    ]
+  },
+  "evaluation": {
+    "metric": "verification accuracy",
+    "paper_metric": "verification accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Blog optimization use cases"
+  },
+  "execution": {
+    "repository": "https://github.com/imbue-ai/darwinian_evolver",
+    "commit": "7f12365d2059c47e29068a5a6f498a293148d2a9",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Blog reports real-world Vet prompt optimization; public repo has multiplication-verifier demonstration, not necessarily the Vet training corpus."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "dataset:Vet code-verification prompt evolution"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_api",
+      "unsupported_reason": "Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the Vet code-verification prompt evolution benchmark. The suite embeds neither model calls nor the benchmark data."
+    }
+  },
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Vet code-verification prompt evolution",
+    "slug": "vet-code-verification-prompt-evolution",
+    "description": "Vet code-verification prompt evolution",
+    "benchmark": null,
+    "dataset": null,
+    "metric": "verification accuracy",
+    "direction": "maximize",
+    "source_url": "https://imbue.com/blog/2026-02-27-darwinian-evolver",
+    "source_locator": "Blog optimization use cases",
+    "upstream_path": null,
+    "requirements": [
+      "private or supplied code verification dataset"
+    ],
+    "execution_notes": "Blog reports real-world Vet prompt optimization; public repo has multiplication-verifier demonstration, not necessarily the Vet training corpus."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

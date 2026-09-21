@@ -1,0 +1,380 @@
+{
+  "schema_version": "1.0",
+  "id": "dgm-aider-polyglot",
+  "name": "Aider Polyglot",
+  "description": "Aider Polyglot",
+  "paper_ids": [
+    "dgm",
+    "gea",
+    "hyperagents"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2505.22954",
+      "type": "paper",
+      "locator": "Experiments and evaluation appendix"
+    },
+    {
+      "url": "https://github.com/jennyzzt/dgm/tree/a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2",
+      "type": "repository",
+      "locator": "polyglot"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.04837",
+      "type": "paper",
+      "locator": "Evaluation protocol"
+    },
+    {
+      "url": "https://github.com/UCSB-AI/GEA/tree/d185edffd1f9fbd2297f4de8c6c9f94547448b6d",
+      "type": "repository",
+      "locator": null
+    },
+    {
+      "url": "https://arxiv.org/pdf/2603.19461",
+      "type": "paper",
+      "locator": "Section 4 and Appendix C"
+    },
+    {
+      "url": "https://github.com/facebookresearch/Hyperagents/tree/59a68f672dfb92c74aeb7e61535d776fb36e172d",
+      "type": "repository",
+      "locator": "domains/polyglot"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "Docker",
+      "LLM credentials",
+      "benchmark data"
+    ]
+  },
+  "evaluation": {
+    "metric": "pass@1 task success",
+    "paper_metric": "pass@1 task success",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Aider Polyglot",
+    "protocol": "specified_only",
+    "source_locator": "Experiments and evaluation appendix"
+  },
+  "execution": {
+    "repository": "https://github.com/jennyzzt/dgm",
+    "commit": "a565fd2d1dca504ef5104a7cc0f3bdc4ab9b4fd2",
+    "upstream_path": "polyglot",
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "python -m pip install -r requirements.txt",
+      "python -m polyglot.prepare_polyglot_dataset"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "python -m pip install -r requirements.txt",
+      "python -m polyglot.prepare_polyglot_dataset"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "README provides dataset setup and DGM_outer.py evolution entry point."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "environment:Aider Polyglot"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_agent_env",
+      "unsupported_reason": "Candidates are LLM agents scored inside the Aider Polyglot environment (tools, web, games or code sandboxes); the environment and model access are external."
+    }
+  },
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Aider Polyglot",
+    "slug": "aider-polyglot",
+    "description": "Aider Polyglot",
+    "benchmark": "Aider Polyglot",
+    "dataset": null,
+    "metric": "pass@1 task success",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2505.22954",
+    "source_locator": "Experiments and evaluation appendix",
+    "upstream_path": "polyglot",
+    "requirements": [
+      "Docker",
+      "LLM credentials",
+      "benchmark data"
+    ],
+    "execution_notes": "README provides dataset setup and DGM_outer.py evolution entry point.",
+    "upstream_evaluator_paths": [],
+    "upstream_seed_paths": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "software_engineering",
+    "area": "software_engineering",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "simulator"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "gea-aider-polyglot",
+      "paper_ids": [
+        "gea"
+      ],
+      "name": "Aider Polyglot",
+      "description": "Aider Polyglot",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.04837",
+          "type": "paper",
+          "locator": "Evaluation protocol"
+        },
+        {
+          "url": "https://github.com/UCSB-AI/GEA/tree/d185edffd1f9fbd2297f4de8c6c9f94547448b6d",
+          "type": "repository",
+          "locator": null
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "LLM credentials",
+          "benchmark datasets"
+        ]
+      },
+      "evaluation": {
+        "metric": "task success rate",
+        "paper_metric": "task success rate",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": null,
+        "protocol": "upstream",
+        "source_locator": "Evaluation protocol"
+      },
+      "execution": {
+        "repository": "https://github.com/UCSB-AI/GEA",
+        "commit": "d185edffd1f9fbd2297f4de8c6c9f94547448b6d",
+        "upstream_path": null,
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "GEA_outer.py",
+              "--polyglot"
+            ],
+            "cwd": ".",
+            "notes": "Group-evolving agents on the Aider Polyglot benchmark (Docker, prepared polyglot dataset, paid model calls). Model-driven search: requires LLM API credentials and incurs cost; never run by seed checks.",
+            "source_url": "https://github.com/UCSB-AI/GEA/blob/d185edffd1f9fbd2297f4de8c6c9f94547448b6d/README.md"
+          }
+        ],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "pip install -r requirements.txt",
+          "Docker daemon required",
+          "Clone SWE-bench at dc4c087c2b9e4cefebf2e3d201d27e36 into swe_bench/ and pip install -e .",
+          "python -m polyglot.prepare_polyglot_dataset",
+          "export OPENAI_API_KEY / ANTHROPIC_API_KEY"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "pip install -r requirements.txt",
+          "Docker daemon required",
+          "Clone SWE-bench at dc4c087c2b9e4cefebf2e3d201d27e36 into swe_bench/ and pip install -e .",
+          "python -m polyglot.prepare_polyglot_dataset",
+          "export OPENAI_API_KEY / ANTHROPIC_API_KEY"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "P",
+          "a",
+          "p",
+          "e",
+          "r",
+          " ",
+          "t",
+          "a",
+          "s",
+          "k",
+          " ",
+          "i",
+          "d",
+          "e",
+          "n",
+          "t",
+          "i",
+          "f",
+          "i",
+          "e",
+          "d",
+          ";",
+          " ",
+          "e",
+          "v",
+          "a",
+          "l",
+          "u",
+          "a",
+          "t",
+          "o",
+          "r",
+          " ",
+          "i",
+          "n",
+          "v",
+          "o",
+          "c",
+          "a",
+          "t",
+          "i",
+          "o",
+          "n",
+          " ",
+          "n",
+          "o",
+          "t",
+          " ",
+          "y",
+          "e",
+          "t",
+          " ",
+          "v",
+          "e",
+          "r",
+          "i",
+          "f",
+          "i",
+          "e",
+          "d",
+          ".",
+          "Source pinned on 2026-09-19; see docs/TASKS.md."
+        ]
+      },
+      "limitations": [
+        "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+        "Official GEA release pinned (Apache-2.0); runs need Docker, the pinned SWE-bench harness, prepared Polyglot data and paid model APIs.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "hyperagents-aider-polyglot",
+      "paper_ids": [
+        "hyperagents"
+      ],
+      "name": "Aider Polyglot",
+      "description": "Aider Polyglot",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2603.19461",
+          "type": "paper",
+          "locator": "Section 4 and Appendix C"
+        },
+        {
+          "url": "https://github.com/facebookresearch/Hyperagents/tree/59a68f672dfb92c74aeb7e61535d776fb36e172d",
+          "type": "repository",
+          "locator": "domains/polyglot"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "LLM credentials"
+        ]
+      },
+      "evaluation": {
+        "metric": "pass@1",
+        "paper_metric": "pass@1",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": null,
+        "protocol": "specified_only",
+        "source_locator": "Section 4 and Appendix C"
+      },
+      "execution": {
+        "repository": "https://github.com/facebookresearch/Hyperagents",
+        "commit": "59a68f672dfb92c74aeb7e61535d776fb36e172d",
+        "upstream_path": "domains/polyglot",
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "python -m pip install -r requirements.txt",
+          "docker build --network=host -t hyperagents .",
+          "bash setup_initial.sh"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "python -m pip install -r requirements.txt",
+          "docker build --network=host -t hyperagents .",
+          "bash setup_initial.sh"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Paper task identified; evaluator invocation not yet verified."
+        ]
+      },
+      "limitations": [
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

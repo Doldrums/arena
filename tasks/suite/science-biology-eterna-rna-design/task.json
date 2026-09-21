@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0",
+  "id": "science-biology-eterna-rna-design",
+  "name": "Biology: Eterna RNA inverse folding",
+  "description": "Search for RNA sequences whose independently evaluated minimum-free-energy structures match Eterna100-v2 targets under a folding-call budget.",
+  "paper_ids": [
+    "science-biology_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4833017/",
+      "type": "paper",
+      "locator": "Eterna100 benchmark target construction and RNA secondary-structure inverse-design protocol."
+    },
+    {
+      "url": "https://github.com/eternagame/eterna100-benchmarking",
+      "type": "repository",
+      "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "ViennaRNA==2.6.4"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned source-derived bundle B02.json plus SHA256 manifest under .cache/science-biology; prepare using scripts/prepare_biology_expansion.py. Automatic compact-source staging available."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Biology: Eterna RNA inverse folding",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_biology_b02",
+    "science_family": "science_biology_b02",
+    "parameters": {},
+    "interface": "design(dot_bracket, constraints, oracle) -> ACGU sequence of matching length. constraints uses N for free bases. oracle(sequence) returns (MFE_structure,energy), exposes budget, and rejects calls beyond budget. ViennaRNA 2.6.4, 37 C. Objective fraction of exact deterministic MFE matches. Search runs in trusted protocol (direct engine calls cannot be policed in-process).",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "public_benchmark",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "biology"
+    },
+    "proposal_id": "B02",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "category": "independent_reimplementation",
+      "note": "New local evaluator and seed based on cited source specifications; official data are reused.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "reuse_scope": "ViennaRNA folding engine; local objective and seed"
+    },
+    "additional_requires": [
+      "file:../../.cache/science-biology/B02.json",
+      "file:../../.cache/science-biology/B02.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_biology_b02",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-biology/B02.json",
+        "file:../../.cache/science-biology/B02.manifest.json",
+        "py:RNA"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Twelve public length<=100 Eterna100-v2 targets, 64 oracle calls each. Thermodynamic folding is not experimental structure confirmation; no concealed-motif generalization claim. Exact pinned engine required.",
+    "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+    "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+  ],
+  "validation": {
+    "level": "source_subset_run",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "evidence": "validation/biology-expansion-source-runs.json",
+    "tests": "tests/test_science_biology_expansion.py",
+    "benchmark_validated": true,
+    "fixture_tests_are_benchmark_validation": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "area": "biology",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Design RNA sequences that fold into a prescribed secondary structure.",
+    "importance_rationale": "Controlling RNA structure supports studies of RNA function and the design of ribozymes and molecular structures.",
+    "papers": [
+      {
+        "title": "A New Algorithm for RNA Secondary Structure Design",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/15095976/",
+        "primary_goal": "Find RNA sequences predicted to fold into specified target secondary structures.",
+        "task_relation": "RNA-SSD solves the same inverse-folding problem as the local Eterna100-v2 task. Local structures and folding-call limits differ; agreement with a minimum-free-energy model does not establish experimental folding or biological function.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited primary paper develops or applies a solution to the stated scientific problem; its task is not merely an agent or general-purpose framework evaluation. Support concerns the scientific problem family, not a claim of new discovery or full-paper reproduction by this local task.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

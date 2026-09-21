@@ -1,0 +1,115 @@
+# How the tasks were added
+
+The repository turns the papers of the [Human Harness Corpus](https://human-harness-corpus.small-pine-3af7.workers.dev/) (98 systems), the SCiEL project's own examples, one community competition and eighteen source-based science tasks into 1,157 source-task records and **903 task packages** that share one format and one execution interface (254 records share their evaluator with another record and are merged into it, section 1b). This document explains where each task comes from, how it was built, and how much of it is original code versus reimplementation.
+
+## 1. From papers to a reviewed catalog
+
+1. **Paper reading.** For every corpus paper the experiment sections and appendices were read and each *named* task recorded: name, benchmark, dataset/split, metric, optimisation direction, source locator (section/table), and the artifact the paper evolves (program, heuristic, prompt, reward, kernel …). Benchmarks are not expanded into individual dataset rows; unnamed or private workloads are recorded as such.
+2. **Source hunting.** Official repositories were located through the papers and project pages and pinned to immutable commits (`catalog/upstream-lock.json`; one Zenodo archive pinned by SHA-256 in `catalog/archive-lock.json`). For each task the evaluator, seed program, dependencies and configuration were inspected; the resulting per-paper record is `catalog/research.json` (98 entries) and the SCiEL supplement records are `catalog/sciel-math.json` and `catalog/sciel-examples.json`.
+3. **Manifest generation.** `scripts/build_catalog.py` writes one manifest `suite/<paper>-<task>/task.json` per reviewed task (sources, requirements, pinned repository, upstream command or evaluator adapter, limitations), the per-paper pages under `papers/` and the gap inventory `catalog/gaps.json`. SCiEL supplement manifests come from `scripts/import_sciel_math.py` and `scripts/build_sciel_examples.py` (pinned SCiEL checkout `da80706f98f9bf1295e502544cdf5a9200fe5f57`).
+4. **Task directory generation.** `scripts/build_suite.py` turns every manifest into a complete SCiEL-layout directory (evaluator, seed, configuration, README, `problem.json`), records the evaluator in the manifest (`execution.suite`) and rebuilds `catalog/tasks.json`, `catalog/tasks.csv` and the browseable `catalog/index.html`.
+
+Package identity is `<paper>-<task>`; the same benchmark stays a separate package under each paper whose protocol differs (this is deliberate: papers use different splits, budgets and objectives).
+
+| Collection | Packages | Origin |
+|---|---:|---|
+| Corpus paper tasks | 802 | 98 papers of the Human Harness Corpus (1,033 records before merging) |
+| SCiEL supplement | 93 | 71 mathematical/optimisation/AlgoTune examples and 22 benchmark examples from the SCiEL checkout |
+| Reference tasks | 2 | independently written portable problems; of the original 12, 10 shared their evaluator with a paper task and were merged into it (SAT and univariate symbolic regression remain) |
+| Science supplement | 18 | six source collections (theoretical computer science 6, cosmology 3 including a real-data Pantheon+ fit, particle physics 2, quantum information 2, climate dynamics 2, computational chemistry 2); reviewed definitions in `catalog/science/`, imported by `scripts/import_science.py`; see [SCIENCE_TASKS.md](SCIENCE_TASKS.md) |
+| Community supplement | 1 | the Kaggle **Santa 2025 - Christmas Tree Packing Challenge** (`kaggle-santa-2025-christmas-tree-packing`), added on request from the competition's public task statement and metric (`catalog/community.json`, `scripts/import_community.py`) |
+
+## 1b. Duplicate problems
+
+Papers reuse problems: 14 papers evaluate the 26-circle packing, nine use online bin packing with the EoH protocol, prompt and agent papers share GSM8K, DROP, HotpotQA and the BBH tasks. Before merging, each paper's task was its own package, so the same evaluator appeared up to 14 times and every count was inflated. `scripts/find_duplicates.py` groups tasks whose evaluators are identical: the same suite family with the same parameters (published reference values excluded), the same copied SCiEL example with the same entry environment, or, for documented-only tasks, the same unsupported category and task slug; for pinned upstream routes the adapter arguments and origin are part of the signature (so the three RankEvolve corpora stay apart). Applied on 2026-09-20 it merged **254 records in 148 groups** (13 of them when the recreated families made further paper tasks identical): 76 model-driven benchmark copies, 16 copies of the 26-circle packing, 10 ALE-Bench contests (ShinkaEvolve reused EvoX's evaluator), 9 distance-ratio constructions, 26 routing and bin-packing heuristics, 18 documented-only tasks that name the same benchmark (SWE-bench Verified in four papers, Aider Polyglot in three, MLE-bench competitions in two), and 10 of the 12 reference tasks. No duplicate groups remain (`python3 scripts/find_duplicates.py` reports zero).
+
+The canonical task is the paper that introduced the problem when known (AlphaEvolve for its constructions and tensors, FunSearch for cap sets and admissible tuples, EoH for online bin packing, TSP and flow shop, ReEvo for the ACO heuristics, CORAL for the ADRS systems tasks, EvoX for ALE-Bench, CoEvo for the LLM-SR datasets), otherwise the earliest paper. The canonical manifest lists every paper in `paper_ids` (135 tasks now belong to more than one paper), merges their sources, and keeps each removed record (name, description, benchmark, requirements, pinned repository, upstream adapter or commands, limitations) under `merged_from`. Nothing executable was lost: `run.py evaluate <id> --route upstream --paper <paper>` (also `show`, `setup`, `run`) uses the merged paper's own pinned evaluator, and the execution report was pruned rather than re-run because every removed task shared its evaluator with a kept one. `catalog/duplicates.json` maps every removed id to its canonical task, and asking the CLI for a removed id names the canonical one. Paper pages under `papers/` list the canonical tasks.
+
+Three merges deserve a note because the papers' protocols differ even though the suite evaluators are identical: MCTS-AHD's black-box variants (same evaluator, different prompt), FunBO's out-of-distribution functions and SATLution's 2024 and 2025 competition sets (the recreated evaluators use the same generated instances), and the A2DEPT/DGA2D pairs (same recreated families). The merged records keep the papers' own descriptions.
+
+## 2. What the manifest records
+
+Every `suite/<id>/task.json` keeps the provenance classification of the task and the executable route:
+
+| `kind` | Tasks | Meaning |
+|---|---:|---|
+| `native` | 76 | the paper task was implemented in this repository from the start (54 exact AlphaEvolve matrix-multiplication tensors and 12 reference problems before merging, the Kaggle task, plus eighteen source-based science tasks) |
+| `upstream` | 382 | pinned original code exists with an inspected per-task command or a direct evaluator adapter (283 adapters) |
+| `specification` | 445 | the task is identified in the paper but no complete public evaluator was found |
+
+`status` is derived from the evaluator: `ready` when `execution.suite.protocol` is executable (631 tasks), otherwise `requires_setup` for pinned upstream code or `blocked`. `run.py evaluate <id>` runs the suite evaluator; `--route upstream` runs the pinned original evaluator adapter instead (the source is fetched into `.cache/upstreams/` by `run.py setup`). Where the original evaluator needed a missing component, a **recovered adapter** under `adapters/recovered/` supplies it without changing the upstream scoring code:
+
+- original solver adapters for EoH, HSEvo, ReEvo and MCTS-AHD (bounded instance/iteration profiles of the papers' evaluators);
+- LLaMEA-BO's 24 BBOB objectives with the original AOCC scorer; FunBO's reconstructed OOD tasks;
+- FunSearch constructors (cap set, admissible tuples, isosceles-free sets) with independent certificates; ShinkaEvolve's circle validator;
+- the AlphaEvolve `mathematical_results` notebook verification cells, hash-pinned and executed on any candidate (19 tasks);
+- CoEvo's LLM-SR evaluator (also used to give DrSR, which has no code, a recreated protocol), The Station's packing verifier, LLM4AD's evaluators for MEoH, AgenticOptimization's circle-packing scorer;
+- SCiEL's AlgoTune examples with a byte-verified vendored AlgoTune subset, and a CSV transport repair for the R example;
+- RankEvolve's three small BEIR corpora and the ADRS data locks (`scripts/prepare_adrs_data.py`, `scripts/prepare_beir_data.py`).
+
+Each repair or reconstruction is labelled in the manifest (`implementation_label`) so a recreated protocol is never mistaken for the original one.
+
+## 3. The SCiEL-style suite
+
+`suite/<task-id>/` is the layout SCiEL consumes directly: `evaluator.py` (`evaluate(program_path) -> dict`), `initial_program.py` with `EVOLVE-BLOCK` markers, a ready `config.yaml`, a task `README.md`, `problem.json` (the human-oriented record) and `task.json` (the manifest). It is generated by `scripts/build_suite.py` from classification rules (task id → evaluator family and parameters) and family templates in `scripts/suite_families.py`; the shared evaluator code is the library `suite/_lib/autoresearch_suite`.
+
+| Protocol | Packages | What it means |
+|---|---:|---|
+| `original` | 130 | evaluator copied verbatim from the pinned source, every file SHA-256 recorded in `problem.json.origin`: all 93 SCiEL examples, the five CORAL ADRS systems tasks (Cloudcast, expert placement, PRISM, LLM-SQL, transaction scheduling) for AdaEvolve/CORAL/EvoX/Pairwise-Validator, the Anthropic performance take-home simulator, the AlgoTune subset, the EvoX ALE-Bench evaluators, the ShinkaEvolve Julia evaluator, and the RankEvolve and ReEvo evaluators through their pinned checkouts |
+| `recreated_verified` | 81 | verifier reimplemented from the paper or notebook and shown to reproduce the **published value exactly on the published construction**: circle packings, Heilbronn problems, distance ratios, kissing configuration, hexagon packing, the autocorrelation inequalities, Erdős minimum overlap, sums/differences, uncertainty inequality (Hermite and Laguerre), all 55 matrix-multiplication tensors, and the Santa 2025 tree-packing metric (reproduces the official metric's doctest value and the sample submission's score exactly) |
+| `recreated` | 422 | evaluator reimplemented from the paper's task description with seeded, locally generated instances or public data: constructive/GLS/ACO heuristics for TSP, CVRP, orienteering, knapsacks, bin packing, shop scheduling, RCPSP, assembly lines, MIS, max-cut, facility location, EVRP-TW, 3-D packing, QPs, SAT; BBOB, FunBO, EvolCAF and LLaMEA-MOBO black-box tasks (ZDT/DTLZ/WFG/RE); LLM-SR, Feynman and univariate regression; ODE integration, root finding, feedback control; scikit-learn HPO (FunBO, Bayesmark); a non-stationary bandit |
+| `unsupported` | 270 | needs GPU or special hardware, a simulator that does not run on this machine, an LLM agent environment, an undistributed dataset or benchmark, an external toolchain or a proprietary system; the stub evaluator records the reason and the exact requirements, and the README documents the intended candidate |
+
+Families added when the blocked groups were unblocked (see `docs/RESULTS.md` for what runs):
+
+- **Model-driven benchmarks** (`llm_benchmark`, 96 tasks after merging, from 27 papers): the candidate is `solve(question, llm)`; `llm` is a cached, budgeted OpenRouter client (`suite/_lib/autoresearch_suite/llm.py`); benchmarks come from public Hugging Face datasets and the Instruction Induction GitHub data (`llm_benchmarks.py`), scored by exact match, numeric match, option letter, label, F1 or executed tests on a fixed seeded sample. Benchmarks without a public source (MT-Bench judged writing, IMO proof benches, APReS, CRAVE, StegPoet, TravelPlanner, DevEval, LeetCode contests, LawBench, USPTO-50k, ArXivMath, ABCD, OR word problems, QDAIF writing, Banking77 and Financial PhraseBank on the Hub's script-free path) stay unsupported with that reason.
+- **ARC** (`arc_solver`, 2): public ARC-AGI-1 and ARC-AGI-2 data converted to the Kaggle layout; `solve(task, llm)` returns output grids.
+- **RL algorithm design** (`rl_algorithm`, 10): Gymnasium classic control, Box2D and MuJoCo tasks with a small training budget; the candidate is an `Agent` class.
+- **Reward design** (`reward_design`, 10): MetaWorld v3 manipulation tasks; a linear policy is trained with the cross-entropy method under the candidate reward and scored by the task's own success signal.
+- **LLM-SRBench** (`lsr_equation`, 8): LSR-Transform and LSR-Synth instances from the public mirror `pkuHaowei/llm-srbench`.
+- **ALE-Bench contests** (`alebench`, 10): the EvoX evaluators copied verbatim with a shim for their unpublished session helper; the ALE-Bench judge runs in Docker.
+- **Upstream routes** (`rankevolve_bm25` 15 including the twelve BRIGHT splits fetched from the Hub at run time, `reevo_upstream` 5, `shinka_julia` 1): the paper's own pinned evaluator wrapped as a suite evaluator (`checkout:` requirement).
+
+Families added on 2026-09-20 when the remaining blocked groups were recreated on the CPU (`docs/RESULTS.md`, section 8):
+
+- **CPU kernels** (`kernel_cpu` 27, `kernel_cpu_attention` 24): the AVO attention configurations (exact shapes, float32 instead of BF16), the KernelPro KernelBench levels and Triton inference kernels, the AccelOpt NKIBench kernels, the EurekAgent TriMul operator and the decode-attention kernel are implemented as PyTorch CPU operators; the candidate is one function per operator, scored by speedup or TFLOPS against the PyTorch reference after an exact correctness check (`suite/_lib/autoresearch_suite/kernel_cpu.py`).
+- **Learning to optimise** (`l2o` 19 after merging): the FunL2O families (DC3 and FSNet QP/QCQP/SOCP, IPM-MPNN, PDHG-Net, pivot and basis LP families, predict-and-search and backdoor-branching MILPs) on locally generated instances; `solve(problem, time_limit)` is scored by the relative gap to Clarabel, HiGHS or a multistart reference.
+- **Text games** (`text_game` 7): the six Jericho games of Learning-to-Learn-at-Test-Time and BALROG's TextWorld, played by `act(observation, valid_actions, history, llm)` for a fixed step budget; game files come from `scripts/prepare_game_data.py`.
+- **MNIST-1D architecture search** (`mnist1d_arch` 1) and **Gym reward design** (`gym_reward_design` 11 after merging): EvoPrompting's CPU-scale NAS task, and the Eureka, DrEureka, STRIDE, REvolve, HyperAgents and Text2Reward reward-design tasks whose simulators have a Gymnasium MuJoCo analogue (Ant, Humanoid, Hopper, InvertedPendulum, Adroit door).
+- **Model-driven benchmarks with newly found public sources** (26 tasks): AIME 2023 to 2025 scaffolds, the EvoOR-Agent word problems (NL4Opt, IndustryOR, MAMO, BWOR), MT-Bench writing/roleplay/humanities and the QDAIF creative-writing tasks (rated by the model as a judge with a fixed rubric), epistemic reasoning, IMO-AnswerBench, LawBench charge prediction, Natural Plan trip planning (the official parser ported), BIOSSES, NCBI-disease mentions, ASSET (SARI), Banking77 and Financial PhraseBank (MTEB mirrors), heart disease.
+
+Design rules for the recreated families:
+
+- The candidate contract follows the paper family where it is known (`priority(item, bins)` for online bin packing, `select_next_node` for constructive routing, `heuristics(...)` for ACO, `update_edge_distance` for guided local search, `Optimizer(budget, dim)` for LLaMEA, `acquisition(mu, sigma, f_best)` for FunBO, `equation(*inputs, params)` for LLM-SR).
+- Instances are generated with fixed seeds; scores are comparable between runs of the suite, not with the papers' tables. Where the paper's data is public and small it is embedded (the LLM-SR datasets from CoEvo, MIT).
+- Every simplification is written into the task README (single-mode RCPSP for A2DEPT, a five-function BBOB subset for LLaMEA-HPO, base functions for FunBO's scaled ID benchmark, a documented cost model for cost-aware BO).
+
+Large released data (LLM-SQL datasets, the EPLB expert-load trace) is fetched into `suite/_lib/vendor/adrs` by `scripts/prepare_adrs_data.py --suite` and is not stored in the repository.
+
+### The Kaggle Santa 2025 task
+
+The competition asks for 200 configurations: for every n from 1 to 200, place n copies of a fixed 15-vertex Christmas-tree polygon (rotations allowed, no overlaps, coordinates within ±100) so that the axis-aligned bounding square of the union is as small as possible; the score is the sum over n of bounding-square area divided by n, lower is better. The competition pages are rendered client-side, so the metric was taken from a public mirror of the competition's metric notebook (pinned commit in `catalog/community.json`) and reimplemented in `suite/_lib/autoresearch_suite/packing.py` with the same polygon, the same 1e18 scaling for shapely, the same touch-but-not-overlap rule and the same Decimal arithmetic. The reimplementation reproduces the official code's doctest value (0.877038143325303) and the getting-started sample submission's score (176.60550959158516) exactly (`validation/santa-2025-crosscheck.json`, `tests/test_suite.py`). The candidate is `construct(n) -> (n, 3) rows (x, y, deg)`; the seed places upright trees on a grid and scores 162.58. Leaderboard values are not embedded.
+
+## 3b. Labels
+
+Every task carries a `labels` block assigned by `scripts/task_labels.py` during suite generation; `docs/LABELS.md` defines the vocabulary and gives the per-source rationale. The main label, `scientific_contribution`, says what an improved score would be: a new result on an open mathematical problem (143 tasks), a better model of real measurements (13), a rediscovery of a known law on synthetic data (21), a better algorithm on benchmark instances (264), engineering performance (249) or a model benchmark (213). A second axis, `area`, gives the coarse field the problem targets (mathematics, optimization, scientific computing, theoretical computer science, cosmology/astrophysics, particle physics, quantum information, climate dynamics, machine learning, language and agents, software engineering, systems and hardware, robotics and control, biology, physics, chemistry, materials science, information retrieval, finance, games).
+
+## 4. Regenerating everything
+
+```sh
+python3 scripts/build_sciel_examples.py --source ../SCiEL   # SCiEL benchmark-example records
+python3 scripts/build_catalog.py                            # suite/<id>/task.json, papers/, catalog/ (calls import_sciel_math, import_community and import_science)
+python3 scripts/build_suite.py --sciel ../SCiEL             # evaluators, seeds, configs, READMEs, problem.json, labels; augments task.json; rebuilds indexes
+python3 scripts/find_duplicates.py                          # report duplicate problems; --apply merges them (then rerun build_catalog and build_suite)
+python3 scripts/task_labels.py --doc                        # docs/LABELS.md from the labelled catalog
+python3 run.py validate && python3 scripts/check_schema.py
+python3 -m unittest discover -s tests
+```
+
+To add a task: record it in `catalog/research.json` (name, benchmark, metric, direction, source locator, pinned repository, adapter or command), regenerate, then add a `classify()` rule and, if needed, a family in `scripts/suite_families.py` for the suite. Never mark a task runnable because a stub exists; missing code, private data or hardware are recorded as gaps.
+
+## 5. Science supplement
+
+Ten tasks add explicit theoretical computer science, cosmology/astrophysics, particle physics, quantum information and climate dynamics coverage. The new source records are separate from the original 98-paper inventory. `catalog/science/<topic>.json` records each task and its adaptations; `scripts/science_<topic>.py` registers its family and seed, and `suite/_lib/autoresearch_suite/science_<topic>.py` contains its independent verifier. The importer is called during normal catalog generation. See [SCIENCE_TASKS.md](SCIENCE_TASKS.md) for all sources, candidate contracts, metrics and execution evidence.
+
+The two TCS tasks verify published feasible constructions and use `recreated_verified`; the eight numerical/method tasks use `recreated`. Their scores do not claim to reproduce paper experiments, establish new physics, or solve unrestricted open questions.

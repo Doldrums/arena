@@ -47,6 +47,32 @@ def test_perfect_seed_is_not_an_improvement_and_repeats_are_not_unique(tmp_path)
     assert result['score_gain'] == 0 and result['cohort']
 
 
+def test_bundled_evaluator_results_are_visible_and_grouped_by_manifest(tmp_path):
+    folder, value = receipt(tmp_path, 1)
+    value['task_source'] = dict(kind='bundled', id='arena-tasks',
+        manifest_sha256='5' * 64, external_files_sha256='6' * 64, file_count=6000)
+    write(folder / 'receipt.json', value)
+    result = canonical(Evidence(tmp_path), RUN)
+    assert result['status'] == 'recorded' and result['valid'] == 1
+    assert result['best_score'] == 1.0 and result['cohort']
+    folder2, value2 = receipt(tmp_path, 2)
+    value2['task_source'] = {**value['task_source'], 'manifest_sha256': '7' * 64}
+    write(folder2 / 'receipt.json', value2)
+    result = canonical(Evidence(tmp_path), RUN)
+    assert result['evaluations'] == 2 and result['cohort'] is None
+    assert result['best_score'] is None and result['status'] == 'partial'
+
+
+def test_bundled_results_with_changed_native_assets_are_separate(tmp_path):
+    for index in (1, 2):
+        folder, value = receipt(tmp_path, index)
+        value['task_source'] = dict(kind='bundled', id='arena-tasks',
+            manifest_sha256='5' * 64, external_files_sha256=str(index) * 64, file_count=6000)
+        write(folder / 'receipt.json', value)
+    result = canonical(Evidence(tmp_path), RUN)
+    assert result['evaluations'] == 2 and result['cohort'] is None
+
+
 def test_invalid_initial_reference_is_not_replaced_with_later_success(tmp_path):
     receipt(tmp_path, 1, score=None, valid=False)
     receipt(tmp_path, 2, score=0.0)

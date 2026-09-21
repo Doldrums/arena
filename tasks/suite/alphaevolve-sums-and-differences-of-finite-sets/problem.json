@@ -1,0 +1,86 @@
+{
+  "protocol": "recreated_verified",
+  "family": "sums_differences",
+  "direction": "maximize",
+  "contract": "construct() -> list of nonnegative integers containing 0; score is the lower bound 1 + log(|U-U|/|U+U|)/log(2 max U + 1) on C6",
+  "parameters": {
+    "published": 1.1479888965092757
+  },
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 120,
+  "notes": [
+    "Verification reimplemented from the AlphaEvolve mathematical_results notebook; the published construction reproduces the published value exactly with this evaluator (see tests/test_suite.py)."
+  ],
+  "protocol_description": "Reimplemented in this repository and cross-checked against the paper's published constructions/values.",
+  "id": "alphaevolve-sums-and-differences-of-finite-sets",
+  "name": "Sums and differences of finite sets",
+  "paper_ids": [
+    "alphaevolve"
+  ],
+  "description": "Construct a finite set U of nonnegative integers containing 0 to maximize the sumset/difference-set exponent lower bound. The paper supplies constructions of size 2003 and 54265.",
+  "benchmark": "Sums and differences of finite sets",
+  "paper_metric": "1 + log(|U-U|/|U+U|)/log(2*max(U)+1) lower bound",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2506.13131",
+      "type": "paper",
+      "locator": "Appendix B.6"
+    },
+    {
+      "url": "https://github.com/google-deepmind/alphaevolve_results/tree/4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+      "type": "repository",
+      "locator": "mathematical_results.ipynb"
+    }
+  ],
+  "limitations": [
+    "Paper reports over 50 mathematical problems but explicitly details 13 families in Appendix B. Unpublished full task inventory and internal Google assets prevent a complete runnable reproduction.",
+    "Official result notebook provides mathematical constructions and verification, but no AlphaEvolve search implementation. It publishes a subset of all evaluated problems; the full >50 mathematical problem inventory is not disclosed.",
+    "Paper Appendix B.3 writes max(abs(autoconvolution)); notebook B.3 reported 1.4557 construction computes abs(max(autoconvolution)). The notebook separately verifies the max(abs(...)) variant at 1.4688. These are not interchangeable metrics.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "alphaevolve",
+      "title": "AlphaEvolve: A coding agent for scientific and algorithmic discovery",
+      "url": "https://arxiv.org/pdf/2506.13131"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Construct integer sets that improve extremal bounds relating sumset and difference-set cardinalities.",
+    "importance_rationale": "These constructions determine limits in additive combinatorics. Their significance is a stronger mathematical inequality or counterexample, rather than a general-purpose model score.",
+    "papers": [
+      {
+        "title": "Sums and Differences of Finite Sets",
+        "url": "https://gyarmatikati.web.elte.hu/publ/sumdiffv.pdf",
+        "task_relation": "The paper derives the construction exponent 1 + log(|U−U|/|U+U|)/log(2 max U + 1) from a finite nonnegative integer set U containing zero. This is the local construction objective used by Sums and differences of finite sets.",
+        "primary_goal": "Establish sharp relationships and constructive bounds for sizes of finite sumsets and difference sets.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0",
+  "evidence_kind": "Published construction warm-start through original SCiEL evaluator",
+  "historical_recovery_check": true,
+  "authoritative_current_run": "Use the final recovery campaign report for current manifest/runtime fingerprints.",
+  "source_sha256": "c52fb68e9780402ab78a472cc70baa0d84114ea859c74eb7438a6ec8ebd283c7",
+  "path_sanitization": {
+    "${REPOSITORY}": "repository root",
+    "${SCIEL_ROOT}": "external pinned SCiEL source",
+    "${WORKSPACE}": "task workspace",
+    "${HOME}": "user home directory",
+    "${TEMP}": "temporary directory"
+  },
+  "results": [
+    {
+      "task_id": "sciel-math-sums-diffs-finite-sets",
+      "mode": "sciel_evaluator_smoke",
+      "score": 0.9909977300808179,
+      "valid": null,
+      "sciel_exercised": true,
+      "sciel_source": {
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "tracked_modified": false,
+        "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+      },
+      "llm_calls_requested": false,
+      "logs": {
+        "stdout": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-sums-diffs-finite-sets/evaluator_smoke.stdout.log",
+        "stderr": "${WORKSPACE}/work/recovery-sciel/sciel-smokes/sciel-math-sums-diffs-finite-sets/evaluator_smoke.stderr.log"
+      },
+      "status": "unverified",
+      "metric": "combined_score",
+      "direction": "maximize",
+      "combined_score": 0.9909977300808179,
+      "sciel_metrics": {
+        "combined_score": 0.9909977300808179,
+        "evaluation_failed": 0.0,
+        "validity_known": 0.0,
+        "original_score": 0.9909977300808179
+      },
+      "evolution_exercised": false,
+      "mutations": 0,
+      "task_result": {
+        "schema_version": "1.0",
+        "task_id": "sciel-math-sums-diffs-finite-sets",
+        "mode": "upstream",
+        "status": "completed",
+        "valid": null,
+        "score": 0.9909977300808179,
+        "source_type": "git",
+        "repository": "https://github.com/luciferkonn/SCiEL",
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "metric": "combined_score",
+        "direction": "maximize",
+        "candidate_sha256": "5ad4987b14b6ace24b7f1151f5a73e3196e2cd1451cfd84ca2131651f7438189",
+        "evaluator_sha256": "bf3c4ff0e11abe294b8f5d8c54090e2c701c9da25c52e693057c60f25aa96661",
+        "evaluator_scope": "upstream",
+        "implementation_label": "Original SCiEL evaluator; published AlphaEvolve 2003-element warm-start seed",
+        "repository_asset_sha256": {
+          "adapters/recovered/sciel_sums_diffs/source.json": "b5d0916d26f7978e8dd3b233158b27a598bfc09fefa9eaeda99d97f32242697c",
+          "adapters/recovered/sciel_sums_diffs/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        "started_at": "2026-09-19T12:38:29.152042+00:00",
+        "actual_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "working_tree_modified": false,
+        "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "upstream_result": {
+          "c6_bound": 1.1479888965092757,
+          "combined_score": 0.9909977300808179,
+          "set_size": 2003,
+          "max_val": 1040200,
+          "eval_time": 0.23447918891906738
+        },
+        "diagnostic_tail": "C6 lower bound achieved: 1.147989\nKnown best bound (AlphaEvolve): 1.158417281556896\nResult is not better than the known lower bounds.\n",
+        "finished_at": "2026-09-19T12:38:29.713877+00:00"
+      },
+      "upstream_result": {
+        "c6_bound": 1.1479888965092757,
+        "combined_score": 0.9909977300808179,
+        "set_size": 2003,
+        "max_val": 1040200,
+        "eval_time": 0.23447918891906738
+      },
+      "engine_evaluator_file": "engine/openevolve/evaluator.py",
+      "python_version": "3.12.14",
+      "exit_code": 0
+    }
+  ]
+}

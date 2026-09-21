@@ -1,0 +1,189 @@
+{
+  "schema_version": "1.0",
+  "id": "cocoevo-leetcode-contest",
+  "name": "LeetCode-Contest",
+  "description": "LeetCode-Contest task evaluated in CoCoEvo: Co-Evolution of Programs and Test Cases to Enhance Code Generation.",
+  "paper_ids": [
+    "cocoevo"
+  ],
+  "kind": "upstream",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2502.10802",
+      "type": "paper",
+      "locator": "Section IV-A, Table I"
+    },
+    {
+      "url": "https://github.com/lbaf23/llm-cocoevo/tree/504355b568b2a0cbd4054783c80bac9c76a4de6d",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "80 weekly/biweekly contest problems",
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "pass@1",
+    "paper_metric": "pass@1",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "80 weekly/biweekly contest problems",
+    "protocol": "upstream",
+    "source_locator": "Section IV-A, Table I"
+  },
+  "execution": {
+    "repository": "https://github.com/lbaf23/llm-cocoevo",
+    "commit": "504355b568b2a0cbd4054783c80bac9c76a4de6d",
+    "upstream_path": null,
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "coevod.py",
+          "--config",
+          "config/config-leetcode-contest-qwen2.5-coder-32b.json",
+          "--run_type",
+          "coevo",
+          "--api_key",
+          "${LLM_API_KEY}",
+          "--base_url",
+          "${LLM_BASE_URL}"
+        ],
+        "cwd": ".",
+        "notes": "CoCoEvo program/test co-evolution on the LeetCode-Contest split with the paper's Qwen2.5-Coder-32B config. Model-driven search: requires LLM API credentials and incurs cost; never run by seed checks.",
+        "source_url": "https://github.com/lbaf23/llm-cocoevo/blob/504355b568b2a0cbd4054783c80bac9c76a4de6d/README.md"
+      },
+      {
+        "argv": [
+          "python",
+          "count_code_population.py",
+          "result_dir",
+          "result/leetcode_contest/qwen2.5-coder-32b/coevod"
+        ],
+        "cwd": ".",
+        "notes": "Pass@1 accounting over a finished CoCoEvo run directory (no model calls).",
+        "source_url": "https://github.com/lbaf23/llm-cocoevo/blob/504355b568b2a0cbd4054783c80bac9c76a4de6d/README.md"
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "pip install -r requirements.txt",
+      "Download test.jsonl from https://huggingface.co/datasets/lbaf23/LeetCode-Contest into data/leetcode_contest.jsonl"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -r requirements.txt",
+      "Download test.jsonl from https://huggingface.co/datasets/lbaf23/LeetCode-Contest into data/leetcode_contest.jsonl"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Source pinned on 2026-09-19; see docs/TASKS.md."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "dataset:80 weekly/biweekly contest problems"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_api",
+      "unsupported_reason": "Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the 80 weekly/biweekly contest problems benchmark. The suite embeds neither model calls nor the benchmark data."
+    }
+  },
+  "limitations": [
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "Official CoCoEvo release pinned; program/test co-evolution needs a code model endpoint and the separately downloaded contest/real-world datasets.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "LeetCode-Contest",
+    "slug": "leetcode-contest",
+    "description": "LeetCode-Contest task evaluated in CoCoEvo: Co-Evolution of Programs and Test Cases to Enhance Code Generation.",
+    "benchmark": "80 weekly/biweekly contest problems",
+    "dataset": "80 weekly/biweekly contest problems",
+    "metric": "pass@1",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2502.10802",
+    "source_locator": "Section IV-A, Table I",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [
+      "Source pinned on 2026-09-19; see docs/TASKS.md."
+    ],
+    "setup_commands": [],
+    "run_commands": [
+      {
+        "argv": [
+          "python",
+          "coevod.py",
+          "--config",
+          "config/config-leetcode-contest-qwen2.5-coder-32b.json",
+          "--run_type",
+          "coevo",
+          "--api_key",
+          "${LLM_API_KEY}",
+          "--base_url",
+          "${LLM_BASE_URL}"
+        ],
+        "cwd": ".",
+        "notes": "CoCoEvo program/test co-evolution on the LeetCode-Contest split with the paper's Qwen2.5-Coder-32B config. Model-driven search: requires LLM API credentials and incurs cost; never run by seed checks.",
+        "source_url": "https://github.com/lbaf23/llm-cocoevo/blob/504355b568b2a0cbd4054783c80bac9c76a4de6d/README.md"
+      },
+      {
+        "argv": [
+          "python",
+          "count_code_population.py",
+          "result_dir",
+          "result/leetcode_contest/qwen2.5-coder-32b/coevod"
+        ],
+        "cwd": ".",
+        "notes": "Pass@1 accounting over a finished CoCoEvo run directory (no model calls).",
+        "source_url": "https://github.com/lbaf23/llm-cocoevo/blob/504355b568b2a0cbd4054783c80bac9c76a4de6d/README.md"
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "protocol": "original",
+  "family": "kernel_builder",
+  "direction": "minimize",
+  "contract": "class KernelBuilder with build_kernel(forest_height, n_values, n_indices, rounds) producing VLIW instructions (self.instrs) for the frozen simulator; score = cycle count of a correct kernel",
+  "parameters": {
+    "forest_height": 10,
+    "rounds": 16,
+    "batch_size": 256,
+    "iterations": 8
+  },
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 600,
+  "notes": [],
+  "origin": {
+    "repository": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+    "path": "examples/kernel_builder",
+    "files_sha256": {
+      "grader.py": "e70c139c10e8027077d0a526fd7f940bf676130e08fe252623030766319fd4fc",
+      "frozen_problem.py": "fadb0f0858e2259f5759077a5544b9906dad3ceee80d37b4f0aa77da730c93c9",
+      "utils.py": "fb2321f24a06bfab13d441467a7e98ef9ba6c21d8347c0ce1cb470104d82e9f5"
+    }
+  },
+  "protocol_description": "Verbatim copy of the CORAL kernel_builder grader and frozen simulator (Anthropic performance take-home); the CORAL base classes are stubbed so the unmodified grader module can be imported.",
+  "id": "coral-anthropic-performance-take-home",
+  "name": "Anthropic performance take-home",
+  "paper_ids": [
+    "coral",
+    "aevo"
+  ],
+  "description": "Anthropic performance take-home",
+  "benchmark": null,
+  "paper_metric": "simulated VLIW SIMD cycle count",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1 stress tests"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/kernel_builder"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2605.13821",
+      "type": "paper",
+      "locator": "Section 5.1; Appendix C.1"
+    }
+  ],
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "coral",
+      "title": "CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery",
+      "url": "https://arxiv.org/pdf/2604.01658"
+    },
+    {
+      "id": "aevo",
+      "title": "Harnessing Agentic Evolution",
+      "url": "https://arxiv.org/pdf/2605.13821"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "kernel",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

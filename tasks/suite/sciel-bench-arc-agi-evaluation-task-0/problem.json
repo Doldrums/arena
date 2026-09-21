@@ -1,0 +1,105 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "file:data/arc-prize-2025/arc-agi_evaluation_challenges.json",
+    "py:numpy"
+  ],
+  "timeout": 600,
+  "notes": [
+    "Needs the ARC Prize 2025 JSON files under suite/_lib/data/arc-prize-2025 (Kaggle download); DATA_ROOT/ARC_TASK_FILE/TASK_NUM select the task.",
+    "Imports openevolve.evaluation_result; suite/_lib/openevolve is a verbatim shim of that module."
+  ],
+  "entry": {
+    "callable": "evaluate",
+    "env": {
+      "DATA_ROOT": "{suite_lib}/data/arc-prize-2025",
+      "ARC_TASK_FILE": "evaluation",
+      "TASK_NUM": "0"
+    },
+    "seed": "initial_program.py",
+    "score_key": "combined_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/arc_benchmark",
+    "files_sha256": {
+      "README.md": "d42942a0e2e9e6c6e972bfc89b83a4fa811bd48830230047c069f56f6e902997",
+      "base_config.yaml": "45a3af0a4b4f7cbd2ea41aa3609c210ba4efa6809f1fe4caa3f8b31e27286eec",
+      "config.yaml": "9cfeec30c1e79328267108603829d81c8b5c7d09728bfcbc36229afe79aa1aa3",
+      "evaluator.py": "e6d425478a7c1ed00be54fea3c1199fa4d111db3627b44017e4023406f3affd7",
+      "generate_config.py": "ed2d5da192ba6202e3f4fa525a0468f6efb55c8501924fdfd214b2bef5204abb",
+      "initial_program.py": "d9c98b808cb4c7b10406ca905c7bd17582dd94bc3e073a88abfc474e04a830c8",
+      "post_evolution_eval.py": "a5fdeaf348949b1e8d5d24830f64221d27bab2da12ae70fab79bf656d75c9a56",
+      "run_evolution.sh": "043ddda3e0205a8c4fc4346553e9c4691b426cd0f23c4f8e79e417ec34c35e05"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/arc_benchmark` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-bench-arc-agi-evaluation-task-0",
+  "name": "SCiEL: ARC-AGI evaluation task 0 (arc-prize-2025)",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Write two grid-transformation attempts (transform_grid_attempt_1/2 over numpy arrays) for one ARC-AGI task selected by index from the arc-prize-2025 challenge file. The pinned evaluator scores pass@2 accuracy over the task's training pairs; the source README's default is evaluation-set index 0 (task 0934a4d8).",
+  "benchmark": "SCiEL source example arc_benchmark",
+  "paper_metric": "combined_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/arc_benchmark/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/arc_benchmark/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/arc_benchmark/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The score is pass@2 on the task's training pairs; held-out test-pair scoring uses the separate post_evolution_eval.py script and the solutions file.",
+    "One package represents the parameterized example; other task indices and splits are selected through the documented environment variables rather than enumerated as packages."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

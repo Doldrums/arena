@@ -9,36 +9,7 @@
     "sources": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "$ref": "common.schema.json#/$defs/identifier"
-          },
-          "repository": {
-            "$ref": "common.schema.json#/$defs/repository"
-          },
-          "catalog_path": {
-            "$ref": "common.schema.json#/$defs/relative_path"
-          },
-          "catalog_sha256": {
-            "$ref": "common.schema.json#/$defs/sha256"
-          },
-          "index_path": {
-            "$ref": "common.schema.json#/$defs/relative_path"
-          },
-          "index_sha256": {
-            "$ref": "common.schema.json#/$defs/sha256"
-          }
-        },
-        "required": [
-          "id",
-          "repository",
-          "catalog_path",
-          "catalog_sha256",
-          "index_path",
-          "index_sha256"
-        ],
-        "additionalProperties": false
+        "$ref": "task-source.schema.json"
       },
       "minItems": 1
     },
@@ -333,7 +304,7 @@
                 "properties": {
                   "url": {
                     "type": "string",
-                    "pattern": "^https://github\\.com/[^/]+/[^/]+/blob/[0-9a-f]{40}/suite/[^/]+/problem\\.json$"
+                    "pattern": "^https://github\\.com/[^/]+/[^/]+/blob/(?:[0-9a-f]{40}/suite|main/tasks/suite)/[^/]+/problem\\.json$"
                   },
                   "path": {
                     "$ref": "common.schema.json#/$defs/relative_path"

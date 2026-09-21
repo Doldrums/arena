@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "id": "science-physics-ariel-atmospheric-posterior",
+  "name": "Ariel atmospheric posterior retrieval",
+  "description": "retrieve(spectrum, uncertainty, planet_metadata) -> 32..4096 integer indices into source TauREx forward grid, with repetition. Metadata carries physical parameters, opacity-pinned spectra and prior bounds. Posterior is a declared discrete-grid adaptation. Score generating-truth CRPS, agreement with released nested-sampling reference posterior and independent spectral predictive likelihood. Split entire planets and atmospheric regimes.",
+  "paper_ids": [
+    "science-physics_expansion"
+  ],
+  "kind": "native",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://proceedings.mlr.press/v220/yip23a.html",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: Ariel atmospheric posterior retrieval"
+    },
+    {
+      "url": "https://zenodo.org/records/6770103",
+      "type": "archive",
+      "locator": "Level1/Level2 observations and nested-sampling posterior; exact TauREx opacity/model grid must be curated."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; source-data preparation may require substantial disk space",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Official ABC Level2 and tutorial archives downloaded and checksum-verified. Source-matched opacity/model conventions remain required: independent generating-truth spectral check fails (chi²/bin92.3; diagnostic radius conversion47.6). See validation/physics-atmosphere-forward-check.json."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Ariel atmospheric posterior retrieval",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_physics_ariel_atmospheric_posterior",
+    "science_family": "science_physics_ariel_atmospheric_posterior",
+    "parameters": {
+      "proposal_id": "P08"
+    },
+    "interface": "retrieve(spectrum, uncertainty, planet_metadata) -> 32..4096 integer indices into source TauREx forward grid, with repetition. Metadata carries physical parameters, opacity-pinned spectra and prior bounds. Posterior is a declared discrete-grid adaptation. Score generating-truth CRPS, agreement with released nested-sampling reference posterior and independent spectral predictive likelihood. Split entire planets and atmospheric regimes.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "cosmology_and_astrophysics"
+    },
+    "proposal_id": "P08",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "requires_setup",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL candidate interface and scientific scoring/checking authored locally. Reused specialist numerical engines are disclosed in upstream_code_reuse_scope; this does not mean the source task evaluator was copied.",
+      "upstream_evaluator_reused": false,
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_code_reuse_scope": "TauREx3.2.4 source-opacity forward-grid preparation; runtime grid metric is local"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_physics_ariel_atmospheric_posterior",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:data/physics-expansion/P08/manifest.json",
+        "file:data/physics-expansion/P08/benchmark.npz"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Published tutorial opacity grid is R≈1000 versus source-model R=10000; released radius/mass/gravity units require further validation. The independent likelihood has not reproduced source truth, so no successful seed execution is claimed."
+  ],
+  "validation": {
+    "level": "adapter_unit_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_physics_expansion.py",
+    "evidence": "validation/physics-expansion-report.json",
+    "benchmark_verified": false
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "cosmology_and_astrophysics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Sulfur dioxide in the mid-infrared transmission spectrum of WASP-39b",
+        "url": "https://www.nature.com/articles/s41586-024-07040-9",
+        "task_relation": "The local Ariel/TauREx task performs posterior inference on a discrete simulated atmospheric grid. It shares the retrieval problem, but has different spectra, species, model assumptions, and posterior restrictions; it neither analyses WASP-39b observations nor reproduces the sulfur-dioxide result.",
+        "primary_goal": "Determine the composition of WASP-39b's atmosphere from its observed mid-infrared transmission spectrum.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Infer exoplanet atmospheric composition and physical parameters from transmission spectra.",
+    "importance_rationale": "Understanding an exoplanet atmosphere through spectral retrieval is the cited paper's primary scientific goal.",
+    "reason": "The evidence is a science paper using retrieval to answer an atmospheric-composition question, rather than only a dataset or retrieval-software paper.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

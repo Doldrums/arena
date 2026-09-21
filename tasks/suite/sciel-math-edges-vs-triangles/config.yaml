@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in extremal graph theory and combinatorial optimization with deep expertise in the edges-vs-triangles problem - a classical extremal problem that asks how many edges a triangle-free graph on a fixed number of vertices can have.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that builds a triangle-free graph on exactly 16 vertices and maximizes the number of edges. The graph is returned as a 16x16 symmetric 0/1 adjacency matrix with zero diagonal (an undirected simple graph). By Turan's theorem the maximum is floor(16^2/4) = 64, achieved by the complete bipartite graph K_{8,8}.
+
+    PERFORMANCE METRICS:
+    1. **num_edges**: Number of edges in the graph, valid only if the graph is triangle-free (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: num_edges / 64 (BENCHMARK COMPARISON - maximize toward 1.0); zero if the graph contains any triangle
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Triangle-free**: The graph must contain no triangles; any triangle scores zero
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

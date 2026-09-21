@@ -1,0 +1,313 @@
+{
+  "schema_version": "1.0",
+  "id": "evox-ahc016-graph-classification",
+  "name": "ahc016 Graph classification",
+  "description": "ahc016 Graph classification",
+  "paper_ids": [
+    "evox",
+    "shinkaevolve"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Appendix A.3 Table 6"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/ale_bench/ale-bench-lite-problems/ahc016"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2509.19349",
+      "type": "paper",
+      "locator": "Section 3.3 and Appendix C.3"
+    },
+    {
+      "url": "https://huggingface.co/datasets/SakanaAI/ALE-Bench/raw/main/problem_ids_lite.txt",
+      "locator": "Lite problem registry",
+      "type": "benchmark"
+    },
+    {
+      "url": "https://github.com/SakanaAI/ALE-Bench/blob/main/src/ale_bench/data.py",
+      "locator": "list_problem_ids(lite_version=True)",
+      "type": "benchmark"
+    },
+    {
+      "url": "https://github.com/SakanaAI/ShinkaEvolve/tree/9912af12d423504b8d580f4179fd15f5f88b8c50",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "ale-bench",
+      "tenacity"
+    ],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "ALE-Bench",
+      "C++ compiler",
+      "Docker",
+      "C++20 source, ALE-Bench case generator/judge and its separately installed helper. Each call evaluates 50 public cases using 13 workers. Full private evaluation is a separate protocol."
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "official AtCoder heuristic score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "ALE-Bench-Lite",
+    "protocol": "upstream",
+    "source_locator": "Appendix A.3 Table 6"
+  },
+  "execution": {
+    "repository": "https://github.com/skydiscover-ai/skydiscover",
+    "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+    "upstream_path": "benchmarks/ale_bench/ale-bench-lite-problems/ahc016",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "benchmarks/ale_bench/ale-bench-lite-problems/ahc016/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "benchmarks/ale_bench/ale-bench-lite-problems/ahc016",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "benchmarks/ale_bench/ale-bench-lite-problems/ahc016/initial_program.cpp",
+      "dependencies": [
+        "ale-bench",
+        "tenacity"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass. Previously unresolved safe_ale_session helper located in official SakanaAI/ALE-Bench and verified at immutable commit 3da9b12fb5d112dabb3af693d1a42031c95142bc. Accepted judge status is the literal ACCEPTED.",
+      "candidate_format": "cpp20",
+      "status_key": "judge_result",
+      "status_success_value": "ACCEPTED"
+    },
+    "setup_instructions": [
+      "python -m pip install 'ale-bench @ git+https://github.com/SakanaAI/ALE-Bench.git@3da9b12fb5d112dabb3af693d1a42031c95142bc' tenacity",
+      "Install/start Docker and CairoSVG native prerequisites per https://github.com/SakanaAI/ALE-Bench/blob/3da9b12fb5d112dabb3af693d1a42031c95142bc/README.md#setup",
+      "Clone https://github.com/SakanaAI/ALE-Bench at 3da9b12fb5d112dabb3af693d1a42031c95142bc and run scripts/docker_build_all.sh with your numeric UID and GID as its two arguments. These official scripts build the judge Docker images.",
+      "Benchmark cases are downloaded on demand from SakanaAI/ALE-Bench on Hugging Face; optionally set ALE_BENCH_DATA to a local dataset checkout."
+    ],
+    "task_setup_instructions": [
+      "python -m pip install 'ale-bench @ git+https://github.com/SakanaAI/ALE-Bench.git@3da9b12fb5d112dabb3af693d1a42031c95142bc' tenacity",
+      "Install/start Docker and CairoSVG native prerequisites per https://github.com/SakanaAI/ALE-Bench/blob/3da9b12fb5d112dabb3af693d1a42031c95142bc/README.md#setup",
+      "Clone https://github.com/SakanaAI/ALE-Bench at 3da9b12fb5d112dabb3af693d1a42031c95142bc and run scripts/docker_build_all.sh with your numeric UID and GID as its two arguments. These official scripts build the judge Docker images.",
+      "Benchmark cases are downloaded on demand from SakanaAI/ALE-Bench on Hugging Face; optionally set ALE_BENCH_DATA to a local dataset checkout."
+    ],
+    "framework_setup_instructions": [
+      "uv sync"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Exact public evaluator/helper interface verified in pinned SkyDiscover and official ALE-Bench repositories. Requires Docker judge images, native Cairo dependencies and public dataset downloads; source-inspected only, not executed."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "alebench",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.cpp",
+      "callable": "evaluate",
+      "env": {
+        "DYLD_FALLBACK_LIBRARY_PATH": "/opt/homebrew/lib"
+      },
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:ale_bench",
+        "docker",
+        "bin:cargo"
+      ],
+      "timeout": 1800
+    }
+  },
+  "limitations": [
+    "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "ahc016 Graph classification",
+    "slug": "ahc016-graph-classification",
+    "description": "ahc016 Graph classification",
+    "benchmark": "ALE-Bench-Lite",
+    "dataset": null,
+    "metric": "official AtCoder heuristic score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2602.23413",
+    "source_locator": "Appendix A.3 Table 6",
+    "upstream_path": "benchmarks/ale_bench/ale-bench-lite-problems/ahc016",
+    "requirements": [
+      "ALE-Bench",
+      "C++ compiler",
+      "Docker",
+      "C++20 source, ALE-Bench case generator/judge and its separately installed helper. Each call evaluates 50 public cases using 13 workers. Full private evaluation is a separate protocol."
+    ],
+    "execution_notes": "Exact public evaluator/helper interface verified in pinned SkyDiscover and official ALE-Bench repositories. Requires Docker judge images, native Cairo dependencies and public dataset downloads; source-inspected only, not executed.",
+    "evaluator_adapter": {
+      "evaluator_path": "benchmarks/ale_bench/ale-bench-lite-problems/ahc016/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "benchmarks/ale_bench/ale-bench-lite-problems/ahc016",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "benchmarks/ale_bench/ale-bench-lite-problems/ahc016/initial_program.cpp",
+      "dependencies": [
+        "ale-bench",
+        "tenacity"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Added during second source gap pass; not runtime-tested in this pass. Previously unresolved safe_ale_session helper located in official SakanaAI/ALE-Bench and verified at immutable commit 3da9b12fb5d112dabb3af693d1a42031c95142bc. Accepted judge status is the literal ACCEPTED.",
+      "candidate_format": "cpp20",
+      "status_key": "judge_result",
+      "status_success_value": "ACCEPTED"
+    },
+    "execution_sources": [
+      "https://github.com/skydiscover-ai/skydiscover/blob/0d932b690670a7e544388ad362e9876c8bd256a0/benchmarks/ale_bench/ale-bench-lite-problems/ahc016/evaluator.py",
+      "https://github.com/SakanaAI/ALE-Bench/blob/3da9b12fb5d112dabb3af693d1a42031c95142bc/src/ale_bench_eval/safe_ale_session.py",
+      "https://github.com/SakanaAI/ALE-Bench/blob/3da9b12fb5d112dabb3af693d1a42031c95142bc/src/ale_bench/result.py",
+      "https://github.com/SakanaAI/ALE-Bench/blob/3da9b12fb5d112dabb3af693d1a42031c95142bc/pyproject.toml",
+      "https://github.com/SakanaAI/ALE-Bench/blob/3da9b12fb5d112dabb3af693d1a42031c95142bc/README.md"
+    ],
+    "setup_commands": [
+      "python -m pip install 'ale-bench @ git+https://github.com/SakanaAI/ALE-Bench.git@3da9b12fb5d112dabb3af693d1a42031c95142bc' tenacity",
+      "Install/start Docker and CairoSVG native prerequisites per https://github.com/SakanaAI/ALE-Bench/blob/3da9b12fb5d112dabb3af693d1a42031c95142bc/README.md#setup",
+      "Clone https://github.com/SakanaAI/ALE-Bench at 3da9b12fb5d112dabb3af693d1a42031c95142bc and run scripts/docker_build_all.sh with your numeric UID and GID as its two arguments. These official scripts build the judge Docker images.",
+      "Benchmark cases are downloaded on demand from SakanaAI/ALE-Bench on Hugging Face; optionally set ALE_BENCH_DATA to a local dataset checkout."
+    ],
+    "dependency_repositories": [
+      {
+        "url": "https://github.com/SakanaAI/ALE-Bench",
+        "commit": "3da9b12fb5d112dabb3af693d1a42031c95142bc",
+        "role": "ALE-Bench judging toolkit and safe_ale_session helper",
+        "license": "Apache-2.0",
+        "evidence_url": "https://github.com/SakanaAI/ALE-Bench/blob/3da9b12fb5d112dabb3af693d1a42031c95142bc/src/ale_bench_eval/safe_ale_session.py"
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "docker"
+    ],
+    "cost": "slow",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "shinkaevolve-ale-bench-lite-ahc016",
+      "paper_ids": [
+        "shinkaevolve"
+      ],
+      "name": "ALE-Bench LITE ahc016",
+      "description": "ALE-Bench LITE: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2509.19349",
+          "type": "paper",
+          "locator": "Section 3.3 and Appendix C.3"
+        },
+        {
+          "url": "https://huggingface.co/datasets/SakanaAI/ALE-Bench/raw/main/problem_ids_lite.txt",
+          "locator": "Lite problem registry",
+          "type": "benchmark"
+        },
+        {
+          "url": "https://github.com/SakanaAI/ALE-Bench/blob/main/src/ale_bench/data.py",
+          "locator": "list_problem_ids(lite_version=True)",
+          "type": "benchmark"
+        },
+        {
+          "url": "https://github.com/SakanaAI/ShinkaEvolve/tree/9912af12d423504b8d580f4179fd15f5f88b8c50",
+          "type": "repository",
+          "locator": null
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "ahc016",
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "AtCoder contest score",
+        "paper_metric": "AtCoder contest score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ALE-Bench LITE",
+        "protocol": "specified_only",
+        "source_locator": "Section 3.3 and Appendix C.3"
+      },
+      "execution": {
+        "repository": "https://github.com/SakanaAI/ShinkaEvolve",
+        "commit": "9912af12d423504b8d580f4179fd15f5f88b8c50",
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [
+          "uv pip install -e ."
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "uv pip install -e ."
+        ],
+        "setup_steps": [
+          {
+            "argv": [
+              "uv",
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": "."
+          }
+        ],
+        "notes": [
+          "Task ID verified in the official benchmark manifest. ShinkaEvolve-specific initial ALE-Agent solution and evolution driver were not located in current source tree."
+        ]
+      },
+      "limitations": [
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "Current public examples retain circle packing but do not include verified AIME, ALE-Bench LITE, or MoE experiment drivers. Later added examples are not included as paper evaluations.",
+        "Original public release v0.0.1 (commit23decc6bf118d783ddff5a3c03d2269cbf149971) was also inspected: its example directories are circle_packing, game_2048, julia_prime_counting and novelty_generator, with no released AIME, ALE or MoE evaluator.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

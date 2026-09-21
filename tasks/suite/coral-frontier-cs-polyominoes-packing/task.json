@@ -1,0 +1,155 @@
+{
+  "schema_version": "1.0",
+  "id": "coral-frontier-cs-polyominoes-packing",
+  "name": "Frontier-CS Polyominoes packing",
+  "description": "Frontier-CS Polyominoes packing",
+  "paper_ids": [
+    "coral"
+  ],
+  "kind": "upstream",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1 stress tests"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/frontier_cs_algo/0"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "packing score",
+    "paper_metric": "packing score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Frontier-CS",
+    "protocol": "upstream",
+    "source_locator": "Section 4.1 stress tests"
+  },
+  "execution": {
+    "repository": "https://github.com/Human-Agent-Society/CORAL",
+    "commit": "0123dfb939b35228cf2c1fde224cd0561e727408",
+    "upstream_path": "examples/frontier_cs_algo/0",
+    "commands": [
+      {
+        "argv": [
+          "coral",
+          "start",
+          "-c",
+          "examples/frontier_cs_algo/0/task.yaml"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Human-Agent-Society/CORAL/blob/0123dfb939b35228cf2c1fde224cd0561e727408/examples/frontier_cs_algo/0/task.yaml",
+        "notes": "Exact Polyominoes configuration: Frontier-CS problem0, C++17,70 cases,2s/256MB per case. Launches full Claude Code agent search; requires authenticated Claude Code, tmux, CORAL and Frontier-CS judging dependencies. Source-inspected, not executed."
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "python -m pip install -e .",
+      "Install/authenticate Claude Code and tmux. Grader setup in task.yaml installs packaged grader and Frontier-CS; inspect Frontier-CS prerequisites for its judge."
+    ],
+    "task_setup_instructions": [
+      "python -m pip install -e .",
+      "Install/authenticate Claude Code and tmux. Grader setup in task.yaml installs packaged grader and Frontier-CS; inspect Frontier-CS prerequisites for its judge."
+    ],
+    "framework_setup_instructions": [
+      "uv sync --extra dev"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Pinned task.yaml names Pack the Polyominoes (Reflections Allowed) and problem_id0, resolving the previous unknown selector."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "toolchain:Frontier-CS judge",
+        "docker"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "toolchain",
+      "unsupported_reason": "Frontier-CS problems are judged by the Frontier-CS evaluation service (Docker judge and hidden tests), which is not bundled."
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Frontier-CS Polyominoes packing",
+    "slug": "frontier-cs-polyominoes-packing",
+    "description": "Frontier-CS Polyominoes packing",
+    "benchmark": "Frontier-CS",
+    "dataset": null,
+    "metric": "packing score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2604.01658",
+    "source_locator": "Section 4.1 stress tests",
+    "upstream_path": "examples/frontier_cs_algo/0",
+    "requirements": [],
+    "execution_notes": "Pinned task.yaml names Pack the Polyominoes (Reflections Allowed) and problem_id0, resolving the previous unknown selector.",
+    "run_commands": [
+      {
+        "argv": [
+          "coral",
+          "start",
+          "-c",
+          "examples/frontier_cs_algo/0/task.yaml"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/Human-Agent-Society/CORAL/blob/0123dfb939b35228cf2c1fde224cd0561e727408/examples/frontier_cs_algo/0/task.yaml",
+        "notes": "Exact Polyominoes configuration: Frontier-CS problem0, C++17,70 cases,2s/256MB per case. Launches full Claude Code agent search; requires authenticated Claude Code, tmux, CORAL and Frontier-CS judging dependencies. Source-inspected, not executed."
+      }
+    ],
+    "setup_commands": [
+      "python -m pip install -e .",
+      "Install/authenticate Claude Code and tmux. Grader setup in task.yaml installs packaged grader and Frontier-CS; inspect Frontier-CS prerequisites for its judge."
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "docker",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

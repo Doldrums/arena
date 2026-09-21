@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0",
+  "id": "constitutional-evolution-multi-agent-society-constitution-optimization",
+  "name": "Multi-agent society constitution optimization",
+  "description": "Multi-agent society constitution optimization",
+  "paper_ids": [
+    "constitutional-evolution"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2602.00755",
+      "type": "paper",
+      "locator": "Sections 3 and 4"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "Gridworld society with resource gathering, team projects and Overseer elimination",
+    "notes": [
+      "custom gridworld simulator",
+      "LLM agents"
+    ]
+  },
+  "evaluation": {
+    "metric": "Societal Stability Score",
+    "paper_metric": "Societal Stability Score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Sections 3 and 4"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "OpenEvolve is cited as optimizer but a task-specific implementation was not linked."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "service:llm_api",
+        "env:OPENROUTER_API_KEY",
+        "dataset:Multi-agent society constitution optimization"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "llm_api",
+      "unsupported_reason": "Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the Multi-agent society constitution optimization benchmark. The suite embeds neither model calls nor the benchmark data."
+    }
+  },
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "Multi-agent society constitution optimization",
+    "slug": "multi-agent-society-constitution-optimization",
+    "description": "Multi-agent society constitution optimization",
+    "benchmark": null,
+    "dataset": "Gridworld society with resource gathering, team projects and Overseer elimination",
+    "metric": "Societal Stability Score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2602.00755",
+    "source_locator": "Sections 3 and 4",
+    "upstream_path": null,
+    "requirements": [
+      "custom gridworld simulator",
+      "LLM agents"
+    ],
+    "execution_notes": "OpenEvolve is cited as optimizer but a task-specific implementation was not linked."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

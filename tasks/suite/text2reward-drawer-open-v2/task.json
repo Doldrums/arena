@@ -1,0 +1,267 @@
+{
+  "schema_version": "1.0",
+  "id": "text2reward-drawer-open-v2",
+  "name": "drawer-open-v2",
+  "description": "drawer-open-v2: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "text2reward"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2309.11489",
+      "type": "paper",
+      "locator": "Appendix B Table 4"
+    },
+    {
+      "url": "https://github.com/xlang-ai/text2reward/tree/e7f57efcf76b22bbfb7c3eb9d67d98ff2765a926",
+      "type": "repository",
+      "locator": "run_metaworld/reward_code/drawer-open-v2/specific.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "MetaWorld",
+    "notes": [
+      "Python 3.7",
+      "MuJoCo",
+      "MetaWorld",
+      "GPU"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "success rate",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "MetaWorld",
+    "protocol": "upstream",
+    "source_locator": "Appendix B Table 4"
+  },
+  "execution": {
+    "repository": "https://github.com/xlang-ai/text2reward",
+    "commit": "e7f57efcf76b22bbfb7c3eb9d67d98ff2765a926",
+    "upstream_path": "run_metaworld/reward_code/drawer-open-v2/specific.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "sac.py",
+          "--env_id",
+          "drawer-open-v2",
+          "--train_num",
+          "8",
+          "--eval_num",
+          "5",
+          "--eval_freq",
+          "16_000",
+          "--max_episode_steps",
+          "500",
+          "--train_max_steps",
+          "1_000_000",
+          "--seed",
+          "12345",
+          "--exp_name",
+          "zero-shot",
+          "--reward_path",
+          "./reward_code/drawer-open-v2/specific.py"
+        ],
+        "cwd": "run_metaworld",
+        "kind": "training_and_evaluation",
+        "requirements": [
+          "Python 3.7",
+          "MuJoCo",
+          "MetaWorld",
+          "GPU"
+        ],
+        "evidence_path": "run_metaworld/run_zero_shot.sh",
+        "verification": "source_inspected_not_executed",
+        "source_url": "https://arxiv.org/pdf/2309.11489"
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "pip install -e .  # cwd: ManiSkill2",
+      "pip install stable-baselines3==1.8.0 wandb tensorboard",
+      "bash download_data.sh  # cwd: run_maniskill",
+      "pip install -e .  # cwd: Metaworld",
+      "pip install langchain chromadb==0.4.0"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -e .  # cwd: ManiSkill2",
+      "pip install stable-baselines3==1.8.0 wandb tensorboard",
+      "bash download_data.sh  # cwd: run_maniskill",
+      "pip install -e .  # cwd: Metaworld",
+      "pip install langchain chromadb==0.4.0"
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": "ManiSkill2"
+      },
+      {
+        "argv": [
+          "pip",
+          "install",
+          "stable-baselines3==1.8.0",
+          "wandb",
+          "tensorboard"
+        ],
+        "cwd": "."
+      },
+      {
+        "argv": [
+          "bash",
+          "download_data.sh"
+        ],
+        "cwd": "run_maniskill"
+      },
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          "."
+        ],
+        "cwd": "Metaworld"
+      },
+      {
+        "argv": [
+          "pip",
+          "install",
+          "langchain",
+          "chromadb==0.4.0"
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [
+      "Python 3.7",
+      "MuJoCo",
+      "MetaWorld",
+      "GPU",
+      "Upstream operation: training_and_evaluation"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "reward_design",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:metaworld",
+        "py:mujoco"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "MuJoCo installation is manual per README. Repository shell script lists handle-pull-v2 but corresponding released reward file is absent; it is not included as a paper task (paper lists ten MetaWorld tasks).",
+    "No SPDX license identification verified for https://github.com/xlang-ai/text2reward.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "drawer-open-v2",
+    "slug": "drawer-open-v2",
+    "description": "drawer-open-v2: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "MetaWorld",
+    "dataset": "MetaWorld",
+    "metric": "success rate",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2309.11489",
+    "source_locator": "Appendix B Table 4",
+    "upstream_path": "run_metaworld/reward_code/drawer-open-v2/specific.py",
+    "requirements": [
+      "Python 3.7",
+      "MuJoCo",
+      "MetaWorld",
+      "GPU"
+    ],
+    "execution_notes": [
+      "Python 3.7",
+      "MuJoCo",
+      "MetaWorld",
+      "GPU",
+      "Upstream operation: training_and_evaluation"
+    ],
+    "execution": {
+      "argv": [
+        "python",
+        "sac.py",
+        "--env_id",
+        "drawer-open-v2",
+        "--train_num",
+        "8",
+        "--eval_num",
+        "5",
+        "--eval_freq",
+        "16_000",
+        "--max_episode_steps",
+        "500",
+        "--train_max_steps",
+        "1_000_000",
+        "--seed",
+        "12345",
+        "--exp_name",
+        "zero-shot",
+        "--reward_path",
+        "./reward_code/drawer-open-v2/specific.py"
+      ],
+      "cwd": "run_metaworld",
+      "kind": "training_and_evaluation",
+      "requirements": [
+        "Python 3.7",
+        "MuJoCo",
+        "MetaWorld",
+        "GPU"
+      ],
+      "evidence_path": "run_metaworld/run_zero_shot.sh",
+      "verification": "source_inspected_not_executed"
+    },
+    "implementation_status": "upstream_command_source_inspected"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "reward",
+    "domain": "robotics",
+    "area": "robotics_and_control",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

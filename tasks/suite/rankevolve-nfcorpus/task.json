@@ -1,0 +1,331 @@
+{
+  "schema_version": "1.0",
+  "id": "rankevolve-nfcorpus",
+  "name": "nfcorpus",
+  "description": "nfcorpus task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
+  "paper_ids": [
+    "rankevolve"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2602.16932",
+      "type": "paper",
+      "locator": "Section 4.2"
+    },
+    {
+      "url": "https://github.com/fangchenli/ranking-evolved/tree/8f664bcd5123bac2397f0c1bfbdb347ca3233483",
+      "type": "repository",
+      "locator": "tasks/bm25/evaluator.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "torch",
+      "beir==2.2.0",
+      "requests==2.32.4",
+      "tqdm"
+    ],
+    "environment_variables": [],
+    "datasets": "nfcorpus",
+    "notes": [
+      "Python>=3.11",
+      "Original freeform seed uses its bundled pure-Python LuceneTokenizer and PorterStemmer; Java and Pyserini are not used in this candidate evaluation path.",
+      "Fetch complete original BEIR test collection with python3 scripts/prepare_beir_data.py --dataset nfcorpus",
+      "All queries and all corpus documents are retained; no reduced dataset or sampling."
+    ],
+    "required_files": [
+      "datasets/beir/nfcorpus/corpus.jsonl",
+      "datasets/beir/nfcorpus/queries.jsonl",
+      "datasets/beir/nfcorpus/qrels/train.tsv",
+      "datasets/beir/nfcorpus/qrels/dev.tsv",
+      "datasets/beir/nfcorpus/qrels/test.tsv"
+    ],
+    "required_file_hashes": {
+      "datasets/beir/nfcorpus/corpus.jsonl": "10cc83ef1826b1425e6a87090b5140b39b27755d5a27e48215a88611c899991f",
+      "datasets/beir/nfcorpus/queries.jsonl": "d024e6621b84925d485ae473d316a0c3af31c62c8068a59fb29d22f7613aef2a",
+      "datasets/beir/nfcorpus/qrels/train.tsv": "6336b80f9bffc4f063f3aa450047ad35c0b7c534efe4a6ba35e16dbace047f6a",
+      "datasets/beir/nfcorpus/qrels/dev.tsv": "b1d38b5e8f78c4a5820bce2b7ec2db54911d7690dc601e76811846b211180bd8",
+      "datasets/beir/nfcorpus/qrels/test.tsv": "f8fba6ef3d4dd9c3a242a8ba4ae38276fc3622fce7dcbae764766d564542fd2a"
+    }
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "BEIR",
+    "protocol": "upstream",
+    "source_locator": "Section 4.2"
+  },
+  "execution": {
+    "repository": "https://github.com/fangchenli/ranking-evolved",
+    "commit": "8f664bcd5123bac2397f0c1bfbdb347ca3233483",
+    "upstream_path": "tasks/bm25/evaluator.py",
+    "commands": [
+      {
+        "argv": [
+          "env",
+          "EVAL_EXCLUDE_DATASETS=scifact,arguana,scidocs,fiqa,trec-covid,webis-touche2020,cqadupstack,quora,nq,dbpedia-entity,hotpotqa,fever,climate-fever,biology,earth_science,economics,psychology,robotics,stackoverflow,sustainable_living,pony,leetcode,aops,theoremqa_theorems,theoremqa_questions,dl19,dl20",
+          "EVAL_SAMPLE_QUERIES=0",
+          "EVAL_TOKENIZER=lucene",
+          "EVAL_MAX_WORKERS=1",
+          "EVAL_THREADS_PER_WORKER=1",
+          "EVAL_SEED=42",
+          "EVAL_OBJECTIVE_NAME=recall100_ndcg10",
+          "EVAL_NDCG_K=10",
+          "EVAL_RECALL_K=100",
+          "EVAL_BENCHMARKS=all",
+          "python",
+          "-m",
+          "tasks.bm25.evaluator",
+          "tasks/bm25/seeds/freeform.py",
+          "--only-beir",
+          "--max-workers",
+          "1",
+          "--threads-per-worker",
+          "1",
+          "--save",
+          "results/nfcorpus.json"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/fangchenli/ranking-evolved/blob/8f664bcd5123bac2397f0c1bfbdb347ca3233483/tasks/bm25/evaluator.py",
+        "notes": "Source-composed invocation of documented evaluator CLI and exclusion environment, selecting exactly this dataset. Uses original BM25 seed; no LLM API needed. Actual SCiEL evaluation completed against the complete original BEIR test collection during recovery."
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "tasks/bm25/evaluator.py",
+      "import_module": "tasks.bm25.evaluator",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "score_metric": "0.8*Recall@100 + 0.2*nDCG@10",
+      "status_key": "datasets_failed",
+      "status_success_value": 0,
+      "error_key": "error",
+      "baseline_path": "tasks/bm25/seeds/freeform.py",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "torch",
+        "beir==2.2.0",
+        "requests==2.32.4",
+        "tqdm"
+      ],
+      "environment": {
+        "EVAL_EXCLUDE_DATASETS": "scifact,arguana,scidocs,fiqa,trec-covid,webis-touche2020,cqadupstack,quora,nq,dbpedia-entity,hotpotqa,fever,climate-fever,biology,earth_science,economics,psychology,robotics,stackoverflow,sustainable_living,pony,leetcode,aops,theoremqa_theorems,theoremqa_questions,dl19,dl20",
+        "EVAL_SAMPLE_QUERIES": "0",
+        "EVAL_TOKENIZER": "lucene",
+        "EVAL_MAX_WORKERS": "1",
+        "EVAL_THREADS_PER_WORKER": "1",
+        "EVAL_SEED": "42",
+        "EVAL_OBJECTIVE_NAME": "recall100_ndcg10",
+        "EVAL_NDCG_K": "10",
+        "EVAL_RECALL_K": "100",
+        "EVAL_BENCHMARKS": "all"
+      },
+      "notes": [
+        "Environment must be set BEFORE module import; excludes all other27 documented public datasets.",
+        "One dataset worker reduces concurrency but large corpora still need substantial RAM; TREC DL indexes8.84million passages and upstream estimates40-65GB RAM per large corpus.",
+        "Recovered on the full official BEIR collection with published MD5 plus SHA-256 verification. The original evaluator and freeform seed are unchanged.",
+        "Dependencies are specific to this BEIR candidate path; datasets, ir-datasets and pyserini belong to other lazy-loaded paths."
+      ]
+    },
+    "setup_instructions": [
+      "python -m pip install --no-deps beir==2.2.0",
+      "python -m pip install numpy scipy torch requests==2.32.4 tqdm",
+      "python3 scripts/prepare_beir_data.py --dataset nfcorpus"
+    ],
+    "task_setup_instructions": [
+      "python -m pip install --no-deps beir==2.2.0",
+      "python -m pip install numpy scipy torch requests==2.32.4 tqdm",
+      "python3 scripts/prepare_beir_data.py --dataset nfcorpus"
+    ],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "uv",
+          "sync"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/fangchenli/ranking-evolved/blob/8f664bcd5123bac2397f0c1bfbdb347ca3233483/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper compares BM25 and QL-Dir seeds; current public tree retains BM25 evaluator and archived QL outputs.",
+      "Direct evaluation requires no LLM. Current release BM25 evaluator selected; archived QL results do not supply a matching QL evaluator."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "rankevolve_bm25",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "checkout:fangchenli/ranking-evolved@8f664bcd5123bac2397f0c1bfbdb347ca3233483",
+        "py:scipy",
+        "py:torch",
+        "py:beir",
+        "py:requests",
+        "py:tqdm"
+      ],
+      "timeout": 900
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "nfcorpus",
+    "slug": "nfcorpus",
+    "description": "nfcorpus task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
+    "benchmark": "BEIR",
+    "dataset": "nfcorpus",
+    "metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2602.16932",
+    "source_locator": "Section 4.2",
+    "upstream_path": "tasks/bm25/evaluator.py",
+    "requirements": [
+      "Python>=3.11",
+      "Original freeform seed uses its bundled pure-Python LuceneTokenizer and PorterStemmer; Java and Pyserini are not used in this candidate evaluation path.",
+      "Fetch complete original BEIR test collection with python3 scripts/prepare_beir_data.py --dataset nfcorpus",
+      "All queries and all corpus documents are retained; no reduced dataset or sampling."
+    ],
+    "execution_notes": [
+      "Paper compares BM25 and QL-Dir seeds; current public tree retains BM25 evaluator and archived QL outputs.",
+      "Direct evaluation requires no LLM. Current release BM25 evaluator selected; archived QL results do not supply a matching QL evaluator."
+    ],
+    "setup_commands": [
+      "python -m pip install --no-deps beir==2.2.0",
+      "python -m pip install numpy scipy torch requests==2.32.4 tqdm",
+      "python3 scripts/prepare_beir_data.py --dataset nfcorpus"
+    ],
+    "run_commands": [
+      {
+        "argv": [
+          "env",
+          "EVAL_EXCLUDE_DATASETS=scifact,arguana,scidocs,fiqa,trec-covid,webis-touche2020,cqadupstack,quora,nq,dbpedia-entity,hotpotqa,fever,climate-fever,biology,earth_science,economics,psychology,robotics,stackoverflow,sustainable_living,pony,leetcode,aops,theoremqa_theorems,theoremqa_questions,dl19,dl20",
+          "EVAL_SAMPLE_QUERIES=0",
+          "EVAL_TOKENIZER=lucene",
+          "EVAL_MAX_WORKERS=1",
+          "EVAL_THREADS_PER_WORKER=1",
+          "EVAL_SEED=42",
+          "EVAL_OBJECTIVE_NAME=recall100_ndcg10",
+          "EVAL_NDCG_K=10",
+          "EVAL_RECALL_K=100",
+          "EVAL_BENCHMARKS=all",
+          "python",
+          "-m",
+          "tasks.bm25.evaluator",
+          "tasks/bm25/seeds/freeform.py",
+          "--only-beir",
+          "--max-workers",
+          "1",
+          "--threads-per-worker",
+          "1",
+          "--save",
+          "results/nfcorpus.json"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/fangchenli/ranking-evolved/blob/8f664bcd5123bac2397f0c1bfbdb347ca3233483/tasks/bm25/evaluator.py",
+        "notes": "Source-composed invocation of documented evaluator CLI and exclusion environment, selecting exactly this dataset. Uses original BM25 seed; no LLM API needed. Actual SCiEL evaluation completed against the complete original BEIR test collection during recovery."
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "tasks/bm25/evaluator.py",
+      "import_module": "tasks.bm25.evaluator",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "score_metric": "0.8*Recall@100 + 0.2*nDCG@10",
+      "status_key": "datasets_failed",
+      "status_success_value": 0,
+      "error_key": "error",
+      "baseline_path": "tasks/bm25/seeds/freeform.py",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "torch",
+        "beir==2.2.0",
+        "requests==2.32.4",
+        "tqdm"
+      ],
+      "environment": {
+        "EVAL_EXCLUDE_DATASETS": "scifact,arguana,scidocs,fiqa,trec-covid,webis-touche2020,cqadupstack,quora,nq,dbpedia-entity,hotpotqa,fever,climate-fever,biology,earth_science,economics,psychology,robotics,stackoverflow,sustainable_living,pony,leetcode,aops,theoremqa_theorems,theoremqa_questions,dl19,dl20",
+        "EVAL_SAMPLE_QUERIES": "0",
+        "EVAL_TOKENIZER": "lucene",
+        "EVAL_MAX_WORKERS": "1",
+        "EVAL_THREADS_PER_WORKER": "1",
+        "EVAL_SEED": "42",
+        "EVAL_OBJECTIVE_NAME": "recall100_ndcg10",
+        "EVAL_NDCG_K": "10",
+        "EVAL_RECALL_K": "100",
+        "EVAL_BENCHMARKS": "all"
+      },
+      "notes": [
+        "Environment must be set BEFORE module import; excludes all other27 documented public datasets.",
+        "One dataset worker reduces concurrency but large corpora still need substantial RAM; TREC DL indexes8.84million passages and upstream estimates40-65GB RAM per large corpus.",
+        "Recovered on the full official BEIR collection with published MD5 plus SHA-256 verification. The original evaluator and freeform seed are unchanged.",
+        "Dependencies are specific to this BEIR candidate path; datasets, ir-datasets and pyserini belong to other lazy-loaded paths."
+      ]
+    },
+    "required_files": [
+      "datasets/beir/nfcorpus/corpus.jsonl",
+      "datasets/beir/nfcorpus/queries.jsonl",
+      "datasets/beir/nfcorpus/qrels/train.tsv",
+      "datasets/beir/nfcorpus/qrels/dev.tsv",
+      "datasets/beir/nfcorpus/qrels/test.tsv"
+    ],
+    "required_file_hashes": {
+      "datasets/beir/nfcorpus/corpus.jsonl": "10cc83ef1826b1425e6a87090b5140b39b27755d5a27e48215a88611c899991f",
+      "datasets/beir/nfcorpus/queries.jsonl": "d024e6621b84925d485ae473d316a0c3af31c62c8068a59fb29d22f7613aef2a",
+      "datasets/beir/nfcorpus/qrels/train.tsv": "6336b80f9bffc4f063f3aa450047ad35c0b7c534efe4a6ba35e16dbace047f6a",
+      "datasets/beir/nfcorpus/qrels/dev.tsv": "b1d38b5e8f78c4a5820bce2b7ec2db54911d7690dc601e76811846b211180bd8",
+      "datasets/beir/nfcorpus/qrels/test.tsv": "f8fba6ef3d4dd9c3a242a8ba4ae38276fc3622fce7dcbae764766d564542fd2a"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "information_retrieval",
+    "area": "information_retrieval",
+    "data": "public_benchmark",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

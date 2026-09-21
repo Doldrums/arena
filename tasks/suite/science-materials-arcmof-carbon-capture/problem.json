@@ -1,0 +1,95 @@
+{
+  "protocol": "recreated",
+  "family": "science_materials_arcmof_carbon_capture",
+  "direction": "maximize",
+  "contract": "select_mofs(descriptors, operating_conditions, observations, budget) -> list of unused integer MOF indices. Observations reveal computed working_capacity_mol_kg and selectivity. One query per call, maximum twenty queries. Score highest observed capacity meeting the operating-condition selectivity constraint divided by the pool optimum. Topology/chemistry groups remain disjoint and target-derived descriptors are forbidden.",
+  "parameters": {
+    "proposal_id": "C05",
+    "data_sha256": "ae243392277fbd39df2dc77892743a982075283bacddb79ac914fa268397a0dd"
+  },
+  "requires": [
+    "py:numpy",
+    "file:data/materials-expansion/C05/dataset.json"
+  ],
+  "timeout": 180,
+  "notes": [
+    "Independently implemented SCIEL adaptation. Source bundles are required except the specified PFHub and Cantera simulations; no generated replacement data. See docs/MATERIALS_EXPANSION.md for provenance, exact setup blockers and validation scope."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-materials-arcmof-carbon-capture",
+  "name": "ARC-MOF carbon-capture material selection",
+  "paper_ids": [
+    "science-materials_expansion"
+  ],
+  "description": "select_mofs(descriptors, operating_conditions, observations, budget) -> list of unused integer MOF indices. Observations reveal computed working_capacity_mol_kg and selectivity. One query per call, maximum twenty queries. Score highest observed capacity meeting the operating-condition selectivity constraint divided by the pool optimum. Topology/chemistry groups remain disjoint and target-derived descriptors are forbidden.",
+  "benchmark": "ARC-MOF carbon-capture material selection",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.26434/chemrxiv-2022-mvr06",
+      "type": "paper",
+      "locator": "ARC-MOF adsorption-ready curated MOF database."
+    },
+    {
+      "url": "https://zenodo.org/records/6908728",
+      "type": "benchmark",
+      "locator": "Structures, adsorption outputs and chemistry/topology clusters."
+    },
+    {
+      "url": "https://pubs.acs.org/doi/abs/10.1021/acs.est.5c00768",
+      "type": "paper",
+      "title": "Discovering Ultra-Stable Metal–Organic Frameworks for CO2 Capture from A Wet Flue Gas: Integrating Machine Learning and Molecular Simulation",
+      "locator": "Screens ARC-MOF materials for carbon capture using learned filtering and molecular simulations. The local dry post-combustion VSA working-capacity replay, selectivity constraint and query budget are narrower and do not reproduce wet-flue-gas stability screening."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation of a cited scientific problem; no claim to reproduce author leaderboard scores.",
+    "Candidate and evaluator run in one Python process; data access is separated by API, not an OS sandbox. Isolate evaluator data for adversarial or held-out evaluation.",
+    "Bounded zero-shot post-combustion VSA replay; selectivity>=10 is a local design constraint. No cross-topology or unseen-chemistry transfer claim.",
+    "Only target-free released geometry descriptors are candidate inputs. Source mmol/g working capacity equals mol/kg numerically."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-materials_expansion",
+      "title": "Chemistry and materials research: source-based research tasks",
+      "url": "https://doi.org/10.1021/jacs.2c08592"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Identify metal-organic frameworks with useful carbon-dioxide separation performance.",
+    "importance_rationale": "Selective CO2 capture materials are candidates for lowering the energy and resource costs of emissions control.",
+    "papers": [
+      {
+        "title": "Discovering Ultra-Stable Metal–Organic Frameworks for CO2 Capture from A Wet Flue Gas: Integrating Machine Learning and Molecular Simulation",
+        "url": "https://pubs.acs.org/doi/abs/10.1021/acs.est.5c00768",
+        "primary_goal": "Identify stable MOF adsorbents with favorable CO2 capture properties under flue-gas conditions.",
+        "task_relation": "The paper searches ARC-MOF materials for carbon capture. The local finite-pool task optimizes working capacity subject to selectivity under its own operating conditions; it does not test the paper's wet-gas stability claims, full process economics or experimental deployment.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited primary paper develops or applies a solution to the stated scientific problem; its task is not merely an agent or general-purpose framework evaluation. Support concerns the scientific problem family, not a claim of new discovery or full-paper reproduction by this local task.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "optimizer",
+    "domain": "natural_science",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "materials_science",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

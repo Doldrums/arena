@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0",
+  "id": "science-earth-methane-emission-inversion",
+  "name": "Earth science: Methane emission inversion",
+  "description": "Methane emission inversion with an explicit candidate interface, physical units, independent evaluator and source-traceable observations or numerical model.",
+  "paper_ids": [
+    "science-earth_expansion"
+  ],
+  "kind": "native",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://gmd.copernicus.org/articles/15/5787/2022/",
+      "type": "paper",
+      "locator": "Scientific process, benchmark motivation and evaluation assumptions."
+    },
+    {
+      "url": "https://github.com/geoschem/integrated_methane_inversion",
+      "type": "repository",
+      "locator": "Original source data/model; local candidate and evaluator are independently implemented."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Requires a curated source IMI case with quality masks, averaging kernels, precomputed GEOS-Chem operator and orbit split."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Earth science: Methane emission inversion",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_earth_methane",
+    "science_family": "science_earth_methane",
+    "parameters": {},
+    "interface": "infer_emissions(columns, transport_operator, prior, uncertainty) -> 2..1024nonnegative emission samples. Frozen IMI/GEOS-Chem linear sensitivities include averaging kernels and quality filtering. Complete orbit groups withheld. Minimize independent held-out-column Gaussian-mixture negative log predictive density; predictive coverage/width diagnostics. No exact real-emission truth or nonlinear transport-reproduction claim.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "area": "earth_and_environment",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none"
+    },
+    "proposal_id": "E12",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "requires_setup",
+    "setup": {
+      "command": "python scripts/prepare_earth_expansion.py --proposal E12",
+      "documentation": "docs/EARTH_EXPANSION.md"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy"
+      ]
+    },
+    "setup_reason": "Requires a curated source IMI case with quality masks, averaging kernels, precomputed GEOS-Chem operator and orbit split.",
+    "setup_instructions": [
+      "python scripts/prepare_earth_expansion.py --proposal E12",
+      "docs/EARTH_EXPANSION.md"
+    ],
+    "additional_requires": [
+      "file:../../.cache/science-earth/E12.json",
+      "file:../../.cache/science-earth/E12.manifest.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_earth_methane",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:../../.cache/science-earth/E12.json",
+        "file:../../.cache/science-earth/E12.manifest.json"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Bounded adaptation; no complete source-paper score reproduction or novel scientific discovery claimed.",
+    "Public evaluation cases are development instances; independent generalization requires frozen candidates and new cases.",
+    "Requires a curated source IMI case with quality masks, averaging kernels, precomputed GEOS-Chem operator and orbit split."
+  ],
+  "validation": {
+    "level": "source_reviewed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_earth_expansion.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "area": "earth_and_environment",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Infer regional methane emissions from atmospheric satellite observations and transport modeling.",
+    "importance_rationale": "Quantifying emissions identifies discrepancies in inventories and supports understanding and mitigation of methane's climate effects.",
+    "papers": [
+      {
+        "title": "Quantifying methane emissions from the largest oil-producing basin in the United States from space",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7176423/",
+        "primary_goal": "Estimate methane emissions from oil and gas production in the Permian Basin using TROPOMI observations and atmospheric inverse modeling.",
+        "task_relation": "The local task defines the same observation-to-emission inversion family through a curated IMI case and transport operator. The required case remains unstaged; scientific relevance does not establish implementation readiness, reproducing the Permian estimate or correctness of an unprepared adapter.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The primary study estimates real emissions. The IMI software/facility introduction is not used as the qualifying evidence.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

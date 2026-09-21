@@ -1,0 +1,138 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "bin:g++",
+    "py:click",
+    "py:numpy",
+    "py:psutil",
+    "py:torch"
+  ],
+  "timeout": 600,
+  "notes": [
+    "The candidate is the ten-file source bundle serialized by the upstream formatter (initial_program.txt); evaluation trains the heat-map model and compiles the C++ solver.",
+    "Imports openevolve.evaluation_result; suite/_lib/openevolve is a verbatim shim of that module."
+  ],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.txt",
+    "score_key": "combined_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/tsp_tour_minimization",
+    "files_sha256": {
+      ".gitignore": "fffd18a4ec6c2dfb0300935c14dfeb26eb3cf940647f46888a5de43c7583b9ff",
+      "README.md": "2239143572e1a89a5ae4354e6531e46d7fea8cda64374db342fc58e0ac69050d",
+      "config.yaml": "7571b4ce49a6ea6e8766db590a6966396d079db6742c3dc6cbcce09243a15cea",
+      "evaluator.py": "7ced45c590a1c70817ee216d3b7b9739e389a38cc5d48044eba34357f783f9af",
+      "evolved_program/TSP.cpp": "63bd046a597dfb136904d9f9f1f93c2cdf425691069ce4e571b46fb7821a0eb7",
+      "evolved_program/config.json": "093520c7722699986ba3bf5c66503f1364343bb4600a9cc0401cae6d71e5a996",
+      "evolved_program/heat_map_inference.py": "4c362afacef0f8f9dbb8b2610998dd6cd572afef583bea41c6fa9ed74e128f78",
+      "evolved_program/heat_map_train.py": "2195e7ad546f3fa737a911782c5b7309d95c1790c4d9f4fbde4ecc202f35c933",
+      "evolved_program/include/additional.hpp": "534b64365ffee71f3b0c196a28506b80face4f44a59615a34eb39f5afece207d",
+      "evolved_program/include/context.hpp": "7e74ce1ecbfc9412e9c3d5a4905687a8e19fd2c65b2ab5d4aab388dda418c6bc",
+      "evolved_program/include/json.hpp": "9bea4c8066ef4a1c206b2be5a36302f8926f7fdc6087af5d20b417d0cf103ea6",
+      "evolved_program/include/local_2_opt_search.hpp": "93dd6f169feaf4581b4f57a05f3c2d8c811acc533e6a0eb52dc8b38cae121168",
+      "evolved_program/include/local_k_opt_search.hpp": "15b9ac349395e316105b5856a26abc42fe48bd0264e0a08309be3ee237757d44",
+      "evolved_program/include/random_solution.hpp": "a0f095896d67eba602f6689524ccd81881ff4dc024a3bc06bf4d2acfeff37346",
+      "evolved_program/include/utils.hpp": "8ba543596ea78d2113bafb2a490a9b8f6a6dd802cc7f587876d4b44f786c3dfc",
+      "initial_program/TSP.cpp": "8f53c5fc08fc12b11f27a6aee6767a82b21891f19fa26983f4c58d2c6da21f28",
+      "initial_program/config.json": "4ba88add982a353c681d9752ce919dfdd2468bf02ab8cba25d8821384cf10081",
+      "initial_program/heat_map_inference.py": "dc1a663cfef6ed71c74855ab93ac03121e26f4e589beac8320aa4c10006309b9",
+      "initial_program/heat_map_train.py": "4e9f8c265fac77366072397c2ed5294dbcceaf39749b667724687b4f37318975",
+      "initial_program/include/additional.hpp": "8354c871e3a38e5332896ea47f86a97fe06d4caa7129f9a956f43af608fb9b5f",
+      "initial_program/include/context.hpp": "a94e2f10656017e01714a03045a5d69b4c38e8df2b0aafe254b71cac12e245ed",
+      "initial_program/include/json.hpp": "9bea4c8066ef4a1c206b2be5a36302f8926f7fdc6087af5d20b417d0cf103ea6",
+      "initial_program/include/local_2_opt_search.hpp": "66685bf08d216d9f628ce55b6974cfd2612162ee143a7d4709c8dae697accb93",
+      "initial_program/include/local_k_opt_search.hpp": "9e1fde9e791ffa72be685a7bf38cd65db3b72f08c7b789d722c0f1f01812a56d",
+      "initial_program/include/random_solution.hpp": "adf3d950603db1e2bccee77f015899f2bd17c1aac8627696fb4116deb977baaf",
+      "initial_program/include/utils.hpp": "1ae38f983bb73bb6c9ab0026a564c2400008789d428a636109f119798d84d6a6",
+      "requirements.txt": "471d5aeec55a3662b75734dc814bd0ab3007f9281a891cba0d7d3ba8f6725474",
+      "start_evolution.py": "1d07de1a84804415a2db25820ed10d5435d86d4c8968d7518c9dc0ccc8579555",
+      "utils/code_to_query.py": "b893e6b8c974a31ffcad33193183cee9a17e61c15313c1d8ad3289c60106f975",
+      "utils/heat_map_runner.py": "70ce6ddd4bd30190b8bafca3c9dd1fa62c8cfd1f056f5493b4d55a43b9dbbc80",
+      "utils/load_data.py": "665bbb28997950df89eddf8e05a3f52e394b1c1abe627799a08e6d117457d442",
+      "utils/runner.py": "ca077c4d8d0ddb3a7ba0aa29fc4e5695efe61f256421d7c0470ad9ea4a51aebf",
+      "utils/tsp_runner.py": "4f699ea3fb26e7916024c7fc27f8143755f2fca25fdcdbd036e6b4b3e856c258",
+      "utils/utils.py": "107543dcb98442f03ed0c614e84b4e4540a08b521359f94faffe0389b58ab6eb"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/tsp_tour_minimization` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-math-tsp-tour-minimization",
+  "name": "SCiEL: Heat-map-assisted TSP, 1,000 cities",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Optimize a bundled Python/C++ heat-map and tour solver on eight generated Euclidean TSP instances of 1,000 cities, scoring tour length with a small runtime modifier.",
+  "benchmark": "SCiEL source example tsp_tour_minimization",
+  "paper_metric": "combined_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/tsp_tour_minimization/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/tsp_tour_minimization/initial_program",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The baseline is a directory of Python/C++ sources, not a directly importable candidate. It must be serialized using the pinned formatter before evaluation.",
+    "The generated TSP data cache has no fixed random seed and is reused by path; results are not comparable unless the dataset file and its hash are retained.",
+    "Some error branches omit combined_score; the strict common adapter reports an execution error rather than inventing a score.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.txt",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "medium",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Minimize the length of a tour that visits each location once and returns to its start.",
+    "importance_rationale": "Shorter feasible tours address routing, inspection and manufacturing movement costs. The local instances are bounded algorithmic studies of that operations-research objective, not evidence of a deployed logistics improvement.",
+    "papers": [
+      {
+        "title": "An effective implementation of the Lin–Kernighan traveling salesman heuristic",
+        "url": "https://doi.org/10.1016/S0377-2217(99)00284-2",
+        "task_relation": "Helsgaun develops a solver whose central goal is shorter symmetric TSP tours. SCiEL: Heat-map-assisted TSP, 1,000 cities uses its own construction, search, or attention interface and instance distribution while optimizing that same feasible-tour objective.",
+        "primary_goal": "Compute optimal or near-optimal traveling-salesman tours efficiently.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

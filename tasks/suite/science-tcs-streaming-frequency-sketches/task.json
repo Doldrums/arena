@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.0",
+  "id": "science-tcs-streaming-frequency-sketches",
+  "name": "Theoretical computer science: Memory-bounded streaming frequency sketches",
+  "description": "Memory-bounded streaming frequency sketches under a bounded candidate interface with independent verification; generated mathematical instances, no external dataset.",
+  "paper_ids": [
+    "science-tcs_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://www.cs.ox.ac.uk/people/graham.cormode/pubs/html/CormodeMuthukrishnan04CMJalg.html",
+      "type": "paper",
+      "locator": "Cormode and Muthukrishnan: Count-Min sketch, insertion-only frequency estimation."
+    },
+    {
+      "url": "https://dimacs.rutgers.edu/~graham/pubs/papers/cm-full.pdf",
+      "type": "paper",
+      "title": "An improved data stream summary: the count-min sketch and its applications",
+      "locator": "Develops a memory-bounded sketch that estimates stream frequencies with provable error bounds. The local integer-stream and storage-budget protocol tests the same point-frequency estimation task."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "None. Generated finite mathematical instances."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Theoretical computer science: Memory-bounded streaming frequency sketches",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_tcs_expansion_streaming",
+    "science_family": "science_tcs_expansion_streaming",
+    "parameters": {},
+    "interface": "update(state: bytes, item: int) -> bytes; query(state: bytes, item: int) -> nonnegative frequency estimate. Initial state is1024 zero bytes; persistent state<=1024bytes. Fresh Python interpreter per256-item chunk, only state persists. Three1024-item insertion-only streams, universe400. Minimize mean absolute count error / stream length; top10recall diagnostic.15s perchunk,120s overall. Cooperative memory contract, not malicious-code sandbox.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "mathematics",
+      "area": "theoretical_computer_science",
+      "data": "synthetic",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "proposal_id": "T05",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_tcs_expansion_streaming",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "This is a bounded native adaptation, not the paper's experimental score or an asymptotic guarantee.",
+    "Public development generators can be inspected; independent generalization requires fresh instances after freezing the candidate.",
+    "Memory persistence is constrained through fresh subprocesses and a bytes interface; this is not an OS sandbox for malicious candidates."
+  ],
+  "validation": {
+    "level": "source_reviewed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_tcs_expansion.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "mathematics",
+    "area": "theoretical_computer_science",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "An Improved Data Stream Summary: The Count-Min Sketch and its Applications",
+        "url": "https://dsf.berkeley.edu/cs286/papers/countmin-latin2004.pdf",
+        "task_relation": "The local task estimates point frequencies under a fixed serialized-byte budget and an empirical error objective. Its workload and persistence boundary are local restrictions, not a proof of the paper's general probabilistic guarantees.",
+        "primary_goal": "Provide efficient, space-limited approximations to point-frequency and related queries over data streams.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Estimate item frequencies accurately from a stream using sublinear, bounded memory.",
+    "importance_rationale": "Accuracy, space, and update costs for stream frequency summaries are the main algorithmic problems in the Count-Min paper.",
+    "reason": "The cited paper directly solves bounded-memory streaming queries; the local score is an adaptation of that substantive algorithms problem.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

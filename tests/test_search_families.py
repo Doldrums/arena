@@ -9,6 +9,7 @@ import sys
 import pytest
 
 from arena.registry import RegistryError, get_catalog
+from arena.task_sources import source_url
 from arena.search_families import (SUPPLEMENT_FAMILIES, build_search_families, get_search_families,
                                     validate_search_families, validate_sources)
 
@@ -125,10 +126,10 @@ def test_invalid_captured_source_rejected(inputs, mutate):
 def test_source_proof_is_revision_and_file_bound(inputs):
     catalog, _ = inputs
     data = get_search_families()
-    commit = catalog["sources"][0]["repository"]["commit"]
+    binding = catalog["sources"][0]
     for paper in data["paper_annotations"].values():
         source = paper["source"]
-        assert f"/blob/{commit}/catalog/papers.json" in source["url"]
+        assert source["url"] == source_url(binding, "catalog/papers.json")
         assert len(source["sha256"]) == 64
         assert source["locator"].endswith("field family")
 
@@ -151,8 +152,9 @@ def test_capture_requires_corpus_membership_or_reviewed_supplement(inputs, monke
                        "id": "science-unreviewed"})
     captured = {"catalog/papers.json": papers, "catalog/corpus.json": corpus,
                 "catalog/research.json": research}
-    monkeypatch.setattr(subprocess, "check_output",
-                        lambda command, **kwargs: json.dumps(captured[command[-1].split(":", 1)[1]]).encode())
+    from arena.task_source_reader import TaskSourceReader
+    monkeypatch.setattr(TaskSourceReader, "__init__", lambda self, *args, **kwargs: setattr(self, "source", catalog["sources"][0]))
+    monkeypatch.setattr(TaskSourceReader, "read", lambda self, path: json.dumps(captured[path]).encode())
     capture = runpy.run_path(str(ROOT / "scripts/build_search_families.py"))["capture_sources"]
     if unreviewed:
         with pytest.raises(RegistryError, match="corpus/papers"):

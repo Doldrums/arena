@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0",
+  "id": "science-materials-grouped-spme-battery-inversion",
+  "name": "Grouped-SPMe battery electrochemical inversion",
+  "description": "infer_parameters(training_protocols, forward_model, bounds, budget) -> dictionary of exactly the grouped physical parameters in bounds. forward_model(parameters, protocol) is an evaluator-owned pinned PyBOP GroupedSPMe solve; at most 100 training calls. Independent held-out whole-SOC impedance and time-domain protocols score mean normalized complex impedance/voltage RMSE. Enforce physical parameter bounds; uncertainty/identifiability is not inferred from a point estimate. The trusted source adapter must be SHA-256 pinned and may not be candidate-supplied.",
+  "paper_ids": [
+    "science-materials_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2412.10896",
+      "type": "paper",
+      "locator": "Hallemans et al. grouped-SPMe electrochemical impedance parameterization and time-domain validation."
+    },
+    {
+      "url": "https://github.com/Battery-Intelligence-Lab/Hallemans-2025-JES/tree/3308a34396b8b56cd614291dd151c3405577c068",
+      "type": "repository",
+      "locator": "Pinned Fig10 EIS fitting and Fig11 time-domain validation scripts; uses PyBOP GroupedSPMe, experimental LG M50LT measurements and OCP tables."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy==1.26.4",
+      "pybop==25.6",
+      "pybamm==25.6.0",
+      "casadi==3.6.7",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned measured LG M50LT impedance and OCP tables;5 training SOCs, withheld40%/70% SOCs (17 frequencies each), separate measured401-point60-second drive trace. --battery preparation; isolated PyBOP25.6/PyBaMM25.6 environment."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Grouped-SPMe battery electrochemical inversion",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_materials_grouped_spme_battery_inversion",
+    "science_family": "science_materials_grouped_spme_battery_inversion",
+    "parameters": {
+      "proposal_id": "C12",
+      "data_sha256": "823cc89f631b97949308a1876f8371d0d3593a265ca40b77a93b0517fab2617b"
+    },
+    "interface": "infer_parameters(training_protocols, forward_model, bounds, budget) -> dictionary of exactly the grouped physical parameters in bounds. forward_model(parameters, protocol) is an evaluator-owned pinned PyBOP GroupedSPMe solve; at most 100 training calls. Independent held-out whole-SOC impedance and time-domain protocols score mean normalized complex impedance/voltage RMSE. Enforce physical parameter bounds; uncertainty/identifiability is not inferred from a point estimate. The trusted source adapter must be SHA-256 pinned and may not be candidate-supplied.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "optimizer",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "materials_science"
+    },
+    "proposal_id": "C12",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL contracts, evaluator logic and tests are independently implemented. Reused scientific engines and reference data are separately attributed in reuse_scope; author-code availability alone is not classified as evaluator reuse.",
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "reuse_scope": "PyBOP GroupedSPMe and PyBaMM/CasADi physical forward-model engines"
+    },
+    "additional_requires": [
+      "file:data/materials-expansion/C12/dataset.json",
+      "file:../../.cache/materials-battery-env/bin/python",
+      "file:data/materials-expansion/C12/raw/OCP_LGM50LT.mat"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_materials_grouped_spme_battery_inversion",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:data/materials-expansion/C12/dataset.json",
+        "file:../../.cache/materials-battery-env/bin/python",
+        "file:data/materials-expansion/C12/raw/OCP_LGM50LT.mat"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent SCIEL adaptation of a cited scientific problem; no claim to reproduce author leaderboard scores.",
+    "Candidate and evaluator run in one Python process; data access is separated by API, not an OS sandbox. Isolate evaluator data for adversarial or held-out evaluation.",
+    "Bounded measured-data adaptation with17 frequencies perSOC and first60s of a withheld drive protocol. Uses source author physical mesh; no parameter identifiability or full paper reproduction claim.",
+    "Forward solves use a separate project-local .cache/materials-battery-env environment; shared candidate process receives only the callable physics interface."
+  ],
+  "validation": {
+    "level": "source_seed_executed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_materials_expansion.py",
+    "evidence": "validation/materials-expansion-report.json",
+    "benchmark_verified": true
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "optimizer",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "materials_science",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Infer physical electrochemical battery-model parameters from impedance measurements.",
+    "importance_rationale": "Physical parameters support interpretable predictions of battery response across operating conditions.",
+    "papers": [
+      {
+        "title": "Physics-based battery model parametrisation from impedance data",
+        "url": "https://arxiv.org/abs/2412.10896",
+        "primary_goal": "Parameterize a physics-based battery model using impedance data and assess resulting behavior predictions.",
+        "task_relation": "The local GroupedSPMe task uses the corresponding parameter-inference formulation with a bounded forward-model budget and withheld SOC/time-domain protocols. A fitted point estimate does not establish parameter identifiability, uncertainty or validity for unrelated cells.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited primary paper develops or applies a solution to the stated scientific problem; its task is not merely an agent or general-purpose framework evaluation. Support concerns the scientific problem family, not a claim of new discovery or full-paper reproduction by this local task.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

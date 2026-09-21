@@ -1,0 +1,296 @@
+[
+  {
+    "id": "science-economics-consumption-saving",
+    "name": "Economics: Consumption-saving policy accuracy",
+    "description": "Consumption-saving policy accuracy with an explicit candidate API, independently recomputed objective and fixed model/data assumptions.",
+    "family": "science_economics_consumption",
+    "parameters": {},
+    "proposal_id": "F01",
+    "status": "ready",
+    "sources": [
+      {
+        "url": "https://www.nber.org/papers/t0309",
+        "type": "paper",
+        "locator": "Carroll endogenous-grid paper: household budget, income uncertainty and policy solution."
+      },
+      {
+        "url": "https://github.com/econ-ark/HARK",
+        "type": "repository",
+        "locator": "Reference algorithms and source documentation; local evaluator is independently authored."
+      }
+    ],
+    "limitations": [
+      "Bounded adaptation specified in the candidate contract; no claim to reproduce full-paper scores.",
+      "Model/simulation scores do not establish empirical policy validity or market returns.",
+      "Public fixed evaluation inputs support development only; freeze candidates and run new cases for generalization."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "policy",
+      "domain": "finance",
+      "area": "finance",
+      "data": "synthetic",
+      "verification": "simulation",
+      "reference": "none"
+    },
+    "requirements": {
+      "hardware": "CPU",
+      "datasets": "Generated economic model instances; no external empirical data.",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ]
+    },
+    "validation": {
+      "level": "source_reviewed",
+      "upstream_reproduction": false,
+      "tests": "tests/test_science_economics_expansion.py"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "reference_libraries": [
+        "numpy",
+        "scipy"
+      ]
+    }
+  },
+  {
+    "id": "science-economics-macroeconomic-transitions",
+    "name": "Economics: Heterogeneous-agent macroeconomic transitions",
+    "description": "Heterogeneous-agent macroeconomic transitions with an explicit candidate API, independently recomputed objective and fixed model/data assumptions.",
+    "family": "science_economics_macro",
+    "parameters": {},
+    "proposal_id": "F02",
+    "status": "ready",
+    "sources": [
+      {
+        "url": "https://doi.org/10.3982/ECTA17434",
+        "type": "paper",
+        "locator": "Auclert et al.: sequence-space equilibrium; pinned package examples/krusell_smith.py."
+      },
+      {
+        "url": "https://github.com/shade-econ/sequence-jacobian",
+        "type": "repository",
+        "locator": "Reference algorithms and source documentation; local evaluator is independently authored."
+      }
+    ],
+    "limitations": [
+      "Bounded adaptation specified in the candidate contract; no claim to reproduce full-paper scores.",
+      "Model/simulation scores do not establish empirical policy validity or market returns.",
+      "Public fixed evaluation inputs support development only; freeze candidates and run new cases for generalization."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "finance",
+      "area": "finance",
+      "data": "simulator",
+      "verification": "simulation",
+      "reference": "none"
+    },
+    "requirements": {
+      "hardware": "CPU",
+      "datasets": "Generated economic model instances; no external empirical data.",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "numba",
+        "sequence-jacobian==1.0.0"
+      ]
+    },
+    "validation": {
+      "level": "source_reviewed",
+      "upstream_reproduction": false,
+      "tests": "tests/test_science_economics_expansion.py"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy",
+        "numba",
+        "sequence-jacobian==1.0.0"
+      ],
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "upstream_code_reuse_scope": "sequence-jacobian Krusell-Smith source model and household/transition numerical routines; local objective, feasibility checks and candidate interface are independently authored."
+    }
+  },
+  {
+    "id": "science-economics-structural-demand-estimation",
+    "name": "Economics: Structural differentiated-product demand estimation",
+    "description": "Structural differentiated-product demand estimation with an explicit candidate API, independently recomputed objective and fixed model/data assumptions.",
+    "family": "science_economics_demand",
+    "parameters": {},
+    "proposal_id": "F03",
+    "status": "ready",
+    "sources": [
+      {
+        "url": "https://doi.org/10.1111/1756-2171.12352",
+        "type": "paper",
+        "locator": "Conlon and Gortmaker: BLP random-coefficients GMM; bundled BLP automobile product data."
+      },
+      {
+        "url": "https://github.com/jeffgortmaker/pyblp",
+        "type": "repository",
+        "locator": "Reference algorithms and source documentation; local evaluator is independently authored."
+      }
+    ],
+    "limitations": [
+      "Bounded adaptation specified in the candidate contract; no claim to reproduce full-paper scores.",
+      "Model/simulation scores do not establish empirical policy validity or market returns.",
+      "Public fixed evaluation inputs support development only; freeze candidates and run new cases for generalization."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "finance",
+      "area": "finance",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none"
+    },
+    "requirements": {
+      "hardware": "CPU",
+      "datasets": "BLP automobile tables bundled with PyBLP; exact hash reported per run.",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "pandas",
+        "pyblp==1.2.0"
+      ]
+    },
+    "validation": {
+      "level": "source_reviewed",
+      "upstream_reproduction": false,
+      "tests": "tests/test_science_economics_expansion.py"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy",
+        "pandas",
+        "pyblp==1.2.0"
+      ],
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "upstream_code_reuse_scope": "PyBLP structural-demand solver, integration, share inversion and bundled observed automobile tables; local market selection, independent stricter re-evaluation and candidate interface are independently authored."
+    }
+  },
+  {
+    "id": "science-economics-finite-auction-design",
+    "name": "Economics: Incentive-compatible finite auction design",
+    "description": "Incentive-compatible finite auction design with an explicit candidate API, independently recomputed objective and fixed model/data assumptions.",
+    "family": "science_economics_auctions",
+    "parameters": {},
+    "proposal_id": "F04",
+    "status": "ready",
+    "sources": [
+      {
+        "url": "https://proceedings.mlr.press/v97/duetting19a.html",
+        "type": "paper",
+        "locator": "RegretNet research objective; local finite-support mechanism replaces approximate sampled regret with exhaustive deviations."
+      },
+      {
+        "url": "https://github.com/saisrivatsan/deep-opt-auctions",
+        "type": "repository",
+        "locator": "Reference algorithms and source documentation; local evaluator is independently authored."
+      }
+    ],
+    "limitations": [
+      "Bounded adaptation specified in the candidate contract; no claim to reproduce full-paper scores.",
+      "Model/simulation scores do not establish empirical policy validity or market returns.",
+      "Public fixed evaluation inputs support development only; freeze candidates and run new cases for generalization."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "finance",
+      "area": "finance",
+      "data": "synthetic",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "requirements": {
+      "hardware": "CPU",
+      "datasets": "Generated economic model instances; no external empirical data.",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ]
+    },
+    "validation": {
+      "level": "source_reviewed",
+      "upstream_reproduction": false,
+      "tests": "tests/test_science_economics_expansion.py"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "reference_libraries": [
+        "numpy",
+        "scipy"
+      ]
+    }
+  },
+  {
+    "id": "science-economics-optimal-stopping",
+    "name": "Economics: Bermudan exercise-policy research",
+    "description": "Bermudan exercise-policy research with an explicit candidate API, independently recomputed objective and fixed model/data assumptions.",
+    "family": "science_economics_stopping",
+    "parameters": {},
+    "proposal_id": "F05",
+    "status": "ready",
+    "sources": [
+      {
+        "url": "https://escholarship.org/uc/item/43n1k4jb",
+        "type": "paper",
+        "locator": "Longstaff and Schwartz least-squares Monte Carlo; independent discrete-calendar tree reference."
+      },
+      {
+        "url": "https://github.com/lballabio/QuantLib",
+        "type": "repository",
+        "locator": "Reference algorithms and source documentation; local evaluator is independently authored."
+      }
+    ],
+    "limitations": [
+      "Bounded adaptation specified in the candidate contract; no claim to reproduce full-paper scores.",
+      "Model/simulation scores do not establish empirical policy validity or market returns.",
+      "Public fixed evaluation inputs support development only; freeze candidates and run new cases for generalization."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "policy",
+      "domain": "finance",
+      "area": "finance",
+      "data": "simulator",
+      "verification": "simulation",
+      "reference": "none"
+    },
+    "requirements": {
+      "hardware": "CPU",
+      "datasets": "Generated economic model instances; no external empirical data.",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ]
+    },
+    "validation": {
+      "level": "source_reviewed",
+      "upstream_reproduction": false,
+      "tests": "tests/test_science_economics_expansion.py"
+    },
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "reference_libraries": [
+        "numpy",
+        "scipy"
+      ]
+    }
+  }
+]

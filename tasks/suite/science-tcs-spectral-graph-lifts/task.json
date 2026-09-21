@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0",
+  "id": "science-tcs-spectral-graph-lifts",
+  "name": "Theoretical computer science: Spectral graph-lift construction",
+  "description": "Spectral graph-lift construction under a bounded candidate interface with independent verification; generated mathematical instances, no external dataset.",
+  "paper_ids": [
+    "science-tcs_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://annals.math.princeton.edu/2015/182-1/p07",
+      "type": "paper",
+      "locator": "Interlacing families I: Bipartite Ramanujan graphs of all degrees: signed adjacency and eigenvalues of two-lifts."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "None. Generated finite mathematical instances."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Theoretical computer science: Spectral graph-lift construction",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_tcs_expansion_lift",
+    "science_family": "science_tcs_expansion_lift",
+    "parameters": {},
+    "interface": "sign_edges(graph, budget) -> +/-1 edge signs. graph contains n and ordered undirected edges. Construct connected 3-regular two-lifts of prism graphs; minimize mean spectral radius of signed adjacency (the new eigenvalues), checked independently. budget=32 is the baseline trial budget; all candidates share the 60-second execution ceiling. Numerical spectral ranking does not certify a general theorem.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "theoretical_computer_science",
+      "data": "synthetic",
+      "verification": "sampled",
+      "reference": "none"
+    },
+    "proposal_id": "T03",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_tcs_expansion_lift",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "This is a bounded native adaptation, not the paper's experimental score or an asymptotic guarantee.",
+    "Public development generators can be inspected; independent generalization requires fresh instances after freezing the candidate."
+  ],
+  "validation": {
+    "level": "source_reviewed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_tcs_expansion.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "theoretical_computer_science",
+    "data": "synthetic",
+    "verification": "sampled",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Interlacing Families I: Bipartite Ramanujan Graphs of All Degrees",
+        "url": "https://arxiv.org/abs/1304.4132",
+        "task_relation": "The local task searches signings of small prism graphs to minimize a spectral-radius objective. These finite constructions are a restricted instance of the signing problem; they do not prove the paper's infinite-family theorem.",
+        "primary_goal": "Establish infinite families of bipartite Ramanujan graphs through spectrally controlled graph lifts.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Choose graph-lift edge signs that keep new eigenvalues small and improve expansion.",
+    "importance_rationale": "Constructing graph lifts with strong spectral bounds is central to the cited Ramanujan-graph result.",
+    "reason": "The source directly studies the spectral construction target. Local finite-instance performance is not presented as a general graph-theoretic result.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

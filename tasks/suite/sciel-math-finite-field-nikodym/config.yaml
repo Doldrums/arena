@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in finite geometry and combinatorics with deep expertise in the finite-field Nikodym problem - a classical problem that asks for the smallest set of points in F_q^2 (with q = p^2) such that every point lies on a line whose other points are all inside the set.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that directly returns a Nikodym set in F_q^2 with q = p^2 and p = 7. The field F_q is modeled as F_p[alpha] with alpha^2 = k, where k is the smallest quadratic non-residue mod p; an element of F_q is a pair (a, b) standing for a + b*alpha with a, b in {0, ..., p-1}. A set N is a Nikodym set if for every point x in F_q^2 there exists a direction v != 0 such that the punctured line {x + t*v : t in F_q, t != 0} is entirely contained in N. The function returns an integer array of shape (k, 2, 2): each point is [[x_a, x_b], [y_a, y_b]] giving the F_q coordinates x = (x_a, x_b) and y = (y_a, y_b). Make N as SMALL as possible (equivalently, make its complement, the excluded set, as LARGE as possible) while keeping it a valid Nikodym set. The optimal construction misses about p^3 = q^(3/2) points; a good first target is a complement of size around p^3/2. The known route uses the Hermitian unital U = {(x,y): Trace(x) + Norm(y) = 0} with Trace((a,b)) = 2a and Norm((a,b)) = a^2 - b^2*k, excluding a carefully chosen subset of U.
+
+    PERFORMANCE METRICS:
+    1. **complement_size**: Number of points of F_q^2 NOT in N (the excluded set). PRIMARY OBJECTIVE - maximize. An invalid Nikodym set scores 0.
+    2. **combined_score**: complement_size / 343 (BENCHMARK COMPARISON - maximize; 343 = p^3 = 7^3 is the optimal-target complement, so a score near 1.0 matches the record).
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Validity**: The returned set MUST be a valid Nikodym set; infeasible sets receive a score of 0.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

@@ -1,0 +1,181 @@
+{
+  "schema_version": "1.0",
+  "id": "dga2d-root-finding-smooth-polynomial",
+  "name": "Root finding: Smooth polynomial",
+  "description": "Root finding: Smooth polynomial",
+  "paper_ids": [
+    "dga2d",
+    "a2dept"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2608.00700",
+      "type": "paper",
+      "locator": "Appendix G.3"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2604.24043",
+      "type": "paper",
+      "locator": "Appendix G.2, Table 18"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "efficiency-aware root-finding score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": null,
+    "protocol": "specified_only",
+    "source_locator": "Appendix G.3"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Task specification verified from paper; direct evaluator availability not confirmed."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "root_finder",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Paper says an anonymized implementation was supplied as supplementary material but no public URL was found in the extracted PDF.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "Root finding: Smooth polynomial",
+    "slug": "root-finding-smooth-polynomial",
+    "description": "Root finding: Smooth polynomial",
+    "benchmark": null,
+    "dataset": null,
+    "metric": "efficiency-aware root-finding score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2608.00700",
+    "source_locator": "Appendix G.3",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": "Task specification verified from paper; direct evaluator availability not confirmed."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "numerical_computing",
+    "area": "scientific_computing",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Numerically solve the small synthetic equations in this local benchmark.",
+    "importance_rationale": "The current task is a generic numerical benchmark; a connection to a substantive scientific or real-world research objective has not been established by the supplied agent-framework citation.",
+    "papers": [],
+    "reviewed_at": "2026-09-20",
+    "reason": "Agent-framework evaluation and generic relevance of root-finding are insufficient under the primary-problem definition. A problem-focused paper and a substantive connection to this local task are required.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "merged_from": [
+    {
+      "id": "a2dept-root-finding-smooth-polynomials",
+      "paper_ids": [
+        "a2dept"
+      ],
+      "name": "Root finding: Smooth Polynomials",
+      "description": "Root finding: Smooth Polynomials",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2604.24043",
+          "type": "paper",
+          "locator": "Appendix G.2, Table 18"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "400 stochastic instances across four families",
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "success adjusted for function evaluations and iterations",
+        "paper_metric": "success adjusted for function evaluations and iterations",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": null,
+        "protocol": "specified_only",
+        "source_locator": "Appendix G.2, Table 18"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Paper task identified; evaluator invocation not yet verified."
+        ]
+      },
+      "limitations": [
+        "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

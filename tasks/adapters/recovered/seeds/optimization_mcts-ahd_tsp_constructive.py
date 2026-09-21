@@ -1,0 +1,10 @@
+# Extracted from the MIT-licensed official mcts-ahd repository.
+# Source: prompts/tsp_constructive/seed_func.txt
+import numpy as np
+def select_next_node_v1(current_node: int, destination_node: int, unvisited_nodes: set, distance_matrix: np.ndarray) -> int:
+    """Select the next node to visit from the unvisited nodes."""
+    scores = {}
+    for node in unvisited_nodes:
+        scores[node] = 1
+    next_node = min(scores, key=scores.get)
+    return next_node

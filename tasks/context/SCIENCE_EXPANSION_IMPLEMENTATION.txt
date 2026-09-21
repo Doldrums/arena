@@ -1,0 +1,156 @@
+# Science expansion: implementation and validation
+
+Recorded 2026-09-20T19:49:18+00:00. All **60 approved proposals** are represented: **56 new families, three existing-family upgrades and one existing-family reuse**. The catalog grew from the proposal snapshot's 903 to **959 canonical packages**.
+
+Fresh generated-package execution receipts currently contain **45 passing seeds**, **15 source/setup blockers**, **0 failed runs**, and **0 missing or stale checks**. Passing means an actual source-data or declared scientific/mathematical-model run returned a finite score and explicit validity. Unit fixtures are excluded. **The remaining source/forward-model blockers are unfinished work; the expansion is not fully source-validated.**
+
+## What was audited and added
+
+The approved roadmap remains an unchanged historical proposal. Candidate artifacts, scientific questions and evaluation contracts were compared with existing packages before adding families. B04 upgrades the Station single-cell package; P05/P06 upgrade the existing particle-physics proxies; T02 reuses the Ramsey verifier. No new task is created by merely changing a source instance, graph size, region or material. The two old text-classification tasks labeled finance are corrected to language.
+
+Every proposal has a canonical manifest, candidate contract, initial program with an EVOLVE-BLOCK, generated evaluator, SCiEL configuration, attributed source links, requirements, limitations and contribution/domain/data/verification labels. Data preparation is explicit; evaluation has no automatic source download or fabricated-data fallback. Scientific engines and source data are attributed separately from local evaluator authorship.
+
+Implemented definitions, declared readiness, regression tests, actual seed runs and full-paper reproduction are different claims. These are bounded research adaptations; none is promoted to a published-score reproduction by passing its seed. Missing isotope/seismic forward models in particular still require implementation and scientific cross-checks.
+
+## Coverage and actual executions
+
+| Group | Proposals | New families | Existing handled | Source/model seed passed | Still blocked or unchecked |
+|---|---:|---:|---:|---:|---:|
+| Biology | 12 | 11 | 1 | 8 | 4 |
+| Chemistry / materials | 12 | 12 | 0 | 11 | 1 |
+| Earth / environment | 12 | 12 | 0 | 9 | 3 |
+| Physics / space / quantum | 14 | 12 | 2 | 7 | 7 |
+| Theoretical CS | 5 | 4 | 1 | 5 | 0 |
+| Economics / finance | 5 | 5 | 0 | 5 | 0 |
+
+## Validation evidence
+
+The full repository regression recorded **471 passed tests and 7 optional skips**, with no failures. This includes JavaScript, local HTTP and actual SCiEL integration checks. The skipped recovered-optimization tests need separately configured upstream checkouts; source scoring below is a separate check. C02 also passed its source/stereochemistry and catalog checks after selective generation. [Full log](../validation/dataset-review-tests.txt), [regression receipt](../validation/science-expansion-regression.json).
+
+Follow-up: **all 7 previously skipped tests passed** after wiring the already-cached pinned source repositories. That targeted run passed all 16 tests, with no skips or failures, covering all 478 tests from the full-suite run. [Follow-up log](../validation/dataset-review-optional-tests.txt).
+
+The dashboard's normal SCiEL execution path recorded **45 verified valid seeds out of 60 proposals**, with 15 blocked and 0 failed. This is an evaluator smoke campaign with zero external model calls, not an evolution experiment. [SCiEL JSON report](../runs/science-expansion-sciel/report.json), [readable report](../runs/science-expansion-sciel/report.html).
+
+## Complete proposal-to-package audit
+
+Each task link contains its actual contract and sources. Source data or model preparation that remains missing is listed below this table.
+
+| Proposal | Canonical task | Action | Declared state | Actual seed |
+|---|---|---|---|---|
+| B01 | [Biology: ProteinGym measured protein variant effects](../suite/science-biology-proteingym-fitness/README.md) | new family | ready | ok |
+| B02 | [Biology: Eterna RNA inverse folding](../suite/science-biology-eterna-rna-design/README.md) | new family | ready | ok |
+| B03 | [Biology: Perturb-seq response generalization](../suite/science-biology-gears-perturbation/README.md) | new family | requires_setup | blocked |
+| B04 | [Biology: Single-cell batch integration: public scIB adaptation](../suite/the-station-single-cell-batch-integration/README.md) | upgrade existing | ready | ok |
+| B05 | [Biology: Isotope-constrained metabolic flux inference](../suite/science-biology-isotope-flux/README.md) | new family | requires_setup | blocked |
+| B06 | [Biology: Spatial transcriptomic cell abundance inference](../suite/science-biology-spatial-deconvolution/README.md) | new family | requires_setup | blocked |
+| B07 | [Biology: Empirical phylogenetic tree likelihood search](../suite/science-biology-phylogenetic-likelihood/README.md) | new family | ready | ok |
+| B08 | [Biology: Reference-aware environmental metagenome assembly](../suite/science-biology-cami-metagenome-assembly/README.md) | new family | requires_setup | blocked |
+| B09 | [Biology: Measured fluorescence microscopy denoising](../suite/science-biology-fmd-microscopy-denoising/README.md) | new family | ready | ok |
+| B10 | [Biology: PEtab biochemical kinetic parameter inference](../suite/science-biology-petab-kinetic-inference/README.md) | new family | ready | ok |
+| B11 | [Biology: Regulatory network inference from expression](../suite/science-biology-beeline-regulatory-network/README.md) | new family | ready | ok |
+| B12 | [Biology: Measured tandem-spectrum peptide reconstruction](../suite/science-biology-casanovo-peptide-decoding/README.md) | new family | ready | ok |
+| C01 | [Budgeted EDBO+ reaction-condition discovery](../suite/science-materials-edbo-reaction-discovery/README.md) | new family | ready | ok |
+| C02 | [GEOM molecular conformer ensemble search](../suite/science-materials-geom-conformer-search/README.md) | new family | ready | ok |
+| C03 | [Matbench DFT-stable crystal screening](../suite/science-materials-matbench-stability-screening/README.md) | new family | ready | ok |
+| C04 | [OC20-Dense catalyst adsorption-site search](../suite/science-materials-oc20-adsorption-search/README.md) | new family | ready | ok |
+| C05 | [ARC-MOF carbon-capture material selection](../suite/science-materials-arcmof-carbon-capture/README.md) | new family | ready | ok |
+| C06 | [PFHub spinodal decomposition integration](../suite/science-materials-pfhub-spinodal-dynamics/README.md) | new family | ready | ok |
+| C07 | [NMR molecular structure elucidation](../suite/science-materials-nmr-structure-elucidation/README.md) | new family | requires_setup | blocked |
+| C08 | [opXRD experimental phase identification](../suite/science-materials-opxrd-phase-identification/README.md) | new family | ready | ok |
+| C09 | [Cantera chemical-mechanism reduction](../suite/science-materials-cantera-mechanism-reduction/README.md) | new family | ready | ok |
+| C10 | [SPICE label-efficient molecular potentials](../suite/science-materials-spice-active-potential/README.md) | new family | ready | ok |
+| C11 | [NASICON occupation-dependent transport with exact finite-state reference](../suite/science-materials-kmcpy-ionic-transport/README.md) | new family | ready | ok |
+| C12 | [Grouped-SPMe battery electrochemical inversion](../suite/science-materials-grouped-spme-battery-inversion/README.md) | new family | ready | ok |
+| E01 | [Earth and environment: Measured rainfall–runoff transfer across catchments](../suite/science-earth-camels-runoff/README.md) | new family | ready | ok |
+| E02 | [Earth and environment: Measured ecosystem carbon-flux reconstruction](../suite/science-earth-fluxnet-ecosystem-flux/README.md) | new family | requires_setup | blocked |
+| E03 | [Earth and environment: WeatherBench probabilistic forecast calibration](../suite/science-earth-weatherbench-calibration/README.md) | new family | ready | ok |
+| E04 | [Earth and environment: OpenFWI subsurface seismic inversion](../suite/science-earth-openfwi-seismic-inversion/README.md) | new family | requires_setup | blocked |
+| E05 | [Earth and environment: ClimateBench emissions-to-climate response](../suite/science-earth-climatebench-emissions-response/README.md) | new family | ready | ok |
+| E06 | [Earth and environment: Independent-track ocean surface-height reconstruction](../suite/science-earth-oceanbench-satellite-ssh/README.md) | new family | ready | ok |
+| E07 | [Earth science: Measured wildfire spread laws](../suite/science-earth-wildfire-spread-law/README.md) | new family | ready | ok |
+| E08 | [Earth science: Seasonal Arctic sea-ice probabilities](../suite/science-earth-seasonal-sea-ice/README.md) | new family | ready | ok |
+| E09 | [Earth science: Snow accumulation and melt across sites](../suite/science-earth-snow-accumulation-melt/README.md) | new family | ready | ok |
+| E10 | [Earth science: Water-efficient irrigation policies](../suite/science-earth-irrigation-policies/README.md) | new family | ready | ok |
+| E11 | [Earth science: Groundwater predictive uncertainty](../suite/science-earth-groundwater-uncertainty/README.md) | new family | ready | ok |
+| E12 | [Earth science: Methane emission inversion](../suite/science-earth-methane-emission-inversion/README.md) | new family | requires_setup | blocked |
+| F01 | [Economics: Consumption-saving policy accuracy](../suite/science-economics-consumption-saving/README.md) | new family | ready | ok |
+| F02 | [Economics: Heterogeneous-agent macroeconomic transitions](../suite/science-economics-macroeconomic-transitions/README.md) | new family | ready | ok |
+| F03 | [Economics: Structural differentiated-product demand estimation](../suite/science-economics-structural-demand-estimation/README.md) | new family | ready | ok |
+| F04 | [Economics: Incentive-compatible finite auction design](../suite/science-economics-finite-auction-design/README.md) | new family | ready | ok |
+| F05 | [Economics: Bermudan exercise-policy research](../suite/science-economics-optimal-stopping/README.md) | new family | ready | ok |
+| P01 | [GREAT3 weak-lensing shear calibration](../suite/science-physics-great3-shear-calibration/README.md) | new family | requires_setup | blocked |
+| P02 | [MLGWSC gravitational-wave event search](../suite/science-physics-mlgwsc-event-search/README.md) | new family | requires_setup | blocked |
+| P03 | [Experimental surface-code logical decoding](../suite/science-physics-experimental-surface-code/README.md) | new family | ready | ok |
+| P04 | [CaloChallenge photon shower generation](../suite/science-physics-calochallenge-photon-showers/README.md) | new family | ready | ok |
+| P05 | [TrackML complete-event track reconstruction](../suite/science-particle-helical-track-reconstruction/README.md) | upgrade existing | requires_setup | blocked |
+| P06 | [LHCO control-region collider anomalies](../suite/science-particle-collider-anomaly-ranking/README.md) | upgrade existing | ready | ok |
+| P07 | [TDLMC time-delay distance posterior](../suite/science-physics-tdlmc-distance-posterior/README.md) | new family | requires_setup | blocked |
+| P08 | [Ariel atmospheric posterior retrieval](../suite/science-physics-ariel-atmospheric-posterior/README.md) | new family | requires_setup | blocked |
+| P09 | [ngEHT closure-constrained imaging](../suite/science-physics-ngeht-closure-imaging/README.md) | new family | requires_setup | blocked |
+| P10 | [FreeGSNKE tokamak coil design](../suite/science-physics-freegsnke-coil-design/README.md) | new family | ready | ok |
+| P11 | [JHTDB turbulent subgrid stress](../suite/science-physics-jhtdb-subgrid-stress/README.md) | new family | requires_setup | blocked |
+| P12 | [Robust multilevel quantum-control pulses](../suite/science-physics-robust-transmon-control/README.md) | new family | ready | ok |
+| P13 | [refnx contrast reflectometry inversion](../suite/science-physics-refnx-contrast-inversion/README.md) | new family | ready | ok |
+| P14 | [Critical-regime XY Monte Carlo schedules](../suite/science-physics-xy-critical-monte-carlo/README.md) | new family | ready | ok |
+| T01 | [Theoretical computer science: Exact XOR-circuit synthesis](../suite/science-tcs-xor-circuit-synthesis/README.md) | new family | ready | ok |
+| T02 | [Ramsey graphs for R(5,5): large graphs with no K5 and no independent 5-set](../suite/science-tcs-ramsey-5-5/README.md) | reuse existing | ready | ok |
+| T03 | [Theoretical computer science: Spectral graph-lift construction](../suite/science-tcs-spectral-graph-lifts/README.md) | new family | ready | ok |
+| T04 | [Theoretical computer science: Communication-minimizing DAG pebbling](../suite/science-tcs-red-blue-pebbling/README.md) | new family | ready | ok |
+| T05 | [Theoretical computer science: Memory-bounded streaming frequency sketches](../suite/science-tcs-streaming-frequency-sketches/README.md) | new family | ready | ok |
+
+## Remaining source and model work
+
+- **B03**: Official GEARS/Dataverse acquisition returned HTTP 403; curate the source perturbation study and whole-perturbation split.
+- **B05**: A verified isotope atom-map forward simulator and source experimental bundle remain missing. This requires scientific implementation/validation, not just downloading a file.
+- **B06**: Curate matched source spatial observations and reference signatures with fixed absolute-scale conventions and a held-out protocol.
+- **B08**: Source CAMI reads/reference genomes and metaQUAST must be staged and checked together.
+- **C07**: Large source NMR release needs a complete, attributed small-molecule/spectrum subset and structure grouping.
+- **E02**: Official FLUXNET download endpoint returned HTTP 403; source tower files and measured-only QC/site-year splits remain unstaged.
+- **E04**: Source OpenFWI wavefields/velocity arrays and a verified source-matching forward simulator remain missing. A model port/reference cross-check is still required.
+- **E12**: A source IMI case with satellite averaging kernels, QC, orbit split and precomputed GEOS-Chem sensitivity operator remains unstaged.
+- **P01**: Complete GREAT3 image/PSF/truth subfields must be staged with the source shear convention.
+- **P02**: Source detector-strain segments, injection truth and independent background/time-slide protocol remain unstaged.
+- **P05**: Official TrackML hit, particle and truth event files remain unstaged; the old proxy is no longer accepted as official TrackML evidence.
+- **P07**: Source lens images/delays/kinematics and the matching forward-model conventions require validation.
+- **P08**: Official Ariel spectra/posteriors and tutorial opacities were downloaded and hashed, but independent TauREx spectra disagree with the released generating spectra (chi-square/bin about 47.6 even after radius-convention correction). Source-matched opacity resolution/model conventions must be resolved; the downloaded files alone do not validate the task.
+- **P09**: The selected ngEHT challenge source is invitation/password restricted; no access-controlled data are bypassed or replaced by fabricated visibilities.
+- **P11**: Source JHTDB velocity cubes with known spacing, boundaries and independent filtering/time blocks remain unstaged.
+
+## Source protocols and scientific review
+
+- [Biology](BIOLOGY_EXPANSION.md): measured assay/cell/microscopy/spectrum subsets, RNA folding, source ODE cross-checks and simulator-derived regulatory data.
+- [Chemistry/materials](MATERIALS_EXPANSION.md): source campaigns and structures, physical conservation checks, source kMC and battery-model adaptation.
+- [Earth E01–E06](EARTH_DATA.md) and [E07–E12](EARTH_EXPANSION.md): measured hydrology, weather, climate/ocean subsets, explicit units and time/site splits, crop and groundwater simulators.
+- [Physics](PHYSICS_EXPANSION.md): source challenge data, experimental quantum information and independently checked numerical models.
+- [Theoretical CS](TCS_EXPANSION.md) and [economics](ECONOMICS_EXPANSION.md): exact constructions, numerical reference problems and bounded economic-model contracts.
+- [Independent correctness review](../validation/scientific-expansion-independent-review.json): fixed candidate mutation of canonical graph/DAG instances and shared macroeconomic reference blocks. These failures have regression coverage.
+
+- [Additional evaluator review](../validation/science-implementation-review.md) and [materials reference review](../validation/materials-independent-review.json): candidate-input isolation, array reuse, immutable budgets and independent NASICON moment checks.
+
+## Dashboard statistics
+
+The existing dashboard now has a **Statistics** navigation page at `/statistics` and downloadable data at `/api/statistics`. It reads canonical manifests rather than counting merged source records as extra tasks. Topic counts use the primary `area` label; climate dynamics remains a distinct topic from the added Earth/environment area.
+
+“Reused upstream” means the active evaluator has the `original` protocol; “built here” includes `recreated` and `recreated_verified`. This is implementation authorship, not whether the paper had an available repository. Locally authored objectives can use upstream scientific engines, which are disclosed in task provenance. Unsupported and unknown origins remain separate.
+
+**Important to science** requires a substantive scientific or real-world problem and a paper whose main research objective is solving it or advancing understanding of it. Merely evaluating an agent/framework on the task, or citing only a benchmark, dataset, or tool, does not qualify. The `science_relevance` record explains the underlying problem, why it matters, each cited paper's main objective, and the local task's connection. `labels.important_to_science` follows this evidence. Unreviewed tasks are not silently treated as unimportant. Contribution tiers and execution readiness remain separate axes; a measured dataset or a high score alone does not establish novelty or a new discovery.
+
+Implementation counts, manifest readiness and recorded seed passes are separate. The page uses the latest saved attempt, excludes fixture-only records and invalid/nonfinite scores, and invalidates receipts when their recorded protocol or file hashes change. Older reports without complete hashes remain historical evidence, not certification of the current environment. Topic and count links open the corresponding library filters.
+
+## Reproduce checks
+
+```sh
+python3 scripts/build_catalog.py
+python3 scripts/build_suite.py --only '^(science-|the-station-single-cell-batch-integration$)'
+.cache/sciel-env/bin/python scripts/check_schema.py
+python3 run.py validate
+.cache/sciel-env/bin/python -m unittest discover -s tests
+.cache/sciel-env/bin/python scripts/check_science_expansion.py --workers 3
+.cache/sciel-env/bin/python scripts/check_science_expansion_sciel.py --workers 3
+python3 scripts/build_science_expansion_audit.py
+python3 run.py dashboard
+```
+
+Run the preparation commands in each domain document before expecting a fresh machine to pass source-dependent checks. Large raw files and isolated scientific environments are local caches, not redistributable repository assets. Source manifests retain URLs, preprocessing choices and hashes; honor their data terms. Public development instances and same-user candidate execution do not provide a secret held-out benchmark or a malicious-code sandbox.
+
+Full numerical receipts: [central execution JSON](../validation/science-expansion-report.json), [readable execution table](../validation/science-expansion-report.md), [machine-readable 60-proposal audit](../catalog/science-expansion-audit.json). No paid model calls or claims of model-driven improvement are part of these checks.

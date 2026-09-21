@@ -15,6 +15,14 @@ from arena.registry import (RegistryError, get_catalog,
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def legacy_registration():
+    return {"schema": "arena.registration/1", "id": "fixture-source", "kind": "task_collection",
+            "repository": {"url": "https://github.com/example/tasks", "commit": "a" * 40},
+            "manifest_path": "catalog/tasks.json", "tracked_ref": "main", "access": "github_app_private",
+            "admission": "team_registry_pr", "refresh": "manual_pinned_snapshot", "snapshot_source_id": "fixture-source"}
+
+
+
 @pytest.fixture
 def catalog():
     return get_catalog()
@@ -25,7 +33,8 @@ def test_pinned_catalog_is_available_without_runtime_or_frameworks(catalog):
         "task_count": 959, "executable_count": 689, "unsupported_count": 270,
         "protocol_counts": {"original": 130, "recreated_verified": 81, "recreated": 478, "unsupported": 270},
         "runtime_readiness": "not_verified"}
-    assert catalog["sources"][0]["repository"]["commit"] == "5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935"
+    assert catalog["sources"][0]["kind"] == "bundled"
+    assert catalog["sources"][0]["id"] == "arena-tasks"
     assert all(task["runtime_readiness"] == "not_verified" for task in catalog["tasks"])
     assert validate_registry()["valid"] is True
 
@@ -36,7 +45,7 @@ def test_pinned_catalog_is_available_without_runtime_or_frameworks(catalog):
     lambda c: c["tasks"][0].update(source_id="missing-source"),
     lambda c: c["tasks"].append(deepcopy(c["tasks"][0])),
     lambda c: c["summary"].update(executable_count=959),
-    lambda c: c["sources"][0]["repository"].update(commit="main"),
+    lambda c: c["sources"][0].update(manifest_sha256="main"),
 ])
 def test_invalid_catalog_rejected(catalog, mutate):
     mutate(catalog)
@@ -92,10 +101,10 @@ def test_input_output_contracts_are_bound_to_pinned_problem_files(catalog):
     assert "(n, 3)" in task["contract"]
     source = task["contract_source"]
     assert source["path"] == "suite/alphaevolve-circle-packing-in-unit-square/problem.json"
-    assert "/blob/5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935/" in source["url"]
+    assert "/Doldrums/arena/blob/main/tasks/" in source["url"]
     assert len(source["sha256"]) == 64
     assert all(t["contract_source"] for t in tasks.values())
-    source["url"] = source["url"].replace("5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935", "main")
+    source["url"] = source["url"].replace("/main/", "/other/")
     with pytest.raises(RegistryError, match="pinned repository"):
         validate_catalog(catalog)
 
@@ -207,7 +216,7 @@ def test_explicit_null_attribution_is_not_an_optional_omission():
     {"refresh": "automated"}, {"kind": "arbitrary_shell"}, {"unexpected": "field"},
 ])
 def test_registration_is_constrained_and_not_a_shell_request(updates):
-    value = json.loads((ROOT / "registry/task-sources/autoresearch-tasks.json").read_text())
+    value = legacy_registration()
     assert value["access"] == "github_app_private"
     validate_registration(value)
     value.update(updates)
@@ -228,9 +237,9 @@ def test_sensitive_urls_and_machine_paths_are_not_catalog_metadata(catalog):
 def test_registration_and_snapshot_revision_must_agree(tmp_path):
     copied = tmp_path / "registry"
     shutil.copytree(ROOT / "registry", copied)
-    registration = copied / "task-sources/autoresearch-tasks.json"
+    registration = copied / "task-sources/arena-tasks.json"
     value = json.loads(registration.read_text())
-    value["repository"]["commit"] = "a" * 40
+    value["manifest_sha256"] = "a" * 64
     registration.write_text(json.dumps(value))
     with pytest.raises(RegistryError, match="revision/path differs"):
         validate_registry(copied)
@@ -269,11 +278,11 @@ def test_snapshot_tool_reads_committed_objects_not_dirty_checkout(tmp_path):
     registry = tmp_path / "registry"
     (registry / "task-sources").mkdir(parents=True)
     (registry / "participants").mkdir()
-    registration = json.loads((ROOT / "registry/task-sources/autoresearch-tasks.json").read_text())
+    registration = legacy_registration()
     registration["repository"]["commit"] = commit
     (registry / "task-sources/autoresearch-tasks.json").write_text(json.dumps(registration))
     result = subprocess.run([sys.executable, str(ROOT / "scripts/sync_task_catalog.py"), str(checkout),
-                             "--registry-root", str(registry)], capture_output=True, text=True)
+                             "--registry-root", str(registry), "--registration", "task-sources/autoresearch-tasks.json"], capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     imported = get_catalog(registry)
     assert imported["tasks"][0]["description"] == "Committed description"
@@ -296,7 +305,7 @@ def test_json_schemas_are_valid_json():
 def test_initial_importer_cannot_overwrite_an_additional_collection(tmp_path):
     copied = tmp_path / "registry"
     shutil.copytree(ROOT / "registry", copied)
-    other = json.loads((copied / "task-sources/autoresearch-tasks.json").read_text())
+    other = json.loads((copied / "task-sources/arena-tasks.json").read_text())
     other.update(id="other", snapshot_source_id="other")
     (copied / "task-sources/other.json").write_text(json.dumps(other))
     before = (copied / "catalog.json").read_bytes()

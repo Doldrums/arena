@@ -1,0 +1,61 @@
+# Dataset and statistics verification
+
+The review found and fixed seven evaluator defects and corrected the definition and reporting of scientific importance. The 60-task expansion has 45 passing source-data or declared scientific-model executions and 15 explicit dataset/forward-model blockers. It is not yet fully source-validated.
+
+## What changed
+
+- **Scientific importance:** the underlying substantive scientific or real-world problem must be the cited paper's **main research objective**. Each positive record explains the problem, why it matters, the paper's main objective, and the connection to the local task. Agent/framework evaluation, benchmark, dataset, or tool citations alone do not qualify. Contribution tiers, implementation origin, and execution results remain separate.
+- **Evidence coverage:** **144 of 959 tasks** meet the primary research goal rule, supported by 73 distinct primary-paper URLs. **815 remain unreviewed** under this rule. All automatic promotion from original agent-paper task locators has been removed. This supersedes the previous broader classification of 878 tasks; unreviewed means qualifying evidence has not been established, not that the task has no scientific value.
+- **Source corrections:** replaced framework and dataset-only justifications with problem-focused research where the local task supports that connection. Synthetic root finding, Lorenz-96 testbeds, small quantum optimizer demos, and several other limited protocols remain unreviewed. Local adaptations are distinguished from the cited experiments. [Importance review](SCIENCE_IMPORTANCE_REVIEW.md).
+- **Statistics:** the science share uses paper evidence, with all 959 tasks in the denominator. Supported and unreviewed tasks have working library filters and searchable paper links. Library and statistics implementation counts agree. Saved results with invalid outputs, changed protocols, or changed recorded files do not count as successful current-file receipts; historical reports remain explicitly historical.
+- **Generation:** evidence persists in task manifests, problem records, the CSV/JSON catalog, suite labels, and task READMEs. Schema and registry checks reject an importance claim without supporting paper metadata. Metadata can be refreshed without replacing candidate/evaluator code using `python3 scripts/science_evidence.py --refresh`.
+
+## Evaluator defects fixed
+
+| Task | Defect and correction |
+|---|---|
+| B10 kinetic inference | Candidate edits could change the conditions/measurements used by the fitting oracle. Pass independent copies. |
+| P04 detector showers | Candidate edits to geometry could change scored features. Preserve canonical geometry. |
+| P07 distance posterior | Candidate edits could change predictive uncertainty. Isolate nested observation metadata. |
+| P09 closure imaging | Candidate edits could change flux constraints and image configuration. Preserve evaluator-owned constraints. |
+| P12 quantum control | Candidate edits could remove robustness cases. Preserve the prescribed detuning/drive-scale cases. |
+| C10 interatomic potential | Reused candidate force buffers were overwritten by subsequent checks, rejecting valid solutions. Snapshot outputs. |
+| E04 seismic inversion | Candidate edits could change the forward-oracle geometry. Isolate candidate inputs from oracle state. |
+
+The dedicated regressions detect the original behavior. Details and reproduction evidence are in [the implementation review](../validation/science-implementation-review.md).
+
+## Verification
+
+The main-goal revision passed **33 evidence/statistics/registry checks and 13 dashboard checks**, with zero skips. All **959 manifests** pass the registry and JSON Schema. [Revision test log](../validation/science-primary-goal-tests.txt) · [Dashboard test log](../validation/science-primary-goal-dashboard-tests.txt).
+
+Fresh execution checks after this revision again produced **45 passes and 15 blockers**, with no stale manifests, file hashes, or resumed SCiEL rows. Repeat metadata generation changed none of **4,779 checked files**, and all **1,945 task Python files** are unchanged. [Regeneration receipt](../validation/science-primary-goal-regeneration.json).
+
+Earlier implementation-audit checks (before this metadata revision):
+
+- Full regression run: **478 tests, 471 passed, 7 optional skips**, with Node rendering, local dashboard HTTP routes, and the installed SCiEL engine enabled. [Complete log](../validation/dataset-review-tests.txt).
+- Follow-up against the already-cached pinned upstream repositories: **16 tests passed with no skips**, including all seven tests skipped in the full run. [Upstream integration log](../validation/dataset-review-optional-tests.txt).
+- Final statistics, dashboard HTTP/JavaScript, and evidence checks: **32 passed**, including the additional report-level hash regression. [Final statistics log](../validation/dataset-review-final-statistics-tests.txt).
+- Final C02/importance/catalog checks: **15 passed** after the final source record and generated conformer task were updated.
+- Registry and JSON Schema: **all 959 manifests valid**.
+- Metadata refresh: **4,778 files unchanged** on repeat generation, including candidate/evaluator files. [Receipt](../validation/dataset-review-regeneration.json).
+- All 60 proposal checks: **45 valid passes, 15 explicit blockers, no failed runs**. All recorded source execution hashes were independently checked against the current files. [Source results](../validation/science-expansion-report.md).
+- The normal SCiEL execution path independently reports **45 verified valid executions and 15 blockers**, with no unknown-validity runs. [SCiEL report](../runs/science-expansion-sciel/report.html).
+
+The 15 blocked proposals are B03, B05, B06, B08, C07, E02, E04, E12, P01, P02, P05, P07, P08, P09, and P11. Their precise setup requirements are in [the implementation inventory](SCIENCE_EXPANSION_IMPLEMENTATION.md). Unit fixtures do not substitute for these missing source runs.
+
+## Current inventory
+
+| Measure | Count |
+|---|---:|
+| Canonical tasks | 959 |
+| Topics | 21 |
+| Implemented active evaluators | 689 |
+| Reused upstream evaluators | 130 |
+| Locally authored evaluators | 559 |
+| Tasks without an implemented active evaluator | 270 |
+| Important to science, with primary-problem evidence | 144 |
+| Primary-problem evidence not yet established | 815 |
+
+Implementation counts describe code availability, not successful execution or complete reproduction of the source paper. Locally authored evaluators may use upstream scientific engines; the task provenance records that reuse. Older tasks retain their historical run evidence; this review did not rerun every GPU, API-dependent, or external-data benchmark in the 959-task library.
+
+[Label definition](LABELS.md) · [Curated paper evidence](../scripts/science_evidence_overrides.json) · [Machine-readable review snapshot](../validation/dataset-review.json)

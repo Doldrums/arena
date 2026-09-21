@@ -1,0 +1,78 @@
+# Science supplement: eighteen tasks in six fields
+
+Added on 2026-09-20 after reviewing the task catalog, shared evaluator families, manifest schema, catalog/suite generators, runner and SCiEL interface; eight more tasks (theoretical computer science, cosmology with real data, computational chemistry) were added the same day. The original 98-paper corpus remains unchanged; six supplemental source collections contain these eighteen additions.
+
+Theoretical computer science and cosmology/astrophysics address the requested gaps. Particle physics, quantum information and climate dynamics are the three additional topics. They were chosen for substantive research questions with small, deterministic CPU evaluation protocols and independently checkable outputs. CERN's public challenges motivate the particle-physics tasks; the local synthetic events are explicitly distinguished from CERN datasets.
+
+## Tasks and primary sources
+
+| Field | Tasks | What is evolved and measured | Source |
+|---|---|---|---|
+| Theoretical computer science | [16-wire sorting network](../suite/science-tcs-sorting-network-16/README.md) | Comparator list; minimize size after exhaustive zero-one verification of all 65,536 inputs. Depth is diagnostic. | [Codish et al.](https://arxiv.org/abs/1507.01428), [Dobbelaere's construction](https://bertdobbelaere.github.io/sorting_networks.html#N16L60D10) |
+| Theoretical computer science | [Length-18 distance-6 binary code](../suite/science-tcs-binary-code-18-6/README.md) | Packed integer codewords; maximize cardinality after checking every Hamming distance exactly. Linear and nonlinear codes allowed. | [Gijswijt et al.](https://arxiv.org/abs/1005.4959), [Brouwer's bounds](https://aeb.win.tue.nl/codes/binary-1.html) |
+| Cosmology/astrophysics | [Luminosity-distance quadrature](../suite/science-cosmology-luminosity-distance-quadrature/README.md) | Eight universal quadrature nodes and weights; minimize worst validation relative distance error in percent against adaptive integration. | [Hogg](https://arxiv.org/abs/astro-ph/9905116), [Linder](https://arxiv.org/abs/astro-ph/0208512) |
+| Cosmology/astrophysics | [Dark-energy growth approximation](../suite/science-cosmology-dark-energy-growth-index/README.md) | Six growth-index coefficients; minimize worst relative growth/rate error in percent against the GR growth ODE. | [Linder and Cahn](https://arxiv.org/abs/astro-ph/0701317) |
+| Particle physics | [Helical-track reconstruction](../suite/science-particle-helical-track-reconstruction/README.md) | Assign hits to tracks; maximize signal-hit pair F1, penalizing noise associations and merged tracks. | [TrackML](https://arxiv.org/abs/1904.06778v3), [CERN description](https://cds.cern.ch/record/2704180) |
+| Particle physics | [Collider-anomaly ranking](../suite/science-particle-collider-anomaly-ranking/README.md) | Rank unlabeled events using a background reference; maximize the average of AUROC and signal efficiency at at most 5% background acceptance. | [LHC Olympics](https://arxiv.org/abs/2101.08320), [CERN search challenges](https://ep-news.web.cern.ch/machine-learning-ushers-new-paradigm-particle-searches-lhc) |
+| Quantum information | [QAOA parameter design](../suite/science-quantum-qaoa-maxcut/README.md) | Graph-dependent parameters of a fixed two-layer circuit; maximize expected-cut/exact-optimum ratio. | [Farhi et al.](https://arxiv.org/abs/1411.4028v1) |
+| Quantum information | [Variational Ising ground states](../suite/science-quantum-ising-vqe/README.md) | Parameters of a fixed three-layer Ry/CZ ansatz; minimize the energy gap per spin relative to exact diagonalization. | [Peruzzo et al.](https://arxiv.org/abs/1304.3061v3), [Kandala et al.](https://arxiv.org/abs/1704.05018v2) |
+| Climate dynamics | [Lorenz-96 assimilation](../suite/science-climate-lorenz96-assimilation/README.md) | Ensemble update from noisy partial observations; minimize analysis-mean RMSE against independent trajectories. | [Tomizawa and Sawada](https://gmd.copernicus.org/articles/14/5623/2021/) |
+| Theoretical computer science | [17-wire](../suite/science-tcs-sorting-network-17/README.md) and [18-wire](../suite/science-tcs-sorting-network-18/README.md) sorting networks | Comparator lists verified over all 2^17 / 2^18 inputs; best known sizes 71 and 77 with lower bounds 63 and 68, so both optimal sizes are open. | [Codish et al.](https://arxiv.org/abs/1507.01428), [Dobbelaere's list](https://bertdobbelaere.github.io/sorting_networks.html) |
+| Theoretical computer science | [Length-17 distance-6 binary code](../suite/science-tcs-binary-code-17-6/README.md) | Maximise the number of 17-bit words at pairwise distance 6; A(17,6) is 258..340. The 256-word shortened extended quadratic-residue code is verified in tests. | [Gijswijt et al.](https://arxiv.org/abs/1005.4959), [Brouwer's table](https://aeb.win.tue.nl/codes/binary-1.html) |
+| Theoretical computer science | [Snake-in-the-box in Q_9](../suite/science-tcs-snake-in-the-box-9/README.md) | Longest induced path in the 9-dimensional hypercube, checked exactly; exact values are known only up to dimension 8, and dimension 9 records were improved in 2026. | [Allison and Paulusma](https://arxiv.org/abs/1603.05119), [2026 census](https://arxiv.org/abs/2607.15270) |
+| Theoretical computer science | [Ramsey graphs for R(5,5)](../suite/science-tcs-ramsey-5-5/README.md) | Largest graph with no K5 and no independent 5-set, checked by exact clique search; 43 <= R(5,5) <= 46, the seed is the Paley graph on 37 vertices. | [Angeltveit and McKay](https://arxiv.org/abs/2409.15709), [Radziszowski's survey](https://www.cs.rit.edu/~spr/ElJC/sur.pdf) |
+| Cosmology/astrophysics | [Pantheon+ expansion-history fit](../suite/science-cosmology-pantheon-plus-expansion-fit/README.md) | Real data: a parametric E(z) with up to six parameters is fitted to 1,580 Pantheon+ supernovae with the full covariance; score is the minimum chi-squared, LambdaCDM reported for comparison. | [Brout et al. 2022](https://arxiv.org/abs/2202.04077), [data release](https://github.com/PantheonPlusSH0ES/DataRelease) |
+| Computational chemistry | [LJ38](../suite/science-chemistry-lennard-jones-38/README.md) and [LJ55](../suite/science-chemistry-lennard-jones-55/README.md) Lennard-Jones clusters | Atom coordinates minimising the exact Lennard-Jones energy; the database minima (-173.928427, -279.248470) are reproduced in tests from constructed geometries. | [Wales and Doye 1997](https://doi.org/10.1021/jp970984n), [Cambridge Cluster Database](https://www-wales.ch.cam.ac.uk/CCD.html) |
+| Climate dynamics | [Subgrid-tendency closure](../suite/science-climate-lorenz96-subgrid-closure/README.md) | Fit a shared degree-five polynomial to unresolved forcing; minimize normalized error on independent trajectories, including an unseen forcing regime. | [Rasp](https://gmd.copernicus.org/articles/13/2185/2020/) |
+
+## What scores establish
+
+The six TCS tasks are finite extremal construction problems on open questions (optimal sorting-network sizes for 16 to 18 wires, A(17,6) and A(18,6), the longest snake in Q_9, and R(5,5)). Tests independently verify a published 60-comparator network and a 512-word extended quadratic-residue code. The latter is constructed from the generator in [ETSI TS 102 361-1 V2.3.1, Annex B.3.2](https://www.etsi.org/deliver/etsi_TS/102300_102399/10236101/02.03.01_60/ts_10236101v020301p.pdf), extending rather than shortening it. They use `recreated_verified`, `open_problem`, `data=none`, `verification=exact`. Improving a weak seed or reproducing a known construction is not a new bound; any record claim requires comparison with current literature.
+
+The Pantheon+ task is the one `discovery` task of the supplement: it fits real measurements (fetched by `scripts/prepare_science_data.py` from the public release at a pinned commit, never redistributed), and a better chi-squared than LambdaCDM is only meaningful together with the parameter count it reports. The two Lennard-Jones tasks are `recreated_verified` `method` tasks: the Cambridge Cluster Database minima are putative, reproduced in `tests/test_science_chemistry.py`. The other eight tasks use `recreated` and `method`. Their fixed small protocols are independently written adaptations of equations or challenges, not reproductions of paper scores. Cosmology tests approximate known equations on synthetic backgrounds. Particle events are illustrative toy samples, not a detector simulation or a discovery significance calculation. Quantum tests use ideal classical statevector simulation. Climate tests use nondimensional Lorenz models, not observed weather. In particular, low offline closure error need not produce stable online forecasts.
+
+Every task specifies a candidate API, objective direction, seed, parameters, dependencies, source locators and limitations. `combined_score` is the raw score for maximization and its negation for minimization. Invalid candidates receive the existing failure envelope, not a valid zero score. Candidate-reported objective values are never trusted.
+
+Evaluation cases are deterministic and public. Numerical tasks use separate calibration/training cases where applicable; those splits are not secret holdouts. SCiEL can inspect local code, so publication-quality generalization claims require freezing the candidate and evaluating fresh seeds or parameter regimes. The ordinary local evaluator process is not a security sandbox against malicious Python that modifies the checker.
+
+## Storage and regeneration
+
+- Reviewed definitions: `catalog/science/{tcs,cosmology,particle,quantum,climate,chemistry}.json`.
+- Real data: `python3 scripts/prepare_science_data.py` fetches the Pantheon+ files (pinned commit, SHA-256) into `suite/_lib/data/pantheon-plus`.
+- Importer: `scripts/import_science.py`, called by `scripts/build_catalog.py`.
+- Family registration and seed templates: `scripts/science_<topic>.py`, loaded by `scripts/suite_families.py`.
+- Shared scoring code: `suite/_lib/autoresearch_suite/science_<topic>.py`.
+- Generated packages: `suite/science-*/`, with the same six files as existing tasks.
+- Provenance pages: `papers/science-<topic>.md`; catalog JSON/CSV/HTML and `suite/index.json` include all eighteen tasks.
+- Area labels: `theoretical_computer_science`, `cosmology_and_astrophysics`, `particle_physics`, `quantum_information`, `climate_dynamics`, `chemistry`.
+
+```sh
+python3 scripts/build_catalog.py
+python3 scripts/build_suite.py --only '^science-'
+.cache/sciel-env/bin/python scripts/check_science.py
+python3 scripts/build_suite.py --only '^science-'  # incorporate measured cost labels
+python3 scripts/task_labels.py --doc
+python3 run.py validate
+.cache/sciel-env/bin/python scripts/check_schema.py
+.cache/sciel-env/bin/python -m unittest discover -s tests -p 'test_science_*.py'
+.cache/sciel-env/bin/python -m unittest discover -s tests -p 'test_recreated_families.py'   # new TCS verifiers, Pantheon+ fit
+```
+
+Filtered suite regeneration now updates the global suite index, so adding a supplement does not leave the index stale. Existing tasks are preserved.
+
+## Validation and running
+
+[Seed results](../validation/science-report.md) and [machine-readable evidence](../validation/science-report.json) record the first ten process-isolated seed evaluations plus SHA-256 hashes; the eight later additions were run through the main harness (`validation/suite-report.json`) of definitions, templates, evaluators, seeds and scoring code. No model API, GPU, credential, data download or paid run is needed; NumPy and SciPy suffice.
+
+[Integration checks](../validation/science-checks.json): all eighteen seeds valid; registry and schema validation pass; no duplicate groups; 295 regression tests run, with 264 passing and 31 existing environment-dependent skips. TCS and cosmology smoke runs also pass through the real SCiEL evaluator bridge. Regenerating the supplement and indexes produces identical contents across 66 checked files.
+
+Independent tests cover exact reference constructions, analytic cosmology limits, a second growth reference, quantum dense-matrix exponentials and analytical spectra, particle label-permutation invariance and ranking ties, climate energy balance and periodic boundaries, RK4 convergence and a second ODE solver. Malformed, nonfinite, out-of-domain and incorrect candidate outputs are rejected. Baseline-improvement checks demonstrate useful search space without asserting that a fit always generalizes: unregularized degree-five closure can perform worse than the linear seed in the unseen forcing regime.
+
+```sh
+python3 run.py list --label area=theoretical_computer_science
+python3 run.py list --label area=cosmology_and_astrophysics
+python3 run.py evaluate science-particle-helical-track-reconstruction
+python3 run.py evaluate science-quantum-qaoa-maxcut --candidate /absolute/path/candidate.py
+```
+
+SCiEL consumes each generated `initial_program.py`, `evaluator.py` and `config.yaml` directly. The existing `run.py experiment` command works with the new IDs and its usual model and budget settings; seed validation does not claim that model-driven evolution has been run.

@@ -1,0 +1,179 @@
+# Physics expansion: P01–P14
+
+These are independent SCIEL implementations of the scientific problems in the expansion roadmap. They are not reproductions of the authors' complete benchmark leaderboards. All fourteen families have candidate contracts, seeds, evaluators, scientific checks and source locators. **An implemented evaluator is not evidence that its source benchmark has run.** The catalog distinguishes `ready` from `requires_setup`; the execution report records actual source/model runs separately from checker tests.
+
+The canonical P05 and P06 packages are upgrades of `science-particle-helical-track-reconstruction` and `science-particle-collider-anomaly-ranking`. Their original provenance is retained by the importer. They are not counted as new duplicate tasks. A semantic audit found no existing package implementing the other twelve source problems.
+
+## Provenance and reproducibility
+
+`catalog/science/physics_expansion.json` is authoritative for proposal IDs, source URLs, labels, requirements, scientific limitations and current setup status. `scripts/science_physics_expansion.py` defines candidate contracts and registration. `suite/_lib/autoresearch_suite/science_physics_expansion.py` implements the independent scientific checks. Numerical source libraries and source observations/simulations are attributed separately from implementation origin: `protocol=recreated`, `implementation_origin=independent_reimplementation`, `upstream_evaluator_reused=false`. Specialist engines are reused for P03 (Stim/PyMatching), P06 preparation (FastJet), P07 (lenstronomy), P08 preparation (TauREx) and P10 (FreeGSNKE); those records explicitly set `upstream_code_reused=true` with its scope. P13 implements Parratt recursion independently and reuses refnx measurements, not the refnx numerical engine. Availability of author code alone never implies evaluator borrowing.
+
+Source packs live in ignored `suite/_lib/data/physics-expansion/Pxx/`, or below `AUTORESEARCH_PHYSICS_DATA`. Each consists of `manifest.json` and `benchmark.npz` loaded with `allow_pickle=False`. A manifest contains `schema=sciel-physics-source-v1`, proposal ID, source URLs/member hashes, license/permission, `source_kind`, `fixture_only=false`, NPZ SHA-256 and scientific metadata. Missing, mismatched, or fixture-only data fail closed. Both manifest and NPZ are evaluator dependencies, because scientific geometry and split definitions also affect results. Source packs are local preparation products; source archives are not redistributed in the repository.
+
+`validation/physics-source-staging.json` records staged source hashes. `validation/physics-expansion-report.json` records observed seed outcomes. The central `validation/science-expansion-report.json` is the fresh package-level execution audit. `tests/test_science_physics_expansion.py` contains checker fixtures; these never count as successful benchmark runs.
+
+Candidates and evaluators share a Python process except optional numerical workers. API separation withholds answer arrays but is not a security boundary. Adversarial use requires evaluator-data isolation.
+
+## Preparation and execution
+
+Use the repository's scientific Python environment:
+
+```sh
+.cache/sciel-env/bin/python scripts/prepare_physics_expansion.py --calo --refnx --xy-reference
+.cache/sciel-env/bin/python scripts/prepare_physics_expansion.py --setup-environment
+.cache/physics-env/bin/python scripts/prepare_physics_expansion.py --qec --coils
+.cache/sciel-env/bin/python -m unittest discover -s tests -p test_science_physics_expansion.py -v
+```
+
+Optional solver work for P03/P07/P10 is dispatched automatically by the normal evaluator to `.cache/physics-env/bin/python`. This isolates FreeGSNKE's NumPy `<2.5` requirement from the shared environment. The worker imports the candidate from its file and returns checked JSON; no manual interpreter selection is required in the dashboard. The environment setup pins FreeGSNKE 3.1.0, PyMatching 2.3.1, Stim 1.15.0 and lenstronomy 1.13.5. Preparation requiring TauREx uses a separate environment because TauREx 3.2.4 requires NumPy `<2`; it must not change the tokamak environment.
+
+An externally curated source pack can be imported with:
+
+```sh
+.cache/sciel-env/bin/python scripts/prepare_physics_expansion.py --validate-pack P01 /absolute/source/pack
+```
+
+This checks provenance and file integrity only. It does not claim a scientific source execution; the candidate evaluator must subsequently run successfully. Source permission is required for restricted data.
+
+## Contracts and scientific checks
+
+### P01 — GREAT3 weak-lensing shear calibration
+
+Sources: [GREAT3 results](https://academic.oup.com/mnras/article/450/3/2963/1064967), [official evaluation code](https://github.com/barnabytprowe/great3-public), [author data page](https://www.andrew.cmu.edu/user/rmandelb/data.html).
+
+`estimate_shear(images, psf, metadata)` returns two shear components per subfield. The seed uses PSF-corrected second moments; it is a simple baseline, not a competitive shear estimator. Evaluator fits multiplicative/additive shear biases after rotating both truth and predictions into the source PSF frame. The ground constant-shear metric is
+
+`Qc = 2000 * 1.232 / sqrt(4 + sum((m_i/.002)^2 + (c_i/.0002)^2))`.
+
+Noise-cancellation groups cannot cross the development/evaluation split. The maximum noise-floor value is 1232, verified by a calibration unit test. This is not the variable-shear branch.
+
+Pack arrays: `images[subfield,galaxy,y,x]`, `psf[subfield,y,x]`, `true_shear[subfield,2]`, `psf_rotation_radians[subfield]`, `group_ids`, `development_group_ids`. Metadata: `pixel_scale_arcsec`. At least six distinct-shear subfields are required. **Setup remains:** obtain complete official subfields, source truth and PSF rotation convention; the legacy public data host timed out during the source audit. Tiny arbitrary galaxy renders are not substituted.
+
+### P02 — MLGWSC gravitational-wave event search
+
+Sources: [challenge paper](https://arxiv.org/abs/2209.11146), [official challenge code/data instructions](https://github.com/gwastro/ml-mock-data-challenge-1).
+
+`search(h1,l1,metadata)` returns time/ranking pairs. The baseline whitens the two detector channels and ranks coincident excess power. The evaluator independently clusters triggers, associates each injection once and determines a strict ranking cut on background. Score is sensitive distance from source injection-volume weights at a declared false-alarm rate. Background duration must support at least ten expected false alarms at that rate; a short clip cannot establish a rare-event claim. Equal-rank ties are handled conservatively.
+
+Arrays: `background[2,time]`, `foreground[2,time]`, `injection_times`, `injection_volume_weights`, `development_block_ids`, `test_block_ids`. Metadata: sampling rate, foreground/background GPS epochs, clustering/matching windows and `max_far_hz`. Source injection weights must encode the actual sampled population/volume, not arbitrary unit weights. **Setup remains:** curate real observing-noise Dataset 4 foreground/background and injection metadata with sufficient duration and disjoint observing blocks.
+
+### P03 — Experimental surface-code logical decoding
+
+Sources: [Google experiment](https://www.nature.com/articles/s41586-024-08449-y), [immutable experimental release](https://zenodo.org/records/13273331).
+
+`decode(detector_events,metadata)` returns shot-by-observable bits. The staged pilot uses three **complete, actual 50,000-shot X-basis acquisitions**, 13 cycles each, at code distances 3, 5 and 7. Source paths are `d3_at_q10_7/X/r13`, `d5_at_q4_7/X/r13`, and `d7_at_q6_7/X/r13` inside `google_105Q_surface_code_d3_d5_d7.zip`. Selection is lexicographic within distance before decoding. ZIP byte-range reads fetch only the required members and verify ZIP CRCs; receipts preserve member SHA-256. This does not claim the entire 5.7 GB archive was downloaded and hashed.
+
+Stim parses released experimental detector events and actual observable flips. It constructs the decoder prior from the released **SI1000 noisy circuit**, never by fitting to test shots. No simulated shots are used. The PyMatching seed reports complete-shot logical error; the primary score macro-averages the three acquisitions. Each acquisition reports its Wilson 95% interval and decode duration. This is a zero-shot decoder pilot, not a reproduction of logical error-per-cycle scaling or of Google's stronger decoders.
+
+Arrays: `train_batch_ids` (empty in this zero-shot pilot), `detectors_i[shot,detector]`, `logical_truth_i[shot,observable]`. Each case records batch ID, distance, cycles and detector-error-model text. A single-acquisition compatibility schema also supports `detectors`, `logical_truth`, `test_batch_ids` plus top-level model/distance metadata. Acquisition groups cannot overlap.
+
+### P04 — CaloChallenge photon shower generation
+
+Sources: [CaloChallenge paper](https://arxiv.org/abs/2410.21611), [Dataset 1](https://zenodo.org/records/8099322), [official geometry](https://github.com/CaloChallenge/homepage/tree/main/code).
+
+`fit_showers(training)` returns an energy-conditional sampler. The seed resamples real training showers at each incident energy. Preparation downloads the two complete official photon HDF5 files and verifies published MD5s:
+
+- `dataset_1_photons_1.hdf5`: `005d2adeda7db034b388112661265656`.
+- `dataset_1_photons_2.hdf5`: `4767715ed56e99565fd9c67340661e70`.
+
+The pilot selects the first 384/128 events at each of 15 released energies from disjoint files: 5,760 training and 1,920 evaluation showers, 368 voxels each. No truth-dependent selection is used. The published XML geometry is content-pinned to SHA-256 `30786d54defff3d45dada4f4ecb2a4600a1622b3ca2004d40dae01774589a92f`; angular-major/radial-minor voxel ordering and angles starting at −π match the source handler.
+
+Deposits must be nonnegative. Score averages per-energy standardized Wasserstein distances of total response, sparsity, layer fractions, centroids and widths. A separately trained logistic classifier gives an out-of-sample discrimination diagnostic; sampling time is separate. This is a compact HLF-inspired CPU benchmark, not the full CaloChallenge leaderboard.
+
+Arrays: `train_showers`, `test_showers`, `train_energy`, `test_energy`, disjoint string event IDs. Geometry arrays `layer,x,y` in metadata correspond exactly to voxel order. Energies/deposits are in MeV.
+
+### P05 — TrackML complete-event reconstruction (canonical upgrade)
+
+Sources: [TrackML challenge](https://arxiv.org/abs/1904.06778), [official dataset library](https://github.com/LAL/trackml-library).
+
+`assign_tracks(hits,cells,metadata)` assigns nonnegative safe-integer IDs to all hits in a complete event. Inputs include cells and detector geometry. The baseline clusters directional hit features; it is intentionally simple. The independently written metric matches the source strict majority rule: a matched pair must contain more than half of both the true particle hits and proposed track hits. Accepted hit weights sum to the score; ties and noise particles do not earn credit. Whole-event weights sum to one.
+
+Arrays: `event_ids`, `development_event_ids`, `detector`, then `hits_i`, `cells_i`, `particle_i`, `weights_i`. Hit columns are `hit_id,x,y,z,volume_id,layer_id,module_id`; cell columns are `hit_id,ch0,ch1,value`. **Setup remains:** obtain official complete events/cells/geometry and record permissions. Artificial helices and partial-hit events cannot stand in for TrackML. The existing toy package is upgraded rather than duplicated; its historical evidence is not fresh TrackML evidence.
+
+### P06 — LHCO control-region anomalies (canonical upgrade)
+
+Sources: [community results](https://arxiv.org/abs/2101.08320), [official Pythia/Delphes event release](https://zenodo.org/records/2629073).
+
+`fit(control_features)` returns an object with `score(events)`. The Isolation Forest baseline sees only control features. Source truth remains in the evaluator. The primary statistic is SIC at at most 5% background acceptance divided by `1 + mass-sculpting chi-square/bin`. AUROC and no-signal acceptance are separate diagnostics. Constant scores cannot create a positive discovery statistic. This is simulated benchmark sensitivity, not a discovery p value or evidence of a new particle.
+
+Arrays: `control_features`, `test_features`, `null_features`, `truth`, `mass`, mutually disjoint `train_event_ids`/`test_event_ids`/`null_event_ids`. Preprocessing must use source constituent four-vectors, a pinned physical jet algorithm and declared feature units/control region. **Source run passed:** the first 50,000 official source events were prepared with FastJet anti-kT jets and disjoint source-row splits. The seed scores 0.0114869204; AUROC is 0.5917746774. See [complete source protocol, splits and reproduction commands](PHYSICS_LHCO_SOURCE.md). The canonical existing anomaly task is upgraded, preserving its old provenance.
+
+### P07 — TDLMC distance posterior
+
+Sources: [challenge results](https://arxiv.org/abs/2006.08619), [official release](https://tdlmc.github.io/download.html).
+
+`infer_distance(image,psf,time_delays,kinematics,metadata)` returns joint distance/nuisance posterior samples. An evaluator-owned, bounded-budget forward API computes lenstronomy images, Fermat delays and stellar dynamics; it never accepts a candidate-supplied model image as validation. Score combines relative distance CRPS with independent posterior predictive residuals; bias, width and 90% coverage are reported. Only Rungs 1 and 2 are accepted. Rung 3's simulation accuracy is unsuitable for percent-level validation.
+
+Arrays: whole-lens split IDs, `image_i`, `noise_i`, `delays_i`, `kinematics_i`, `true_ddt`. Metadata cases specify redshifts, PSF, astrometry, aperture/seeing/anisotropy, lens/source light model families, physical prior bounds and named parameter bindings. Distance is in Mpc and delays in days. The baseline uses bounded least-squares with a local Gaussian posterior; calibration is evaluated rather than assumed.
+
+**Setup still needs scientific curation:** Rung1 images (12 MB) and open-box truth (32 KB) were fetched successfully. Translating real-host morphology, source astrometry labels, external convergence, aperture kinematics and pixel conventions into a validated independent likelihood remains necessary before declaring this a source success. Downloading the archive alone is not a completed scientific evaluation.
+
+### P08 — Ariel atmospheric posterior
+
+Sources: [ABC paper](https://proceedings.mlr.press/v220/yip23a.html), [source observations, nested-sampling traces and TauREx tutorial/opacities](https://zenodo.org/records/6770103).
+
+`retrieve(spectrum,uncertainty,planet_metadata)` returns repeated indices into a pinned physical TauREx forward grid. This is an explicit discrete posterior adaptation, not a claim of continuous retrieval. The evaluator compares normalized CRPS against generating parameters, parameter-wise Wasserstein agreement with source reference posteriors and spectral posterior predictive likelihood. Whole planets remain disjoint. The seed samples grid points according to their Gaussian spectral likelihood and declared grid prior.
+
+Arrays per planet: `grid_parameters_i`, `grid_spectra_i`, `spectrum_i`, `uncertainty_i`, `reference_posterior_i`, `truth_i`, plus whole-planet split IDs. Cases specify physical parameter names/bounds, planet/star metadata and exact opacity/model versions. The candidate never receives generating truth or reference posterior. **Observed setup blocker:** the complete Level2 archive (3.190 GB, MD5 `72c11cb47f80f1d9b300435fc1b7533d`) and tutorial/opacities archive (67.6 MB, MD5 `123f98a8db9f2192c51d05407689ea61`) were downloaded and verified. The independent generating-truth forward check on released Planet_0 fails: chi-square per bin 92.3 using literal released meters, 47.6 using a diagnostic mean/equatorial Jupiter-radius conversion. The radius/mass/gravity discrepancy suggests a unit convention issue; that interpretation is an inference, not a confirmed source fix. The tutorial opacity grid has resolving power about 1,000 while the source paper specifies 10,000. Source-matched opacities and model conventions must be verified before a posterior-grid benchmark can be counted as successful. No random spectrum or inconsistent likelihood is substituted.
+
+The reproducible diagnostic is `scripts/prepare_physics_atmospheres.py --check` and its evidence is `validation/physics-atmosphere-forward-check.json`. It runs in `.cache/atmosphere-env` with TauREx 3.2.4, NumPy 1.26.4 and Numba 0.61.2; `--download` reconstructs the verified archives. The diagnostic returns failure on the mismatch and never creates a ready task pack. This source check is separate from candidate execution.
+
+### P09 — ngEHT closure-constrained imaging
+
+Sources: [ngEHT analysis challenge](https://arxiv.org/abs/2212.11355), [official access terms](https://challenge.ngeht.org/challenge1/).
+
+`reconstruct(visibilities,array_metadata,noise)` returns nonnegative Jy/pixel brightness with total flux within 1% of declared calibration. Independent direct Fourier transforms check visibility amplitudes and signed closure-triangle phases, so unknown station phases are not treated as calibrated complex visibilities. Image error uses source-fixed field of view, centre, pixel scale and Gaussian angular resolution. No candidate-dependent alignment is performed. Whole source models and observing schedules are split.
+
+Arrays per case: `uv_i`, `amplitude_i`, `amplitude_sigma_i`, signed one-based `triangles_i`, `closure_phase_i`, `closure_sigma_i`, `truth_image_i`, and disjoint source/schedule IDs. Metadata gives pixels, radians/pixel, flux Jy and comparison FWHM in pixels.
+
+**Actual access blocker:** the official challenge1 data/model site requires a password and limits access/use to invited participants. Obtain source permission and credentials before preparation. No unrestricted mirror is assumed and no generic image/Fourier toy replaces this scientific source.
+
+### P10 — FreeGSNKE tokamak coil design
+
+Sources: [solver paper](https://doi.org/10.1063/5.0188467), [Anamak source example](https://github.com/FusionComputingLab/freegsnke/tree/d755538c0f849e46f0e2407c0dad535eb9a1e228).
+
+`design_coils(machine,target_boundary,plasma_profile)` returns eight currents bounded by ±800 kA. The published idealized geometry contains eight active coils, fifty passive structures and a circular limiter. The model uses Lao85 plasma profiles. Two declared cases use 200/180 kA plasma current and outer target radii 1.22/1.20 m. The baseline invokes the pinned standard inverse-equilibrium method.
+
+Independent forward solves at 33×65 and 65×129 grids require relative Grad–Shafranov residual below 2e-6, an O-point/X-point closed diverted plasma topology, absence of limiter contact, an interior magnetic axis and an axis refinement shift below 5 cm. The score combines normalized target-boundary flux variation and magnetic-axis displacement, taking the worse grid. Candidate currents are re-solved from evaluator-owned initial fields; a claimed solver success is not accepted without a recomputed residual.
+
+Reference inverse solves and seed forward solves have executed. Observed residuals were below 1.3e-9, with 3–4 mm refinement shifts. This is a static numerical model, not experimental machine control or reactor design validation. Packs store target boundary/axis and coarse/refined initialization fields; source solution currents remain evaluator-side.
+
+### P11 — JHTDB turbulent subgrid stress
+
+Sources: [database paper](https://turbulence.pha.jhu.edu/papers/lietal-jhudatabase2008.pdf), [official datasets](https://turbulence.idies.jhu.edu/datasets).
+
+`closure(filtered_velocity,gradients,filter_width)` returns a symmetric 3×3 stress tensor per cell. The evaluator derives `tau_ij = filter(u_i u_j) - filter(u_i) filter(u_j)` independently, with periodic box filtering. Stress error, energy-transfer error and coarse-rollout Fourier-energy error all contribute. Galilean translation and a proper cyclic spatial/vector rotation are checked. An evaluator-owned incompressible projected RK2 rollout rejects unstable energy growth. The seed is a Smagorinsky/gradient-energy closure.
+
+Arrays: separated development/evaluation block IDs, `fine_i`, `fine_future_i`. Cases specify fine spacing, filter cells, stride, viscosity, timestep and rollout steps. **Setup remains:** complete periodic source DNS fields at separated source times. `full_periodic_boxes=true` is required. Wrapping an arbitrary cutout creates a false periodic flow and is explicitly rejected. No random velocity field is used as benchmark evidence.
+
+### P12 — Robust multilevel quantum control
+
+Sources: [QuOCS methods](https://arxiv.org/abs/2212.11144), [official examples](https://github.com/Quantum-OCS/QuOCS).
+
+`pulse('X_pi',hardware_model)` returns 80 IQ samples over 40 ns. The explicit three-level Duffing transmon has anharmonicity −2π×0.25 rad/ns, amplitude bound 0.4 rad/ns and slew bound 0.12 rad/ns/ns including zero endpoints. T1=25,000 ns and Tphi=40,000 ns set Lindblad relaxation/dephasing. A 3×3 grid spans ±2π×0.002 rad/ns detuning and 0.97–1.03 drive calibration. Six Bloch-sphere states measure average gate fidelity including leakage from the computational subspace.
+
+The primary score is mean plus worst average gate infidelity. A matrix-exponential Liouvillian propagator is independently checked against refined DOP853 integration. The Gaussian/DRAG-style seed passed; maximum cross-integrator channel difference was about 6.25e-10. This is a fully specified local physical-model benchmark, not a copied QuOCS workload, hardware result or quantum advantage claim.
+
+### P13 — Reflectometry contrast inversion
+
+Sources: [refnx paper](https://doi.org/10.1107/S1600576718017296), [pinned measured curves and global-fit pilot](https://github.com/refnx/refnx/tree/02b9bd11b439e8db8b319e6c25c7ee94b5033451/examples/global_fitting_motofit).
+
+`infer_profile(training_contrasts,bounds,metadata)` returns posterior samples of oxide/film thickness, dry film SLD, solvent fraction, roughness and background. The measured track holds out an entire solvent contrast of one shared physical sample (`e361r`, `e365r`, `e366r`). No neighboring-q random split is used. Independent Parratt recursion includes Nevot–Croce roughness and 15-point Gaussian Q-resolution integration. Posterior predictive log density on the withheld contrast is the score. The model has a fixed six-parameter complexity.
+
+Three separately labelled simulated samples provide known-parameter CRPS calibration; they do not replace the measured curves. SLD/length units and physical bounds are explicit. The seed uses multistart bounded fitting and local Gaussian uncertainty; no assumption that this approximation is calibrated is made.
+
+Source pilot values specify solvent contrast calibration. The source provides incomplete physical sample/instrument-run metadata; therefore the measured track is explicitly a **single-sample pilot**, not evidence of transfer to a diverse experimental cohort. Measured sample profiles are not exact ground truth. Source files and per-file SHA-256 are retained in the staging receipt.
+
+### P14 — Critical-regime XY Monte Carlo
+
+Sources: [Wolff cluster method](https://doi.org/10.1103/PhysRevLett.62.361), [ALPS Monte Carlo resources](https://alps.comp-phys.org/tutorials/mcs/).
+
+`schedule(temperature,lattice_size,budget)` chooses a repeating list of 1–64 trusted Metropolis, over-relaxation and Wolff updates. Candidate code cannot modify transitions. A purely deterministic over-relaxation schedule is rejected as nonergodic. Each sweep/cluster is charged N site units, an upper work bound; warmup is charged too. This fixed-work cost model is explicit and does not pretend to be identical wall-clock cost.
+
+Three periodic XY cases have (T,L)=(0.88,8),(0.96,12),(1.10,8), J=1. Each candidate runs six independent 384-update chains, with 96 warmup updates. Energy and magnetization estimates are scored by normalized mean-square error against eight independent reference chains of 8,192 updates (1,024 warmup). Reference standard errors must be below 8% of the equilibrium observable scale. Source reports include those errors, candidate chain uncertainty and lag-one autocorrelations. The metric never rewards an ESS estimate alone.
+
+The reference is numerical, not exact equilibrium truth. Cases/reference seeds and candidate seeds are disjoint. A checker test verifies energy conservation of over-relaxation and rejects untrusted kernels. Actual long-reference preparation and seed execution have completed.
+
+## Meaning of a successful run
+
+A finite score indicates that the implementation ran and passed its declared validity checks on the cited observations or specified source model. It does not mean that the seed performs well, produces a novel scientific discovery, reproduces a paper's full results, or has been validated on experimental equipment. Setup blockers and narrower adaptations are part of the benchmark definition, not silently hidden by fixtures.

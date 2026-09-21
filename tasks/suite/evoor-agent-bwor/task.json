@@ -1,0 +1,323 @@
+{
+  "schema_version": "1.0",
+  "id": "evoor-agent-bwor",
+  "name": "BWOR",
+  "description": "BWOR",
+  "paper_ids": [
+    "evoor-agent"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.17708",
+      "type": "paper",
+      "locator": "Section IV and Table III"
+    },
+    {
+      "url": "https://github.com/EvoNexusX/2026HuangEvoORAgent/tree/1a255eaade3b325706ab9b2ad1e20f2aafae0a06",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "benchmark dataset",
+      "solver",
+      "LLM credentials"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "optimization-model solution accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "BWOR",
+    "protocol": "upstream",
+    "source_locator": "Section IV and Table III"
+  },
+  "execution": {
+    "repository": "https://github.com/EvoNexusX/2026HuangEvoORAgent",
+    "commit": "1a255eaade3b325706ab9b2ad1e20f2aafae0a06",
+    "upstream_path": null,
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "initial.py",
+          "-n",
+          "6",
+          "-m",
+          "${LLM_MODEL}"
+        ],
+        "cwd": ".",
+        "notes": "Population initialization. Model-driven search: requires LLM API credentials and incurs cost; never run by seed checks.",
+        "source_url": "https://github.com/EvoNexusX/2026HuangEvoORAgent/blob/1a255eaade3b325706ab9b2ad1e20f2aafae0a06/README.md"
+      },
+      {
+        "argv": [
+          "python",
+          "evaluate.py",
+          "--mode",
+          "from-scratch",
+          "-n",
+          "6",
+          "-m",
+          "${LLM_MODEL}",
+          "--seed",
+          "42"
+        ],
+        "cwd": ".",
+        "notes": "Multi-generational co-evolution and evaluation over the bundled OR datasets; the pinned CLI has no per-dataset flag, so the bwor split is selected inside evaluate.py. Model-driven search: requires LLM API credentials and incurs cost; never run by seed checks.",
+        "source_url": "https://github.com/EvoNexusX/2026HuangEvoORAgent/blob/1a255eaade3b325706ab9b2ad1e20f2aafae0a06/README.md"
+      }
+    ],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "pip install -r requirements.txt",
+      "Configure the LLM endpoint in new_utils.py (anonymized in the release)",
+      "Optional: gurobipy for solver-backed candidates"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -r requirements.txt",
+      "Configure the LLM endpoint in new_utils.py (anonymized in the release)",
+      "Optional: gurobipy for solver-backed candidates"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "P",
+      "a",
+      "p",
+      "e",
+      "r",
+      " ",
+      "t",
+      "a",
+      "s",
+      "k",
+      " ",
+      "i",
+      "d",
+      "e",
+      "n",
+      "t",
+      "i",
+      "f",
+      "i",
+      "e",
+      "d",
+      ";",
+      " ",
+      "e",
+      "v",
+      "a",
+      "l",
+      "u",
+      "a",
+      "t",
+      "o",
+      "r",
+      " ",
+      "i",
+      "n",
+      "v",
+      "o",
+      "c",
+      "a",
+      "t",
+      "i",
+      "o",
+      "n",
+      " ",
+      "n",
+      "o",
+      "t",
+      " ",
+      "y",
+      "e",
+      "t",
+      " ",
+      "v",
+      "e",
+      "r",
+      "i",
+      "f",
+      "i",
+      "e",
+      "d",
+      ".",
+      "Source pinned on 2026-09-19; see docs/TASKS.md."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llm_benchmark",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "env:OPENROUTER_API_KEY",
+        "network:openrouter+huggingface"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "Paper-provided anonymous code URL https://anonymous.4open.science/r/pL8xY2mQ8rA5fC3vB7nK could not be read: web tool inaccessible; direct HTTPS connection reset. No downloadable artifact verified.",
+    "Official EvoOR-Agent release pinned; the LLM configuration is anonymized in the release and per-dataset selection is internal to evaluate.py.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "BWOR",
+    "slug": "bwor",
+    "description": "BWOR",
+    "benchmark": "BWOR",
+    "dataset": null,
+    "metric": "optimization-model solution accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2604.17708",
+    "source_locator": "Section IV and Table III",
+    "upstream_path": null,
+    "requirements": [
+      "benchmark dataset",
+      "solver",
+      "LLM credentials"
+    ],
+    "execution_notes": [
+      "P",
+      "a",
+      "p",
+      "e",
+      "r",
+      " ",
+      "t",
+      "a",
+      "s",
+      "k",
+      " ",
+      "i",
+      "d",
+      "e",
+      "n",
+      "t",
+      "i",
+      "f",
+      "i",
+      "e",
+      "d",
+      ";",
+      " ",
+      "e",
+      "v",
+      "a",
+      "l",
+      "u",
+      "a",
+      "t",
+      "o",
+      "r",
+      " ",
+      "i",
+      "n",
+      "v",
+      "o",
+      "c",
+      "a",
+      "t",
+      "i",
+      "o",
+      "n",
+      " ",
+      "n",
+      "o",
+      "t",
+      " ",
+      "y",
+      "e",
+      "t",
+      " ",
+      "v",
+      "e",
+      "r",
+      "i",
+      "f",
+      "i",
+      "e",
+      "d",
+      ".",
+      "Source pinned on 2026-09-19; see docs/TASKS.md."
+    ],
+    "run_commands": [
+      {
+        "argv": [
+          "python",
+          "initial.py",
+          "-n",
+          "6",
+          "-m",
+          "${LLM_MODEL}"
+        ],
+        "cwd": ".",
+        "notes": "Population initialization. Model-driven search: requires LLM API credentials and incurs cost; never run by seed checks.",
+        "source_url": "https://github.com/EvoNexusX/2026HuangEvoORAgent/blob/1a255eaade3b325706ab9b2ad1e20f2aafae0a06/README.md"
+      },
+      {
+        "argv": [
+          "python",
+          "evaluate.py",
+          "--mode",
+          "from-scratch",
+          "-n",
+          "6",
+          "-m",
+          "${LLM_MODEL}",
+          "--seed",
+          "42"
+        ],
+        "cwd": ".",
+        "notes": "Multi-generational co-evolution and evaluation over the bundled OR datasets; the pinned CLI has no per-dataset flag, so the bwor split is selected inside evaluate.py. Model-driven search: requires LLM API credentials and incurs cost; never run by seed checks.",
+        "source_url": "https://github.com/EvoNexusX/2026HuangEvoORAgent/blob/1a255eaade3b325706ab9b2ad1e20f2aafae0a06/README.md"
+      }
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert computational geometer and optimization specialist with deep expertise in the kissing cylinders problem - a problem in 3D geometry that asks for an arrangement of n mutually tangent infinite cylinders of equal (unit) radius. Each cylinder is an infinite right circular cylinder of radius 1 whose axis is a line in R^3. Two unit cylinders "kiss" (are tangent) exactly when the shortest distance between their axis lines equals 2 (the sum of their radii).
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that generates an arrangement of exactly 7 mutually tangent unit-radius cylinders in R^3. Each cylinder i is represented by a pair (P_i, v_i): P_i is a point on its axis (taken closest to the origin, so P_i . v_i = 0) and v_i is the unit direction vector of its axis. The arrangement must make EVERY pair of cylinders tangent, i.e. the axis-to-axis distance of every pair should equal 2. The function returns a numpy array of shape (7, 2, 3) where entry [i, 0] is P_i and entry [i, 1] is v_i.
+
+    PERFORMANCE METRICS:
+    1. **tangency_error**: Total squared deviation from tangency, E = sum over pairs (i<j) of (dist(axis_i, axis_j) - 2)^2 (PRIMARY OBJECTIVE - minimize toward 0, which means all pairs are perfectly tangent)
+    2. **combined_score**: 1 / (1 + tangency_error) (BENCHMARK COMPARISON - maximize toward 1.0; the record is a perfect arrangement with tangency_error = 0, which yields combined_score = 1.0)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Validity**: Direction vectors must be nonzero (they are normalized to unit length); axis points are standardized so P . v = 0. Contact midpoints of every pair must lie within the box [-100, 100]^3.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

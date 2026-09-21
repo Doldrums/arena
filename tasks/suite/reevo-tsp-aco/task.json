@@ -1,0 +1,776 @@
+{
+  "schema_version": "1.0",
+  "id": "reevo-tsp-aco",
+  "name": "TSP ACO",
+  "description": "TSP ACO: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "reevo",
+    "mcts-ahd"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2402.01145",
+      "type": "paper",
+      "locator": "Sections 5.1–5.5"
+    },
+    {
+      "url": "https://github.com/ai4co/reevo/tree/6dce18257da5e11db2d138e417a2fffc5c72d05f",
+      "type": "repository",
+      "locator": "cfg/problem/tsp_aco.yaml"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2501.08603",
+      "type": "paper",
+      "locator": "Section 4; Appendices B-D and F"
+    },
+    {
+      "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+      "type": "repository",
+      "locator": "problems/tsp_aco/eval.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "torch"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+    "notes": [
+      "CPU Python with NumPy",
+      "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+    ],
+    "required_files": [
+      "problems/tsp_aco/eval.py",
+      "problems/tsp_aco/gen_inst.py",
+      "problems/tsp_aco/aco.py",
+      "utils/utils.py"
+    ],
+    "required_file_hashes": {
+      "problems/tsp_aco/eval.py": "60a65064f342b40433ce5e157bd4426d9f4fe29e16fddcc54d2281d5b3251949",
+      "problems/tsp_aco/gen_inst.py": "12b42be1708910d0b1079e9e720ee1c1ab74f49a00165a1c22f4f55734c43fe4",
+      "problems/tsp_aco/aco.py": "233fdb43f4cba571c92a06134167830cdb2260d9f316650f4775d38e2848cb70",
+      "utils/utils.py": "392d1642f63eb2a64e09a43bc649a8abe3d35fcb68df0ea5b658843524dbc74f"
+    }
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "mean tour length",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "TSP ACO",
+    "protocol": "upstream",
+    "source_locator": "Sections 5.1–5.5"
+  },
+  "execution": {
+    "repository": "https://github.com/ai4co/reevo",
+    "commit": "6dce18257da5e11db2d138e417a2fffc5c72d05f",
+    "upstream_path": "cfg/problem/tsp_aco.yaml",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "main.py",
+          "problem=tsp_aco"
+        ],
+        "cwd": ".",
+        "kind": "search_and_evaluation",
+        "requirements": [
+          "Python >=3.12",
+          "ReEvo task extras",
+          "LLM API key"
+        ],
+        "evidence_path": "README.md and cfg/problem/tsp_aco.yaml",
+        "verification": "source_inspected_not_executed",
+        "source_url": "https://arxiv.org/pdf/2402.01145"
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_original.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_reevo_tsp_aco.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "tsp_aco",
+        "max_instances": 2,
+        "iterations": 5,
+        "ants": 10,
+        "random_seed": 1234,
+        "black_box": false
+      },
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "torch"
+      ],
+      "implementation_label": "bounded_original_protocol_extracted_seed",
+      "repository_files": {
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+        "adapters/recovered/seeds/optimization_reevo_tsp_aco.py": "b0ebb8c4bea25323ca11d0eb06d88174b3bd2d41e306a73889fd7d68e08fffa1"
+      },
+      "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 0.851,
+        "metrics": {
+          "score": 14.813994144289525,
+          "validity": null,
+          "instances": 2,
+          "instance_size": 50,
+          "candidate_calls": 2,
+          "instance_objectives": [
+            14.077392652543988,
+            15.550595636035062
+          ],
+          "profile": "bounded_original_training",
+          "iterations": 5,
+          "ants": 10,
+          "black_box": false,
+          "random_seed": 1234,
+          "dataset_origin": "official_generator_training_data",
+          "dataset_sha256": "49cfd10c6d21efd39736e5baf57510b4ce6945c3a057cdbe8dcad398c728599a",
+          "validation_scope": "finite original solver objective; no independent solution certificate"
+        },
+        "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+      }
+    },
+    "setup_instructions": [
+      "pip install -e '.[gls,aco,nco]'"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install -e '.[gls,aco,nco]'"
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-e",
+          ".[gls,aco,nco]"
+        ],
+        "cwd": "."
+      }
+    ],
+    "notes": [
+      "NCO variants require original POMO/LEHD checkpoints and test datasets.",
+      "main.py writes the selected heuristic to gpt.py and invokes the task evaluator; directly invoking eval.py before generating gpt.py fails.",
+      "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+      "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json.",
+      "Python >=3.12",
+      "ReEvo task extras",
+      "LLM API key",
+      "Upstream operation: search_and_evaluation"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "tsp_aco",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "TSP ACO",
+    "slug": "tsp-aco",
+    "description": "TSP ACO: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "TSP ACO",
+    "dataset": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+    "metric": "mean tour length",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2402.01145",
+    "source_locator": "Sections 5.1–5.5",
+    "upstream_path": "cfg/problem/tsp_aco.yaml",
+    "requirements": [
+      "CPU Python with NumPy",
+      "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+    ],
+    "execution_notes": [
+      "NCO variants require original POMO/LEHD checkpoints and test datasets.",
+      "main.py writes the selected heuristic to gpt.py and invokes the task evaluator; directly invoking eval.py before generating gpt.py fails.",
+      "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+      "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json.",
+      "Python >=3.12",
+      "ReEvo task extras",
+      "LLM API key",
+      "Upstream operation: search_and_evaluation"
+    ],
+    "execution": {
+      "argv": [
+        "python",
+        "main.py",
+        "problem=tsp_aco"
+      ],
+      "cwd": ".",
+      "kind": "search_and_evaluation",
+      "requirements": [
+        "Python >=3.12",
+        "ReEvo task extras",
+        "LLM API key"
+      ],
+      "evidence_path": "README.md and cfg/problem/tsp_aco.yaml",
+      "verification": "source_inspected_not_executed"
+    },
+    "implementation_status": "recovered_direct_evaluator_tested",
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_original.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_reevo_tsp_aco.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "tsp_aco",
+        "max_instances": 2,
+        "iterations": 5,
+        "ants": 10,
+        "random_seed": 1234,
+        "black_box": false
+      },
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "torch"
+      ],
+      "implementation_label": "bounded_original_protocol_extracted_seed",
+      "repository_files": {
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+        "adapters/recovered/seeds/optimization_reevo_tsp_aco.py": "b0ebb8c4bea25323ca11d0eb06d88174b3bd2d41e306a73889fd7d68e08fffa1"
+      },
+      "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 0.851,
+        "metrics": {
+          "score": 14.813994144289525,
+          "validity": null,
+          "instances": 2,
+          "instance_size": 50,
+          "candidate_calls": 2,
+          "instance_objectives": [
+            14.077392652543988,
+            15.550595636035062
+          ],
+          "profile": "bounded_original_training",
+          "iterations": 5,
+          "ants": 10,
+          "black_box": false,
+          "random_seed": 1234,
+          "dataset_origin": "official_generator_training_data",
+          "dataset_sha256": "49cfd10c6d21efd39736e5baf57510b4ce6945c3a057cdbe8dcad398c728599a",
+          "validation_scope": "finite original solver objective; no independent solution certificate"
+        },
+        "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+      }
+    },
+    "required_files": [
+      "problems/tsp_aco/eval.py",
+      "problems/tsp_aco/gen_inst.py",
+      "problems/tsp_aco/aco.py",
+      "utils/utils.py"
+    ],
+    "required_file_hashes": {
+      "problems/tsp_aco/eval.py": "60a65064f342b40433ce5e157bd4426d9f4fe29e16fddcc54d2281d5b3251949",
+      "problems/tsp_aco/gen_inst.py": "12b42be1708910d0b1079e9e720ee1c1ab74f49a00165a1c22f4f55734c43fe4",
+      "problems/tsp_aco/aco.py": "233fdb43f4cba571c92a06134167830cdb2260d9f316650f4775d38e2848cb70",
+      "utils/utils.py": "392d1642f63eb2a64e09a43bc649a8abe3d35fcb68df0ea5b658843524dbc74f"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "baseline_execution",
+      "passed": true,
+      "seconds": 0.851,
+      "metrics": {
+        "score": 14.813994144289525,
+        "validity": null,
+        "instances": 2,
+        "instance_size": 50,
+        "candidate_calls": 2,
+        "instance_objectives": [
+          14.077392652543988,
+          15.550595636035062
+        ],
+        "profile": "bounded_original_training",
+        "iterations": 5,
+        "ants": 10,
+        "black_box": false,
+        "random_seed": 1234,
+        "dataset_origin": "official_generator_training_data",
+        "dataset_sha256": "49cfd10c6d21efd39736e5baf57510b4ce6945c3a057cdbe8dcad398c728599a",
+        "validation_scope": "finite original solver objective; no independent solution certificate"
+      },
+      "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+    }
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Minimize the length of a tour that visits each location once and returns to its start.",
+    "importance_rationale": "Shorter feasible tours address routing, inspection and manufacturing movement costs. The local instances are bounded algorithmic studies of that operations-research objective, not evidence of a deployed logistics improvement.",
+    "papers": [
+      {
+        "title": "An effective implementation of the Lin–Kernighan traveling salesman heuristic",
+        "url": "https://doi.org/10.1016/S0377-2217(99)00284-2",
+        "task_relation": "Helsgaun develops a solver whose central goal is shorter symmetric TSP tours. TSP ACO uses its own construction, search, or attention interface and instance distribution while optimizing that same feasible-tour objective.",
+        "primary_goal": "Compute optimal or near-optimal traveling-salesman tours efficiently.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "merged_from": [
+    {
+      "id": "mcts-ahd-tsp-aco",
+      "paper_ids": [
+        "mcts-ahd"
+      ],
+      "name": "tsp_aco",
+      "description": "tsp_aco task evaluated in Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2501.08603",
+          "type": "paper",
+          "locator": "Section 4; Appendices B-D and F"
+        },
+        {
+          "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+          "type": "repository",
+          "locator": "problems/tsp_aco/eval.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy",
+          "torch"
+        ],
+        "environment_variables": [],
+        "datasets": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+        "notes": [
+          "CPU Python with NumPy",
+          "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+        ],
+        "required_files": [
+          "problems/tsp_aco/eval.py",
+          "problems/tsp_aco/gen_inst.py",
+          "problems/tsp_aco/aco.py",
+          "utils/utils.py",
+          "problems/tsp_aco/dataset/train50_dataset.npy"
+        ],
+        "required_file_hashes": {
+          "problems/tsp_aco/eval.py": "60a65064f342b40433ce5e157bd4426d9f4fe29e16fddcc54d2281d5b3251949",
+          "problems/tsp_aco/gen_inst.py": "667e5f80517d88346c3856954ac60712456aab9824969db727bc37d030970ab9",
+          "problems/tsp_aco/aco.py": "c4fdeec4ddec8c4f8ec58bedbc8f02db3e831232d48a0be7eceee6d1d202c95a",
+          "utils/utils.py": "0b9cfa62adcde5046d1b90808e6477928940ef1462602b82685296831285a0b9",
+          "problems/tsp_aco/dataset/train50_dataset.npy": "49cfd10c6d21efd39736e5baf57510b4ce6945c3a057cdbe8dcad398c728599a"
+        }
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "mean tour length",
+        "paper_direction": "minimize",
+        "direction": "minimize",
+        "benchmark": "tsp_aco",
+        "protocol": "upstream",
+        "source_locator": "Section 4; Appendices B-D and F"
+      },
+      "execution": {
+        "repository": "https://github.com/zz1358m/MCTS-AHD-master",
+        "commit": "ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+        "upstream_path": "problems/tsp_aco/eval.py",
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "main.py",
+              "problem=tsp_aco"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/main.py",
+            "notes": "Hydra task override derived from inspected @hydra.main configuration and verified cfg/problem file; not executed."
+          }
+        ],
+        "evaluator_adapter": {
+          "evaluator_scope": "repository",
+          "evaluator_path": "adapters/recovered/optimization_original.py",
+          "baseline_scope": "repository",
+          "baseline_path": "adapters/recovered/seeds/optimization_mcts-ahd_tsp_aco.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": ".",
+          "score_key": "score",
+          "score_direction": "minimize",
+          "validity_key": "validity",
+          "return_style": "dict",
+          "kwargs": {
+            "checkout": "{checkout}",
+            "problem": "tsp_aco",
+            "max_instances": 2,
+            "iterations": 5,
+            "ants": 10,
+            "random_seed": 1234,
+            "black_box": false
+          },
+          "dependencies": [
+            "numpy",
+            "scipy",
+            "torch"
+          ],
+          "implementation_label": "bounded_original_protocol_extracted_seed",
+          "repository_files": {
+            "adapters/recovered/seeds/optimization_mcts-ahd_tsp_aco.py": "f3941f841b853ab053d3e02ed234c6c902503d0ffaf8ddcce83035a5fb91015d",
+            "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3"
+          },
+          "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "seconds": 0.742,
+            "metrics": {
+              "score": 14.813994144289525,
+              "validity": null,
+              "instances": 2,
+              "instance_size": 50,
+              "candidate_calls": 2,
+              "instance_objectives": [
+                14.077392652543988,
+                15.550595636035062
+              ],
+              "profile": "bounded_original_training",
+              "iterations": 5,
+              "ants": 10,
+              "black_box": false,
+              "random_seed": 1234,
+              "dataset_origin": "released_training_data",
+              "dataset_sha256": "49cfd10c6d21efd39736e5baf57510b4ce6945c3a057cdbe8dcad398c728599a",
+              "validation_scope": "finite original solver objective; no independent solution certificate"
+            },
+            "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+          }
+        },
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Use cfg/problem/tsp_aco.yaml. Set max_fe=2000 for online BPP and init_pop_size=10 for black-box ACO as README instructs.",
+          "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+          "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "seconds": 0.742,
+          "metrics": {
+            "score": 14.813994144289525,
+            "validity": null,
+            "instances": 2,
+            "instance_size": 50,
+            "candidate_calls": 2,
+            "instance_objectives": [
+              14.077392652543988,
+              15.550595636035062
+            ],
+            "profile": "bounded_original_training",
+            "iterations": 5,
+            "ants": 10,
+            "black_box": false,
+            "random_seed": 1234,
+            "dataset_origin": "released_training_data",
+            "dataset_sha256": "49cfd10c6d21efd39736e5baf57510b4ce6945c3a057cdbe8dcad398c728599a",
+            "validation_scope": "finite original solver objective; no independent solution certificate"
+          },
+          "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+        }
+      }
+    },
+    {
+      "id": "mcts-ahd-tsp-aco-black-box",
+      "paper_ids": [
+        "mcts-ahd"
+      ],
+      "name": "tsp_aco_black_box",
+      "description": "tsp_aco_black_box task evaluated in Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2501.08603",
+          "type": "paper",
+          "locator": "Section 4; Appendices B-D and F"
+        },
+        {
+          "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+          "type": "repository",
+          "locator": "problems/tsp_aco/eval.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy",
+          "torch"
+        ],
+        "environment_variables": [],
+        "datasets": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+        "notes": [
+          "CPU Python with NumPy",
+          "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+        ],
+        "required_files": [
+          "problems/tsp_aco/eval_black_box.py",
+          "problems/tsp_aco/gen_inst.py",
+          "problems/tsp_aco/aco.py",
+          "utils/utils.py",
+          "problems/tsp_aco/dataset/train50_dataset.npy"
+        ],
+        "required_file_hashes": {
+          "problems/tsp_aco/eval_black_box.py": "fa32baf204bac39ba66963f4dde3d9e52e3d68e0e7eea01fe810b5870d27ecb5",
+          "problems/tsp_aco/gen_inst.py": "667e5f80517d88346c3856954ac60712456aab9824969db727bc37d030970ab9",
+          "problems/tsp_aco/aco.py": "c4fdeec4ddec8c4f8ec58bedbc8f02db3e831232d48a0be7eceee6d1d202c95a",
+          "utils/utils.py": "0b9cfa62adcde5046d1b90808e6477928940ef1462602b82685296831285a0b9",
+          "problems/tsp_aco/dataset/train50_dataset.npy": "49cfd10c6d21efd39736e5baf57510b4ce6945c3a057cdbe8dcad398c728599a"
+        }
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "mean tour length",
+        "paper_direction": "minimize",
+        "direction": "minimize",
+        "benchmark": "tsp_aco_black_box",
+        "protocol": "upstream",
+        "source_locator": "Section 4; Appendices B-D and F"
+      },
+      "execution": {
+        "repository": "https://github.com/zz1358m/MCTS-AHD-master",
+        "commit": "ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+        "upstream_path": "problems/tsp_aco/eval.py",
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "main.py",
+              "problem=tsp_aco_black_box",
+              "init_pop_size=10"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/main.py",
+            "notes": "Hydra task override derived from inspected @hydra.main configuration and verified cfg/problem file; not executed."
+          }
+        ],
+        "evaluator_adapter": {
+          "evaluator_scope": "repository",
+          "evaluator_path": "adapters/recovered/optimization_original.py",
+          "baseline_scope": "repository",
+          "baseline_path": "adapters/recovered/seeds/optimization_mcts-ahd_tsp_aco_black_box.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": ".",
+          "score_key": "score",
+          "score_direction": "minimize",
+          "validity_key": "validity",
+          "return_style": "dict",
+          "kwargs": {
+            "checkout": "{checkout}",
+            "problem": "tsp_aco",
+            "max_instances": 2,
+            "iterations": 5,
+            "ants": 10,
+            "random_seed": 1234,
+            "black_box": true
+          },
+          "dependencies": [
+            "numpy",
+            "scipy",
+            "torch"
+          ],
+          "implementation_label": "bounded_original_protocol_extracted_seed",
+          "repository_files": {
+            "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+            "adapters/recovered/seeds/optimization_mcts-ahd_tsp_aco_black_box.py": "26b8275589daebead2a3a268799c633286e626ef71a614b9c2b43b4086208ecd"
+          },
+          "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "seconds": 0.734,
+            "metrics": {
+              "score": 22.336064261993226,
+              "validity": null,
+              "instances": 2,
+              "instance_size": 50,
+              "candidate_calls": 2,
+              "instance_objectives": [
+                21.179397451245393,
+                23.49273107274106
+              ],
+              "profile": "bounded_original_training",
+              "iterations": 5,
+              "ants": 10,
+              "black_box": true,
+              "random_seed": 1234,
+              "dataset_origin": "released_training_data",
+              "dataset_sha256": "49cfd10c6d21efd39736e5baf57510b4ce6945c3a057cdbe8dcad398c728599a",
+              "validation_scope": "finite original solver objective; no independent solution certificate"
+            },
+            "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+          }
+        },
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-r",
+              "requirements.txt"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Use cfg/problem/tsp_aco_black_box.yaml. Set max_fe=2000 for online BPP and init_pop_size=10 for black-box ACO as README instructs.",
+          "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+          "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "seconds": 0.734,
+          "metrics": {
+            "score": 22.336064261993226,
+            "validity": null,
+            "instances": 2,
+            "instance_size": 50,
+            "candidate_calls": 2,
+            "instance_objectives": [
+              21.179397451245393,
+              23.49273107274106
+            ],
+            "profile": "bounded_original_training",
+            "iterations": 5,
+            "ants": 10,
+            "black_box": true,
+            "random_seed": 1234,
+            "dataset_origin": "released_training_data",
+            "dataset_sha256": "49cfd10c6d21efd39736e5baf57510b4ce6945c3a057cdbe8dcad398c728599a",
+            "validation_scope": "finite original solver objective; no independent solution certificate"
+          },
+          "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+        }
+      }
+    }
+  ]
+}

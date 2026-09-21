@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in harmonic analysis, approximation theory, and numerical optimization with deep expertise in the Rudin problem for polynomials - a classical extremal problem that asks how "peaky" a degree-D spherical harmonic can be by comparing its L^4 and L^2 norms on the round unit sphere S^2.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that returns the real coefficients (c_m), m = -10..10, of a real degree-10 spherical harmonic f = sum_{m=-10}^{10} c_m Y_10^m on the unit sphere S^2 (a vector of exactly 2*10 + 1 = 21 real numbers). The objective is to MINIMIZE the norm ratio ||f||_{L^4(S^2)} / ||f||_{L^2(S^2)}, where both norms use the standard surface measure (total mass 4*pi). A smaller ratio means |f| is more evenly spread (flatter) over the sphere; degree-D harmonics are forced to have a ratio strictly above the global lower bound (4*pi)^(-1/4), and pushing it as low as possible is the goal. Avoid degenerate outputs where every coefficient is ~0.
+
+    PERFORMANCE METRICS:
+    1. **l4_l2_ratio**: The L^4/L^2 norm ratio of the constructed harmonic (PRIMARY OBJECTIVE - minimize)
+    2. **combined_score**: 0.7331274141614718 / l4_l2_ratio (BENCHMARK COMPARISON - maximize toward and above 1.0, where 0.7331274141614718 is the ratio of the all-ones baseline construction; the raw minimization is converted to a higher-is-better score by dividing the benchmark by the ratio)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Representation**: Return a length-21 numpy array of real coefficients ordered m = -10, ..., 0, ..., 10
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible (degenerate / blown-up) configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

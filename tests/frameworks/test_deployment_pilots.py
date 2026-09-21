@@ -24,10 +24,11 @@ def test_generation_is_deterministic_nonsecret_and_bound_to_real_catalog_tasks()
     assert pilot.PINS["sciel"] == sciel_pin and pilot.PINS["shinka"] == shinka_pin
     catalog = get_catalog()
     tasks = {task["id"]: task for task in catalog["tasks"]}
-    assert catalog["sources"][0]["repository"]["commit"] == pilot.PINS["autoresearch-tasks"]
+    assert set(pilot.PINS) == {"sciel", "shinka"}
     for framework in ("sciel", "shinka"):
         evaluation = first[framework + ".evaluation.json"]
         assert tasks[evaluation["task_id"]]["executable"] is True
+        assert "tasks_dir" not in evaluation  # Resolved from the worker's Arena install.
         assert evaluation["execution"] == {"kind": "docker", "image": IMAGE, "python": "python", "require_control_cgroup": True}
         request = first[framework + ".run.json"]
         assert request["framework"] == framework

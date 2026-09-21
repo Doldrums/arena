@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "id": "science-cosmology-pantheon-plus-expansion-fit",
+  "name": "Expansion-history models fitted to the Pantheon+ supernova Hubble diagram",
+  "description": "Propose a parametric expansion history E(z) = H(z)/H0 with at most six parameters and fit it to the 1,580 Pantheon+ Type Ia supernova light curves with zHD > 0.01 (the 1,590-object cosmology sample minus the ten Cepheid-host calibrators) (corrected apparent magnitudes and the full statistical plus systematic covariance). The absolute magnitude is profiled analytically; the score is the minimum chi-squared, lower is better. Flat LambdaCDM with a fitted matter density is reported for comparison.",
+  "paper_ids": [
+    "science-cosmology"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2202.04077",
+      "type": "paper",
+      "locator": "Brout et al. 2022, The Pantheon+ Analysis: Cosmological Constraints; Section 2 (data), Section 3 (likelihood with the STAT+SYS covariance, zHD > 0.01 cut)."
+    },
+    {
+      "url": "https://github.com/PantheonPlusSH0ES/DataRelease/tree/c447f0fea703fcd0fff57de5000947b5ca81286b/Pantheon%2B_Data/4_DISTANCES_AND_COVAR",
+      "type": "repository",
+      "locator": "Pantheon+SH0ES.dat and Pantheon+SH0ES_STAT+SYS.cov, fetched by scripts/prepare_science_data.py and pinned by SHA-256."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "None downloaded; mathematical constructions or locally generated synthetic instances."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Expansion-history models fitted to the Pantheon+ supernova Hubble diagram",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_pantheon",
+    "science_family": "science_pantheon",
+    "parameters": {
+      "z_min": 0.01
+    },
+    "interface": "expansion(z, theta) -> array E(z) = H(z)/H0 for an array of redshifts z >= 0 (positive, finite; E(0) should be 1); initial_theta() -> initial parameter vector (1 to 6 values); bounds() -> list of (low, high) per parameter. The evaluator fits theta to the Pantheon+ Hubble diagram (zHD > 0.01 and no Cepheid calibrators: 1,580 light curves, STAT+SYS covariance) with the absolute magnitude profiled analytically and H0 = 70 fixed for the distance scale; score is the minimum chi-squared (lower is better). Flat LambdaCDM (fitted Omega_m) chi-squared is reported for comparison.",
+    "label_spec": {
+      "scientific_contribution": "discovery",
+      "artifact": "equation",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "exact",
+      "reference": "none",
+      "area": "cosmology_and_astrophysics"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_pantheon",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:data/pantheon-plus/Pantheon+SH0ES.dat",
+        "file:data/pantheon-plus/Pantheon+SH0ES_STAT+SYS.npy"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Real measurements: the data are the public Pantheon+ release, fetched at prepare time (network), not redistributed.",
+    "The likelihood profiles the absolute magnitude and fixes H0 = 70 for the distance scale, so only the shape of E(z) is constrained; the SH0ES Cepheid calibrators are excluded.",
+    "A lower chi-squared than LambdaCDM with more parameters is not by itself evidence for new physics; model comparison needs an information criterion or Bayesian evidence, which the evaluator reports the ingredients for (chi-squared and parameter count)."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "evidence": "validation/science-report.json",
+    "tests": "tests/test_science_cosmology.py"
+  },
+  "labels": {
+    "scientific_contribution": "discovery",
+    "artifact": "equation",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "exact",
+    "reference": "none",
+    "area": "cosmology_and_astrophysics",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "The Pantheon+ Analysis: Cosmological Constraints",
+        "url": "https://arxiv.org/abs/2202.04077",
+        "task_relation": "The local task fits a bounded-complexity expansion history to a selected set of Pantheon+ light curves with covariance and a profiled magnitude offset. Its Cepheid-host exclusion, parameter cap, and chi-square objective do not reproduce the full combined cosmological analysis.",
+        "primary_goal": "Use the Pantheon+ supernova sample to infer cosmological parameters, including dark-energy properties.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Constrain cosmic expansion and dark energy using Type Ia supernova distance measurements.",
+    "importance_rationale": "Inferring cosmological parameters from supernova observations is the primary goal of the Pantheon+ cosmology analysis.",
+    "reason": "The chosen source is the cosmological-inference paper, not merely the Pantheon+ data-release paper.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "protocol": "unsupported",
+  "family": null,
+  "direction": "maximize",
+  "contract": null,
+  "parameters": {},
+  "requires": [
+    "service:llm_api",
+    "env:OPENROUTER_API_KEY",
+    "dataset:CRAVE"
+  ],
+  "timeout": 30,
+  "notes": [],
+  "unsupported_category": "llm_api",
+  "unsupported_reason": "Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the CRAVE benchmark. The suite embeds neither model calls nor the benchmark data.",
+  "protocol_description": "Not executable in this suite: Candidates are prompts, agent scaffolds or workflows whose fitness is measured by querying a language model on the CRAVE benchmark. The suite embeds neither model calls nor the benchmark data.",
+  "id": "rqgm-code-review",
+  "name": "Code review",
+  "paper_ids": [
+    "rqgm"
+  ],
+  "description": "Code review task evaluated in The Red Queen Gödel Machine: Co-Evolving Agents and Their Evaluators.",
+  "benchmark": "CRAVE",
+  "paper_metric": "review classification accuracy",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2606.26294",
+      "type": "paper",
+      "locator": "Section 4, Domains and ground-truth anchors; Appendix C"
+    }
+  ],
+  "limitations": [
+    "arXiv HTML unavailable; full PDF retrieved and text extracted.",
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "rqgm",
+      "title": "The Red Queen Gödel Machine: Co-Evolving Agents and Their Evaluators",
+      "url": "https://arxiv.org/pdf/2606.26294"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "agent",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

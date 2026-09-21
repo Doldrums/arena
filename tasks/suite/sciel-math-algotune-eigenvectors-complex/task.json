@@ -1,0 +1,359 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-math-algotune-eigenvectors-complex",
+  "name": "SCiEL: AlgoTune complex eigenvectors",
+  "description": "Compute the required eigendecomposition of a complex matrix and maximize measured reference-relative speedup.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "algotune_numerical",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/algotune/eigenvectors_complex/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/algotune/eigenvectors_complex/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/oripress/AlgoTune/blob/dff9914c10800c7a031c9e8c3d4d1c8cd1b38906/AlgoTuneTasks/eigenvectors_complex/eigenvectors_complex.py",
+      "type": "repository",
+      "locator": "Recovered official task generator/solver dependency; immutable additional pin"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
+    "dependencies": [
+      "numpy",
+      "PyYAML",
+      "openevolve",
+      "orjson==3.11.7",
+      "threadpoolctl"
+    ],
+    "environment_variables": [],
+    "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "AlgoTune task/import sources are vendored unchanged at dff9914c10800c7a031c9e8c3d4d1c8cd1b38906; install orjson==3.11.7 and threadpoolctl with the listed numerical dependencies. No author-specific checkout path is required."
+    ]
+  },
+  "evaluation": {
+    "metric": "speedup_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example algotune/eigenvectors_complex",
+    "paper_metric": null,
+    "source_locator": "examples/algotune/eigenvectors_complex/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/algotune/eigenvectors_complex",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "adapters/recovered/sciel_algotune/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "speedup_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": "examples/algotune/eigenvectors_complex/initial_program.py",
+      "dependencies": [
+        "numpy",
+        "PyYAML",
+        "openevolve",
+        "orjson==3.11.7",
+        "threadpoolctl"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply mathematical validity; preserve unknown validity unless the original evaluator exposes an explicit signal.",
+        "A repository wrapper supplies the exact vendored AlgoTune registry; original SCiEL evaluator, YAML settings and candidate-owned validation are unchanged."
+      ],
+      "evaluator_scope": "repository",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "task": "eigenvectors_complex"
+      },
+      "implementation_label": "Official SCiEL evaluator with pinned AlgoTune registry discovery",
+      "repository_files": {
+        "adapters/recovered/sciel_algotune/sources.json": "b2cce5f39130d796ca8f7c3c8b23f3b9b298f7b32ff28597f83fe4490587f060",
+        "adapters/recovered/sciel_algotune/vendor/LICENSE": "06027a4230b1df2d71ce945b081fb814335d13b98b5509e453f15f60ab55d90d",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/__init__.py": "d9f2d2b4359440585d5c2741bb2f7f8dfb3a8b366b171719950c392d03e93e0b",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/base.py": "f5a6cc1448b7e20b16c810f51d6b7d3fc72a078a64640d9b5508002063e4f852",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_cmplx_scipy_fftpack/fft_cmplx_scipy_fftpack.py": "0881c9dc4daca33855a8740c4f37e6256a8a96d5f26fde6b8f45274f9ad06852",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/fft_convolution/fft_convolution.py": "37fb937accc0acbb1b3064b4d8b8e38721a84cefd00f35ae5b2b18c81931aa99",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/affine_transform_2d/affine_transform_2d.py": "3d18b2fc9510ee553bdeff3a77695612d0eebb459a5e20f390552d1117109f3c",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/eigenvectors_complex/eigenvectors_complex.py": "53918617d7d167203030c0fd88f527347baae36286f6591fe6fddc38646381f5",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/convolve2d_full_fill/convolve2d_full_fill.py": "7e6dd7a54db13c3f432e7c653a9429bb59277c6fe9e4b77b60ae4e5bb75911e6",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/lu_factorization/lu_factorization.py": "fbfc1888abed01adaeda466c1c5e649f7d415da37b0ac18950e3fd487bc1698f",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/psd_cone_projection/psd_cone_projection.py": "4aa87a75a1d1ab8dadf16e51b081122e7ed5f88f8a64ad272295be5fbf7a323b",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuneTasks/polynomial_real/polynomial_real.py": "964bfa9fd415bf3eb9914676992c6f658f375961c1b559672289fbc9d3c8615e",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/config.yaml": "a3a6ef799524d8d1c70503edf1c69a2d4e6016da3a67eb34895aaa81bbfb6739",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/config/loader.py": "798f77515fb3889030ff3b63d070310b4ad42e870999c85b9e2a9788d0d885d6",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/timing_config.py": "0a7fd8fc20631f4293cde64150f6bce9b4885f06da23963990f7d32860b01a53",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/error_utils.py": "ac6edeff4f56ee601abd564d5a46f0568c4ecdad14033ee9d4f7450b59019a59",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/isolated_benchmark.py": "b9eb48eb036860c76f87cf9103ca4502408e6ad35a38a9c692376166ffaeba49",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/casting.py": "68ace78c3e820ced43193abc1b6cd5ebc147c9ec13a936a6c781bb1bf6639390",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/streaming_json.py": "69b8c4da9745a3fe25af943975cea33293c35c2a43e0c6fea22f88c3269843c4",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/robust_tempdir.py": "2f80c1951307d4e37d55a9129eedf79500e02a586201b06668138b2e33b56233",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/utils.py": "4c604eac9cc7d3bd5f2df1d90a936865e1f57b423669c37199d20f98151f5e8a",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/multiprocessing_utils.py": "006b690e0cc6fec1176bab7ccb8b1da8d7e7a3cb437732f5912a7eddc7fbe2c5",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/hf_datasets.py": "ea0f64be967ce6880fb6fc5a3d5b4bf02a537b0435754662ece4b5ac5bddc66f",
+        "adapters/recovered/sciel_algotune/vendor/AlgoTuner/utils/serialization.py": "de2603e0893a29c9c5255d1afc5bd1948d900f56892c0807a33b4c9f70372646"
+      },
+      "environment": {}
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "AlgoTune task/import sources are vendored unchanged at dff9914c10800c7a031c9e8c3d4d1c8cd1b38906; install orjson==3.11.7 and threadpoolctl with the listed numerical dependencies. No author-specific checkout path is required."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "speedup_score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:orjson",
+        "py:threadpoolctl",
+        "py:yaml",
+        "vendor:algotune"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The evaluator checks candidate.Class().is_solution(), so candidate code controls the correctness predicate. SCiEL did not pin its external AlgoTune registry; this recovery supplies an explicit additional revision. Reported correctness and speedup do not provide independent verification.",
+    "Timing includes Python thread dispatch and measures short numerical operations; noise and environment changes can dominate speedup.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "The evaluator checks candidate.Class().is_solution(), so candidate code controls the correctness predicate. SCiEL did not pin its external AlgoTune registry; this recovery supplies an explicit additional revision. Reported correctness and speedup do not provide independent verification.",
+      "Timing includes Python thread dispatch and measures short numerical operations; noise and environment changes can dominate speedup."
+    ],
+    "execution_tested": true,
+    "recovery_evidence": {
+      "date": "2026-09-19",
+      "mode": "original seed with original SCiEL YAML",
+      "num_trials": 5,
+      "success_rate": 1.0,
+      "independent_verification": false,
+      "report": "docs/TASKS.md"
+    }
+  },
+  "source_hashes": {
+    "examples/algotune/eigenvectors_complex/evaluator.py": "9db869a525ec70370f8600de25d69bbea98185301c4cbec0ba58be43f7b1f8eb",
+    "examples/algotune/eigenvectors_complex/config.yaml": "053b0940b0fc63b8aa00db9925796632cfbf077d76222ba83703d48cd81dc640",
+    "examples/algotune/eigenvectors_complex/initial_program.py": "4a795f6877c9433435867267a7caa9db1470930e3566fdcbf21af2df097588b0"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/algotune/eigenvectors_complex/evaluator.py",
+      "signature": "program_path, config=None",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.run_solver(problem) -> solution",
+      "program.EigenvectorsComplex()"
+    ],
+    "baseline_path": "examples/algotune/eigenvectors_complex/initial_program.py",
+    "baseline_functions": {
+      "run_solver": {
+        "signature": "problem",
+        "docstring": "Main function to run the solver.\nThis function is used by the evaluator to test the evolved solution.\n\nArgs:\n    problem: The problem to solve\n\nReturns:\n    The solution",
+        "returns": null
+      }
+    },
+    "parameters": {},
+    "score_key": "speedup_score",
+    "score_direction": "maximize",
+    "score_expressions": [
+      "combined_score = float(0.7 * avg_correctness + 0.2 * avg_performance + 0.1 * reliability_score)"
+    ],
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 500,
+        "expression": "{'correctness_score': avg_correctness, 'performance_score': avg_performance, 'reliability_score': reliability_score, 'combined_score': combined_score, 'speedup_score': speedup_score, 'success_rate': reliability_score, 'baseline_comparison': baseline_comparison}"
+      },
+      {
+        "function": "evaluate",
+        "line": 337,
+        "expression": "{'correctness_score': 0.0, 'performance_score': 0.0, 'combined_score': 0.0, 'speedup_score': 0.0, 'baseline_comparison': {'mean_speedup': None, 'median_speedup': None, 'success_rate': 0.0, 'baseline_times': [], 'evolved_times': [], 'speedups': []}, 'error': 'Missing run_solver function'}"
+      },
+      {
+        "function": "evaluate",
+        "line": 453,
+        "expression": "{'correctness_score': 0.0, 'performance_score': 0.0, 'combined_score': 0.0, 'speedup_score': 0.0, 'baseline_comparison': {'mean_speedup': None, 'median_speedup': None, 'success_rate': 0.0, 'baseline_times': [], 'evolved_times': [], 'speedups': []}, 'error': 'All trials failed'}"
+      },
+      {
+        "function": "evaluate",
+        "line": 513,
+        "expression": "{'correctness_score': 0.0, 'performance_score': 0.0, 'combined_score': 0.0, 'speedup_score': 0.0, 'baseline_comparison': {'mean_speedup': None, 'median_speedup': None, 'success_rate': 0.0, 'baseline_times': [], 'evolved_times': [], 'speedups': []}, 'error': str(e)}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 562,
+        "expression": "EvaluationResult(metrics={'runs_successfully': 0.0}, artifacts={'error': 'Missing run_solver function', 'traceback': traceback.format_exc() if 'Missing run_solver function' != 'Timeout' else 'Timeout occurred'})"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 628,
+        "expression": "EvaluationResult(metrics={'runs_successfully': 0.0}, artifacts={'error': str(e), 'traceback': traceback.format_exc() if str(e) != 'Timeout' else 'Timeout occurred'})"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 597,
+        "expression": "EvaluationResult(metrics={'runs_successfully': 1.0, 'basic_functionality': 1.0}, artifacts={})"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 601,
+        "expression": "EvaluationResult(metrics={'runs_successfully': 0.5, 'basic_functionality': 0.0}, artifacts={'error': 'Function returned None', 'failure_stage': 'stage1'})"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 607,
+        "expression": "EvaluationResult(metrics={'runs_successfully': 0.0}, artifacts={'error': 'Timeout', 'traceback': traceback.format_exc() if 'Timeout' != 'Timeout' else 'Timeout occurred'})"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 617,
+        "expression": "EvaluationResult(metrics={'runs_successfully': 0.0}, artifacts={'error': str(e), 'traceback': traceback.format_exc() if str(e) != 'Timeout' else 'Timeout occurred'})"
+      },
+      {
+        "function": "evaluate_stage2",
+        "line": 639,
+        "expression": "evaluate(program_path, config)"
+      }
+    ],
+    "metric_assignments": [],
+    "validity_key": null,
+    "validity_semantics": "No independent boolean validity field; zero score, success rate and absence of error do not establish validity.",
+    "error_key": "error",
+    "rng_calls": [],
+    "declared_requirements": [],
+    "evaluator_imports": [
+      "AlgoTuneTasks",
+      "concurrent",
+      "importlib",
+      "logging",
+      "numpy",
+      "openevolve",
+      "os",
+      "pathlib",
+      "sys",
+      "time",
+      "traceback",
+      "typing",
+      "yaml"
+    ],
+    "baseline_imports": [
+      "logging",
+      "numpy",
+      "random",
+      "typing"
+    ],
+    "source_config_path": "examples/algotune/eigenvectors_complex/config.yaml",
+    "baseline_constants": {},
+    "baseline_rng_calls": [],
+    "candidate_classes": [
+      {
+        "name": "EigenvectorsComplex",
+        "methods": {
+          "__init__": {
+            "signature": "self",
+            "docstring": "Initialize the EigenvectorsComplex.",
+            "line": 70
+          },
+          "solve": {
+            "signature": "self, problem",
+            "docstring": "Solve the eigenvectors_complex problem.\n\nArgs:\n    problem: Dictionary containing problem data specific to eigenvectors_complex\n\nReturns:\n    The solution in the format expected by the task",
+            "line": 74
+          },
+          "is_solution": {
+            "signature": "self, problem, solution",
+            "docstring": "Check if the provided solution is valid.\n\nArgs:\n    problem: The original problem\n    solution: The proposed solution\n\nReturns:\n    True if the solution is valid, False otherwise",
+            "line": 113
+          }
+        }
+      }
+    ],
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Some branches return score zero without error; some omit the primary score. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 100,
+      "evaluator": {
+        "timeout": 200,
+        "max_retries": 3,
+        "cascade_evaluation": true,
+        "cascade_thresholds": [
+          0.5,
+          0.8
+        ],
+        "parallel_evaluations": 4
+      },
+      "algotune": {
+        "num_trials": 5,
+        "data_size": 25,
+        "timeout": 300,
+        "num_runs": 3,
+        "warmup_runs": 1
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "numerical_timing",
+    "recommended_smoke_outer_timeout_seconds": 45
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "numerical_computing",
+    "area": "scientific_computing",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

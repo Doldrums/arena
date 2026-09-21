@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0",
+  "id": "avo-gqa-32-query-heads-4-kv-heads-causal-sequence-8192",
+  "name": "GQA 32 query heads 4 KV heads, causal, sequence 8192",
+  "description": "BF16 forward-prefill attention, head dimension 128, batch size 4, fixed 32768 total tokens.",
+  "paper_ids": [
+    "avo"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2603.24517",
+      "type": "paper",
+      "locator": "Section 4.1 Benchmark Configurations"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "NVIDIA B200",
+      "CUDA 13.1",
+      "PyTorch 2.10.0",
+      "cuDNN 9.19.1"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "TFLOPS",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "FlashAttention-4 timing protocol",
+    "protocol": "specified_only",
+    "source_locator": "Section 4.1 Benchmark Configurations"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Official baseline benchmark_attn.py is linked; evolved AVO kernel implementation not linked."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "kernel_cpu_attention",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:torch"
+      ],
+      "timeout": 1800,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "GQA 32 query heads 4 KV heads, causal, sequence 8192",
+    "slug": "gqa-32-query-heads-4-kv-heads-causal-sequence-8192",
+    "description": "BF16 forward-prefill attention, head dimension 128, batch size 4, fixed 32768 total tokens.",
+    "benchmark": "FlashAttention-4 timing protocol",
+    "dataset": null,
+    "metric": "TFLOPS",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2603.24517",
+    "source_locator": "Section 4.1 Benchmark Configurations",
+    "upstream_path": null,
+    "requirements": [
+      "NVIDIA B200",
+      "CUDA 13.1",
+      "PyTorch 2.10.0",
+      "cuDNN 9.19.1"
+    ],
+    "execution_notes": "Official baseline benchmark_attn.py is linked; evolved AVO kernel implementation not linked."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "kernel",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

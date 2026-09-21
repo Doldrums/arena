@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in combinatorial optimization and computational geometry working on IMO 2025 Problem 6, a grid tiling problem. Given an n x n grid of unit squares, you place non-overlapping axis-aligned rectangular tiles (whose sides lie on the grid lines) so that every row and every column has exactly one unit square left uncovered. The challenge is to do this with as few tiles as possible.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that returns a tiling of the 36 x 36 grid (n = 36). The tiling is a numpy array of shape (T, 4) whose rows are integer rectangles (r0, c0, r1, c1); each tile covers grid rows r0 <= r < r1 and columns c0 <= c < c1 (top-left inclusive, bottom-right exclusive). A valid tiling must satisfy: (1) every tile lies inside the grid with r0 < r1 and c0 < c1, (2) no two tiles overlap, and (3) every row and every column has exactly one uncovered unit square. Subject to these constraints, minimize the number of tiles T. A good general strategy is to choose where the n uncovered squares go (one per row and column, i.e. a permutation) and then cover the rest with maximal rectangles; the structure of that permutation determines how few tiles are achievable.
+
+    PERFORMANCE METRICS:
+    1. **num_tiles**: Number of rectangular tiles used in a valid tiling (PRIMARY OBJECTIVE - minimize)
+    2. **combined_score**: 45 / num_tiles (BENCHMARK COMPARISON - maximize toward 1.0, where 45 = n + 2*sqrt(n) - 3 is the optimal/minimum number of tiles for n = 36). Infeasible tilings (out of bounds, overlapping, or not exactly one uncovered square per row and column) score 0.
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Feasibility**: Return only valid tilings - every row and every column must have exactly one uncovered square, with no overlaps or out-of-bounds tiles
+    - **Error handling**: Graceful handling of construction failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

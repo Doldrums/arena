@@ -1,0 +1,549 @@
+{
+  "schema_version": "1.0",
+  "id": "eoh-permutation-flow-shop-scheduling",
+  "name": "Permutation flow shop scheduling",
+  "description": "Permutation flow shop scheduling: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "paper_ids": [
+    "eoh",
+    "codeevolve",
+    "dga2d",
+    "a2dept"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2401.02051",
+      "type": "paper",
+      "locator": "Section 4 and Appendices B–D"
+    },
+    {
+      "url": "https://github.com/FeiLiu36/EoH/tree/472545785c936dcfc863d2bc0d6109cf23c7ce62",
+      "type": "repository",
+      "locator": "examples/fssp_gls/evaluation/runEval.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2510.14150",
+      "type": "paper",
+      "locator": "Appendix A.2"
+    },
+    {
+      "url": "https://github.com/inter-co/science-codeevolve/tree/c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+      "type": "repository",
+      "locator": "problems/eoh-problems/fssp_gls/input"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2608.00700",
+      "type": "paper",
+      "locator": "Section 4.1; Appendices E and F"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2604.24043",
+      "type": "paper",
+      "locator": "Problem family; original benchmark protocol is not claimed."
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+    "notes": [
+      "CPU Python with NumPy"
+    ],
+    "required_files": [
+      "examples/fssp_gls/prob.py",
+      "examples/fssp_gls/get_instance.py",
+      "eoh/src/eoh/problem.py",
+      "examples/fssp_gls/TrainingData/1.txt"
+    ],
+    "required_file_hashes": {
+      "examples/fssp_gls/prob.py": "8b7a843bf7e332f0cfbce35964c3df8c1ca1e697f399a3e0d708e6ac8a7465fe",
+      "examples/fssp_gls/get_instance.py": "4d116c721bddff8a5e97967d64be969b2369ffa989152dbc1854709988b2d9da",
+      "eoh/src/eoh/problem.py": "876b7c67fde9ca3bb595e724787dae3ccfc78f84a6e902f63de5bd655c557c88",
+      "examples/fssp_gls/TrainingData/1.txt": "b1c14cdecb038a27a48f095c2c086fcef05d6163a2a6aede8869679674826779"
+    }
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "mean makespan",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "Permutation flow shop scheduling",
+    "protocol": "upstream",
+    "source_locator": "Section 4 and Appendices B–D"
+  },
+  "execution": {
+    "repository": "https://github.com/FeiLiu36/EoH",
+    "commit": "472545785c936dcfc863d2bc0d6109cf23c7ce62",
+    "upstream_path": "examples/fssp_gls/evaluation/runEval.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "runEval.py"
+        ],
+        "cwd": "examples/fssp_gls/evaluation",
+        "kind": "evaluation",
+        "requirements": [
+          "EoH Python package and task dependencies"
+        ],
+        "evidence_path": "examples/fssp_gls/evaluation/runEval.py",
+        "verification": "source_inspected_not_executed",
+        "source_url": "https://arxiv.org/pdf/2401.02051"
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_eoh.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_eoh_fssp_gls.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "fssp_gls",
+        "max_instances": 1,
+        "iterations": 2,
+        "seconds_per_instance": 10.0
+      },
+      "dependencies": [
+        "numpy"
+      ],
+      "implementation_label": "bounded_original_protocol_extracted_seed",
+      "repository_files": {
+        "adapters/recovered/optimization_eoh.py": "a79a0cf88e03458d82ac4b2274681597ceeecf3d98f7f3095e5e21c7bf88613e",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+        "adapters/recovered/seeds/optimization_eoh_fssp_gls.py": "c5014186d4de700688ee1d03f954de0bb65d854a5e627b3119f0365f9aae4213"
+      },
+      "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 1.114,
+        "metrics": {
+          "score": 4007.0,
+          "validity": null,
+          "instances": 1,
+          "candidate_calls": 2,
+          "iterations": 2,
+          "seconds_per_instance": 10.0,
+          "profile": "bounded_original_training",
+          "dataset_origin": "released_training_data",
+          "dataset_files": {
+            "examples/fssp_gls/TrainingData/1.txt": "b1c14cdecb038a27a48f095c2c086fcef05d6163a2a6aede8869679674826779"
+          },
+          "validation_scope": "finite original solver objective; no independent solution certificate"
+        },
+        "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+      }
+    },
+    "setup_instructions": [
+      "pip install ."
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "pip install ."
+    ],
+    "setup_steps": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "."
+        ],
+        "cwd": "eoh"
+      }
+    ],
+    "notes": [
+      "Pinned current repository evaluator may use a smaller/default subset than paper experiment.",
+      "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+      "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json.",
+      "EoH Python package and task dependencies",
+      "Upstream operation: evaluation"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "flow_shop",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Permutation flow shop scheduling",
+    "slug": "permutation-flow-shop-scheduling",
+    "description": "Permutation flow shop scheduling: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+    "benchmark": "Permutation flow shop scheduling",
+    "dataset": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+    "metric": "mean makespan",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2401.02051",
+    "source_locator": "Section 4 and Appendices B–D",
+    "upstream_path": "examples/fssp_gls/evaluation/runEval.py",
+    "requirements": [
+      "CPU Python with NumPy"
+    ],
+    "execution_notes": [
+      "Pinned current repository evaluator may use a smaller/default subset than paper experiment.",
+      "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+      "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json.",
+      "EoH Python package and task dependencies",
+      "Upstream operation: evaluation"
+    ],
+    "execution": {
+      "argv": [
+        "python",
+        "runEval.py"
+      ],
+      "cwd": "examples/fssp_gls/evaluation",
+      "kind": "evaluation",
+      "requirements": [
+        "EoH Python package and task dependencies"
+      ],
+      "evidence_path": "examples/fssp_gls/evaluation/runEval.py",
+      "verification": "source_inspected_not_executed"
+    },
+    "implementation_status": "recovered_direct_evaluator_tested",
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_eoh.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_eoh_fssp_gls.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "minimize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "fssp_gls",
+        "max_instances": 1,
+        "iterations": 2,
+        "seconds_per_instance": 10.0
+      },
+      "dependencies": [
+        "numpy"
+      ],
+      "implementation_label": "bounded_original_protocol_extracted_seed",
+      "repository_files": {
+        "adapters/recovered/optimization_eoh.py": "a79a0cf88e03458d82ac4b2274681597ceeecf3d98f7f3095e5e21c7bf88613e",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3",
+        "adapters/recovered/seeds/optimization_eoh_fssp_gls.py": "c5014186d4de700688ee1d03f954de0bb65d854a5e627b3119f0365f9aae4213"
+      },
+      "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 1.114,
+        "metrics": {
+          "score": 4007.0,
+          "validity": null,
+          "instances": 1,
+          "candidate_calls": 2,
+          "iterations": 2,
+          "seconds_per_instance": 10.0,
+          "profile": "bounded_original_training",
+          "dataset_origin": "released_training_data",
+          "dataset_files": {
+            "examples/fssp_gls/TrainingData/1.txt": "b1c14cdecb038a27a48f095c2c086fcef05d6163a2a6aede8869679674826779"
+          },
+          "validation_scope": "finite original solver objective; no independent solution certificate"
+        },
+        "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+      }
+    },
+    "required_files": [
+      "examples/fssp_gls/prob.py",
+      "examples/fssp_gls/get_instance.py",
+      "eoh/src/eoh/problem.py",
+      "examples/fssp_gls/TrainingData/1.txt"
+    ],
+    "required_file_hashes": {
+      "examples/fssp_gls/prob.py": "8b7a843bf7e332f0cfbce35964c3df8c1ca1e697f399a3e0d708e6ac8a7465fe",
+      "examples/fssp_gls/get_instance.py": "4d116c721bddff8a5e97967d64be969b2369ffa989152dbc1854709988b2d9da",
+      "eoh/src/eoh/problem.py": "876b7c67fde9ca3bb595e724787dae3ccfc78f84a6e902f63de5bd655c557c88",
+      "examples/fssp_gls/TrainingData/1.txt": "b1c14cdecb038a27a48f095c2c086fcef05d6163a2a6aede8869679674826779"
+    }
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "baseline_execution",
+      "passed": true,
+      "seconds": 1.114,
+      "metrics": {
+        "score": 4007.0,
+        "validity": null,
+        "instances": 1,
+        "candidate_calls": 2,
+        "iterations": 2,
+        "seconds_per_instance": 10.0,
+        "profile": "bounded_original_training",
+        "dataset_origin": "released_training_data",
+        "dataset_files": {
+          "examples/fssp_gls/TrainingData/1.txt": "b1c14cdecb038a27a48f095c2c086fcef05d6163a2a6aede8869679674826779"
+        },
+        "validation_scope": "finite original solver objective; no independent solution certificate"
+      },
+      "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+    }
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "codeevolve-flow-shop-guided-local-search",
+      "paper_ids": [
+        "codeevolve"
+      ],
+      "name": "Flow shop guided local search",
+      "description": "Flow shop guided local search",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2510.14150",
+          "type": "paper",
+          "locator": "Appendix A.2"
+        },
+        {
+          "url": "https://github.com/inter-co/science-codeevolve/tree/c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+          "type": "repository",
+          "locator": "problems/eoh-problems/fssp_gls/input"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy",
+          "numba"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python",
+          "benchmark data"
+        ]
+      },
+      "evaluation": {
+        "metric": "fitness",
+        "paper_metric": "makespan",
+        "paper_direction": "minimize",
+        "direction": "maximize",
+        "benchmark": "EoH",
+        "protocol": "upstream",
+        "source_locator": "Appendix A.2"
+      },
+      "execution": {
+        "repository": "https://github.com/inter-co/science-codeevolve",
+        "commit": "c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+        "upstream_path": "problems/eoh-problems/fssp_gls/input",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "problems/eoh-problems/fssp_gls/input/evaluate.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "problems/eoh-problems/fssp_gls/input",
+          "score_key": "fitness",
+          "score_direction": "maximize",
+          "baseline_path": "problems/eoh-problems/fssp_gls/input/src/init_program.py",
+          "dependencies": [
+            "numpy",
+            "scipy",
+            "numba"
+          ],
+          "return_style": "json_file",
+          "output_argument": "positional",
+          "notes": "Official evaluate(program_path, results_path) writes JSON and raises on rejected construction; no separate validity field. baseline_path is repository-relative."
+        },
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Direct evaluator signature and normalized maximizing score verified in pinned source. Baseline may be an intentionally weak or infeasible starting construction; check reported evaluator errors."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": null,
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": -3554.3333333333335
+          }
+        ]
+      }
+    },
+    {
+      "id": "dga2d-flow-shop-scheduling",
+      "paper_ids": [
+        "dga2d"
+      ],
+      "name": "Flow-Shop Scheduling",
+      "description": "Flow-Shop Scheduling",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2608.00700",
+          "type": "paper",
+          "locator": "Section 4.1; Appendices E and F"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "problem-specific dataset",
+          "90-second per-instance budget"
+        ]
+      },
+      "evaluation": {
+        "metric": "normalized optimality gap",
+        "paper_metric": "normalized optimality gap",
+        "paper_direction": "minimize",
+        "direction": "minimize",
+        "benchmark": null,
+        "protocol": "specified_only",
+        "source_locator": "Section 4.1; Appendices E and F"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Task specification verified from paper; direct evaluator availability not confirmed."
+        ]
+      },
+      "limitations": [
+        "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+        "Paper says an anonymized implementation was supplied as supplementary material but no public URL was found in the extracted PDF.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "reference-flow-shop",
+      "paper_ids": [
+        "eoh",
+        "a2dept"
+      ],
+      "name": "Permutation flow-shop scheduling",
+      "description": "Input processing_times[job][machine]. Return {\"order\": [job indices]}: a permutation used on every machine. The evaluator computes standard flow-shop makespan.",
+      "kind": "native",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2401.02051",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        },
+        {
+          "url": "https://arxiv.org/pdf/2604.24043",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        }
+      ],
+      "requirements": {
+        "python": ">=3.10",
+        "hardware": "CPU",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "Generated locally with documented seed."
+      },
+      "evaluation": {
+        "metric": "score",
+        "direction": "minimize",
+        "aggregation": "mean",
+        "protocol": "portable_reference",
+        "instance_generation": "src/autoresearch_tasks/native.py",
+        "profiles": [
+          "smoke",
+          "evaluation"
+        ]
+      },
+      "execution": {
+        "native_kind": "flow-shop",
+        "parameters": {
+          "n": 20,
+          "machines": 5
+        },
+        "interface": "Input processing_times[job][machine]. Return {\"order\": [job indices]}: a permutation used on every machine. The evaluator computes standard flow-shop makespan."
+      },
+      "limitations": [
+        "Portable reference implementation, not a reproduction of the original paper experiment.",
+        "Generated deterministic instances are not the paper datasets. Scores are not comparable to published results."
+      ],
+      "validation": {
+        "level": "automated_tests",
+        "upstream_reproduction": false
+      }
+    }
+  ]
+}

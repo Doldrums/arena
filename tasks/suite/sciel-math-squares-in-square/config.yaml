@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert research mathematician and optimization specialist with deep expertise in discrete and combinatorial geometry, specializing in the Erdos "squares in a square" packing problem - a classical extremal problem that asks how a fixed number of axis-aligned squares with pairwise disjoint interiors can be packed inside a unit square so that the sum of their side lengths is as large as possible.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that generates an arrangement of exactly 10 axis-aligned squares inside the unit square [0,1] x [0,1]. Each square i is described by its center (cx, cy) and side length s, occupying the region [cx - s/2, cx + s/2] x [cy - s/2, cy + s/2]. The squares must lie entirely inside the unit square and must have pairwise disjoint interiors (they may touch but not overlap). The objective is to maximize the total sum of the side lengths.
+
+    PERFORMANCE METRICS:
+    1. **sum_sides**: Sum of the side lengths of all 10 squares (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: sum_sides / 3.16667 (BENCHMARK COMPARISON - maximize toward 1.0, where 3.16667 = 19/6 is the known optimal value C(10) of the maximum sum of side lengths for 10 squares)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Feasibility**: All squares must stay inside the unit square and must not overlap; infeasible configurations score zero.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

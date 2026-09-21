@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "id": "alphaevolve-borg-data-center-scheduling",
+  "name": "Borg data-center scheduling",
+  "description": "Borg data-center scheduling task evaluated in AlphaEvolve: A coding agent for scientific and algorithmic discovery.",
+  "paper_ids": [
+    "alphaevolve"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2506.13131",
+      "type": "paper",
+      "locator": "Section 3.3"
+    },
+    {
+      "url": "https://github.com/google-deepmind/alphaevolve_results/tree/4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "stranded compute resources",
+    "paper_metric": "stranded compute resources",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "Borg data-center scheduling",
+    "protocol": "specified_only",
+    "source_locator": "Section 3.3"
+  },
+  "execution": {
+    "repository": "https://github.com/google-deepmind/alphaevolve_results",
+    "commit": "4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Google internal workloads, hardware, or compiler infrastructure; public mathematical analogues are not faithful reproductions."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "internal:Google infrastructure"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "internal",
+      "unsupported_reason": "Evaluation depends on a proprietary internal system (Borg data-center scheduling) that is not public."
+    }
+  },
+  "limitations": [
+    "Paper reports over 50 mathematical problems but explicitly details 13 families in Appendix B. Unpublished full task inventory and internal Google assets prevent a complete runnable reproduction.",
+    "Official result notebook provides mathematical constructions and verification, but no AlphaEvolve search implementation. It publishes a subset of all evaluated problems; the full >50 mathematical problem inventory is not disclosed.",
+    "Paper Appendix B.3 writes max(abs(autoconvolution)); notebook B.3 reported 1.4557 construction computes abs(max(autoconvolution)). The notebook separately verifies the max(abs(...)) variant at 1.4688. These are not interchangeable metrics.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "Borg data-center scheduling",
+    "slug": "borg-data-center-scheduling",
+    "description": "Borg data-center scheduling task evaluated in AlphaEvolve: A coding agent for scientific and algorithmic discovery.",
+    "benchmark": "Borg data-center scheduling",
+    "dataset": null,
+    "metric": "stranded compute resources",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2506.13131",
+    "source_locator": "Section 3.3",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [
+      "Google internal workloads, hardware, or compiler infrastructure; public mathematical analogues are not faithful reproductions."
+    ],
+    "setup_commands": [],
+    "run_commands": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "proprietary",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "protocol": "recreated",
+  "family": "sr_algorithm",
+  "direction": "minimize",
+  "contract": "fit(X_train: np.ndarray[n, d], y_train) -> predict(X) callable; the candidate is a symbolic-regression algorithm run on every equation of the set. Score: mean held-out NMSE over the equations",
+  "parameters": {
+    "targets": [
+      "I.6.2a",
+      "I.9.18",
+      "I.12.1",
+      "I.14.3",
+      "I.25.13",
+      "I.29.4",
+      "I.34.27",
+      "II.3.24",
+      "I.27.6",
+      "I.39.1"
+    ],
+    "seed": 0
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 300,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "lasr-feynman-equations-symbolic-regression",
+  "name": "Feynman equations symbolic regression",
+  "paper_ids": [
+    "lasr"
+  ],
+  "description": "Feynman equations symbolic regression: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "benchmark": "Feynman equations symbolic regression",
+  "paper_metric": "exact symbolic recovery / MSE (symbolic regression); scaling-law predictive fit",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2409.09359",
+      "type": "paper",
+      "locator": "Sections 4.1–4.5 and Appendix A.4–A.6"
+    },
+    {
+      "url": "https://github.com/trishullab/LibraryAugmentedSymbolicRegression.jl/tree/776196e339191736e20d4eb6eed7c468aa6e4472",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "lasr",
+      "title": "Symbolic Regression with a Learned Concept Library",
+      "url": "https://arxiv.org/pdf/2409.09359"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "natural_science",
+    "area": "physics",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

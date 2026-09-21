@@ -1,0 +1,827 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-math-signal-processing",
+  "name": "SCiEL: Adaptive signal processing",
+  "description": "Return filtered signal metrics for five synthetic signal cases; the original evaluator blends smoothness, error, noise reduction and reliability.",
+  "paper_ids": [
+    "sciel-supplement",
+    "adaevolve",
+    "coral",
+    "evox",
+    "pairwise-validator"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "optimization_statistics",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/signal_processing/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/signal_processing/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Math results and task-definition appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/math/signal_processing"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1, Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/math/signal_processing"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Math results and task-definition appendix"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2607.14408",
+      "type": "paper",
+      "locator": "Section 5.4, Table 5"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "matplotlib>=3.5.0",
+      "scikit-learn>=1.0.0",
+      "pykalman",
+      "PyWavelets"
+    ],
+    "environment_variables": [],
+    "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ]
+  },
+  "evaluation": {
+    "metric": "overall_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example signal_processing",
+    "paper_metric": null,
+    "source_locator": "examples/signal_processing/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/signal_processing",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/signal_processing/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "overall_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": "examples/signal_processing/initial_program.py",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "matplotlib>=3.5.0",
+        "scikit-learn>=1.0.0",
+        "pykalman",
+        "PyWavelets"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply mathematical validity; preserve unknown validity unless the original evaluator exposes an explicit signal."
+      ]
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "overall_score",
+      "error_key": "error",
+      "requires": [
+        "py:matplotlib",
+        "py:numpy",
+        "py:pykalman",
+        "py:pywt",
+        "py:scipy",
+        "py:sklearn"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The evaluator generates noisy/clean reference signals but passes only signal length, noise level and window size to run_signal_processing(). Candidate output may correspond to a different generated input; the resulting signal comparison is not an independent check of filtering the intended input.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "The evaluator generates noisy/clean reference signals but passes only signal length, noise level and window size to run_signal_processing(). Candidate output may correspond to a different generated input; the resulting signal comparison is not an independent check of filtering the intended input."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/signal_processing/evaluator.py": "9623b2ebaa2a7ad736e532d38a8c6669607924ac606589397c219b240c5e27c1",
+    "examples/signal_processing/config.yaml": "223b1e2b86e2201024f396f19022c431a9f1f1f7b1f535de37b82ac17dc9bbde",
+    "examples/signal_processing/requirements.txt": "f485bec8e996cdbb122b11de226b82cf1c8fc5259d80ed37363f7783047efcb5",
+    "examples/signal_processing/README.md": "476d6ea8d49716002f1bfc527ad5fec034a34d54bfa1e05a8fbd1d48f029319f",
+    "examples/signal_processing/initial_program.py": "3316701515451ecbe7bd47231bfbe89155afbe31bb1bc878a0b698a79e412a34"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/signal_processing/evaluator.py",
+      "signature": "program_path",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "program.run_signal_processing(signal_length=len(noisy_signal), noise_level=0.3, window_size=20) -> dict"
+    ],
+    "baseline_path": "examples/signal_processing/initial_program.py",
+    "baseline_functions": {
+      "adaptive_filter": {
+        "signature": "x, window_size=20",
+        "docstring": "Adaptive signal processing algorithm using sliding window approach.\n\nArgs:\n    x: Input signal (1D array of real-valued samples)\n    window_size: Size of the sliding window (W samples)\n\nReturns:\n    y: Filtered output signal with length = len(x) - window_size + 1",
+        "returns": null
+      },
+      "enhanced_filter_with_trend_preservation": {
+        "signature": "x, window_size=20",
+        "docstring": "Enhanced version with trend preservation using weighted moving average.\n\nArgs:\n    x: Input signal (1D array of real-valued samples)\n    window_size: Size of the sliding window\n\nReturns:\n    y: Filtered output signal",
+        "returns": null
+      },
+      "process_signal": {
+        "signature": "input_signal, window_size=20, algorithm_type='enhanced'",
+        "docstring": "Main signal processing function that applies the selected algorithm.\n\nArgs:\n    input_signal: Input time series data\n    window_size: Window size for processing\n    algorithm_type: Type of algorithm to use (\"basic\" or \"enhanced\")\n\nReturns:\n    Filtered signal",
+        "returns": null
+      },
+      "generate_test_signal": {
+        "signature": "length=1000, noise_level=0.3, seed=42",
+        "docstring": "Generate synthetic test signal with known characteristics.\n\nArgs:\n    length: Length of the signal\n    noise_level: Standard deviation of noise to add\n    seed: Random seed for reproducibility\n\nReturns:\n    Tuple of (noisy_signal, clean_signal)",
+        "returns": null
+      },
+      "run_signal_processing": {
+        "signature": "signal_length=1000, noise_level=0.3, window_size=20",
+        "docstring": "Run the signal processing algorithm on a test signal.\n\nReturns:\n    Dictionary containing results and metrics",
+        "returns": null
+      }
+    },
+    "parameters": {},
+    "score_key": "overall_score",
+    "score_direction": "maximize",
+    "score_expressions": [
+      "composite_score = calculate_composite_score(S, L_recent, L_avg, R)",
+      "composite_score = 0.5"
+    ],
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 433,
+        "expression": "{'composite_score': safe_float(avg_composite_score), 'overall_score': safe_float(overall_score), 'slope_changes': safe_float(avg_slope_changes), 'lag_error': safe_float(avg_lag_error), 'avg_error': safe_float(avg_avg_error), 'false_reversals': safe_float(avg_false_reversals), 'correlation': safe_float(avg_correlation), 'noise_reduction': safe_float(avg_noise_reduction), 'smoothness_score': safe_float(smoothness_score), 'responsiveness_score': safe_float(responsiveness_score), 'accuracy_score': safe_float(accuracy_score), 'efficiency_score': safe_float(efficiency_score), 'execution_time': safe_float(avg_execution_time), 'success_rate': safe_float(success_rate)}"
+      },
+      {
+        "function": "evaluate",
+        "line": 279,
+        "expression": "{'composite_score': 0.0, 'error': 'Missing run_signal_processing function'}"
+      },
+      {
+        "function": "evaluate",
+        "line": 395,
+        "expression": "{'composite_score': 0.0, 'slope_changes': 100.0, 'lag_error': 1.0, 'avg_error': 1.0, 'false_reversals': 50.0, 'correlation': 0.0, 'noise_reduction': 0.0, 'success_rate': 0.0, 'error': 'All test signals failed'}"
+      },
+      {
+        "function": "evaluate",
+        "line": 453,
+        "expression": "{'composite_score': 0.0, 'overall_score': 0.0, 'error': str(e)}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 468,
+        "expression": "{'runs_successfully': 0.0, 'error': 'Missing run_signal_processing function'}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 505,
+        "expression": "{'runs_successfully': 0.0, 'error': f'Stage 1 failed: {str(e)}'}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 497,
+        "expression": "{'runs_successfully': 0.3, 'error': 'Invalid result format'}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 500,
+        "expression": "{'runs_successfully': 0.0, 'error': 'Timeout in stage 1'}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 502,
+        "expression": "{'runs_successfully': 0.0, 'error': f'Stage 1 error: {str(e)}'}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 489,
+        "expression": "{'runs_successfully': 1.0, 'composite_score': composite_score, 'output_length': len(filtered_signal)}"
+      },
+      {
+        "function": "evaluate_stage1",
+        "line": 495,
+        "expression": "{'runs_successfully': 0.5, 'error': 'Empty filtered signal'}"
+      },
+      {
+        "function": "evaluate_stage2",
+        "line": 512,
+        "expression": "evaluate(program_path)"
+      }
+    ],
+    "metric_assignments": [
+      {
+        "function": "evaluate",
+        "line": 370,
+        "expression": "metrics = {'slope_changes': safe_float(S), 'lag_error': safe_float(L_recent), 'avg_error': safe_float(L_avg), 'false_reversals': safe_float(R), 'composite_score': safe_float(composite_score), 'correlation': safe_float(correlation), 'noise_reduction': safe_float(noise_reduction), 'execution_time': safe_float(execution_time), 'signal_length': len(filtered_signal)}"
+      }
+    ],
+    "validity_key": null,
+    "validity_semantics": "No independent boolean validity field; zero score, success rate and absence of error do not establish validity.",
+    "error_key": "error",
+    "rng_calls": [
+      "np.random.normal",
+      "np.random.randn",
+      "np.random.seed"
+    ],
+    "declared_requirements": [
+      "numpy>=1.21.0",
+      "scipy>=1.7.0",
+      "matplotlib>=3.5.0",
+      "scikit-learn>=1.0.0",
+      "pykalman",
+      "PyWavelets"
+    ],
+    "evaluator_imports": [
+      "concurrent",
+      "importlib",
+      "numpy",
+      "scipy",
+      "time",
+      "traceback"
+    ],
+    "baseline_imports": [
+      "collections",
+      "numpy",
+      "scipy"
+    ],
+    "source_config_path": "examples/signal_processing/config.yaml",
+    "baseline_constants": {},
+    "baseline_rng_calls": [
+      "np.random.seed(seed)",
+      "np.random.normal(0, noise_level, length)",
+      "np.random.randn(length)"
+    ],
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Some branches return score zero without error; some omit the primary score. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity."
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 100,
+      "evaluator": {
+        "timeout": 120,
+        "cascade_evaluation": true,
+        "cascade_thresholds": [
+          0.3,
+          0.6
+        ],
+        "parallel_evaluations": 4,
+        "use_llm_feedback": false
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "cpu",
+    "recommended_smoke_outer_timeout_seconds": 15
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "numerical_computing",
+    "area": "scientific_computing",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "merged_from": [
+    {
+      "id": "adaevolve-signal-processing",
+      "paper_ids": [
+        "adaevolve"
+      ],
+      "name": "Signal processing",
+      "description": "Signal processing",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.20133",
+          "type": "paper",
+          "locator": "Math results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/math/signal_processing"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python",
+          "NumPy",
+          "SciPy"
+        ]
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "filter quality combined score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "AlphaEvolve math",
+        "protocol": "upstream",
+        "source_locator": "Math results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/math/signal_processing",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/math/signal_processing/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/math/signal_processing",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/math/signal_processing/initial_program.py",
+          "dependencies": [
+            "numpy",
+            "scipy"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Official evaluate(program_path) returns a normalized maximizing score; errors can return zero with an error field. Inspect errors rather than interpreting zero as success.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+            "metrics": {
+              "combined_score": 0.49904861783269006,
+              "composite_score": 0.4518100150842093,
+              "overall_score": 0.49904861783269006,
+              "slope_changes": 223.4,
+              "lag_error": 0.3090769071827435,
+              "avg_error": 0.4664988183834896,
+              "false_reversals": 175.4,
+              "correlation": 0.8420816095203836,
+              "noise_reduction": 0.3347443615622788,
+              "smoothness_score": 0.08216926869350863,
+              "responsiveness_score": 0.7638970594570291,
+              "accuracy_score": 0.8420816095203836,
+              "efficiency_score": 1.0,
+              "execution_time": 0.0007084369659423828,
+              "success_rate": 1.0
+            },
+            "seconds": 13.27
+          }
+        },
+        "setup_instructions": [
+          "uv sync"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Exact callable, return metric, seed and dependencies inspected from pinned SkyDiscover repository."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+          "metrics": {
+            "combined_score": 0.49904861783269006,
+            "composite_score": 0.4518100150842093,
+            "overall_score": 0.49904861783269006,
+            "slope_changes": 223.4,
+            "lag_error": 0.3090769071827435,
+            "avg_error": 0.4664988183834896,
+            "false_reversals": 175.4,
+            "correlation": 0.8420816095203836,
+            "noise_reduction": 0.3347443615622788,
+            "smoothness_score": 0.08216926869350863,
+            "responsiveness_score": 0.7638970594570291,
+            "accuracy_score": 0.8420816095203836,
+            "efficiency_score": 1.0,
+            "execution_time": 0.0007084369659423828,
+            "success_rate": 1.0
+          },
+          "seconds": 13.27
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": 0.49904861783269006
+          }
+        ]
+      }
+    },
+    {
+      "id": "coral-signal-processing",
+      "paper_ids": [
+        "coral"
+      ],
+      "name": "Signal processing",
+      "description": "Signal processing",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2604.01658",
+          "type": "paper",
+          "locator": "Section 4.1, Table 1"
+        },
+        {
+          "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+          "type": "repository",
+          "locator": "examples/math/signal_processing"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "coral (installed from pinned checkout)",
+          "numpy",
+          "scipy",
+          "pyyaml",
+          "omegaconf"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python 3.11+",
+          "coding-agent credentials",
+          "CORAL requires Python>=3.11,<3.14. Importing its packaged grader requires installed CORAL metadata; PYTHONPATH alone is insufficient."
+        ]
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "filter quality score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": null,
+        "protocol": "upstream",
+        "source_locator": "Section 4.1, Table 1"
+      },
+      "execution": {
+        "repository": "https://github.com/Human-Agent-Society/CORAL",
+        "commit": "0123dfb939b35228cf2c1fde224cd0561e727408",
+        "upstream_path": "examples/math/signal_processing",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "examples/math/signal_processing/grader/src/signal_processing_grader/grader.py",
+          "callable": "_run_evaluation",
+          "candidate_argument": "positional",
+          "cwd": "examples/math/signal_processing",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "examples/math/signal_processing/seed/initial_program.py",
+          "dependencies": [
+            "coral (installed from pinned checkout)",
+            "numpy",
+            "scipy",
+            "pyyaml",
+            "omegaconf"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced. Uses the official grader helper; {python} resolves to the bridge interpreter. Does not launch agents.",
+          "kwargs": {
+            "timeout": 600,
+            "python_cmd": [
+              "{python}"
+            ]
+          },
+          "validation": {
+            "kind": "official_seed_common_cli_smoke",
+            "passed": true,
+            "status": "completed",
+            "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+            "seconds": 1.15,
+            "candidate_sha256": "17d493d65542b562cb551e7f042b60770b523b8eadfb76dd0b5dc14f5fc3fe95",
+            "evaluator_sha256": "457ff5f88c711d8f987e4d33c780bd89ecf5ae4a69f37f5e4efc2003aa560ce0",
+            "score": 0.49904861783269006,
+            "valid": null,
+            "report": "validation/upstream-gap-smoke-early.json"
+          }
+        },
+        "setup_instructions": [
+          "From the pinned CORAL checkout root: python -m pip install --no-deps . (required to supply CORAL distribution metadata, even when its source is importable).",
+          "python -m pip install numpy scipy pyyaml omegaconf"
+        ],
+        "task_setup_instructions": [
+          "From the pinned CORAL checkout root: python -m pip install --no-deps . (required to supply CORAL distribution metadata, even when its source is importable).",
+          "python -m pip install numpy scipy pyyaml omegaconf"
+        ],
+        "framework_setup_instructions": [
+          "uv sync --extra dev"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "official_seed_common_cli_smoke",
+          "passed": true,
+          "status": "completed",
+          "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+          "seconds": 1.15,
+          "candidate_sha256": "17d493d65542b562cb551e7f042b60770b523b8eadfb76dd0b5dc14f5fc3fe95",
+          "evaluator_sha256": "457ff5f88c711d8f987e4d33c780bd89ecf5ae4a69f37f5e4efc2003aa560ce0",
+          "score": 0.49904861783269006,
+          "valid": null,
+          "report": "validation/upstream-gap-smoke-early.json"
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-gap-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": 0.49904861783269006
+          }
+        ]
+      }
+    },
+    {
+      "id": "evox-signal-processing",
+      "paper_ids": [
+        "evox"
+      ],
+      "name": "Signal processing",
+      "description": "Signal processing",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.23413",
+          "type": "paper",
+          "locator": "Math results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/math/signal_processing"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python",
+          "NumPy",
+          "SciPy"
+        ]
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "filter quality combined score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "AlphaEvolve math",
+        "protocol": "upstream",
+        "source_locator": "Math results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/math/signal_processing",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/math/signal_processing/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/math/signal_processing",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/math/signal_processing/initial_program.py",
+          "dependencies": [
+            "numpy",
+            "scipy"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Official evaluate(program_path) returns a normalized maximizing score; errors can return zero with an error field. Inspect errors rather than interpreting zero as success.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+            "metrics": {
+              "combined_score": 0.49904861783269006,
+              "composite_score": 0.4518100150842093,
+              "overall_score": 0.49904861783269006,
+              "slope_changes": 223.4,
+              "lag_error": 0.3090769071827435,
+              "avg_error": 0.4664988183834896,
+              "false_reversals": 175.4,
+              "correlation": 0.8420816095203836,
+              "noise_reduction": 0.3347443615622788,
+              "smoothness_score": 0.08216926869350863,
+              "responsiveness_score": 0.7638970594570291,
+              "accuracy_score": 0.8420816095203836,
+              "efficiency_score": 1.0,
+              "execution_time": 0.0007084369659423828,
+              "success_rate": 1.0
+            },
+            "seconds": 13.27
+          }
+        },
+        "setup_instructions": [
+          "uv sync"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Exact callable, return metric, seed and dependencies inspected from pinned SkyDiscover repository."
+        ]
+      },
+      "limitations": [
+        "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+          "metrics": {
+            "combined_score": 0.49904861783269006,
+            "composite_score": 0.4518100150842093,
+            "overall_score": 0.49904861783269006,
+            "slope_changes": 223.4,
+            "lag_error": 0.3090769071827435,
+            "avg_error": 0.4664988183834896,
+            "false_reversals": 175.4,
+            "correlation": 0.8420816095203836,
+            "noise_reduction": 0.3347443615622788,
+            "smoothness_score": 0.08216926869350863,
+            "responsiveness_score": 0.7638970594570291,
+            "accuracy_score": 0.8420816095203836,
+            "efficiency_score": 1.0,
+            "execution_time": 0.0007084369659423828,
+            "success_rate": 1.0
+          },
+          "seconds": 13.27
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": 0.49904861783269006
+          }
+        ]
+      }
+    },
+    {
+      "id": "pairwise-validator-signal-processing",
+      "paper_ids": [
+        "pairwise-validator"
+      ],
+      "name": "signal_processing",
+      "description": "signal_processing task evaluated in Reward-Free Evolving Agents via Pairwise Validator.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2607.14408",
+          "type": "paper",
+          "locator": "Section 5.4, Table 5"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "upstream task score",
+        "paper_metric": "upstream task score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ADRS / ShinkaEvolve",
+        "protocol": "specified_only",
+        "source_locator": "Section 5.4, Table 5"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "circle_packing evaluated through both engines; other tasks follow their respective engine. Scalar metric differs by task."
+        ]
+      },
+      "limitations": [
+        "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ],
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

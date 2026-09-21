@@ -1,0 +1,308 @@
+{
+  "schema_version": "1.0",
+  "id": "rankevolve-fever",
+  "name": "fever",
+  "description": "fever task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
+  "paper_ids": [
+    "rankevolve"
+  ],
+  "kind": "upstream",
+  "status": "requires_setup",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2602.16932",
+      "type": "paper",
+      "locator": "Section 4.2"
+    },
+    {
+      "url": "https://github.com/fangchenli/ranking-evolved/tree/8f664bcd5123bac2397f0c1bfbdb347ca3233483",
+      "type": "repository",
+      "locator": "tasks/bm25/evaluator.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "datasets",
+      "beir",
+      "pyserini",
+      "ir-datasets"
+    ],
+    "environment_variables": [],
+    "datasets": "fever",
+    "notes": [
+      "Python>=3.11",
+      "uv sync",
+      "Java21 and Pyserini for original Lucene tokenization",
+      "Benchmark dataset download/cache",
+      "Up to40-65GB RAM for largest corpora",
+      "Place the BEIR fever corpus under datasets/beir/fever in the checkout; the pinned evaluator otherwise downloads the archive at run time, which seed checks do not do."
+    ],
+    "required_files": [
+      "datasets/beir/fever/corpus.jsonl"
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "BEIR",
+    "protocol": "upstream",
+    "source_locator": "Section 4.2"
+  },
+  "execution": {
+    "repository": "https://github.com/fangchenli/ranking-evolved",
+    "commit": "8f664bcd5123bac2397f0c1bfbdb347ca3233483",
+    "upstream_path": "tasks/bm25/evaluator.py",
+    "commands": [
+      {
+        "argv": [
+          "env",
+          "EVAL_EXCLUDE_DATASETS=nfcorpus,scifact,arguana,scidocs,fiqa,trec-covid,webis-touche2020,cqadupstack,quora,nq,dbpedia-entity,hotpotqa,climate-fever,biology,earth_science,economics,psychology,robotics,stackoverflow,sustainable_living,pony,leetcode,aops,theoremqa_theorems,theoremqa_questions,dl19,dl20",
+          "EVAL_SAMPLE_QUERIES=0",
+          "EVAL_TOKENIZER=lucene",
+          "EVAL_MAX_WORKERS=1",
+          "EVAL_THREADS_PER_WORKER=1",
+          "EVAL_SEED=42",
+          "EVAL_OBJECTIVE_NAME=recall100_ndcg10",
+          "EVAL_NDCG_K=10",
+          "EVAL_RECALL_K=100",
+          "EVAL_BENCHMARKS=all",
+          "python",
+          "-m",
+          "tasks.bm25.evaluator",
+          "tasks/bm25/seeds/freeform.py",
+          "--only-beir",
+          "--max-workers",
+          "1",
+          "--threads-per-worker",
+          "1",
+          "--save",
+          "results/fever.json"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/fangchenli/ranking-evolved/blob/8f664bcd5123bac2397f0c1bfbdb347ca3233483/tasks/bm25/evaluator.py",
+        "notes": "Source-composed invocation of documented evaluator CLI and exclusion environment, selecting exactly this dataset. Uses original BM25 seed; no LLM API needed. Not executed against downloaded data."
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "tasks/bm25/evaluator.py",
+      "import_module": "tasks.bm25.evaluator",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "score_metric": "0.8*Recall@100 + 0.2*nDCG@10",
+      "status_key": "datasets_failed",
+      "status_success_value": 0,
+      "error_key": "error",
+      "baseline_path": "tasks/bm25/seeds/freeform.py",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "datasets",
+        "beir",
+        "pyserini",
+        "ir-datasets"
+      ],
+      "environment": {
+        "EVAL_EXCLUDE_DATASETS": "nfcorpus,scifact,arguana,scidocs,fiqa,trec-covid,webis-touche2020,cqadupstack,quora,nq,dbpedia-entity,hotpotqa,climate-fever,biology,earth_science,economics,psychology,robotics,stackoverflow,sustainable_living,pony,leetcode,aops,theoremqa_theorems,theoremqa_questions,dl19,dl20",
+        "EVAL_SAMPLE_QUERIES": "0",
+        "EVAL_TOKENIZER": "lucene",
+        "EVAL_MAX_WORKERS": "1",
+        "EVAL_THREADS_PER_WORKER": "1",
+        "EVAL_SEED": "42",
+        "EVAL_OBJECTIVE_NAME": "recall100_ndcg10",
+        "EVAL_NDCG_K": "10",
+        "EVAL_RECALL_K": "100",
+        "EVAL_BENCHMARKS": "all"
+      },
+      "notes": [
+        "Source-inspected adapter; external benchmark corpora have not been downloaded or evaluated.",
+        "Environment must be set BEFORE module import; excludes all other27 documented public datasets.",
+        "Candidate exports BM25, Corpus, tokenize and LuceneTokenizer. Lucene tokenizer requires Java21/Pyserini.",
+        "One dataset worker reduces concurrency but large corpora still need substantial RAM; TREC DL indexes8.84million passages and upstream estimates40-65GB RAM per large corpus."
+      ]
+    },
+    "setup_instructions": [
+      {
+        "argv": [
+          "uv",
+          "sync"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/fangchenli/ranking-evolved/blob/8f664bcd5123bac2397f0c1bfbdb347ca3233483/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "uv",
+          "sync"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/fangchenli/ranking-evolved/blob/8f664bcd5123bac2397f0c1bfbdb347ca3233483/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Paper compares BM25 and QL-Dir seeds; current public tree retains BM25 evaluator and archived QL outputs.",
+      "Direct evaluation requires no LLM. Current release BM25 evaluator selected; archived QL results do not supply a matching QL evaluator."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "dataset:BEIR"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "dataset",
+      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite."
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "fever",
+    "slug": "fever",
+    "description": "fever task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
+    "benchmark": "BEIR",
+    "dataset": "fever",
+    "metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2602.16932",
+    "source_locator": "Section 4.2",
+    "upstream_path": "tasks/bm25/evaluator.py",
+    "requirements": [
+      "Python>=3.11",
+      "uv sync",
+      "Java21 and Pyserini for original Lucene tokenization",
+      "Benchmark dataset download/cache",
+      "Up to40-65GB RAM for largest corpora",
+      "Place the BEIR fever corpus under datasets/beir/fever in the checkout; the pinned evaluator otherwise downloads the archive at run time, which seed checks do not do."
+    ],
+    "execution_notes": [
+      "Paper compares BM25 and QL-Dir seeds; current public tree retains BM25 evaluator and archived QL outputs.",
+      "Direct evaluation requires no LLM. Current release BM25 evaluator selected; archived QL results do not supply a matching QL evaluator."
+    ],
+    "setup_commands": [],
+    "run_commands": [
+      {
+        "argv": [
+          "env",
+          "EVAL_EXCLUDE_DATASETS=nfcorpus,scifact,arguana,scidocs,fiqa,trec-covid,webis-touche2020,cqadupstack,quora,nq,dbpedia-entity,hotpotqa,climate-fever,biology,earth_science,economics,psychology,robotics,stackoverflow,sustainable_living,pony,leetcode,aops,theoremqa_theorems,theoremqa_questions,dl19,dl20",
+          "EVAL_SAMPLE_QUERIES=0",
+          "EVAL_TOKENIZER=lucene",
+          "EVAL_MAX_WORKERS=1",
+          "EVAL_THREADS_PER_WORKER=1",
+          "EVAL_SEED=42",
+          "EVAL_OBJECTIVE_NAME=recall100_ndcg10",
+          "EVAL_NDCG_K=10",
+          "EVAL_RECALL_K=100",
+          "EVAL_BENCHMARKS=all",
+          "python",
+          "-m",
+          "tasks.bm25.evaluator",
+          "tasks/bm25/seeds/freeform.py",
+          "--only-beir",
+          "--max-workers",
+          "1",
+          "--threads-per-worker",
+          "1",
+          "--save",
+          "results/fever.json"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/fangchenli/ranking-evolved/blob/8f664bcd5123bac2397f0c1bfbdb347ca3233483/tasks/bm25/evaluator.py",
+        "notes": "Source-composed invocation of documented evaluator CLI and exclusion environment, selecting exactly this dataset. Uses original BM25 seed; no LLM API needed. Not executed against downloaded data."
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "tasks/bm25/evaluator.py",
+      "import_module": "tasks.bm25.evaluator",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "score_metric": "0.8*Recall@100 + 0.2*nDCG@10",
+      "status_key": "datasets_failed",
+      "status_success_value": 0,
+      "error_key": "error",
+      "baseline_path": "tasks/bm25/seeds/freeform.py",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "datasets",
+        "beir",
+        "pyserini",
+        "ir-datasets"
+      ],
+      "environment": {
+        "EVAL_EXCLUDE_DATASETS": "nfcorpus,scifact,arguana,scidocs,fiqa,trec-covid,webis-touche2020,cqadupstack,quora,nq,dbpedia-entity,hotpotqa,climate-fever,biology,earth_science,economics,psychology,robotics,stackoverflow,sustainable_living,pony,leetcode,aops,theoremqa_theorems,theoremqa_questions,dl19,dl20",
+        "EVAL_SAMPLE_QUERIES": "0",
+        "EVAL_TOKENIZER": "lucene",
+        "EVAL_MAX_WORKERS": "1",
+        "EVAL_THREADS_PER_WORKER": "1",
+        "EVAL_SEED": "42",
+        "EVAL_OBJECTIVE_NAME": "recall100_ndcg10",
+        "EVAL_NDCG_K": "10",
+        "EVAL_RECALL_K": "100",
+        "EVAL_BENCHMARKS": "all"
+      },
+      "notes": [
+        "Source-inspected adapter; external benchmark corpora have not been downloaded or evaluated.",
+        "Environment must be set BEFORE module import; excludes all other27 documented public datasets.",
+        "Candidate exports BM25, Corpus, tokenize and LuceneTokenizer. Lucene tokenizer requires Java21/Pyserini.",
+        "One dataset worker reduces concurrency but large corpora still need substantial RAM; TREC DL indexes8.84million passages and upstream estimates40-65GB RAM per large corpus."
+      ]
+    },
+    "required_files": [
+      "datasets/beir/fever/corpus.jsonl"
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "information_retrieval",
+    "area": "information_retrieval",
+    "data": "undistributed",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

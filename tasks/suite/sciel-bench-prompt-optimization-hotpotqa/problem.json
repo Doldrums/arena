@@ -1,0 +1,128 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "env:OPENROUTER_API_KEY",
+    "network:huggingface datasets",
+    "network:openrouter",
+    "py:datasets",
+    "py:numpy",
+    "py:openai",
+    "py:tqdm",
+    "py:yaml"
+  ],
+  "timeout": 600,
+  "notes": [
+    "The candidate is a prompt text file; OPENEVOLVE_PROMPT selects the dataset configuration. Every evaluation queries the task model through an OpenAI-compatible endpoint; the copied config.yaml is re-pointed at OpenRouter (google/gemini-2.5-flash) and OPENAI_API_KEY is taken from OPENROUTER_API_KEY. The dataset YAML keeps the upstream sample size (up to 200 items per evaluation)."
+  ],
+  "entry": {
+    "callable": "evaluate",
+    "env": {
+      "OPENEVOLVE_PROMPT": "hotpotqa_prompt.txt",
+      "OPENAI_API_KEY": "${OPENROUTER_API_KEY}"
+    },
+    "seed": "hotpotqa_prompt.txt",
+    "score_key": "combined_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/llm_prompt_optimization",
+    "files_sha256": {
+      "README.md": "a8624d2180c63a2a9b2a5d89d2347fe590ae05323a1bcf9f4fef859f3c5e61c3",
+      "config.yaml": "b4f6627404adcafc347082214053210668426cb0bc2326305d0f55aeb2ed3692",
+      "config_qwen3_baseline.yaml": "b2aa36eb5068779d219babdaadcdc20d8c8179cdf846533b88d51ed1a73e3e87",
+      "config_qwen3_evolution.yaml": "3c66077b5780f14e11ce24494f64e867024921087aa11ad95068be3bd0d45441",
+      "dataset_settings.yaml": "5169cc93807ebc6b2e51044ec04dc1c3262ac4f89b669729304457281e283f19",
+      "emotion_prompt.txt": "2a794d31529f5b235e1718093dfe7e93d3119d5ddf927144c70678c9008b28ff",
+      "emotion_prompt_dataset.yaml": "c8d386a3501d3912109742a3095b082e6716ef02c118f4ea1cf68091de55c1ee",
+      "evaluate_prompts.py": "fc7e98ea39b45694c6422cac0f1dcd5c163d32ab4d2661fa53fb4653dbef4903",
+      "evaluation_results_baseline_20250809_070942.json": "ce5fdae43c35770eca06b73bedee76695d22499470e62a1ee37f7d588031afbf",
+      "evaluation_results_evolved_20250809_103002.json": "5ab75f451dd02cf37663b2e1d96b64d531485e55bc1194f9d317f98a70c394f3",
+      "evaluator.py": "6e703d4330198e288bcd39edb412e072c3282af1c55755f1a232b520a79d111c",
+      "gsm8k_prompt.txt": "f6139dc266051e45bc9656ad9ad96e06cfb99dd9129d948ca2a903042eb62b41",
+      "gsm8k_prompt_dataset.yaml": "ae72808175a8679966f00dc9572cb136e762656d29d706c64d8c12038fa35fe4",
+      "hotpotqa_prompt.txt": "d647486aba65b8a32f04cdee80f30c69c175f1fcb729980be5980ffd5cf4fbb4",
+      "hotpotqa_prompt_dataset.yaml": "4669f834d53fb4dac7e5a0d0b26efe6cedf779be98ec9f858a4e363942cc4c09",
+      "hover_prompt.txt": "74cc1cfb4fad42f16ef3945a2cf912121aa9df368e3e7387434eb5e6d305e0da",
+      "hover_prompt_dataset.yaml": "c201d0806135107d58653c9c85b335c9d73315c519af99daaf26a38023369043",
+      "ifeval_prompt.txt": "7ec33116d80eba4e2a20211630eb34894b14e0628dda999b9e4a6e0b09925715",
+      "ifeval_prompt_dataset.yaml": "b6848e3852ccf0b64e828bb5507cc80f07406b3914d295669519a27b8f8cbd24",
+      "initial_prompt.txt": "27e4f8b932b882cffe67078439737ddc55014fbaf5224abf1b46ee867861232f",
+      "initial_prompt_dataset.yaml": "b25fa8a355d80cbb08a1bdbc2cd9c232d3cafc567cb5c54aa18621a3f7524ac1",
+      "requirements.txt": "37aa3dfd2f97cad6858b59227ff6454dc2e82acec1f1096de4cf0a51a0973f58",
+      "run_evolution.sh": "0ea06771c5fc894038d7d814fcb5cd41d3151617bfb8f67868fa74b4391702cc",
+      "templates/evaluation.txt": "4079661c68ebd45a2441c6b026612a19182ecd29e8a284c031c7f759dd45b097",
+      "templates/evaluator_system_message.txt": "a7797a35f3b366086c94a2bcb1c9bb2e213b8fa739d8330fa2043dda44e7e40d",
+      "templates/full_rewrite_user.txt": "9e3ccc1ac3f9cf1f5d9a44afe5171d5a9fdc2affeb4ecc9cdf6acf7cbeb8284d"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/llm_prompt_optimization` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-bench-prompt-optimization-hotpotqa",
+  "name": "SCiEL: prompt optimization on hotpotqa",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Evolve a text prompt for the task model on the hotpot_qa (distractor) dataset (validation split). Multi-hop question answering with distractor paragraphs; exact-match accuracy. The pinned evaluator sends each sampled example to the configured task model and reports accuracy as combined_score.",
+  "benchmark": "SCiEL source example llm_prompt_optimization",
+  "paper_metric": "combined_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/llm_prompt_optimization/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/llm_prompt_optimization/hotpotqa_prompt.txt",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/llm_prompt_optimization/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "No direct candidate evaluator adapter is registered: the pinned task evaluator itself performs model calls, which the no-model-call seed-check contract of this repository excludes. The original search and baseline commands are recorded instead.",
+    "Task-model choice, endpoint and sampling temperature are set in the source config.yaml; scores are not comparable across models or endpoints."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "hotpotqa_prompt.txt",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "benchmark",
+    "science_tier": 3,
+    "artifact": "prompt",
+    "domain": "language",
+    "area": "language_and_agents",
+    "data": "public_benchmark",
+    "verification": "sampled",
+    "reference": "none",
+    "resources": [
+      "model_api",
+      "network"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

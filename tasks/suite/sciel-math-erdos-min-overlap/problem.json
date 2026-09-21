@@ -1,0 +1,101 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "py:jax",
+    "py:numpy",
+    "py:optax",
+    "py:tqdm"
+  ],
+  "timeout": 600,
+  "notes": [],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "combined_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/alphaevolve_math_problems/erdos_min_overlap",
+    "files_sha256": {
+      "config.yaml": "6a4279e36d913243aa4a211bab28354fbb4ddbe2af25b4ed90083364f86da42d",
+      "evaluator.py": "17cc5e63ab3afc530adf4a4459a576e026430fd0b6e1704d18978be771755517",
+      "initial_program.py": "ad0aa2f8bf333e63e6712a060d2b0aaf37950bdc5c2e78d22456cfb7f2e5cac4",
+      "requirements.txt": "af902634ec0c0bb998bee552f78fbbd77aef7b26d3d94226a60c512b70a6b541"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/alphaevolve_math_problems/erdos_min_overlap` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-math-erdos-min-overlap",
+  "name": "SCiEL: Erdős minimum overlap",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Construct a discretized function and its reported overlap constant c5; minimize the original evaluator’s overlap bound.",
+  "benchmark": "SCiEL source example erdos_min_overlap",
+  "paper_metric": "combined_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/erdos_min_overlap/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/alphaevolve_math_problems/erdos_min_overlap/initial_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Bound Erdős' minimum-overlap constant for a set and translations of its complement.",
+    "importance_rationale": "Determining this extremal constant advances a named problem in combinatorial number theory and analysis. The task seeks explicit feasible constructions relevant to its upper bound.",
+    "papers": [
+      {
+        "title": "Erdős' minimum overlap problem",
+        "url": "https://arxiv.org/abs/2201.05704",
+        "task_relation": "White develops a stronger lower bound for the same minimum-overlap constant. The local task instead searches bounded step-function constructions yielding upper bounds; both address the constant itself, and this paper is not claimed to supply the local construction.",
+        "primary_goal": "Improve rigorous bounds on Erdős' minimum-overlap problem.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

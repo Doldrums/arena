@@ -1,0 +1,126 @@
+{
+  "protocol": "recreated",
+  "family": "gym_reward_design",
+  "direction": "maximize",
+  "contract": "reward(observation, action, next_observation, info) -> float, the shaped reward used to train a policy on the Gymnasium environment named in the task (info carries the environment's step info such as x_velocity). The evaluator trains a linear Gaussian policy with the cross-entropy method (6 iterations x 16 candidates, 200-step episodes) under the candidate reward and reports the task's own fitness (see README) on 5 evaluation episodes. Higher is better.",
+  "parameters": {
+    "task": "ant_forward",
+    "seed": 0
+  },
+  "requires": [
+    "py:numpy",
+    "py:gymnasium",
+    "py:mujoco"
+  ],
+  "timeout": 900,
+  "notes": [
+    "Isaac Gym Ant replaced by Gymnasium Ant-v5; fitness is mean forward velocity (the Ant task's objective).",
+    "The paper's simulator (Isaac Gym, Bi-DexHands, custom humanoids, ManiSkill2 or a real robot) is replaced by the closest Gymnasium MuJoCo environment and the RL training by a small CEM budget; the fitness definitions are local proxies of the papers' success criteria and scores are comparable within the suite only."
+  ],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "eureka-ant",
+  "name": "Ant",
+  "paper_ids": [
+    "eureka",
+    "dreureka",
+    "hyperagents",
+    "text2reward"
+  ],
+  "description": "Ant: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "benchmark": "Isaac Gym",
+  "paper_metric": "task-specific fitness and human-normalized score",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2310.12931",
+      "type": "paper",
+      "locator": "Appendix B task table"
+    },
+    {
+      "url": "https://github.com/eureka-research/Eureka/tree/9eee42808b52d8abc14845d1547bfde886403ccc",
+      "type": "repository",
+      "locator": "eureka/cfg/env/ant.yaml"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2406.01967",
+      "type": "paper",
+      "locator": "Sections 4–6"
+    },
+    {
+      "url": "https://github.com/eureka-research/DrEureka/tree/1d4e00700423170717654516f4ef4b24cb0f3a84",
+      "type": "repository",
+      "locator": "forward_locomotion"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2603.19461",
+      "type": "paper",
+      "locator": "Section 4 and Appendix C"
+    },
+    {
+      "url": "https://github.com/facebookresearch/Hyperagents/tree/59a68f672dfb92c74aeb7e61535d776fb36e172d",
+      "type": "repository",
+      "locator": "domains/genesis"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2309.11489",
+      "type": "paper",
+      "locator": "Appendix B Table 6"
+    },
+    {
+      "url": "https://github.com/xlang-ai/text2reward/tree/e7f57efcf76b22bbfb7c3eb9d67d98ff2765a926",
+      "type": "repository",
+      "locator": "code_generation/single_flow/classlike_prompt/AntPrompt.py"
+    }
+  ],
+  "limitations": [
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "Pinned cfg/config.yaml selects historical model gpt-4-0314 and the legacy OpenAI SDK. Configure a compatible available endpoint/model before execution; changing models changes reproduction conditions.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "eureka",
+      "title": "Eureka: Human-Level Reward Design via Coding Large Language Models",
+      "url": "https://arxiv.org/pdf/2310.12931"
+    },
+    {
+      "id": "dreureka",
+      "title": "DrEureka: Language Model Guided Sim-To-Real Transfer",
+      "url": "https://arxiv.org/pdf/2406.01967"
+    },
+    {
+      "id": "hyperagents",
+      "title": "HyperAgents",
+      "url": "https://arxiv.org/pdf/2603.19461"
+    },
+    {
+      "id": "text2reward",
+      "title": "Text2Reward: Reward Shaping with Language Models for Reinforcement Learning",
+      "url": "https://arxiv.org/pdf/2309.11489"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "reward",
+    "domain": "robotics",
+    "area": "robotics_and_control",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -2,7 +2,8 @@
 """Write bounded real-native pilot templates; never launch a model or evaluator.
 
 Default mode is offline template generation. --materialize additionally verifies
-the three installed source pins and creates the two canonical native task trees.
+the two installed engine pins and bundled task manifest, then creates the two
+canonical native task trees.
 Dependencies, gateway authentication and actual runs are separate operator steps.
 """
 from __future__ import annotations
@@ -22,7 +23,6 @@ sys.path.insert(0, str(REPO / "src"))
 PINS = {
     "sciel": "0d67f813dd4ac21dee304f2b0de0b0ce59bf4157",
     "shinka": "9912af12d423504b8d580f4179fd15f5f88b8c50",
-    "autoresearch-tasks": "5729caa7a3bd4e66c39a447c0d4ee56dc8fa0935",
 }
 MODELS = ("gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna", "gpt-6-astra", "gpt-5.5", "gpt-reserve", "codex-auto-review")
 THREAD_ENV = ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS")
@@ -85,7 +85,7 @@ def build_bundle(root, campaign, image, model="gpt-5.6-sol", gateway="http://127
     source_root = root / "sources"
     arena_python = str(root / "envs/arena/bin/python")
     execution = {"kind": "docker", "image": image, "python": "python", "require_control_cgroup": True}
-    evaluation = {"schema": "arena.evaluation-config/1", "tasks_dir": str(source_root / "autoresearch-tasks"),
+    evaluation = {"schema": "arena.evaluation-config/1",
                   "timeout_seconds": 120, "execution": execution}
     sciel_eval = {**evaluation, "task_id": "reference-sat", "profile": "sciel-unit-interval/1",
                   "receipts_dir": str(run_dir / "canonical-sciel")}

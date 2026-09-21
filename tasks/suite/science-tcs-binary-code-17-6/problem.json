@@ -1,0 +1,86 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_binary_code",
+  "direction": "maximize",
+  "contract": "construct() -> nonempty list of distinct integers in [0, 2**N). Each integer encodes one N-bit binary codeword, including leading zeros. Every pair must have Hamming distance at least MINIMUM_DISTANCE. Linear and nonlinear codes are allowed. Score: number of codewords, maximized.",
+  "parameters": {
+    "n": 17,
+    "minimum_distance": 6,
+    "reference": 256
+  },
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 60,
+  "notes": [
+    "Independent exact pairwise Hamming-distance verifier for A_2(18,6). The seed is a 32-word Reed-Muller subconstruction. Tests reconstruct the 512-word extended quadratic-residue reference using g(x)=x^8+x^5+x^4+x^3+1 and verify all 130,816 pairs. The 2012 source establishes an upper bound of 673, and Brouwer's table lists 512..673 when inspected on 2026-09-20; the evaluator does not assume that bound or claim global optimality. This task searches constructions, not the paper's semidefinite upper-bound program."
+  ],
+  "protocol_description": "Reimplemented in this repository and cross-checked against the paper's published constructions/values.",
+  "id": "science-tcs-binary-code-17-6",
+  "name": "Binary error-correcting codes of length 17 and distance 6",
+  "paper_ids": [
+    "science-tcs"
+  ],
+  "description": "Construct the largest set of 17-bit words with pairwise Hamming distance at least 6, the extremal quantity A_2(17,6). Brouwer's table lists 258..340: the lower bound is Milshtein's 2019 nonlinear code, the upper bound comes from semidefinite programming. The 256-word linear reference is the [18,9,6] extended quadratic-residue code shortened by one coordinate; the seed has 32 words.",
+  "benchmark": "Binary error-correcting codes of length 17 and distance 6",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1005.4959",
+      "type": "paper",
+      "locator": "Gijswijt, Mittelmann and Schrijver: definition of A(n,d) and semidefinite upper bounds."
+    },
+    {
+      "url": "https://aeb.win.tue.nl/codes/binary-1.html",
+      "type": "benchmark",
+      "locator": "Brouwer's table, n=17, d=6: 258..340 (lower bound Milshtein 2019), inspected 2026-09-20."
+    }
+  ],
+  "limitations": [
+    "The 256-word reference is verified in tests by shortening the extended quadratic-residue code; the 258-word record is not reproduced here.",
+    "A code larger than 258 words would be a new lower bound and needs independent verification against current tables."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-tcs",
+      "title": "Theoretical computer science: source-based research tasks",
+      "url": "https://arxiv.org/abs/1507.01428"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Semidefinite code bounds based on quadruple distances",
+        "url": "https://arxiv.org/abs/1005.4959",
+        "task_relation": "The local task constructs length-17, distance-six codes, giving lower bounds. The paper chiefly derives upper bounds; the directions are complementary, not the same algorithm or claimed record.",
+        "primary_goal": "Bound the maximum size of binary codes with prescribed length and minimum distance.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Determine large binary codes of length 17 with minimum Hamming distance six.",
+    "importance_rationale": "The maximum possible size of distance-constrained binary codes is the central extremal problem of the source.",
+    "reason": "Both concern the extremal code-size problem itself. The citation does not certify the local reference as optimal.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "area": "theoretical_computer_science",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

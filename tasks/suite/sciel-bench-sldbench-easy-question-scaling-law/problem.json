@@ -1,0 +1,101 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "network:huggingface pkuHaowei/sldbench",
+    "py:datasets",
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 600,
+  "notes": [
+    "One SCiEL example directory serves all sldbench tasks; EVAL_TASK_NAME selects this task (problem.json entry.env). The first evaluation downloads the pkuHaowei/sldbench Hugging Face dataset."
+  ],
+  "entry": {
+    "callable": "evaluate",
+    "env": {
+      "EVAL_TASK_NAME": "easy_question_scaling_law"
+    },
+    "seed": "initial_program.py",
+    "score_key": "combined_score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/sldbench",
+    "files_sha256": {
+      "README.md": "abb9e2089a43c558612efa35723be751d918b049b81252ee21245518dc00e461",
+      "data_loader.py": "eff552c3060d425ff8d9165d26b306a72bdf664104b5dba4d607062710dbc1db",
+      "evaluator.py": "b59767b35bee120cdf651ceb26dcd6d550192c0b237f90399dd7f01067082f2f",
+      "init_program.py": "73a2e2205eafb96103a08ec3da62f33bbcec83bf1ec8601d100daaf73f9a641c",
+      "run.sh": "0221b4ff7f859e3ddbe6cbe54bdaa8619da190765370a62a63d58a1b109c94ed"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/sldbench` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-bench-sldbench-easy-question-scaling-law",
+  "name": "SCiEL: SLDBench easy question scaling law",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Discover a symbolic scaling law and a parameter-fitting routine for SLDBench task easy_question_scaling_law. Brier score as a function of log training FLOPs for easy questions; included in the source loader but not part of the paper's seven core tasks. Programs are fitted on smaller-scale training groups and scored on held-out larger-scale test groups by combined_score = 1/(1+NMSE).",
+  "benchmark": "SCiEL source example sldbench",
+  "paper_metric": "combined_score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/sldbench/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/sldbench/init_program.py",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/sldbench/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The task YAML configurations referenced by the source README (examples/sldbench/configs/) are absent at the pinned commit; only the shared evaluator, seed and data loader are pinned.",
+    "The Hugging Face dataset revision is selected by the upstream loader at run time; results can drift if the hub dataset changes."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "discovery",
+    "science_tier": 1,
+    "artifact": "equation",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "real_measurements",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "network"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

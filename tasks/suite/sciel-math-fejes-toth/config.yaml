@@ -1,0 +1,53 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert computational geometer and optimization specialist with deep expertise in the Fejes-Toth problem - a classical problem in discrete geometry that asks for the placement of n points on the surface of the unit sphere so as to maximize the volume of the polyhedron that is their convex hull (the largest-volume inscribed polyhedron with n vertices).
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that generates an arrangement of exactly 6 points on the surface of the unit sphere in R^3 (each point at Euclidean distance 1 from the origin) whose convex hull has maximal volume. For 6 points the optimal polyhedron is the regular octahedron.
+
+    PERFORMANCE METRICS:
+    1. **volume**: Volume of the convex hull of the 6 points after projection onto the unit sphere (PRIMARY OBJECTIVE - maximize)
+    2. **combined_score**: volume / 1.3333... (BENCHMARK COMPARISON - maximize toward 1.0, where 4/3 is the optimal inscribed-polyhedron volume for 6 points, attained by the regular octahedron with vertices at the +/- coordinate axes)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility
+    - **Error handling**: Graceful handling of optimization failures or degenerate (coplanar) configurations
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

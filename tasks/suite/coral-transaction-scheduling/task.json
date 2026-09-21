@@ -1,0 +1,536 @@
+{
+  "schema_version": "1.0",
+  "id": "coral-transaction-scheduling",
+  "name": "Transaction scheduling",
+  "description": "Transaction scheduling",
+  "paper_ids": [
+    "coral",
+    "adaevolve",
+    "evox",
+    "pairwise-validator"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1 and Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/ADRS/txn_scheduling"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/ADRS/txn_scheduling"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Systems results and task-definition appendix"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2607.14408",
+      "type": "paper",
+      "locator": "Section 5.4, Table 5"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "Docker",
+      "task-specific data"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "evaluator combined score",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "ADRS",
+    "protocol": "upstream",
+    "source_locator": "Section 4.1 and Table 1"
+  },
+  "execution": {
+    "repository": "https://github.com/Human-Agent-Society/CORAL",
+    "commit": "0123dfb939b35228cf2c1fde224cd0561e727408",
+    "upstream_path": "examples/ADRS/txn_scheduling",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/ADRS/txn_scheduling/taskdata/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/ADRS/txn_scheduling/taskdata",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "examples/ADRS/txn_scheduling/seed/initial_program.py",
+      "dependencies": [
+        "numpy"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced.",
+      "validity_key": "validity",
+      "validation": {
+        "kind": "official_seed_common_cli_smoke",
+        "passed": true,
+        "status": "completed",
+        "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+        "seconds": 0.62,
+        "candidate_sha256": "f38cea06e252799611995267f10f019fa4937d9ba51c185f2e08f50986e5894a",
+        "evaluator_sha256": "3e4e0e2456a904373b59843f58ca1bd32ede0faf42b19880ed3516714ec6995c",
+        "score": 2785.515320334262,
+        "valid": true,
+        "report": "validation/upstream-gap-smoke-early.json"
+      }
+    },
+    "setup_instructions": [
+      "python -m pip install numpy"
+    ],
+    "task_setup_instructions": [
+      "python -m pip install numpy"
+    ],
+    "framework_setup_instructions": [
+      "uv sync --extra dev"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "adrs_txn_scheduling",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 900
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Transaction scheduling",
+    "slug": "transaction-scheduling",
+    "description": "Transaction scheduling",
+    "benchmark": "ADRS",
+    "dataset": null,
+    "metric": "evaluator combined score",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2604.01658",
+    "source_locator": "Section 4.1 and Table 1",
+    "upstream_path": "examples/ADRS/txn_scheduling",
+    "requirements": [
+      "Docker",
+      "task-specific data"
+    ],
+    "execution_notes": "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced.",
+    "upstream_evaluator_paths": [
+      "examples/ADRS/txn_scheduling/grader/src/txn_scheduling_grader/grader.py",
+      "examples/ADRS/txn_scheduling/taskdata/evaluator.py"
+    ],
+    "upstream_seed_paths": [
+      "examples/ADRS/txn_scheduling/seed/initial_program.py"
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/ADRS/txn_scheduling/taskdata/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/ADRS/txn_scheduling/taskdata",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "baseline_path": "examples/ADRS/txn_scheduling/seed/initial_program.py",
+      "dependencies": [
+        "numpy"
+      ],
+      "return_style": "dict",
+      "error_key": "error",
+      "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced.",
+      "validity_key": "validity",
+      "validation": {
+        "kind": "official_seed_common_cli_smoke",
+        "passed": true,
+        "status": "completed",
+        "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+        "seconds": 0.62,
+        "candidate_sha256": "f38cea06e252799611995267f10f019fa4937d9ba51c185f2e08f50986e5894a",
+        "evaluator_sha256": "3e4e0e2456a904373b59843f58ca1bd32ede0faf42b19880ed3516714ec6995c",
+        "score": 2785.515320334262,
+        "valid": true,
+        "report": "validation/upstream-gap-smoke-early.json"
+      }
+    },
+    "execution_sources": [
+      "https://github.com/Human-Agent-Society/CORAL/blob/0123dfb939b35228cf2c1fde224cd0561e727408/examples/ADRS/txn_scheduling/taskdata/evaluator.py"
+    ],
+    "setup_commands": [
+      "python -m pip install numpy"
+    ]
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "integration_smoke",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "official_seed_common_cli_smoke",
+      "passed": true,
+      "status": "completed",
+      "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+      "seconds": 0.62,
+      "candidate_sha256": "f38cea06e252799611995267f10f019fa4937d9ba51c185f2e08f50986e5894a",
+      "evaluator_sha256": "3e4e0e2456a904373b59843f58ca1bd32ede0faf42b19880ed3516714ec6995c",
+      "score": 2785.515320334262,
+      "valid": true,
+      "report": "validation/upstream-gap-smoke-early.json"
+    },
+    "execution_evidence": [
+      {
+        "report": "validation/upstream-gap-smoke-early.json",
+        "candidate_label": "upstream_seed",
+        "status": "completed",
+        "valid": true,
+        "score": 2785.515320334262
+      }
+    ]
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "public_benchmark",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "adaevolve-transaction-scheduling",
+      "paper_ids": [
+        "adaevolve"
+      ],
+      "name": "Transaction scheduling",
+      "description": "Transaction scheduling",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.20133",
+          "type": "paper",
+          "locator": "Systems results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/ADRS/txn_scheduling"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "task-specific dependencies and data",
+          "No LLM/API call needed for direct candidate evaluation. Test workloads are procedurally generated; CPU evaluation."
+        ]
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "evaluator combined score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ADRS",
+        "protocol": "upstream",
+        "source_locator": "Systems results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/ADRS/txn_scheduling",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/ADRS/txn_scheduling/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/ADRS/txn_scheduling/evaluator",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/ADRS/txn_scheduling/initial_program.py",
+          "dependencies": [
+            "numpy"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced.",
+          "validity_key": "validity",
+          "validation": {
+            "kind": "official_seed_common_cli_smoke",
+            "passed": true,
+            "status": "completed",
+            "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+            "seconds": 0.66,
+            "candidate_sha256": "07a24b6a4e8b56017e66415d7dfe6336425c1cf3e60e4133f7c153d47fb16e03",
+            "evaluator_sha256": "47a593a26d4ec62013751f72ab5176973fb8b7a6033f22d5979bfdaa936c00de",
+            "score": 2747.252747252747,
+            "valid": true,
+            "report": "validation/upstream-gap-smoke-early.json"
+          }
+        },
+        "setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/txn_scheduling/evaluator/requirements.txt"
+        ],
+        "task_setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/txn_scheduling/evaluator/requirements.txt"
+        ],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "official_seed_common_cli_smoke",
+          "passed": true,
+          "status": "completed",
+          "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+          "seconds": 0.66,
+          "candidate_sha256": "07a24b6a4e8b56017e66415d7dfe6336425c1cf3e60e4133f7c153d47fb16e03",
+          "evaluator_sha256": "47a593a26d4ec62013751f72ab5176973fb8b7a6033f22d5979bfdaa936c00de",
+          "score": 2747.252747252747,
+          "valid": true,
+          "report": "validation/upstream-gap-smoke-early.json"
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-gap-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": true,
+            "score": 2747.252747252747
+          }
+        ]
+      }
+    },
+    {
+      "id": "evox-transaction-scheduling",
+      "paper_ids": [
+        "evox"
+      ],
+      "name": "Transaction scheduling",
+      "description": "Transaction scheduling",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.23413",
+          "type": "paper",
+          "locator": "Systems results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/ADRS/txn_scheduling"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "task-specific dependencies and data",
+          "No LLM/API call needed for direct candidate evaluation. Test workloads are procedurally generated; CPU evaluation."
+        ]
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "evaluator combined score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ADRS",
+        "protocol": "upstream",
+        "source_locator": "Systems results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/ADRS/txn_scheduling",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/ADRS/txn_scheduling/evaluator/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/ADRS/txn_scheduling/evaluator",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/ADRS/txn_scheduling/initial_program.py",
+          "dependencies": [
+            "numpy"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced.",
+          "validity_key": "validity",
+          "validation": {
+            "kind": "official_seed_common_cli_smoke",
+            "passed": true,
+            "status": "completed",
+            "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+            "seconds": 0.61,
+            "candidate_sha256": "07a24b6a4e8b56017e66415d7dfe6336425c1cf3e60e4133f7c153d47fb16e03",
+            "evaluator_sha256": "47a593a26d4ec62013751f72ab5176973fb8b7a6033f22d5979bfdaa936c00de",
+            "score": 2624.6719160104985,
+            "valid": true,
+            "report": "validation/upstream-gap-smoke-early.json"
+          }
+        },
+        "setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/txn_scheduling/evaluator/requirements.txt"
+        ],
+        "task_setup_instructions": [
+          "python -m pip install -r benchmarks/ADRS/txn_scheduling/evaluator/requirements.txt"
+        ],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced."
+        ]
+      },
+      "limitations": [
+        "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "official_seed_common_cli_smoke",
+          "passed": true,
+          "status": "completed",
+          "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+          "seconds": 0.61,
+          "candidate_sha256": "07a24b6a4e8b56017e66415d7dfe6336425c1cf3e60e4133f7c153d47fb16e03",
+          "evaluator_sha256": "47a593a26d4ec62013751f72ab5176973fb8b7a6033f22d5979bfdaa936c00de",
+          "score": 2624.6719160104985,
+          "valid": true,
+          "report": "validation/upstream-gap-smoke-early.json"
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-gap-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": true,
+            "score": 2624.6719160104985
+          }
+        ]
+      }
+    },
+    {
+      "id": "pairwise-validator-txn-scheduling",
+      "paper_ids": [
+        "pairwise-validator"
+      ],
+      "name": "txn_scheduling",
+      "description": "txn_scheduling task evaluated in Reward-Free Evolving Agents via Pairwise Validator.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2607.14408",
+          "type": "paper",
+          "locator": "Section 5.4, Table 5"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "upstream task score",
+        "paper_metric": "upstream task score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ADRS / ShinkaEvolve",
+        "protocol": "specified_only",
+        "source_locator": "Section 5.4, Table 5"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "circle_packing evaluated through both engines; other tasks follow their respective engine. Scalar metric differs by task."
+        ]
+      },
+      "limitations": [
+        "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

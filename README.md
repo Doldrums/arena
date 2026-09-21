@@ -6,6 +6,12 @@
 
 **An arena for research on recursive self-improvement.**
 
+[![959 tasks](.github/assets/tasks-badge.svg)](tasks/suite)
+[![689 evaluator definitions](.github/assets/evaluators-badge.svg)](registry/catalog.json)
+[![98 research papers](.github/assets/papers-badge.svg)](registry/participant-corpus.json)
+[![Python 3.11+](.github/assets/python-badge.svg)](#quick-start)
+[![Hugging Face mirror](.github/assets/huggingface-badge.svg)](https://huggingface.co/datasets/autoresearchTasksSciel/autoresearch-tasks)
+
 Empira connects scientific tasks, research systems and experiment records to study a specific question: **when do changes to a system’s research methods improve its ability to make further improvements?**
 
 Researchers can inspect the problems a system works on, follow changes to its code and research process, and examine results alongside the resources used to obtain them. Frameworks keep their own search algorithms, memory and learning mechanisms.
@@ -38,7 +44,7 @@ Evaluator definitions cover **71.85%** of the catalog. **81** adapted definition
 
 Counts refer to task packages, including distinct parameter settings and protocols. The split describes evaluator implementation; validation and runtime requirements are recorded separately for each task.
 
-Release data: [task catalog](registry/catalog.json), [research domains](registry/insights.json), [reference evidence](registry/references.json).
+Release data: [task library](tasks/suite), [task catalog](registry/catalog.json), [research domains](registry/insights.json), [reference evidence](registry/references.json).
 
 ## Inside the arena
 
@@ -75,6 +81,16 @@ python -m arena
 
 Open <http://127.0.0.1:8787>. The local board serves the catalog and published results without model credentials. Native experiment views read existing archives; they do not require the SCiEL engine to be installed.
 
+Task definitions, evaluators, seeds and shared task modules live in [`tasks/`](tasks) and ship with the Python package. Inspect the collection locally:
+
+```sh
+python tasks/run.py list
+python tasks/run.py show reference-sat
+python tasks/run.py doctor reference-sat
+```
+
+Workers verify the bundled task files against a SHA-256 manifest before evaluation. Individual tasks can require additional datasets, benchmark packages or native tools; `doctor` reports their declared requirements. See [task development](CONTRIBUTING.md#tasks).
+
 To inspect your own runs, provide their directories:
 
 ```sh
@@ -100,6 +116,7 @@ The discovery board and experiment workspace share task, system and result contr
 | Observer and execution services | Python in `src/arena/`; NumPy for numerical projections |
 | Edge API | TypeScript on Cloudflare Workers, with Cloudflare Access authentication |
 | Registry | Versioned JSON snapshots and schemas in `registry/` and `schemas/` |
+| Task library | Scientific task definitions, evaluators and shared modules in `tasks/` |
 | Private queue | SQLite-backed control service, worker leases, quotas and cancellation |
 
 The cloud board serves published result snapshots and connects to the private observer through a Cloudflare VPC Service. Experiment views read native run state; published Results change through an explicit export and deployment. The public Worker exposes read-only routes; execution credentials stay on the private side.

@@ -1,0 +1,86 @@
+{
+  "protocol": "recreated",
+  "family": "kernel_cpu_attention",
+  "direction": "maximize",
+  "contract": "attention(q, k, v, causal) -> torch.Tensor of shape (batch, heads_q, seq, dim): scaled dot-product attention in float32 on the CPU; k and v have heads_kv heads (grouped-query attention repeats each kv head for heads_q // heads_kv query heads); causal masks future positions. Score: achieved TFLOPS of the candidate (4*B*Hq*S*S*D flops, halved when causal) at the task's shapes, best of 3 timed runs after a warm-up; the output must match torch's scaled_dot_product_attention within 1e-3 relative error.",
+  "parameters": {
+    "ops": [
+      {
+        "name": "attention",
+        "op": "attention",
+        "params": {
+          "batch": 1,
+          "heads_q": 32,
+          "heads_kv": 4,
+          "seq": 32768,
+          "dim": 128,
+          "causal": true
+        }
+      }
+    ],
+    "seed": 0,
+    "repeats": 3
+  },
+  "requires": [
+    "py:numpy",
+    "py:torch"
+  ],
+  "timeout": 1800,
+  "notes": [
+    "AVO benchmark configuration kept exactly (head dim 128, 1 x 32768 = 32768 tokens); BF16 on B200 replaced by float32 on the CPU.",
+    "CPU recreation of the paper's attention-kernel task at the paper's shapes: the accelerator and BF16 kernels are replaced by float32 PyTorch on the CPU, and the reference is torch.nn.functional.scaled_dot_product_attention. TFLOPS are comparable within the suite only."
+  ],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "avo-gqa-32-query-heads-4-kv-heads-causal-sequence-32768",
+  "name": "GQA 32 query heads 4 KV heads, causal, sequence 32768",
+  "paper_ids": [
+    "avo"
+  ],
+  "description": "BF16 forward-prefill attention, head dimension 128, batch size 1, fixed 32768 total tokens.",
+  "benchmark": "FlashAttention-4 timing protocol",
+  "paper_metric": "TFLOPS",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2603.24517",
+      "type": "paper",
+      "locator": "Section 4.1 Benchmark Configurations"
+    }
+  ],
+  "limitations": [
+    "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "avo",
+      "title": "AVO: Agentic Variation Operators for Autonomous Evolutionary Search",
+      "url": "https://arxiv.org/pdf/2603.24517"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "kernel",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "slow",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

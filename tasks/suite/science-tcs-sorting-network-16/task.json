@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "id": "science-tcs-sorting-network-16",
+  "name": "Size-efficient sorting networks on 16 wires",
+  "description": "Construct a fixed compare-exchange network that sorts all 16-input sequences using as few comparators as possible. Correctness is certified by the zero-one principle over all 65,536 Boolean inputs. Parallel depth is reported separately. A verified 60-comparator construction is the reference; the initial odd-even transposition network uses 120 comparators.",
+  "paper_ids": [
+    "science-tcs"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1507.01428",
+      "type": "paper",
+      "locator": "Codish et al., Sorting Networks: to the End and Back Again (2015/2016): comparator-network definitions, zero-one verification, and the optimal size/depth construction problem."
+    },
+    {
+      "url": "https://bertdobbelaere.github.io/sorting_networks.html#N16L60D10",
+      "type": "benchmark",
+      "locator": "Author-maintained sorting-network list, 16 inputs / 60 compare-exchanges / 10 layers; inspected 2026-09-20. Comparator topology is preserved as an independently verified test fixture."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy"
+    ],
+    "environment_variables": [],
+    "datasets": "None downloaded; mathematical constructions or locally generated synthetic instances."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Size-efficient sorting networks on 16 wires",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_sorting_network",
+    "science_family": "science_sorting_network",
+    "parameters": {
+      "n": 16,
+      "max_comparators": 4096,
+      "reference": 60
+    },
+    "interface": "construct() -> ordered list of integer pairs (i, j), 0 <= i < j < N. Each compare-exchange writes min to wire i and max to j. The network must sort every input. Score: comparator count, minimized; parallel depth is reported separately. Maximum 4096 comparators.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value",
+      "area": "theoretical_computer_science"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_sorting_network",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "This is an independently recreated construction benchmark, not a reproduction of the paper's SAT search, experimental budget, or optimality proof.",
+    "The size objective is identical to the finite sorting-network problem. Depth is diagnostic only, and the 4096-comparator cap is a generous benchmark resource limit.",
+    "The 60-comparator reference is a verified feasible upper bound. The inspected source lists size bounds 57..60; this package does not prove the minimum or promise that the online record will remain current.",
+    "Improving the 120-comparator seed or recovering a published network is not a new research result. A claimed record requires a separately reviewed construction and comparison against current literature."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "evidence": "validation/science-report.json",
+    "tests": "tests/test_science_tcs.py"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "area": "theoretical_computer_science",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Greedy Best-First Search for the Optimal-Size Sorting Network Problem",
+        "url": "https://doi.org/10.1016/j.procs.2019.09.199",
+        "task_relation": "The local task restricts this problem to 16 wires and exhaustively checks binary inputs. Its reference size is not claimed as a current record.",
+        "primary_goal": "Construct sorting networks with fewer comparators.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Minimize comparators in a sorting network on 16 inputs.",
+    "importance_rationale": "Optimal-size sorting networks are the explicit combinatorial optimization target of the paper.",
+    "reason": "The scientific target is the network construction itself, not an incidental test of a general agent.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

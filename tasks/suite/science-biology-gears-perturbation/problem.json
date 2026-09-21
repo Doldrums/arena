@@ -1,0 +1,92 @@
+{
+  "protocol": "recreated",
+  "family": "science_biology_b03",
+  "direction": "minimize",
+  "contract": "predict_shift(training_profiles, training_perturbations, query_perturbations, gene_context) -> finite query x gene matrix of expression shifts relative to controls. Whole perturbation groups are disjoint. Minimize query MSE divided by error of training-perturbation-mean baseline; report mean-reference-corrected perturbation retrieval.",
+  "parameters": {},
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "file:../../.cache/science-biology/B03.json",
+    "file:../../.cache/science-biology/B03.manifest.json"
+  ],
+  "timeout": 600,
+  "notes": [
+    "Independently written bounded scientific adaptation. Source data and SHA256 preparation receipts required. See docs/BIOLOGY_EXPANSION.md and task limitations; fixture tests never establish source benchmark reproduction."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-biology-gears-perturbation",
+  "name": "Biology: Perturb-seq response generalization",
+  "paper_ids": [
+    "science-biology_expansion"
+  ],
+  "description": "Predict expression shifts for complete held-out genetic perturbations using measured GEARS study pseudobulks and training-only gene selection.",
+  "benchmark": "Biology: Perturb-seq response generalization",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://www.nature.com/articles/s41587-023-01905-6",
+      "type": "paper",
+      "locator": "GEARS Methods: data processing, perturbation splits and combinatorial prediction."
+    },
+    {
+      "url": "https://github.com/snap-stanford/GEARS",
+      "type": "repository",
+      "locator": "Official author implementation/data reference; evaluator and seed are independently written, not copied."
+    },
+    {
+      "url": "https://doi.org/10.1038/s41587-025-02777-8",
+      "type": "paper",
+      "locator": "Systema: correcting shared perturbation effects and reporting perturbation-specific evaluation."
+    }
+  ],
+  "limitations": [
+    "Independent training-mean-normalized error and retrieval metric inspired by Systema; not the entire published GEARS/Systema metric suite. Official Dataverse source access returned403 during preparation.",
+    "Public source subsets are development-visible. Freeze candidates before evaluating on additional independently chosen studies/instances; trusted candidate execution is not a security sandbox.",
+    "Improving this benchmark is a scientific-method result; it does not alone establish a new biological discovery."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-biology_expansion",
+      "title": "Biology and bioinformatics: source-based research tasks",
+      "url": "https://papers.neurips.cc/paper_files/paper/2023/file/cac723e5ff29f65e3fcbb0739ae91bee-Paper-Datasets_and_Benchmarks.pdf"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Predict cellular transcriptional responses to unseen genetic perturbations.",
+    "importance_rationale": "Perturbation-response prediction can help identify gene interactions and prioritize experiments on cellular mechanisms.",
+    "papers": [
+      {
+        "title": "Predicting transcriptional outcomes of novel multigene perturbations with GEARS",
+        "url": "https://www.nature.com/articles/s41587-023-01905-6",
+        "primary_goal": "Predict expression responses to previously unmeasured single- and multigene perturbations.",
+        "task_relation": "The local task uses measured GEARS study pseudobulks and holds out complete perturbations. It tests a reduced gene-expression prediction problem rather than reproducing the paper's full network or all multigene results.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "The cited primary paper develops or applies a solution to the stated scientific problem; its task is not merely an agent or general-purpose framework evaluation. Support concerns the scientific problem family, not a claim of new discovery or full-paper reproduction by this local task.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "model",
+    "domain": "natural_science",
+    "data": "real_measurements",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "biology",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  }
+}

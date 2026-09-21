@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0",
+  "id": "science-materials-kmcpy-ionic-transport",
+  "name": "NASICON occupation-dependent transport with exact finite-state reference",
+  "description": "transport(lattice, occupancies, barrier_model, temperature_k, budget) -> exactly budget['events'] [waiting_time_seconds, directed_edge_index] pairs. For the pinned NASICON model, Na state is0 and vacancy1; Si/P framework states remain fixed. barrier_model['nasicon_lce'] supplies occupation-dependent decorated LCE sums, source fitted parameters, local environments and directed periodic hop vectors. Rates are nu*exp(-(E_KRA+direction*DeltaE_site/2)/(kBT)). Preserve particle identity, exclusion and unwrapped periodic displacement. Evaluator independently audits clocks/events and compares 1000-event mean tagged-ion MSD/(6 mean physical time) against exact propagation over1680 tagged states. Score candidate runtime*relative_standard_error^2 across64 replicas. This bounded source illustrative model does not establish bulk/asymptotic conductivity or a new validated material fit.",
+  "paper_ids": [
+    "science-materials_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://caneparesearch.org/papers/deng-kmcpy/",
+      "type": "paper",
+      "locator": "kMCpy framework for solid-state diffusion simulations."
+    },
+    {
+      "url": "https://github.com/caneparesearch/kMCpy/tree/7761fdd2c0506763816d5b0b42226b224f60dc70",
+      "type": "repository",
+      "locator": "Pinned NASICON model/events, example fitting_results and fitting_results_site, active-site encoding, primitive lattice; complete decorated LCE evaluation and exact local finite-event transport reference."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned source model/event/initial-state/primitive-cell JSON, prepared by python scripts/prepare_materials_expansion.py --nasicon; exact1680-state transport moments derived offline."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "NASICON occupation-dependent transport with exact finite-state reference",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_materials_kmcpy_ionic_transport",
+    "science_family": "science_materials_kmcpy_ionic_transport",
+    "parameters": {
+      "proposal_id": "C11",
+      "data_sha256": "2c04311021f4253b8766589d0dd6e5cb09d008d459e9803aab17c833db4d41b8"
+    },
+    "interface": "transport(lattice, occupancies, barrier_model, temperature_k, budget) -> exactly budget['events'] [waiting_time_seconds, directed_edge_index] pairs. For the pinned NASICON model, Na state is0 and vacancy1; Si/P framework states remain fixed. barrier_model['nasicon_lce'] supplies occupation-dependent decorated LCE sums, source fitted parameters, local environments and directed periodic hop vectors. Rates are nu*exp(-(E_KRA+direction*DeltaE_site/2)/(kBT)). Preserve particle identity, exclusion and unwrapped periodic displacement. Evaluator independently audits clocks/events and compares 1000-event mean tagged-ion MSD/(6 mean physical time) against exact propagation over1680 tagged states. Score candidate runtime*relative_standard_error^2 across64 replicas. This bounded source illustrative model does not establish bulk/asymptotic conductivity or a new validated material fit.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "materials_science"
+    },
+    "proposal_id": "C11",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": false,
+      "upstream_reference_code_available": true,
+      "reason": "SCIEL contracts, evaluator logic and tests are independently implemented. Reused scientific engines and reference data are separately attributed in reuse_scope; author-code availability alone is not classified as evaluator reuse.",
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "reuse_scope": "No upstream scientific evaluator or model implementation; source numerical data and standard numerical libraries only"
+    },
+    "additional_requires": [
+      "file:data/materials-expansion/C11/dataset.json"
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_materials_kmcpy_ionic_transport",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "file:data/materials-expansion/C11/dataset.json"
+      ],
+      "timeout": 600,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent SCIEL adaptation of a cited scientific problem; no claim to reproduce author leaderboard scores.",
+    "Candidate and evaluator run in one Python process; data access is separated by API, not an OS sandbox. Isolate evaluator data for adversarial or held-out evaluation.",
+    "Pinned source2x1x1 NASICON illustrative LCE model, two vacancies and fixed Si framework. The author provides identical KRA/site fit coefficients, retained as published. This is not independent validation of those fitted coefficients.",
+    "The score measures finite1000-event tagged-ion transport. Exact2000-event value is also reported to expose finite-horizon dependence; no bulk/asymptotic conductivity claim."
+  ],
+  "validation": {
+    "level": "source_seed_executed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_materials_expansion.py",
+    "evidence": "validation/materials-expansion-report.json",
+    "benchmark_verified": true
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "materials_science",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Predict sodium-ion motion in mixed-polyanion NASICON solid electrolytes.",
+    "importance_rationale": "Ion transport controls the conductivity of candidate solid-state battery electrolytes.",
+    "papers": [
+      {
+        "title": "Fundamental investigations on the sodium-ion transport properties of mixed polyanion solid-state battery electrolytes",
+        "url": "https://www.nature.com/articles/s41467-022-32190-7",
+        "primary_goal": "Explain how Si/P polyanion composition controls Na-ion transport and identify favorable NASICON compositions using kinetic simulations and impedance measurements.",
+        "task_relation": "The paper studies the same Na1+xZr2SixP3-xO12 material family and occupation-dependent hopping physics. The local source illustrative model estimates finite-time tagged-ion motion on a tiny fixed lattice; it does not reproduce bulk conductivity, the composition survey or experimental validation.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "This is a physical ion-transport investigation, replacing reliance on a kMCpy software citation. Support is for the transport-model subproblem, with finite-model limitations explicit.",
+    "verification_basis": "Primary publisher, author, or PubMed/PMC paper abstract and relevant task description inspected on the web; local catalog contract inspected. No independent reproduction of the paper is claimed.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

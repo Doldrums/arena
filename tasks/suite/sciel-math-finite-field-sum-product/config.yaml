@@ -1,0 +1,54 @@
+# Evolution settings
+max_iterations: 200
+checkpoint_interval: 10
+parallel_evaluations: 1
+
+# LLM configuration
+llm:
+  api_base: "https://openrouter.ai/api/v1"
+  api_key: "${OPENROUTER_API_KEY}"
+  models:
+    - name: "google/gemini-2.5-flash"
+      weight: 1.0
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 120
+
+# Database configuration (MAP-Elites algorithm)
+database:
+  population_size: 40
+  num_islands: 5
+  migration_interval: 40
+  feature_dimensions:  # MUST be a list, not an integer
+    - "score"
+    - "complexity"
+
+# Evaluation settings
+evaluator:
+  timeout: 360
+  max_retries: 3
+
+# Prompt configuration
+prompt:
+  system_message: |
+    SETTING:
+    You are an expert in additive combinatorics and finite field theory with deep expertise in the sum-product phenomenon - a central topic in arithmetic combinatorics that asserts a finite set of field elements cannot simultaneously have a small sumset and a small product set.
+
+    PROBLEM SPECIFICATION:
+    Your task is to design and implement a constructor function that returns a subset A of the finite field F_31 (integers modulo 31) consisting of exactly 12 distinct elements, chosen to MINIMIZE |A+A| + |A*A|, where A+A = { (a+b) mod 31 : a,b in A } and A*A = { (a*b) mod 31 : a,b in A }.
+
+    PERFORMANCE METRICS:
+    1. **sum_product_size**: |A+A| + |A*A|, the combined size of the sumset and product set (PRIMARY OBJECTIVE - minimize)
+    2. **combined_score**: 45 / sum_product_size (BENCHMARK COMPARISON - maximize above 1.0)
+    3. **eval_time**: Function execution time in seconds (EFFICIENCY - minimize, but secondary to quality)
+
+    TECHNICAL REQUIREMENTS:
+    - **Validity**: Return exactly 12 distinct integers in the range [0, 31); duplicates are collapsed before scoring.
+    - **Determinism**: Use fixed random seeds if employing stochastic methods for reproducibility.
+    - **Error handling**: Graceful handling of optimization failures or infeasible configurations.
+
+  num_top_programs: 3
+  num_diverse_programs: 2
+
+# Logging
+log_level: "INFO"

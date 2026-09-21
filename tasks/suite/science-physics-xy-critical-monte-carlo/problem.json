@@ -1,0 +1,88 @@
+{
+  "protocol": "recreated",
+  "family": "science_physics_xy_critical_monte_carlo",
+  "direction": "minimize",
+  "contract": "schedule(temperature, lattice_size, budget) -> list of 1..64 kernel names: metropolis, overrelax, wolff, containing a stochastic kernel. Trusted detailed-balance kernels operate classical periodic XY model. Each sweep/cluster is charged N site units (upper bound); warmup counts. Multiple independent chains score squared energy/magnetization errors against long independent reference chains, with reference uncertainty and autocorrelation diagnostics. Fixed-work local adaptation, not a timing leaderboard.",
+  "parameters": {
+    "proposal_id": "P14"
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy",
+    "file:data/physics-expansion/P14/manifest.json",
+    "file:data/physics-expansion/P14/benchmark.npz"
+  ],
+  "timeout": 900,
+  "notes": [
+    "Independent SCIEL scientific adaptation. Required source packs never fall back to toy data. Fixture tests are distinct from source-data execution. See docs/PHYSICS_EXPANSION.md."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-physics-xy-critical-monte-carlo",
+  "name": "Critical-regime XY Monte Carlo schedules",
+  "paper_ids": [
+    "science-physics_expansion"
+  ],
+  "description": "schedule(temperature, lattice_size, budget) -> list of 1..64 kernel names: metropolis, overrelax, wolff, containing a stochastic kernel. Trusted detailed-balance kernels operate classical periodic XY model. Each sweep/cluster is charged N site units (upper bound); warmup counts. Multiple independent chains score squared energy/magnetization errors against long independent reference chains, with reference uncertainty and autocorrelation diagnostics. Fixed-work local adaptation, not a timing leaderboard.",
+  "benchmark": "Critical-regime XY Monte Carlo schedules",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1103/PhysRevLett.62.361",
+      "type": "paper",
+      "locator": "Scientific problem, assumptions and evaluation methodology: Critical-regime XY Monte Carlo schedules"
+    },
+    {
+      "url": "https://alps.comp-phys.org/tutorials/mcs/",
+      "type": "repository",
+      "locator": "Classical XY Wolff kernel and equilibrium Monte Carlo methodology; independent fixed-work implementation."
+    }
+  ],
+  "limitations": [
+    "Independent SCIEL adaptation, not a reproduction of source leaderboard scores.",
+    "Candidate and evaluator share a Python process. Input APIs withhold labels but do not provide an OS security boundary; isolate evaluation data for adversarial use.",
+    "Run scripts/prepare_physics_expansion.py --xy-reference to create long-chain numerical reference with uncertainty checks."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-physics_expansion",
+      "title": "Physics and astrophysics research: source-based research tasks",
+      "url": "https://arxiv.org/abs/1904.06778v3"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Collective Monte Carlo Updating for Spin Systems",
+        "url": "https://doi.org/10.1103/PhysRevLett.62.361",
+        "task_relation": "The local task schedules trusted Metropolis, overrelaxation, and Wolff kernels for finite XY systems under a work budget. It optimizes a restricted mixture of existing kernels; its schedule search and equilibrium-error score are not the paper's new cluster algorithm.",
+        "primary_goal": "Improve equilibrium Monte Carlo sampling near criticality through collective spin-cluster updates, including the XY model.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Sample critical spin-model equilibria efficiently despite long autocorrelation times.",
+    "importance_rationale": "Reducing critical slowing in physical spin-system sampling is the main goal of the Wolff algorithm paper.",
+    "reason": "The primary target is efficient physical equilibrium sampling. The local schedule is explicitly an adaptation of that research problem.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "natural_science",
+    "data": "simulator",
+    "verification": "sampled",
+    "reference": "none",
+    "area": "physics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

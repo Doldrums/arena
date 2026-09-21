@@ -1,0 +1,62 @@
+{
+  "scope": [
+    "science_tcs_expansion runtime/contracts",
+    "science_economics_expansion runtime/contracts",
+    "science_earth_expansion E07-E12 runtime/contracts and relevant source preparation"
+  ],
+  "review_focus": [
+    "independent scoring",
+    "candidate input mutation",
+    "feasibility constraints",
+    "budget accounting",
+    "train/test leakage",
+    "source units and temporal alignment"
+  ],
+  "findings_fixed": [
+    {
+      "id": "TCS-lift-input-alias",
+      "problem": "Candidate could replace canonical graph and be checked on the replacement. Reproduced all four instances being replaced by 12-vertex lifts.",
+      "fix": "Pass a deep copy to sign_edges; verify canonical original graph.",
+      "regression": "test_candidate_cannot_replace_the_graph_being_verified"
+    },
+    {
+      "id": "TCS-pebbling-input-alias",
+      "problem": "Candidate could clear DAG outputs and receive perfect score0.0 for an empty schedule.",
+      "fix": "Pass a deep copy to pebble; verify and normalize against canonical original DAG.",
+      "regression": "test_candidate_cannot_remove_required_pebbling_outputs; test_candidate_working_mutations_preserve_canonical_scores"
+    },
+    {
+      "id": "F02-reference-block-alias",
+      "problem": "sequence-jacobian dag() creates models sharing module-level firm and mkt_clearing block instances, allowing candidate-model mutations to alter reference equations.",
+      "fix": "Deep-copy the entire candidate model/steady-state pair, preserving internal relationships while isolating reference blocks.",
+      "regression": "test_macro_candidate_model_cannot_replace_verifier_market_equations"
+    },
+    {
+      "id": "F03-stale-source-version",
+      "problem": "Returned metadata claimed PyBLP1.1.2 after the installed/catalog-pinned version became1.2.0.",
+      "fix": "Report installed package version from importlib.metadata; regression asserts reported version."
+    },
+    {
+      "id": "F02-F03-code-provenance",
+      "problem": "Code reuse flags omitted upstream numerical/forward routines.",
+      "fix": "Explicit upstream_code_reused true and named reuse scope; independently authored active evaluator remains independent_reimplementation and upstream_evaluator_reused false."
+    }
+  ],
+  "verification": [
+    {
+      "command": ".cache/sciel-env/bin/python -m unittest discover -s tests -p test_science_tcs_expansion.py -v",
+      "passed": 10,
+      "failed": 0
+    },
+    {
+      "command": ".cache/sciel-env/bin/python -m unittest discover -s tests -p test_science_economics_expansion.py -v",
+      "passed": 9,
+      "failed": 0
+    },
+    {
+      "check": "ESM-SnowMIP source forcing/observation alignment",
+      "result": "Col de Porte and Sodankyla source start timestamps match exactly after converting differing CF time origins; full relative time-series offsets are zero."
+    }
+  ],
+  "limits": "A bounded scientific/correctness review, not a security audit. Public Python candidate interfaces remain cooperative, as documented. No new Earth E07-E12 scoring defect was established in this review."
+}

@@ -1,0 +1,127 @@
+{
+  "schema": "sciel-independent-materials-review-v1",
+  "created_at": "2026-09-20T19:15:33.222672+00:00",
+  "reviewer": "statistics_page subagent; independent of chemistry implementation",
+  "review_scope": [
+    "C11 NASICON source-model units and finite-event reference",
+    "C11 candidate-input and event-budget protection",
+    "C10 acquisition isolation and query budget",
+    "C12 forward-solve isolation and oracle budget"
+  ],
+  "counts_as_seed_execution": false,
+  "source_snapshot_at_receipt": {
+    "suite/_lib/autoresearch_suite/materials_nasicon.py": "131617c2ca98801123b9914b0ed84ba6618933809985901dc7cda542e2023289",
+    "suite/_lib/autoresearch_suite/science_materials_expansion.py": "9ea0bcd04accae57136cc390fa04c34fc1c17630d0d4b9adda2aca634bdd9f8e",
+    "scripts/prepare_materials_expansion.py": "e6bef4aab9b8029361e5bcfc25ca31f65209cc49c2c76447e788860803ec81c6",
+    "suite/_lib/data/materials-expansion/C11/dataset.json": "2c04311021f4253b8766589d0dd6e5cb09d008d459e9803aab17c833db4d41b8"
+  },
+  "snapshot_note": "Hashes were captured when saving this review. A concurrent agent owns the generic C11 budget correction; the reproduced finding below describes the reviewed pre-fix behavior and is not a post-fix assertion.",
+  "checks": [
+    {
+      "id": "C11_units_and_observable",
+      "status": "passed",
+      "details": [
+        "Boltzmann constant 8.617333262145e-2 meV/K is consistent with source LCE barriers in meV and temperature in K.",
+        "Rates are attempt frequency in Hz multiplied by exp(-barrier/(kBT)); exponential waits therefore have units seconds.",
+        "Unwrapped hop displacement uses source coordinates plus periodic_image @ cell, in Angstrom; mean squared displacement converts to square metres with 1e-20.",
+        "Reference and estimator both use mean tagged-ion MSD divided by 6 times mean physical duration. The implementation explicitly describes a finite-event illustrative source model, not asymptotic bulk diffusion or conductivity."
+      ]
+    },
+    {
+      "id": "C11_independent_two_hop_reference",
+      "status": "passed",
+      "method": "Exhaustively enumerate every allowed first and second hop from the actual source initial configuration. Retain separate labels and accumulated 3D displacement for all 14 ions. Weight each two-hop path by its scalar-rate transition probabilities and sum its mean ion squared displacement and the two expected exponential residence times. Compare with exact_moments(model, initial_state, 298, [2]). This direct trajectory enumeration does not use the sparse moment propagation algorithm.",
+      "temperature_k": 298.0,
+      "ions": 14,
+      "direct_enumeration": {
+        "probability_mass": 1.0000000000000004,
+        "mean_msd_angstrom2": 1.4399558814563465,
+        "mean_duration_s": 9.168440772268709e-10
+      },
+      "sparse_reference": {
+        "mean_msd_angstrom2": 1.4399558814563465,
+        "mean_duration_s": 9.168440772268711e-10,
+        "apparent_diffusivity_m2_s": 2.6175949964718526e-12,
+        "probability_mass_error": 1.1102230246251565e-16,
+        "tagged_states": 1680
+      },
+      "relative_msd_difference": 0.0,
+      "relative_duration_difference": 2.220446049250313e-16,
+      "assertion_tolerance": 1e-12,
+      "scope_limit": "This independently verifies two-step displacement cross terms and residence-time propagation for the declared source model. It does not independently validate the author-fitted material parameters or prove an asymptotic transport limit."
+    },
+    {
+      "id": "C11_active_nasicon_input_and_budget_isolation",
+      "status": "passed",
+      "details": [
+        "Candidate receives deep copies of lattice and model plus a copied occupancy list.",
+        "The source NASICON branch stores events_count before candidate invocation and validates returned shape against that evaluator-owned integer.",
+        "The exact reference event count must match the evaluator configuration; mutating the candidate budget dictionary cannot reduce the active source benchmark event count."
+      ]
+    },
+    {
+      "id": "C10_acquisition_isolation",
+      "status": "passed",
+      "details": [
+        "Acquisition receives deep-copied pool and observations. Fitting receives copied observations.",
+        "The evaluator controls acquisition iterations and enforces one unused index per query.",
+        "Potential evaluations receive copied coordinates; finite-difference and rigid-motion checks are evaluator-controlled."
+      ]
+    },
+    {
+      "id": "C12_oracle_budget_and_input_isolation",
+      "status": "passed",
+      "details": [
+        "The trusted physical adapter is selected by evaluator-owned path and verified SHA-256.",
+        "Candidate forward calls increment an evaluator-owned counter before dispatch and reject calls beyond the configured limit.",
+        "Training data, parameter bounds, forward parameters and protocols are copied before candidate/model use.",
+        "Held-out predictions use the trusted model and evaluator-owned protocols."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "C11_generic_mutable_event_budget",
+      "severity": "medium",
+      "status": "reproduced_pre_fix; correction delegated to biology agent",
+      "file": "suite/_lib/autoresearch_suite/science_materials_expansion.py",
+      "function": "kmc_score generic fallback",
+      "reviewed_lines": [
+        501,
+        502
+      ],
+      "cause": "Expected event-history shape was read from the same mutable budget dictionary passed to the candidate, after the candidate returned.",
+      "reproducer": "Use the existing analytic nine-site ring fixture with evaluator events=150. Candidate sets its received budget[events] to 10, 25 or 50 and then returns kmc_seed output. Each shortened history passed the complete generic evaluator across its 32 replicas.",
+      "observations": [
+        {
+          "configured_events": 150,
+          "returned_events_per_replica": 10,
+          "accepted": true
+        },
+        {
+          "configured_events": 150,
+          "returned_events_per_replica": 25,
+          "accepted": true
+        },
+        {
+          "configured_events": 150,
+          "returned_events_per_replica": 50,
+          "accepted": true
+        }
+      ],
+      "impact": "A candidate can reduce prescribed work in the generic fallback, changing the intended runtime/uncertainty comparison. The staged NASICON source benchmark uses a separate protected branch and is unaffected.",
+      "recommended_fix": "Capture the expected event count in an evaluator-owned integer before invocation and validate shape against it. Add a regression candidate that mutates its received budget and returns a shortened otherwise valid history.",
+      "reported_to": [
+        "root",
+        "implement_chemistry"
+      ],
+      "fix_owner": "implement_biology",
+      "post_fix_verification": "Not performed by this review; owner and parent will record regression result."
+    }
+  ],
+  "limitations": [
+    "Review covers API-level argument and oracle-budget separation, not operating-system isolation of hostile same-process Python code.",
+    "No implementation files were changed during this independent review.",
+    "This review receipt is not a source-seed execution report and must not increase verified task counts."
+  ]
+}

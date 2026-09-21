@@ -1,0 +1,68 @@
+{
+  "protocol": "recreated",
+  "family": "sat_solver",
+  "direction": "maximize",
+  "contract": "solve(instance) -> list of booleans (instance has n and clauses as signed 1-based literals). Score: fraction of satisfiable instances solved",
+  "parameters": {
+    "n_instances": 10,
+    "n_vars": 50,
+    "seed": 0
+  },
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 300,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "reference-sat",
+  "name": "Satisfiable 3-CNF solving",
+  "paper_ids": [
+    "satlution"
+  ],
+  "description": "Return {\"assignment\": [booleans]}; score 1 iff every clause is satisfied. Literal k refers to assignment[abs(k)-1], negated when k < 0.",
+  "benchmark": null,
+  "paper_metric": "score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2509.07367",
+      "type": "paper",
+      "locator": "Problem family; original benchmark protocol is not claimed."
+    }
+  ],
+  "limitations": [
+    "Portable reference implementation, not a reproduction of the original paper experiment.",
+    "Generated deterministic instances are not the paper datasets. Scores are not comparable to published results."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "satlution",
+      "title": "Autonomous Code Evolution Meets NP-Completeness",
+      "url": "https://arxiv.org/pdf/2509.07367"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0",
+  "id": "science-economics-macroeconomic-transitions",
+  "name": "Economics: Heterogeneous-agent macroeconomic transitions",
+  "description": "Heterogeneous-agent macroeconomic transitions with an explicit candidate API, independently recomputed objective and fixed model/data assumptions.",
+  "paper_ids": [
+    "science-economics_expansion"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.3982/ECTA17434",
+      "type": "paper",
+      "locator": "Auclert et al.: sequence-space equilibrium; pinned package examples/krusell_smith.py."
+    },
+    {
+      "url": "https://github.com/shade-econ/sequence-jacobian",
+      "type": "repository",
+      "locator": "Reference algorithms and source documentation; local evaluator is independently authored."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "numba",
+      "sequence-jacobian==1.0.0"
+    ],
+    "environment_variables": [],
+    "datasets": "Generated economic model instances; no external empirical data."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Economics: Heterogeneous-agent macroeconomic transitions",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_economics_macro",
+    "science_family": "science_economics_macro",
+    "parameters": {},
+    "interface": "solve_transition(model, steady_state, aggregate_shock) -> length40 capital DEVIATIONS from steady state. Fixed sequence-jacobian Krusell-Smith source example (2 income states,10 asset nodes);24period productivity shocks plus16zero periods; household continuation uses fixed terminal steady-state value. Independently recompute nonlinear household/distribution/market paths. Minimize mean maximum asset-market residual / steady-state capital; check probability mass, positive consumption and feasible assets. Source household optimizer is fixed; candidate evolves equilibrium-path solution.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "finance",
+      "area": "finance",
+      "data": "simulator",
+      "verification": "simulation",
+      "reference": "none"
+    },
+    "proposal_id": "F02",
+    "implementation_origin": "independent_reimplementation",
+    "declared_status": "ready",
+    "provenance": {
+      "implementation_origin": "independent_reimplementation",
+      "upstream_code_reused": true,
+      "reference_libraries": [
+        "numpy",
+        "scipy",
+        "numba",
+        "sequence-jacobian==1.0.0"
+      ],
+      "active_evaluator_origin": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "upstream_code_reuse_scope": "sequence-jacobian Krusell-Smith source model and household/transition numerical routines; local objective, feasibility checks and candidate interface are independently authored."
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated",
+      "family": "science_economics_macro",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy",
+        "py:numba",
+        "py:sequence_jacobian"
+      ],
+      "timeout": 180,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Bounded adaptation specified in the candidate contract; no claim to reproduce full-paper scores.",
+    "Model/simulation scores do not establish empirical policy validity or market returns.",
+    "Public fixed evaluation inputs support development only; freeze candidates and run new cases for generalization."
+  ],
+  "validation": {
+    "level": "source_reviewed",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-20",
+    "tests": "tests/test_science_economics_expansion.py"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "finance",
+    "area": "finance",
+    "data": "simulator",
+    "verification": "simulation",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Using the Sequence-Space Jacobian to Solve and Estimate Heterogeneous-Agent Models",
+        "url": "https://www.nber.org/papers/w26123",
+        "task_relation": "The local task solves Krusell-Smith transition paths through market-clearing residuals under bounded shocks and horizons. It restricts the models and inference goals studied in the paper and does not reproduce its wider estimation exercises.",
+        "primary_goal": "Solve and estimate heterogeneous-agent equilibrium models, including impulse responses and nonlinear transition paths.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Solve aggregate transition paths in heterogeneous-household economies after economic shocks.",
+    "importance_rationale": "Computing and estimating general-equilibrium responses in heterogeneous-agent macroeconomics is the paper's central domain-specific target.",
+    "reason": "The method is designed to solve a specific economic-equilibrium problem, rather than presenting a general optimizer benchmark or a software release alone.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

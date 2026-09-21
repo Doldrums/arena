@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "evidence_kind": "Real SCiEL rejection of intentionally invalid R candidate",
+  "historical_recovery_check": true,
+  "authoritative_current_run": "Use the final recovery campaign report for current manifest/runtime fingerprints.",
+  "source_sha256": "21a9cdaa16fb616a0f482536389a0a216cd8467358f42c75b5bb7ce765044202",
+  "path_sanitization": {
+    "${REPOSITORY}": "repository root",
+    "${SCIEL_ROOT}": "external pinned SCiEL source",
+    "${WORKSPACE}": "task workspace",
+    "${HOME}": "user home directory",
+    "${TEMP}": "temporary directory"
+  },
+  "results": [
+    {
+      "task_id": "sciel-math-r-robust-regression",
+      "mode": "sciel_evaluator_smoke",
+      "score": null,
+      "valid": null,
+      "sciel_exercised": true,
+      "sciel_source": {
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "tracked_modified": false,
+        "source_tree_sha256": "be3eb366ea1d2660bde8cdcf16821d7f0f3018fba3b944e0d6eb8eaf71f5e4d0"
+      },
+      "llm_calls_requested": false,
+      "logs": {
+        "stdout": "${WORKSPACE}/work/recovery-sciel/sciel-r-invalid/evaluator_smoke.stdout.log",
+        "stderr": "${WORKSPACE}/work/recovery-sciel/sciel-r-invalid/evaluator_smoke.stderr.log"
+      },
+      "status": "failed",
+      "metric": "score",
+      "direction": "maximize",
+      "combined_score": -1.7976931348623157e+308,
+      "sciel_metrics": {
+        "combined_score": -1.7976931348623157e+308,
+        "evaluation_failed": 1.0,
+        "validity_known": 0.0
+      },
+      "evolution_exercised": false,
+      "mutations": 0,
+      "task_result": {
+        "schema_version": "1.0",
+        "task_id": "sciel-math-r-robust-regression",
+        "mode": "upstream",
+        "status": "failed",
+        "valid": null,
+        "score": null,
+        "source_type": "git",
+        "repository": "https://github.com/luciferkonn/SCiEL",
+        "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "metric": "score",
+        "direction": "maximize",
+        "candidate_sha256": "077bbcc9fcf8fa6610623578bc31b1cf665032b5304dddeff62f1ac6bcc16dbf",
+        "evaluator_sha256": "ea9c03d202b8883891222167c2963461ab926c9c0f4d12a377a8ecfcfa841983",
+        "evaluator_scope": "repository",
+        "implementation_label": "Repository repair of SCiEL R CSV transport; scientific scoring unchanged",
+        "repository_asset_sha256": {},
+        "started_at": "2026-09-19T12:35:10.809034+00:00",
+        "actual_commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+        "working_tree_modified": false,
+        "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "error": "Upstream evaluator exited 1: Traceback (most recent call last):\n  File \"${REPOSITORY}/src/autoresearch_tasks/bridge.py\", line 78, in <module>\n    if __name__==\"__main__\": main()\n                             ^^^^^^\n  File \"${REPOSITORY}/src/autoresearch_tasks/bridge.py\", line 76, in main\n    print(json.dumps(plain(result),allow_nan=False))\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"${HOME}/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py\", line 238, in dumps\n    **kw).encode(obj)\n          ^^^^^^^^^^^\n  File \"${HOME}/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py\", line 200, in encode\n    chunks = self.iterencode(o, _one_shot=True)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"${HOME}/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py\", line 258, in iterencode\n    return _iterencode(o, 0)\n           ^^^^^^^^^^^^^^^^^\nValueError: Out of range float values are not JSON compliant: inf\n",
+        "finished_at": "2026-09-19T12:35:12.705183+00:00"
+      },
+      "upstream_result": null,
+      "engine_evaluator_file": "engine/openevolve/evaluator.py",
+      "python_version": "3.12.14",
+      "exit_code": 1
+    }
+  ]
+}

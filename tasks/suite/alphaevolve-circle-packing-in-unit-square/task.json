@@ -1,0 +1,1808 @@
+{
+  "schema_version": "1.0",
+  "id": "alphaevolve-circle-packing-in-unit-square",
+  "name": "Circle packing in unit square",
+  "description": "Pack 26 circles with disjoint interiors inside [0,1]^2 and maximize the sum of their radii.",
+  "paper_ids": [
+    "alphaevolve",
+    "adaevolve",
+    "aevo",
+    "agentic-optimization",
+    "base",
+    "codeevolve",
+    "coral",
+    "eurekagent",
+    "evox",
+    "loongflow",
+    "pairwise-validator",
+    "shinkaevolve",
+    "the-station"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2506.13131",
+      "type": "paper",
+      "locator": "Appendix B.12"
+    },
+    {
+      "url": "https://github.com/google-deepmind/alphaevolve_results/tree/4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+      "type": "repository",
+      "locator": "mathematical_results.ipynb"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.20133",
+      "type": "paper",
+      "locator": "Math results and task-definition appendix"
+    },
+    {
+      "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+      "type": "repository",
+      "locator": "benchmarks/math/circle_packing"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2605.13821",
+      "type": "paper",
+      "locator": "Section 5.1; Appendix C.1"
+    },
+    {
+      "url": "https://junye-pan.github.io/posts/agentic-optimization/assets/report.pdf",
+      "type": "paper",
+      "locator": "Report Section 5.1"
+    },
+    {
+      "url": "https://github.com/Junye-Pan/AgenticOptimization/tree/712b2fd4888c4b57fc08c1d2bdf4b1ca4c4517fb",
+      "type": "repository",
+      "locator": "tasks/circle_packing_26"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2605.29268",
+      "type": "paper",
+      "locator": "Section 4"
+    },
+    {
+      "url": "https://github.com/keruiwu/self-evolving-allocation/tree/ae7b5da1db39c0fd826adda7893c99d5bda5ac1b",
+      "type": "repository",
+      "locator": "tasks/circle_packing"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2510.14150",
+      "type": "paper",
+      "locator": "Appendix A.1"
+    },
+    {
+      "url": "https://github.com/inter-co/science-codeevolve/tree/c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+      "type": "repository",
+      "locator": "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2604.01658",
+      "type": "paper",
+      "locator": "Section 4.1, Table 1"
+    },
+    {
+      "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+      "type": "repository",
+      "locator": "examples/math/circle_packing"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2606.13662",
+      "type": "paper",
+      "locator": "Sections 4.1–4.2"
+    },
+    {
+      "url": "https://github.com/THU-Team-Eureka/EurekAgent/blob/fb96df897dfb99797a77623aa0dd9ee178fe89d2/examples/circle_packing/SUBMISSION_FORMAT.md",
+      "type": "repository",
+      "locator": "Exact JSON submission contract used for recovered seed"
+    },
+    {
+      "url": "https://github.com/THU-Team-Eureka/EurekAgent/tree/fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+      "type": "repository",
+      "locator": "examples/circle_packing"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2602.23413",
+      "type": "paper",
+      "locator": "Math results and task-definition appendix"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2512.24077",
+      "type": "paper",
+      "locator": "Table 1"
+    },
+    {
+      "url": "https://github.com/baidu-baige/LoongFlow/tree/945c78bc1554f8281aac40320b3599bd68d528d7",
+      "type": "repository",
+      "locator": "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2607.14408",
+      "type": "paper",
+      "locator": "Section 5.4, Table 5"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2509.19349",
+      "type": "paper",
+      "locator": "Problem family; original benchmark protocol is not claimed."
+    },
+    {
+      "url": "https://github.com/SakanaAI/ShinkaEvolve/tree/9912af12d423504b8d580f4179fd15f5f88b8c50",
+      "type": "repository",
+      "locator": "examples/circle_packing/evaluate.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2511.06309",
+      "type": "paper",
+      "locator": "Section 3.1"
+    },
+    {
+      "url": "https://github.com/dualverse-ai/station/tree/782088e561998bf357d95a838a0566a8229425d9",
+      "type": "repository",
+      "locator": "example/research_alpha_evolve/circle_n26"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "sympy"
+    ],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "numpy",
+      "scipy or sympy for applicable notebook sections"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "sum of circle radii",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Circle packing in unit square",
+    "protocol": "upstream",
+    "source_locator": "Appendix B.12"
+  },
+  "execution": {
+    "repository": "https://github.com/google-deepmind/alphaevolve_results",
+    "commit": "4226acbf237ff9ad10ba7673a2af127a2d8a5971",
+    "upstream_path": "mathematical_results.ipynb",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "adapters/recovered/alphaevolve_notebook/evaluator.py",
+      "evaluator_scope": "repository",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "circle_packing_square_26"
+      },
+      "score_key": "score",
+      "score_direction": "maximize",
+      "validity_key": "valid",
+      "error_key": "error",
+      "baseline_path": "adapters/recovered/alphaevolve_notebook/seeds/circle_packing_square_26.py",
+      "baseline_scope": "repository",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "sympy"
+      ],
+      "implementation_label": "Official notebook verification cells executed on the candidate construction; independently written trivial seed",
+      "repository_files": {
+        "adapters/recovered/alphaevolve_notebook/problems.json": "4483af1dd32e079af49be518d93a3e73a6581ec4d5cebe8c66c961413f7950f7",
+        "adapters/recovered/alphaevolve_notebook/seeds/circle_packing_square_26.py": "fc506c7fcc495de4d0513cacdf4c9b7bbf75aa8c624fabfdeb0de5d31a09d2ac"
+      },
+      "notes": [
+        "Executes the official notebook data and verification cells (indices recorded in problems.json, hash-checked) with the notebook's data variable rebound to the candidate's construct() output.",
+        "Notebook assertions decide validity; the score is the notebook's own printed bound. Plotting is stubbed.",
+        "Published notebook value 2.6358627564136983 is a reference, not a target; the trivial seed is deliberately weak."
+      ]
+    },
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Official notebook contains construction data and verification code. Cell indices are zero-based.",
+      "Published result is a rounded paper reference, not a claimed result of this repository.",
+      "Recovered through the official notebook verification cells; see docs/TASKS.md."
+    ],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "circle_packing_square",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Paper reports over 50 mathematical problems but explicitly details 13 families in Appendix B. Unpublished full task inventory and internal Google assets prevent a complete runnable reproduction.",
+    "Official result notebook provides mathematical constructions and verification, but no AlphaEvolve search implementation. It publishes a subset of all evaluated problems; the full >50 mathematical problem inventory is not disclosed.",
+    "Paper Appendix B.3 writes max(abs(autoconvolution)); notebook B.3 reported 1.4557 construction computes abs(max(autoconvolution)). The notebook separately verifies the max(abs(...)) variant at 1.4688. These are not interchangeable metrics.",
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Circle packing in unit square",
+    "slug": "circle-packing-in-unit-square",
+    "description": "Pack 26 circles with disjoint interiors inside [0,1]^2 and maximize the sum of their radii.",
+    "benchmark": "Circle packing in unit square",
+    "dataset": null,
+    "metric": "sum of circle radii",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2506.13131",
+    "source_locator": "Appendix B.12",
+    "upstream_path": "mathematical_results.ipynb",
+    "requirements": [
+      "numpy",
+      "scipy or sympy for applicable notebook sections"
+    ],
+    "execution_notes": [
+      "Official notebook contains construction data and verification code. Cell indices are zero-based.",
+      "Published result is a rounded paper reference, not a claimed result of this repository.",
+      "Recovered through the official notebook verification cells; see docs/TASKS.md."
+    ],
+    "setup_commands": [],
+    "run_commands": [],
+    "parameters": {
+      "n": 26,
+      "container": "unit_square"
+    },
+    "constraints": [
+      "All radii >= 0",
+      "Each circle lies inside [0,1]^2",
+      "Every center distance >= sum of the two radii"
+    ],
+    "published_result": 2.635,
+    "notebook_cells": [
+      115,
+      116,
+      118,
+      119
+    ],
+    "artifact_source_url": "https://github.com/google-deepmind/alphaevolve_results/blob/4226acbf237ff9ad10ba7673a2af127a2d8a5971/mathematical_results.ipynb",
+    "evaluator_adapter": {
+      "evaluator_path": "adapters/recovered/alphaevolve_notebook/evaluator.py",
+      "evaluator_scope": "repository",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "circle_packing_square_26"
+      },
+      "score_key": "score",
+      "score_direction": "maximize",
+      "validity_key": "valid",
+      "error_key": "error",
+      "baseline_path": "adapters/recovered/alphaevolve_notebook/seeds/circle_packing_square_26.py",
+      "baseline_scope": "repository",
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "sympy"
+      ],
+      "implementation_label": "Official notebook verification cells executed on the candidate construction; independently written trivial seed",
+      "repository_files": {
+        "adapters/recovered/alphaevolve_notebook/problems.json": "4483af1dd32e079af49be518d93a3e73a6581ec4d5cebe8c66c961413f7950f7",
+        "adapters/recovered/alphaevolve_notebook/seeds/circle_packing_square_26.py": "fc506c7fcc495de4d0513cacdf4c9b7bbf75aa8c624fabfdeb0de5d31a09d2ac"
+      },
+      "notes": [
+        "Executes the official notebook data and verification cells (indices recorded in problems.json, hash-checked) with the notebook's data variable rebound to the candidate's construct() output.",
+        "Notebook assertions decide validity; the score is the notebook's own printed bound. Plotting is stubbed.",
+        "Published notebook value 2.6358627564136983 is a reference, not a target; the trivial seed is deliberately weak."
+      ]
+    },
+    "upstream_seed_paths": [
+      "adapters/recovered/alphaevolve_notebook/seeds/circle_packing_square_26.py"
+    ],
+    "candidate_contract": "construct() -> numpy array of shape (26, 3) rows (x, y, radius)"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "adaevolve-circle-packing-square-26",
+      "paper_ids": [
+        "adaevolve"
+      ],
+      "name": "Circle packing square 26",
+      "description": "Circle packing square 26",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.20133",
+          "type": "paper",
+          "locator": "Math results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/math/circle_packing"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python",
+          "NumPy",
+          "SciPy"
+        ]
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "sum of radii",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "AlphaEvolve math",
+        "protocol": "upstream",
+        "source_locator": "Math results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/math/circle_packing",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/math/circle_packing/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/math/circle_packing",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/math/circle_packing/initial_program.py",
+          "dependencies": [
+            "numpy",
+            "scipy"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Official evaluate(program_path) returns a normalized maximizing score; errors can return zero with an error field. Inspect errors rather than interpreting zero as success.",
+          "validity_key": "validity",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+            "metrics": {
+              "sum_radii": 0.9597642169962064,
+              "target_ratio": 0.36423689449571406,
+              "validity": 1.0,
+              "eval_time": 0.05386805534362793,
+              "combined_score": 0.36423689449571406
+            },
+            "seconds": 0.73
+          }
+        },
+        "setup_instructions": [
+          "uv sync"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Exact callable, return metric, seed and dependencies inspected from pinned SkyDiscover repository."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+          "metrics": {
+            "sum_radii": 0.9597642169962064,
+            "target_ratio": 0.36423689449571406,
+            "validity": 1.0,
+            "eval_time": 0.05386805534362793,
+            "combined_score": 0.36423689449571406
+          },
+          "seconds": 0.73
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": true,
+            "score": 0.36423689449571406
+          }
+        ]
+      }
+    },
+    {
+      "id": "aevo-circle-packing-26",
+      "paper_ids": [
+        "aevo"
+      ],
+      "name": "Circle packing 26",
+      "description": "Circle packing 26",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2605.13821",
+          "type": "paper",
+          "locator": "Section 5.1; Appendix C.1"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "sum of radii",
+        "paper_metric": "sum of radii",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "Circle packing 26",
+        "protocol": "specified_only",
+        "source_locator": "Section 5.1; Appendix C.1"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Paper task identified; evaluator invocation not yet verified."
+        ]
+      },
+      "limitations": [
+        "No official implementation repository link identified in the inspected source. Paper specification is recorded; runnable reproduction is not verified.",
+        "Paper cites Anthropic original_performance_takehome commit 5452f74; this is a simulated VLIW SIMD optimization problem, not a GPU kernel benchmark.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "agentic-optimization-circle-packing-26",
+      "paper_ids": [
+        "agentic-optimization"
+      ],
+      "name": "Circle packing 26",
+      "description": "Circle packing 26",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://junye-pan.github.io/posts/agentic-optimization/assets/report.pdf",
+          "type": "paper",
+          "locator": "Report Section 5.1"
+        },
+        {
+          "url": "https://github.com/Junye-Pan/AgenticOptimization/tree/712b2fd4888c4b57fc08c1d2bdf4b1ca4c4517fb",
+          "type": "repository",
+          "locator": "tasks/circle_packing_26"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python",
+          "server-owned evaluator"
+        ]
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "sum of radii",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": null,
+        "protocol": "upstream",
+        "source_locator": "Report Section 5.1"
+      },
+      "execution": {
+        "repository": "https://github.com/Junye-Pan/AgenticOptimization",
+        "commit": "712b2fd4888c4b57fc08c1d2bdf4b1ca4c4517fb",
+        "upstream_path": "tasks/circle_packing_26",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "adapters/recovered/agentic_optimization/evaluator.py",
+          "evaluator_scope": "repository",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": ".",
+          "kwargs": {
+            "checkout": "{checkout}",
+            "expected_task_sha256": "cfba83463468f9e8d83bd956f40e7044da56792a32f7abd875949667078120b3"
+          },
+          "score_key": "score",
+          "score_direction": "maximize",
+          "validity_key": "valid",
+          "error_key": "error",
+          "baseline_path": "tasks/circle_packing_26/public/initial.py",
+          "baseline_scope": "upstream",
+          "dependencies": [
+            "numpy",
+            "scipy"
+          ],
+          "implementation_label": "Original task scoring pipeline (program loader, run_packing, analyze_output with the strict fixed-center LP safety score) run in-process without the control plane or its worker spawn; original public seed",
+          "repository_files": {},
+          "notes": [
+            "The server evaluator spawns a worker (180 s default, AO_CIRCLE_PACKING_TIMEOUT_S) that re-imports the task through the control-plane registry; outside the server that spawn cannot resolve, so the adapter runs the same loader/run_packing/analyze_output pipeline in-process under the common runner timeout. The score is strict_safe_score after the LP safety margin, so it is slightly below the plain sum of radii.",
+            "Candidate contract from public_contract.md: run_packing() -> (centers[26,2], radii[26], reported_sum)."
+          ]
+        },
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "P",
+          "a",
+          "p",
+          "e",
+          "r",
+          " ",
+          "t",
+          "a",
+          "s",
+          "k",
+          " ",
+          "i",
+          "d",
+          "e",
+          "n",
+          "t",
+          "i",
+          "f",
+          "i",
+          "e",
+          "d",
+          ";",
+          " ",
+          "e",
+          "v",
+          "a",
+          "l",
+          "u",
+          "a",
+          "t",
+          "o",
+          "r",
+          " ",
+          "i",
+          "n",
+          "v",
+          "o",
+          "c",
+          "a",
+          "t",
+          "i",
+          "o",
+          "n",
+          " ",
+          "n",
+          "o",
+          "t",
+          " ",
+          "y",
+          "e",
+          "t",
+          " ",
+          "v",
+          "e",
+          "r",
+          "i",
+          "f",
+          "i",
+          "e",
+          "d",
+          ".",
+          "Recovered on 2026-09-19; see docs/TASKS.md."
+        ]
+      },
+      "limitations": [
+        "No root license or dependency manifest found in inspected repository; README mentions design.md but file is absent at pinned commit.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "base-circle-packing-26",
+      "paper_ids": [
+        "base"
+      ],
+      "name": "Circle packing 26",
+      "description": "Circle packing 26",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2605.29268",
+          "type": "paper",
+          "locator": "Section 4"
+        },
+        {
+          "url": "https://github.com/keruiwu/self-evolving-allocation/tree/ae7b5da1db39c0fd826adda7893c99d5bda5ac1b",
+          "type": "repository",
+          "locator": "tasks/circle_packing"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python",
+          "OpenAI-compatible LLM endpoint"
+        ]
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "fitness normalized to best published construction",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "OpenEvolve math",
+        "protocol": "upstream",
+        "source_locator": "Section 4"
+      },
+      "execution": {
+        "repository": "https://github.com/keruiwu/self-evolving-allocation",
+        "commit": "ae7b5da1db39c0fd826adda7893c99d5bda5ac1b",
+        "upstream_path": "tasks/circle_packing",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "tasks/circle_packing/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "tasks/circle_packing",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "tasks/circle_packing/initial_program.py",
+          "dependencies": [
+            "numpy",
+            "scipy"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Exact official function inspected; normalized score maximized. Invalid candidates may return zero with error.",
+          "validity_key": "validity",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+            "metrics": {
+              "sum_radii": 0.9597642169962064,
+              "target_ratio": 0.36423689449571406,
+              "validity": 1.0,
+              "eval_time": 0.04606318473815918,
+              "combined_score": 0.36423689449571406
+            },
+            "seconds": 0.1
+          }
+        },
+        "setup_instructions": [
+          "python -m pip install -r requirements.txt"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "python -m pip install -r requirements.txt"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Direct evaluate(program_path) available without LLM calls."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+          "metrics": {
+            "sum_radii": 0.9597642169962064,
+            "target_ratio": 0.36423689449571406,
+            "validity": 1.0,
+            "eval_time": 0.04606318473815918,
+            "combined_score": 0.36423689449571406
+          },
+          "seconds": 0.1
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": true,
+            "score": 0.36423689449571406
+          }
+        ]
+      }
+    },
+    {
+      "id": "codeevolve-circle-packing-square-26",
+      "paper_ids": [
+        "codeevolve"
+      ],
+      "name": "Circle packing square 26",
+      "description": "Circle packing square 26",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2510.14150",
+          "type": "paper",
+          "locator": "Appendix A.1"
+        },
+        {
+          "url": "https://github.com/inter-co/science-codeevolve/tree/c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+          "type": "repository",
+          "locator": "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python",
+          "NumPy",
+          "SciPy"
+        ]
+      },
+      "evaluation": {
+        "metric": "benchmark_ratio",
+        "paper_metric": "sum of radii",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "AlphaEvolve math",
+        "protocol": "upstream",
+        "source_locator": "Appendix A.1"
+      },
+      "execution": {
+        "repository": "https://github.com/inter-co/science-codeevolve",
+        "commit": "c077959e1ab24b060aaa6d4c563bca2e9cbe8617",
+        "upstream_path": "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/evaluate.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input",
+          "score_key": "benchmark_ratio",
+          "score_direction": "maximize",
+          "baseline_path": "problems/alphaevolve_math_problems/packing_problems/circle_packing_square/26/input/src/init_program.py",
+          "dependencies": [
+            "numpy",
+            "scipy"
+          ],
+          "return_style": "json_file",
+          "output_argument": "positional",
+          "notes": "Official evaluate(program_path, results_path) writes JSON and raises on rejected construction; no separate validity field. baseline_path is repository-relative.",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+            "metrics": {
+              "radii_sum": 0.0,
+              "benchmark_ratio": 0.0,
+              "eval_time": 5.9604644775390625e-06
+            },
+            "seconds": 0.04
+          }
+        },
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "Direct evaluator signature and normalized maximizing score verified in pinned source. Baseline may be an intentionally weak or infeasible starting construction; check reported evaluator errors."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+          "metrics": {
+            "radii_sum": 0.0,
+            "benchmark_ratio": 0.0,
+            "eval_time": 5.9604644775390625e-06
+          },
+          "seconds": 0.04
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "coral-circle-packing-26",
+      "paper_ids": [
+        "coral"
+      ],
+      "name": "Circle packing 26",
+      "description": "Circle packing 26",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2604.01658",
+          "type": "paper",
+          "locator": "Section 4.1, Table 1"
+        },
+        {
+          "url": "https://github.com/Human-Agent-Society/CORAL/tree/0123dfb939b35228cf2c1fde224cd0561e727408",
+          "type": "repository",
+          "locator": "examples/math/circle_packing"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "coral (installed from pinned checkout)",
+          "numpy",
+          "scipy",
+          "pyyaml",
+          "omegaconf"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python 3.11+",
+          "coding-agent credentials",
+          "CORAL requires Python>=3.11,<3.14. Importing its packaged grader requires installed CORAL metadata; PYTHONPATH alone is insufficient."
+        ]
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "sum of radii",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": null,
+        "protocol": "upstream",
+        "source_locator": "Section 4.1, Table 1"
+      },
+      "execution": {
+        "repository": "https://github.com/Human-Agent-Society/CORAL",
+        "commit": "0123dfb939b35228cf2c1fde224cd0561e727408",
+        "upstream_path": "examples/math/circle_packing",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "examples/math/circle_packing/grader/src/circle_packing_grader/grader.py",
+          "callable": "_run_evaluation",
+          "candidate_argument": "positional",
+          "cwd": "examples/math/circle_packing",
+          "score_key": "score",
+          "score_direction": "maximize",
+          "baseline_path": "examples/math/circle_packing/seed/initial_program.py",
+          "dependencies": [
+            "coral (installed from pinned checkout)",
+            "numpy",
+            "scipy",
+            "pyyaml",
+            "omegaconf"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Signature and metric inspected at the pinned official source. Official seed completed common CLI bridge evaluation during the second gap pass on 2026-09-19. Full paper experiments have not been reproduced. Uses the official grader helper; {python} resolves to the bridge interpreter. Does not launch agents.",
+          "kwargs": {
+            "timeout": 600,
+            "python_cmd": [
+              "{python}"
+            ]
+          },
+          "validation": {
+            "kind": "official_seed_common_cli_smoke",
+            "passed": true,
+            "status": "completed",
+            "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+            "seconds": 0.4,
+            "candidate_sha256": "ec7ceb3075e8174b67ecf582e0511d850133080493a1a879f72a2598311fe44a",
+            "evaluator_sha256": "fe410f41114ffe3bcd6439356f4cab3f5d0e71a28bc79c7ea03658f729f32654",
+            "score": 0.36410189352798084,
+            "valid": null,
+            "report": "validation/upstream-gap-smoke-early.json"
+          }
+        },
+        "setup_instructions": [
+          "From the pinned CORAL checkout root: python -m pip install --no-deps . (required to supply CORAL distribution metadata, even when its source is importable).",
+          "python -m pip install numpy scipy pyyaml omegaconf"
+        ],
+        "task_setup_instructions": [
+          "From the pinned CORAL checkout root: python -m pip install --no-deps . (required to supply CORAL distribution metadata, even when its source is importable).",
+          "python -m pip install numpy scipy pyyaml omegaconf"
+        ],
+        "framework_setup_instructions": [
+          "uv sync --extra dev"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Official source candidate interface verified and supplied baseline evaluated successfully through the common CLI bridge on 2026-09-19. Full paper experiments have not been reproduced."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "official_seed_common_cli_smoke",
+          "passed": true,
+          "status": "completed",
+          "runtime": "Python3.12.14; see validation/upstream-gap-smoke-early.json for complete dependency versions",
+          "seconds": 0.4,
+          "candidate_sha256": "ec7ceb3075e8174b67ecf582e0511d850133080493a1a879f72a2598311fe44a",
+          "evaluator_sha256": "fe410f41114ffe3bcd6439356f4cab3f5d0e71a28bc79c7ea03658f729f32654",
+          "score": 0.36410189352798084,
+          "valid": null,
+          "report": "validation/upstream-gap-smoke-early.json"
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-gap-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": null,
+            "score": 0.36410189352798084
+          }
+        ]
+      }
+    },
+    {
+      "id": "eurekagent-circle-packing-26",
+      "paper_ids": [
+        "eurekagent"
+      ],
+      "name": "Circle packing 26",
+      "description": "Circle packing 26",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2606.13662",
+          "type": "paper",
+          "locator": "Sections 4.1–4.2"
+        },
+        {
+          "url": "https://github.com/THU-Team-Eureka/EurekAgent/blob/fb96df897dfb99797a77623aa0dd9ee178fe89d2/examples/circle_packing/SUBMISSION_FORMAT.md",
+          "type": "repository",
+          "locator": "Exact JSON submission contract used for recovered seed"
+        },
+        {
+          "url": "https://github.com/THU-Team-Eureka/EurekAgent/tree/fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+          "type": "repository",
+          "locator": "examples/circle_packing"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Docker",
+          "Node.js 22+",
+          "Python 3.12",
+          "coding-agent credentials"
+        ]
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "sum of radii",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": null,
+        "protocol": "upstream",
+        "source_locator": "Sections 4.1–4.2"
+      },
+      "execution": {
+        "repository": "https://github.com/THU-Team-Eureka/EurekAgent",
+        "commit": "fb96df897dfb99797a77623aa0dd9ee178fe89d2",
+        "upstream_path": "examples/circle_packing",
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "hidden_eval_dir/evaluate.py",
+              "--program_path",
+              "initial.py",
+              "--results_dir",
+              "baseline-results"
+            ],
+            "cwd": "examples/circle_packing",
+            "source_url": "https://github.com/THU-Team-Eureka/EurekAgent/blob/fb96df897dfb99797a77623aa0dd9ee178fe89d2/examples/circle_packing/hidden_eval_dir/evaluate.py",
+            "notes": "Runs official Python seed through source CLI and writes metrics.json/correct.json under baseline-results. Separate from the JSON-candidate secure grading adapter; no LLM search."
+          }
+        ],
+        "evaluator_adapter": {
+          "evaluator_path": "examples/circle_packing/hidden_eval_dir/evaluate.py",
+          "callable": "grade_submission",
+          "candidate_argument": "positional",
+          "cwd": "examples/circle_packing",
+          "score_key": "score",
+          "score_direction": "maximize",
+          "baseline_path": "adapters/recovered/seeds/eurekagent_circle_packing.json",
+          "dependencies": [
+            "numpy"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Original pinned JSON grader unchanged. Repository seed is frozen output from the official initial.py (seed42, one-second construction budget for ac1/erdos; direct run_packing forcircles). This fills the missing JSON submission, not the research search loop. Invalid nonfinite upstream scores remain failures.",
+          "kwargs": {
+            "context": {}
+          },
+          "validity_key": "valid",
+          "candidate_format": "json",
+          "baseline_scope": "repository",
+          "implementation_label": "original_evaluator_with_official_baseline_output",
+          "repository_files": {
+            "adapters/recovered/seeds/eurekagent_circle_packing.json": "4dca3ff4720f172eaecf83ab7d88300952b6a9b90dc9666d95d324cc3c9a478c"
+          }
+        },
+        "setup_instructions": [
+          "python -m pip install numpy",
+          "Provide a submission JSON following the pinned task SUBMISSION_FORMAT.md. Docker and the full agent environment are unnecessary for direct JSON grading."
+        ],
+        "task_setup_instructions": [
+          "python -m pip install numpy",
+          "Provide a submission JSON following the pinned task SUBMISSION_FORMAT.md. Docker and the full agent environment are unnecessary for direct JSON grading."
+        ],
+        "framework_setup_instructions": [
+          "uv sync",
+          "bash docker/build.sh"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Original pinned JSON grader unchanged. Repository seed is frozen output from the official initial.py (seed42, one-second construction budget for ac1/erdos; direct run_packing forcircles). This fills the missing JSON submission, not the research search loop. Invalid nonfinite upstream scores remain failures."
+        ]
+      },
+      "limitations": [
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "evox-circle-packing-square-26",
+      "paper_ids": [
+        "evox"
+      ],
+      "name": "Circle packing square 26",
+      "description": "Circle packing square 26",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.23413",
+          "type": "paper",
+          "locator": "Math results and task-definition appendix"
+        },
+        {
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/0d932b690670a7e544388ad362e9876c8bd256a0",
+          "type": "repository",
+          "locator": "benchmarks/math/circle_packing"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "scipy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python",
+          "NumPy",
+          "SciPy"
+        ]
+      },
+      "evaluation": {
+        "metric": "combined_score",
+        "paper_metric": "sum of radii",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "AlphaEvolve math",
+        "protocol": "upstream",
+        "source_locator": "Math results and task-definition appendix"
+      },
+      "execution": {
+        "repository": "https://github.com/skydiscover-ai/skydiscover",
+        "commit": "0d932b690670a7e544388ad362e9876c8bd256a0",
+        "upstream_path": "benchmarks/math/circle_packing",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "benchmarks/math/circle_packing/evaluator.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": "benchmarks/math/circle_packing",
+          "score_key": "combined_score",
+          "score_direction": "maximize",
+          "baseline_path": "benchmarks/math/circle_packing/initial_program.py",
+          "dependencies": [
+            "numpy",
+            "scipy"
+          ],
+          "return_style": "dict",
+          "error_key": "error",
+          "notes": "Official evaluate(program_path) returns a normalized maximizing score; errors can return zero with an error field. Inspect errors rather than interpreting zero as success.",
+          "validity_key": "validity",
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+            "metrics": {
+              "sum_radii": 0.9597642169962064,
+              "target_ratio": 0.36423689449571406,
+              "validity": 1.0,
+              "eval_time": 0.05386805534362793,
+              "combined_score": 0.36423689449571406
+            },
+            "seconds": 0.73
+          }
+        },
+        "setup_instructions": [
+          "uv sync"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "uv sync"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Exact callable, return metric, seed and dependencies inspected from pinned SkyDiscover repository."
+        ]
+      },
+      "limitations": [
+        "Appendix task prose conflicts with standard circle-packing/Heilbronn definitions; the pinned evaluator is authoritative. Telemetry-repair directory is not present at inspected commit.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "runtime": "Python 3.12, NumPy 2.5.3, SciPy 1.18.1 on macOS ARM64",
+          "metrics": {
+            "sum_radii": 0.9597642169962064,
+            "target_ratio": 0.36423689449571406,
+            "validity": 1.0,
+            "eval_time": 0.05386805534362793,
+            "combined_score": 0.36423689449571406
+          },
+          "seconds": 0.73
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-smoke-early.json",
+            "candidate_label": "upstream_seed",
+            "status": "completed",
+            "valid": true,
+            "score": 0.36423689449571406
+          }
+        ]
+      }
+    },
+    {
+      "id": "loongflow-circle-packing-square",
+      "paper_ids": [
+        "loongflow"
+      ],
+      "name": "Circle packing square",
+      "description": "Circle packing square task evaluated in LoongFlow: Directed Evolutionary Search via a Cognitive Plan-Execute-Summarize Paradigm.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2512.24077",
+          "type": "paper",
+          "locator": "Table 1"
+        },
+        {
+          "url": "https://github.com/baidu-baige/LoongFlow/tree/945c78bc1554f8281aac40320b3599bd68d528d7",
+          "type": "repository",
+          "locator": "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": [
+          "Python >=3.12",
+          "Model API credentials"
+        ]
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "paper construction objective",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "Circle packing square",
+        "protocol": "upstream",
+        "source_locator": "Table 1"
+      },
+      "execution": {
+        "repository": "https://github.com/baidu-baige/LoongFlow",
+        "commit": "945c78bc1554f8281aac40320b3599bd68d528d7",
+        "upstream_path": "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py",
+        "commands": [
+          {
+            "argv": [
+              "./run_math.sh",
+              "packing_circle_in_unit_square"
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/baidu-baige/LoongFlow/blob/945c78bc1554f8281aac40320b3599bd68d528d7/README.md",
+            "notes": "README documents run_math.sh task-name interface; task directory verified. Install task requirements first."
+          }
+        ],
+        "evaluator_adapter": {
+          "evaluator_path": "agents/math_agent/examples/packing_circle_in_unit_square/eval_program.py",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": ".",
+          "score_key": "score",
+          "baseline_path": "adapters/recovered/seeds/source_loongflow_circle.py",
+          "dependencies": [
+            "numpy"
+          ],
+          "notes": [
+            "Published best_result.py construction coordinates are copied unchanged into a repository seed exporting run_packing(num_circles=26); plotting side effects are omitted. This is the published static result, not an execution of best_solution.py.",
+            "Original initial_program.py fails the strict released geometry evaluator; this baseline is separately source-attributed and was verified successful.",
+            "Score is the original validated radius sum divided by2.6358627564136983. External process timeout remains necessary."
+          ],
+          "baseline_scope": "repository",
+          "repository_files": {
+            "adapters/recovered/seeds/source_loongflow_circle.py": "5457bb11657c097243e64dcd55059680e5e75ef4b773bc27044e8236905fe46b"
+          },
+          "baseline_provenance": {
+            "source_url": "https://github.com/baidu-baige/LoongFlow/blob/945c78bc1554f8281aac40320b3599bd68d528d7/agents/math_agent/examples/packing_circle_in_unit_square/best_result.py",
+            "source_sha256": "b88862eac91245f2b6fd0f0733283a5fff3bd727ebd1fcbd2f4405031b33d16c",
+            "source_locator": "construction_1 array (all26 rows unchanged)",
+            "license": "Apache-2.0",
+            "modification": "Added candidate interface, array copies and evolvable markers; omitted plotting and top-level execution"
+          },
+          "validation": {
+            "kind": "baseline_execution",
+            "passed": true,
+            "metrics": {
+              "status": "success",
+              "summary": "Success: Valid packing found. Sum of radii: 2.635963, Score: 1.0000",
+              "score": 1.00003812519198,
+              "metrics": {
+                "sum_radii": 2.63596324918732,
+                "target_ratio": 1.00003812519198,
+                "validity": 1.0,
+                "eval_time": 0.0009107589721679688
+              }
+            },
+            "original_initial_status": "validation_failed"
+          },
+          "status_key": "status",
+          "status_success_value": "success"
+        },
+        "setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/baidu-baige/LoongFlow/blob/945c78bc1554f8281aac40320b3599bd68d528d7/README.md",
+            "notes": ""
+          }
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": ".",
+            "source_url": "https://github.com/baidu-baige/LoongFlow/blob/945c78bc1554f8281aac40320b3599bd68d528d7/README.md",
+            "notes": ""
+          }
+        ],
+        "setup_steps": [],
+        "notes": [
+          "Locally executed original evaluator: upstream initial seed failed strict overlap check; original 26-circle grid integration fixture passed. This verifies API and geometry checks, not paper performance."
+        ]
+      },
+      "limitations": [
+        "Direct CPU checks found upstream square seed rejected by strict overlap test and rectangle seed incompatible with its evaluator. Original Autocorrelation II and Erdos overlap seeds passed; a new simple square grid fixture passed. These are integration checks, not reproduced paper results.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "integration_smoke",
+        "upstream_reproduction": false,
+        "adapter_checks": {
+          "kind": "baseline_execution",
+          "passed": true,
+          "metrics": {
+            "status": "success",
+            "summary": "Success: Valid packing found. Sum of radii: 2.635963, Score: 1.0000",
+            "score": 1.00003812519198,
+            "metrics": {
+              "sum_radii": 2.63596324918732,
+              "target_ratio": 1.00003812519198,
+              "validity": 1.0,
+              "eval_time": 0.0009107589721679688
+            }
+          },
+          "original_initial_status": "validation_failed"
+        },
+        "execution_evidence": [
+          {
+            "report": "validation/upstream-smoke-middle.json",
+            "candidate_label": "new_grid",
+            "status": "completed",
+            "valid": true,
+            "score": 0.8137752979667439
+          },
+          {
+            "report": "validation/upstream-smoke-middle.json",
+            "candidate_label": "original_seed",
+            "status": "failed",
+            "valid": false,
+            "score": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "pairwise-validator-circle-packing",
+      "paper_ids": [
+        "pairwise-validator"
+      ],
+      "name": "circle_packing",
+      "description": "circle_packing task evaluated in Reward-Free Evolving Agents via Pairwise Validator.",
+      "kind": "specification",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2607.14408",
+          "type": "paper",
+          "locator": "Section 5.4, Table 5"
+        }
+      ],
+      "requirements": {
+        "python": null,
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "upstream task score",
+        "paper_metric": "upstream task score",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "ADRS / ShinkaEvolve",
+        "protocol": "specified_only",
+        "source_locator": "Section 5.4, Table 5"
+      },
+      "execution": {
+        "repository": null,
+        "commit": null,
+        "upstream_path": null,
+        "commands": [],
+        "evaluator_adapter": null,
+        "setup_instructions": [],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [],
+        "setup_steps": [],
+        "notes": [
+          "circle_packing evaluated through both engines; other tasks follow their respective engine. Scalar metric differs by task."
+        ]
+      },
+      "limitations": [
+        "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+        "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+        "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+      ],
+      "validation": {
+        "level": "paper_inventory",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "reference-circle-packing-26",
+      "paper_ids": [
+        "adaevolve",
+        "shinkaevolve",
+        "agentic-optimization"
+      ],
+      "name": "Circle packing: 26 circles",
+      "description": "Return {\"circles\": [[x, y, radius], ...]} with exactly 26 nonoverlapping circles inside [0,1]^2.",
+      "kind": "native",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2602.20133",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        },
+        {
+          "url": "https://arxiv.org/pdf/2509.19349",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        },
+        {
+          "url": "https://junye-pan.github.io/posts/agentic-optimization/assets/report.pdf",
+          "type": "paper",
+          "locator": "Problem family; original benchmark protocol is not claimed."
+        }
+      ],
+      "requirements": {
+        "python": ">=3.10",
+        "hardware": "CPU",
+        "dependencies": [],
+        "environment_variables": [],
+        "datasets": "Generated locally with documented seed."
+      },
+      "evaluation": {
+        "metric": "score",
+        "direction": "maximize",
+        "aggregation": "mean",
+        "protocol": "portable_reference",
+        "instance_generation": "src/autoresearch_tasks/native.py",
+        "profiles": [
+          "smoke",
+          "evaluation"
+        ]
+      },
+      "execution": {
+        "native_kind": "circle-packing",
+        "parameters": {
+          "n": 26
+        },
+        "interface": "Return {\"circles\": [[x, y, radius], ...]} with exactly 26 nonoverlapping circles inside [0,1]^2."
+      },
+      "limitations": [
+        "Portable reference implementation, not a reproduction of the original paper experiment.",
+        "Mathematical validity is checked directly; baseline and search procedure are original to this repository."
+      ],
+      "validation": {
+        "level": "automated_tests",
+        "upstream_reproduction": false
+      }
+    },
+    {
+      "id": "shinkaevolve-circle-packing-n-26",
+      "paper_ids": [
+        "shinkaevolve"
+      ],
+      "name": "Circle packing n=26",
+      "description": "Circle packing n=26: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2509.19349",
+          "type": "paper",
+          "locator": "Section 3.1"
+        },
+        {
+          "url": "https://github.com/SakanaAI/ShinkaEvolve/tree/9912af12d423504b8d580f4179fd15f5f88b8c50",
+          "type": "repository",
+          "locator": "examples/circle_packing/evaluate.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy"
+        ],
+        "environment_variables": [],
+        "datasets": "26 circles in unit square",
+        "notes": [
+          "Python >=3.10",
+          "shinka-evolve dependencies"
+        ]
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "sum of radii",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "Circle packing n=26",
+        "protocol": "upstream",
+        "source_locator": "Section 3.1"
+      },
+      "execution": {
+        "repository": "https://github.com/SakanaAI/ShinkaEvolve",
+        "commit": "9912af12d423504b8d580f4179fd15f5f88b8c50",
+        "upstream_path": "examples/circle_packing/evaluate.py",
+        "commands": [
+          {
+            "argv": [
+              "python",
+              "evaluate.py",
+              "--program_path",
+              "initial.py",
+              "--results_dir",
+              "results/manual_eval"
+            ],
+            "cwd": "examples/circle_packing",
+            "kind": "evaluation",
+            "requirements": [
+              "Python >=3.10",
+              "shinka-evolve dependencies"
+            ],
+            "evidence_path": "examples/circle_packing/README.md",
+            "verification": "source_inspected_not_executed",
+            "source_url": "https://arxiv.org/pdf/2509.19349"
+          }
+        ],
+        "evaluator_adapter": {
+          "evaluator_scope": "repository",
+          "evaluator_path": "adapters/recovered/math_shinka.py",
+          "callable": "evaluate",
+          "candidate_parameter": "candidate_path",
+          "baseline_path": "examples/circle_packing/initial.py",
+          "kwargs": {
+            "checkout": "{checkout}"
+          },
+          "score_key": "score",
+          "validity_key": "validity",
+          "dependencies": [
+            "numpy"
+          ],
+          "implementation_label": "original_validator_without_search_runtime",
+          "repository_files": {
+            "adapters/recovered/math_shinka.py": "33acb4df07ea97d001b51fe125ab6665e6312814a0d78051d3123e1ffcc998f9"
+          }
+        },
+        "setup_instructions": [
+          "python -m pip install numpy"
+        ],
+        "task_setup_instructions": [
+          "python -m pip install numpy"
+        ],
+        "framework_setup_instructions": [
+          "uv pip install -e ."
+        ],
+        "setup_steps": [
+          {
+            "argv": [
+              "uv",
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": "."
+          }
+        ],
+        "notes": [
+          "Loads the unchanged original validator and aggregation functions via AST, omitting the eager shinka.core search import. Runs original seed run_packing; geometry tolerances remain unchanged.",
+          "Python >=3.10",
+          "shinka-evolve dependencies",
+          "Upstream operation: evaluation"
+        ]
+      },
+      "limitations": [
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "Current public examples retain circle packing but do not include verified AIME, ALE-Bench LITE, or MoE experiment drivers. Later added examples are not included as paper evaluations.",
+        "Original public release v0.0.1 (commit23decc6bf118d783ddff5a3c03d2269cbf149971) was also inspected: its example directories are circle_packing, game_2048, julia_prime_counting and novelty_generator, with no released AIME, ALE or MoE evaluator.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    },
+    {
+      "id": "the-station-circle-packing-n-26",
+      "paper_ids": [
+        "the-station"
+      ],
+      "name": "Circle packing n=26",
+      "description": "Circle packing n=26: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2511.06309",
+          "type": "paper",
+          "locator": "Section 3.1"
+        },
+        {
+          "url": "https://github.com/dualverse-ai/station/tree/782088e561998bf357d95a838a0566a8229425d9",
+          "type": "repository",
+          "locator": "example/research_alpha_evolve/circle_n26"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy"
+        ],
+        "environment_variables": [],
+        "datasets": "Circle packing n=26",
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "score",
+        "paper_metric": "sum of radii",
+        "paper_direction": "maximize",
+        "direction": "maximize",
+        "benchmark": "Circle packing n=26",
+        "protocol": "upstream",
+        "source_locator": "Section 3.1"
+      },
+      "execution": {
+        "repository": "https://github.com/dualverse-ai/station",
+        "commit": "782088e561998bf357d95a838a0566a8229425d9",
+        "upstream_path": "example/research_alpha_evolve/circle_n26",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "adapters/recovered/station_circle_packing/evaluator.py",
+          "evaluator_scope": "repository",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": ".",
+          "kwargs": {
+            "checkout": "{checkout}",
+            "n": 26,
+            "expected_evaluator_sha256": "a5f35e0b0e837778d1ebd54a24f6831080390fe46e897f262be57415def205ec"
+          },
+          "score_key": "score",
+          "score_direction": "maximize",
+          "validity_key": "valid",
+          "error_key": "error",
+          "baseline_path": "adapters/recovered/station_circle_packing/seeds/circle_n26.py",
+          "baseline_scope": "repository",
+          "dependencies": [
+            "numpy"
+          ],
+          "implementation_label": "Official Station Task1Evaluator._evaluate extracted unchanged from the pinned evaluator; independently written trivial seed",
+          "repository_files": {
+            "adapters/recovered/station_circle_packing/seeds/circle_n26.py": "67af94a598ac308b642839be148ae73b0344ff5165047fb12ba2f50e5ced8252"
+          },
+          "notes": [
+            "The verification method is hash-checked and extracted with ast from the pinned class so that the station package (which persists accepted packings to its data rooms) is not required.",
+            "Candidate contract from research_task.md: construct_packing() -> (centers[n,2], radii[n])."
+          ]
+        },
+        "setup_instructions": [
+          "pip install -e ."
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "pip install -e ."
+        ],
+        "setup_steps": [
+          {
+            "argv": [
+              "pip",
+              "install",
+              "-e",
+              "."
+            ],
+            "cwd": "."
+          }
+        ],
+        "notes": [
+          "station init provisions an agent environment; direct evaluator is in this task directory.",
+          "Recovered on 2026-09-19; see docs/TASKS.md."
+        ]
+      },
+      "limitations": [
+        "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

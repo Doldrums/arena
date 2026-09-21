@@ -1,0 +1,430 @@
+[
+  {
+    "id": "science-earth-camels-runoff",
+    "proposal_id": "E01",
+    "name": "Earth and environment: Measured rainfall–runoff transfer across catchments",
+    "description": "Calibrate a causal, water-conserving snow/soil runoff model on measured CAMELS catchments and predict discharge in wholly unseen basins and a subsequent year.",
+    "family": "science_earth_e01",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://hess.copernicus.org/articles/21/5293/2017/",
+        "type": "paper",
+        "locator": "CAMELS-US dataset description, catchment attributes, meteorological forcing and streamflow observations."
+      },
+      {
+        "url": "https://github.com/neuralhydrology/neuralhydrology/tree/37568bcb2a207a82b92cac3e4ef52fb8fc8662b5/test/test_data/camels_us",
+        "type": "repository",
+        "locator": "Official source data/evaluation reference; evaluator and seed independently written."
+      },
+      {
+        "url": "https://hess.copernicus.org/articles/23/5089/2019/",
+        "type": "paper",
+        "title": "Towards learning universal, regional, and local hydrological behaviors via machine learning applied to large-sample datasets",
+        "locator": "Develops rainfall-runoff models across CAMELS catchments and evaluates regional and ungauged-basin transfer. The local four-basin causal water-conserving model is a much smaller task-family adaptation."
+      }
+    ],
+    "status": "ready",
+    "requires": [
+      "file:../../.cache/science-earth-data/E01.json",
+      "file:../../.cache/science-earth-data/E01.manifest.json"
+    ],
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "upstream_code_used": false,
+      "note": "Local evaluator, candidate interface and seed recreated from scientific specifications; official benchmark data are reused."
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "preparation_dependencies": [
+        "netCDF4",
+        "numcodecs==0.16.3"
+      ],
+      "environment_variables": [],
+      "datasets": "SHA256-locked source bundle E01.json in .cache/science-earth-data. Automatically prepared by scripts/prepare_earth_data.py."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "source_reviewed": "2026-09-20",
+      "upstream_reproduction": false,
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false,
+      "evidence": "validation/earth-data-source-runs.json",
+      "tests": "tests/test_science_earth_data.py"
+    },
+    "limitations": [
+      "Four source basins2000–2002; two training basins and two wholly unseen evaluation basins. Daily retrospective forcing, not meteorological forecasting. Tiny geographic sample is not the full671-basin benchmark.",
+      "Source data remain local caches with immutable revisions/content hashes and no evaluator network access. Public subsets are development-visible; freeze candidates before wider generalization tests.",
+      "Improved source benchmark performance is a scientific-method contribution, not alone a new discovery or operational forecast validation."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "earth_and_environment"
+    }
+  },
+  {
+    "id": "science-earth-fluxnet-ecosystem-flux",
+    "proposal_id": "E02",
+    "name": "Earth and environment: Measured ecosystem carbon-flux reconstruction",
+    "description": "Predict half-hourly net ecosystem carbon exchange from meteorology and ecosystem metadata, scoring quality-controlled measured targets rather than gap-filled products.",
+    "family": "science_earth_e02",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://doi.org/10.1038/s41597-020-0534-3",
+        "type": "paper",
+        "locator": "FLUXNET2015/ONEFlux data processing, flux-variable definitions, quality flags and measurement uncertainty."
+      },
+      {
+        "url": "https://fluxnet.org/data/fluxnet2015-dataset/",
+        "type": "benchmark",
+        "locator": "Official source data/evaluation reference; evaluator and seed independently written."
+      },
+      {
+        "url": "https://www.sciencedirect.com/science/article/pii/S016819232400100X",
+        "type": "paper",
+        "title": "Modeling net ecosystem exchange of CO2 with gated recurrent unit neural networks",
+        "locator": "Trains and evaluates half-hourly net ecosystem carbon-exchange prediction from environmental inputs. This establishes the prediction task family; the local FLUXNET sites, measured-target quality filters and site/year holdouts are separate protocol choices."
+      }
+    ],
+    "status": "requires_setup",
+    "requires": [
+      "file:../../.cache/science-earth-data/E02.json",
+      "file:../../.cache/science-earth-data/E02.manifest.json"
+    ],
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "upstream_code_used": false,
+      "note": "Local evaluator, candidate interface and seed recreated from scientific specifications; official benchmark data are reused."
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "preparation_dependencies": [
+        "netCDF4",
+        "numcodecs==0.16.3"
+      ],
+      "environment_variables": [],
+      "datasets": "SHA256-locked source bundle E02.json in .cache/science-earth-data. Official FLUXNET download endpoint returnedHTTP403. Source half-hourly tower measurements, QC flags, site metadata and reviewed site/year holdout bundle are not yet staged."
+    },
+    "validation": {
+      "level": "unit_tests_only",
+      "source_reviewed": "2026-09-20",
+      "upstream_reproduction": false,
+      "benchmark_validated": false,
+      "fixture_tests_are_benchmark_validation": false,
+      "evidence": "docs/EARTH_DATA.md",
+      "tests": "tests/test_science_earth_data.py"
+    },
+    "limitations": [
+      "Requires source half-hourly tower files and site/year splits; only QC0 measured targets score. Net carbon exchange is distinct from derivedGPP/respiration. Official download endpoint returnedHTTP403 during staging.",
+      "Source data remain local caches with immutable revisions/content hashes and no evaluator network access. Public subsets are development-visible; freeze candidates before wider generalization tests.",
+      "Improved source benchmark performance is a scientific-method contribution, not alone a new discovery or operational forecast validation."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "equation",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "earth_and_environment"
+    },
+    "setup_blocker": "Official FLUXNET download endpoint returnedHTTP403. Source half-hourly tower measurements, QC flags, site metadata and reviewed site/year holdout bundle are not yet staged."
+  },
+  {
+    "id": "science-earth-weatherbench-calibration",
+    "proposal_id": "E03",
+    "name": "Earth and environment: WeatherBench probabilistic forecast calibration",
+    "description": "Calibrate fixed operational ensemble forecasts using prior-year history and evaluate their predictive distributions against independently aligned future-year reanalysis.",
+    "family": "science_earth_e03",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2308.15560",
+        "type": "paper",
+        "locator": "WeatherBench2 forecast evaluation, probabilistic ensembleCRPS, ERA5 reference data and area weighting."
+      },
+      {
+        "url": "https://weatherbench2.readthedocs.io/en/latest/data-guide.html",
+        "type": "benchmark",
+        "locator": "Official source data/evaluation reference; evaluator and seed independently written."
+      },
+      {
+        "url": "https://journals.ametsoc.org/view/journals/mwre/133/5/mwr2904.1.xml",
+        "type": "paper",
+        "title": "Calibrated Probabilistic Forecasting Using Ensemble Model Output Statistics and Minimum CRPS Estimation",
+        "locator": "Develops ensemble forecast postprocessing that corrects bias and dispersion using historical observations and CRPS. The local WeatherBench2 IFS/ERA5 chronological subset is a separate application of this calibration task."
+      }
+    ],
+    "status": "ready",
+    "requires": [
+      "file:../../.cache/science-earth-data/E03.json",
+      "file:../../.cache/science-earth-data/E03.manifest.json"
+    ],
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "upstream_code_used": false,
+      "note": "Local evaluator, candidate interface and seed recreated from scientific specifications; official benchmark data are reused."
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "preparation_dependencies": [
+        "netCDF4",
+        "numcodecs==0.16.3"
+      ],
+      "environment_variables": [],
+      "datasets": "SHA256-locked source bundle E03.json in .cache/science-earth-data. Automatically prepared by scripts/prepare_earth_data.py."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "source_reviewed": "2026-09-20",
+      "upstream_reproduction": false,
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false,
+      "evidence": "validation/earth-data-source-runs.json",
+      "tests": "tests/test_science_earth_data.py"
+    },
+    "limitations": [
+      "IFS50-member2m-temperature24-hour forecasts on64×32 grid: monthly2018 training versus monthly2019 evaluation at64 locations. ERA5 is reanalysis, not independent raw weather observation. TIGGE data have research-use restrictions; this is a small chronological adaptation.",
+      "Source data remain local caches with immutable revisions/content hashes and no evaluator network access. Public subsets are development-visible; freeze candidates before wider generalization tests.",
+      "Improved source benchmark performance is a scientific-method contribution, not alone a new discovery or operational forecast validation."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "public_benchmark",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "earth_and_environment"
+    }
+  },
+  {
+    "id": "science-earth-openfwi-seismic-inversion",
+    "proposal_id": "E04",
+    "name": "Earth and environment: OpenFWI subsurface seismic inversion",
+    "description": "Reconstruct a positive subsurface velocity field from simulated seismic traces, independently checking velocity structure and a pinned source-matching wave forward model.",
+    "family": "science_earth_e04",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2111.02926",
+        "type": "paper",
+        "locator": "OpenFWI dataset geometry, synthetic geological models, wave simulation and inversion metrics."
+      },
+      {
+        "url": "https://openfwi-lanl.github.io/docs/data.html",
+        "type": "benchmark",
+        "locator": "Official source data/evaluation reference; evaluator and seed independently written."
+      }
+    ],
+    "status": "requires_setup",
+    "requires": [
+      "file:../../.cache/science-earth-data/E04.json",
+      "file:../../.cache/science-earth-data/E04.manifest.json"
+    ],
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "upstream_code_used": false,
+      "note": "Local evaluator, candidate interface and seed recreated from scientific specifications; official benchmark data are reused."
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "preparation_dependencies": [
+        "netCDF4",
+        "numcodecs==0.16.3"
+      ],
+      "environment_variables": [],
+      "datasets": "SHA256-locked source bundle E04.json in .cache/science-earth-data. No source OpenFWI velocity/trace subset or verified source-matching forward simulator staged. Official smallestVel family43GB; prepare a licensed reduced complete-geology subset and validated simulator; no toy substitution."
+    },
+    "validation": {
+      "level": "unit_tests_only",
+      "source_reviewed": "2026-09-20",
+      "upstream_reproduction": false,
+      "benchmark_validated": false,
+      "fixture_tests_are_benchmark_validation": false,
+      "evidence": "docs/EARTH_DATA.md",
+      "tests": "tests/test_science_earth_data.py"
+    },
+    "limitations": [
+      "Needs actual OpenFWI arrays and a validated source-matching forward simulator; smallest advertisedVel dataset43GB. No locally generated toy wavefields substituted. Source data areCC-BY-NC-SA4.0; no field-survey truth claim.",
+      "Source data remain local caches with immutable revisions/content hashes and no evaluator network access. Public subsets are development-visible; freeze candidates before wider generalization tests.",
+      "Improved source benchmark performance is a scientific-method contribution, not alone a new discovery or operational forecast validation."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "earth_and_environment"
+    },
+    "setup_blocker": "No source OpenFWI velocity/trace subset or verified source-matching forward simulator staged. Official smallestVel family43GB; prepare a licensed reduced complete-geology subset and validated simulator; no toy substitution."
+  },
+  {
+    "id": "science-earth-climatebench-emissions-response",
+    "proposal_id": "E05",
+    "name": "Earth and environment: ClimateBench emissions-to-climate response",
+    "description": "Learn a compact emissions-response emulator from complete training scenarios and predict source climate anomalies for the entirely withheldSSP245 scenario.",
+    "family": "science_earth_e05",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://doi.org/10.1029/2021MS002954",
+        "type": "paper",
+        "locator": "ClimateBench1.0 problem definition, scenario-level split and spatial/global normalized error, Sections2–4."
+      },
+      {
+        "url": "https://github.com/duncanwp/ClimateBench/blob/085c0b5b20761446fabe05bbc58b9a5440e9c25f/analysis_notebooks/paper_figures.ipynb",
+        "type": "repository",
+        "locator": "Official source data/evaluation reference; evaluator and seed independently written."
+      }
+    ],
+    "status": "ready",
+    "requires": [
+      "file:../../.cache/science-earth-data/E05.json",
+      "file:../../.cache/science-earth-data/E05.manifest.json"
+    ],
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "upstream_code_used": false,
+      "note": "Local evaluator, candidate interface and seed recreated from scientific specifications; official benchmark data are reused."
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "preparation_dependencies": [
+        "netCDF4",
+        "numcodecs==0.16.3"
+      ],
+      "environment_variables": [],
+      "datasets": "SHA256-locked source bundle E05.json in .cache/science-earth-data. Automatically prepared by scripts/prepare_earth_data.py."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "source_reviewed": "2026-09-20",
+      "upstream_reproduction": false,
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false,
+      "evidence": "validation/earth-data-source-runs.json",
+      "tests": "tests/test_science_earth_data.py"
+    },
+    "limitations": [
+      "Source NorESM member means, temperature/precipitation anomalies, area-weighted8×12 spatial adaptation. CompleteSSP245 held out;2080–2100 scored. TrainingSSP370 uses available-member means because two source members end early. Not the full-resolution four-variable leaderboard or observed future climate.",
+      "Source data remain local caches with immutable revisions/content hashes and no evaluator network access. Public subsets are development-visible; freeze candidates before wider generalization tests.",
+      "Improved source benchmark performance is a scientific-method contribution, not alone a new discovery or operational forecast validation."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "model",
+      "domain": "natural_science",
+      "data": "simulator",
+      "verification": "simulation",
+      "reference": "none",
+      "area": "earth_and_environment"
+    }
+  },
+  {
+    "id": "science-earth-oceanbench-satellite-ssh",
+    "proposal_id": "E06",
+    "name": "Earth and environment: Independent-track ocean surface-height reconstruction",
+    "description": "Reconstruct measured sea-surface-height anomalies from irregular satellite observations and evaluate a fully withheld satellite system.",
+    "family": "science_earth_e06",
+    "parameters": {},
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2309.15599",
+        "type": "paper",
+        "locator": "OceanBench sea-surface-height reconstruction and distinct observing-system experiment versus simulation regimes."
+      },
+      {
+        "url": "https://github.com/quentinf00/oceanbench-data-registry/tree/b678399e9264e8a1a04384cb4c1ca71a2773f302",
+        "type": "repository",
+        "locator": "Official source data/evaluation reference; evaluator and seed independently written."
+      }
+    ],
+    "status": "ready",
+    "requires": [
+      "file:../../.cache/science-earth-data/E06.json",
+      "file:../../.cache/science-earth-data/E06.manifest.json"
+    ],
+    "implementation_origin": "independent_reimplementation",
+    "implementation_provenance": {
+      "category": "independent_reimplementation",
+      "upstream_code_used": false,
+      "note": "Local evaluator, candidate interface and seed recreated from scientific specifications; official benchmark data are reused."
+    },
+    "requirements": {
+      "python": ">=3.10",
+      "hardware": "CPU",
+      "dependencies": [
+        "numpy",
+        "scipy"
+      ],
+      "preparation_dependencies": [
+        "netCDF4",
+        "numcodecs==0.16.3"
+      ],
+      "environment_variables": [],
+      "datasets": "SHA256-locked source bundle E06.json in .cache/science-earth-data. Automatically prepared by scripts/prepare_earth_data.py."
+    },
+    "validation": {
+      "level": "source_subset_run",
+      "source_reviewed": "2026-09-20",
+      "upstream_reproduction": false,
+      "benchmark_validated": true,
+      "fixture_tests_are_benchmark_validation": false,
+      "evidence": "validation/earth-data-source-runs.json",
+      "tests": "tests/test_science_earth_data.py"
+    },
+    "limitations": [
+      "Real January2017GulfStream Jason2N observations to independently withheldJason3 tracks. Source filteredSLA in meters, retrospective reconstruction and source-order decimation. Independent tracks provide incomplete spatial truth; no full-fieldOSSE or spectral-resolution claim.",
+      "Source data remain local caches with immutable revisions/content hashes and no evaluator network access. Public subsets are development-visible; freeze candidates before wider generalization tests.",
+      "Improved source benchmark performance is a scientific-method contribution, not alone a new discovery or operational forecast validation."
+    ],
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "program",
+      "domain": "natural_science",
+      "data": "real_measurements",
+      "verification": "sampled",
+      "reference": "none",
+      "area": "earth_and_environment"
+    }
+  }
+]

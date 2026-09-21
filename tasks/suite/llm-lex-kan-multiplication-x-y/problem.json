@@ -1,0 +1,72 @@
+{
+  "protocol": "recreated",
+  "family": "synthetic_equation",
+  "direction": "minimize",
+  "contract": "equation(<inputs>, params: np.ndarray[10]) -> np.ndarray prediction; parameters fitted by BFGS on generated training data. Score: NMSE on generated test data",
+  "parameters": {
+    "target": "kan_multiplication",
+    "seed": 0
+  },
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 120,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "llm-lex-kan-multiplication-x-y",
+  "name": "KAN multiplication x*y",
+  "paper_ids": [
+    "llm-lex"
+  ],
+  "description": "KAN multiplication x*y task evaluated in Symbolic Regression with Multimodal Large Language Models and Kolmogorov–Arnold Networks.",
+  "benchmark": "KAN multiplication x*y",
+  "paper_metric": "scale-normalized squared fitting error (Equation 3)",
+  "paper_direction": "minimize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2505.07956",
+      "type": "paper",
+      "locator": "Section 3.2 Example 2"
+    },
+    {
+      "url": "https://github.com/harveyThomas4692/llmlex/tree/9f02b58c5efb6d3c973c2ad2552ecc3a57998f81",
+      "type": "repository",
+      "locator": "Examples/Example Paper MultiKAN.ipynb"
+    }
+  ],
+  "limitations": [
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "llm-lex",
+      "title": "Symbolic Regression with Multimodal Large Language Models and Kolmogorov–Arnold Networks",
+      "url": "https://arxiv.org/pdf/2505.07956"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "science_tier": 2,
+    "artifact": "equation",
+    "domain": "natural_science",
+    "area": "mathematics",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

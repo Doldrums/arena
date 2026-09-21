@@ -1,0 +1,100 @@
+{
+  "protocol": "original",
+  "family": "sciel_copy",
+  "direction": "maximize",
+  "contract": "See evaluator.py and README.upstream.md.",
+  "parameters": {},
+  "requires": [
+    "bin:cargo",
+    "py:numpy"
+  ],
+  "timeout": 600,
+  "notes": [
+    "Imports openevolve.evaluation_result; suite/_lib/openevolve is a verbatim shim of that module."
+  ],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.rs",
+    "score_key": "score",
+    "error_key": "error"
+  },
+  "origin": {
+    "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "path": "examples/rust_adaptive_sort",
+    "files_sha256": {
+      "README.md": "f190587411f3b2bdc7933615d08dbbd240ff61bedd5a64c61748450af976167c",
+      "config.yaml": "cb1631b4cf9f9dfe56735890451f5934b878c9102ec42d252783b19625250fab",
+      "evaluator.py": "b7e24493c765be2450de04671aacff5c788b0edab8eeda63912a1defe9893e7b",
+      "initial_program.rs": "b27c6f6e778f5872de8d94d44158ed93f97232f45f827e84d25dc2bc3fcf48f4",
+      "requirements.txt": "ae7abe81edabb4c53a0c105cca1b6fadc60e4dc59e70088a35271f417762ac2f",
+      "sort_test/.gitignore": "91e32e7c7446da0e17ef5bc0a3a783065c4476613ea4a7c24dee14aa889c6ddd",
+      "sort_test/Cargo.toml": "0cadd184d24d3715b1b231f3ff37c6451a4d523db9546135c1adae9f1bebc34d",
+      "sort_test/src/lib.rs": "1a56b8b9302ee6f3e0e2f0447d976cb60a15021717b02471e171ce495118600f",
+      "sort_test/src/main.rs": "686237bc09caec9db2bbb4835e8833cba40d47c241a681a2cd74dba0513fb168"
+    }
+  },
+  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/rust_adaptive_sort` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "id": "sciel-bench-rust-adaptive-sort",
+  "name": "SCiEL: Rust adaptive sorting",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "description": "Evolve a Rust adaptive_sort implementation compiled with Cargo and benchmarked on ten generated integer datasets (random, nearly sorted, reversed, duplicate-heavy and partially sorted; 1,000 and 10,000 elements). score = 0.6*performance + 0.4*adaptability when every dataset sorts correctly, otherwise 0.",
+  "benchmark": "SCiEL source example rust_adaptive_sort",
+  "paper_metric": "score",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/rust_adaptive_sort/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper functions at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/rust_adaptive_sort/initial_program.rs",
+      "type": "repository",
+      "locator": "original baseline"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/rust_adaptive_sort/README.md",
+      "type": "repository",
+      "locator": "source README"
+    }
+  ],
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The pinned evaluator copies sort_test/Cargo.lock into the temporary project, but no Cargo.lock is tracked at the pinned commit (sort_test/.gitignore ignores only target/). Every evaluation therefore raises FileNotFoundError and returns score 0.0 with artifacts.error until a lock file is generated in the checkout; this repository records the defect and does not silently repair it."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.rs",
+  "papers": [
+    {
+      "id": "sciel-supplement",
+      "title": "SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples",
+      "url": "https://github.com/luciferkonn/SCiEL"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "program",
+    "domain": "systems",
+    "area": "systems_and_hardware",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

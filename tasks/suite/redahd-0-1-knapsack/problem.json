@@ -1,0 +1,108 @@
+{
+  "protocol": "recreated",
+  "family": "knapsack_constructive",
+  "direction": "maximize",
+  "contract": "select_next_item(remaining_capacity, remaining_weights, remaining_values) -> index into the remaining (feasible) arrays, or -1 to stop. Score: mean total value",
+  "parameters": {
+    "n_instances": 8,
+    "n_items": 100,
+    "seed": 0
+  },
+  "requires": [
+    "py:numpy"
+  ],
+  "timeout": 120,
+  "notes": [],
+  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "id": "redahd-0-1-knapsack",
+  "name": "0/1 knapsack",
+  "paper_ids": [
+    "redahd",
+    "mcts-ahd",
+    "a2dept",
+    "reevo"
+  ],
+  "description": "0/1 knapsack: optimize the candidate specified by the paper and evaluate against the named benchmark.",
+  "benchmark": "MCTS-AHD evaluation datasets",
+  "paper_metric": "objective value / gap to optimum (problem dependent)",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2505.20242",
+      "type": "paper",
+      "locator": "Section 5.1 and Appendix C"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2501.08603",
+      "type": "paper",
+      "locator": "Section 4; Appendices B-D and F"
+    },
+    {
+      "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+      "type": "repository",
+      "locator": "problems/kp_constructive/eval.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2604.24043",
+      "type": "paper",
+      "locator": "Problem family; original benchmark protocol is not claimed."
+    },
+    {
+      "url": "https://arxiv.org/pdf/2402.01145",
+      "type": "paper",
+      "locator": "Problem family; original benchmark protocol is not claimed."
+    }
+  ],
+  "limitations": [
+    "No official runnable repository was verified from the paper/project sources examined.",
+    "Upstream commands and dependencies were inspected; costly training, paid APIs, and hardware experiments were not executed.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "redahd",
+      "title": "RedAHD: Reduction-Based End-to-End Automatic Heuristic Design with Large Language Models",
+      "url": "https://arxiv.org/pdf/2505.20242"
+    },
+    {
+      "id": "mcts-ahd",
+      "title": "Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design",
+      "url": "https://arxiv.org/pdf/2501.08603"
+    },
+    {
+      "id": "a2dept",
+      "title": "A2DEPT: Large Language Model-Driven Automated Algorithm Design via Evolutionary Program Trees",
+      "url": "https://arxiv.org/pdf/2604.24043"
+    },
+    {
+      "id": "reevo",
+      "title": "ReEvo: Large Language Models as Hyper-Heuristics with Reflective Evolution",
+      "url": "https://arxiv.org/pdf/2402.01145"
+    }
+  ],
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

@@ -1,0 +1,367 @@
+{
+  "schema_version": "1.0",
+  "id": "coevo-oscillation-1",
+  "name": "Oscillation 1",
+  "description": "Oscillation 1 task evaluated in CoEvo: Continual Evolution of Symbolic Solutions Using Large Language Models.",
+  "paper_ids": [
+    "coevo",
+    "drsr"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2412.18890",
+      "type": "paper",
+      "locator": "Section 4, Table 1"
+    },
+    {
+      "url": "https://github.com/pgg3/CoEvo/tree/dcad65e9799961cf67cf29865ff41dda2902a808",
+      "type": "repository",
+      "locator": "CoEvo/src/coevo/tasks/oscillation_1.py"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2506.04282",
+      "type": "paper",
+      "locator": "Section 4.1 and Appendix B"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "pandas",
+      "scipy"
+    ],
+    "environment_variables": [],
+    "datasets": "oscillation_1",
+    "notes": [
+      "Python >=3.10",
+      "uv",
+      "LLM API credentials"
+    ]
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "NMSE",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "oscillation_1",
+    "protocol": "upstream",
+    "source_locator": "Section 4, Table 1"
+  },
+  "execution": {
+    "repository": "https://github.com/pgg3/CoEvo",
+    "commit": "dcad65e9799961cf67cf29865ff41dda2902a808",
+    "upstream_path": "CoEvo/src/coevo/tasks/oscillation_1.py",
+    "commands": [
+      {
+        "argv": [
+          "uv",
+          "run",
+          "python",
+          "../main_run.py",
+          "--task",
+          "oscillation_1",
+          "--max_gen",
+          "97",
+          "--pop_size",
+          "2"
+        ],
+        "cwd": "CoEvo",
+        "source_url": "https://github.com/pgg3/CoEvo/blob/dcad65e9799961cf67cf29865ff41dda2902a808/README.md",
+        "notes": ""
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "adapters/recovered/coevo_llmsr/evaluator.py",
+      "evaluator_scope": "repository",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "task": "oscillation_1",
+        "expected_module_sha256": "06eebc3983918402990c3d0ec31ffec35736b4451c94a0f3bf0a0bbd4bd341fe"
+      },
+      "score_key": "mse",
+      "score_direction": "minimize",
+      "validity_key": "valid",
+      "error_key": "error",
+      "baseline_path": "adapters/recovered/coevo_llmsr/seeds/oscillation_1.py",
+      "baseline_scope": "repository",
+      "dependencies": [
+        "numpy",
+        "pandas",
+        "scipy"
+      ],
+      "implementation_label": "Original pinned CoEvo task evaluator on the training split; evotoolkit base classes stubbed when the package is absent; original program template as seed",
+      "repository_files": {
+        "adapters/recovered/coevo_llmsr/seeds/oscillation_1.py": "7a7a09f8b749392d190625799874e4957f7bddda925f60d8fa11e1f62b63b202"
+      },
+      "notes": [
+        "Scores the candidate's equation() by BFGS-fitting its ten parameters on the task's train.csv and reporting the mean squared error, exactly as CoEvo's in-loop evaluator does.",
+        "The paper metrics are NMSE on the held-out test_id/test_ood splits (CoEvo test_res.py); the in-loop train MSE recorded here is the search signal, not the reported benchmark number."
+      ]
+    },
+    "setup_instructions": [
+      {
+        "argv": [
+          "uv",
+          "sync"
+        ],
+        "cwd": "CoEvo",
+        "source_url": "https://github.com/pgg3/CoEvo/blob/dcad65e9799961cf67cf29865ff41dda2902a808/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "uv",
+          "sync"
+        ],
+        "cwd": "CoEvo",
+        "source_url": "https://github.com/pgg3/CoEvo/blob/dcad65e9799961cf67cf29865ff41dda2902a808/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Recovered on 2026-09-19 through the pinned CoEvo task evaluator; see docs/TASKS.md."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "llmsr_equation",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:scipy"
+      ],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+  ],
+  "source_specification": {
+    "name": "Oscillation 1",
+    "slug": "oscillation-1",
+    "description": "Oscillation 1 task evaluated in CoEvo: Continual Evolution of Symbolic Solutions Using Large Language Models.",
+    "benchmark": "oscillation_1",
+    "dataset": "oscillation_1",
+    "metric": "NMSE",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2412.18890",
+    "source_locator": "Section 4, Table 1",
+    "upstream_path": "CoEvo/src/coevo/tasks/oscillation_1.py",
+    "requirements": [
+      "Python >=3.10",
+      "uv",
+      "LLM API credentials"
+    ],
+    "execution_notes": [
+      "Recovered on 2026-09-19 through the pinned CoEvo task evaluator; see docs/TASKS.md."
+    ],
+    "setup_commands": [],
+    "run_commands": [
+      {
+        "argv": [
+          "uv",
+          "run",
+          "python",
+          "../main_run.py",
+          "--task",
+          "oscillation_1",
+          "--max_gen",
+          "97",
+          "--pop_size",
+          "2"
+        ],
+        "cwd": "CoEvo",
+        "source_url": "https://github.com/pgg3/CoEvo/blob/dcad65e9799961cf67cf29865ff41dda2902a808/README.md",
+        "notes": ""
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_path": "adapters/recovered/coevo_llmsr/evaluator.py",
+      "evaluator_scope": "repository",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "task": "oscillation_1",
+        "expected_module_sha256": "06eebc3983918402990c3d0ec31ffec35736b4451c94a0f3bf0a0bbd4bd341fe"
+      },
+      "score_key": "mse",
+      "score_direction": "minimize",
+      "validity_key": "valid",
+      "error_key": "error",
+      "baseline_path": "adapters/recovered/coevo_llmsr/seeds/oscillation_1.py",
+      "baseline_scope": "repository",
+      "dependencies": [
+        "numpy",
+        "pandas",
+        "scipy"
+      ],
+      "implementation_label": "Original pinned CoEvo task evaluator on the training split; evotoolkit base classes stubbed when the package is absent; original program template as seed",
+      "repository_files": {
+        "adapters/recovered/coevo_llmsr/seeds/oscillation_1.py": "7a7a09f8b749392d190625799874e4957f7bddda925f60d8fa11e1f62b63b202"
+      },
+      "notes": [
+        "Scores the candidate's equation() by BFGS-fitting its ten parameters on the task's train.csv and reporting the mean squared error, exactly as CoEvo's in-loop evaluator does.",
+        "The paper metrics are NMSE on the held-out test_id/test_ood splits (CoEvo test_res.py); the in-loop train MSE recorded here is the search signal, not the reported benchmark number."
+      ]
+    },
+    "paper_metric": "NMSE"
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "science_tier": 2,
+    "artifact": "equation",
+    "domain": "natural_science",
+    "area": "physics",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "merged_from": [
+    {
+      "id": "drsr-oscillation-1",
+      "paper_ids": [
+        "drsr"
+      ],
+      "name": "Oscillation 1",
+      "description": "Oscillation 1 task evaluated in DrSR: LLM based Scientific Equation Discovery with Dual Reasoning from Data and Experience.",
+      "kind": "upstream",
+      "sources": [
+        {
+          "url": "https://arxiv.org/pdf/2506.04282",
+          "type": "paper",
+          "locator": "Section 4.1 and Appendix B"
+        },
+        {
+          "url": "https://github.com/pgg3/CoEvo/tree/dcad65e9799961cf67cf29865ff41dda2902a808",
+          "type": "repository",
+          "locator": "CoEvo/src/coevo/tasks/oscillation_1.py"
+        }
+      ],
+      "requirements": {
+        "python": "Upstream-defined",
+        "hardware": "See upstream requirements and task notes.",
+        "dependencies": [
+          "numpy",
+          "pandas",
+          "scipy"
+        ],
+        "environment_variables": [],
+        "datasets": null,
+        "notes": []
+      },
+      "evaluation": {
+        "metric": "mse",
+        "paper_metric": "normalized mean squared error",
+        "paper_direction": "minimize",
+        "direction": "minimize",
+        "benchmark": "Oscillation 1",
+        "protocol": "upstream",
+        "source_locator": "Section 4.1 and Appendix B"
+      },
+      "execution": {
+        "repository": "https://github.com/pgg3/CoEvo",
+        "commit": "dcad65e9799961cf67cf29865ff41dda2902a808",
+        "upstream_path": "CoEvo/src/coevo/tasks/oscillation_1.py",
+        "commands": [],
+        "evaluator_adapter": {
+          "evaluator_path": "adapters/recovered/coevo_llmsr/evaluator.py",
+          "evaluator_scope": "repository",
+          "callable": "evaluate",
+          "candidate_argument": "positional",
+          "cwd": ".",
+          "kwargs": {
+            "checkout": "{checkout}",
+            "task": "oscillation_1",
+            "expected_module_sha256": "06eebc3983918402990c3d0ec31ffec35736b4451c94a0f3bf0a0bbd4bd341fe"
+          },
+          "score_key": "mse",
+          "score_direction": "minimize",
+          "validity_key": "valid",
+          "error_key": "error",
+          "baseline_path": "adapters/recovered/coevo_llmsr/seeds/oscillation_1.py",
+          "baseline_scope": "repository",
+          "dependencies": [
+            "numpy",
+            "pandas",
+            "scipy"
+          ],
+          "implementation_label": "Recreated protocol: the pinned CoEvo LLM-SR task evaluator and benchmark data stand in for DrSR's unreleased evaluation code",
+          "repository_files": {
+            "adapters/recovered/coevo_llmsr/seeds/oscillation_1.py": "7a7a09f8b749392d190625799874e4957f7bddda925f60d8fa11e1f62b63b202"
+          },
+          "notes": [
+            "Scores the candidate's equation() by BFGS-fitting its ten parameters on the task's train.csv and reporting the mean squared error, exactly as CoEvo's in-loop evaluator does.",
+            "The paper metrics are NMSE on the held-out test_id/test_ood splits (CoEvo test_res.py); the in-loop train MSE recorded here is the search signal, not the reported benchmark number.",
+            "DrSR has no public implementation; the LLM-SR benchmark data and equivalent BFGS-fit evaluator are taken from the pinned CoEvo release, which the DrSR paper compares against on the same four datasets."
+          ]
+        },
+        "setup_instructions": [
+          "uv sync (CoEvo README); the direct adapter needs only numpy, pandas and scipy"
+        ],
+        "task_setup_instructions": [],
+        "framework_setup_instructions": [
+          "uv sync (CoEvo README); the direct adapter needs only numpy, pandas and scipy"
+        ],
+        "setup_steps": [],
+        "notes": [
+          "NMSE minimized; accuracy maximized. Paper table aggregates the two LSR-Transform tasks.",
+          "Thresholded recovery accuracy is a separate maximized secondary metric.",
+          "Thresholded recovery accuracy is a separate maximized secondary metric.",
+          "Thresholded recovery accuracy is a separate maximized secondary metric.",
+          "Thresholded recovery accuracy is a separate maximized secondary metric.",
+          "Thresholded recovery accuracy is a separate maximized secondary metric.",
+          "Thresholded recovery accuracy is a separate maximized secondary metric.",
+          "Thresholded recovery accuracy is a separate maximized secondary metric.",
+          "Recovered on 2026-09-19 through the pinned CoEvo task evaluator; see docs/TASKS.md."
+        ]
+      },
+      "limitations": [
+        "arXiv HTML unavailable; full PDF retrieved and text extracted.",
+        "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+        "pgg3/CoEvo is pinned only as the paper-cited LLM-SR benchmark source; DrSR's own code has not been released.",
+        "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+      ],
+      "validation": {
+        "level": "source_inspected",
+        "upstream_reproduction": false,
+        "adapter_checks": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.0",
+  "id": "llmastool-imagenet-100",
+  "name": "ImageNet-100",
+  "description": "ImageNet-100 task evaluated in LLM as a Tool, Not an Agent: Code-Mined Tree Transformations for Neural Architecture Search.",
+  "paper_ids": [
+    "llmastool"
+  ],
+  "kind": "specification",
+  "status": "blocked",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2604.16555",
+      "type": "paper",
+      "locator": "Section 4.1"
+    }
+  ],
+  "requirements": {
+    "python": null,
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": [
+      "GPU training",
+      "Dataset access"
+    ]
+  },
+  "evaluation": {
+    "metric": "classification accuracy",
+    "paper_metric": "classification accuracy",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "NAS-Bench-201 and ImageNet-100 architecture search",
+    "protocol": "specified_only",
+    "source_locator": "Section 4.1"
+  },
+  "execution": {
+    "repository": null,
+    "commit": null,
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [],
+    "setup_steps": [],
+    "notes": [
+      "Full architecture training is required. Paper reports parameter/FLOP constraints; generic NAS-Bench lookup is not equivalent."
+    ],
+    "suite": {
+      "protocol": "unsupported",
+      "family": null,
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "hardware:gpu",
+        "dataset:NAS-Bench-201 and ImageNet-100 architecture search"
+      ],
+      "timeout": 30,
+      "validity_key": "valid",
+      "unsupported_category": "gpu",
+      "unsupported_reason": "Fitness is accelerator wall-clock or model training on GPU hardware (NAS-Bench-201 and ImageNet-100 architecture search); it cannot be measured on a CPU-only suite."
+    }
+  },
+  "limitations": [
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap.",
+    "No publicly accessible, paper-linked implementation with a verified immutable revision was established."
+  ],
+  "source_specification": {
+    "name": "ImageNet-100",
+    "slug": "imagenet-100",
+    "description": "ImageNet-100 task evaluated in LLM as a Tool, Not an Agent: Code-Mined Tree Transformations for Neural Architecture Search.",
+    "benchmark": "NAS-Bench-201 and ImageNet-100 architecture search",
+    "dataset": null,
+    "metric": "classification accuracy",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2604.16555",
+    "source_locator": "Section 4.1",
+    "upstream_path": null,
+    "requirements": [
+      "GPU training",
+      "Dataset access"
+    ],
+    "execution_notes": [
+      "Full architecture training is required. Paper reports parameter/FLOP constraints; generic NAS-Bench lookup is not equivalent."
+    ],
+    "setup_commands": [],
+    "run_commands": []
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "engineering",
+    "science_tier": 3,
+    "artifact": "model",
+    "domain": "machine_learning",
+    "area": "machine_learning",
+    "data": "public_benchmark",
+    "verification": "none",
+    "reference": "none",
+    "resources": [
+      "gpu",
+      "unavailable"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

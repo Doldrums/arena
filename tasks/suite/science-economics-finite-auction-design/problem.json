@@ -1,0 +1,84 @@
+{
+  "protocol": "recreated",
+  "family": "science_economics_auctions",
+  "direction": "maximize",
+  "contract": "construct_auction(distribution_spec, support, constraints) -> {allocations:(16,2),payments:(16,)}. One additive bidder,two goods,each value in{0,1,2,3},three fixed distributions. Every allowed report is enumerated; require feasible probabilities, nonnegative payments, individual rationality and regret<=1e-8. Maximize expected revenue normalized by an independently solved finite-support mechanism LP. Truthfulness holds only on the declared report/value support.",
+  "parameters": {},
+  "requires": [
+    "py:numpy",
+    "py:scipy"
+  ],
+  "timeout": 60,
+  "notes": [
+    "Candidate outputs are independently re-evaluated. Baselines may call named public numerical helpers, but cannot supply their own objective. These bounded research-model adaptations do not establish empirical economic predictions or trading returns."
+  ],
+  "protocol_description": "Locally authored implementation of the cited scientific task. Source data, generated mathematical instances, reference checks and adaptations are specified below; unit-test fixtures do not establish a benchmark reproduction.",
+  "id": "science-economics-finite-auction-design",
+  "name": "Economics: Incentive-compatible finite auction design",
+  "paper_ids": [
+    "science-economics_expansion"
+  ],
+  "description": "Incentive-compatible finite auction design with an explicit candidate API, independently recomputed objective and fixed model/data assumptions.",
+  "benchmark": "Economics: Incentive-compatible finite auction design",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://proceedings.mlr.press/v97/duetting19a.html",
+      "type": "paper",
+      "locator": "RegretNet research objective; local finite-support mechanism replaces approximate sampled regret with exhaustive deviations."
+    },
+    {
+      "url": "https://github.com/saisrivatsan/deep-opt-auctions",
+      "type": "repository",
+      "locator": "Reference algorithms and source documentation; local evaluator is independently authored."
+    }
+  ],
+  "limitations": [
+    "Bounded adaptation specified in the candidate contract; no claim to reproduce full-paper scores.",
+    "Model/simulation scores do not establish empirical policy validity or market returns.",
+    "Public fixed evaluation inputs support development only; freeze candidates and run new cases for generalization."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-economics_expansion",
+      "title": "Economics and quantitative finance: source-based research tasks",
+      "url": "https://www.nber.org/papers/t0309"
+    }
+  ],
+  "science_relevance": {
+    "status": "supported",
+    "papers": [
+      {
+        "title": "Optimal Auctions through Deep Learning",
+        "url": "https://proceedings.mlr.press/v97/duetting19a.html",
+        "task_relation": "The local task restricts auctions to finite supports and checks deviations exhaustively against an LP reference. These exact finite constraints and distributions differ from the paper's neural mechanisms and approximate training procedure.",
+        "primary_goal": "Find high-revenue incentive-compatible auctions, including settings where analytical optimal mechanisms are unknown.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "scientific_problem": "Design revenue-maximizing auctions subject to incentive-compatibility constraints.",
+    "importance_rationale": "Optimal multi-item mechanism design is the primary economics problem addressed in the paper.",
+    "reason": "The paper attempts to solve a substantive auction-design problem; deep learning is a solution method, not the task's sole justification.",
+    "reviewed_at": "2026-09-20",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "program",
+    "domain": "finance",
+    "area": "finance",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

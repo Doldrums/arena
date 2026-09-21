@@ -1,0 +1,311 @@
+{
+  "schema_version": "1.0",
+  "id": "sciel-math-tsp-tour-minimization",
+  "name": "SCiEL: Heat-map-assisted TSP, 1,000 cities",
+  "description": "Optimize a bundled Python/C++ heat-map and tour solver on eight generated Euclidean TSP instances of 1,000 cities, scoring tour length with a small runtime modifier.",
+  "paper_ids": [
+    "sciel-supplement"
+  ],
+  "kind": "upstream",
+  "status": "ready",
+  "family": "optimization_statistics",
+  "sources": [
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/tsp_tour_minimization/evaluator.py",
+      "type": "repository",
+      "locator": "evaluate and helper validators at immutable commit"
+    },
+    {
+      "url": "https://github.com/luciferkonn/SCiEL/blob/da80706f98f9bf1295e502544cdf5a9200fe5f57/examples/tsp_tour_minimization/initial_program",
+      "type": "repository",
+      "locator": "original baseline"
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
+    "dependencies": [
+      "numpy",
+      "torch",
+      "click",
+      "openevolve",
+      "psutil"
+    ],
+    "environment_variables": [],
+    "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
+    "notes": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Serialize initial_program/ with utils.code_to_query.format_query_code from the example working directory; pass the resulting text file as --candidate. Compilation and multiple heat-map/tour subprocesses are involved.",
+      "Original utils/tsp_runner.py imports psutil; generated TSP instances are created on demand in temp/points/1000.npy, not external mandatory input files."
+    ],
+    "system_dependencies": [
+      "C++ compiler with C++17 support"
+    ]
+  },
+  "evaluation": {
+    "metric": "combined_score",
+    "direction": "maximize",
+    "protocol": "upstream",
+    "benchmark": "SCiEL source example tsp_tour_minimization",
+    "paper_metric": null,
+    "source_locator": "examples/tsp_tour_minimization/evaluator.py::evaluate"
+  },
+  "execution": {
+    "repository": "https://github.com/luciferkonn/SCiEL",
+    "commit": "da80706f98f9bf1295e502544cdf5a9200fe5f57",
+    "upstream_path": "examples/tsp_tour_minimization",
+    "commands": [],
+    "evaluator_adapter": {
+      "evaluator_path": "examples/tsp_tour_minimization/evaluator.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": "examples/tsp_tour_minimization",
+      "score_key": "combined_score",
+      "score_direction": "maximize",
+      "error_key": "error",
+      "baseline_path": null,
+      "dependencies": [
+        "numpy",
+        "torch",
+        "click",
+        "openevolve",
+        "psutil"
+      ],
+      "notes": [
+        "Call the pinned evaluator directly; no LLM/API call is made by this adapter.",
+        "A completed call does not imply mathematical validity; preserve unknown validity unless the original evaluator exposes an explicit signal."
+      ],
+      "candidate_format": "mixed",
+      "baseline_preparation": {
+        "kind": "sciel_tsp_source_bundle",
+        "formatter_path": "examples/tsp_tour_minimization/utils/code_to_query.py",
+        "callable": "format_query_code",
+        "input_directory": "examples/tsp_tour_minimization/initial_program",
+        "input_files": [
+          "heat_map_train.py",
+          "heat_map_inference.py",
+          "include/utils.hpp",
+          "include/context.hpp",
+          "include/random_solution.hpp",
+          "include/local_2_opt_search.hpp",
+          "include/local_k_opt_search.hpp",
+          "include/additional.hpp",
+          "TSP.cpp",
+          "config.json"
+        ],
+        "file_suffix": ".txt",
+        "language": "mixed"
+      }
+    },
+    "setup_instructions": [
+      "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "Serialize initial_program/ with utils.code_to_query.format_query_code from the example working directory; pass the resulting text file as --candidate. Compilation and multiple heat-map/tour subprocesses are involved."
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Direct evaluation of original candidate contract; model-driven search is configured separately."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "sciel_copy",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.txt",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "combined_score",
+      "error_key": "error",
+      "requires": [
+        "bin:g++",
+        "py:click",
+        "py:numpy",
+        "py:psutil",
+        "py:torch"
+      ],
+      "timeout": 600
+    }
+  },
+  "limitations": [
+    "Source-inspected SCiEL example; not a reproduced paper result.",
+    "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
+    "The baseline is a directory of Python/C++ sources, not a directly importable candidate. It must be serialized using the pinned formatter before evaluation.",
+    "The generated TSP data cache has no fixed random seed and is reused by path; results are not comparable unless the dataset file and its hash are retained.",
+    "Some error branches omit combined_score; the strict common adapter reports an execution error rather than inventing a score.",
+    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "independent_verification": false,
+    "integrity_risks": [
+      "The baseline is a directory of Python/C++ sources, not a directly importable candidate. It must be serialized using the pinned formatter before evaluation.",
+      "The generated TSP data cache has no fixed random seed and is reused by path; results are not comparable unless the dataset file and its hash are retained.",
+      "Some error branches omit combined_score; the strict common adapter reports an execution error rather than inventing a score."
+    ],
+    "execution_tested": false
+  },
+  "source_hashes": {
+    "examples/tsp_tour_minimization/evaluator.py": "7ced45c590a1c70817ee216d3b7b9739e389a38cc5d48044eba34357f783f9af",
+    "examples/tsp_tour_minimization/config.yaml": "7571b4ce49a6ea6e8766db590a6966396d079db6742c3dc6cbcce09243a15cea",
+    "examples/tsp_tour_minimization/requirements.txt": "471d5aeec55a3662b75734dc814bd0ab3007f9281a891cba0d7d3ba8f6725474",
+    "examples/tsp_tour_minimization/README.md": "2239143572e1a89a5ae4354e6531e46d7fea8cda64374db342fc58e0ac69050d",
+    "examples/tsp_tour_minimization/initial_program/TSP.cpp": "8f53c5fc08fc12b11f27a6aee6767a82b21891f19fa26983f4c58d2c6da21f28",
+    "examples/tsp_tour_minimization/initial_program/config.json": "4ba88add982a353c681d9752ce919dfdd2468bf02ab8cba25d8821384cf10081",
+    "examples/tsp_tour_minimization/initial_program/heat_map_inference.py": "dc1a663cfef6ed71c74855ab93ac03121e26f4e589beac8320aa4c10006309b9",
+    "examples/tsp_tour_minimization/initial_program/heat_map_train.py": "4e9f8c265fac77366072397c2ed5294dbcceaf39749b667724687b4f37318975",
+    "examples/tsp_tour_minimization/initial_program/include/additional.hpp": "8354c871e3a38e5332896ea47f86a97fe06d4caa7129f9a956f43af608fb9b5f",
+    "examples/tsp_tour_minimization/initial_program/include/context.hpp": "a94e2f10656017e01714a03045a5d69b4c38e8df2b0aafe254b71cac12e245ed",
+    "examples/tsp_tour_minimization/initial_program/include/json.hpp": "9bea4c8066ef4a1c206b2be5a36302f8926f7fdc6087af5d20b417d0cf103ea6",
+    "examples/tsp_tour_minimization/initial_program/include/local_2_opt_search.hpp": "66685bf08d216d9f628ce55b6974cfd2612162ee143a7d4709c8dae697accb93",
+    "examples/tsp_tour_minimization/initial_program/include/local_k_opt_search.hpp": "9e1fde9e791ffa72be685a7bf38cd65db3b72f08c7b789d722c0f1f01812a56d",
+    "examples/tsp_tour_minimization/initial_program/include/random_solution.hpp": "adf3d950603db1e2bccee77f015899f2bd17c1aac8627696fb4116deb977baaf",
+    "examples/tsp_tour_minimization/initial_program/include/utils.hpp": "1ae38f983bb73bb6c9ab0026a564c2400008789d428a636109f119798d84d6a6",
+    "examples/tsp_tour_minimization/utils/code_to_query.py": "b893e6b8c974a31ffcad33193183cee9a17e61c15313c1d8ad3289c60106f975",
+    "examples/tsp_tour_minimization/utils/runner.py": "ca077c4d8d0ddb3a7ba0aa29fc4e5695efe61f256421d7c0470ad9ea4a51aebf",
+    "examples/tsp_tour_minimization/utils/tsp_runner.py": "4f699ea3fb26e7916024c7fc27f8143755f2fca25fdcdbd036e6b4b3e856c258",
+    "examples/tsp_tour_minimization/utils/heat_map_runner.py": "70ce6ddd4bd30190b8bafca3c9dd1fa62c8cfd1f056f5493b4d55a43b9dbbc80",
+    "examples/tsp_tour_minimization/utils/utils.py": "107543dcb98442f03ed0c614e84b4e4540a08b521359f94faffe0389b58ab6eb",
+    "examples/tsp_tour_minimization/utils/load_data.py": "665bbb28997950df89eddf8e05a3f52e394b1c1abe627799a08e6d117457d442"
+  },
+  "upstream_contract": {
+    "evaluator": {
+      "path": "examples/tsp_tour_minimization/evaluator.py",
+      "signature": "program_path: str",
+      "callable": "evaluate",
+      "async": false
+    },
+    "candidate_calls": [
+      "text file containing *filename* and @@@ delimited source sections; parsed by utils.code_to_query.parse_output_code"
+    ],
+    "baseline_path": "examples/tsp_tour_minimization/initial_program",
+    "baseline_functions": {},
+    "parameters": {
+      "BASE_DIR": "pathlib.Path(__file__).parent",
+      "PROJECT_TEMP_DIRECTORY": "BASE_DIR / 'temp'",
+      "SOLUTIONS_DIRECTORY": "PROJECT_TEMP_DIRECTORY / 'solutions'",
+      "N": 1000,
+      "INSTANCES_COUNT": 8,
+      "HEAT_MAP_TRAIN_TIMEOUT": 480.0,
+      "HEAT_MAP_INFERENCE_TIMEOUT": 60.0,
+      "TSP_COMPILATION_TIMEOUT": 10.0,
+      "TSP_RUN_TIMEOUT": 160.0
+    },
+    "score_key": "combined_score",
+    "score_direction": "maximize",
+    "score_expressions": [],
+    "return_branches": [
+      {
+        "function": "evaluate",
+        "line": 305,
+        "expression": "EvaluationResult(metrics=metrics, artifacts=artifacts)"
+      },
+      {
+        "function": "evaluate",
+        "line": 319,
+        "expression": "EvaluationResult(metrics=error_metrics | {'error': str(e)}, artifacts=error_artifacts)"
+      },
+      {
+        "function": "evaluate",
+        "line": 265,
+        "expression": "EvaluationResult(metrics=error_metrics | {'error': str(e)}, artifacts=error_artifacts)"
+      },
+      {
+        "function": "evaluate",
+        "line": 279,
+        "expression": "EvaluationResult(metrics=error_metrics | {'error': str(e)}, artifacts=error_artifacts)"
+      }
+    ],
+    "metric_assignments": [
+      {
+        "function": "evaluate",
+        "line": 227,
+        "expression": "error_metrics = {'heat_map_train_execution_time_score': 0.0, 'average_heat_map_inference_execution_time_score': 0.0, 'average_tsp_run_execution_time_score': 0.0, 'path_length_score': 0.0, 'path_length_variance_score': 0.0, 'combined_score': 0.0}"
+      }
+    ],
+    "validity_key": null,
+    "validity_semantics": "No independent boolean validity field; zero score, success rate and absence of error do not establish validity.",
+    "error_key": "error",
+    "rng_calls": [],
+    "declared_requirements": [
+      "numpy",
+      "torch",
+      "click"
+    ],
+    "evaluator_imports": [
+      "datetime",
+      "math",
+      "numpy",
+      "openevolve",
+      "pathlib",
+      "sys",
+      "traceback",
+      "typing",
+      "utils",
+      "uuid"
+    ],
+    "baseline_imports": [],
+    "source_config_path": "examples/tsp_tour_minimization/config.yaml",
+    "error_semantics": "Original return branches are retained verbatim as source expressions. Some branches return score zero without error; some omit the primary score. Missing primary scores, exceptions, timeout and nonfinite JSON fail in the common adapter. An absent error field does not imply validity.",
+    "secondary_evaluator_imports": [
+      "numpy",
+      "psutil"
+    ],
+    "secondary_baseline_imports": [
+      "numpy",
+      "torch"
+    ]
+  },
+  "budgets": {
+    "source_config": {
+      "max_iterations": 10000,
+      "evaluator": {
+        "timeout": 1500,
+        "cascade_evaluation": false,
+        "parallel_evaluations": 3
+      }
+    },
+    "enforcement": "These are original search/config budgets. Direct evaluation uses callable defaults and the common runner outer timeout; config max_iterations does not run a search.",
+    "cost_bucket": "heavy_cpu_or_compiler",
+    "recommended_smoke_outer_timeout_seconds": 30,
+    "stages_seconds": {
+      "HEAT_MAP_TRAIN_TIMEOUT": 480.0,
+      "HEAT_MAP_INFERENCE_TIMEOUT": 60.0,
+      "TSP_COMPILATION_TIMEOUT": 10.0,
+      "TSP_RUN_TIMEOUT": 160.0
+    }
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "science_tier": 2,
+    "artifact": "program",
+    "domain": "combinatorial_optimisation",
+    "area": "optimization",
+    "data": "synthetic",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "medium",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Minimize the length of a tour that visits each location once and returns to its start.",
+    "importance_rationale": "Shorter feasible tours address routing, inspection and manufacturing movement costs. The local instances are bounded algorithmic studies of that operations-research objective, not evidence of a deployed logistics improvement.",
+    "papers": [
+      {
+        "title": "An effective implementation of the Lin–Kernighan traveling salesman heuristic",
+        "url": "https://doi.org/10.1016/S0377-2217(99)00284-2",
+        "task_relation": "Helsgaun develops a solver whose central goal is shorter symmetric TSP tours. SCiEL: Heat-map-assisted TSP, 1,000 cities uses its own construction, search, or attention interface and instance distribution while optimizing that same feasible-tour objective.",
+        "primary_goal": "Compute optimal or near-optimal traveling-salesman tours efficiently.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-20",
+    "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

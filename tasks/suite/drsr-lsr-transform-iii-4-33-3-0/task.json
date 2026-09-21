@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.0",
+  "id": "drsr-lsr-transform-iii-4-33-3-0",
+  "name": "LSR-Transform III.4.33_3_0",
+  "description": "LSR-Transform III.4.33_3_0 task evaluated in DrSR: LLM based Scientific Equation Discovery with Dual Reasoning from Data and Experience.",
+  "paper_ids": [
+    "drsr"
+  ],
+  "kind": "specification",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2506.04282",
+      "type": "paper",
+      "locator": "Section 4.1 and Appendix B"
+    },
+    {
+      "url": "https://github.com/pgg3/CoEvo/tree/dcad65e9799961cf67cf29865ff41dda2902a808",
+      "type": "repository",
+      "locator": null
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": null,
+    "notes": []
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "normalized mean squared error",
+    "paper_direction": "minimize",
+    "direction": "minimize",
+    "benchmark": "LSR-Transform III.4.33_3_0",
+    "protocol": "specified_only",
+    "source_locator": "Section 4.1 and Appendix B"
+  },
+  "execution": {
+    "repository": "https://github.com/pgg3/CoEvo",
+    "commit": "dcad65e9799961cf67cf29865ff41dda2902a808",
+    "upstream_path": null,
+    "commands": [],
+    "evaluator_adapter": null,
+    "setup_instructions": [
+      "uv sync (CoEvo README); the direct adapter needs only numpy, pandas and scipy"
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      "uv sync (CoEvo README); the direct adapter needs only numpy, pandas and scipy"
+    ],
+    "setup_steps": [],
+    "notes": [
+      "NMSE minimized; accuracy maximized. Paper table aggregates the two LSR-Transform tasks.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric."
+    ],
+    "suite": {
+      "protocol": "recreated",
+      "family": "lsr_equation",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "py:datasets",
+        "network:huggingface pkuHaowei/llm-srbench",
+        "py:scipy"
+      ],
+      "timeout": 900,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "arXiv HTML unavailable; full PDF retrieved and text extracted.",
+    "No official public runnable implementation verified from the inspected paper. External benchmark code may exist separately.",
+    "pgg3/CoEvo is pinned only as the paper-cited LLM-SR benchmark source; DrSR's own code has not been released.",
+    "LSR-Transform and LSR-Synth evaluation needs the LLM-SRBench package and its datasets, which are not pinned here; DrSR itself has no public implementation.",
+    "No complete, verified execution adapter has been established for this exact task; this package is an explicit implementation gap."
+  ],
+  "source_specification": {
+    "name": "LSR-Transform III.4.33_3_0",
+    "slug": "lsr-transform-iii-4-33-3-0",
+    "description": "LSR-Transform III.4.33_3_0 task evaluated in DrSR: LLM based Scientific Equation Discovery with Dual Reasoning from Data and Experience.",
+    "benchmark": "LSR-Transform III.4.33_3_0",
+    "dataset": null,
+    "metric": "normalized mean squared error",
+    "direction": "minimize",
+    "source_url": "https://arxiv.org/pdf/2506.04282",
+    "source_locator": "Section 4.1 and Appendix B",
+    "upstream_path": null,
+    "requirements": [],
+    "execution_notes": [
+      "NMSE minimized; accuracy maximized. Paper table aggregates the two LSR-Transform tasks.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric.",
+      "Thresholded recovery accuracy is a separate maximized secondary metric."
+    ],
+    "setup_commands": [],
+    "run_commands": [],
+    "execution_blocked_reason": "LSR-Transform and LSR-Synth evaluation needs the LLM-SRBench package and its datasets, which are not pinned here; DrSR itself has no public implementation."
+  },
+  "subtasks": [],
+  "validation": {
+    "level": "paper_inventory",
+    "upstream_reproduction": false,
+    "adapter_checks": null
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "science_tier": 2,
+    "artifact": "equation",
+    "domain": "natural_science",
+    "area": "physics",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "resources": [
+      "network"
+    ],
+    "cost": "medium",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}
