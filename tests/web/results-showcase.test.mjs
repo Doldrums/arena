@@ -40,6 +40,14 @@ const value = (t, label) => card(t,label)?.querySelector('.showcase-highlight-va
 function change(t,id,value,type='change') {const control=t.doc.getElementById(id);control.value=value;control.dispatchEvent(new t.w.Event(type,{bubbles:true}));}
 const chartIds = t => [...t.doc.querySelectorAll('#showcase-efficiency .plot-point')].map(n=>n.dataset.runId);
 const frontierIds = t => [...t.doc.querySelectorAll('#showcase-efficiency .plot-point.on-frontier')].map(n=>n.dataset.runId);
+function assertLoadState(t,state,{busy=false,skeleton=false}={}) {
+  assert.equal(t.doc.getElementById('main').dataset.loadState,state);
+  assert.equal(t.doc.getElementById('main').getAttribute('aria-busy'),String(busy));
+  const loading=t.doc.getElementById('showcase-loading');
+  assert.ok(loading,'loading placeholders exist separately from measured values');
+  assert.equal(loading.hidden,!skeleton);
+  assert.equal(loading.getAttribute('aria-hidden'),'true','decorative skeletons do not announce fake measurements');
+}
 
 test('research dashboard retains the discovery navigation and research link without promotional hero or Queue',()=>{
   const dom=new JSDOM(html);try{
@@ -56,8 +64,130 @@ test('research dashboard retains the discovery navigation and research link with
     for(const id of ['framework','model','state','search','sort','cohort','axis','budget']) assert.ok(doc.getElementById(`showcase-${id}`));
   }finally{dom.window.close();}
 });
-test('without a key no request is made and all six unmeasured highlights remain unknown',async()=>{
-  const t=mount({initialKey:''});try{await flush();assert.equal(t.calls.length,0);assert.equal(t.doc.getElementById('showcase-content').hidden,true);assert.deepEqual([...t.doc.querySelectorAll('.showcase-highlight-value')].map(n=>n.textContent),Array(6).fill('—'));}finally{t.close();}
+test('without a key the connection state has no request, skeleton or dummy metric cards',async()=>{
+  const t=mount({initialKey:''});try{
+    await flush();
+    assert.equal(t.calls.length,0);
+    assertLoadState(t,'disconnected');
+    assert.equal(t.doc.getElementById('showcase-content').hidden,true);
+    assert.equal(t.doc.querySelectorAll('.showcase-highlight-value').length,0);
+    for(const selector of ['#showcase-highlights','#showcase-basis','.showcase-toolbar']) assert.equal(t.doc.querySelector(selector).hidden,true);
+    assert.equal(t.doc.getElementById('showcase-empty').hidden,false);
+    assert.equal(t.doc.getElementById('showcase-empty-connect').hidden,false);
+    assert.equal(t.doc.getElementById('showcase-empty-retry').hidden,true);
+    assert.match(t.doc.querySelector('#showcase-empty h2').textContent,/connect/i);
+  }finally{t.close();}
+});
+test('an initial read shows decorative skeletons until real results arrive without flashing the connection or unknown-metric state',async()=>{
+  let resolve;
+  const t=mount({fetcher:()=>new Promise(done=>{resolve=done;})});try{
+    await flush();
+    assertLoadState(t,'loading',{busy:true,skeleton:true});
+    assert.equal(t.calls.length,1);
+    assert.equal(t.doc.getElementById('showcase-empty').hidden,true);
+    assert.equal(t.doc.getElementById('showcase-content').hidden,true);
+    assert.equal(t.doc.querySelectorAll('.showcase-highlight-value').length,0);
+    for(const selector of ['#showcase-highlights','#showcase-basis','.showcase-toolbar']) assert.equal(t.doc.querySelector(selector).hidden,true);
+    assert.match(t.doc.getElementById('showcase-status').textContent,/loading/i);
+    resolve({ok:true,json:async()=>({schema:'arena.results/1',runs:[run]})});
+    await flush();
+    assertLoadState(t,'ready');
+    assert.equal(t.doc.getElementById('showcase-empty').hidden,true);
+    assert.equal(t.doc.getElementById('showcase-content').hidden,false);
+    for(const selector of ['#showcase-highlights','#showcase-basis','.showcase-toolbar']) assert.equal(t.doc.querySelector(selector).hidden,false);
+    assert.equal(value(t,'Runs'),'1');
+    assert.equal(rows(t).length,1);
+  }finally{t.close();}
+});
+test('loading continues after response headers until the result body is available',async()=>{
+  let resolveBody;
+  const t=mount({fetcher:async()=>({ok:true,json:()=>new Promise(done=>{resolveBody=done;})})});try{
+    await flush();
+    assertLoadState(t,'loading',{busy:true,skeleton:true});
+    assert.equal(t.doc.getElementById('showcase-empty').hidden,true);
+    assert.equal(t.doc.querySelectorAll('.showcase-highlight-value').length,0);
+    resolveBody({schema:'arena.results/1',runs:[run]});
+    await flush();
+    assertLoadState(t,'ready');
+    assert.equal(value(t,'Runs'),'1');
+  }finally{t.close();}
+});
+test('a background refresh retains measured cards and charts, and a failed refresh offers retry while disclosing stale results',async()=>{
+  let rejectRefresh;
+  const updated=clone(run);updated.metrics.usage.total_tokens=6500;
+  const t=mount({fetcher:async(_path,_options,n)=>{
+    if(n===2)return new Promise((_resolve,reject)=>{rejectRefresh=reject;});
+    return {ok:true,json:async()=>({schema:'arena.results/1',runs:[n===1?run:updated]})};
+  }});try{
+    await flush();
+    const refresh=t.app.refresh();
+    await flush();
+    assertLoadState(t,'refreshing',{busy:true});
+    assert.equal(value(t,'Median recorded tokens'),'5,000');
+    assert.deepEqual(chartIds(t),[run.id]);
+    assert.equal(t.doc.getElementById('showcase-content').hidden,false);
+    assert.equal(t.doc.getElementById('showcase-empty').hidden,true);
+    rejectRefresh(new Error('temporary network outage'));
+    await refresh;
+    assertLoadState(t,'error');
+    assert.equal(value(t,'Median recorded tokens'),'5,000');
+    assert.equal(rows(t).length,1);
+    assert.deepEqual(chartIds(t),[run.id]);
+    assert.equal(t.doc.getElementById('showcase-content').hidden,false);
+    assert.equal(t.doc.getElementById('showcase-empty').hidden,true);
+    assert.match(t.doc.getElementById('showcase-status').textContent,/previous|last|stale|retained/i);
+    assert.equal(t.doc.getElementById('showcase-refresh').disabled,false);
+    t.doc.getElementById('showcase-refresh').click();
+    await flush();
+    assertLoadState(t,'ready');
+    assert.equal(value(t,'Median recorded tokens'),'6,500');
+    assert.equal(t.calls.length,3);
+  }finally{t.close();}
+});
+test('an initial read failure replaces skeletons with an explicit retry that recovers without asking for another key',async()=>{
+  let resolveRetry;
+  const t=mount({fetcher:async(_path,_options,n)=>{
+    if(n===1)throw new Error('network unavailable');
+    return new Promise(done=>{resolveRetry=done;});
+  }});try{
+    await flush();
+    assertLoadState(t,'error');
+    assert.equal(t.doc.getElementById('showcase-content').hidden,true);
+    assert.equal(t.doc.querySelectorAll('.showcase-highlight-value').length,0);
+    assert.equal(t.doc.getElementById('showcase-empty').hidden,false);
+    assert.match(t.doc.querySelector('#showcase-empty h2').textContent,/could not load results/i);
+    assert.equal(t.doc.getElementById('showcase-empty-connect').hidden,true);
+    const retry=t.doc.getElementById('showcase-empty-retry');
+    assert.equal(retry.hidden,false);
+    assert.equal(retry.disabled,false);
+    retry.click();
+    await flush();
+    assertLoadState(t,'loading',{busy:true,skeleton:true});
+    assert.equal(t.doc.getElementById('showcase-empty').hidden,true);
+    assert.equal(t.calls.length,2);
+    assert.equal(t.calls[1].options.headers.Authorization,'Bearer private-key');
+    resolveRetry({ok:true,json:async()=>({schema:'arena.results/1',runs:[run]})});
+    await flush();
+    assertLoadState(t,'ready');
+    assert.equal(rows(t).length,1);
+    assert.equal(retry.hidden,true);
+    assert.equal(t.doc.getElementById('showcase-key-dialog').open,false);
+  }finally{t.close();}
+});
+test('a successful empty response shows recorded-run absence rather than loading, connection prompts or dummy metric cards',async()=>{
+  const t=mount({runs:[]});try{
+    await flush();
+    assertLoadState(t,'empty');
+    assert.equal(t.calls.length,1);
+    assert.equal(t.doc.getElementById('showcase-empty').hidden,false);
+    assert.match(t.doc.querySelector('#showcase-empty h2').textContent,/no recorded runs/i);
+    assert.equal(t.doc.getElementById('showcase-empty-connect').hidden,true);
+    assert.equal(t.doc.getElementById('showcase-empty-retry').hidden,true);
+    assert.equal(t.doc.getElementById('showcase-content').hidden,true);
+    assert.equal(t.doc.getElementById('showcase-highlights').hidden,true);
+    assert.equal(t.doc.querySelector('.showcase-toolbar').hidden,false);
+    assert.equal(rows(t).length,0);
+  }finally{t.close();}
 });
 test('session key performs only a read of the scoped same-origin endpoint',async()=>{
   const t=mount();try{await flush();assert.equal(t.calls.length,1);const call=t.calls[0];assert.equal(call.path,'/api/control/results');assert.equal(call.options.method,undefined);assert.equal(call.options.headers.Authorization,'Bearer private-key');assert.equal(call.options.redirect,'error');assert.equal(call.options.cache,'no-store');assert.equal(call.options.credentials,'same-origin');assert.equal(rows(t).length,1);assert.equal(t.doc.querySelectorAll('details.run-evidence').length,1);}finally{t.close();}
@@ -104,7 +234,7 @@ test('model, process state, search and budget filters constrain all run-derived 
   const t=mount({runs:[run,second,active]});try{await flush();change(t,'showcase-model','model-b');assert.deepEqual(rows(t).map(n=>n.dataset.runId),['attention-run']);assert.equal(value(t,'Runs'),'1');change(t,'showcase-model','all');change(t,'showcase-state','active');assert.deepEqual(rows(t).map(n=>n.dataset.runId),['active-run']);change(t,'showcase-state','attention');assert.deepEqual(rows(t).map(n=>n.dataset.runId),['attention-run']);change(t,'showcase-state','all');change(t,'showcase-search','private-image','input');assert.deepEqual(rows(t).map(n=>n.dataset.runId),[run.id]);change(t,'showcase-search','','input');const budget=t.doc.getElementById('showcase-budget');const option=[...budget.options].find(n=>n.value!=='all'&&/8/.test(n.textContent));assert.ok(option);change(t,'showcase-budget',option.value);assert.deepEqual(rows(t).map(n=>n.dataset.runId),['attention-run']);assert.equal(value(t,'Runs'),'1');assert.equal(t.calls.length,1);}finally{t.close();}
 });
 test('a filter with no matching rows has a useful empty state and can recover without another fetch',async()=>{
-  const t=mount();try{await flush();change(t,'showcase-search','no-such-research-run','input');assert.equal(rows(t).length,0);assert.equal(t.doc.getElementById('showcase-content').hidden,true);assert.match(t.doc.getElementById('showcase-empty-copy').textContent,/filter|match/i);assert.doesNotMatch(t.doc.querySelector('#showcase-empty h2').textContent,/connect/i);assert.equal(t.doc.getElementById('showcase-empty-connect').hidden,true);change(t,'showcase-search','','input');assert.equal(rows(t).length,1);assert.equal(t.doc.getElementById('showcase-content').hidden,false);assert.equal(t.calls.length,1);}finally{t.close();}
+  const t=mount();try{await flush();change(t,'showcase-search','no-such-research-run','input');assertLoadState(t,'empty');assert.equal(rows(t).length,0);assert.equal(t.doc.getElementById('showcase-content').hidden,true);assert.equal(t.doc.getElementById('showcase-highlights').hidden,true);assert.equal(t.doc.querySelector('.showcase-toolbar').hidden,false);assert.match(t.doc.getElementById('showcase-empty-copy').textContent,/filter|match/i);assert.doesNotMatch(t.doc.querySelector('#showcase-empty h2').textContent,/connect/i);assert.equal(t.doc.getElementById('showcase-empty-connect').hidden,true);assert.equal(t.doc.getElementById('showcase-empty-retry').hidden,true);change(t,'showcase-search','','input');assertLoadState(t,'ready');assert.equal(rows(t).length,1);assert.equal(t.doc.getElementById('showcase-content').hidden,false);assert.equal(t.calls.length,1);}finally{t.close();}
 });
 test('run table pagination exposes every record while overview totals cover all matching records',async()=>{
   const runs=Array.from({length:25},(_,i)=>{const r=clone(run);r.id=`run-${String(i).padStart(2,'0')}`;r.model=`model-${String(i).padStart(2,'0')}`;return r;});
@@ -128,10 +258,10 @@ test('new key submission stores only a session key and never uses it in a URL',a
   const t=mount({initialKey:''});try{t.doc.getElementById('showcase-connect').click();assert.equal(t.doc.activeElement.id,'showcase-key');t.doc.getElementById('showcase-key').value='new-secret';t.doc.getElementById('showcase-key-form').dispatchEvent(new t.w.Event('submit',{bubbles:true,cancelable:true}));await flush();assert.equal(t.stored.get('arena.queue.session-key'),'new-secret');assert.equal(t.doc.getElementById('showcase-key').value,'');assert.equal(t.doc.getElementById('showcase-key-dialog').open,false);assert.ok(t.calls.every(call=>!call.path.includes('new-secret')));}finally{t.close();}
 });
 test('authorization errors remove prior private content, chart data and invalid keys',async()=>{
-  const t=mount({fetcher:async(_path,_options,n)=>n===1?{ok:true,json:async()=>({schema:'arena.results/1',runs:[run]})}:{ok:false,status:403}});try{await flush();assert.equal(rows(t).length,1);await t.app.refresh();assert.equal(rows(t).length,0);assert.equal(chartIds(t).length,0);assert.equal(t.stored.size,0);assert.match(t.doc.getElementById('showcase-status').textContent,/does not have access/);assert.equal(t.doc.getElementById('showcase-content').hidden,true);}finally{t.close();}
+  const t=mount({fetcher:async(_path,_options,n)=>n===1?{ok:true,json:async()=>({schema:'arena.results/1',runs:[run]})}:{ok:false,status:403}});try{await flush();assert.equal(rows(t).length,1);await t.app.refresh();assertLoadState(t,'disconnected');assert.equal(rows(t).length,0);assert.equal(chartIds(t).length,0);assert.equal(t.doc.querySelectorAll('.showcase-highlight-value').length,0);assert.equal(t.stored.size,0);assert.match(t.doc.getElementById('showcase-status').textContent,/does not have access/);assert.equal(t.doc.getElementById('showcase-content').hidden,true);assert.equal(t.doc.getElementById('showcase-empty-connect').hidden,false);assert.equal(t.doc.getElementById('showcase-empty-retry').hidden,true);}finally{t.close();}
 });
 test('disconnect clears evidence and a late response cannot restore it',async()=>{
-  let resolve;const t=mount({fetcher:()=>new Promise(done=>{resolve=done;})});try{await flush();t.app.disconnect();resolve({ok:true,json:async()=>({schema:'arena.results/1',runs:[run]})});await flush();assert.equal(t.stored.size,0);assert.equal(rows(t).length,0);assert.match(t.doc.getElementById('showcase-status').textContent,/Disconnected/);await t.app.refresh();assert.equal(t.calls.length,1);}finally{t.close();}
+  let resolve;const t=mount({fetcher:()=>new Promise(done=>{resolve=done;})});try{await flush();assertLoadState(t,'loading',{busy:true,skeleton:true});t.app.disconnect();assertLoadState(t,'disconnected');resolve({ok:true,json:async()=>({schema:'arena.results/1',runs:[run]})});await flush();assertLoadState(t,'disconnected');assert.equal(t.stored.size,0);assert.equal(rows(t).length,0);assert.equal(t.doc.querySelectorAll('.showcase-highlight-value').length,0);assert.match(t.doc.getElementById('showcase-status').textContent,/Disconnected/);await t.app.refresh();assert.equal(t.calls.length,1);}finally{t.close();}
 });
 test('untrusted model, task and run labels render as text, never HTML or executable links',async()=>{
   const bad=clone(run);bad.id='javascript:alert(1)';bad.model='<img src=x onerror=alert(1)>';bad.metrics.canonical.task_name='<script>alert(1)</script>';
@@ -139,11 +269,11 @@ test('untrusted model, task and run labels render as text, never HTML or executa
 });
 test('a stalled fetch times out, aborts and allows an explicit read-only retry',async()=>{
   const t=mount({requestTimeoutMs:10,fetcher:async(_path,_options,n)=>n===1?new Promise(()=>{}):{ok:true,json:async()=>({schema:'arena.results/1',runs:[run]})}});
-  try{await new Promise(resolve=>setTimeout(resolve,25));await flush();assert.match(t.doc.getElementById('showcase-status').textContent,/timed out/);assert.equal(t.calls[0].options.signal.aborted,true);assert.equal(t.doc.getElementById('showcase-refresh').disabled,false);await t.app.refresh();assert.equal(rows(t).length,1);assert.equal(t.calls.length,2);}finally{t.close();}
+  try{assertLoadState(t,'loading',{busy:true,skeleton:true});await new Promise(resolve=>setTimeout(resolve,25));await flush();assertLoadState(t,'error');assert.match(t.doc.getElementById('showcase-status').textContent,/timed out/);assert.equal(t.calls[0].options.signal.aborted,true);assert.equal(t.doc.getElementById('showcase-refresh').disabled,false);assert.equal(t.doc.getElementById('showcase-empty-retry').hidden,false);assert.equal(t.doc.getElementById('showcase-empty-retry').disabled,false);t.doc.getElementById('showcase-empty-retry').click();await flush();assertLoadState(t,'ready');assert.equal(rows(t).length,1);assert.equal(t.calls.length,2);assert.ok(t.calls.every(call=>call.options.method===undefined&&call.path==='/api/control/results'));}finally{t.close();}
 });
 test('a stalled response body also times out without leaving Refresh disabled',async()=>{
   const t=mount({requestTimeoutMs:10,fetcher:async()=>({ok:true,json:()=>new Promise(()=>{})})});
-  try{await new Promise(resolve=>setTimeout(resolve,25));await flush();assert.match(t.doc.getElementById('showcase-status').textContent,/timed out/);assert.equal(t.doc.getElementById('showcase-refresh').disabled,false);}finally{t.close();}
+  try{assertLoadState(t,'loading',{busy:true,skeleton:true});await new Promise(resolve=>setTimeout(resolve,25));await flush();assertLoadState(t,'error');assert.match(t.doc.getElementById('showcase-status').textContent,/timed out/);assert.equal(t.doc.getElementById('showcase-refresh').disabled,false);assert.equal(t.doc.getElementById('showcase-empty-retry').hidden,false);assert.equal(t.doc.getElementById('showcase-empty-retry').disabled,false);}finally{t.close();}
 });
 test('truncated results disclose loaded scope and an absent SCiEL cohort never substitutes another system',async()=>{
   const t=mount({responseExtra:{truncated:true,total:600}});try{await flush();assert.match(t.doc.getElementById('showcase-basis').textContent,/1.*600|600.*1/);assert.match(t.doc.getElementById('showcase-basis').textContent,/loaded|sample/i);}finally{t.close();}

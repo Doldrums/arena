@@ -31,7 +31,7 @@ const validity = run => {
 // native outcomes and partial measurements remain inspectable in the run table.
 export function initResultsShowcase({doc = document, fetcher = (...args) => fetch(...args), storage = sessionStorage, pollMs = 30000, requestTimeoutMs = 30000} = {}) {
   const win = doc.defaultView, $ = id => doc.getElementById(id), listeners = [];
-  let key = '', payload = null, groups = new Map(), selected = [], epoch = 0, pending = null, timer = null, destroyed = false, page = 0;
+  let key = '', payload = null, groups = new Map(), selected = [], epoch = 0, pending = null, timer = null, destroyed = false, page = 0, loadState = 'disconnected';
   try { key = storage.getItem(STORAGE_KEY) || ''; } catch {}
   function on(node, type, handler) { node.addEventListener(type,handler); listeners.push(() => node.removeEventListener(type,handler)); }
   function stopPending() { if (!pending) return; win.clearTimeout(pending.timeout); pending.controller.abort(); pending = null; }
@@ -40,7 +40,6 @@ export function initResultsShowcase({doc = document, fetcher = (...args) => fetc
     const card = node('article','showcase-highlight'); if (tone) card.dataset.tone = tone;
     card.append(node('span','showcase-highlight-label',label),node('strong','showcase-highlight-value',value),node('small','',description)); return card;
   }
-  const metricLabels = ['Runs','Models with valid evidence','Candidate validity','Distinct valid programs','Median recorded tokens','Completed runs'];
   const dynamicIds = ['showcase-models','showcase-tokens','showcase-methodology-body','showcase-efficiency','showcase-progress','showcase-validity','showcase-coverage'];
   const noteIds = ['showcase-basis','showcase-score-context','showcase-seed-note','showcase-token-context','showcase-efficiency-note','showcase-validity-note','showcase-coverage-note','showcase-run-count','showcase-table-page'];
   function clear() {
@@ -51,7 +50,37 @@ export function initResultsShowcase({doc = document, fetcher = (...args) => fetc
     for (const [id,value,label] of [['showcase-framework','sciel-release','SCiEL · private image'],['showcase-model','all','All models'],['showcase-budget','all','All budgets']]) { const option = node('option','',label); option.value = value; $(id).replaceChildren(option); }
     $('showcase-search').value = ''; $('showcase-state').value = 'all';
     dynamicIds.forEach(id => $(id).replaceChildren()); noteIds.forEach(id => { $(id).textContent = ''; });
-    $('showcase-highlights').replaceChildren(...metricLabels.map(label => highlight(label,'—','')));
+    $('showcase-highlights').replaceChildren();
+    $('showcase-empty-copy').textContent = 'Connect with your Arena key to view recorded runs and their measurements.';
+    setLoadState('disconnected');
+  }
+  function setLoadState(state) {
+    loadState = state;
+    $('main').dataset.loadState = state;
+    $('main').setAttribute('aria-busy',String(state === 'loading' || state === 'refreshing'));
+    const measured = !!payload && selected.length > 0;
+    $('showcase-loading').hidden = state !== 'loading';
+    $('showcase-toolbar').hidden = !payload;
+    $('showcase-highlights').hidden = !measured;
+    $('showcase-basis').hidden = !payload;
+    $('showcase-content').hidden = !measured;
+    $('showcase-methodology').hidden = !measured;
+    $('showcase-empty').hidden = measured || state === 'loading';
+    $('showcase-empty-retry').hidden = state !== 'error' || !!payload || !key;
+  }
+  function failedLoad(timedOut) {
+    setLoadState('error');
+    const message = timedOut ? 'The results request timed out.' : 'Results could not be loaded.';
+    $('showcase-status').textContent = payload
+      ? `${message} Showing the last loaded results. Refresh to try again.`
+      : `${message} Retry loading to try again.`;
+    $('showcase-key-error').textContent = `${message} Please try again.`;
+    if (!payload) {
+      $('showcase-empty').querySelector('h2').textContent = 'Could not load results';
+      $('showcase-empty-copy').textContent = timedOut
+        ? 'The server is taking longer than expected. Retry when you are ready.'
+        : 'Check your connection and retry. Your access key is kept for the next attempt.';
+    }
   }
   function setAccess() {
     $('showcase-connect').textContent = key ? 'Access key' : 'Connect with key';
@@ -299,11 +328,13 @@ export function initResultsShowcase({doc = document, fetcher = (...args) => fetc
     $('showcase-sort').querySelector('option[value="score"]').disabled = !comparable;
     if (!comparable && $('showcase-sort').value === 'score') $('showcase-sort').value = 'model';
     charts(); measurements(); table(); coverage();
+    setLoadState(loadState === 'refreshing' ? 'refreshing' : selected.length ? 'ready' : 'empty');
   }
   async function refresh() {
     if (!key || destroyed || pending) return;
     const current = ++epoch, controller = new win.AbortController();
     pending = {controller,current,timeout:null}; setAccess();
+    setLoadState(payload ? 'refreshing' : 'loading');
     const timeout = new Promise((resolve,reject) => {
       pending.timeout = win.setTimeout(() => { const error = new Error('Results request timed out.'); error.name = 'TimeoutError'; reject(error); controller.abort(); },requestTimeoutMs);
     });
@@ -322,20 +353,14 @@ export function initResultsShowcase({doc = document, fetcher = (...args) => fetc
       const next = await Promise.race([response.json(),timeout]);
       if (destroyed || current !== epoch) return;
       if (next?.schema !== 'arena.results/1' || !Array.isArray(next.runs)) throw new Error('The results response could not be read.');
-      payload = {...next, runs:next.runs.filter(run => run && typeof run === 'object' && typeof run.id === 'string' && typeof run.framework === 'string')}; configureFilters(); render();
+      payload = {...next, runs:next.runs.filter(run => run && typeof run === 'object' && typeof run.id === 'string' && typeof run.framework === 'string')}; configureFilters(); render(); setLoadState(selected.length ? 'ready' : 'empty');
       const date = finite(next.generated_at) ? new Date(next.generated_at * 1000) : null;
       $('showcase-status').textContent = date && Number.isFinite(date.getTime()) ? `Recorded results · updated ${date.toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'})}` : 'Recorded results';
       $('showcase-key-error').textContent = '';
       if ($('showcase-key-dialog').open) $('showcase-key-dialog').close();
     } catch (error) {
       if (destroyed || current !== epoch || error?.name === 'AbortError') return;
-      if (error?.name === 'TimeoutError') {
-        $('showcase-status').textContent = 'The results request timed out. Refresh to try again.';
-        $('showcase-key-error').textContent = 'The results request timed out. Please try again.';
-        return;
-      }
-      $('showcase-status').textContent = 'Results are temporarily unavailable. Try refreshing.';
-      $('showcase-key-error').textContent = 'Could not connect to results. Check the key and try again.';
+      failedLoad(error?.name === 'TimeoutError');
     } finally { if (current === epoch) { win.clearTimeout(pending?.timeout); pending = null; setAccess(); } }
   }
   function showKey() { $('showcase-key').value = ''; $('showcase-key-dialog').showModal(); $('showcase-key').focus(); }
@@ -352,6 +377,7 @@ export function initResultsShowcase({doc = document, fetcher = (...args) => fetc
   on($('showcase-key-dialog'),'cancel',() => { $('showcase-key').value = ''; });
   on($('showcase-disconnect'),'click',disconnect);
   on($('showcase-refresh'),'click',refresh);
+  on($('showcase-empty-retry'),'click',refresh);
   on($('showcase-cohort'),'change',charts);
   on($('showcase-axis'),'change',charts);
   for (const id of ['showcase-framework','showcase-model','showcase-state','showcase-budget']) on($(id),'change',() => { page = 0; render(); });
@@ -367,7 +393,7 @@ export function initResultsShowcase({doc = document, fetcher = (...args) => fetc
   });
   clear(); setAccess(); if (key) refresh();
   if (pollMs > 0) timer = win.setInterval(() => { if (!doc.hidden) refresh(); },pollMs);
-  return {refresh,disconnect,destroy() { destroyed = true; epoch++; stopPending(); if (timer) win.clearInterval(timer); for (const remove of listeners) remove(); }};
+  return {refresh,disconnect,destroy() { destroyed = true; epoch++; stopPending(); $('main').setAttribute('aria-busy','false'); $('showcase-loading').hidden = true; if (timer) win.clearInterval(timer); for (const remove of listeners) remove(); }};
 }
 
 if (typeof document !== 'undefined' && document.body?.dataset.resultsShowcase === 'true') initResultsShowcase();

@@ -31,16 +31,39 @@
       <h1 id="showcase-title">Results</h1>
       <div class="showcase-context"><span id="showcase-status" role="status" aria-live="polite">Connect to explore recorded results.</span><button id="showcase-refresh" type="button" disabled aria-label="Refresh results">↻</button></div>
     </header>
-    <section class="showcase-toolbar" aria-label="Filter results">
+    <section id="showcase-toolbar" class="showcase-toolbar" aria-label="Filter results" hidden>
       <label>System<select id="showcase-framework"><option value="sciel-release">SCiEL</option></select></label>
       <label>Model<select id="showcase-model"><option value="all">All models</option></select></label>
       <label>Status<select id="showcase-state"><option value="all">All statuses</option><option value="completed">Completed</option><option value="active">Active</option><option value="attention">Needs attention</option><option value="cancelled">Cancelled</option></select></label>
       <label>Budget<select id="showcase-budget"><option value="all">All budgets</option></select></label>
       <label class="showcase-search-label">Search<input id="showcase-search" type="search" placeholder="Search runs, tasks or models" autocomplete="off"></label>
     </section>
-    <section id="showcase-highlights" class="showcase-highlights" aria-label="Result overview"></section>
-    <p id="showcase-basis" class="showcase-basis"></p>
-    <section id="showcase-empty" class="showcase-empty"><h2>Connect to results</h2><p id="showcase-empty-copy">Use your Arena key to inspect recorded scores, evaluation outcomes and resources across runs.</p><button id="showcase-empty-connect" class="button primary" type="button">Connect with key</button></section>
+    <section id="showcase-highlights" class="showcase-highlights" aria-label="Result overview" hidden></section>
+    <p id="showcase-basis" class="showcase-basis" hidden></p>
+    <section id="showcase-empty" class="showcase-empty"><h2 id="showcase-empty-title">Connect to results</h2><p id="showcase-empty-copy">Use your Arena key to inspect recorded scores, evaluation outcomes and resources across runs.</p><div class="showcase-empty-actions"><button id="showcase-empty-connect" class="button primary" type="button">Connect with key</button><button id="showcase-empty-retry" class="button" type="button" hidden>Retry loading</button></div></section>
+    <div id="showcase-loading" class="showcase-loading" aria-hidden="true" hidden>
+      <div class="showcase-highlights">
+        <div class="showcase-highlight"><span class="showcase-skeleton showcase-skeleton-label"></span><span class="showcase-skeleton showcase-skeleton-value"></span><span class="showcase-skeleton showcase-skeleton-note"></span></div>
+        <div class="showcase-highlight"><span class="showcase-skeleton showcase-skeleton-label"></span><span class="showcase-skeleton showcase-skeleton-value"></span><span class="showcase-skeleton showcase-skeleton-note"></span></div>
+        <div class="showcase-highlight"><span class="showcase-skeleton showcase-skeleton-label"></span><span class="showcase-skeleton showcase-skeleton-value"></span><span class="showcase-skeleton showcase-skeleton-note"></span></div>
+        <div class="showcase-highlight"><span class="showcase-skeleton showcase-skeleton-label"></span><span class="showcase-skeleton showcase-skeleton-value"></span><span class="showcase-skeleton showcase-skeleton-note"></span></div>
+        <div class="showcase-highlight"><span class="showcase-skeleton showcase-skeleton-label"></span><span class="showcase-skeleton showcase-skeleton-value"></span><span class="showcase-skeleton showcase-skeleton-note"></span></div>
+        <div class="showcase-highlight"><span class="showcase-skeleton showcase-skeleton-label"></span><span class="showcase-skeleton showcase-skeleton-value"></span><span class="showcase-skeleton showcase-skeleton-note"></span></div>
+      </div>
+      <div class="showcase-chart-grid">
+        <div class="showcase-card showcase-loading-chart"><span class="showcase-skeleton showcase-skeleton-title"></span><span class="showcase-skeleton showcase-skeleton-caption"></span><div class="showcase-skeleton showcase-skeleton-plot"></div><span class="showcase-skeleton showcase-skeleton-note"></span></div>
+        <div class="showcase-card showcase-loading-chart"><span class="showcase-skeleton showcase-skeleton-title"></span><span class="showcase-skeleton showcase-skeleton-caption"></span><div class="showcase-skeleton showcase-skeleton-plot"></div><span class="showcase-skeleton showcase-skeleton-note"></span></div>
+      </div>
+      <div class="showcase-card showcase-loading-table">
+        <span class="showcase-skeleton showcase-skeleton-title"></span>
+        <div class="showcase-loading-rows">
+          <div class="showcase-loading-row"><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span></div>
+          <div class="showcase-loading-row"><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span></div>
+          <div class="showcase-loading-row"><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span></div>
+          <div class="showcase-loading-row"><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span></div>
+        </div>
+      </div>
+    </div>
     <div id="showcase-content" class="showcase-content" hidden>
       <div class="showcase-chart-grid">
         <section class="showcase-card showcase-chart-card" aria-labelledby="showcase-efficiency-title">
