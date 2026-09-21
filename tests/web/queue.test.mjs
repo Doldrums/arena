@@ -9,7 +9,7 @@ const run={id:'run-123',framework:'sciel',profile:'reference-sat',model:'model-a
 const template={id:'sciel-a',framework:'sciel',name:'SCiEL pilot',profile:'reference-sat',model:'model-a',status:'ready',resources:run.resources};
 const flush=async()=>{for(let i=0;i<5;i++)await new Promise(resolve=>setImmediate(resolve));};
 function mount({initialKey='',rows=[run],status=200,logText='Worker started.',total=rows.length}={}){
-  const dom=new JSDOM(html,{url:'http://arena.test/queue',runScripts:'outside-only',pretendToBeVisual:true});
+  const dom=new JSDOM(html,{url:'http://arena.test/experiments/queue',runScripts:'outside-only',pretendToBeVisual:true});
   const w=dom.window,doc=w.document,calls=[];
   w.HTMLDialogElement.prototype.showModal=function(){this.setAttribute('open','');};
   w.HTMLDialogElement.prototype.close=function(){this.removeAttribute('open');};
@@ -55,4 +55,23 @@ test('disconnect clears credentials and run data; authorization failure stays ex
 test('queue pagination makes older batches accessible',async()=>{
   const {dom,doc,calls,app}=mount({initialKey:'key',total:518});
   try{await flush();assert.equal(doc.getElementById('queue-next').disabled,false);doc.getElementById('queue-next').click();await flush();assert.ok(calls.some(call=>call.path==='/api/queue?limit=200&offset=200'));assert.equal(doc.getElementById('queue-prev').disabled,false);}finally{app.destroy();dom.window.close();}
+});
+
+test('queue stays in the experiment sidebar with its run controls intact',()=>{
+  const dom=new JSDOM(html);
+  try {
+    const doc=dom.window.document;
+    const nav=doc.querySelector('aside.workspace-sidebar nav[aria-label="Experiment workspace"]');
+    assert.ok(nav);
+    assert.deepEqual([...nav.querySelectorAll('a')].map(a=>a.getAttribute('href')),['/experiments','/experiments/results','/experiments/queue']);
+    assert.equal(nav.querySelector('[aria-current="page"]').getAttribute('href'),'/experiments/queue');
+    assert.equal(doc.querySelectorAll('header nav').length,0);
+    assert.ok(doc.querySelector('.workspace-sidebar-bottom a[href="/"]'));
+    assert.ok(doc.querySelector('.workspace-content > header #queue-connect'));
+    assert.ok(doc.querySelector('.workspace-content > main#main #queue-new'));
+    assert.ok(doc.querySelector('main footer a[href="/experiments"]'));
+    const styles=[...doc.querySelectorAll('link[rel="stylesheet"]')];
+    assert.equal(styles.at(-1).getAttribute('href'),'/arena-workspace.css');
+    for(const link of nav.querySelectorAll('a')) assert.ok(link.getAttribute('aria-label'));
+  } finally { dom.window.close(); }
 });

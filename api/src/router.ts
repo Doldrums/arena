@@ -41,6 +41,9 @@ export async function route(request: Request, env: Env): Promise<Response> {
   } else {
     if (url.pathname === '/') url.pathname = '/index.html';
     if (url.pathname === '/experiments' || url.pathname === '/experiments/') url.pathname = '/experiment.html';
+    if (url.pathname === '/results' || url.pathname === '/results/') url.pathname = '/results.html';
+    if (url.pathname === '/experiments/results' || url.pathname === '/experiments/results/') url.pathname = '/experiment-results.html';
+    if (['/experiments/queue', '/experiments/queue/', '/queue', '/queue/'].includes(url.pathname)) url.pathname = '/queue.html';
     response = await env.ASSETS.fetch(new Request(url, request));
     response = new Response(response.body, response);
     response.headers.set('Cache-Control', 'private, no-store');

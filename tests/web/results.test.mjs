@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
 
-const html = readFileSync(new URL('../../web/results.html',import.meta.url),'utf8').replace('data-results-app="true"','data-results-app="test"');
+const html = readFileSync(new URL('../../web/experiment-results.html',import.meta.url),'utf8').replace('data-results-app="true"','data-results-app="test"');
 const source = readFileSync(new URL('../../web/arena-results.js',import.meta.url),'utf8').replace(/^export /gm,'');
 const run = {
   id:'image-run',framework:'sciel-release',profile:'reference-sat',model:'model-a',state:'completed',label:'SCiEL pilot',returncode:0,
@@ -12,7 +12,7 @@ const run = {
 const clone = value => JSON.parse(JSON.stringify(value));
 const flush = async () => { for (let i=0;i<5;i++) await new Promise(resolve => setImmediate(resolve)); };
 function mount({rows=[run],initialKey='test-private-key',responseStatus=200,responseExtra={},fetcher:customFetcher}={}) {
-  const dom = new JSDOM(html,{url:'http://arena.test/results',runScripts:'outside-only',pretendToBeVisual:true});
+  const dom = new JSDOM(html,{url:'http://arena.test/experiments/results',runScripts:'outside-only',pretendToBeVisual:true});
   const w = dom.window, doc = w.document, calls = [], stored = new Map(initialKey ? [['arena.queue.session-key',initialKey]] : []);
   const storage = {getItem:key=>stored.get(key),setItem:(key,value)=>stored.set(key,value),removeItem:key=>stored.delete(key)};
   w.HTMLDialogElement.prototype.showModal=function(){ this.setAttribute('open',''); };
@@ -94,9 +94,27 @@ test('authorization failure removes previously displayed private data',async()=>
 test('expanded provenance survives an evidence refresh',async()=>{
   const t=mount();try{await flush();t.doc.querySelector('details').open=true;await t.app.refresh();assert.equal(t.doc.querySelector('details').open,true);}finally{t.close();}
 });
-test('results is reachable from each existing page',()=>{
-  for(const name of ['index.html','experiment.html','queue.html']) {
+test('operational results keeps the experiment sidebar and private controls',()=>{
+  const dom=new JSDOM(html);
+  try {
+    const doc=dom.window.document;
+    const nav=doc.querySelector('aside.workspace-sidebar nav[aria-label="Experiment workspace"]');
+    assert.ok(nav);
+    assert.deepEqual([...nav.querySelectorAll('a')].map(a=>a.getAttribute('href')),['/experiments','/experiments/results','/experiments/queue']);
+    assert.equal(nav.querySelector('[aria-current="page"]').getAttribute('href'),'/experiments/results');
+    assert.equal(doc.querySelectorAll('header nav').length,0);
+    assert.ok(doc.querySelector('.workspace-sidebar-bottom a[href="/"]'));
+    assert.ok(doc.querySelector('.workspace-content > header #results-connect'));
+    assert.ok(doc.querySelector('.workspace-content > main#main'));
+    assert.ok(doc.querySelector('main footer a[href="/experiments/queue"]'));
+    const styles=[...doc.querySelectorAll('link[rel="stylesheet"]')];
+    assert.equal(styles.at(-1).getAttribute('href'),'/arena-workspace.css');
+    for(const link of nav.querySelectorAll('a')) assert.ok(link.getAttribute('aria-label'));
+  } finally { dom.window.close(); }
+});
+test('landing and operational navigation lead to their own results pages',()=>{
+  for(const [name,path] of [['index.html','/results'],['experiment.html','/experiments/results'],['queue.html','/experiments/results']]) {
     const dom=new JSDOM(readFileSync(new URL(`../../web/${name}`,import.meta.url),'utf8'));
-    try{assert.ok(dom.window.document.querySelector('nav[aria-label="Empira"] a[href="/results"]'),name);}finally{dom.window.close();}
+    try{assert.ok(dom.window.document.querySelector(`nav a[href="${path}"]`),name);}finally{dom.window.close();}
   }
 });

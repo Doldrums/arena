@@ -4,44 +4,42 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#f5f5f5">
+  <meta name="theme-color" content="#f5f5f6">
+  <meta name="description" content="SCiEL research results: valid programs, scores and the resources behind them.">
   <title>Empira · Results</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/arena-results.css">
-  <script type="module" src="/arena-results.js"></script>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/arena.css">
+  <link rel="stylesheet" href="/arena-theme.css">
+  <link rel="stylesheet" href="/arena-results-showcase.css">
+  <script type="module" src="/arena-results-showcase.js"></script>
 </head>
-<body data-results-app="true">
+<body class="arena-shell showcase-shell" data-results-showcase="true">
   <a class="skip" href="#main">Skip to results</a>
-  <header class="results-header">
-    <a class="results-brand" href="/">Empira <small>THE RSI RESEARCH ARENA</small></a>
-    <nav aria-label="Empira"><a href="/">Tasks</a><a href="/?view=participants">Participants</a><a href="/experiments">Experiments</a><a href="/results" aria-current="page">Results</a><a href="/queue">Queue</a></nav>
-    <button id="results-connect" type="button">Connect with key</button>
+  <header class="arena-masthead">
+    <a class="arena-brand" href="/" aria-label="Empira home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="28" height="28" fill="#fff"><rect x="9" y="10" width="9" height="17" rx="4.5" transform="rotate(9 13.5 18.5)"/><rect x="24" y="13" width="9" height="16" rx="4.5" transform="rotate(12 28.5 21)"/></svg></span><span>Empira<span class="brand-caption">THE RSI RESEARCH ARENA</span></span></a>
+    <nav class="arena-tabs" aria-label="Empira">
+      <a href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="2"/><rect x="14" y="4" width="6" height="6" rx="2"/><rect x="4" y="14" width="6" height="6" rx="2"/><rect x="14" y="14" width="6" height="6" rx="2"/></svg>Tasks</a>
+      <a href="/?view=participants"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 4v2"/></svg>Participants</a>
+      <a href="/experiments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16h16M7 15l4-5 4 3 5-7"/></svg>Experiments<small aria-hidden="true">↗</small></a>
+      <a href="/results" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V12M12 20V4M19 20V8"/></svg>Results</a>
+    </nav>
+    <div class="arena-header-actions"><button id="showcase-connect" class="button" type="button" aria-haspopup="dialog" aria-controls="showcase-key-dialog">Connect with key</button></div>
   </header>
-  <main id="main" tabindex="-1">
-    <div class="results-heading"><div><p class="eyebrow">RESEARCH EVIDENCE</p><h1>Results</h1><p id="results-intro" class="results-intro">SCiEL across models, tasks and search budgets.</p></div><span class="readonly">Read only <span aria-hidden="true">↗</span></span></div>
-    <div class="results-status-line"><span id="results-status" role="status" aria-live="polite">Connect to view recorded results.</span><button id="results-refresh" class="text-button" type="button" disabled>Refresh ↻</button></div>
-    <section class="results-controls" aria-label="Filter results">
-      <label>System<select id="results-framework"><option value="sciel-release">SCiEL · private image</option><option value="all">All systems</option></select></label>
-      <label>Model<select id="results-model"><option value="all">All models</option></select></label>
-      <label>Process status<select id="results-state"><option value="all">All statuses</option><option value="completed">Completed</option><option value="active">Active / queued</option><option value="attention">Failed / blocked</option><option value="cancelled">Cancelled</option></select></label>
-      <label class="results-search-label">Find a run<input id="results-search" type="search" placeholder="Task, profile, batch or run ID"></label>
-    </section>
-    <section id="results-overview" class="results-overview" aria-label="Evidence summary"></section>
-    <div id="results-notices" class="results-notices"></div>
-    <section class="results-panel results-matrix-panel" aria-labelledby="matrix-title">
-      <div class="panel-heading"><div><p class="eyebrow" id="matrix-eyebrow">SCIEL · PRIVATE IMAGE</p><h2 id="matrix-title">Across models</h2><p>Process completion and candidate validity are separate. Seed → best shows whether the search improved on its starting point.</p></div><span id="results-count" class="count-pill">—</span></div>
-      <div id="results-matrix" class="results-matrix"><p class="empty">Recorded runs will appear here after you connect.</p></div>
-    </section>
-    <section class="results-panel results-comparison-panel" aria-labelledby="comparison-title">
-      <div class="panel-heading"><div><p class="eyebrow">SHARED EVALUATOR</p><h2 id="comparison-title">Score and recorded resources</h2><p>Compare within one task and evaluator identity. Budgets and search protocols can still differ. Select the same model before interpreting efficiency.</p></div></div>
-      <div class="comparison-controls"><label>Evaluator cohort<select id="results-cohort" disabled><option value="">No recorded cohort</option></select></label><fieldset><legend>Resource axis</legend><label><input type="radio" name="results-axis" value="tokens" checked> Recorded tokens</label><label><input type="radio" name="results-axis" value="time"> Wall time</label></fieldset></div>
-      <div id="results-chart" class="results-chart"><p class="empty">A plot appears when a canonical score and the selected resource measurement are both recorded.</p></div>
-      <p class="comparison-note">Tokens are counts, not a price estimate. Wall time includes the run’s recorded work and waiting. These observations do not establish which method is best.</p>
-    </section>
-    <section class="reading-guide" aria-labelledby="guide-title"><h2 id="guide-title">How to read this board</h2><div><p><strong>Canonical evidence</strong> comes from the task evaluator. A valid candidate can have a low score; validity does not mean an optimal solution.</p><p><strong>Native scores</strong> stay attached to their framework and task in each run’s evidence. They are not combined into a global ranking.</p><p><strong>Missing measurements</strong> stay unknown. Partial evidence and failed processes remain visible, including useful results produced before a failure.</p></div></section>
-    <details id="results-methodology" class="measurement-notes" hidden><summary>Measurement notes</summary><div id="results-measurement-notes"></div></details>
-    <footer><span>Private workspace · recorded results only</span><a href="/queue">Open run queue ↗</a><a href="/experiments">Inspect SCiEL experiments ↗</a></footer>
+  <main id="main" class="arena-canvas showcase-canvas" tabindex="-1">
+    <section class="showcase-intro" aria-labelledby="showcase-title"><div><p class="eyebrow">RESULTS · SCIEL</p><h1 id="showcase-title">SCiEL in the arena.</h1><p class="showcase-deck">The programs it produces.<br>The resources it takes.</p></div><div class="showcase-intro-aside"><p>Explore results across models, with the task, starting point and search budget in view.</p><a class="button primary" href="/experiments/results">Open experiment board <span aria-hidden="true">↗</span></a></div></section>
+    <div class="showcase-context"><div><span id="showcase-status" role="status" aria-live="polite">Connect to explore recorded results.</span><button id="showcase-refresh" type="button" disabled aria-label="Refresh results">↻</button></div><label id="showcase-cohort-label" hidden>Study<select id="showcase-cohort" aria-label="Task and evaluator cohort"></select></label></div>
+    <section id="showcase-highlights" class="showcase-highlights" aria-label="SCiEL result highlights"></section>
+    <p id="showcase-basis" class="showcase-basis"></p>
+    <section id="showcase-empty" class="showcase-empty"><span class="showcase-empty-icon" aria-hidden="true">↗</span><h2>The evidence, all in one place.</h2><p id="showcase-empty-copy">Connect with your Arena key to see SCiEL’s recorded scores, valid programs and resource use.</p><button id="showcase-empty-connect" class="button primary" type="button">Connect to results</button></section>
+    <div id="showcase-content" class="showcase-content" hidden>
+      <section class="showcase-scores showcase-card" aria-labelledby="showcase-model-title"><header><div><p class="eyebrow">ACROSS MODELS</p><h2 id="showcase-model-title">Results, model by model.</h2><p id="showcase-score-context"></p></div><span class="showcase-round-mark" aria-hidden="true">↗</span></header><div class="showcase-row-legend"><span>Model / process</span><span>Seed → best score</span></div><div id="showcase-models"></div><p id="showcase-seed-note" class="showcase-card-note"></p></section>
+      <aside class="showcase-resources" aria-label="Search and resources"><article class="showcase-budget-card"><p class="eyebrow">THE SEARCH BUDGET</p><div id="showcase-budget-value" class="showcase-budget-value">—</div><h2 id="showcase-budget-title">Native search budget</h2><p id="showcase-budget-note"></p><div class="showcase-budget-art" aria-hidden="true"><span></span><span></span><span></span><span></span></div></article><article class="showcase-card showcase-token-card"><p class="eyebrow">RECORDED RESOURCES</p><h2>Tokens behind the result.</h2><p id="showcase-token-context"></p><div id="showcase-tokens"></div><p class="showcase-card-note">Counts from recorded provider receipts. Hatched bars have partial token coverage.</p></article></aside>
+    </div>
+    <details id="showcase-methodology" class="showcase-methodology" hidden><summary><span>What these results measure</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div id="showcase-methodology-body"></div></details>
+    <section class="showcase-next"><div><h2>Follow the research behind the numbers.</h2><p>Explore individual runs, candidate evidence and recorded resources in the experiment board.</p></div><a class="showcase-next-link" href="/experiments/results" aria-label="Open experiment board"><span aria-hidden="true">↗</span></a></section>
+    <footer class="page-footer arena-page-footer showcase-footer"><span class="showcase-attribution"><span>Made by</span> <a href="https://cpil-lab.github.io/" target="_blank" rel="noopener noreferrer"><img src="/brand/cpil.png" width="24" height="24" alt="">CPIL Research Group</a> <span>@</span> <a href="https://mbzuai.ac.ae/" target="_blank" rel="noopener noreferrer"><img src="/brand/mbzuai.png" width="28" height="28" alt="">MBZUAI</a></span><a href="/?view=participants">Explore participating systems ↗</a></footer>
   </main>
-  <dialog id="results-key-dialog" aria-labelledby="results-key-title"><form id="results-key-form"><div class="dialog-heading"><h2 id="results-key-title">Connect to results</h2><button id="results-key-close" type="button" aria-label="Close">×</button></div><p>Use your Arena access key. It stays in this browser tab’s session and is sent only to this server.</p><label>Access key<input id="results-key" type="password" required autocomplete="off" spellcheck="false"></label><p id="results-key-error" class="error" role="alert"></p><div class="dialog-actions"><button id="results-disconnect" type="button">Disconnect</button><button class="primary" type="submit">Connect</button></div></form></dialog>
+  <dialog id="showcase-key-dialog" class="showcase-key-dialog" aria-labelledby="showcase-key-title"><form id="showcase-key-form"><div class="showcase-dialog-heading"><h2 id="showcase-key-title">Connect to results</h2><button id="showcase-key-close" type="button" aria-label="Close">×</button></div><p>Your Arena key connects this browser tab to its recorded results.</p><label>Access key<input id="showcase-key" type="password" required autocomplete="off" spellcheck="false"></label><p id="showcase-key-error" role="alert"></p><div class="showcase-dialog-actions"><button id="showcase-disconnect" class="button" type="button">Disconnect</button><button class="button primary" type="submit">Connect</button></div></form></dialog>
 </body>
 </html>

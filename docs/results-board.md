@@ -1,8 +1,15 @@
 # Recorded results
 
-The private board is available at `/results`, using the same tab-session access
-key as `/queue`. The page only reads data: opening it, changing a filter or
-refreshing never submits work or imports a participant implementation.
+The research overview has a Results showcase at `/results`, with the same
+masthead and tabs as Tasks and Participants. It emphasizes SCiEL's recorded
+quality, valid programs and resource use. Queue controls belong to the separate
+experiment workspace.
+
+The experiment workspace retains its left sidebar: Experiments at `/experiments`,
+detailed Results at `/experiments/results`, and Queue at `/experiments/queue`.
+`/queue` remains an alias for the queue. Both Results views use the same tab-session
+access key and owner-scoped data. Opening them, changing a filter or refreshing
+never submits work or imports a participant implementation.
 
 `GET /api/control/results` requires `read` scope. Ordinary keys see their owner's
 runs; administrators see all runs. The response contains at most the newest 500

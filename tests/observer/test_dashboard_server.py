@@ -110,6 +110,11 @@ class DashboardServerTests(unittest.TestCase):
         before = self.fingerprints()
         for path, mime in [("/", "text/html"), ("/index.html", "text/html"),
                            ("/experiments", "text/html"), ("/experiment.html", "text/html"),
+                           ("/results", "text/html"), ("/results.html", "text/html"),
+                           ("/experiments/results", "text/html"), ("/experiment-results.html", "text/html"),
+                           ("/experiments/queue", "text/html"), ("/queue", "text/html"),
+                           ("/arena-workspace.css", "text/css"),
+                           ("/arena-results-showcase.js", "javascript"), ("/arena-results-showcase.css", "text/css"),
                            ("/arena.js", "javascript"), ("/arena.css", "text/css"),
                            ("/arena-insights.js", "javascript"), ("/arena-insights.css", "text/css"),
                            ("/arena-atlas.js", "javascript"), ("/arena-atlas.css", "text/css"),
@@ -149,6 +154,21 @@ class DashboardServerTests(unittest.TestCase):
         self.assertIn("+value = 2", detail["diff"])
         self.assertFalse(self.executed.exists())
         self.assertEqual(self.fingerprints(), before)
+
+    def test_showcase_and_operational_results_keep_separate_navigation(self):
+        landing = self.get('/')[2].decode()
+        showcase = self.get('/results')[2].decode()
+        operational = self.get('/experiments/results')[2].decode()
+        queue = self.get('/experiments/queue')[2].decode()
+        self.assertNotIn('href="/queue"', landing)
+        self.assertNotIn('href="/experiments/queue"', showcase)
+        self.assertIn('arena-tabs', showcase)
+        self.assertIn('arena-workspace', operational)
+        self.assertIn('arena-workspace', queue)
+        self.assertIn('href="/experiments/results"', queue)
+        self.assertIn('href="/experiments/queue"', operational)
+        self.assertEqual(self.get('/queue')[2], self.get('/experiments/queue')[2])
+        self.assertNotEqual(showcase, operational)
 
     def test_arena_registry_routes_are_separate_from_native_run_observation(self):
         before = self.fingerprints()

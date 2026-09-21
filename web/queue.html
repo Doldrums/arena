@@ -8,15 +8,29 @@
   <title>Empira · Run queue</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/arena-queue.css">
+  <link rel="stylesheet" href="/arena-workspace.css">
   <script type="module" src="/arena-queue.js"></script>
 </head>
-<body data-queue-app="true">
+<body class="arena-workspace" data-queue-app="true">
   <a class="skip" href="#main">Skip to queue</a>
-  <header class="queue-header">
-    <a class="queue-brand" href="/">Empira <small>THE RSI RESEARCH ARENA</small></a>
-    <nav aria-label="Empira"><a href="/">Tasks</a><a href="/?view=participants">Participants</a><a href="/experiments">Experiments</a><a href="/results">Results</a><a href="/queue" aria-current="page">Queue</a></nav>
-    <button id="queue-connect" type="button">Connect with key</button>
-  </header>
+  <aside class="workspace-sidebar" aria-label="Research workspace">
+    <a class="workspace-brand" href="/experiments" aria-label="Empira experiments">
+      <span class="workspace-brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="28" height="28" fill="#fff"><rect x="9" y="10" width="9" height="17" rx="4.5" transform="rotate(9 13.5 18.5)"/><rect x="24" y="13" width="9" height="16" rx="4.5" transform="rotate(12 28.5 21)"/></svg></span>
+      <span class="workspace-brand-name">Empira<small>THE RSI RESEARCH ARENA</small></span>
+    </a>
+    <nav class="workspace-nav" aria-label="Experiment workspace">
+      <a href="/experiments" aria-label="Experiments" title="Experiments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16h16M7 15l4-5 4 3 5-7"/></svg><span>Experiments</span></a>
+      <a href="/experiments/results" aria-label="Results" title="Results"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V12M12 20V4M19 20V8"/></svg><span>Results</span></a>
+      <a href="/experiments/queue" aria-current="page" aria-label="Queue" title="Queue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h1M3 12h1M3 18h1"/></svg><span>Queue</span></a>
+    </nav>
+    <div class="workspace-sidebar-note"><span>Research workspace</span><p>Experiments, their evidence<br>and the next runs.</p></div>
+    <div class="workspace-sidebar-bottom"><a href="/" aria-label="Research overview" title="Research overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg><span>Research overview</span></a></div>
+  </aside>
+  <div class="workspace-content">
+    <header class="workspace-topbar">
+      <div class="workspace-breadcrumbs"><a href="/experiments">Experiments</a><span aria-hidden="true">/</span><span>Run queue</span></div>
+      <button id="queue-connect" type="button">Connect with key</button>
+    </header>
   <main id="main" tabindex="-1">
     <div class="queue-heading"><div><p class="eyebrow">EXPERIMENTS</p><h1>Run queue</h1><p class="muted">Native research runs, admitted as resources become available.</p></div><button id="queue-new" class="primary" type="button" disabled>New run <span aria-hidden="true">+</span></button></div>
     <div class="queue-status-line"><span id="queue-status" role="status" aria-live="polite">Connect to view the private queue.</span><button id="queue-refresh" class="text-button" type="button" disabled>Refresh ↻</button></div>
@@ -32,6 +46,7 @@
     </div>
     <footer>Private workspace <span>·</span> <a href="/experiments">Open the SCiEL experiment inspector ↗</a></footer>
   </main>
+  </div>
   <dialog id="queue-key-dialog" aria-labelledby="queue-key-title"><form id="queue-key-form"><div class="dialog-heading"><h2 id="queue-key-title">Connect to the queue</h2><button type="button" data-close="queue-key-dialog" aria-label="Close">×</button></div><p>Use your Arena access key. It stays in this browser tab’s session and is sent only to this server.</p><label>Access key<input id="queue-key" type="password" required autocomplete="off" spellcheck="false"></label><p id="queue-key-error" class="error" role="alert"></p><div class="dialog-actions"><button type="button" id="queue-disconnect">Disconnect</button><button class="primary" type="submit">Connect</button></div></form></dialog>
   <dialog id="queue-submit-dialog" aria-labelledby="queue-submit-title"><form id="queue-submit-form"><div class="dialog-heading"><h2 id="queue-submit-title">Queue a research run</h2><button type="button" data-close="queue-submit-dialog" aria-label="Close">×</button></div><p>Choose a reviewed framework configuration. Starting a run uses model and evaluation resources.</p><label>Configuration<select id="queue-template" required></select></label><p id="queue-template-note" class="muted"></p><label>Run label<input id="queue-label" maxlength="120" placeholder="Optional study label"></label><p id="queue-submit-error" class="error" role="alert"></p><div class="dialog-actions"><button type="button" data-close="queue-submit-dialog">Cancel</button><button id="queue-submit" type="submit" class="primary">Add to queue</button></div></form></dialog>
 </body>
