@@ -15,13 +15,18 @@ the optional `OBSERVER` VPC Service binding described below.
 | `/?view=participants` | Participants and research references |
 | `/results` | Published results overview from `/api/results-overview` |
 | `/experiments` | Live read-only experiment viewer when `OBSERVER` is configured; otherwise the page shows an unavailable/retry state |
-| `/experiments/results` | Private workspace page; `/api/control/results` is unavailable (404) |
+| `/experiments/results` | Published research dashboard within the workspace sidebar; private control results are shown only when that API is available and authenticated |
 | `/experiments/queue` or `/queue` | Queue page; live queue APIs are unavailable |
 
 The published overview is bundled from `registry/results-overview.json`. Its
 refresh control reloads that snapshot; new VM measurements require an explicit
 publication and deployment. The overview does not send an Arena control key or
-fall back to private control endpoints. Non-GET/HEAD requests return 405.
+fall back to private control endpoints. The workspace uses this same snapshot
+when its private control API is unavailable, as on Cloudflare. Non-GET/HEAD
+requests return 405. The research snapshot currently contains 203 measured
+SCiEL runs, separate from 196 integration records. See the
+[Results refresh report](../reports/results-research-refresh-20260921.md) for
+metric definitions and validation.
 
 The existing private VM service hosts experiments and control APIs independently.
 The Worker exposes only an explicit allowlist of native observer GET/HEAD routes.
@@ -71,7 +76,7 @@ and [connector requirements](https://developers.cloudflare.com/workers-vpc/confi
 ### Observer-only updates and imported history
 
 The September 21 observer update uses a separate code release at
-`/opt/arena/observer-releases/3225c8b8`. The board's systemd drop-in,
+`/opt/arena/observer-releases/b6f1b32`. The board's systemd drop-in,
 `/etc/systemd/system/arena-board.service.d/80-observer-snapshot.conf`, selects its
 `src` directory through `PYTHONPATH`. This leaves the worker's existing
 `/opt/arena/current` release and running experiments unchanged. Future board

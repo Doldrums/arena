@@ -58,3 +58,26 @@ records stay unknown. Private paths, raw artifacts and run IDs are not published
 
 No experiment was launched or resumed. The deployment updates only the board and
 its published snapshot; execution controls remain behind their existing boundary.
+
+## Verified deployment
+
+Reviewed code commit: `b6f1b326335078d4ca2b5fdb024e6f6b013636e0`. The board-only
+release is `/opt/arena/observer-releases/b6f1b32`; its archive SHA-256 is
+`48b0bbca2a4082a8be3e8155e48dca95f758d656d0c229ca7b2634526b1783c4`.
+After warming the observer, its API returned 217 native records and the published
+aggregate returned 203 research and 196 integration records. The experiment
+worker process remained unchanged.
+
+Both Workers were deployed with their existing authentication and private
+observer bindings preserved:
+
+- Main: `2a86cc81-9373-44f3-a0aa-21969663a519`.
+- Expiring debug: `bcfae831-95be-4b52-aa94-4333d8eef28c`.
+
+Authenticated Chromium verification on the deployed debug Worker rendered both
+`/results` and `/experiments/results` at 1440px and 390px. Each showed the expected
+default best result, 74/80 improved runs, five models, 80 distribution points and
+two charts. Model and elapsed-checkpoint filters and the integration disclosure
+worked. No JavaScript errors or page overflow occurred; the workspace retained
+its sidebar. Unauthenticated aggregate requests returned 401, and the main
+Results route continued to show the university Cloudflare Access sign-in gate.
