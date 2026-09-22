@@ -24,7 +24,9 @@ from urllib.error import HTTPError, URLError
 from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from sciel_control_transition import current_revision, load_transition, snapshot_binding
+from sciel_control_transition import (
+    current_revision, load_transition, observe_admission, snapshot_binding, validate_resume_transition,
+)
 
 TERMINAL = {"completed", "failed", "cancelled", "blocked"}
 STATES = TERMINAL | {"queued", "preparing", "running"}
@@ -131,7 +133,7 @@ def validate_templates(planned, live):
     if not planned or len({row["id"] for row in planned}) != len(planned):
         raise ValueError("Campaign needs a nonempty list of unique prepared templates")
     for row in planned:
-        if (row != by_id.get(row["id"]) or row["framework"] != "sciel-release"
+        if (encoded(row) != encoded(by_id.get(row["id"])) or row["framework"] != "sciel-release"
                 or row["status"] != "ready" or "astra" in row["model"].lower()):
             raise ValueError("Prepared template differs from the live reviewed configuration")
 
@@ -233,22 +235,44 @@ def write_status(path, value):
 
 
 def validate_resume(path, summary):
+    summary["run_assignments"] = {}
     if path.exists():
         previous = json.loads(read_bytes(path, private=True))
         for key in ("schema", "campaign", "templates_sha256", "batch_size", "models", "control_revision"):
             if previous.get(key) != summary[key]:
                 raise ValueError("Resume requires the same campaign, templates, model, batch size and control revision")
-        if previous.get("control_transition") and previous["control_transition"] != summary.get("control_transition"):
-            raise ValueError("Resume requires the same explicit control transition")
+        validate_resume_transition(previous, summary)
+        assignments = previous.get("run_assignments", {})
+        if type(assignments) is not dict:
+            raise ValueError("Invalid recorded campaign run assignments")
+        for template, item in assignments.items():
+            if type(item) is not dict or set(item) != {"id", "batch_id"}:
+                raise ValueError("Invalid recorded campaign run assignment")
+            remember_run(summary, {"template": template, "id": item["id"]}, item["batch_id"])
+        for batch in previous.get("batches", []):
+            for row in batch.get("runs", []):
+                remember_run(summary, row, batch["batch_id"])
         if summary.get("control_transition"):
-            if (previous.get("active_control_revision") == summary["control_transition"]["next_revision"]
-                    and summary["active_control_revision"] != previous["active_control_revision"]):
-                raise ValueError("Resume cannot revert an approved control append")
             summary["run_bindings"] = dict(previous.get("run_bindings", {}))
             for batch in previous.get("batches", []):
                 for run in batch.get("runs", []):
                     summary["run_bindings"].setdefault(run["id"],
                         {"revision": run.get("revision", previous["control_revision"])})
+
+
+def remember_run(summary, row, batch_id):
+    if (type(row.get("id")) is not str or not re.fullmatch(r"[a-f0-9]{32}", row["id"])
+            or type(row.get("template")) is not str or not row["template"]
+            or type(batch_id) is not str or not batch_id):
+        raise ValueError("Invalid immutable campaign run identity")
+    expected = {"id": row["id"], "batch_id": batch_id}
+    assignments = summary["run_assignments"]
+    previous = assignments.get(row["template"])
+    if previous is not None and previous != expected:
+        raise ValueError("Recorded campaign run identity cannot be replaced")
+    if any(item["id"] == row["id"] and key != row["template"] for key, item in assignments.items()):
+        raise ValueError("Recorded run cannot belong to multiple campaign templates")
+    assignments[row["template"]] = expected
 
 
 def admit(args, planned, summary, live, transition=None):
@@ -257,7 +281,9 @@ def admit(args, planned, summary, live, transition=None):
     state_dir = Path(live["state_dir"])
     def check_live():
         return verify_live(control, args.control_config, planned, revision, transition=transition, summary=summary)
-    def check_run(row, template, batch_id):
+    def check_run(row, template, batch_id, expected_id=None):
+        if expected_id is not None and row.get("id") != expected_id:
+            raise ValueError("Control response replaced the requested run identity")
         expected = revision
         if transition:
             if type(row.get("id")) is not str or not re.fullmatch(r"[a-f0-9]{32}", row["id"]):
@@ -266,8 +292,10 @@ def admit(args, planned, summary, live, transition=None):
                                        read=read_bytes, encode=encoded)
             expected = binding["revision"]
         verify_run(row, template, batch_id, expected)
+        remember_run(summary, row, batch_id)
         if transition:
             summary["run_bindings"][row["id"]] = binding
+            observe_admission(transition, summary, row["revision"])
     check_live()
     existing = control.runs()
     assignments = {row["id"]: f"{args.campaign}-b{index:03d}"
@@ -277,6 +305,22 @@ def admit(args, planned, summary, live, transition=None):
         batch = row.get("batch_id") or ""
         if batch.startswith(args.campaign + "-b") and assignments.get(row["template"]) != batch:
             raise ValueError("Existing campaign runs have a different batch assignment")
+    by_id = {row["id"]: row for row in existing}
+    templates = {row["id"]: row for row in planned}
+    # Older submitters recorded bindings immediately after POST, before writing
+    # a batch record. Recover those identities before considering any new POST.
+    if transition:
+        for ident in dict(summary["run_bindings"]):
+            row = by_id.get(ident)
+            if (row is None or row["template"] not in templates
+                    or assignments.get(row["template"]) != row.get("batch_id")):
+                raise ValueError("Previously bound campaign run is absent or has changed its assignment")
+            check_run(row, templates[row["template"]], row["batch_id"], ident)
+    for template_id, identity in dict(summary["run_assignments"]).items():
+        if (template_id not in templates or identity["id"] not in by_id
+                or assignments.get(template_id) != identity["batch_id"]):
+            raise ValueError("Previously recorded campaign run is absent or has changed its assignment")
+        check_run(by_id[identity["id"]], templates[template_id], identity["batch_id"], identity["id"])
     summary.update(state="running", updated_at=time.time())
     write_status(args.status, summary)
     for index, start in enumerate(range(0, len(planned), args.batch_size), 1):
@@ -288,18 +332,18 @@ def admit(args, planned, summary, live, transition=None):
         for template in wave:
             run = admitted.get(template["id"])
             if run is None:
+                check_live()
                 run = control.call("/api/queue", submission(template, args.campaign, index))["run"]
             check_run(run, template, batch_id)
             admitted[template["id"]] = run
-            if transition:
-                write_status(args.status, summary)
+            write_status(args.status, summary)
         previous = None
         while True:
             check_live()
             rows = []
             for template in wave:
                 row = control.call("/api/queue/" + admitted[template["id"]]["id"])["run"]
-                check_run(row, template, batch_id)
+                check_run(row, template, batch_id, admitted[template["id"]]["id"])
                 rows.append(row)
             rows, counts, finished, failed = batch_state(rows, wave, batch_id)
             issues = {row["id"]: problem for row in rows if (problem := native_issue(row, state_dir))}
@@ -331,7 +375,7 @@ def main(argv=None):
     parser.add_argument("--status", type=Path, required=True)
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument("--control-transition", type=Path,
-                        help="Explicit private frozen old-to-new append transition; never installs configuration")
+                        help="Explicit private frozen append transition or ordered chain; never installs configuration")
     parser.add_argument("--admit", action="store_true")
     args = parser.parse_args(argv)
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,63}", args.campaign) or not 1 <= args.batch_size <= 16:
