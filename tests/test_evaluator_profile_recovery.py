@@ -9,6 +9,7 @@ import pytest
 
 from arena import evaluation_resources as resources
 from arena import evaluator_execution, evaluator_proxy as proxy
+from evaluator_cpu_helpers import image, cpu_binding, native_container
 
 spec = importlib.util.spec_from_file_location("profile_recovery_fixture",
     Path(__file__).with_name("test_evaluator_proxy.py"))
@@ -40,10 +41,12 @@ def test_create_persists_profile_before_daemon_and_recovers_exact_labels(
     monkeypatch.setattr(resources, "require_parent_budget", lambda *args: None)
     monkeypatch.setattr(evaluator_execution.os, "chown", lambda *args: None)
     instance = proxy.Proxy(config)
-    expected = {"id": None, "run": RUN, "name": NAME}
+    expected = {"id": None, "run": RUN, "name": NAME, "cpu": cpu_binding(config, body)}
     if profile is not None:
         expected["resource_profile"] = profile
     def create(method, path, body=None, **kwargs):
+        if method == "GET" and path.startswith("/images/"):
+            return 200, {}, json.dumps(image(config.images[0])).encode()
         assert method == "POST"
         stages = list(config.staging_root.iterdir())
         assert len(stages) == 1
@@ -66,13 +69,16 @@ def test_create_persists_profile_before_daemon_and_recovers_exact_labels(
     calls = []
     def recover(method, path, **kwargs):
         calls.append((method, path))
+        if path.startswith("/images/"):
+            return 200, {}, json.dumps(image(config.images[0])).encode()
         if method == "GET":
-            return 200, {}, json.dumps({"Id": IDENT, "Config": {"Labels": body["Labels"]}}).encode()
+            return 200, {}, json.dumps(native_container(config, stage, expected)).encode()
         return 204, {}, b""
     restarted.request = recover
     restarted.recover()
-    assert calls == [("GET", "/containers/" + (expected["id"] or NAME) + "/json"),
-                     ("DELETE", "/containers/" + IDENT + "?force=1")]
+    assert calls[0] == ("GET", "/containers/" + (expected["id"] or NAME) + "/json")
+    assert calls[1][0] == "GET" and calls[1][1].startswith("/images/")
+    assert calls[2] == ("DELETE", "/containers/" + IDENT + "?force=1")
     assert not stage.exists()
 
 

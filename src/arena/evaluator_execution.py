@@ -78,7 +78,12 @@ class Proxy:
                     # Durable ownership precedes both the transient staging
                     # record and Docker POST. A lost response still owns GPU.
                     gpu_lease = self.gpu_leases.reserve(recovery, stage)
-                (stage / "record.json").write_text(json.dumps(recovery))
+                if gpu_lease is None:
+                    from .evaluator_cpu_recovery import bind_image, write_record
+                    recovery["cpu"] = bind_image(self.request, self.config, rebuilt)
+                    write_record(stage, recovery)
+                else:
+                    (stage / "record.json").write_text(json.dumps(recovery))
                 # Retain only the trusted library mount rebuilt by policy;
                 # caller-writable candidate/results paths are always replaced.
                 rebuilt["HostConfig"]["Mounts"] = [*rebuilt["HostConfig"]["Mounts"],
@@ -92,7 +97,10 @@ class Proxy:
                     if gpu_lease is not None:
                         self.gpu_leases.identify(gpu_lease, ident)
                     recovery["id"] = ident
-                    (stage / "record.json").write_text(json.dumps(recovery))
+                    if gpu_lease is None:
+                        write_record(stage, recovery)
+                    else:
+                        (stage / "record.json").write_text(json.dumps(recovery))
                     self.records[name] = {"id": ident, "run": run_id, "stage": stage, "output_fd": output_fd,
                                           "expires": time.monotonic() + int(rebuilt["Cmd"][11]) + 60,
                                           "candidate_sha256": hashlib.sha256(program).hexdigest()}
@@ -192,7 +200,8 @@ class Proxy:
             if metadata.exists():
                 require(metadata.is_file() and not metadata.is_symlink() and metadata.stat().st_size <= 4096)
                 record = json_object(metadata.read_bytes())
-                require(set(record) in ({"id", "run", "name"}, {"id", "run", "name", "resource_profile"})
+                require({"id", "run", "name"} <= set(record)
+                        and not set(record) - {"id", "run", "name", "resource_profile", "cpu"}
                         and RUN.fullmatch(record["run"])
                         and (record["id"] is None or re.fullmatch(r"[a-f0-9]{64}", record["id"]))
                         and re.fullmatch(r"arena-eval-[a-f0-9]{32}", record["name"]))
@@ -202,14 +211,13 @@ class Proxy:
                     profile = record["resource_profile"]
                     require(type(profile) is str and profile in PROFILES)
                     labels["arena.evaluation-profile"] = profile
+                from .evaluator_cpu_recovery import validate_saved, verify_container
+                validate_saved(self.config, record, labels)
                 status, _, raw = self.request("GET", "/containers/" + (record["id"] or record["name"]) + "/json")
                 if status != 404:
                     require(status == 200)
                     native = json_object(raw)
-                    ident = native.get("Id")
-                    require(type(ident) is str and re.fullmatch(r"[a-f0-9]{64}", ident)
-                            and (record["id"] is None or ident == record["id"])
-                            and native.get("Config", {}).get("Labels") == labels)
+                    ident = verify_container(self.request, self.config, stage, record, native, labels)
                     deleted = self.request("DELETE", "/containers/" + ident + "?force=1")
                     require(deleted[0] in {204, 404})
             shutil.rmtree(stage)
