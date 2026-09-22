@@ -8230,11 +8230,20 @@
     {
       "path": "suite/sciel-math-tsp-tour-minimization/initial_program/include/json.hpp",
       "kind": "external_native_runtime_asset"
+    },
+    {
+      "path": "suite/_lib/autoresearch_suite/kernel_cpu.py",
+      "kind": "timing_protocol_revision",
+      "original_sha256": "23a170c2862e5e3984914c55cff71e19e4cd392e00bbc8e0a52e873b26b6ff09",
+      "current_sha256": "5a2318cc07b85583c7629efd91451e99c6f98bce547f7d535c74b2ce6e4ddff9",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "note": "Shapes, tolerance and scoring formulas retained; historical host-wide-thread timings are not current timing evidence."
     }
   ],
   "additional_files": [
     "catalog/source-assets.json",
     "run.py",
+    "scripts/audit_kernel_cpu_memory.py",
     "scripts/prepare_source_assets.py",
     "src/autoresearch_tasks/cli.py",
     "src/autoresearch_tasks/source_assets.py",
@@ -8248,6 +8257,7 @@
     "suite/_lib/autoresearch_suite/combinatorial_resources.py",
     "suite/_lib/autoresearch_suite/combinatorial_routing.py",
     "suite/_lib/autoresearch_suite/combinatorial_scheduling.py",
+    "suite/_lib/autoresearch_suite/kernel_threads.py",
     "suite/_lib/autoresearch_suite/sciel_algotune_timing.py",
     "suite/_lib/autoresearch_suite/sciel_prompt_data.py",
     "suite/_lib/autoresearch_suite/sciel_signal_metrics.py",
@@ -8281,7 +8291,10 @@
     "suite/sciel-math-subsets-grid-no-isosceles/upstream_evaluator.py",
     "tests/test_collection_runtime.py",
     "tests/test_construction_validity.py",
-    "tests/test_task_cache_paths.py"
+    "tests/test_kernel_cpu_resources.py",
+    "tests/test_kernel_thread_policy.py",
+    "tests/test_task_cache_paths.py",
+    "validation/kernel-cpu-resource-audit.json"
   ],
   "evidence_note": "Original hashes and execution reports describe the imported source revision. Adapted files have new hashes; historical execution claims do not automatically validate adapted code."
 }

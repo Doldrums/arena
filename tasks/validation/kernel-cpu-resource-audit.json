@@ -1,0 +1,4052 @@
+{
+  "schema": "arena.kernel-cpu-resource-audit/1",
+  "task_count": 51,
+  "timing_protocol": "arena.kernel-cpu.single-thread/1",
+  "analysis": "static_allocation_lower_bounds_only",
+  "model_calls": 0,
+  "metrics": {
+    "speedup": 27,
+    "tflops": 24
+  },
+  "exceed_2gib_count": 19,
+  "limitations": [
+    "Not measured peak RSS: excludes Python/PyTorch, allocator retention, library workspaces and other temporaries.",
+    "Operator-loop liveness can retain earlier tensors; the maximum is a lower bound, not a safe memory limit.",
+    "Dense attention weights are a shape-derived warning, not a claim that the fused reference materializes them.",
+    "No task shapes, score formulas, tolerances, seeds, repeats or evaluator timeouts were reduced.",
+    "A task below 2 GiB here is not proven to fit 2 GiB or its timeout; every seed still needs measured preflight."
+  ],
+  "tasks": [
+    {
+      "task_id": "accelopt-adamw-m10944-n2048-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "6cf7604955feb8f95ff2998f1047e0ec098e085a90271dcd6e9462153fa769d6",
+      "seed_sha256": "0429701e8dec7af6761fdf7b830b1b146055b4765f5a61f4aa5751207a31f7b2",
+      "allocation_floor_bytes": 1434451968,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "adamw",
+          "op": "adamw",
+          "params": {
+            "m": 10944,
+            "n": 2048
+          },
+          "inputs": [
+            {
+              "shape": [
+                10944,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 89653248
+            },
+            {
+              "shape": [
+                10944,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 89653248
+            },
+            {
+              "shape": [
+                10944,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 89653248
+            },
+            {
+              "shape": [
+                10944,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 89653248
+            }
+          ],
+          "output": {
+            "shape": [
+              3,
+              10944,
+              2048
+            ],
+            "dtype": "float32",
+            "bytes": 268959744
+          },
+          "resident_input_bytes": 358612992,
+          "input_generation_floor_bytes": 448266240,
+          "correctness_floor_bytes": 1434451968,
+          "allocation_floor_bytes": 1434451968
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-add-rmsnorm-matmul-m4096-n2048-k1024-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "c0cafe84b7103561e1d0b7cc97b73a5d52b6ecf20df01ad6c25b8bb55e478d76",
+      "seed_sha256": "406ab3bc9935b3370e82f2b440d2bab49d4285030787caedaa03fd3f9840b8cf",
+      "allocation_floor_bytes": 176164864,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "add_rmsnorm_matmul",
+          "op": "add_rmsnorm_matmul",
+          "params": {
+            "m": 4096,
+            "n": 2048,
+            "k": 1024
+          },
+          "inputs": [
+            {
+              "shape": [
+                4096,
+                1024
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                4096,
+                1024
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                1024
+              ],
+              "dtype": "float32",
+              "bytes": 4096
+            },
+            {
+              "shape": [
+                1024,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 8388608
+            }
+          ],
+          "output": {
+            "shape": [
+              4096,
+              2048
+            ],
+            "dtype": "float32",
+            "bytes": 33554432
+          },
+          "resident_input_bytes": 41947136,
+          "input_generation_floor_bytes": 50335744,
+          "correctness_floor_bytes": 176164864,
+          "allocation_floor_bytes": 176164864
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-bmm-b16-m4096-k64-n4096-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "e8f013e806e7d7cf90cbeb5ab3ce14004119bf849e739d2464a16469390e16aa",
+      "seed_sha256": "f19a811be4a6bb7b2b3818f24a20d61abb603a95ddaf82542d6bea44480e49ef",
+      "allocation_floor_bytes": 4328521728,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "bmm",
+          "op": "bmm",
+          "params": {
+            "b": 16,
+            "m": 4096,
+            "k": 64,
+            "n": 4096
+          },
+          "inputs": [
+            {
+              "shape": [
+                16,
+                4096,
+                64
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                16,
+                64,
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            }
+          ],
+          "output": {
+            "shape": [
+              16,
+              4096,
+              4096
+            ],
+            "dtype": "float32",
+            "bytes": 1073741824
+          },
+          "resident_input_bytes": 33554432,
+          "input_generation_floor_bytes": 50331648,
+          "correctness_floor_bytes": 4328521728,
+          "allocation_floor_bytes": 4328521728
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-bmm-softmax-b16-k64-m4096-n4096-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "ba0a43544872e2c59678c7637007716965da2c1868d258a410add8d03b0d4537",
+      "seed_sha256": "368d096f47384ca7b0974d014b3f72cf682d2dcb356007021bdb47564b1369b4",
+      "allocation_floor_bytes": 4328521728,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "bmm_softmax",
+          "op": "bmm_softmax",
+          "params": {
+            "b": 16,
+            "m": 4096,
+            "k": 64,
+            "n": 4096
+          },
+          "inputs": [
+            {
+              "shape": [
+                16,
+                4096,
+                64
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                16,
+                64,
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            }
+          ],
+          "output": {
+            "shape": [
+              16,
+              4096,
+              4096
+            ],
+            "dtype": "float32",
+            "bytes": 1073741824
+          },
+          "resident_input_bytes": 33554432,
+          "input_generation_floor_bytes": 50331648,
+          "correctness_floor_bytes": 4328521728,
+          "allocation_floor_bytes": 4328521728
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-gqa-full-b1-n4096-qh16-kh8-d128-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "e72ffb416d20a41e9bf3ea8065a2cd4e2e269ea3109f3ad39b1c5cefbb5d189b",
+      "seed_sha256": "e08df3b27249195153d8efd4e01e87e2fa30e48139c6c0c06ac31c07d503d1fb",
+      "allocation_floor_bytes": 201326592,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 1,
+            "heads_q": 16,
+            "heads_kv": 8,
+            "seq": 4096,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                1,
+                16,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 33554432
+            },
+            {
+              "shape": [
+                1,
+                8,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                1,
+                8,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            }
+          ],
+          "output": {
+            "shape": [
+              1,
+              16,
+              4096,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 33554432
+          },
+          "resident_input_bytes": 67108864,
+          "input_generation_floor_bytes": 83886080,
+          "correctness_floor_bytes": 201326592,
+          "allocation_floor_bytes": 201326592,
+          "dense_attention_weights_bytes": 1073741824
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-lora-m4096-n12288-k5120-r128-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "e3d9037cb563b8eea154eb2bab2944a221ffff8ed109a0534515223c64455645",
+      "seed_sha256": "97a83d785920351d9149be9e51a8d770eaf9773f13dbadccc89b72ecd91b8580",
+      "allocation_floor_bytes": 1149763584,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "lora",
+          "op": "lora",
+          "params": {
+            "m": 4096,
+            "n": 12288,
+            "k": 5120,
+            "r": 128
+          },
+          "inputs": [
+            {
+              "shape": [
+                4096,
+                5120
+              ],
+              "dtype": "float32",
+              "bytes": 83886080
+            },
+            {
+              "shape": [
+                5120,
+                12288
+              ],
+              "dtype": "float32",
+              "bytes": 251658240
+            },
+            {
+              "shape": [
+                5120,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 2621440
+            },
+            {
+              "shape": [
+                128,
+                12288
+              ],
+              "dtype": "float32",
+              "bytes": 6291456
+            }
+          ],
+          "output": {
+            "shape": [
+              4096,
+              12288
+            ],
+            "dtype": "float32",
+            "bytes": 201326592
+          },
+          "resident_input_bytes": 344457216,
+          "input_generation_floor_bytes": 587202560,
+          "correctness_floor_bytes": 1149763584,
+          "allocation_floor_bytes": 1149763584
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-mamba-m7168-c256-s16-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "fcc4ab8d428bf0eb806b3bc39701013275db8126b24c896352461551b193679f",
+      "seed_sha256": "e4b7d334a5a059be3c1b2133ce521551c943e0fd7574f5f737672864d6d5141d",
+      "allocation_floor_bytes": 44975104,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "mamba_scan",
+          "op": "mamba_scan",
+          "params": {
+            "seq": 7168,
+            "channels": 256,
+            "state": 16
+          },
+          "inputs": [
+            {
+              "shape": [
+                7168,
+                256
+              ],
+              "dtype": "float32",
+              "bytes": 7340032
+            },
+            {
+              "shape": [
+                7168,
+                256
+              ],
+              "dtype": "float32",
+              "bytes": 7340032
+            },
+            {
+              "shape": [
+                256,
+                16
+              ],
+              "dtype": "float32",
+              "bytes": 16384
+            },
+            {
+              "shape": [
+                7168,
+                16
+              ],
+              "dtype": "float32",
+              "bytes": 458752
+            },
+            {
+              "shape": [
+                7168,
+                16
+              ],
+              "dtype": "float32",
+              "bytes": 458752
+            },
+            {
+              "shape": [
+                256
+              ],
+              "dtype": "float32",
+              "bytes": 1024
+            }
+          ],
+          "output": {
+            "shape": [
+              7168,
+              256
+            ],
+            "dtype": "float32",
+            "bytes": 7340032
+          },
+          "resident_input_bytes": 15614976,
+          "input_generation_floor_bytes": 22020096,
+          "correctness_floor_bytes": 44975104,
+          "allocation_floor_bytes": 44975104
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-matmul-add-rmsnorm-m4096-n2048-k2048-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "db0ceece14f72c9177eb3618ed33da03cf185a9c0997738dd8118db7d5435ae5",
+      "seed_sha256": "cc44febba5e7d9fc0635d1cfb8753346bb6e906cad1ef6ec097d2c75cf7d9cff",
+      "allocation_floor_bytes": 218112000,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "matmul_add_rmsnorm",
+          "op": "matmul_add_rmsnorm",
+          "params": {
+            "m": 4096,
+            "n": 2048,
+            "k": 2048
+          },
+          "inputs": [
+            {
+              "shape": [
+                4096,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 33554432
+            },
+            {
+              "shape": [
+                2048,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                4096,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 33554432
+            },
+            {
+              "shape": [
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 8192
+            }
+          ],
+          "output": {
+            "shape": [
+              4096,
+              2048
+            ],
+            "dtype": "float32",
+            "bytes": 33554432
+          },
+          "resident_input_bytes": 83894272,
+          "input_generation_floor_bytes": 117440512,
+          "correctness_floor_bytes": 218112000,
+          "allocation_floor_bytes": 218112000
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-matmul-m4096-n12288-k5120-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "112de91426cabafad4a0c3552e515467e93503dc6d2bc552cf264add83e5a0a0",
+      "seed_sha256": "e2ac191eaae67ee30699a7f22887e96040196cf0aa9a15b67e34105662fb2f99",
+      "allocation_floor_bytes": 1140850688,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "matmul",
+          "op": "matmul",
+          "params": {
+            "m": 4096,
+            "n": 12288,
+            "k": 5120
+          },
+          "inputs": [
+            {
+              "shape": [
+                4096,
+                5120
+              ],
+              "dtype": "float32",
+              "bytes": 83886080
+            },
+            {
+              "shape": [
+                5120,
+                12288
+              ],
+              "dtype": "float32",
+              "bytes": 251658240
+            }
+          ],
+          "output": {
+            "shape": [
+              4096,
+              12288
+            ],
+            "dtype": "float32",
+            "bytes": 201326592
+          },
+          "resident_input_bytes": 335544320,
+          "input_generation_floor_bytes": 587202560,
+          "correctness_floor_bytes": 1140850688,
+          "allocation_floor_bytes": 1140850688
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-rmsnorm-matmul-m4096-n2048-k1024-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "74bd821e2b9197c0e43cd90105baf5bd716cd4a2f4720dccd9689c50a503b10b",
+      "seed_sha256": "706f570c6c5e29885dacec8453d600ce657edc267742ab6e826287dddee98e71",
+      "allocation_floor_bytes": 159387648,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "rmsnorm_matmul",
+          "op": "rmsnorm_matmul",
+          "params": {
+            "m": 4096,
+            "n": 2048,
+            "k": 1024
+          },
+          "inputs": [
+            {
+              "shape": [
+                4096,
+                1024
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                1024
+              ],
+              "dtype": "float32",
+              "bytes": 4096
+            },
+            {
+              "shape": [
+                1024,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 8388608
+            }
+          ],
+          "output": {
+            "shape": [
+              4096,
+              2048
+            ],
+            "dtype": "float32",
+            "bytes": 33554432
+          },
+          "resident_input_bytes": 25169920,
+          "input_generation_floor_bytes": 33558528,
+          "correctness_floor_bytes": 159387648,
+          "allocation_floor_bytes": 159387648
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-rope-single-freq-apply-b1-h64-n4096-d128-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "fbb5504859efc79cdabb3fa01b906258858a3c21012aa2c18dd1afe1168a4952",
+      "seed_sha256": "3d97a0fe2b97291a6e2172829946d8ffad64a3875e1ce880111090fbc8a77189",
+      "allocation_floor_bytes": 673185792,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "rope",
+          "op": "rope",
+          "params": {
+            "b": 1,
+            "heads": 64,
+            "seq": 4096,
+            "dim": 128
+          },
+          "inputs": [
+            {
+              "shape": [
+                1,
+                64,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            },
+            {
+              "shape": [
+                4096,
+                64
+              ],
+              "dtype": "float32",
+              "bytes": 1048576
+            },
+            {
+              "shape": [
+                4096,
+                64
+              ],
+              "dtype": "float32",
+              "bytes": 1048576
+            }
+          ],
+          "output": {
+            "shape": [
+              1,
+              64,
+              4096,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 134217728
+          },
+          "resident_input_bytes": 136314880,
+          "input_generation_floor_bytes": 268435456,
+          "correctness_floor_bytes": 673185792,
+          "allocation_floor_bytes": 673185792
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-silu-m4096-n7168-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "f43fa31de9b18749f679f20f4747529ed267b9d9492ebd66cfe8aa09e5a0933c",
+      "seed_sha256": "3a4ad07e7d7f07563650663094066f11e5184ebf8bc2e35e337263eb12113e77",
+      "allocation_floor_bytes": 587202560,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "silu",
+          "op": "silu",
+          "params": {
+            "m": 4096,
+            "n": 7168
+          },
+          "inputs": [
+            {
+              "shape": [
+                4096,
+                7168
+              ],
+              "dtype": "float32",
+              "bytes": 117440512
+            }
+          ],
+          "output": {
+            "shape": [
+              4096,
+              7168
+            ],
+            "dtype": "float32",
+            "bytes": 117440512
+          },
+          "resident_input_bytes": 117440512,
+          "input_generation_floor_bytes": 234881024,
+          "correctness_floor_bytes": 587202560,
+          "allocation_floor_bytes": 587202560
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-swiglu-m4096-n3072-k1024-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "7cf8228b4f9ac180a1370819ab7b148182789f9e2e650fde574f7919522784bf",
+      "seed_sha256": "581cd0709db229c0cf3ac6d7d037209ce83982e6df7df2e85442c6ed093ea8cc",
+      "allocation_floor_bytes": 243269632,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "swiglu",
+          "op": "swiglu",
+          "params": {
+            "m": 4096,
+            "n": 3072,
+            "k": 1024
+          },
+          "inputs": [
+            {
+              "shape": [
+                4096,
+                1024
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                1024,
+                3072
+              ],
+              "dtype": "float32",
+              "bytes": 12582912
+            },
+            {
+              "shape": [
+                1024,
+                3072
+              ],
+              "dtype": "float32",
+              "bytes": 12582912
+            }
+          ],
+          "output": {
+            "shape": [
+              4096,
+              3072
+            ],
+            "dtype": "float32",
+            "bytes": 50331648
+          },
+          "resident_input_bytes": 41943040,
+          "input_generation_floor_bytes": 54525952,
+          "correctness_floor_bytes": 243269632,
+          "allocation_floor_bytes": 243269632
+        }
+      ]
+    },
+    {
+      "task_id": "accelopt-transpose-matmul-m4096-k2048-n10944-0",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "f13e3f639e2f57c0ac54aef44960a359fb6b3d65856c30b51dd0877543797ccf",
+      "seed_sha256": "d99e729184d3860fbe4312bbc22bf2b212ee779a556f50f30390c6a30b1ea470",
+      "allocation_floor_bytes": 840433664,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "transpose_matmul",
+          "op": "transpose_matmul",
+          "params": {
+            "m": 4096,
+            "k": 2048,
+            "n": 10944
+          },
+          "inputs": [
+            {
+              "shape": [
+                2048,
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 33554432
+            },
+            {
+              "shape": [
+                2048,
+                10944
+              ],
+              "dtype": "float32",
+              "bytes": 89653248
+            }
+          ],
+          "output": {
+            "shape": [
+              4096,
+              10944
+            ],
+            "dtype": "float32",
+            "bytes": 179306496
+          },
+          "resident_input_bytes": 123207680,
+          "input_generation_floor_bytes": 212860928,
+          "correctness_floor_bytes": 840433664,
+          "allocation_floor_bytes": 840433664
+        }
+      ]
+    },
+    {
+      "task_id": "agentic-optimization-decode-attention-kernel-optimization",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "9ca9a27c1a54a6ab989984a956b7d25ed94b6df1034c260ee721719ee026bdfb",
+      "seed_sha256": "d9a9a5e3b44541636fd3ff07280f5ed4c264e1fcaee38a789e1b2b4bb787ee03",
+      "allocation_floor_bytes": 3221749760,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "decode_attention",
+          "op": "decode_attention",
+          "params": {
+            "batch": 32,
+            "heads": 32,
+            "dim": 128,
+            "kv_len": 2048
+          },
+          "inputs": [
+            {
+              "shape": [
+                32,
+                32,
+                1,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 524288
+            },
+            {
+              "shape": [
+                32,
+                32,
+                2048,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 1073741824
+            },
+            {
+              "shape": [
+                32,
+                32,
+                2048,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 1073741824
+            }
+          ],
+          "output": {
+            "shape": [
+              32,
+              32,
+              1,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 524288
+          },
+          "resident_input_bytes": 2148007936,
+          "input_generation_floor_bytes": 3221749760,
+          "correctness_floor_bytes": 2150105088,
+          "allocation_floor_bytes": 3221749760
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-4-kv-heads-causal-sequence-16384",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "c273f3c681c187f7dbe16f17e8b744226386fae98c2001772ea1fb994384cc79",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2818572288,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 2,
+            "heads_q": 32,
+            "heads_kv": 4,
+            "seq": 16384,
+            "dim": 128,
+            "causal": true
+          },
+          "inputs": [
+            {
+              "shape": [
+                2,
+                32,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                2,
+                4,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            },
+            {
+              "shape": [
+                2,
+                4,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            }
+          ],
+          "output": {
+            "shape": [
+              2,
+              32,
+              16384,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 671088640,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2818572288,
+          "allocation_floor_bytes": 2818572288,
+          "dense_attention_weights_bytes": 68719476736
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-4-kv-heads-causal-sequence-32768",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "7cee953b26c4c6e1c34904545608f8bf5168f56943b443acdfabdec29f033740",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2818572288,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 1,
+            "heads_q": 32,
+            "heads_kv": 4,
+            "seq": 32768,
+            "dim": 128,
+            "causal": true
+          },
+          "inputs": [
+            {
+              "shape": [
+                1,
+                32,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                1,
+                4,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            },
+            {
+              "shape": [
+                1,
+                4,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            }
+          ],
+          "output": {
+            "shape": [
+              1,
+              32,
+              32768,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 671088640,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2818572288,
+          "allocation_floor_bytes": 2818572288,
+          "dense_attention_weights_bytes": 137438953472
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-4-kv-heads-causal-sequence-4096",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "75641bcd39422f762561c8b4d21da62707ed0d8c8ce8c53071ba7efd6a38454e",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2818572288,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 8,
+            "heads_q": 32,
+            "heads_kv": 4,
+            "seq": 4096,
+            "dim": 128,
+            "causal": true
+          },
+          "inputs": [
+            {
+              "shape": [
+                8,
+                32,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                8,
+                4,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            },
+            {
+              "shape": [
+                8,
+                4,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            }
+          ],
+          "output": {
+            "shape": [
+              8,
+              32,
+              4096,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 671088640,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2818572288,
+          "allocation_floor_bytes": 2818572288,
+          "dense_attention_weights_bytes": 17179869184
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-4-kv-heads-causal-sequence-8192",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "f336de984013187b2f28fbd1b46f54bc0706cf543ff2932edc223865d0239af7",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2818572288,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 4,
+            "heads_q": 32,
+            "heads_kv": 4,
+            "seq": 8192,
+            "dim": 128,
+            "causal": true
+          },
+          "inputs": [
+            {
+              "shape": [
+                4,
+                32,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                4,
+                4,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            },
+            {
+              "shape": [
+                4,
+                4,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            }
+          ],
+          "output": {
+            "shape": [
+              4,
+              32,
+              8192,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 671088640,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2818572288,
+          "allocation_floor_bytes": 2818572288,
+          "dense_attention_weights_bytes": 34359738368
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-4-kv-heads-non-causal-sequence-16384",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "44f43fd65f2eb98e8eee75b1df015151dd8fc22f9964e3d8e7563cff98bc726f",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2818572288,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 2,
+            "heads_q": 32,
+            "heads_kv": 4,
+            "seq": 16384,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                2,
+                32,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                2,
+                4,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            },
+            {
+              "shape": [
+                2,
+                4,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            }
+          ],
+          "output": {
+            "shape": [
+              2,
+              32,
+              16384,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 671088640,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2818572288,
+          "allocation_floor_bytes": 2818572288,
+          "dense_attention_weights_bytes": 68719476736
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-4-kv-heads-non-causal-sequence-32768",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "272424c583f30edd02dbba067566079dff84e7f31ead24cb128923d83dd60250",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2818572288,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 1,
+            "heads_q": 32,
+            "heads_kv": 4,
+            "seq": 32768,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                1,
+                32,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                1,
+                4,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            },
+            {
+              "shape": [
+                1,
+                4,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            }
+          ],
+          "output": {
+            "shape": [
+              1,
+              32,
+              32768,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 671088640,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2818572288,
+          "allocation_floor_bytes": 2818572288,
+          "dense_attention_weights_bytes": 137438953472
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-4-kv-heads-non-causal-sequence-4096",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "eaf1e373269620ab7d6c979fca8b945bd05f931d805f133aac11edf80bc6c488",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2818572288,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 8,
+            "heads_q": 32,
+            "heads_kv": 4,
+            "seq": 4096,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                8,
+                32,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                8,
+                4,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            },
+            {
+              "shape": [
+                8,
+                4,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            }
+          ],
+          "output": {
+            "shape": [
+              8,
+              32,
+              4096,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 671088640,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2818572288,
+          "allocation_floor_bytes": 2818572288,
+          "dense_attention_weights_bytes": 17179869184
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-4-kv-heads-non-causal-sequence-8192",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "93e878c6075c883188facf4d5934851a6635194578cc4be2a6699b2bdd001ca2",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2818572288,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 4,
+            "heads_q": 32,
+            "heads_kv": 4,
+            "seq": 8192,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                4,
+                32,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                4,
+                4,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            },
+            {
+              "shape": [
+                4,
+                4,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            }
+          ],
+          "output": {
+            "shape": [
+              4,
+              32,
+              8192,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 671088640,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2818572288,
+          "allocation_floor_bytes": 2818572288,
+          "dense_attention_weights_bytes": 34359738368
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-8-kv-heads-causal-sequence-16384",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "2b37c7b3ce4f03a96d7aaadc6494fea34b968444806f08452bf602eab6d47d5c",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2952790016,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 2,
+            "heads_q": 32,
+            "heads_kv": 8,
+            "seq": 16384,
+            "dim": 128,
+            "causal": true
+          },
+          "inputs": [
+            {
+              "shape": [
+                2,
+                32,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                2,
+                8,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            },
+            {
+              "shape": [
+                2,
+                8,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            }
+          ],
+          "output": {
+            "shape": [
+              2,
+              32,
+              16384,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2952790016,
+          "allocation_floor_bytes": 2952790016,
+          "dense_attention_weights_bytes": 68719476736
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-8-kv-heads-causal-sequence-32768",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "d56247fca6f57ee74d55964f455ac769799e7f8fd534049ac29312ee820fc6f7",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2952790016,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 1,
+            "heads_q": 32,
+            "heads_kv": 8,
+            "seq": 32768,
+            "dim": 128,
+            "causal": true
+          },
+          "inputs": [
+            {
+              "shape": [
+                1,
+                32,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                1,
+                8,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            },
+            {
+              "shape": [
+                1,
+                8,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            }
+          ],
+          "output": {
+            "shape": [
+              1,
+              32,
+              32768,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2952790016,
+          "allocation_floor_bytes": 2952790016,
+          "dense_attention_weights_bytes": 137438953472
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-8-kv-heads-causal-sequence-4096",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "23514d2534aff728dc66bfefb52eff305d05287c2cb7f5b67d3f109dc85c6038",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2952790016,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 8,
+            "heads_q": 32,
+            "heads_kv": 8,
+            "seq": 4096,
+            "dim": 128,
+            "causal": true
+          },
+          "inputs": [
+            {
+              "shape": [
+                8,
+                32,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                8,
+                8,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            },
+            {
+              "shape": [
+                8,
+                8,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            }
+          ],
+          "output": {
+            "shape": [
+              8,
+              32,
+              4096,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2952790016,
+          "allocation_floor_bytes": 2952790016,
+          "dense_attention_weights_bytes": 17179869184
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-8-kv-heads-causal-sequence-8192",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "7a998eccb2c71f8d4eb9dfff96ff32ca694b05268e275e34a6b03929c33dd524",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2952790016,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 4,
+            "heads_q": 32,
+            "heads_kv": 8,
+            "seq": 8192,
+            "dim": 128,
+            "causal": true
+          },
+          "inputs": [
+            {
+              "shape": [
+                4,
+                32,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                4,
+                8,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            },
+            {
+              "shape": [
+                4,
+                8,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            }
+          ],
+          "output": {
+            "shape": [
+              4,
+              32,
+              8192,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2952790016,
+          "allocation_floor_bytes": 2952790016,
+          "dense_attention_weights_bytes": 34359738368
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-8-kv-heads-non-causal-sequence-16384",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "f98fd3ba03add2405fc9df32d6e633fe482856fa570b3c9206502ed041437cb6",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2952790016,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 2,
+            "heads_q": 32,
+            "heads_kv": 8,
+            "seq": 16384,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                2,
+                32,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                2,
+                8,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            },
+            {
+              "shape": [
+                2,
+                8,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            }
+          ],
+          "output": {
+            "shape": [
+              2,
+              32,
+              16384,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2952790016,
+          "allocation_floor_bytes": 2952790016,
+          "dense_attention_weights_bytes": 68719476736
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-8-kv-heads-non-causal-sequence-32768",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "3fe11aae920c97884a9eed9edb1e529a500a51bd80ed0ffd7fc0876264c14dca",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2952790016,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 1,
+            "heads_q": 32,
+            "heads_kv": 8,
+            "seq": 32768,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                1,
+                32,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                1,
+                8,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            },
+            {
+              "shape": [
+                1,
+                8,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            }
+          ],
+          "output": {
+            "shape": [
+              1,
+              32,
+              32768,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2952790016,
+          "allocation_floor_bytes": 2952790016,
+          "dense_attention_weights_bytes": 137438953472
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-8-kv-heads-non-causal-sequence-4096",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "4c9a66422eb4f3889558c0e88c14f87f4427e5819cd8226c681ffb58dd86da0b",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2952790016,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 8,
+            "heads_q": 32,
+            "heads_kv": 8,
+            "seq": 4096,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                8,
+                32,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                8,
+                8,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            },
+            {
+              "shape": [
+                8,
+                8,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            }
+          ],
+          "output": {
+            "shape": [
+              8,
+              32,
+              4096,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2952790016,
+          "allocation_floor_bytes": 2952790016,
+          "dense_attention_weights_bytes": 17179869184
+        }
+      ]
+    },
+    {
+      "task_id": "avo-gqa-32-query-heads-8-kv-heads-non-causal-sequence-8192",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "3d76339f0a47ad21e692f571edd112bc87a384597d88e03a483c6b88fc53cb55",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 2952790016,
+      "exceeds_2gib": true,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 4,
+            "heads_q": 32,
+            "heads_kv": 8,
+            "seq": 8192,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                4,
+                32,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 536870912
+            },
+            {
+              "shape": [
+                4,
+                8,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            },
+            {
+              "shape": [
+                4,
+                8,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            }
+          ],
+          "output": {
+            "shape": [
+              4,
+              32,
+              8192,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 536870912
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 2952790016,
+          "allocation_floor_bytes": 2952790016,
+          "dense_attention_weights_bytes": 34359738368
+        }
+      ]
+    },
+    {
+      "task_id": "avo-mha-16-heads-causal-sequence-16384",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "c578e8d60b42d41ba5ffc90e97751ca7fea8dbfff3beaf0bde4b10d2e89c2032",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 1879048192,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 2,
+            "heads_q": 16,
+            "heads_kv": 16,
+            "seq": 16384,
+            "dim": 128,
+            "causal": true
+          },
+          "inputs": [
+            {
+              "shape": [
+                2,
+                16,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                2,
+                16,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                2,
+                16,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            }
+          ],
+          "output": {
+            "shape": [
+              2,
+              16,
+              16384,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 268435456
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 1879048192,
+          "allocation_floor_bytes": 1879048192,
+          "dense_attention_weights_bytes": 34359738368
+        }
+      ]
+    },
+    {
+      "task_id": "avo-mha-16-heads-causal-sequence-32768",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "e039295993c59d6d981aff9bb01037b509046d371c20f087a2a5474b1382f2ce",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 1879048192,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 1,
+            "heads_q": 16,
+            "heads_kv": 16,
+            "seq": 32768,
+            "dim": 128,
+            "causal": true
+          },
+          "inputs": [
+            {
+              "shape": [
+                1,
+                16,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                1,
+                16,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                1,
+                16,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            }
+          ],
+          "output": {
+            "shape": [
+              1,
+              16,
+              32768,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 268435456
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 1879048192,
+          "allocation_floor_bytes": 1879048192,
+          "dense_attention_weights_bytes": 68719476736
+        }
+      ]
+    },
+    {
+      "task_id": "avo-mha-16-heads-causal-sequence-4096",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "4f80dae8e9e20b4caa982483c2224e3ed77143074c5095b234c50e7d75fe9d7f",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 1879048192,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 8,
+            "heads_q": 16,
+            "heads_kv": 16,
+            "seq": 4096,
+            "dim": 128,
+            "causal": true
+          },
+          "inputs": [
+            {
+              "shape": [
+                8,
+                16,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                8,
+                16,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                8,
+                16,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            }
+          ],
+          "output": {
+            "shape": [
+              8,
+              16,
+              4096,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 268435456
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 1879048192,
+          "allocation_floor_bytes": 1879048192,
+          "dense_attention_weights_bytes": 8589934592
+        }
+      ]
+    },
+    {
+      "task_id": "avo-mha-16-heads-causal-sequence-8192",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "1b2e585bebb50ba4d403ef5ff77d17b56517e8a942fbbbc3e673f7d16648db63",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 1879048192,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 4,
+            "heads_q": 16,
+            "heads_kv": 16,
+            "seq": 8192,
+            "dim": 128,
+            "causal": true
+          },
+          "inputs": [
+            {
+              "shape": [
+                4,
+                16,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                4,
+                16,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                4,
+                16,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            }
+          ],
+          "output": {
+            "shape": [
+              4,
+              16,
+              8192,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 268435456
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 1879048192,
+          "allocation_floor_bytes": 1879048192,
+          "dense_attention_weights_bytes": 17179869184
+        }
+      ]
+    },
+    {
+      "task_id": "avo-mha-16-heads-non-causal-sequence-16384",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "ffb4eec46232efb2dd53c953ba0c424f6385f6c41f6f250b396ade2be05e97ed",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 1879048192,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 2,
+            "heads_q": 16,
+            "heads_kv": 16,
+            "seq": 16384,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                2,
+                16,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                2,
+                16,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                2,
+                16,
+                16384,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            }
+          ],
+          "output": {
+            "shape": [
+              2,
+              16,
+              16384,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 268435456
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 1879048192,
+          "allocation_floor_bytes": 1879048192,
+          "dense_attention_weights_bytes": 34359738368
+        }
+      ]
+    },
+    {
+      "task_id": "avo-mha-16-heads-non-causal-sequence-32768",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "ac1bb19f0ce43862e517468a54aa89f14cf8a12417034eb010a22b57ac57843c",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 1879048192,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 1,
+            "heads_q": 16,
+            "heads_kv": 16,
+            "seq": 32768,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                1,
+                16,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                1,
+                16,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                1,
+                16,
+                32768,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            }
+          ],
+          "output": {
+            "shape": [
+              1,
+              16,
+              32768,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 268435456
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 1879048192,
+          "allocation_floor_bytes": 1879048192,
+          "dense_attention_weights_bytes": 68719476736
+        }
+      ]
+    },
+    {
+      "task_id": "avo-mha-16-heads-non-causal-sequence-4096",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "427145bb02e89cfc866e267bec9cedacfb2cd486f92017969918808e2d3ebaaa",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 1879048192,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 8,
+            "heads_q": 16,
+            "heads_kv": 16,
+            "seq": 4096,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                8,
+                16,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                8,
+                16,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                8,
+                16,
+                4096,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            }
+          ],
+          "output": {
+            "shape": [
+              8,
+              16,
+              4096,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 268435456
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 1879048192,
+          "allocation_floor_bytes": 1879048192,
+          "dense_attention_weights_bytes": 8589934592
+        }
+      ]
+    },
+    {
+      "task_id": "avo-mha-16-heads-non-causal-sequence-8192",
+      "family": "kernel_cpu_attention",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "tflops",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "2852e5d5c6c93ee89818e60694fdfb73edb58d13a81135175760dd8dba636451",
+      "seed_sha256": "6d5845c4eadf75ec45a0708eec702bde3610e678d39dd84c02df32abf8471e2a",
+      "allocation_floor_bytes": 1879048192,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "attention",
+          "op": "attention",
+          "params": {
+            "batch": 4,
+            "heads_q": 16,
+            "heads_kv": 16,
+            "seq": 8192,
+            "dim": 128,
+            "causal": false
+          },
+          "inputs": [
+            {
+              "shape": [
+                4,
+                16,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                4,
+                16,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                4,
+                16,
+                8192,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            }
+          ],
+          "output": {
+            "shape": [
+              4,
+              16,
+              8192,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 268435456
+          },
+          "resident_input_bytes": 805306368,
+          "input_generation_floor_bytes": 1073741824,
+          "correctness_floor_bytes": 1879048192,
+          "allocation_floor_bytes": 1879048192,
+          "dense_attention_weights_bytes": 17179869184
+        }
+      ]
+    },
+    {
+      "task_id": "eurekagent-gpumode-trimul-a100",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "c9c0acd2a254d2dd0a3f9a3cd4acba1283e5f1b351b2b9422ea69a4c17205233",
+      "seed_sha256": "b265ec2010f16271d507739cb07acb96eded5d37744dd74546134c96e8cd094a",
+      "allocation_floor_bytes": 168429568,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "trimul",
+          "op": "trimul",
+          "params": {
+            "n": 256,
+            "c": 128,
+            "hidden": 128
+          },
+          "inputs": [
+            {
+              "shape": [
+                1,
+                256,
+                256,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 33554432
+            },
+            {
+              "shape": [
+                1,
+                256,
+                256
+              ],
+              "dtype": "float32",
+              "bytes": 262144
+            },
+            {
+              "shape": [
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 512
+            },
+            {
+              "shape": [
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 512
+            },
+            {
+              "shape": [
+                128,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 65536
+            },
+            {
+              "shape": [
+                128,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 65536
+            },
+            {
+              "shape": [
+                128,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 65536
+            },
+            {
+              "shape": [
+                128,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 65536
+            },
+            {
+              "shape": [
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 512
+            },
+            {
+              "shape": [
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 512
+            },
+            {
+              "shape": [
+                128,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 65536
+            },
+            {
+              "shape": [
+                128,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 65536
+            }
+          ],
+          "output": {
+            "shape": [
+              1,
+              256,
+              256,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 33554432
+          },
+          "resident_input_bytes": 34211840,
+          "input_generation_floor_bytes": 67108864,
+          "correctness_floor_bytes": 168429568,
+          "allocation_floor_bytes": 168429568
+        }
+      ]
+    },
+    {
+      "task_id": "kernelpro-kernelbench-level-1-single-operators",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "8d799c2d2a1075db51006c4fe7c14fc990988f0b27f42142b89765250266f940",
+      "seed_sha256": "ee5556daa55bd337781214c5a0647451791aab3c2528a7bfb7cf8b22372e7b18",
+      "allocation_floor_bytes": 335544320,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "matmul",
+          "op": "matmul",
+          "params": {
+            "m": 2048,
+            "k": 2048,
+            "n": 2048
+          },
+          "inputs": [
+            {
+              "shape": [
+                2048,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                2048,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            }
+          ],
+          "output": {
+            "shape": [
+              2048,
+              2048
+            ],
+            "dtype": "float32",
+            "bytes": 16777216
+          },
+          "resident_input_bytes": 33554432,
+          "input_generation_floor_bytes": 50331648,
+          "correctness_floor_bytes": 100663296,
+          "allocation_floor_bytes": 100663296
+        },
+        {
+          "name": "softmax",
+          "op": "softmax",
+          "params": {
+            "m": 4096,
+            "n": 4096
+          },
+          "inputs": [
+            {
+              "shape": [
+                4096,
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            }
+          ],
+          "output": {
+            "shape": [
+              4096,
+              4096
+            ],
+            "dtype": "float32",
+            "bytes": 67108864
+          },
+          "resident_input_bytes": 67108864,
+          "input_generation_floor_bytes": 134217728,
+          "correctness_floor_bytes": 335544320,
+          "allocation_floor_bytes": 335544320
+        },
+        {
+          "name": "layer_norm",
+          "op": "layer_norm",
+          "params": {
+            "m": 2048,
+            "n": 4096
+          },
+          "inputs": [
+            {
+              "shape": [
+                2048,
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 33554432
+            },
+            {
+              "shape": [
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 16384
+            },
+            {
+              "shape": [
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 16384
+            }
+          ],
+          "output": {
+            "shape": [
+              2048,
+              4096
+            ],
+            "dtype": "float32",
+            "bytes": 33554432
+          },
+          "resident_input_bytes": 33587200,
+          "input_generation_floor_bytes": 67108864,
+          "correctness_floor_bytes": 167804928,
+          "allocation_floor_bytes": 167804928
+        },
+        {
+          "name": "conv2d",
+          "op": "conv2d",
+          "params": {
+            "b": 8,
+            "cin": 64,
+            "cout": 64,
+            "hw": 64
+          },
+          "inputs": [
+            {
+              "shape": [
+                8,
+                64,
+                64,
+                64
+              ],
+              "dtype": "float32",
+              "bytes": 8388608
+            },
+            {
+              "shape": [
+                64,
+                64,
+                3,
+                3
+              ],
+              "dtype": "float32",
+              "bytes": 147456
+            }
+          ],
+          "output": {
+            "shape": [
+              8,
+              64,
+              64,
+              64
+            ],
+            "dtype": "float32",
+            "bytes": 8388608
+          },
+          "resident_input_bytes": 8536064,
+          "input_generation_floor_bytes": 16777216,
+          "correctness_floor_bytes": 42090496,
+          "allocation_floor_bytes": 42090496
+        },
+        {
+          "name": "relu",
+          "op": "relu",
+          "params": {
+            "m": 4096,
+            "n": 4096
+          },
+          "inputs": [
+            {
+              "shape": [
+                4096,
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            }
+          ],
+          "output": {
+            "shape": [
+              4096,
+              4096
+            ],
+            "dtype": "float32",
+            "bytes": 67108864
+          },
+          "resident_input_bytes": 67108864,
+          "input_generation_floor_bytes": 134217728,
+          "correctness_floor_bytes": 335544320,
+          "allocation_floor_bytes": 335544320
+        }
+      ]
+    },
+    {
+      "task_id": "kernelpro-kernelbench-level-2-fused-operators",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "5a8cf7394d572b38f99ce15118c867baef3df3d882dd2757347ec9113e435d15",
+      "seed_sha256": "f5027ddf1aa4e052438dab2ad1a8bb734d8f0e0152e92e267f1bb26273b30aa6",
+      "allocation_floor_bytes": 100679680,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "gemm_bias_relu",
+          "op": "gemm_bias_relu",
+          "params": {
+            "m": 2048,
+            "k": 2048,
+            "n": 2048
+          },
+          "inputs": [
+            {
+              "shape": [
+                2048,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                2048,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 8192
+            }
+          ],
+          "output": {
+            "shape": [
+              2048,
+              2048
+            ],
+            "dtype": "float32",
+            "bytes": 16777216
+          },
+          "resident_input_bytes": 33562624,
+          "input_generation_floor_bytes": 50331648,
+          "correctness_floor_bytes": 100671488,
+          "allocation_floor_bytes": 100671488
+        },
+        {
+          "name": "conv_bn_relu",
+          "op": "conv_bn_relu",
+          "params": {
+            "b": 8,
+            "cin": 64,
+            "cout": 64,
+            "hw": 64
+          },
+          "inputs": [
+            {
+              "shape": [
+                8,
+                64,
+                64,
+                64
+              ],
+              "dtype": "float32",
+              "bytes": 8388608
+            },
+            {
+              "shape": [
+                64,
+                64,
+                3,
+                3
+              ],
+              "dtype": "float32",
+              "bytes": 147456
+            },
+            {
+              "shape": [
+                64
+              ],
+              "dtype": "float32",
+              "bytes": 256
+            },
+            {
+              "shape": [
+                64
+              ],
+              "dtype": "float32",
+              "bytes": 256
+            },
+            {
+              "shape": [
+                64
+              ],
+              "dtype": "float32",
+              "bytes": 256
+            },
+            {
+              "shape": [
+                64
+              ],
+              "dtype": "float32",
+              "bytes": 256
+            }
+          ],
+          "output": {
+            "shape": [
+              8,
+              64,
+              64,
+              64
+            ],
+            "dtype": "float32",
+            "bytes": 8388608
+          },
+          "resident_input_bytes": 8537088,
+          "input_generation_floor_bytes": 16777216,
+          "correctness_floor_bytes": 42091520,
+          "allocation_floor_bytes": 42091520
+        },
+        {
+          "name": "matmul_layer_norm",
+          "op": "matmul_layer_norm",
+          "params": {
+            "m": 2048,
+            "k": 2048,
+            "n": 2048
+          },
+          "inputs": [
+            {
+              "shape": [
+                2048,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                2048,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 8192
+            },
+            {
+              "shape": [
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 8192
+            }
+          ],
+          "output": {
+            "shape": [
+              2048,
+              2048
+            ],
+            "dtype": "float32",
+            "bytes": 16777216
+          },
+          "resident_input_bytes": 33570816,
+          "input_generation_floor_bytes": 50331648,
+          "correctness_floor_bytes": 100679680,
+          "allocation_floor_bytes": 100679680
+        }
+      ]
+    },
+    {
+      "task_id": "kernelpro-kernelbench-level-3-architectures",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "3f5dcdfee9029de649c264486e713523cf0156775296ce0c61d23b2e005f4eb3",
+      "seed_sha256": "7de0d5498e974ea67ca8b1f0a06a3e0c7f077667c73dba5f41c2751dee97091c",
+      "allocation_floor_bytes": 117460992,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "mlp_block",
+          "op": "mlp_block",
+          "params": {
+            "tokens": 4096,
+            "d": 1024,
+            "ff": 4096
+          },
+          "inputs": [
+            {
+              "shape": [
+                4096,
+                1024
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                1024,
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 16384
+            },
+            {
+              "shape": [
+                4096,
+                1024
+              ],
+              "dtype": "float32",
+              "bytes": 16777216
+            },
+            {
+              "shape": [
+                1024
+              ],
+              "dtype": "float32",
+              "bytes": 4096
+            }
+          ],
+          "output": {
+            "shape": [
+              4096,
+              1024
+            ],
+            "dtype": "float32",
+            "bytes": 16777216
+          },
+          "resident_input_bytes": 50352128,
+          "input_generation_floor_bytes": 67125248,
+          "correctness_floor_bytes": 117460992,
+          "allocation_floor_bytes": 117460992
+        },
+        {
+          "name": "transformer_block",
+          "op": "transformer_block",
+          "params": {
+            "tokens": 512,
+            "d": 512,
+            "ff": 2048,
+            "heads": 8
+          },
+          "inputs": [
+            {
+              "shape": [
+                1,
+                512,
+                512
+              ],
+              "dtype": "float32",
+              "bytes": 1048576
+            },
+            {
+              "shape": [
+                512,
+                1536
+              ],
+              "dtype": "float32",
+              "bytes": 3145728
+            },
+            {
+              "shape": [
+                512,
+                512
+              ],
+              "dtype": "float32",
+              "bytes": 1048576
+            },
+            {
+              "shape": [
+                512
+              ],
+              "dtype": "float32",
+              "bytes": 2048
+            },
+            {
+              "shape": [
+                512
+              ],
+              "dtype": "float32",
+              "bytes": 2048
+            },
+            {
+              "shape": [
+                512,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 4194304
+            },
+            {
+              "shape": [
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 8192
+            },
+            {
+              "shape": [
+                2048,
+                512
+              ],
+              "dtype": "float32",
+              "bytes": 4194304
+            },
+            {
+              "shape": [
+                512
+              ],
+              "dtype": "float32",
+              "bytes": 2048
+            }
+          ],
+          "output": {
+            "shape": [
+              1,
+              512,
+              512
+            ],
+            "dtype": "float32",
+            "bytes": 1048576
+          },
+          "resident_input_bytes": 13645824,
+          "input_generation_floor_bytes": 17838080,
+          "correctness_floor_bytes": 17840128,
+          "allocation_floor_bytes": 17840128
+        }
+      ]
+    },
+    {
+      "task_id": "kernelpro-swish-energy-aware-kernel-optimization",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "5648a6ab95c39f5840542adc459110a4c6fabe01a5ec26575c3e30870532a2df",
+      "seed_sha256": "a1fbc7031526495457c6287dc7eb319e9b4938c6a68a6a9af38cd233baa237f1",
+      "allocation_floor_bytes": 1342177280,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "swish",
+          "op": "swish",
+          "params": {
+            "m": 8192,
+            "n": 8192
+          },
+          "inputs": [
+            {
+              "shape": [
+                8192,
+                8192
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            }
+          ],
+          "output": {
+            "shape": [
+              8192,
+              8192
+            ],
+            "dtype": "float32",
+            "bytes": 268435456
+          },
+          "resident_input_bytes": 268435456,
+          "input_generation_floor_bytes": 536870912,
+          "correctness_floor_bytes": 1342177280,
+          "allocation_floor_bytes": 1342177280
+        }
+      ]
+    },
+    {
+      "task_id": "kernelpro-triton-inference-fused-moe",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "59d29a07dab1fd13735e48c9324d6ac49aed3292385a08c44fbe7eb62fb1f7c3",
+      "seed_sha256": "1e02e385147029ef75961a2858d857f769504c647576de1c02ba0bc4f7d216fc",
+      "allocation_floor_bytes": 104873984,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "fused_moe",
+          "op": "fused_moe",
+          "params": {
+            "tokens": 2048,
+            "d": 512,
+            "experts": 8,
+            "ff": 2048,
+            "top_k": 2
+          },
+          "inputs": [
+            {
+              "shape": [
+                2048,
+                512
+              ],
+              "dtype": "float32",
+              "bytes": 4194304
+            },
+            {
+              "shape": [
+                512,
+                8
+              ],
+              "dtype": "float32",
+              "bytes": 16384
+            },
+            {
+              "shape": [
+                8,
+                512,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 33554432
+            },
+            {
+              "shape": [
+                8,
+                2048,
+                512
+              ],
+              "dtype": "float32",
+              "bytes": 33554432
+            }
+          ],
+          "output": {
+            "shape": [
+              2048,
+              512
+            ],
+            "dtype": "float32",
+            "bytes": 4194304
+          },
+          "resident_input_bytes": 71319552,
+          "input_generation_floor_bytes": 104873984,
+          "correctness_floor_bytes": 88096768,
+          "allocation_floor_bytes": 104873984
+        }
+      ]
+    },
+    {
+      "task_id": "kernelpro-triton-inference-gemm-split-k",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "530d4393bebe6662cce27b3c0ef6872b379e7846d3d3fcf10a9b75773ad820b8",
+      "seed_sha256": "2c6a5b26a2443b859060dfc43cf0fe88922f6d2414b2e3dead97e4fefe7f99b5",
+      "allocation_floor_bytes": 541065216,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "gemm_split_k",
+          "op": "gemm_split_k",
+          "params": {
+            "m": 64,
+            "k": 16384,
+            "n": 4096
+          },
+          "inputs": [
+            {
+              "shape": [
+                64,
+                16384
+              ],
+              "dtype": "float32",
+              "bytes": 4194304
+            },
+            {
+              "shape": [
+                16384,
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            }
+          ],
+          "output": {
+            "shape": [
+              64,
+              4096
+            ],
+            "dtype": "float32",
+            "bytes": 1048576
+          },
+          "resident_input_bytes": 272629760,
+          "input_generation_floor_bytes": 541065216,
+          "correctness_floor_bytes": 276824064,
+          "allocation_floor_bytes": 541065216
+        }
+      ]
+    },
+    {
+      "task_id": "kernelpro-triton-inference-kernel-paged-attention",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "9a9fd23680b58265a55a7f5c2ff68b59c7b497e45c44acd10995e25d446e0d3c",
+      "seed_sha256": "9605f84276efc8deb6959fb783c4247c8b5fc7bcc6be11a269f23bddb032e3ff",
+      "allocation_floor_bytes": 402784256,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "paged_attention",
+          "op": "paged_attention",
+          "params": {
+            "batch": 8,
+            "heads": 32,
+            "dim": 128,
+            "page": 16,
+            "kv_len": 1024
+          },
+          "inputs": [
+            {
+              "shape": [
+                8,
+                32,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 131072
+            },
+            {
+              "shape": [
+                512,
+                16,
+                32,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            },
+            {
+              "shape": [
+                512,
+                16,
+                32,
+                128
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            },
+            {
+              "shape": [
+                8,
+                64
+              ],
+              "dtype": "int64",
+              "bytes": 4096
+            },
+            {
+              "shape": [
+                8
+              ],
+              "dtype": "int64",
+              "bytes": 64
+            }
+          ],
+          "output": {
+            "shape": [
+              8,
+              32,
+              128
+            ],
+            "dtype": "float32",
+            "bytes": 131072
+          },
+          "resident_input_bytes": 268570688,
+          "input_generation_floor_bytes": 402784256,
+          "correctness_floor_bytes": 269094976,
+          "allocation_floor_bytes": 402784256
+        }
+      ]
+    },
+    {
+      "task_id": "kernelpro-triton-inference-layer-norm",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "3abf067def45e56b5717fdfc347077b949f854af40698d67e7d7781b2e3664bc",
+      "seed_sha256": "8539372fc088b5afa79d31107d5a532cc3f22e51088a9e0b2a2c78390811341b",
+      "allocation_floor_bytes": 671121408,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "layer_norm",
+          "op": "layer_norm",
+          "params": {
+            "m": 8192,
+            "n": 4096
+          },
+          "inputs": [
+            {
+              "shape": [
+                8192,
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 134217728
+            },
+            {
+              "shape": [
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 16384
+            },
+            {
+              "shape": [
+                4096
+              ],
+              "dtype": "float32",
+              "bytes": 16384
+            }
+          ],
+          "output": {
+            "shape": [
+              8192,
+              4096
+            ],
+            "dtype": "float32",
+            "bytes": 134217728
+          },
+          "resident_input_bytes": 134250496,
+          "input_generation_floor_bytes": 268435456,
+          "correctness_floor_bytes": 671121408,
+          "allocation_floor_bytes": 671121408
+        }
+      ]
+    },
+    {
+      "task_id": "kernelpro-triton-inference-persistent-vec-matmul",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "7149388a47be987922177f7a849b63aea7aac270d1eaaa3eaf29e7b1dee6e77d",
+      "seed_sha256": "77772ac66ab583f63a9b628ec1a0fb4cccf2ab0b1091a73644b0a30226fed674",
+      "allocation_floor_bytes": 536870912,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "persistent_vec_matmul",
+          "op": "persistent_vec_matmul",
+          "params": {
+            "m": 8192,
+            "n": 8192,
+            "vectors": 16
+          },
+          "inputs": [
+            {
+              "shape": [
+                8192,
+                8192
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                8192,
+                16
+              ],
+              "dtype": "float32",
+              "bytes": 524288
+            }
+          ],
+          "output": {
+            "shape": [
+              8192,
+              16
+            ],
+            "dtype": "float32",
+            "bytes": 524288
+          },
+          "resident_input_bytes": 268959744,
+          "input_generation_floor_bytes": 536870912,
+          "correctness_floor_bytes": 271056896,
+          "allocation_floor_bytes": 536870912
+        }
+      ]
+    },
+    {
+      "task_id": "kernelpro-triton-inference-vec-matmul",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "b24c4a83a491d6a916f466032a6a4da420661925333327a80123256de83dcf40",
+      "seed_sha256": "55834e5b4610bc7a3cee019f6e07dba72432c04687f1decc19937ed600d62eeb",
+      "allocation_floor_bytes": 536870912,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "vec_matmul",
+          "op": "vec_matmul",
+          "params": {
+            "m": 8192,
+            "n": 8192,
+            "vectors": 1
+          },
+          "inputs": [
+            {
+              "shape": [
+                8192,
+                8192
+              ],
+              "dtype": "float32",
+              "bytes": 268435456
+            },
+            {
+              "shape": [
+                8192,
+                1
+              ],
+              "dtype": "float32",
+              "bytes": 32768
+            }
+          ],
+          "output": {
+            "shape": [
+              8192,
+              1
+            ],
+            "dtype": "float32",
+            "bytes": 32768
+          },
+          "resident_input_bytes": 268468224,
+          "input_generation_floor_bytes": 536870912,
+          "correctness_floor_bytes": 268599296,
+          "allocation_floor_bytes": 536870912
+        }
+      ]
+    },
+    {
+      "task_id": "kernelpro-veomni-dw1-grouped-gemm-weight-gradient",
+      "family": "kernel_cpu",
+      "protocol": "recreated",
+      "timing_protocol": "arena.kernel-cpu.single-thread/1",
+      "metric": "speedup",
+      "seed": 0,
+      "repeats": 3,
+      "timeout_seconds": 1800,
+      "evaluator_sha256": "5a9efdb52dcd8235ef6fa88637a6a2c968316e2a46e8f8846bbcf60e1fcd4b08",
+      "seed_sha256": "71fe140a5765bc755b7031a938d32f68dbc2f1a7bfbc766f9ffec5ba308b2c53",
+      "allocation_floor_bytes": 369098816,
+      "exceeds_2gib": false,
+      "readiness": "requires_measured_seed_preflight",
+      "operators": [
+        {
+          "name": "grouped_gemm_weight_gradient",
+          "op": "grouped_gemm_weight_gradient",
+          "params": {
+            "tokens": 8192,
+            "k": 1024,
+            "n": 2048,
+            "groups": 8
+          },
+          "inputs": [
+            {
+              "shape": [
+                8192,
+                1024
+              ],
+              "dtype": "float32",
+              "bytes": 33554432
+            },
+            {
+              "shape": [
+                8192,
+                2048
+              ],
+              "dtype": "float32",
+              "bytes": 67108864
+            },
+            {
+              "shape": [
+                8
+              ],
+              "dtype": "int64",
+              "bytes": 64
+            }
+          ],
+          "output": {
+            "shape": [
+              8,
+              1024,
+              2048
+            ],
+            "dtype": "float32",
+            "bytes": 67108864
+          },
+          "resident_input_bytes": 100663360,
+          "input_generation_floor_bytes": 167772160,
+          "correctness_floor_bytes": 369098816,
+          "allocation_floor_bytes": 369098816
+        }
+      ]
+    }
+  ]
+}

@@ -37,6 +37,10 @@ Reimplemented in this repository from the paper's task description; instances ar
 - AVO benchmark configuration kept exactly (head dim 128, 2 x 16384 = 32768 tokens); BF16 on B200 replaced by float32 on the CPU.
 - CPU recreation of the paper's attention-kernel task at the paper's shapes: the accelerator and BF16 kernels are replaced by float32 PyTorch on the CPU, and the reference is torch.nn.functional.scaled_dot_product_attention. TFLOPS are comparable within the suite only.
 
+## CPU timing revision
+
+CPU timing revision arena.kernel-cpu.single-thread/1: one PyTorch intra-op and one inter-op thread, with OMP/MKL/OpenBLAS/NumExpr thread limits set to 1. Shapes, float32 correctness tolerances, warm-up, repeats and score formulas are unchanged. Historical host-wide-thread timings are retained as historical evidence and are not comparable to this revision. Fresh seed timing and memory preflight is still required; a CPU recreation is not a GPU-paper reproduction.
+
 ## Run
 
 ```

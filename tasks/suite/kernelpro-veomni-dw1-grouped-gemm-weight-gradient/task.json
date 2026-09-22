@@ -24,7 +24,8 @@
     "notes": [
       "NVIDIA H100",
       "CUDA/CuTe",
-      "M=2880 N=5760 E=128 ragged-K workload"
+      "M=2880 N=5760 E=128 ragged-K workload",
+      "CPU timing revision arena.kernel-cpu.single-thread/1: one PyTorch intra-op and one inter-op thread, with OMP/MKL/OpenBLAS/NumExpr thread limits set to 1. Shapes, float32 correctness tolerances, warm-up, repeats and score formulas are unchanged. Historical host-wide-thread timings are retained as historical evidence and are not comparable to this revision. Fresh seed timing and memory preflight is still required; a CPU recreation is not a GPU-paper reproduction."
     ]
   },
   "evaluation": {
@@ -55,7 +56,12 @@
       "evaluator": "evaluator.py",
       "initial_program": "initial_program.py",
       "callable": "evaluate",
-      "env": {},
+      "env": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1"
+      },
       "score_key": "score",
       "error_key": "error",
       "requires": [
@@ -63,7 +69,14 @@
         "py:torch"
       ],
       "timeout": 1800,
-      "validity_key": "valid"
+      "validity_key": "valid",
+      "timing_protocol": {
+        "id": "arena.kernel-cpu.single-thread/1",
+        "intra_op_threads": 1,
+        "inter_op_threads": 1,
+        "historical_timings_comparable": false,
+        "validation_status": "requires_seed_preflight"
+      }
     }
   },
   "limitations": [

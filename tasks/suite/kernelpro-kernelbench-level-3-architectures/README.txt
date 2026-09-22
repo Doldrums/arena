@@ -35,7 +35,11 @@ No qualifying paper whose main objective is this underlying scientific or real-w
 Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.
 
 - KernelBench-style levels are represented by a fixed set of operators (see README); the paper's 100-problem levels, CUDA kernels and GPU timings are not reproduced.
-- CPU recreation of a GPU kernel task: the operator, shapes and correctness contract are kept; CUDA/Triton/NKI and the accelerator are replaced by float32 PyTorch on the CPU. The seed implements each operator with the plain PyTorch composition (speedup 1.0 by construction); speedups are comparable within the suite only.
+- CPU recreation of a GPU kernel task: the operator, shapes and correctness contract are kept; CUDA/Triton/NKI and the accelerator are replaced by float32 PyTorch on the CPU. The seed implements each operator with the plain PyTorch composition (measured speedup may differ from 1.0); speedups are comparable within the suite only.
+
+## CPU timing revision
+
+CPU timing revision arena.kernel-cpu.single-thread/1: one PyTorch intra-op and one inter-op thread, with OMP/MKL/OpenBLAS/NumExpr thread limits set to 1. Shapes, float32 correctness tolerances, warm-up, repeats and score formulas are unchanged. Historical host-wide-thread timings are retained as historical evidence and are not comparable to this revision. Fresh seed timing and memory preflight is still required; a CPU recreation is not a GPU-paper reproduction.
 
 ## Run
 
