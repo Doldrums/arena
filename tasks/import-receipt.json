@@ -8646,10 +8646,85 @@
     {
       "path": "suite/rankevolve-trec-covid/task.json",
       "kind": "separate_candidate_runner_and_binary_qrel_grader"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-blue/README.txt",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-blue/config.yaml",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-blue/evaluator.py",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-blue/initial_program.py",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-blue/problem.json",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-blue/task.json",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-green/README.txt",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-green/config.yaml",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-green/evaluator.py",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-green/initial_program.py",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-green/problem.json",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-green/task.json",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-red/README.txt",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-red/config.yaml",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-red/evaluator.py",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-red/initial_program.py",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-red/problem.json",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
+    },
+    {
+      "path": "suite/lmx-stable-diffusion-excess-red/task.json",
+      "kind": "source_derived_lmx_sd14_gpu_evaluation"
     }
   ],
   "additional_files": [
+    "adapters/lmx_sd_assets.json",
     "catalog/source-assets.json",
+    "licenses/LMX-LICENSE",
+    "licenses/Stable-Diffusion-LICENSE.txt",
     "run.py",
     "scripts/audit_kernel_cpu_memory.py",
     "scripts/prepare_source_assets.py",
@@ -8670,6 +8745,9 @@
     "suite/_lib/autoresearch_suite/combinatorial_routing.py",
     "suite/_lib/autoresearch_suite/combinatorial_scheduling.py",
     "suite/_lib/autoresearch_suite/kernel_threads.py",
+    "suite/_lib/autoresearch_suite/lmx_sd.py",
+    "suite/_lib/autoresearch_suite/lmx_sd_assets.py",
+    "suite/_lib/autoresearch_suite/lmx_sd_candidate.py",
     "suite/_lib/autoresearch_suite/sciel_algotune_timing.py",
     "suite/_lib/autoresearch_suite/sciel_prompt_data.py",
     "suite/_lib/autoresearch_suite/sciel_signal_metrics.py",
@@ -8739,9 +8817,11 @@
     "tests/test_jax_scalar_snapshot.py",
     "tests/test_kernel_cpu_resources.py",
     "tests/test_kernel_thread_policy.py",
+    "tests/test_lmx_sd.py",
     "tests/test_rankevolve_boundary.py",
     "tests/test_task_cache_paths.py",
-    "validation/kernel-cpu-resource-audit.json"
+    "validation/kernel-cpu-resource-audit.json",
+    "validation/lmx-sd14-seed-probes.json"
   ],
   "evidence_note": "Original hashes and execution reports describe the imported source revision. Adapted files have new hashes; historical execution claims do not automatically validate adapted code."
 }

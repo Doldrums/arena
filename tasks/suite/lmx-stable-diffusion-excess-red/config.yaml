@@ -22,8 +22,8 @@ database:
     - "complexity"
 
 evaluator:
-  timeout: 30
-  max_retries: 2
+  timeout: 600
+  max_retries: 0
 
 prompt:
   system_message: |
@@ -31,7 +31,7 @@ prompt:
 
     Stable Diffusion excess red: optimize the candidate specified by the paper and evaluate against the named benchmark.
 
-    Candidate interface: see evaluator.py
+    Candidate interface: candidate() returns a text prompt. The grader renders and scores the complete image.
 
     Only modify code between the EVOLVE-BLOCK markers; keep the interface unchanged.
   num_top_programs: 3

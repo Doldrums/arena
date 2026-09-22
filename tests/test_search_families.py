@@ -26,14 +26,14 @@ def test_source_declared_families_cover_catalog_once(inputs):
     data = get_search_families()
     assert data["summary"] == {"task_count": 959, "source_group_count": 113, "corpus_paper_count": 98,
                                 "group_count": 10, "unknown_family_source_count": 0, "unknown_family_task_count": 0,
-                                "cross_family_task_count": 26, "executable_count": 689, "unsupported_count": 270}
+                                "cross_family_task_count": 26, "executable_count": 705, "unsupported_count": 254}
     members = [ident for group in data["groups"] for ident in group["task_ids"]]
     assert len(members) == len(set(members)) == 959
     assert set(members) == {task["id"] for task in catalog["tasks"]}
     assert sum(group["paper_count"] for group in data["groups"]) == 98
     assert sum(group["source_group_count"] for group in data["groups"]) == 113
-    assert sum(group["executable"] for group in data["groups"]) == 689
-    assert sum(group["unsupported"] for group in data["groups"]) == 270
+    assert sum(group["executable"] for group in data["groups"]) == 705
+    assert sum(group["unsupported"] for group in data["groups"]) == 254
     assert {group["label"]: group["source_group_count"] for group in data["groups"]} == {
         "AlphaEvolve / OpenEvolve": 16, "FunSearch / EoH": 18, "DGM / ADAS": 16,
         "Eureka": 7, "LLM-SR": 4, "Promptbreeder / EvoPrompt": 13, "Other": 24, "SCiEL supplement": 1,
