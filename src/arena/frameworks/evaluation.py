@@ -7,6 +7,7 @@ this module nor preparing an evaluation executes task or participant code.
 from __future__ import annotations
 
 import hashlib
+import http.client
 import json
 import math
 import os
@@ -169,9 +170,11 @@ def validate_config(config):
             raise ValueError("Docker Python must be python or python3 from the pinned image")
         if "resource_profile" in execution:
             from arena.evaluation_resources import budget
+            from .evaluation_gpu_client import resources as gpu_resources
             if execution["resource_profile"] is None:
                 raise ValueError("resource_profile must name an explicit canonical budget")
-            budget(execution["resource_profile"])
+            if gpu_resources(config) is None:
+                budget(execution["resource_profile"])
     else:
         raise ValueError("Choose docker for generated code or local_trusted for reviewed fixtures")
     return {"config": config, "task": task, "source_dir": str(root), "source": revision,
@@ -299,14 +302,17 @@ def evaluate(config, program_path, output_dir):
                "started_at": time.time(), "environment_locked": execution["kind"] == "docker"}
     root = Path(prepared["source_dir"])
     container = f"arena-eval-{ident}"
+    from . import evaluation_gpu_client as gpu_client
+    gpu_resources = gpu_client.resources(config)
+    gpu_created = False
     if execution["kind"] == "docker":
         # A trusted evaluator and candidate share this container. This constrains
         # resource/host access; it is not an adversarial verifier guarantee.
         from arena.evaluation_resources import budget
-        resources = budget(execution.get("resource_profile"))
+        resources = gpu_resources or budget(execution.get("resource_profile"))
         memory = f"{resources['memory_mb']}m" if "resource_profile" in execution else "2g"
         argv = ["docker", "run", "--rm", "--pull=never", "--name", container,
-                "--network", "none", "--read-only", "--cpus", "1", "--memory", memory,
+                "--network", "none", "--read-only", "--cpus", str(resources["cpus"]), "--memory", memory,
                 "--pids-limit", str(resources["pids"]), "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
                 "--user", f"{os.getuid()}:{os.getgid()}", "--tmpfs", "/tmp:rw,nosuid,nodev,size=268435456",
                 "--mount", f"type=bind,src={root},dst=/tasks,readonly",
@@ -365,6 +371,20 @@ def evaluate(config, program_path, output_dir):
             receipt["python_sha256"] = _digest_file(Path(execution["python"]))
         _write_json(output / "request.json", {"schema": "arena.evaluation-request/1", "config": config,
                                              "candidate_sha256": prepared["candidate_sha256"], "argv": argv})
+        if gpu_resources:
+            body = gpu_client.create_body(config, root, candidate_dir, native_dir, context)
+            capacity = receipt["capacity_wait"] = {}
+            # One deadline covers admission and execution. A capacity response
+            # proves nonexecution; other create failures are never replayed.
+            ident = gpu_client.create_when_available(body, container, environment,
+                started + config["timeout_seconds"], capacity)
+            gpu_created = True
+            receipt["container_id"] = ident
+            argv = ["docker", "start", "--attach", ident]
+            _write_json(output / "request.json", {"schema": "arena.evaluation-request/1", "config": config,
+                "candidate_sha256": prepared["candidate_sha256"], "create": body, "argv": argv})
+            if time.monotonic() >= started + config["timeout_seconds"]:
+                raise subprocess.TimeoutExpired("GPU admission used the execution deadline", config["timeout_seconds"])
         # No model credentials or participant environment is passed to evaluators.
         process = subprocess.Popen(argv, cwd=output, env=environment, stdin=subprocess.DEVNULL,
                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
@@ -373,23 +393,27 @@ def evaluate(config, program_path, output_dir):
             capture = _Capture(stream, output / f"{name}.log")
             captures.append(capture)
             capture.start()
-        process.wait(timeout=config["timeout_seconds"] + 15)
+        process.wait(timeout=(max(0, started + config["timeout_seconds"] - time.monotonic())
+                              if gpu_resources else config["timeout_seconds"] + 15))
         receipt["returncode"] = process.returncode
         native, native_digest = _read_native_result(native_file)
         receipt.update(normalize_result(native, prepared))
         if process.returncode not in (0, 1) or (process.returncode != 0 and receipt["status"] == "completed"):
             receipt.update(status="error", fitness=None)
         receipt["native_result_sha256"] = native_digest
+    except gpu_client.CapacityUnavailable:
+        receipt["status"] = "capacity_unavailable"
+        receipt["warnings"].append("GPU remained occupied until the original evaluation deadline; no evaluation executed")
     except subprocess.TimeoutExpired:
         receipt["status"] = "timeout"
     except KeyboardInterrupt:
         receipt["status"] = "interrupted"
-    except (OSError, ValueError, TypeError, KeyError, subprocess.SubprocessError) as error:
+    except (OSError, ValueError, TypeError, KeyError, subprocess.SubprocessError, http.client.HTTPException) as error:
         receipt["warnings"].append(f"Evaluation did not produce a verified result ({type(error).__name__})")
     finally:
         if process is not None:
             _stop(process)
-        if execution["kind"] == "docker" and process is not None:
+        if execution["kind"] == "docker" and (process is not None or gpu_created):
             try:
                 cleanup = subprocess.run(["docker", "rm", "--force", container], env=environment,
                                          capture_output=True, timeout=15)
