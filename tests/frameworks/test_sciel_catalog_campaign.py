@@ -170,3 +170,53 @@ def test_explicit_pilot_exclusion_never_materializes_another_run(prepared_inputs
     assert json.loads((args["config_destination"] / "templates.json").read_text()) == []
     assert list(args["native_tasks"].iterdir()) == []
     assert summary["model_calls"] == 0 and summary["queue_mutated"] is False
+
+
+def test_explicit_new_build_preserves_source_pin_and_exact_approval(prepared_inputs):
+    from arena.release_deployment import binding_digest
+    args, _, _, _ = prepared_inputs
+    version = f"0.2.0+arena.{campaign.COMMIT[:8]}.worker2"
+    deployment = json.loads(args["deployment"].read_text())
+    deployment["release"]["version"] = deployment["binding"]["version"] = version
+    deployment["binding_sha256"] = binding_digest(deployment["binding"])
+    args["deployment"].write_text(json.dumps(deployment))
+    approval = args["approval"].parent / (digest(args["deployment"]) + ".json")
+    approval.write_bytes(args["deployment"].read_bytes())
+    approval.chmod(0o600)
+    args["approval"] = approval
+    with pytest.raises(ValueError, match="exact approved"):
+        campaign.prepare(**args)
+    result = campaign.prepare(**args, release_version=version)
+    assert result["counts"]["prepared"] == 1
+    inventory = json.loads((args["config_destination"] / "campaign-inventory.json").read_text())
+    assert inventory["release"]["version"] == version
+
+
+@pytest.mark.parametrize("version", ["0.3.0", "0.2.0+arena.00000000.worker2", "latest", 123])
+def test_new_build_option_cannot_relax_the_native_source_contract(prepared_inputs, version):
+    args, _, _, _ = prepared_inputs
+    with pytest.raises(ValueError, match="pinned SCiEL 0.2.0"):
+        campaign.prepare(**args, release_version=version)
+    assert not args["config_destination"].exists()
+
+
+@pytest.mark.parametrize("mutation", [None, "data", "image", "implicit"])
+def test_science_preflight_requires_the_explicit_immutable_environment(prepared_inputs, mutation):
+    from arena.frameworks.sciel_catalog_profile import SCIENCE_IMAGE_ID, SCIENCE_PROFILE, science_environment
+    _, path, _, catalog = prepared_inputs
+    manifest = json.loads(path.read_text())
+    identity = manifest["task_source"]
+    manifest.update(group="science", profile=SCIENCE_PROFILE, image=SCIENCE_IMAGE_ID,
+                    prepared_environment=science_environment(SCIENCE_IMAGE_ID))
+    if mutation == "data":
+        manifest["prepared_environment"]["data_lock_sha256"] = "0" * 64
+    elif mutation == "image":
+        manifest["image"] = "sha256:" + "0" * 64
+    elif mutation == "implicit":
+        manifest["group"] = "all"
+    if mutation is None:
+        tasks, rows = campaign.preflight_records(manifest, catalog, identity)
+        assert len(tasks) == len(rows) == 2
+    else:
+        with pytest.raises(ValueError, match="science|reviewed image"):
+            campaign.preflight_records(manifest, catalog, identity)

@@ -18,7 +18,9 @@ import time
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
-from arena.frameworks.sciel_catalog_profile import requirement_group
+from arena.frameworks.sciel_catalog_profile import (
+    SCIENCE_PROFILE, requirement_group, science_environment, supports_science_task,
+)
 
 
 def encode(value):
@@ -32,13 +34,17 @@ def write(path, value):
     temporary.replace(path)
 
 
-def inventory(tasks, root, group="all"):
-    if group not in {"base", "extended", "all"}:
-        raise ValueError("Choose the base, extended or all CPU seed group")
+def inventory(tasks, root, group="all", image=None):
+    if group not in {"base", "extended", "all", "science"}:
+        raise ValueError("Choose the base, extended, all or science CPU seed group")
+    if group == "science":
+        science_environment(image)
     rows = []
     for task in tasks:
         seed = root / "suite" / task["id"] / "initial_program.py"
         required_group = requirement_group(task["requirements"])
+        if group == "science" and supports_science_task(task["id"], task["requirements"]):
+            required_group = "science"
         if not task["executable"]:
             status, reason = "evaluation_integration_pending", "No executable evaluator definition."
         elif not seed.is_file() or seed.is_symlink():
@@ -57,13 +63,18 @@ def inventory(tasks, root, group="all"):
     return rows
 
 
-def check_seed(row, *, root, output, image, timeout):
+def check_seed(row, *, root, output, image, timeout, group="all"):
     from arena.frameworks.evaluation import evaluate
 
     task_id = row["task_id"]
     config = {"schema": "arena.evaluation-config/1", "task_id": task_id,
               "tasks_dir": str(root), "timeout_seconds": timeout,
               "execution": {"kind": "docker", "image": image, "python": "python"}}
+    if group == "science":
+        science_environment(image)
+        if not supports_science_task(task_id, row["requirements"]):
+            raise ValueError("Task is outside the exact prepared science cohort")
+        config["profile"] = SCIENCE_PROFILE
     try:
         receipt = evaluate(config, root / "suite" / task_id / "initial_program.py", output / task_id)
         good = (receipt["status"] == "completed" and receipt["validity"] is True
@@ -87,7 +98,7 @@ def main(argv=None):
     parser.add_argument("--timeout", type=int, default=120)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--execute-seeds", action="store_true")
-    parser.add_argument("--group", choices=("base", "extended", "all"), default="all",
+    parser.add_argument("--group", choices=("base", "extended", "all", "science"), default="all",
                         help="Check one CPU dependency group; retain all other tasks in the inventory")
     args = parser.parse_args(argv)
     if not 1 <= args.workers <= 16 or not 1 <= args.timeout <= 600:
@@ -104,7 +115,7 @@ def main(argv=None):
     catalog = get_catalog()
     source = next(s for s in catalog["sources"] if s["id"] == "arena-tasks")
     identity = verify_task_library(args.tasks_root, source)
-    rows = inventory(catalog["tasks"], args.tasks_root, args.group)
+    rows = inventory(catalog["tasks"], args.tasks_root, args.group, args.image)
     eligible = [row for row in rows if row["status"] == "seed_check_pending"]
     if not eligible:
         parser.error("No tasks match the prepared CPU profile")
@@ -115,6 +126,8 @@ def main(argv=None):
     manifest = {"schema": "arena.sciel-catalog-preflight/1", "created_at": time.time(),
                 "task_source": identity, "image": args.image, "timeout_seconds": args.timeout,
                 "seed_workers": args.workers, "group": args.group, "model_calls": 0, "tasks": rows}
+    if args.group == "science":
+        manifest.update(profile=SCIENCE_PROFILE, prepared_environment=science_environment(args.image))
     path = args.output / "manifest.json"
 
     def save():
@@ -127,7 +140,7 @@ def main(argv=None):
         positions = {row["task_id"]: i for i, row in enumerate(rows)}
         with ThreadPoolExecutor(max_workers=args.workers) as executor:
             pending = [executor.submit(check_seed, row, root=args.tasks_root,
-                       output=args.output, image=args.image, timeout=args.timeout) for row in eligible]
+                       output=args.output, image=args.image, timeout=args.timeout, group=args.group) for row in eligible]
             for future in as_completed(pending):
                 row = future.result()
                 rows[positions[row["task_id"]]] = row
