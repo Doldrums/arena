@@ -18,6 +18,7 @@ from .research_tool_policy import HASH, canonical, canonical_config, digest, exe
 from .research_tool_recovery import (image_proof, load_record, snapshot_paths, verify_container, verify_snapshot,
                                      write_json, write_record)
 from .research_tool_snapshot import snapshot_inputs
+from .research_tool_stream import retain_stream
 
 
 class ResearchProxy:
@@ -150,6 +151,8 @@ class ResearchProxy:
         with self.lock:
             require(not record.get('closed') and self.records.get(record['saved']['name']) is record)
             require(record['saved'].get('output', proof) == proof, 'Research output stream changed')
+            require(record['stage'].parent == self.config.staging_root)
+            retain_stream(self.config.receipts_root, record['stage'].name, raw)
             record['saved']['output'] = proof
             self._save(record)
 
