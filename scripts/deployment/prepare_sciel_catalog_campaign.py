@@ -22,6 +22,9 @@ sys.path.insert(0, str(ROOT / "src"))
 from arena.engine_policy import checked_native_config
 from arena.evaluation_resources import worker_resources
 from arena.frameworks.sciel_catalog_jax import JAX_GROUPS, JAX_PROFILE, jax_environment, jax_task_group
+from arena.frameworks.sciel_catalog_torch import (
+    TORCH_GROUPS, TORCH_PROFILE, torch_environment, torch_task_group, validate_torch_seed_receipt,
+)
 from arena.control_config import validate_config as validate_control
 from arena.frameworks.sciel_catalog_evaluate import create_task, validate_config as validate_bridge
 from arena.frameworks.sciel_catalog_profile import SCIENCE_PROFILE, science_environment
@@ -96,10 +99,16 @@ def preflight_records(manifest, catalog, identity):
                 or manifest.get("prepared_environment") != environment
                 or manifest.get("resource_profile") != environment["resource_profile"]):
             raise ValueError("Preflight differs from the pinned prepared JAX environment and resources")
+    elif manifest.get("group") in TORCH_GROUPS:
+        environment = torch_environment(manifest.get("image"), manifest["group"])
+        if (manifest.get("profile") != TORCH_PROFILE
+                or manifest.get("prepared_environment") != environment
+                or manifest.get("resource_profile") != environment["resource_profile"]):
+            raise ValueError("Preflight differs from the pinned prepared Torch environment and resources")
     elif any(key in manifest for key in ("profile", "prepared_environment", "resource_profile")):
-        raise ValueError("Prepared environment binding requires the explicit science or JAX group")
-    if manifest.get("group") not in JAX_GROUPS and "resource_profile" in manifest:
-        raise ValueError("Resource profile requires the exact prepared JAX group")
+        raise ValueError("Prepared environment binding requires the explicit science, JAX or Torch group")
+    if manifest.get("group") not in (*JAX_GROUPS, *TORCH_GROUPS) and "resource_profile" in manifest:
+        raise ValueError("Resource profile requires the exact prepared JAX or Torch group")
     rows = manifest.get("tasks")
     if type(rows) is not list or any(type(row) is not dict for row in rows):
         raise ValueError("Preflight task inventory is missing")
@@ -114,6 +123,9 @@ def preflight_records(manifest, catalog, identity):
         if (manifest.get("group") in JAX_GROUPS and row.get("status") == "seed_verified"
                 and jax_task_group(task["id"], task["requirements"]) != manifest["group"]):
             raise ValueError("Verified seed is outside the exact prepared JAX cohort")
+        if (manifest.get("group") in TORCH_GROUPS and row.get("status") == "seed_verified"
+                and torch_task_group(task["id"], task["requirements"]) != manifest["group"]):
+            raise ValueError("Verified seed is outside the exact prepared Torch cohort")
     return tasks, rows
 
 
@@ -138,8 +150,13 @@ def verified_seed(row, manifest, manifest_path, verified):
     if manifest.get("group") in JAX_GROUPS:
         expected["execution"]["resource_profile"] = jax_environment(
             manifest["image"], manifest["group"])["resource_profile"]
+    if manifest.get("group") in TORCH_GROUPS:
+        expected["execution"]["resource_profile"] = torch_environment(
+            manifest["image"], manifest["group"])["resource_profile"]
     if any(receipt.get(key) != value for key, value in expected.items()):
         raise ValueError("Seed receipt does not match the exact candidate, evaluator and Docker image")
+    if manifest.get("group") in TORCH_GROUPS:
+        validate_torch_seed_receipt(receipt, path.parent)
     raw, fitness = receipt.get("raw_score"), receipt.get("fitness")
     if (any(type(value) not in (int, float) or not math.isfinite(value) for value in (raw, fitness))
             or fitness != (raw if task["direction"] == "maximize" else -raw)):
@@ -240,6 +257,9 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
         if preflight.get("group") in JAX_GROUPS:
             bridge["evaluation"]["profile"] = JAX_PROFILE
             bridge["evaluation"]["execution"]["resource_profile"] = preflight["resource_profile"]
+        if preflight.get("group") in TORCH_GROUPS:
+            bridge["evaluation"]["profile"] = TORCH_PROFILE
+            bridge["evaluation"]["execution"]["resource_profile"] = preflight["resource_profile"]
         try:
             verified = validate_bridge(bridge)
         except ValueError as exc:
@@ -296,6 +316,10 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
         result.update(preflight_group="science", prepared_environment=preflight["prepared_environment"])
     if preflight.get("group") in JAX_GROUPS:
         result.update(preflight_group=preflight["group"], profile=JAX_PROFILE,
+                      resource_profile=preflight["resource_profile"],
+                      prepared_environment=preflight["prepared_environment"])
+    if preflight.get("group") in TORCH_GROUPS:
+        result.update(preflight_group=preflight["group"], profile=TORCH_PROFILE,
                       resource_profile=preflight["resource_profile"],
                       prepared_environment=preflight["prepared_environment"])
     write(config_destination / "templates.json", templates)

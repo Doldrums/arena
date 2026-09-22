@@ -79,8 +79,11 @@ def validate_task_profile(task, evaluation):
     """Bind extra environment data only for an explicitly reviewed cohort."""
     profile = evaluation.get("profile", CPU_PROFILE)
     from .sciel_catalog_jax import JAX_PROFILE, validate_jax_task
+    from .sciel_catalog_torch import TORCH_PROFILE, validate_torch_task
     if profile == JAX_PROFILE:
         return validate_jax_task(task, evaluation)
+    if profile == TORCH_PROFILE:
+        return validate_torch_task(task, evaluation)
     if profile == SCIENCE_PROFILE:
         environment = science_environment(evaluation["execution"]["image"])
         if not supports_science_task(task["id"], task.get("requirements")):

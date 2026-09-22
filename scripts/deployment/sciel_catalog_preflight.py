@@ -19,6 +19,9 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from arena.frameworks.sciel_catalog_jax import JAX_GROUPS, JAX_PROFILE, jax_environment, jax_task_group
+from arena.frameworks.sciel_catalog_torch import (
+    TORCH_GROUPS, TORCH_PROFILE, torch_environment, torch_task_group, validate_torch_seed_receipt,
+)
 from arena.frameworks.sciel_catalog_profile import (
     SCIENCE_PROFILE, requirement_group, science_environment, supports_science_task,
 )
@@ -36,10 +39,12 @@ def write(path, value):
 
 
 def inventory(tasks, root, group="all", image=None):
-    if group not in {"base", "extended", "all", "science", *JAX_GROUPS}:
+    if group not in {"base", "extended", "all", "science", *JAX_GROUPS, *TORCH_GROUPS}:
         raise ValueError("Choose an explicit supported CPU seed group")
     if group in JAX_GROUPS:
         jax_environment(image, group)
+    if group in TORCH_GROUPS:
+        torch_environment(image, group)
     if group == "science":
         science_environment(image)
     rows = []
@@ -50,6 +55,8 @@ def inventory(tasks, root, group="all", image=None):
             required_group = "science"
         if group in JAX_GROUPS:
             required_group = jax_task_group(task["id"], task["requirements"]) or required_group
+        if group in TORCH_GROUPS:
+            required_group = torch_task_group(task["id"], task["requirements"]) or required_group
         if not task["executable"]:
             status, reason = "evaluation_integration_pending", "No executable evaluator definition."
         elif not seed.is_file() or seed.is_symlink():
@@ -86,10 +93,18 @@ def check_seed(row, *, root, output, image, timeout, group="all"):
             raise ValueError("Task is outside the exact prepared JAX cohort")
         config["profile"] = JAX_PROFILE
         config["execution"]["resource_profile"] = environment["resource_profile"]
+    if group in TORCH_GROUPS:
+        environment = torch_environment(image, group)
+        if torch_task_group(task_id, row["requirements"]) != group:
+            raise ValueError("Task is outside the exact prepared Torch cohort")
+        config["profile"] = TORCH_PROFILE
+        config["execution"]["resource_profile"] = environment["resource_profile"]
     try:
         receipt = evaluate(config, root / "suite" / task_id / "initial_program.py", output / task_id)
         good = (receipt["status"] == "completed" and receipt["validity"] is True
                 and receipt["fitness"] is not None)
+        if good and group in TORCH_GROUPS:
+            validate_torch_seed_receipt(receipt, output / task_id)
         receipt_path = Path(receipt["receipt_path"])
         return {**row, "status": "seed_verified" if good else "seed_check_failed",
                 "reason": None if good else "Seed evaluation: " + receipt["status"],
@@ -109,7 +124,7 @@ def main(argv=None):
     parser.add_argument("--timeout", type=int, default=120)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--execute-seeds", action="store_true")
-    parser.add_argument("--group", choices=("base", "extended", "all", "science", *JAX_GROUPS), default="all",
+    parser.add_argument("--group", choices=("base", "extended", "all", "science", *JAX_GROUPS, *TORCH_GROUPS), default="all",
                         help="Check one CPU dependency group; retain all other tasks in the inventory")
     args = parser.parse_args(argv)
     if not 1 <= args.workers <= 16 or not 1 <= args.timeout <= 600:
@@ -134,8 +149,10 @@ def main(argv=None):
               "tasks_dir": str(args.tasks_root), "timeout_seconds": args.timeout,
               "execution": {"kind": "docker", "image": args.image, "python": "python"}}
     environment = jax_environment(args.image, args.group) if args.group in JAX_GROUPS else None
+    if args.group in TORCH_GROUPS:
+        environment = torch_environment(args.image, args.group)
     if environment is not None:
-        config["profile"] = JAX_PROFILE
+        config["profile"] = environment["profile"]
         config["execution"]["resource_profile"] = environment["resource_profile"]
     validate_config(config)
     args.output.mkdir(mode=0o700, parents=True)
@@ -145,7 +162,7 @@ def main(argv=None):
     if args.group == "science":
         manifest.update(profile=SCIENCE_PROFILE, prepared_environment=science_environment(args.image))
     if environment is not None:
-        manifest.update(profile=JAX_PROFILE, prepared_environment=environment,
+        manifest.update(profile=environment["profile"], prepared_environment=environment,
                         resource_profile=environment["resource_profile"])
     path = args.output / "manifest.json"
 
