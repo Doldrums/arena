@@ -31,16 +31,16 @@ Researchers can inspect the problems a system works on, follow changes to its co
 
 As of **22 September 2026**, the collection contains **959 task packages** across **151 task families** and **11 research domains**, drawing on a **98-paper research corpus** and supplementary scientific collections.
 
-Our contribution is turning research problems into task packages with a shared evaluation interface. Of the **689 packages with executable evaluator definitions**, **81.86% use evaluators implemented or adapted in the task library**; **18.14% reuse upstream evaluators**.
+Our contribution is turning research problems into task packages with a shared evaluation interface. Of the **689 packages with executable evaluator definitions**, **83.02% use evaluators implemented or adapted in the task library**; **16.98% reuse upstream evaluators**.
 
 | How evaluation is provided | Task packages | Share of the full catalog |
 | --- | ---: | ---: |
-| Implemented or adapted in the task library | **564** | **58.81%** |
-| Reused from upstream implementations | 125 | 13.03% |
+| Implemented or adapted in the task library | **572** | **59.65%** |
+| Reused from upstream implementations | 117 | 12.20% |
 | Research tasks awaiting evaluation integration | 270 | 28.15% |
 | **Total** | **959** | **100.00%** |
 
-Evaluator definitions cover **71.85%** of the catalog. **81** adapted definitions are recorded as verified reconstructions. Recorded numeric seed baselines are available for **662 packages (69.03%)**; **75 (7.82%)** include published numeric references.
+Evaluator definitions cover **71.85%** of the catalog. **81** adapted definitions are recorded as verified reconstructions. Recorded numeric seed baselines are available for **654 packages (68.20%)**; **75 (7.82%)** include published numeric references.
 
 Counts refer to task packages, including distinct parameter settings and protocols. The split describes evaluator implementation; validation and runtime requirements are recorded separately for each task.
 

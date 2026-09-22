@@ -8,11 +8,11 @@
       "repository_url": "https://github.com/Doldrums/arena",
       "revision": "main",
       "manifest_path": "registry/task-library-manifest.json",
-      "manifest_sha256": "71b251f9e23433dc8b277459a6314fc2fdd3de6c92a587e849158bc44538c321",
+      "manifest_sha256": "0b6cd9ec882cfb8e14ae8c895ea333dd0324535676e1990ec84aad5e8066d7b6",
       "catalog_path": "catalog/tasks.json",
       "index_path": "suite/index.json",
-      "catalog_sha256": "86dea9baabf93c7c34419d75e468ec3b851bda8060c890989c108029008a47fe",
-      "index_sha256": "6f95b388069947cf6568750a8953720d27f374fd916bcc53b1a2dfb5519660e4"
+      "catalog_sha256": "cb358ba4b2b45ba7a23da577be98a7d460f896c3974441944cdcae1c3eabb7ca",
+      "index_sha256": "52689ac2b42b354a57ff85c097c04c0c51836ddaef8d621143ba1bbe874466f9"
     }
   ],
   "summary": {
@@ -20,9 +20,9 @@
     "executable_count": 689,
     "unsupported_count": 270,
     "protocol_counts": {
-      "original": 125,
+      "original": 117,
       "recreated_verified": 81,
-      "recreated": 483,
+      "recreated": 491,
       "unsupported": 270
     },
     "runtime_readiness": "not_verified"
@@ -44869,7 +44869,7 @@
       "name": "SCiEL: K-module pipeline configuration",
       "description": "Select the correct option for each of four independent pipeline modules (loader, preprocess, algorithm, formatter; five options each, 625 combinations). The evaluator reports only how many modules are correct, so the landscape carries no per-module gradient; combined_score is the fraction of correct modules.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -44888,7 +44888,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-bench-k-module-problem/problem.json",
         "path": "suite/sciel-bench-k-module-problem/problem.json",
-        "sha256": "e591b5641b843af98bab39578bfadee086edc656ce75721366c0d8f10d599689"
+        "sha256": "d0297b16c800a48a365404cc7d22d97a57d58c59c771479dc107b07d6305d1df"
       },
       "provenance": {
         "kind": "upstream",
@@ -44912,9 +44912,11 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The hidden target configuration is readable in the pinned evaluator source; the task measures search behavior under coarse feedback, not concealed knowledge."
+          "The hidden target configuration is readable in the pinned evaluator source; the task measures search behavior under coarse feedback, not concealed knowledge.",
+          "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+          "Validity means all required choices belong to their allowed options, regardless of target-match accuracy. The readable target configuration is not concealed knowledge."
         ],
-        "validation_level": "integration_smoke",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example k_module_problem",
         "paper_metric": null,
@@ -47612,7 +47614,7 @@
       "name": "SCiEL: Erdős squarefree subset in [1,500]",
       "description": "Choose integers at most 500 to maximize the subset objective penalized when ab+1 is squarefree for a selected pair.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -47631,7 +47633,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-erdos-squarefree/problem.json",
         "path": "suite/sciel-math-erdos-squarefree/problem.json",
-        "sha256": "8c023fcc7ad5e8e9b277d48628d739d6920bb29eb941095d7197ce2d4d406e50"
+        "sha256": "1b5cc4d9f6bc6278869395cfd3a50ebde3a320d5d7f55759d299da08751cb256"
       },
       "provenance": {
         "kind": "upstream",
@@ -47650,9 +47652,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+          "The feasibility predicate checks distinct unordered pairs only, matching the scorer; it does not add a diagonal/self-pair restriction. Raw subset entries must be exact finite integers before upstream rounding."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example erdos_squarefree",
         "paper_metric": null,
@@ -47728,7 +47731,7 @@
       "name": "SCiEL: Factoring 100 factorial",
       "description": "Partition the prime factors of 100! into exactly 100 integer factors to maximize the smallest factor under the upstream partition constraints.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -47747,7 +47750,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-factoring-factorials/problem.json",
         "path": "suite/sciel-math-factoring-factorials/problem.json",
-        "sha256": "e37ca039434630652acba6834d7aaa394f089fef9c8360fb6fee2f08f8521899"
+        "sha256": "5beed05a4e01030796e6d4dd8b2cf4eeae69019d2a6a69b3857123c9e534c167"
       },
       "provenance": {
         "kind": "upstream",
@@ -47766,9 +47769,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+          "The no-argument bin-assignment representation differs from the source notebook API. Exact Python-integer products must reproduce 100 factorial. The normalization constant is a greedy seed baseline, not a known optimum."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example factoring_factorials",
         "paper_metric": null,
@@ -48078,7 +48082,7 @@
       "name": "SCiEL: Littlewood merit factor at length 41",
       "description": "Choose a ±1 coefficient sequence of length 41 to maximize its Littlewood merit factor.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -48097,7 +48101,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-flat-polynomials/problem.json",
         "path": "suite/sciel-math-flat-polynomials/problem.json",
-        "sha256": "c380753b31625929aa725eaeb27f548c3631c85e2bc63a17ab8ef44561de6be3"
+        "sha256": "988b6f9b174867ac83ce11711b25234be3a9e21da1ce7adb622ff10418bbc98d"
       },
       "provenance": {
         "kind": "upstream",
@@ -48116,9 +48120,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+          "The source converts any finite real sign pattern into coefficients +/-1, with zero mapped to +1. Validity certifies that normalized representation, not a merit-factor record."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example flat_polynomials",
         "paper_metric": null,
@@ -48256,7 +48261,7 @@
       "name": "SCiEL: Square-difference-free subset modulo 205",
       "description": "Choose a large subset modulo 205 avoiding nonzero square differences.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -48275,7 +48280,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-furstenberg-sarkozy/problem.json",
         "path": "suite/sciel-math-furstenberg-sarkozy/problem.json",
-        "sha256": "fbdeb4fa451879cb7bc7013f297782fcb1583cc0f4279636ed734bc341ed32fb"
+        "sha256": "042432095a39ce34336b3b2a219f428b4fd958308aeced8ccc6006707da834af"
       },
       "provenance": {
         "kind": "upstream",
@@ -48294,9 +48299,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+          "The subset contains exact finite integer residues before upstream rounding. The source evaluator reports a transcription problem in the published subset and retains its size as a target; this adapter does not claim to reproduce that construction."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example furstenberg_sarkozy",
         "paper_metric": null,
@@ -49199,7 +49205,7 @@
       "name": "SCiEL: No five cospherical points in an 8³ grid",
       "description": "Choose as many points as possible from an 8×8×8 integer grid with no five cospherical or coplanar points under the upstream determinant checks.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -49218,7 +49224,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-no-5-on-a-sphere/problem.json",
         "path": "suite/sciel-math-no-5-on-a-sphere/problem.json",
-        "sha256": "ed974df7bf84304f8a494ca2d36df363a9ed2c203a1046683abf4acbd956f7c5"
+        "sha256": "509af8270664d9d292636088bf27bf0923699883dae30d222638317e30701de3"
       },
       "provenance": {
         "kind": "upstream",
@@ -49237,9 +49243,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+          "The determinant verifier excludes five cospherical OR coplanar points on the integer grid. This numerical determinant check is not an exact-arithmetic certificate."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example no_5_on_a_sphere",
         "paper_metric": null,
@@ -49668,7 +49675,7 @@
       "name": "SCiEL: Sendov polynomial of degree six",
       "description": "Choose six complex roots in the closed unit disk to maximize the largest root-to-nearest-critical-point distance.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -49687,7 +49694,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-sendov-conjecture/problem.json",
         "path": "suite/sciel-math-sendov-conjecture/problem.json",
-        "sha256": "f10e7de6f5aa59386e931ce1d4f302d4217b18a2476a9b591895ed182c8d16ff"
+        "sha256": "c93b9fba2daebe9a06e516d8527dd5eddb129d67a787dce1ad3824507b7abfe2"
       },
       "provenance": {
         "kind": "upstream",
@@ -49706,9 +49713,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+          "Root entries are flattened and interpreted as complex values exactly as in the source. The unit-disk tolerance is 1e-6 and derivative roots are computed numerically; validity is not a proof or counterexample to Sendov conjecture."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example sendov_conjecture",
         "paper_metric": null,
@@ -49999,7 +50007,7 @@
       "name": "SCiEL: No isosceles triangles in a 7×7 grid",
       "description": "Choose the largest subset of a 7×7 integer grid with no isosceles triangle.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -50018,7 +50026,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-subsets-grid-no-isosceles/problem.json",
         "path": "suite/sciel-math-subsets-grid-no-isosceles/problem.json",
-        "sha256": "c85de28dd1f34538089113c021cbe0929083f0fd49fd43088e8efd8c5cf9b69e"
+        "sha256": "3dc8fda1659c4048eac2a5bcae970e3e6bef2f5e55a4939f130fba88ec43f1d7"
       },
       "provenance": {
         "kind": "upstream",
@@ -50037,9 +50045,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+          "Raw coordinates must be exact finite integers before the upstream integer cast. Every triple is checked for equality of any two squared distances; an empty (0,2) grid is vacuously feasible under this source contract."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example subsets_grid_no_isosceles",
         "paper_metric": null,

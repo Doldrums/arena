@@ -73,7 +73,7 @@
       "Direct evaluation of original candidate contract; model-driven search is configured separately."
     ],
     "suite": {
-      "protocol": "original",
+      "protocol": "recreated",
       "family": "sciel_copy",
       "evaluator": "evaluator.py",
       "initial_program": "initial_program.py",
@@ -84,16 +84,27 @@
       "requires": [
         "py:numpy"
       ],
-      "timeout": 600
+      "timeout": 600,
+      "validity_key": "arena_valid",
+      "adaptation": {
+        "schema": "arena.task-feasibility-adapter/1",
+        "contract": "flat_sign_polynomial",
+        "upstream_evaluator_path": "upstream_evaluator.py",
+        "upstream_evaluator_sha256": "a0801463110b1bd7a1e3c65f7cf1c01c34f27eb6d611dd212c86036d910cfea9",
+        "verifier": "finite length-41 input + normalized binary-coefficient predicate",
+        "validity_key": "arena_valid",
+        "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+      }
     }
   },
   "limitations": [
     "Source-inspected SCiEL example; not a reproduced paper result.",
     "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+    "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+    "The source converts any finite real sign pattern into coefficients +/-1, with zero mapped to +1. Validity certifies that normalized representation, not a merit-factor record."
   ],
   "validation": {
-    "level": "source_inspected",
+    "level": "source_inspected_with_feasibility_adapter",
     "upstream_reproduction": false,
     "independent_verification": false,
     "integrity_risks": [],
