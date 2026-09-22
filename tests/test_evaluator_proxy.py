@@ -57,7 +57,8 @@ def test_actual_cli_shape_is_rebuilt_not_forwarded(setup):
     assert checked["HostConfig"]["LogConfig"] == {"Type": "local", "Config": {"max-size": "1m", "max-file": "1", "compress": "false"}}
     assert checked["Entrypoint"] == [] and checked["HostConfig"]["CgroupnsMode"] == "private"
     assert "Binds" not in checked["HostConfig"] and "NetworkingConfig" not in checked
-    assert checked["HostConfig"]["Mounts"] == []  # rewritten only after safe snapshot
+    assert checked["HostConfig"]["Mounts"] == [
+        {"Type": "bind", "Source": str(config.tasks_root), "Target": "/tasks", "ReadOnly": True}]
 
 
 

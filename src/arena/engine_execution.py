@@ -53,6 +53,9 @@ class Broker:
 
     def prepare(self, plan):
         run_id, config = plan["run_id"], self.config
+        for path in config.library_roots:
+            descriptor = directory_fd(path)
+            os.close(descriptor)
         stage = config.staging_root / run_id
         stage.mkdir(mode=0o700)
         (stage / "inputs").mkdir(mode=0o755); (stage / "inputs").chmod(0o755)
@@ -92,7 +95,7 @@ class Broker:
                                "Tmpfs": {"/tmp": "rw,nosuid,nodev,size=536870912"},
                                "LogConfig": {"Type": "local", "Config": {"max-size": "4m", "max-file": "1", "compress": "false"}},
                                "Mounts": [mount(stage / "inputs", "/arena-input"), mount(artifacts, plan["logical"], False),
-                                          mount(config.tasks_root, config.tasks_root),
+                                          *[mount(path, path) for path in config.library_roots],
                                           mount(config.evaluator_socket, "/run/arena-evaluator/docker.sock"),
                                           mount(stage / "context.json", "/run/arena-engine/context.json")]}}
         # ID is available after create and before start; the bind source exists

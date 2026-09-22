@@ -64,8 +64,10 @@ class Proxy:
                 # Persist the name before asking Docker to create. If transport
                 # fails after daemon creation, restart recovery still knows it.
                 (stage / "record.json").write_text(json.dumps({"id": None, "run": run_id, "name": name}))
+                # Retain only the trusted library mount rebuilt by policy;
+                # caller-writable candidate/results paths are always replaced.
                 rebuilt["HostConfig"]["Mounts"] = [
-                    {"Type": "bind", "Source": str(self.config.tasks_root), "Target": "/tasks", "ReadOnly": True},
+                    rebuilt["HostConfig"]["Mounts"][0],
                     {"Type": "bind", "Source": str(stage / "candidate"), "Target": "/candidate", "ReadOnly": True},
                     {"Type": "bind", "Source": str(stage / "results"), "Target": "/results", "ReadOnly": False}]
                 keep_stage = True

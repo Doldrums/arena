@@ -67,6 +67,34 @@ def directory_fd(path):
         raise
 
 
+def parse_additional_tasks_roots(value, primary):
+    """An explicit finite list of disjoint libraries, never a path prefix grant."""
+    require(type(value) is list and len(value) <= 16)
+    require(all(type(item) is str for item in value))
+    roots = (primary, *(Path(item) for item in value))
+    require(all(path.is_absolute() and ".." not in path.parts and len(path.parts) >= 2 for path in roots))
+    require(all(not left.is_relative_to(right) and not right.is_relative_to(left)
+                for index, left in enumerate(roots) for right in roots[index + 1:]),
+            "Task library roots must be distinct and non-overlapping")
+    return roots[1:]
+
+
+def immutable_task_library(path):
+    """Apply the same host trust boundary to every approved task revision."""
+    descriptor = directory_fd(path)
+    os.close(descriptor)
+    for ancestor in (path, *path.parents):
+        info = ancestor.stat()
+        require(info.st_uid == 0 and not info.st_mode & 0o022,
+                "Task libraries must have root-owned non-writable ancestors")
+    for base, directories, files in os.walk(path, followlinks=False):
+        for name in directories + files:
+            info = (Path(base) / name).lstat()
+            require((stat.S_ISREG(info.st_mode) or stat.S_ISDIR(info.st_mode))
+                    and info.st_uid == 0 and not info.st_mode & 0o022,
+                    "Task libraries must be root-owned, link-free and not group/world writable")
+
+
 def read_regular(descriptor, name, limit, owner=None):
     fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=descriptor)
     try:
@@ -103,6 +131,11 @@ class Config:
     timeout_seconds: int = 3600
     engine_registry: Path | None = None
     engine_staging_root: Path | None = None
+    additional_tasks_roots: tuple[Path, ...] = ()
+
+    @property
+    def library_roots(self):
+        return (self.tasks_root, *self.additional_tasks_roots)
 
     @classmethod
     def read(cls, path):
@@ -110,10 +143,13 @@ class Config:
         required = {"docker_socket", "socket_path", "staging_root", "tasks_root", "run_roots",
                     "images", "worker_uid", "worker_gid"}
         require(required <= data.keys() and not set(data) - required -
-                {"cgroup_root", "max_containers", "timeout_seconds", "engine_registry", "engine_staging_root"})
+                {"cgroup_root", "max_containers", "timeout_seconds", "engine_registry", "engine_staging_root",
+                 "additional_tasks_roots"})
         for key in ("docker_socket", "socket_path", "staging_root", "tasks_root"):
             data[key] = Path(data[key])
             require(data[key].is_absolute() and ".." not in data[key].parts)
+        data["additional_tasks_roots"] = parse_additional_tasks_roots(
+            data.get("additional_tasks_roots", []), data["tasks_root"])
         require(type(data["run_roots"]) is list and data["run_roots"])
         data["run_roots"] = tuple(Path(p) for p in data["run_roots"])
         require(all(p.is_absolute() and len(p.parts) >= 4 and ".." not in p.parts for p in data["run_roots"]))
@@ -149,7 +185,7 @@ class Config:
         require(match is not None)
         size = int(match[1]) * {"": 1, "k": 1024, "m": 1024 ** 2, "g": 1024 ** 3}[match[2]]
         require(16 * 1024 ** 2 <= size <= 256 * 1024 ** 2, "Staging tmpfs must be 16–256 MiB")
-        for path in (self.staging_root, self.socket_path.parent, self.tasks_root):
+        for path in (self.staging_root, self.socket_path.parent):
             fd = directory_fd(path)
             os.close(fd)
             for ancestor in (path, *path.parents):
@@ -164,12 +200,8 @@ class Config:
                 require(path.stat().st_uid == 0 and stat.S_IMODE(path.stat().st_mode) == 0o700)
                 for parent in path.parents:
                     require(parent.stat().st_uid == 0 and not parent.stat().st_mode & 0o022)
-        # The caller must not be able to mutate the reviewed task implementation.
-        for base, directories, files in os.walk(self.tasks_root, followlinks=False):
-            for name in directories + files:
-                info = (Path(base) / name).lstat()
-                require(not stat.S_ISLNK(info.st_mode) and info.st_uid == 0 and not info.st_mode & 0o022,
-                        "Task checkout must be root-owned, link-free and not group/world writable")
+        for path in self.library_roots:
+            immutable_task_library(path)
 
 
 def _peer_identity(connection, config):
@@ -274,7 +306,11 @@ def canonical_config(body, name, run_id, config):
     require(set(selected) == {"/tasks", "/candidate", "/results"})
     require(selected["/tasks"].get("ReadOnly") is True and selected["/candidate"].get("ReadOnly") is True)
     require(selected["/results"].get("ReadOnly", False) is False)
-    require(selected["/tasks"].get("Source") == str(config.tasks_root))
+    task_source = selected["/tasks"].get("Source")
+    require(type(task_source) is str and task_source in {str(path) for path in config.library_roots},
+            "Task library source is not explicitly approved")
+    descriptor = directory_fd(Path(task_source))
+    os.close(descriptor)
     candidate, result = Path(selected["/candidate"]["Source"]), Path(selected["/results"]["Source"])
     require(candidate.is_absolute() and result.is_absolute() and ".." not in candidate.parts and ".." not in result.parts)
     require(candidate.name in {"input", "candidate"} and result.name == "native-output" and candidate.parent == result.parent)
@@ -290,7 +326,7 @@ def canonical_config(body, name, run_id, config):
                    "CgroupParent": host["CgroupParent"], "CgroupnsMode": "private",
                    "Tmpfs": {"/tmp": "rw,nosuid,nodev,size=268435456"},
                    "LogConfig": {"Type": "local", "Config": {"max-size": "1m", "max-file": "1", "compress": "false"}},
-                   "Mounts": []}}
+                   "Mounts": [{"Type": "bind", "Source": task_source, "Target": "/tasks", "ReadOnly": True}]}}
     return rebuilt, candidate, result
 
 

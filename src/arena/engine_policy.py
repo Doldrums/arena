@@ -11,7 +11,7 @@ import sqlite3
 import stat
 from urllib.parse import quote
 import uuid
-from .evaluator_policy import RUN, directory_fd, json_object, read_regular, require
+from .evaluator_policy import RUN, directory_fd, immutable_task_library, json_object, parse_additional_tasks_roots, read_regular, require
 from .release_deployment import validate_manifest
 
 
@@ -46,6 +46,11 @@ class Config:
     cgroup_root: str = "/arena-workers"
     max_active: int = 4
     max_seconds: int = 7200
+    additional_tasks_roots: tuple[Path, ...] = ()
+
+    @property
+    def library_roots(self):
+        return (self.tasks_root, *self.additional_tasks_roots)
 
     @classmethod
     def read(cls, path):
@@ -58,6 +63,8 @@ class Config:
         for name in paths | {"evaluator_socket"}:
             value[name] = Path(value[name])
             require(value[name].is_absolute() and ".." not in value[name].parts)
+        value["additional_tasks_roots"] = parse_additional_tasks_roots(
+            value.get("additional_tasks_roots", []), value["tasks_root"])
         for name in ("config_roots", "task_roots"):
             require(type(value[name]) is list and value[name])
             value[name] = tuple(Path(p) for p in value[name])
@@ -76,7 +83,7 @@ class Config:
 
     def host_check(self):
         require(os.geteuid() == 0 and hasattr(socket, "SO_PEERCRED"))
-        for path in (self.approvals, self.staging_root, self.registrations, self.receipts, self.socket_path.parent, self.tasks_root):
+        for path in (self.approvals, self.staging_root, self.registrations, self.receipts, self.socket_path.parent):
             fd = directory_fd(path); os.close(fd)
             require(path.stat().st_uid == 0 and not path.stat().st_mode & 0o022)
             for ancestor in path.parents:
@@ -98,10 +105,8 @@ class Config:
         match = re.fullmatch(r"(\d+)([kmg]?)", sizes[0])
         size = int(match[1]) * {"": 1, "k": 1024, "m": 1024**2, "g": 1024**3}[match[2]]
         require(256 * 1024**2 <= size <= 4 * 1024**3)
-        for root, directories, files in os.walk(self.tasks_root, followlinks=False):
-            for name in directories + files:
-                info = (Path(root) / name).lstat()
-                require(not stat.S_ISLNK(info.st_mode) and info.st_uid == 0 and not info.st_mode & 0o022)
+        for path in self.library_roots:
+            immutable_task_library(path)
 
 
 def root_file(path, maximum=MAX_JSON):
