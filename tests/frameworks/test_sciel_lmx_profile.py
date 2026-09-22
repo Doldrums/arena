@@ -8,6 +8,7 @@ import pytest
 
 from arena.frameworks import sciel_catalog_lmx as lmx
 from arena.frameworks.sciel_catalog_profile import validate_task_profile
+from arena.registry import get_catalog
 from test_sciel_catalog_evaluate import setup, bridge, evaluation, digest
 
 REPO = Path(__file__).resolve().parents[2]
@@ -88,6 +89,46 @@ def test_exact_three_real_metadata_records_and_asset_lock_match_profile():
                                  {lmx.ASSET_PATH: lmx.MODEL_SHA})
 
 
+@pytest.mark.parametrize("name", lmx.TASK_IDS)
+def test_shipped_catalog_generates_bound_gpu_task_without_evaluation(name, tmp_path, monkeypatch):
+    # Registry requirements are sorted; task.json preserves the original order.
+    # Read both actual artifacts instead of rebuilding the catalog in a fixture.
+    catalog = get_catalog()
+    task = next(task for task in catalog["tasks"] if task["id"] == name)
+    source = next(source for source in catalog["sources"] if source["id"] == task["source_id"])
+    assert task["requirements"] == sorted(lmx.REQUIREMENTS)
+    assert tuple(task["requirements"]) != lmx.REQUIREMENTS
+    assert lmx.supports_lmx_task(name, task["requirements"])
+
+    def no_execution(*args, **kwargs):
+        pytest.fail("Task preparation must not execute the canonical evaluator")
+    monkeypatch.setattr(evaluation, "evaluate", no_execution)
+    config = {"schema": bridge.SCHEMA, "evaluation": {
+        "schema": "arena.evaluation-config/1", "task_id": name,
+        "tasks_dir": str(REPO / "tasks"), "receipts_dir": str(tmp_path / "receipts"),
+        "profile": lmx.LMX_PROFILE, "timeout_seconds": 600,
+        "execution": {"kind": "docker", "image": lmx.IMAGE, "python": "python",
+            "require_control_cgroup": True, "resource_profile": lmx.RESOURCE_PROFILE}},
+        "fitness": {"kind": "atan", "scale": 1, "basis": "Preparation regression only"},
+        "confirmation": {"stochastic": True, "samples": 3}}
+    verified = bridge.validate_config(config)
+    assert verified["task"] == task
+    assert verified["source"]["manifest_sha256"] == source["manifest_sha256"]
+    target = tmp_path / "native" / name
+    created = bridge.create_task(config, target)
+    native = json.loads((target / "task.yaml").read_bytes())
+    bound = json.loads((target / "evaluation.json").read_bytes())
+    assert native["name"] == name and native["resources"] == "gpu" and native["origin"] == "heavy"
+    assert native["confirm_n"] == 3 and native["full_timeout"] == 720
+    assert native["confirm_timeout"] == 2160 and len(native["task_prompt"]) <= 1600
+    assert bound["binding"] == verified["bridge_config"]["binding"]
+    assert bound["binding"]["prepared_environment"] == lmx.lmx_environment(lmx.IMAGE)
+    assert (target / "initial_program.py").read_bytes() == verified["seed"]
+    assert created["readiness_requirements"] == task["requirements"]
+    assert created["runtime_conformance"] == "not_verified"
+    assert not (tmp_path / "receipts").exists()
+
+
 def test_native_package_describes_gpu_and_pins_environment_without_evaluating(lmx_inputs, tmp_path):
     (config, _, marker, calls, _, _, _), _ = lmx_inputs
     target = tmp_path / "native"
@@ -103,12 +144,12 @@ def test_native_package_describes_gpu_and_pins_environment_without_evaluating(lm
     assert result["runtime_conformance"] == "not_verified" and not calls and not marker.exists()
 
 
-@pytest.mark.parametrize("change", ["task", "order", "additional", "model", "image", "tag", "profile",
+@pytest.mark.parametrize("change", ["task", "duplicate", "additional", "model", "image", "tag", "profile",
                                     "cgroup", "timeout", "protocol", "direction", "python"])
 def test_lmx_profile_has_no_generic_gpu_or_dependency_admission(lmx_inputs, change):
     (config, _, _, calls, _, _, task), _ = lmx_inputs
     if change == "task": task["id"] = "some-other-gpu-task"
-    elif change == "order": task["requirements"].reverse()
+    elif change == "duplicate": task["requirements"].append(task["requirements"][0])
     elif change == "additional": task["requirements"].append("py:pandas")
     elif change == "model": task["requirements"][-2] = "model:other"
     elif change == "image": config["evaluation"]["execution"]["image"] = lmx.IMAGE_ID
@@ -122,6 +163,16 @@ def test_lmx_profile_has_no_generic_gpu_or_dependency_admission(lmx_inputs, chan
     with pytest.raises(ValueError):
         validate_task_profile(task, config["evaluation"])
     assert not calls
+
+
+@pytest.mark.parametrize("requirements", [
+    list(lmx.REQUIREMENTS[:-1]), list(lmx.REQUIREMENTS) + [lmx.REQUIREMENTS[0]],
+    [*lmx.REQUIREMENTS[:-1], lmx.REQUIREMENTS[0]],
+    [*lmx.REQUIREMENTS[:-1], None], [*lmx.REQUIREMENTS[:-1], True],
+    [*lmx.REQUIREMENTS[:-1], [lmx.REQUIREMENTS[-1]]], tuple(lmx.REQUIREMENTS),
+])
+def test_lmx_requirement_membership_rejects_missing_duplicate_or_nonstring_values(requirements):
+    assert lmx.supports_lmx_task(lmx.TASK_IDS[0], requirements) is False
 
 
 @pytest.mark.parametrize("change", ["env", "requires", "dimensions", "model", "steps", "seed", "assets", "boolean"])
