@@ -1,4 +1,4 @@
-"""SCiEL bridge for the bundled CPU/Python catalog, with declared score semantics.
+"""SCiEL bridge for reviewed bundled Python tasks, with declared score semantics.
 
 Preparation reads pinned bytes only. Candidate execution belongs exclusively to
 the canonical Docker evaluator; search transforms never replace its raw metric.
@@ -17,6 +17,7 @@ import uuid
 
 from .sciel_evaluate import smoke
 from .sciel_catalog_profile import CPU_PROFILE, validate_task_profile
+from .sciel_catalog_lmx import LMX_PROFILE
 
 SCHEMA = "arena.sciel-catalog-config/1"
 PROFILE = CPU_PROFILE
@@ -110,6 +111,9 @@ def validate_config(config):
     if "binding" in config and config["binding"] != binding:
         raise ValueError("Catalog configuration binding differs from the pinned task")
     problem = json.loads(read_task_file(root, task["contract_source"]["path"], verified["problem_sha256"]))
+    if evaluation.get("profile") == LMX_PROFILE:
+        from .sciel_catalog_lmx import validate_lmx_metadata
+        validate_lmx_metadata(task, metadata, problem, root, files)
     return {**verified, "bridge_config": {**config, "binding": binding}, "seed": seed,
             "receipts": receipts, "parameters": problem.get("parameters", {})}
 
@@ -118,10 +122,11 @@ def _prompt(task, config, parameters):
     transform = config["fitness"]
     rule = ("search_score = canonical_fitness" if transform["kind"] == "identity" else
             f"search_score = 0.5 + atan(canonical_fitness / {transform['scale']}) / pi")
+    resource = "GPU" if config["evaluation"].get("profile") == LMX_PROFILE else "CPU"
     semantics = (f"Objective: {task['direction']} the evaluator's raw {task['metric']} metric. "
                  "canonical_fitness = raw_score for maximization, -raw_score for minimization. "
                  f"{rule}. This is search scaling only; raw scores remain in canonical receipts. "
-                 "Smoke checks syntax only. Full evaluates once in an isolated CPU container. "
+                 f"Smoke checks syntax only. Full evaluates once in an isolated {resource} container. "
                  "Confirmation, when requested, averages fresh canonical trials before scaling.")
     prompt = (f"Task: {task['name']}.\nInterface: {task['contract']}\n"
               f"Parameters: {_json(parameters)}\n{semantics}")
@@ -143,7 +148,10 @@ def create_task(config, destination):
             raise ValueError("Generated task, source and receipts must be separate trees")
     timeout, confirmation = config["evaluation"]["timeout_seconds"], config["confirmation"]
     prompt = _prompt(task, config, verified["parameters"])
-    native = {"suite": "arena", "name": task["id"], "origin": "math", "resources": "cpu",
+    gpu = config["evaluation"].get("profile") == LMX_PROFILE
+    # SCiEL v0.2.0 records this string in TaskSpec/task_hash; it grants no devices.
+    native = {"suite": "arena", "name": task["id"], "origin": "heavy" if gpu else "math",
+              "resources": "gpu" if gpu else "cpu",
               "primary_metric": "arena_search_score", "case_metrics": ["raw_score", "canonical_fitness", "validity"],
               "tiers": ["smoke", "full"] + (["confirm"] if confirmation["stochastic"] else []),
               "stochastic": confirmation["stochastic"], "confirm_n": confirmation["samples"],
@@ -151,7 +159,7 @@ def create_task(config, destination):
               "confirm_timeout": (timeout + 120) * confirmation["samples"], "task_prompt": prompt}
     payload = _json(config)
     digest = hashlib.sha256(payload.encode()).hexdigest()
-    evaluator = f'''"""Canonical Arena CPU evaluator; configuration participates in SCiEL task_hash."""
+    evaluator = f'''"""Canonical Arena {"GPU" if gpu else "CPU"} evaluator; configuration participates in SCiEL task_hash."""
 import hashlib
 import json
 from arena.frameworks.sciel_catalog_evaluate import smoke, full as _full, confirm as _confirm
@@ -222,6 +230,29 @@ def _measurement(verified, program_path):
                  "arena_fitness_transform": _json(config["fitness"])}
     if "prepared_environment" in config["binding"]:
         artifacts["arena_prepared_environment"] = _json(config["binding"]["prepared_environment"])
+    if receipt.get("status") == "capacity_unavailable":
+        capacity = receipt.get("capacity_wait", {})
+        if (evaluation.get("profile") != LMX_PROFILE
+                or any(key not in receipt or receipt[key] is not None
+                       for key in ("raw_score", "fitness", "validity"))
+                or any(type(receipt.get(key)) is not int or receipt[key] != 0
+                       for key in ("evaluation_attempts", "retries"))
+                or "container_id" in receipt or "native_result_sha256" in receipt
+                or type(capacity) is not dict or set(capacity) != {"busy_responses", "create_requests", "wait_seconds"}
+                or type(capacity.get("busy_responses")) is not int or capacity["busy_responses"] < 1
+                or type(capacity.get("create_requests")) is not int
+                or capacity["create_requests"] != capacity["busy_responses"]
+                or not _finite(capacity.get("wait_seconds")) or capacity["wait_seconds"] < 0
+                or (call_dir / "native-output/native.json").exists()
+                or (call_dir / "native-output/native.json").is_symlink()):
+            raise ValueError("GPU capacity receipt cannot contain an executed candidate verdict")
+        artifacts.update(error_type="ArenaGpuCapacityUnavailable",
+            error="GPU capacity deadline expired before evaluation; candidate was not evaluated",
+            arena_failure_class="infrastructure", arena_evaluation_status="capacity_unavailable",
+            arena_candidate_evaluated="false", arena_capacity_wait=_json(capacity))
+        # The numeric failure sentinel is required by SCiEL's native contract.
+        # Native failure/iteration accounting is unchanged; this is no score.
+        return {"ok": False, "score": 0.0, "cases": {}, "artifacts": artifacts}
     if receipt.get("status") != "completed" or receipt.get("validity") is not True:
         artifacts.update(error_type="ArenaEvaluationUnavailable", error="No explicitly valid completed canonical result")
         return {"ok": False, "score": 0.0, "cases": {}, "artifacts": artifacts}
@@ -229,6 +260,9 @@ def _measurement(verified, program_path):
     if (not _finite(raw) or not _finite(fitness)
             or fitness != (raw if task["direction"] == "maximize" else -raw)):
         raise ValueError("Canonical raw score and objective direction disagree with fitness")
+    if evaluation.get("profile") == LMX_PROFILE:
+        from .sciel_catalog_lmx import validate_lmx_seed_receipt
+        artifacts["arena_lmx_protocol_evidence"] = _json(validate_lmx_seed_receipt(receipt, call_dir))
     return {"ok": True, "score": search_score(fitness, config["fitness"]),
             "cases": {"raw_score": raw, "canonical_fitness": fitness, "validity": 1.0}, "artifacts": artifacts}
 
@@ -254,6 +288,16 @@ def confirm(config, program_path, n):
                  "arena_fitness_transform": _json(config["fitness"]),
                  "arena_confirmation": "arithmetic mean of independent canonical scores, then declared transform"}
     if len(trials) != n or any(not item["ok"] for item in trials):
+        if trials[-1]["artifacts"].get("error_type") == "ArenaGpuCapacityUnavailable":
+            artifacts.update({key: value for key, value in trials[-1]["artifacts"].items()
+                              if key in {"error_type", "error", "arena_failure_class", "arena_evaluation_status",
+                                         "arena_candidate_evaluated", "arena_capacity_wait"}})
+            completed = sum(item["ok"] for item in trials)
+            artifacts.update(arena_confirmation_completed_trials=str(completed),
+                             arena_candidate_evaluated="true" if completed else "false",
+                             arena_failed_trial_candidate_evaluated="false",
+                             error="GPU capacity deadline expired before a confirmation trial; confirmation is incomplete")
+            return {"ok": False, "score": 0.0, "cases": {}, "artifacts": artifacts}
         artifacts.update(error_type="ArenaConfirmationUnavailable", error="At least one confirmation trial failed")
         return {"ok": False, "score": 0.0, "cases": {}, "artifacts": artifacts}
     if len({item["artifacts"]["arena_candidate_sha256"] for item in trials}) != 1:
