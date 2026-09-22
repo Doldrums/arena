@@ -8,11 +8,11 @@
       "repository_url": "https://github.com/Doldrums/arena",
       "revision": "main",
       "manifest_path": "registry/task-library-manifest.json",
-      "manifest_sha256": "d4c73561608817697ed8288bc398b4edd86214b8784db82a0ca7231be13d188f",
+      "manifest_sha256": "71b251f9e23433dc8b277459a6314fc2fdd3de6c92a587e849158bc44538c321",
       "catalog_path": "catalog/tasks.json",
       "index_path": "suite/index.json",
-      "catalog_sha256": "05e49e4dea5061d5dd73673573464fdefb2a3986cc05f6bc6a0a60570c420d72",
-      "index_sha256": "82f460d9c7551ca746ec7583c3fce4c00a975297ca1b54044048f8ae1e85505c"
+      "catalog_sha256": "86dea9baabf93c7c34419d75e468ec3b851bda8060c890989c108029008a47fe",
+      "index_sha256": "6f95b388069947cf6568750a8953720d27f374fd916bcc53b1a2dfb5519660e4"
     }
   ],
   "summary": {
@@ -20,9 +20,9 @@
     "executable_count": 689,
     "unsupported_count": 270,
     "protocol_counts": {
-      "original": 130,
+      "original": 125,
       "recreated_verified": 81,
-      "recreated": 478,
+      "recreated": 483,
       "unsupported": 270
     },
     "runtime_readiness": "not_verified"
@@ -47260,7 +47260,7 @@
       "name": "SCiEL: Sidon set in [0,60]",
       "description": "Construct a subset of integers 0 through 60 with all positive differences distinct, maximizing its cardinality. The upstream directory is named difference_bases.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -47279,7 +47279,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-difference-bases/problem.json",
         "path": "suite/sciel-math-difference-bases/problem.json",
-        "sha256": "06632a21cc28f4eb021036e001a2c74cfdd65cdb3b5cd235bf359c923a045349"
+        "sha256": "a953455eb3e0fc814bbe7f53400ccfcd83c115e938ee524e6377bb105f1db2f7"
       },
       "provenance": {
         "kind": "upstream",
@@ -47298,9 +47298,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+          "The adapted Sidon contract also checks the same returned raw basis for finite integer entries and one dimension before accepting the upstream cast-and-deduplicate result. This rejects NaN or fractional inputs that the original integer cast could otherwise hide."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example difference_bases",
         "paper_metric": null,
@@ -47376,7 +47377,7 @@
       "name": "SCiEL: Four equidistant vertices in a convex 20-gon",
       "description": "Construct a convex 20-gon optimizing the evaluator’s worst-vertex four-distance similarity criterion.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -47395,7 +47396,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-equidistant-points-convex/problem.json",
         "path": "suite/sciel-math-equidistant-points-convex/problem.json",
-        "sha256": "54bcf409120b48cc75e42cec30a1f40983d1dda6437d342dd464f840f4c4c6ae"
+        "sha256": "76a6ee5ed327bc6b2c3b68c4a7c034317ea78a9b1cc75fedfcaf4645378a99a3"
       },
       "provenance": {
         "kind": "upstream",
@@ -47414,9 +47415,9 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example equidistant_points_convex",
         "paper_metric": null,
@@ -47434,7 +47435,7 @@
       "name": "SCiEL: Erdős discrepancy at most two",
       "description": "Construct the longest ±1 sequence whose homogeneous arithmetic progression sums all have absolute value at most 2.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -47453,7 +47454,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-erdos-discrepancy/problem.json",
         "path": "suite/sciel-math-erdos-discrepancy/problem.json",
-        "sha256": "81af81d4185e514658237b88ff909f5163f3c2957b35a5160113f6e01fbf4dfd"
+        "sha256": "9243b731fa065183bd392c5980326dc0b332c76ae6e9a3b398a24e1d6b97588a"
       },
       "provenance": {
         "kind": "upstream",
@@ -47472,9 +47473,9 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example erdos_discrepancy",
         "paper_metric": null,
@@ -47901,7 +47902,7 @@
       "name": "SCiEL: Nikodym complement over F49",
       "description": "Construct a Nikodym configuration over F49=F7², maximizing the size of the certified complement.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -47920,7 +47921,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-finite-field-nikodym/problem.json",
         "path": "suite/sciel-math-finite-field-nikodym/problem.json",
-        "sha256": "6616dc47b26af039dc75b1e0941d26b6230fe9c6580905ab94bfca3a966fb5cb"
+        "sha256": "bdb3d737501d368a73597462ea62c414bf2325855fa1691bad0dc1ea023f558e"
       },
       "provenance": {
         "kind": "upstream",
@@ -47939,9 +47940,9 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example finite_field_nikodym",
         "paper_metric": null,
@@ -50063,7 +50064,9 @@
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "py:numpy"
+        "py:jax",
+        "py:numpy",
+        "py:tqdm"
       ],
       "paper_ids": [
         "sciel-supplement"
@@ -50075,7 +50078,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-sums-diffs-finite-sets/problem.json",
         "path": "suite/sciel-math-sums-diffs-finite-sets/problem.json",
-        "sha256": "072874c95518f70242428731fba67b5429bfbb8acc6d8db08c1eb0bc92bc07f5"
+        "sha256": "0f6ae18dc7395a65576a291eeb038c814ee2d75227deb1fcc980e07c2ea185f4"
       },
       "provenance": {
         "kind": "upstream",
@@ -50100,7 +50103,7 @@
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
           "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified.",
-          "The bounded seed is a known published AlphaEvolve construction, not the original SCiEL simulated-annealing seed. Its score is not a newly discovered result; the source JAX search remains archived and was not reproduced."
+          "The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search."
         ],
         "validation_level": "source_inspected",
         "upstream_reproduction": false,
@@ -50480,7 +50483,7 @@
       "name": "SCiEL: Tetrahedron-free three-uniform hypergraph",
       "description": "Construct a weighted three-uniform blow-up pattern with no tetrahedron and maximize its density.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -50499,7 +50502,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-turan-hypergraph/problem.json",
         "path": "suite/sciel-math-turan-hypergraph/problem.json",
-        "sha256": "aafcf7743022ec3124e16e0c6f56fee9912f41c1c795095732e331778078f851"
+        "sha256": "3e1a510057ab5b57ddaa1f21f8a205cc137c25729d6c3c310e43fe0fd74ffd4a"
       },
       "provenance": {
         "kind": "upstream",
@@ -50518,9 +50521,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+          "The Arena adaptation additionally requires a finite positive original weight total and a finite nonnegative normalized distribution summing to one. Finite raw weights whose sum overflows are rejected even if the original density score is finite."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example turan_hypergraph",
         "paper_metric": null,

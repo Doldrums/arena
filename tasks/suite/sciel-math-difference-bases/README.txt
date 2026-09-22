@@ -2,7 +2,7 @@
 
 **Paper:** SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples (https://github.com/luciferkonn/SCiEL)\
 **Task id:** `sciel-math-difference-bases`\
-**Protocol:** `original`\
+**Protocol:** `recreated`\
 **Direction:** maximize\
 
 ## Task
@@ -53,4 +53,7 @@ The evaluator prints a JSON result with `combined_score` (the value SCiEL maximi
 
 - Source-inspected SCiEL example; not a reproduced paper result.
 - The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.
-- The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified.
+- Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction.
+
+Arena adapter: is_sidon. Upstream evaluator SHA256: eef0349b2d83332f6a048f9f87ee03937076fae732afbe8a7ff980dfe8e53bb4.
+The adapted Sidon contract also checks the same returned raw basis for finite integer entries and one dimension before accepting the upstream cast-and-deduplicate result. This rejects NaN or fractional inputs that the original integer cast could otherwise hide.

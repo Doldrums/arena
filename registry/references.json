@@ -8,23 +8,23 @@
     "repository_url": "https://github.com/Doldrums/arena",
     "revision": "main",
     "manifest_path": "registry/task-library-manifest.json",
-    "manifest_sha256": "d4c73561608817697ed8288bc398b4edd86214b8784db82a0ca7231be13d188f",
+    "manifest_sha256": "71b251f9e23433dc8b277459a6314fc2fdd3de6c92a587e849158bc44538c321",
     "catalog_path": "catalog/tasks.json",
     "index_path": "suite/index.json",
-    "catalog_sha256": "05e49e4dea5061d5dd73673573464fdefb2a3986cc05f6bc6a0a60570c420d72",
-    "index_sha256": "82f460d9c7551ca746ec7583c3fce4c00a975297ca1b54044048f8ae1e85505c"
+    "catalog_sha256": "86dea9baabf93c7c34419d75e468ec3b851bda8060c890989c108029008a47fe",
+    "index_sha256": "6f95b388069947cf6568750a8953720d27f374fd916bcc53b1a2dfb5519660e4"
   },
   "summary": {
     "task_count": 959,
-    "tasks_with_references": 667,
+    "tasks_with_references": 662,
     "tasks_with_published_reference": 75,
-    "tasks_with_recorded_baseline": 667,
-    "tasks_without_numeric_reference": 292,
+    "tasks_with_recorded_baseline": 662,
+    "tasks_without_numeric_reference": 297,
     "tasks_without_published_reference": 884,
     "tasks_with_recorded_reproduction": 34,
     "arena_reproduced_references": 0,
     "valid_recorded_baselines": 577,
-    "validity_unknown_baselines": 90,
+    "validity_unknown_baselines": 85,
     "verified_current_sota": 0,
     "current_sota_status": "not_assessed",
     "tasks_with_evaluation_size": 259,
@@ -48071,10 +48071,10 @@
     },
     {
       "task_id": "sciel-math-difference-bases",
-      "status": "source_reference",
+      "status": "missing",
       "metric": "combined_score",
       "direction": "maximize",
-      "protocol": "original",
+      "protocol": "recreated",
       "evaluation": {
         "case_count": null,
         "case_count_kind": "not_recorded",
@@ -48084,55 +48084,20 @@
         "source": {
           "path": "suite/sciel-math-difference-bases/problem.json",
           "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-difference-bases/problem.json",
-          "sha256": "06632a21cc28f4eb021036e001a2c74cfdd65cdb3b5cd235bf359c923a045349",
+          "sha256": "a953455eb3e0fc814bbe7f53400ccfcd83c115e938ee524e6377bb105f1db2f7",
           "locator": "#/parameters"
         },
-        "notes": [],
+        "notes": [
+          "The pinned suite smoke row describes a different task family, protocol or direction and is not used as a baseline for this configuration."
+        ],
         "evaluator_source": {
           "path": "suite/sciel-math-difference-bases/evaluator.py",
           "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-difference-bases/evaluator.py",
-          "sha256": "eef0349b2d83332f6a048f9f87ee03937076fae732afbe8a7ff980dfe8e53bb4",
+          "sha256": "2e84ef9339cb29fa1f51b0892748df951689da6eae10dd126d8a7294b86ca051",
           "locator": "evaluate / task metric definition"
         }
       },
-      "anchors": [
-        {
-          "id": "sciel-math-difference-bases:seed",
-          "label": "Recorded seed smoke baseline",
-          "kind": "recorded_seed_baseline",
-          "value": 0.75,
-          "metric": "score",
-          "metric_label": "Recorded suite evaluator score",
-          "score_space": "reported_score_or_selected_fitness",
-          "direction": "maximize",
-          "status": "source_reference",
-          "scope": "Historical seed-program smoke test in the source repository; not an Arena participant result or a paper benchmark result.",
-          "comparison": "historical_smoke_only",
-          "automatic_comparison": false,
-          "reproduction": "not_recorded",
-          "current_sota": "not_assessed",
-          "validity": null,
-          "recorded_status": "ok",
-          "recorded_at": "2026-09-20T18:54:55+00:00",
-          "reported_combined_score": 0.75,
-          "source": {
-            "path": "validation/suite-report.json",
-            "url": "https://github.com/Doldrums/arena/blob/main/tasks/validation/suite-report.json",
-            "sha256": "44b33b83e136c0de9bced9272f4a319a963ab919029c3024398e026793686033",
-            "locator": "#/tasks/789"
-          },
-          "primary_sources": [],
-          "evaluation": {
-            "case_count": null,
-            "case_count_kind": "not_recorded"
-          },
-          "notes": [
-            "Recorded score may be raw task score or wrapper-selected fitness; the report alone does not establish paper-metric equivalence.",
-            "Smoke receipts do not include complete environment, exact evaluated item IDs, repeat trials or uncertainty estimates.",
-            "status=ok means the evaluator returned a usable score; the report provides no explicit validity signal."
-          ]
-        }
-      ]
+      "anchors": []
     },
     {
       "task_id": "sciel-math-edges-vs-triangles",
@@ -48201,10 +48166,10 @@
     },
     {
       "task_id": "sciel-math-equidistant-points-convex",
-      "status": "source_reference",
+      "status": "missing",
       "metric": "combined_score",
       "direction": "maximize",
-      "protocol": "original",
+      "protocol": "recreated",
       "evaluation": {
         "case_count": null,
         "case_count_kind": "not_recorded",
@@ -48214,62 +48179,27 @@
         "source": {
           "path": "suite/sciel-math-equidistant-points-convex/problem.json",
           "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-equidistant-points-convex/problem.json",
-          "sha256": "54bcf409120b48cc75e42cec30a1f40983d1dda6437d342dd464f840f4c4c6ae",
+          "sha256": "76a6ee5ed327bc6b2c3b68c4a7c034317ea78a9b1cc75fedfcaf4645378a99a3",
           "locator": "#/parameters"
         },
-        "notes": [],
+        "notes": [
+          "The pinned suite smoke row describes a different task family, protocol or direction and is not used as a baseline for this configuration."
+        ],
         "evaluator_source": {
           "path": "suite/sciel-math-equidistant-points-convex/evaluator.py",
           "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-equidistant-points-convex/evaluator.py",
-          "sha256": "bbec4c4a840a2b67e7298884ab027b561c9476465cd11f508457b9df0081cd63",
+          "sha256": "9204fc3fc44d49256e7c0c011d1efa67641b8de8998461966ef397fca364fb9f",
           "locator": "evaluate / task metric definition"
         }
       },
-      "anchors": [
-        {
-          "id": "sciel-math-equidistant-points-convex:seed",
-          "label": "Recorded seed smoke baseline",
-          "kind": "recorded_seed_baseline",
-          "value": 0.67253196998203,
-          "metric": "score",
-          "metric_label": "Recorded suite evaluator score",
-          "score_space": "reported_score_or_selected_fitness",
-          "direction": "maximize",
-          "status": "source_reference",
-          "scope": "Historical seed-program smoke test in the source repository; not an Arena participant result or a paper benchmark result.",
-          "comparison": "historical_smoke_only",
-          "automatic_comparison": false,
-          "reproduction": "not_recorded",
-          "current_sota": "not_assessed",
-          "validity": null,
-          "recorded_status": "ok",
-          "recorded_at": "2026-09-20T18:54:55+00:00",
-          "reported_combined_score": 0.67253196998203,
-          "source": {
-            "path": "validation/suite-report.json",
-            "url": "https://github.com/Doldrums/arena/blob/main/tasks/validation/suite-report.json",
-            "sha256": "44b33b83e136c0de9bced9272f4a319a963ab919029c3024398e026793686033",
-            "locator": "#/tasks/791"
-          },
-          "primary_sources": [],
-          "evaluation": {
-            "case_count": null,
-            "case_count_kind": "not_recorded"
-          },
-          "notes": [
-            "Recorded score may be raw task score or wrapper-selected fitness; the report alone does not establish paper-metric equivalence.",
-            "Smoke receipts do not include complete environment, exact evaluated item IDs, repeat trials or uncertainty estimates.",
-            "status=ok means the evaluator returned a usable score; the report provides no explicit validity signal."
-          ]
-        }
-      ]
+      "anchors": []
     },
     {
       "task_id": "sciel-math-erdos-discrepancy",
-      "status": "source_reference",
+      "status": "missing",
       "metric": "combined_score",
       "direction": "maximize",
-      "protocol": "original",
+      "protocol": "recreated",
       "evaluation": {
         "case_count": null,
         "case_count_kind": "not_recorded",
@@ -48279,55 +48209,20 @@
         "source": {
           "path": "suite/sciel-math-erdos-discrepancy/problem.json",
           "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-erdos-discrepancy/problem.json",
-          "sha256": "81af81d4185e514658237b88ff909f5163f3c2957b35a5160113f6e01fbf4dfd",
+          "sha256": "9243b731fa065183bd392c5980326dc0b332c76ae6e9a3b398a24e1d6b97588a",
           "locator": "#/parameters"
         },
-        "notes": [],
+        "notes": [
+          "The pinned suite smoke row describes a different task family, protocol or direction and is not used as a baseline for this configuration."
+        ],
         "evaluator_source": {
           "path": "suite/sciel-math-erdos-discrepancy/evaluator.py",
           "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-erdos-discrepancy/evaluator.py",
-          "sha256": "9a0c0bdec5d0f90f5e60c934f734c7915a28294e832e60a350114da0d6335716",
+          "sha256": "5a0de396f280fe8b2bd7792ca3b050ce0a1ce7c08f5c3b5960a013cae8d070ad",
           "locator": "evaluate / task metric definition"
         }
       },
-      "anchors": [
-        {
-          "id": "sciel-math-erdos-discrepancy:seed",
-          "label": "Recorded seed smoke baseline",
-          "kind": "recorded_seed_baseline",
-          "value": 0.05862068965517241,
-          "metric": "score",
-          "metric_label": "Recorded suite evaluator score",
-          "score_space": "reported_score_or_selected_fitness",
-          "direction": "maximize",
-          "status": "source_reference",
-          "scope": "Historical seed-program smoke test in the source repository; not an Arena participant result or a paper benchmark result.",
-          "comparison": "historical_smoke_only",
-          "automatic_comparison": false,
-          "reproduction": "not_recorded",
-          "current_sota": "not_assessed",
-          "validity": null,
-          "recorded_status": "ok",
-          "recorded_at": "2026-09-20T18:54:55+00:00",
-          "reported_combined_score": 0.05862068965517241,
-          "source": {
-            "path": "validation/suite-report.json",
-            "url": "https://github.com/Doldrums/arena/blob/main/tasks/validation/suite-report.json",
-            "sha256": "44b33b83e136c0de9bced9272f4a319a963ab919029c3024398e026793686033",
-            "locator": "#/tasks/792"
-          },
-          "primary_sources": [],
-          "evaluation": {
-            "case_count": null,
-            "case_count_kind": "not_recorded"
-          },
-          "notes": [
-            "Recorded score may be raw task score or wrapper-selected fitness; the report alone does not establish paper-metric equivalence.",
-            "Smoke receipts do not include complete environment, exact evaluated item IDs, repeat trials or uncertainty estimates.",
-            "status=ok means the evaluator returned a usable score; the report provides no explicit validity signal."
-          ]
-        }
-      ]
+      "anchors": []
     },
     {
       "task_id": "sciel-math-erdos-gyarfas",
@@ -48786,10 +48681,10 @@
     },
     {
       "task_id": "sciel-math-finite-field-nikodym",
-      "status": "source_reference",
+      "status": "missing",
       "metric": "combined_score",
       "direction": "maximize",
-      "protocol": "original",
+      "protocol": "recreated",
       "evaluation": {
         "case_count": null,
         "case_count_kind": "not_recorded",
@@ -48799,55 +48694,20 @@
         "source": {
           "path": "suite/sciel-math-finite-field-nikodym/problem.json",
           "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-finite-field-nikodym/problem.json",
-          "sha256": "6616dc47b26af039dc75b1e0941d26b6230fe9c6580905ab94bfca3a966fb5cb",
+          "sha256": "bdb3d737501d368a73597462ea62c414bf2325855fa1691bad0dc1ea023f558e",
           "locator": "#/parameters"
         },
-        "notes": [],
+        "notes": [
+          "The pinned suite smoke row describes a different task family, protocol or direction and is not used as a baseline for this configuration."
+        ],
         "evaluator_source": {
           "path": "suite/sciel-math-finite-field-nikodym/evaluator.py",
           "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-finite-field-nikodym/evaluator.py",
-          "sha256": "36c738891ee3795be4411f20e8be483e4e76b223fe714179522d57bdbc40da63",
+          "sha256": "ec9db2e98e1af7264dab965702aaf289c31e6712218b67c0e046e99af97c89a8",
           "locator": "evaluate / task metric definition"
         }
       },
-      "anchors": [
-        {
-          "id": "sciel-math-finite-field-nikodym:seed",
-          "label": "Recorded seed smoke baseline",
-          "kind": "recorded_seed_baseline",
-          "value": 0.42857142857142855,
-          "metric": "score",
-          "metric_label": "Recorded suite evaluator score",
-          "score_space": "reported_score_or_selected_fitness",
-          "direction": "maximize",
-          "status": "source_reference",
-          "scope": "Historical seed-program smoke test in the source repository; not an Arena participant result or a paper benchmark result.",
-          "comparison": "historical_smoke_only",
-          "automatic_comparison": false,
-          "reproduction": "not_recorded",
-          "current_sota": "not_assessed",
-          "validity": null,
-          "recorded_status": "ok",
-          "recorded_at": "2026-09-20T18:54:55+00:00",
-          "reported_combined_score": 0.42857142857142855,
-          "source": {
-            "path": "validation/suite-report.json",
-            "url": "https://github.com/Doldrums/arena/blob/main/tasks/validation/suite-report.json",
-            "sha256": "44b33b83e136c0de9bced9272f4a319a963ab919029c3024398e026793686033",
-            "locator": "#/tasks/800"
-          },
-          "primary_sources": [],
-          "evaluation": {
-            "case_count": null,
-            "case_count_kind": "not_recorded"
-          },
-          "notes": [
-            "Recorded score may be raw task score or wrapper-selected fitness; the report alone does not establish paper-metric equivalence.",
-            "Smoke receipts do not include complete environment, exact evaluated item IDs, repeat trials or uncertainty estimates.",
-            "status=ok means the evaluator returned a usable score; the report provides no explicit validity signal."
-          ]
-        }
-      ]
+      "anchors": []
     },
     {
       "task_id": "sciel-math-finite-field-sum-product",
@@ -51139,7 +50999,7 @@
         "source": {
           "path": "suite/sciel-math-sums-diffs-finite-sets/problem.json",
           "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-sums-diffs-finite-sets/problem.json",
-          "sha256": "072874c95518f70242428731fba67b5429bfbb8acc6d8db08c1eb0bc92bc07f5",
+          "sha256": "0f6ae18dc7395a65576a291eeb038c814ee2d75227deb1fcc980e07c2ea185f4",
           "locator": "#/parameters"
         },
         "notes": [],
@@ -51581,10 +51441,10 @@
     },
     {
       "task_id": "sciel-math-turan-hypergraph",
-      "status": "source_reference",
+      "status": "missing",
       "metric": "combined_score",
       "direction": "maximize",
-      "protocol": "original",
+      "protocol": "recreated",
       "evaluation": {
         "case_count": null,
         "case_count_kind": "not_recorded",
@@ -51594,55 +51454,20 @@
         "source": {
           "path": "suite/sciel-math-turan-hypergraph/problem.json",
           "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-turan-hypergraph/problem.json",
-          "sha256": "aafcf7743022ec3124e16e0c6f56fee9912f41c1c795095732e331778078f851",
+          "sha256": "3e1a510057ab5b57ddaa1f21f8a205cc137c25729d6c3c310e43fe0fd74ffd4a",
           "locator": "#/parameters"
         },
-        "notes": [],
+        "notes": [
+          "The pinned suite smoke row describes a different task family, protocol or direction and is not used as a baseline for this configuration."
+        ],
         "evaluator_source": {
           "path": "suite/sciel-math-turan-hypergraph/evaluator.py",
           "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-turan-hypergraph/evaluator.py",
-          "sha256": "3e2b6d700f18f5ec51ea0b5a6b79c3c3b755c0f2f3e44a9914bd40b0105b4993",
+          "sha256": "dd30d764e1f3a7a78351cb61d50f9a63f14c13ac1dcc8d4bd252566cc30a9eb1",
           "locator": "evaluate / task metric definition"
         }
       },
-      "anchors": [
-        {
-          "id": "sciel-math-turan-hypergraph:seed",
-          "label": "Recorded seed smoke baseline",
-          "kind": "recorded_seed_baseline",
-          "value": 1.0,
-          "metric": "score",
-          "metric_label": "Recorded suite evaluator score",
-          "score_space": "reported_score_or_selected_fitness",
-          "direction": "maximize",
-          "status": "source_reference",
-          "scope": "Historical seed-program smoke test in the source repository; not an Arena participant result or a paper benchmark result.",
-          "comparison": "historical_smoke_only",
-          "automatic_comparison": false,
-          "reproduction": "not_recorded",
-          "current_sota": "not_assessed",
-          "validity": null,
-          "recorded_status": "ok",
-          "recorded_at": "2026-09-20T18:54:55+00:00",
-          "reported_combined_score": 1.0,
-          "source": {
-            "path": "validation/suite-report.json",
-            "url": "https://github.com/Doldrums/arena/blob/main/tasks/validation/suite-report.json",
-            "sha256": "44b33b83e136c0de9bced9272f4a319a963ab919029c3024398e026793686033",
-            "locator": "#/tasks/843"
-          },
-          "primary_sources": [],
-          "evaluation": {
-            "case_count": null,
-            "case_count_kind": "not_recorded"
-          },
-          "notes": [
-            "Recorded score may be raw task score or wrapper-selected fitness; the report alone does not establish paper-metric equivalence.",
-            "Smoke receipts do not include complete environment, exact evaluated item IDs, repeat trials or uncertainty estimates.",
-            "status=ok means the evaluator returned a usable score; the report provides no explicit validity signal."
-          ]
-        }
-      ]
+      "anchors": []
     },
     {
       "task_id": "sciel-math-uncertainty-ineq",

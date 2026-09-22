@@ -69,7 +69,7 @@ def test_every_catalog_record_remains_visible_and_cpu_candidates_are_manifest_bo
     assert len(rows) == len(catalog["tasks"]) == 959
     assert [row["task_id"] for row in rows] == [t["id"] for t in catalog["tasks"]]
     assert Counter(row["status"] for row in rows) == {
-        "seed_check_pending": 350, "environment_preparation_pending": 318,
+        "seed_check_pending": 349, "environment_preparation_pending": 319,
         "evaluation_integration_pending": 270, "runtime_integration_pending": 21}
     assert all(row["status"] != "seed_verified" for row in rows)
     for row in rows:
@@ -78,12 +78,12 @@ def test_every_catalog_record_remains_visible_and_cpu_candidates_are_manifest_bo
             for filename in ("initial_program.py", "evaluator.py", "task.json"):
                 relative = f"suite/{row['task_id']}/{filename}"
                 assert hashlib.sha256((root / relative).read_bytes()).hexdigest() == files[relative]
-    for group, eligible, deferred in (("base", 279, 71), ("extended", 71, 279)):
+    for group, eligible, deferred in (("base", 278, 71), ("extended", 71, 278)):
         selected = preflight.inventory(catalog["tasks"], root, group)
         assert len(selected) == 959
         assert Counter(row["status"] for row in selected) == {
             "seed_check_pending": eligible, "seed_check_deferred": deferred,
-            "environment_preparation_pending": 318, "evaluation_integration_pending": 270,
+            "environment_preparation_pending": 319, "evaluation_integration_pending": 270,
             "runtime_integration_pending": 21}
 
 
@@ -117,7 +117,7 @@ def test_default_inventory_never_evaluates_and_binds_the_verified_library(tmp_pa
     assert manifest["finished_at"] >= manifest["created_at"]
     assert sum(manifest["counts"].values()) == 959
     assert manifest["group"] == "all"
-    assert manifest["counts"]["seed_check_pending"] == 350
+    assert manifest["counts"]["seed_check_pending"] == 349
     assert not list(output.glob("*/receipt.json"))
     assert (output / "manifest.json").stat().st_mode & 0o077 == 0
 

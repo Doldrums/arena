@@ -2,7 +2,7 @@
 
 **Paper:** SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples (https://github.com/luciferkonn/SCiEL)\
 **Task id:** `sciel-math-finite-field-nikodym`\
-**Protocol:** `original`\
+**Protocol:** `recreated`\
 **Direction:** maximize\
 
 ## Task
@@ -53,4 +53,6 @@ The evaluator prints a JSON result with `combined_score` (the value SCiEL maximi
 
 - Source-inspected SCiEL example; not a reproduced paper result.
 - The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.
-- The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified.
+- Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction.
+
+Arena adapter: _is_valid_nikodym. Upstream evaluator SHA256: 36c738891ee3795be4411f20e8be483e4e76b223fe714179522d57bdbc40da63.

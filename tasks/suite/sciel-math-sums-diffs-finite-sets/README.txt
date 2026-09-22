@@ -61,3 +61,5 @@ The evaluator prints a JSON result with `combined_score` (the value SCiEL maximi
 - The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.
 - The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified.
 - The bounded seed is a known published AlphaEvolve construction, not the original SCiEL simulated-annealing seed. Its score is not a newly discovered result; the source JAX search remains archived and was not reproduced.
+
+Runtime routes: The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search.

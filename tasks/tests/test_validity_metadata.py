@@ -44,7 +44,12 @@ class ExplicitValidityMetadataTests(unittest.TestCase):
         self.assertEqual(len(pending), 54)
         for row in pending:
             self.assertIsNone(row["validity_key"])
-            self.assertNotIn("validity_key", get_task(ROOT, row["task_id"])["execution"]["suite"])
+            suite = get_task(ROOT, row["task_id"])["execution"]["suite"]
+            if suite.get("validity_key"):
+                # This historical audit is not rewritten by a later adaptation.
+                self.assertEqual(suite["protocol"], "recreated")
+                self.assertEqual(suite["adaptation"]["upstream_evaluator_sha256"],
+                                 row["original_receipt"]["evaluator_sha256"])
         failure = next(r for r in AUDIT["tasks"]
                        if r["status"] == "explicit_evaluator_error")
         self.assertEqual(failure["task_id"], "sciel-math-sums-diffs-finite-sets")
