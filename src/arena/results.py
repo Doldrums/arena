@@ -90,7 +90,8 @@ class Evidence:
 
 def empty_canonical():
     return dict(evaluations=0, valid=0, invalid=0, unknown=0, unique_valid_candidates=0,
-                best_score=None, seed_score=None, score_gain=None, metric=None,
+                best_score=None, best_score_basis='best_single_evaluation',
+                seed_score=None, score_gain=None, metric=None, protocol=None,
                 direction=None, task_id=None, task_name=None, cohort=None,
                 receipt_hashes=[], valid_candidate_hashes=[], status='missing')
 
@@ -182,7 +183,9 @@ def canonical(evidence, run_id):
     first = receipts[0]
     row = first['row']
     result.update(task_id=row['task_id'], task_name=row['task_id'].replace('-', ' ').title(),
-                  metric=row['metric'], direction=row['direction'], cohort=first['cohort'])
+                  metric=row['metric'], direction=row['direction'], cohort=first['cohort'],
+                  protocol=row.get('protocol') if row.get('protocol') in
+                  ('original', 'recreated_verified', 'recreated') else None)
     scores = [item['row']['raw_score'] for item in receipts if item['valid']]
     if scores:
         result['best_score'] = (max if row['direction'] == 'maximize' else min)(scores)

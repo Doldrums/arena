@@ -47,6 +47,28 @@ def test_perfect_seed_is_not_an_improvement_and_repeats_are_not_unique(tmp_path)
     assert result['score_gain'] == 0 and result['cohort']
 
 
+def test_best_score_is_an_individual_observation_not_a_confirmation_mean(tmp_path):
+    for index, score in enumerate([1, 2, 9], 1):
+        receipt(tmp_path, index, score=score)
+    result = canonical(Evidence(tmp_path), RUN)
+    assert result['valid'] == 3 and result['unique_valid_candidates'] == 1
+    assert result['best_score'] == 9  # Three trials of one program; mean would be 4.
+    assert result['best_score_basis'] == 'best_single_evaluation'
+    assert result['seed_score'] == 1 and result['score_gain'] == 8
+    assert result['protocol'] == 'recreated'
+    assert 'confirmed_score' not in result
+
+
+def test_protocol_is_exposed_without_merging_distinct_evaluator_cohorts(tmp_path):
+    first, value = receipt(tmp_path, 1)
+    value['protocol'] = 'recreated_verified'
+    write(first / 'receipt.json', value)
+    assert canonical(Evidence(tmp_path), RUN)['protocol'] == 'recreated_verified'
+    receipt(tmp_path, 2)
+    mixed = canonical(Evidence(tmp_path), RUN)
+    assert mixed['protocol'] is mixed['best_score'] is mixed['cohort'] is None
+
+
 def test_bundled_evaluator_results_are_visible_and_grouped_by_manifest(tmp_path):
     folder, value = receipt(tmp_path, 1)
     value['task_source'] = dict(kind='bundled', id='arena-tasks',
