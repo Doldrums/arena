@@ -11,6 +11,7 @@ from .provider_common import (
     _bad,
     _json,
 )
+from .provider_projection import chat_message
 
 
 def _content(value, role):
@@ -283,23 +284,9 @@ def public_response(value):
 
 
 def chat_completion(response, requested_model, request_id, compatibility):
-    content, refusals, calls = [], [], []
-    for item in response.get("output", []):
-        if item.get("type") == "message":
-            for part in item.get("content", []):
-                if part.get("type") == "output_text":
-                    content.append(part.get("text", ""))
-                elif part.get("type") == "refusal":
-                    refusals.append(part.get("refusal", ""))
-        elif item.get("type") == "function_call":
-            calls.append({"id": item["call_id"], "type": "function", "function": {"name": item["name"], "arguments": item["arguments"]}})
-    message = {"role": "assistant", "content": "".join(content) or None}
-    if calls:
-        message["tool_calls"] = calls
-    if refusals:
-        message["refusal"] = "".join(refusals)
+    message = chat_message(response)
     observed = usage_counts(response.get("usage"))
     usage = {"prompt_tokens": observed.get("input_tokens"), "completion_tokens": observed.get("output_tokens"), "total_tokens": observed.get("total_tokens")}
     return {"id": "chatcmpl-" + request_id, "object": "chat.completion", "created": int(time.time()),
-            "model": requested_model, "choices": [{"index": 0, "message": message, "finish_reason": "tool_calls" if calls else "stop"}],
+            "model": requested_model, "choices": [{"index": 0, "message": message, "finish_reason": "tool_calls" if message.get("tool_calls") else "stop"}],
             "usage": usage, "arena_compatibility": compatibility}

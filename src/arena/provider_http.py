@@ -136,7 +136,7 @@ class GatewayHandler(BaseHTTPRequestHandler):
             model = payload["model"]
             with self.server.bridge.admission():
                 stream = body.get("stream", False)
-                final, emitted_text, tool_indexes, emitted_arguments = None, "", {}, {}
+                final = None
                 for event in self.server.bridge.events(payload):
                     kind = event.get("type")
                     if not streaming and stream:
@@ -153,24 +153,8 @@ class GatewayHandler(BaseHTTPRequestHandler):
                         if isinstance(event.get("response"), dict):
                             event = {**event, "response": {**event["response"], "arena_compatibility": compatibility}}
                         self._sse(event, event=kind if isinstance(kind, str) and re.fullmatch(r"[a-z_.]+", kind) else None)
-                    elif kind == "response.output_text.delta":
-                        delta = event.get("delta", "")
-                        emitted_text += delta
-                        self._sse(self._chunk(request_id, model, {"content": delta}))
-                    elif kind == "response.output_item.added" and event.get("item", {}).get("type") == "function_call":
-                        item = event["item"]
-                        index = len(tool_indexes)
-                        tool_indexes[event["output_index"]] = index
-                        arguments = item.get("arguments", "")
-                        emitted_arguments[index] = arguments
-                        self._sse(self._chunk(request_id, model, {"tool_calls": [{"index": index, "id": item["call_id"], "type": "function", "function": {"name": item["name"], "arguments": arguments}}]}))
-                    elif kind == "response.function_call_arguments.delta":
-                        index = tool_indexes.get(event.get("output_index"))
-                        if index is None:
-                            raise ProviderError(502, "invalid_tool_stream", "Provider tool arguments arrived without a function call.")
-                        delta = event.get("delta", "")
-                        emitted_arguments[index] += delta
-                        self._sse(self._chunk(request_id, model, {"tool_calls": [{"index": index, "function": {"arguments": delta}}]}))
+                    # Chat cannot expose deltas before committed item phases
+                    # are known. Responses clients retain the original events.
                 if final is None:
                     raise ProviderError(502, "missing_completion", "The provider did not return a complete response.")
                 if chat:
@@ -178,20 +162,10 @@ class GatewayHandler(BaseHTTPRequestHandler):
                     if stream:
                         message = completion["choices"][0]["message"]
                         final_text = message.get("content") or ""
-                        if not final_text.startswith(emitted_text):
-                            raise ProviderError(502, "inconsistent_text_stream", "Provider completion did not match its text stream.")
-                        if final_text[len(emitted_text):]:
-                            self._sse(self._chunk(request_id, model, {"content": final_text[len(emitted_text):]}))
+                        if final_text:
+                            self._sse(self._chunk(request_id, model, {"content": final_text}))
                         for index, call in enumerate(message.get("tool_calls", [])):
-                            args = call["function"]["arguments"]
-                            previous = emitted_arguments.get(index)
-                            if previous is None:
-                                self._sse(self._chunk(request_id, model, {"tool_calls": [{"index": index, **call}]}))
-                            elif args.startswith(previous):
-                                if args[len(previous):]:
-                                    self._sse(self._chunk(request_id, model, {"tool_calls": [{"index": index, "function": {"arguments": args[len(previous):]}}]}))
-                            else:
-                                raise ProviderError(502, "inconsistent_tool_stream", "Provider completion did not match its tool stream.")
+                            self._sse(self._chunk(request_id, model, {"tool_calls": [{"index": index, **call}]}))
                         if message.get("refusal"):
                             self._sse(self._chunk(request_id, model, {"refusal": message["refusal"]}))
                         self._sse(self._chunk(request_id, model, {}, finish=completion["choices"][0]["finish_reason"]))
