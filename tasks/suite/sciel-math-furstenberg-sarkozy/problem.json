@@ -1,5 +1,5 @@
 {
-  "protocol": "original",
+  "protocol": "recreated",
   "family": "sciel_copy",
   "direction": "maximize",
   "contract": "See evaluator.py and README.upstream.md.",
@@ -8,13 +8,16 @@
     "py:numpy"
   ],
   "timeout": 600,
-  "notes": [],
+  "notes": [
+    "The subset contains exact finite integer residues before upstream rounding. The source evaluator reports a transcription problem in the published subset and retains its size as a target; this adapter does not claim to reproduce that construction."
+  ],
   "entry": {
     "callable": "evaluate",
     "env": {},
     "seed": "initial_program.py",
     "score_key": "combined_score",
-    "error_key": "error"
+    "error_key": "error",
+    "validity_key": "arena_valid"
   },
   "origin": {
     "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
@@ -26,7 +29,7 @@
       "requirements.txt": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc"
     }
   },
-  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/alphaevolve_math_problems/furstenberg_sarkozy` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "protocol_description": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction. The original scorer is preserved byte-for-byte in upstream_evaluator.py; the seed and source configuration are unchanged.",
   "id": "sciel-math-furstenberg-sarkozy",
   "name": "SCiEL: Square-difference-free subset modulo 205",
   "paper_ids": [
@@ -51,7 +54,8 @@
   "limitations": [
     "Source-inspected SCiEL example; not a reproduced paper result.",
     "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+    "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+    "The subset contains exact finite integer residues before upstream rounding. The source evaluator reports a transcription problem in the published subset and retains its size as a target; this adapter does not claim to reproduce that construction."
   ],
   "evaluator": "evaluator.py",
   "initial_program": "initial_program.py",
@@ -83,5 +87,14 @@
     "status": "unreviewed",
     "papers": [],
     "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "adaptation": {
+    "schema": "arena.task-feasibility-adapter/1",
+    "contract": "sarkozy_subset",
+    "upstream_evaluator_path": "upstream_evaluator.py",
+    "upstream_evaluator_sha256": "8082024ed4ee95096b9bbc331a76d5e3f9d55f94d29cedaebbfb5cdac2e58c50",
+    "verifier": "both oriented modular-difference predicates",
+    "validity_key": "arena_valid",
+    "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
   }
 }

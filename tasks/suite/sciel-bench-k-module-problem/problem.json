@@ -1,5 +1,5 @@
 {
-  "protocol": "original",
+  "protocol": "recreated",
   "family": "sciel_copy",
   "direction": "maximize",
   "contract": "See evaluator.py and README.upstream.md.",
@@ -8,13 +8,16 @@
     "py:numpy"
   ],
   "timeout": 600,
-  "notes": [],
+  "notes": [
+    "Validity means all required choices belong to their allowed options, regardless of target-match accuracy. The readable target configuration is not concealed knowledge."
+  ],
   "entry": {
     "callable": "evaluate",
     "env": {},
     "seed": "initial_program.py",
     "score_key": "combined_score",
-    "error_key": "error"
+    "error_key": "error",
+    "validity_key": "arena_valid"
   },
   "origin": {
     "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
@@ -33,7 +36,7 @@
       "run_random_baseline.py": "30b60323fc89c598770e39bab574c93145542a025cc503837abdb96b057faace"
     }
   },
-  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/k_module_problem` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "protocol_description": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction. The original scorer is preserved byte-for-byte in upstream_evaluator.py; the seed and source configuration are unchanged.",
   "id": "sciel-bench-k-module-problem",
   "name": "SCiEL: K-module pipeline configuration",
   "paper_ids": [
@@ -63,7 +66,9 @@
   "limitations": [
     "Source-inspected SCiEL example; not a reproduced paper result.",
     "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-    "The hidden target configuration is readable in the pinned evaluator source; the task measures search behavior under coarse feedback, not concealed knowledge."
+    "The hidden target configuration is readable in the pinned evaluator source; the task measures search behavior under coarse feedback, not concealed knowledge.",
+    "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+    "Validity means all required choices belong to their allowed options, regardless of target-match accuracy. The readable target configuration is not concealed knowledge."
   ],
   "evaluator": "evaluator.py",
   "initial_program": "initial_program.py",
@@ -95,5 +100,14 @@
     "status": "unreviewed",
     "papers": [],
     "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "adaptation": {
+    "schema": "arena.task-feasibility-adapter/1",
+    "contract": "pipeline_config",
+    "upstream_evaluator_path": "upstream_evaluator.py",
+    "upstream_evaluator_sha256": "4f31a4306589d94e8e21e98437e8045b6b1d8a4e5977944d183ee2b31c68fb43",
+    "verifier": "validate_config",
+    "validity_key": "arena_valid",
+    "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
   }
 }

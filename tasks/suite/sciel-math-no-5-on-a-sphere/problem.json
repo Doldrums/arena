@@ -1,5 +1,5 @@
 {
-  "protocol": "original",
+  "protocol": "recreated",
   "family": "sciel_copy",
   "direction": "maximize",
   "contract": "See evaluator.py and README.upstream.md.",
@@ -8,13 +8,16 @@
     "py:numpy"
   ],
   "timeout": 600,
-  "notes": [],
+  "notes": [
+    "The determinant verifier excludes five cospherical OR coplanar points on the integer grid. This numerical determinant check is not an exact-arithmetic certificate."
+  ],
   "entry": {
     "callable": "evaluate",
     "env": {},
     "seed": "initial_program.py",
     "score_key": "combined_score",
-    "error_key": "error"
+    "error_key": "error",
+    "validity_key": "arena_valid"
   },
   "origin": {
     "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
@@ -26,7 +29,7 @@
       "requirements.txt": "e09f656c130b9c08b2c5ab7187c891295e449ed77febea2a6ceee9cc98ccb0fc"
     }
   },
-  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/alphaevolve_math_problems/no_5_on_a_sphere` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "protocol_description": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction. The original scorer is preserved byte-for-byte in upstream_evaluator.py; the seed and source configuration are unchanged.",
   "id": "sciel-math-no-5-on-a-sphere",
   "name": "SCiEL: No five cospherical points in an 8³ grid",
   "paper_ids": [
@@ -51,7 +54,8 @@
   "limitations": [
     "Source-inspected SCiEL example; not a reproduced paper result.",
     "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+    "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+    "The determinant verifier excludes five cospherical OR coplanar points on the integer grid. This numerical determinant check is not an exact-arithmetic certificate."
   ],
   "evaluator": "evaluator.py",
   "initial_program": "initial_program.py",
@@ -83,5 +87,14 @@
     "status": "unreviewed",
     "papers": [],
     "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "adaptation": {
+    "schema": "arena.task-feasibility-adapter/1",
+    "contract": "no_five_sphere",
+    "upstream_evaluator_path": "upstream_evaluator.py",
+    "upstream_evaluator_sha256": "472d4e9547fa11aeea8216da7bf6136443e698c89c5584e82921a68c17700ebd",
+    "verifier": "_has_five_cospherical",
+    "validity_key": "arena_valid",
+    "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
   }
 }

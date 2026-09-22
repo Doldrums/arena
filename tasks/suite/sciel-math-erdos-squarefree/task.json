@@ -73,7 +73,7 @@
       "Direct evaluation of original candidate contract; model-driven search is configured separately."
     ],
     "suite": {
-      "protocol": "original",
+      "protocol": "recreated",
       "family": "sciel_copy",
       "evaluator": "evaluator.py",
       "initial_program": "initial_program.py",
@@ -84,16 +84,27 @@
       "requires": [
         "py:numpy"
       ],
-      "timeout": 600
+      "timeout": 600,
+      "validity_key": "arena_valid",
+      "adaptation": {
+        "schema": "arena.task-feasibility-adapter/1",
+        "contract": "squarefree_subset",
+        "upstream_evaluator_path": "upstream_evaluator.py",
+        "upstream_evaluator_sha256": "09a43e81f00e2f2304abd3c195ccff8db160b7d7e80b51c136098a7578fa63cb",
+        "verifier": "_squarefree_sieve + distinct-pair predicate",
+        "validity_key": "arena_valid",
+        "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+      }
     }
   },
   "limitations": [
     "Source-inspected SCiEL example; not a reproduced paper result.",
     "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+    "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+    "The feasibility predicate checks distinct unordered pairs only, matching the scorer; it does not add a diagonal/self-pair restriction. Raw subset entries must be exact finite integers before upstream rounding."
   ],
   "validation": {
-    "level": "source_inspected",
+    "level": "source_inspected_with_feasibility_adapter",
     "upstream_reproduction": false,
     "independent_verification": false,
     "integrity_risks": [],

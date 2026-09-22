@@ -160053,7 +160053,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -160064,23 +160064,35 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "pipeline_config",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "4f31a4306589d94e8e21e98437e8045b6b1d8a4e5977944d183ee2b31c68fb43",
+          "verifier": "validate_config",
+          "validity_key": "arena_valid",
+          "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The hidden target configuration is readable in the pinned evaluator source; the task measures search behavior under coarse feedback, not concealed knowledge."
+      "The hidden target configuration is readable in the pinned evaluator source; the task measures search behavior under coarse feedback, not concealed knowledge.",
+      "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+      "Validity means all required choices belong to their allowed options, regardless of target-match accuracy. The readable target configuration is not concealed knowledge."
     ],
     "validation": {
-      "level": "integration_smoke",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [
         "Failure branches nest combined_score under metrics while the success branch returns it at the top level; the adapter treats a missing top-level score as an execution error rather than a zero score."
       ],
-      "execution_tested": true,
-      "execution_evidence": {
+      "execution_tested": false,
+      "historical_original_execution_evidence": {
         "task_id": "sciel-bench-k-module-problem",
         "date": "2026-09-19",
         "mode": "original seed, original pinned evaluator",
@@ -171712,7 +171724,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -171723,16 +171735,27 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "squarefree_subset",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "09a43e81f00e2f2304abd3c195ccff8db160b7d7e80b51c136098a7578fa63cb",
+          "verifier": "_squarefree_sieve + distinct-pair predicate",
+          "validity_key": "arena_valid",
+          "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+      "The feasibility predicate checks distinct unordered pairs only, matching the scorer; it does not add a diagonal/self-pair restriction. Raw subset entries must be exact finite integers before upstream rounding."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [],
@@ -172132,7 +172155,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -172143,16 +172166,27 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "factorial_assignment",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "3bf731604c7f0a689d067b8fba365e23ff357610769a3821735f6da1005e1662",
+          "verifier": "_prime_factors_factorial + exact product predicate",
+          "validity_key": "arena_valid",
+          "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+      "The no-argument bin-assignment representation differs from the source notebook API. Exact Python-integer products must reproduce 100 factorial. The normalization constant is a greedy seed baseline, not a known optimum."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [],
@@ -173425,7 +173459,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -173436,16 +173470,27 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "flat_sign_polynomial",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "a0801463110b1bd7a1e3c65f7cf1c01c34f27eb6d611dd212c86036d910cfea9",
+          "verifier": "finite length-41 input + normalized binary-coefficient predicate",
+          "validity_key": "arena_valid",
+          "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+      "The source converts any finite real sign pattern into coefficients +/-1, with zero mapped to +1. Validity certifies that normalized representation, not a merit-factor record."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [],
@@ -174150,7 +174195,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -174161,16 +174206,27 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "sarkozy_subset",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "8082024ed4ee95096b9bbc331a76d5e3f9d55f94d29cedaebbfb5cdac2e58c50",
+          "verifier": "both oriented modular-difference predicates",
+          "validity_key": "arena_valid",
+          "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+      "The subset contains exact finite integer residues before upstream rounding. The source evaluator reports a transcription problem in the published subset and retains its size as a target; this adapter does not claim to reproduce that construction."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [],
@@ -177612,7 +177668,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -177623,16 +177679,27 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "no_five_sphere",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "472d4e9547fa11aeea8216da7bf6136443e698c89c5584e82921a68c17700ebd",
+          "verifier": "_has_five_cospherical",
+          "validity_key": "arena_valid",
+          "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+      "The determinant verifier excludes five cospherical OR coplanar points on the integer grid. This numerical determinant check is not an exact-arithmetic certificate."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [],
@@ -179457,7 +179524,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -179468,16 +179535,27 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "sendov_roots",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "3c06162fb25fa691fc45dc69bfb8753075648c8de63470c798ce07a46e61d6e4",
+          "verifier": "unit-disk roots + finite derivative-root predicates",
+          "validity_key": "arena_valid",
+          "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+      "Root entries are flattened and interpreted as complex values exactly as in the source. The unit-disk tolerance is 1e-6 and derivative roots are computed numerically; validity is not a proof or counterexample to Sendov conjecture."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [],
@@ -181202,7 +181280,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -181213,16 +181291,27 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "no_isosceles_grid",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "014a8d90105d09dda79c6114ce79a651491a43cb9527a16d4f33cbf95d8b1110",
+          "verifier": "all-triples squared-distance predicate",
+          "validity_key": "arena_valid",
+          "scope": "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena captures exactly one constructor result and the final locals of the same pinned evaluator call, then checks named domain and feasibility invariants. The constructor is never rerun. Original scoring bytes are retained in upstream_evaluator.py. Missing or ambiguous observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+      "Raw coordinates must be exact finite integers before the upstream integer cast. Every triple is checked for equality of any two squared distances; an empty (0,2) grid is vacuously feasible under this source contract."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [],

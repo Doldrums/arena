@@ -31,7 +31,7 @@ def catalog():
 def test_pinned_catalog_is_available_without_runtime_or_frameworks(catalog):
     assert catalog["summary"] == {
         "task_count": 959, "executable_count": 689, "unsupported_count": 270,
-        "protocol_counts": {"original": 125, "recreated_verified": 81, "recreated": 483, "unsupported": 270},
+        "protocol_counts": {"original": 117, "recreated_verified": 81, "recreated": 491, "unsupported": 270},
         "runtime_readiness": "not_verified"}
     assert catalog["sources"][0]["kind"] == "bundled"
     assert catalog["sources"][0]["id"] == "arena-tasks"
