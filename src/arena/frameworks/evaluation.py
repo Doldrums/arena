@@ -158,7 +158,7 @@ def validate_config(config):
             raise ValueError("local_trusted Python must be an absolute executable path")
     elif execution.get("kind") == "docker":
         if (not {"kind", "image", "python"} <= set(execution)
-                or set(execution) - {"kind", "image", "python", "require_control_cgroup"}
+                or set(execution) - {"kind", "image", "python", "require_control_cgroup", "resource_profile"}
                 or not isinstance(execution["image"], str)):
             raise ValueError("docker requires kind, image and python")
         if "require_control_cgroup" in execution and type(execution["require_control_cgroup"]) is not bool:
@@ -167,6 +167,11 @@ def validate_config(config):
             raise ValueError("Docker evaluation image must be pinned by sha256 digest")
         if execution["python"] not in {"python", "python3"}:
             raise ValueError("Docker Python must be python or python3 from the pinned image")
+        if "resource_profile" in execution:
+            from arena.evaluation_resources import budget
+            if execution["resource_profile"] is None:
+                raise ValueError("resource_profile must name an explicit canonical budget")
+            budget(execution["resource_profile"])
     else:
         raise ValueError("Choose docker for generated code or local_trusted for reviewed fixtures")
     return {"config": config, "task": task, "source_dir": str(root), "source": revision,
@@ -297,9 +302,12 @@ def evaluate(config, program_path, output_dir):
     if execution["kind"] == "docker":
         # A trusted evaluator and candidate share this container. This constrains
         # resource/host access; it is not an adversarial verifier guarantee.
+        from arena.evaluation_resources import budget
+        resources = budget(execution.get("resource_profile"))
+        memory = f"{resources['memory_mb']}m" if "resource_profile" in execution else "2g"
         argv = ["docker", "run", "--rm", "--pull=never", "--name", container,
-                "--network", "none", "--read-only", "--cpus", "1", "--memory", "2g",
-                "--pids-limit", "128", "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
+                "--network", "none", "--read-only", "--cpus", "1", "--memory", memory,
+                "--pids-limit", str(resources["pids"]), "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
                 "--user", f"{os.getuid()}:{os.getgid()}", "--tmpfs", "/tmp:rw,nosuid,nodev,size=268435456",
                 "--mount", f"type=bind,src={root},dst=/tasks,readonly",
                 "--mount", f"type=bind,src={candidate_dir},dst=/candidate,readonly",
@@ -309,6 +317,9 @@ def evaluate(config, program_path, output_dir):
                 execution["python"], "/tasks/run.py", "--root", "/tasks", "evaluate", config["task_id"],
                 "--candidate", "/candidate/program.py", "--python", execution["python"],
                 "--timeout", str(config["timeout_seconds"]), "--output", "/results/native.json"]
+        if "resource_profile" in execution:
+            position = argv.index(execution["image"])
+            argv[position:position] = ["--memory-swap", memory]
     else:
         argv = [execution["python"], str(root / "run.py"), "--root", str(root), "evaluate", config["task_id"],
                 "--candidate", str(candidate), "--python", execution["python"],
@@ -339,6 +350,8 @@ def evaluate(config, program_path, output_dir):
             argv[position:position] = ["--label", "arena.evaluator=canonical-v1", "--label",
                                       "arena.control-run=" + context["run_id"],
                                       "--cgroup-parent", context["cgroup_parent"]]
+            if "resource_profile" in execution:
+                argv[position:position] = ["--label", "arena.evaluation-profile=" + execution["resource_profile"]]
             receipt["control"] = context
         native_dir.mkdir(mode=0o700)
         candidate_dir.mkdir()

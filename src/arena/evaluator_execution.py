@@ -63,7 +63,10 @@ class Proxy:
                 os.chown(stage / "results", self.config.worker_uid, self.config.worker_gid)
                 # Persist the name before asking Docker to create. If transport
                 # fails after daemon creation, restart recovery still knows it.
-                (stage / "record.json").write_text(json.dumps({"id": None, "run": run_id, "name": name}))
+                recovery = {"id": None, "run": run_id, "name": name}
+                if "arena.evaluation-profile" in rebuilt["Labels"]:
+                    recovery["resource_profile"] = rebuilt["Labels"]["arena.evaluation-profile"]
+                (stage / "record.json").write_text(json.dumps(recovery))
                 # Retain only the trusted library mount rebuilt by policy;
                 # caller-writable candidate/results paths are always replaced.
                 rebuilt["HostConfig"]["Mounts"] = [
@@ -75,7 +78,8 @@ class Proxy:
                 if result[0] == 201:
                     ident = json_object(result[2]).get("Id")
                     require(type(ident) is str and re.fullmatch(r"[a-f0-9]{64}", ident))
-                    (stage / "record.json").write_text(json.dumps({"id": ident, "run": run_id, "name": name}))
+                    recovery["id"] = ident
+                    (stage / "record.json").write_text(json.dumps(recovery))
                     self.records[name] = {"id": ident, "run": run_id, "stage": stage, "output_fd": output_fd,
                                           "expires": time.monotonic() + int(rebuilt["Cmd"][11]) + 60,
                                           "candidate_sha256": hashlib.sha256(program).hexdigest()}
@@ -165,9 +169,16 @@ class Proxy:
             if metadata.exists():
                 require(metadata.is_file() and not metadata.is_symlink() and metadata.stat().st_size <= 4096)
                 record = json_object(metadata.read_bytes())
-                require(set(record) == {"id", "run", "name"} and RUN.fullmatch(record["run"])
+                require(set(record) in ({"id", "run", "name"}, {"id", "run", "name", "resource_profile"})
+                        and RUN.fullmatch(record["run"])
                         and (record["id"] is None or re.fullmatch(r"[a-f0-9]{64}", record["id"]))
                         and re.fullmatch(r"arena-eval-[a-f0-9]{32}", record["name"]))
+                labels = {"arena.evaluator": "canonical-v1", "arena.control-run": record["run"]}
+                if "resource_profile" in record:
+                    from .evaluation_resources import PROFILES
+                    profile = record["resource_profile"]
+                    require(type(profile) is str and profile in PROFILES)
+                    labels["arena.evaluation-profile"] = profile
                 status, _, raw = self.request("GET", "/containers/" + (record["id"] or record["name"]) + "/json")
                 if status != 404:
                     require(status == 200)
@@ -175,8 +186,7 @@ class Proxy:
                     ident = native.get("Id")
                     require(type(ident) is str and re.fullmatch(r"[a-f0-9]{64}", ident)
                             and (record["id"] is None or ident == record["id"])
-                            and native.get("Config", {}).get("Labels") ==
-                            {"arena.evaluator": "canonical-v1", "arena.control-run": record["run"]})
+                            and native.get("Config", {}).get("Labels") == labels)
                     deleted = self.request("DELETE", "/containers/" + ident + "?force=1")
                     require(deleted[0] in {204, 404})
             shutil.rmtree(stage)
