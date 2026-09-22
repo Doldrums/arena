@@ -43,12 +43,16 @@ class Broker:
         require(status == 200 and inspect_image_evidence([actual], manifest["binding"]) == manifest["image"],
                 "Installed image differs from its approved deployment")
         raw = input_file(admitted["request"]["config"], self.config.config_roots)
+        from .engine_research import admit
+        research_profile = admit(self.config, raw, request=admitted['request'],
+                                 engine_commit=manifest['binding']['repository']['commit'])
         logical = self.config.runs_root / run_id / "artifacts"
         native_config = checked_native_config(raw, admitted["model"], logical, self.config.gateway_url)
         tasks = Path(admitted["request"]["tasks_root"])
         require(tasks.is_absolute() and ".." not in tasks.parts
                 and any(tasks.is_relative_to(root) and tasks != root for root in self.config.task_roots))
         return {**admitted, "run_id": run_id, "deployment_sha256": digest, "logical": logical,
+                "research_profile": research_profile,
                 "config": native_config, "original_config_sha256": hashlib.sha256(raw).hexdigest(), "tasks": tasks}
 
     def prepare(self, plan):
@@ -98,6 +102,8 @@ class Broker:
                                           *[mount(path, path) for path in config.library_roots],
                                           mount(config.evaluator_socket, "/run/arena-evaluator/docker.sock"),
                                           mount(stage / "context.json", "/run/arena-engine/context.json")]}}
+        from .engine_research import prepare
+        prepare(config, plan, artifacts, body)
         # ID is available after create and before start; the bind source exists
         # now and is rewritten root-only with that actual ID before any code runs.
         (stage / "context.json").write_text("{}"); (stage / "context.json").chmod(0o444)
@@ -274,6 +280,9 @@ class Broker:
                            "staged_config_sha256": plan["staged_config_sha256"], "task_hashes": plan["task_hashes"],
                            "container_id": record["id"], "model": plan["model"],
                            "network": "host", "canonical_evaluation": False}
+            if plan.get('research_profile') is not None:
+                journal['research_profile'] = plan['research_profile']
+                journal['research_cli_sha256'] = self.config.research_tools.cli_sha256
         except (ValueError, KeyError, TypeError, OSError, sqlite3.Error, http.client.HTTPException) as error:
             failure = type(error).__name__
             if plan is not None:

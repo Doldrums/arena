@@ -47,6 +47,7 @@ class Config:
     max_active: int = 4
     max_seconds: int = 7200
     additional_tasks_roots: tuple[Path, ...] = ()
+    research_tools: object | None = None
 
     @property
     def library_roots(self):
@@ -72,6 +73,9 @@ class Config:
         require(type(value["models"]) is list and value["models"]
                 and all(type(m) is str and re.fullmatch(r"[A-Za-z0-9_.-]{1,80}", m) for m in value["models"]))
         value["models"] = tuple(value["models"])
+        if 'research_tools' in value:
+            from .engine_research import ResearchGrant
+            value['research_tools'] = ResearchGrant.read(value['research_tools'])
         config = cls(**value)
         require(config.gateway_url == "http://127.0.0.1:8789/v1")
         require(re.fullmatch(r"/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+", config.cgroup_root))
@@ -83,6 +87,8 @@ class Config:
 
     def host_check(self):
         require(os.geteuid() == 0 and hasattr(socket, "SO_PEERCRED"))
+        if self.research_tools is not None:
+            self.research_tools.validate_host()
         for path in (self.approvals, self.staging_root, self.registrations, self.receipts, self.socket_path.parent):
             fd = directory_fd(path); os.close(fd)
             require(path.stat().st_uid == 0 and not path.stat().st_mode & 0o022)
