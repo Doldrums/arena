@@ -7,7 +7,7 @@ import {effortDetailsHTML,publishedEffortHTML,renderEffort} from '../../web/effo
 
 const assets=new URL('../../web/',import.meta.url);
 const measured={schema:'sciel-metric-display/1',status:'measured',value:2.63,raw_score:1,label:'Sum of radii',metric_sha256:'a'.repeat(64)};
-const scope={history_complete:true,status:'complete',reported_usd:3.47392,cost_status:'reported',
+const scope={history_complete:true,status:'complete',reported_usd:3.47392,cost_status:'reported',cost_accounting:'receipt_provenance',
   physical_llm_calls:15,pending_llm_calls:0,unknown_cost_calls:0,evaluator_cascades:9,
   target_iteration:1,ordinary_iterations:0,models:['anthropic/claude-opus-5'],model_count:1,
   cutoff_at:'2026-09-20T16:52:53.042623+00:00',wall_seconds:950};
@@ -24,7 +24,7 @@ function mount(){
     best_ai_method:{status:'known',label:'Best AI search',name:'AI',value:2.635,current_value:2.63,tolerance:1e-6}};
   const snapshot={run:{id:'test',path:'fixture',name:'Fixture'},stats:{best_metric_display:measured,best_score:1},events:[],
     trials:[],hypotheses:[],lessons:[],runtime:{},best_candidate_id:'p29',benchmark:reference,
-    effort:{best_program_id:'p29',to_best:scope,total:{...scope,target_iteration:null,ordinary_iterations:4,reported_usd:6.265515,physical_llm_calls:31}}};
+    effort:{best_program_id:'p29',to_best:scope,total:{...scope,terminal:true,target_iteration:null,ordinary_iterations:4,reported_usd:6.265515,physical_llm_calls:31}}};
   w.fixture.state.snapshot=snapshot;
   return {dom,w,doc:w.document,snapshot,api:w.fixture};
 }
@@ -37,7 +37,7 @@ test('record cutoff and total effort are separate, with precise counting units',
     assert.match(cards[0].textContent,/To current best · p29.*\$3\.4739.*9 program evaluations · 15 completed LLM calls/);
     assert.match(cards[0].textContent,/Best reached at evolution iteration 1/);
     assert.doesNotMatch(cards[0].textContent,/0 ordinary iterations logged/);
-    assert.match(cards[1].textContent,/Total run · now.*\$6\.2655.*31 completed LLM calls/);
+    assert.match(cards[1].textContent,/Total run · finished.*\$6\.2655.*31 completed LLM calls/);
     assert.match(cards[0].textContent,/CPU time unknown/);
     const rows=[...doc.querySelectorAll('.benchmark-table tbody tr:not(.benchmark-group)')];
     assert.match(rows[0].textContent,/Same tolerance/);assert.match(rows[1].textContent,/This run · bestp29/);assert.match(rows[2].textContent,/Strict/);
@@ -127,8 +127,41 @@ test('subscription billing survives missing physical history and unknown outcome
     assert.doesNotMatch(line,/\$0\.00/);
     snapshot.runtime.uncommitted_cost={available:false};api.renderSummary();
     assert.match(doc.querySelector('#cost-note').textContent,/charges unknown.*current wave receipts unavailable/);
-    assert.match(api.runEffort({committed_effort:{ordinary_iterations:1,known_llm_usd:1.25,
+    assert.match(api.runEffort({committed_effort:{ordinary_iterations:1,known_llm_usd:1.25,provider_reported_llm_usd:1.25,
       billing_mode:'subscription_unpriced',cost_status:'known_logged_lower_bound'}}),/≥ \$1\.25 known \+ subscription/);
-    assert.match(api.runEffort({committed_effort:{ordinary_iterations:1,known_llm_usd:1.25,cost_status:'reported'}}),/\$1\.25 committed/);
+    assert.match(api.runEffort({committed_effort:{ordinary_iterations:1,known_llm_usd:1.25,cost_status:'reported'}}),/USD unverified committed/);
+  }finally{dom.window.close();}
+});
+
+test('token estimates and CPU omissions cannot be presented as measured all-in spend',()=>{
+  const {dom,doc,api,snapshot}=mount();try{
+    snapshot.effort.total={...scope,reported_usd:null,estimated_usd:12.5,
+      estimated_cost_calls:15,unknown_cost_calls:15,cost_status:'partial_or_estimated',terminal:true};
+    api.renderSummary();
+    assert.equal(doc.querySelector('#cost').textContent,'$12.5000 estimate');
+    assert.match(doc.querySelector('#cost-note').textContent,/historical token-rate estimate; not billed USD/);
+    assert.match(doc.querySelector('#cost-note').textContent,/CPU\/infrastructure cost unavailable · all-in cost unavailable/);
+    const html=renderEffort(snapshot.effort);
+    assert.match(html,/Total run · finished/);
+    assert.match(html,/Unknown USD.*Provider-reported LLM charges only.*\$12\.5000 historical token-rate estimate/);
+    assert.doesNotMatch(html,/Total run · now|≥ \$12\.5000/);
+    snapshot.effort.total.billing_mode='subscription_unpriced';api.renderSummary();
+    assert.equal(doc.querySelector('#cost').textContent,'Subscription');
+    assert.match(doc.querySelector('#cost-note').textContent,/not billed USD/);
+  }finally{dom.window.close();}
+});
+
+test('old mixed-cost snapshots and unconfirmed run boundaries remain explicitly unverified',()=>{
+  const {dom,doc,api,snapshot}=mount();try{
+    const legacy={...scope,reported_usd:9.9,wall_source:'last_recorded_boundary'};
+    delete legacy.cost_accounting;snapshot.effort.total=legacy;
+    api.renderSummary();
+    assert.equal(doc.querySelector('#cost').textContent,'USD unavailable');
+    assert.match(doc.querySelector('#cost-note').textContent,/\$9\.9000 recorded accounting; billing source unverified/);
+    const html=renderEffort(snapshot.effort);
+    assert.match(html,/Total run · recorded.*end time unconfirmed/);
+    assert.doesNotMatch(html,/Total run · finished|Total run · live/);
+    assert.match(api.runEffort({committed_effort:{ordinary_iterations:2,estimated_llm_usd:3.2,
+      cost_basis:'token_estimate'}}),/\$3\.20 token-rate estimate/);
   }finally{dom.window.close();}
 });

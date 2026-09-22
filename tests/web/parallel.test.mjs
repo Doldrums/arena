@@ -53,17 +53,17 @@ test('architecture labels waves only for explicit recorded parallel execution',(
   }finally{dom.window.close();}
 });
 
-test('known unpublished spend updates independently and never calls a committed baseline total',()=>{
+test('unclassified journal and unpublished amounts remain recorded accounting, not billed USD',()=>{
   const dom=new JSDOM('<div id="cost"></div><div id="cost-note"></div>',{runScripts:'outside-only'});
   try{
     const w=dom.window,fn=dashboardFunction('renderSpend', 'dashboard-summary.js');
     w.eval(`{const state={snapshot:{stats:{cost_total:1.25,cost_status:'reported'},runtime:{}}};const $=id=>document.getElementById(id),numeric=v=>typeof v==='number'&&Number.isFinite(v);${fn};window.draw=value=>{state.snapshot.runtime.uncommitted_cost=value;renderSpend();};}`);
     w.draw({available:true,wave:'2',baseline_cost:1.25,known_cost:.15,known_spend:1.4,unknown_call_count:1,pending_call_count:2});
-    assert.equal(w.document.getElementById('cost').textContent,'≥ $1.4000');
-    assert.match(w.document.getElementById('cost-note').textContent,/\$1.2500 committed \+ \$0.1500 uncommitted · 1 unknown-cost calls · 2 awaiting receipts/);
+    assert.equal(w.document.getElementById('cost').textContent,'USD unavailable');
+    assert.match(w.document.getElementById('cost-note').textContent,/billing unverified.*\$1\.4000 recorded.*2 awaiting receipts.*1 unknown-cost calls/);
     w.draw({available:false,reason:'Incomplete receipt'});
-    assert.equal(w.document.getElementById('cost').textContent,'≥ $1.2500');
-    assert.match(w.document.getElementById('cost-note').textContent,/current wave cost unavailable/);
-    w.draw(null);assert.equal(w.document.getElementById('cost').textContent,'$1.2500');
+    assert.equal(w.document.getElementById('cost').textContent,'USD unavailable');
+    assert.match(w.document.getElementById('cost-note').textContent,/current wave receipts unavailable/);
+    w.draw(null);assert.equal(w.document.getElementById('cost').textContent,'USD unavailable');
   }finally{dom.window.close();}
 });

@@ -206,6 +206,12 @@ def project_run(ident, path, *, rows, checkpoint, checkpoint_info, warnings,
         if cost is not None:
             cost_status = "known_logged_lower_bound"
             cost_source = "unknown_charge / " + cost_source
+    estimated = (not subscription and _dict(config.get('llm')).get('cost_reporting')
+                 == 'estimated_uncached_token_rates')
+    accounting = dict(recorded_llm_usd=_number(cost), provider_reported_llm_usd=None,
+        estimated_llm_usd=_number(cost) if estimated else None,
+        cost_basis='subscription_unpriced' if subscription else 'token_estimate' if estimated else 'unverified_recorded_accounting',
+        cpu_usd=None, all_in_usd=None, cpu_cost_status='not_recorded')
     programs = project_lineage(curves, trials, sources, evidence, rows)
     measured_results = max((value for value in (
         checkpoint.get('n_evaluation_results'), end.get('n_evaluation_results'),
@@ -225,6 +231,7 @@ def project_run(ident, path, *, rows, checkpoint, checkpoint_info, warnings,
         cost_total=_number(cost), cost_source=cost_source,
         cost_status=cost_status, billing_mode="subscription_unpriced" if subscription else None,
         unknown_cost_present=unknown_charge, llm_unpriced_calls=checkpoint.get("llm_unpriced_calls", 0),
+        **accounting,
         best_score=best, seed_score=observed_seed_score if observed_seed_score is not None
             else _number(end.get("seed_score", checkpoint.get("seed_score")))),
         curves=curves, programs=programs, trials=trials, hypotheses=[item for item in trials if isinstance(item.get("hypothesis"), dict)],
@@ -245,8 +252,9 @@ def project_run(ident, path, *, rows, checkpoint, checkpoint_info, warnings,
     snapshot['_effort_basis'] = effort_basis(rows, sources, best_candidate_id, best,
         _dict(checkpoint.get('identity')).get('task_hash'), iterations)
     run['committed_effort'] = dict(scope='committed_journal', ordinary_iterations=iterations,
-        ordinary_successful_evaluations=evaluations, known_llm_usd=_number(cost), cost_status=cost_status,
+        ordinary_successful_evaluations=evaluations, known_llm_usd=None, cost_status=cost_status,
+        **accounting,
         billing_mode="subscription_unpriced" if subscription else None, unknown_cost_present=unknown_charge,
         configured_models=_list(start.get('models')),
-        note='Committed accounting only. Physical pending receipts and actual model use require the selected run view.')
+        note='Committed accounting amounts are not verified billing. Historical token-rate estimates, when declared, are shown separately. CPU/infrastructure and all-in costs are unavailable. Physical receipts and actual model use require the selected run view.')
     return snapshot, sources, evidence, (start, end, modified, _stop_detail(checkpoint, rows[last_start + 1:]))

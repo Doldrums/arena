@@ -13,11 +13,18 @@ export function effortDetailsHTML(scope){
   if(!scope)return '<span class="effort-unknown">Effort unknown · no bound physical history</span>';
   const partial=scope.history_complete!==true||scope.pending_llm_calls>0||scope.unknown_cost_calls>0;
   const subscription=scope.unpriced_llm_calls>0||scope.billing_mode==='subscription_unpriced'||scope.cost_status==='subscription_unpriced';
-  const price=subscription?(scope.reported_usd>0?dollars(scope.reported_usd,true)+' known + subscription · USD unavailable':'Subscription · USD unavailable'):dollars(scope.reported_usd,partial);
-  return '<div class="effort-facts"><span>'+text(price)+' <small>LLM charges'+(scope.cost_status==='partial_or_estimated'?' · partial / estimated':'')+'</small></span>'+
+  const classified=scope.cost_accounting==='receipt_provenance';
+  const reported=classified?scope.reported_usd:null;
+  const estimate=classified?scope.estimated_usd:null;
+  const unverified=classified?scope.unattributed_recorded_usd:scope.reported_usd;
+  const price=subscription?(reported>0?dollars(reported,true)+' known + subscription · USD unavailable':'Subscription · USD unavailable'):dollars(reported,partial);
+  return '<div class="effort-facts"><span>'+text(price)+' <small>Provider-reported LLM charges only</small></span>'+
+    (finite(estimate)?'<span>'+text(dollars(estimate))+' historical token-rate estimate · not billed USD</span>':'')+
+    (finite(unverified)?'<span>'+text(dollars(unverified))+' recorded accounting · billing source unverified</span>':'')+
     '<span>'+text(number(scope.evaluator_cascades))+' program evaluations · '+text(number(scope.physical_llm_calls))+' completed LLM calls</span>'+
     '<span>'+(finite(scope.target_iteration)?'Best reached at evolution iteration '+text(number(scope.target_iteration)):text(number(scope.ordinary_iterations))+' completed evolution iterations')+'</span>'+
-    '<span>'+text(duration(scope.wall_seconds))+' elapsed (incl. pauses) · CPU time unknown</span>'+
+    '<span>'+text(duration(scope.wall_seconds))+' elapsed (incl. pauses)'+(scope.wall_source==='last_recorded_boundary'?' · last recorded boundary; end time unconfirmed':'')+' · CPU time unknown</span>'+
+    '<span>CPU/infrastructure cost unavailable · all-in cost unavailable</span>'+
     (scope.pending_llm_calls||scope.unknown_cost_calls?'<span class="effort-uncertain">'+text(number(scope.pending_llm_calls))+' calls pending · '+text(number(scope.unknown_cost_calls))+' charges unknown</span>':'')+
     (scope.history_complete!==true?'<span class="effort-uncertain">Incomplete receipt history · observed lower bounds</span>':'')+
     (scope.unpriced_llm_calls>0?'<span>'+text(number(scope.unpriced_llm_calls))+' completed subscription calls · no USD price supplied</span>':'')+
@@ -42,7 +49,7 @@ export function publishedEffortHTML(effort){
 export function renderEffort(effort){
   return '<div class="effort-scopes" aria-label="Run effort comparison"><section><div class="effort-title">To current best'+(effort?.best_program_id?' · '+text(effort.best_program_id):'')+'</div>'+effortDetailsHTML(effort?.to_best)+
     (effort?.to_best?.cutoff_at?'<time datetime="'+text(effort.to_best.cutoff_at)+'">Evaluation completed '+text(effort.to_best.cutoff_at.replace('T',' ').replace('+00:00',' UTC'))+'</time>':'')+'</section>'+
-    '<section><div class="effort-title">Total run · now</div>'+effortDetailsHTML(effort?.total)+
+    '<section><div class="effort-title">Total run'+(effort?.total?.live===true?' · live':effort?.total?.terminal===true?' · finished':' · recorded')+'</div>'+effortDetailsHTML(effort?.total)+
     (effort?.observed_at?'<time datetime="'+text(effort.observed_at)+'">Receipt snapshot '+text(effort.observed_at.replace('T',' ').replace('+00:00',' UTC'))+'</time>':'')+'</section></div>'+
     '<p class="effort-note">'+text(effort?.note||'Discovery effort is not recorded. A candidate’s generation charge is not the total cost of finding its result.')+'</p>';
 }

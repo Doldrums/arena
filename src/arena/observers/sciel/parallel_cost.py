@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 
 from .cost_accounting import subscription_unpriced
+from .failures import provider_failure
 
 SCHEMA = 'sciel-wave-transaction/2'
 MAX_CALLS = 4096
@@ -130,7 +131,12 @@ class WaveSpendMonitor:
             if kind == 'evaluation':
                 return dict(kind=kind, cost=0., unknown=0, pending=0)
             if payload['status'] == 'error':
-                return dict(kind=kind, cost=0., unknown=int(payload.get('not_dispatched') is not True), pending=0)
+                failure = provider_failure(payload.get('error'))
+                if failure:
+                    failure.update(request_sha256=expected, receipt_sha256=envelope['sha256'],
+                        outcome_unknown=payload.get('not_dispatched') is not True)
+                return dict(kind=kind, cost=0., unknown=int(payload.get('not_dispatched') is not True),
+                    pending=0, provider_failure=failure)
             value = payload.get('value')
             cost = _number(value.get('cost')) if isinstance(value, dict) else None
             unpriced = subscription_unpriced(value)
@@ -195,6 +201,7 @@ class WaveSpendMonitor:
             pending = sum(fact['pending'] for fact in llm)
             unpriced = sum(fact.get('unpriced', 0) for fact in llm)
             return dict(schema='sciel-uncommitted-spend/1', available=True, wave=wave,
+                provider_failures=[fact['provider_failure'] for fact in llm if fact.get('provider_failure')],
                 phase=manifest['phase'], known_cost=known, unknown_call_count=unknown,
                 pending_call_count=pending, unpriced_call_count=unpriced,
                 baseline_unpriced_calls=baseline['unpriced_calls'], baseline_cost=baseline['cost'],
