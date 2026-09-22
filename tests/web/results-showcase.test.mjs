@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
 
-const html = readFileSync(new URL('../../web/results.html',import.meta.url),'utf8').replace('data-results-showcase="true"','data-results-showcase="test"');
+const html = readFileSync(new URL('./fixtures/results-legacy.html',import.meta.url),'utf8').replace('data-results-showcase="true"','data-results-showcase="test"');
 const source = readFileSync(new URL('../../web/arena-results-showcase.js',import.meta.url),'utf8').replace(/^export /gm,'');
 const run = {
   id:'private-image-run', framework:'sciel-release', model:'model-a', state:'completed', created:100,

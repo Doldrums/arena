@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {JSDOM} from 'jsdom';
-const html=readFileSync(new URL('../../web/results.html',import.meta.url),'utf8').replace('data-results-showcase="true"','data-results-showcase="test"');
+const html=readFileSync(new URL('./fixtures/results-legacy.html',import.meta.url),'utf8').replace('data-results-showcase="true"','data-results-showcase="test"');
 const source=readFileSync(new URL('../../web/arena-results-overview.js',import.meta.url),'utf8').replace(/^import .*$/gm,'').replace(/^export /gm,'');
 const researchSource=readFileSync(new URL('../../web/results-research.js',import.meta.url),'utf8').replace(/^export /gm,'');
 const efficiencySource=readFileSync(new URL('../../web/results-efficiency.js',import.meta.url),'utf8').replace(/^export /gm,'');

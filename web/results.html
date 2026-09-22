@@ -5,19 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#f5f5f6">
-  <meta name="description" content="Research results across systems and models: evaluation outcomes, score progression, recorded resources and run evidence.">
-  <title>Empira · Results</title>
+  <meta name="description" content="Explore the research landscape: tasks, participating systems and recorded experiments across scientific directions.">
+  <title>Empira · Research arena</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/arena.css">
   <link rel="stylesheet" href="/arena-theme.css">
-  <link rel="stylesheet" href="/arena-results-showcase.css">
-  <script type="module" src="/arena-results-showcase.js"></script>
-  <link rel="stylesheet" href="/arena-results-overview.css">
-  <script type="module" src="/arena-results-overview.js"></script>
+  <link rel="stylesheet" href="/research-map.css">
+  <script type="module" src="/research-map.js"></script>
 </head>
-<body class="arena-shell showcase-shell" data-results-showcase="true">
-  <a class="skip" href="#main">Skip to results</a>
+<body class="arena-shell research-map-shell" data-research-map="true">
+  <a class="skip" href="#main">Skip to research arena</a>
   <header class="arena-masthead">
     <a class="arena-brand" href="/" aria-label="Empira home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" width="28" height="28" fill="#fff"><rect x="9" y="10" width="9" height="17" rx="4.5" transform="rotate(9 13.5 18.5)"/><rect x="24" y="13" width="9" height="16" rx="4.5" transform="rotate(12 28.5 21)"/></svg></span><span>Empira<span class="brand-caption">THE RSI RESEARCH ARENA</span></span></a>
     <nav class="arena-tabs" aria-label="Empira">
@@ -26,85 +24,41 @@
       <a href="/experiments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16h16M7 15l4-5 4 3 5-7"/></svg>Experiments<small aria-hidden="true">↗</small></a>
       <a href="/results" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V12M12 20V4M19 20V8"/></svg>Results</a>
     </nav>
-    <div class="arena-header-actions"><button id="showcase-connect" class="button" type="button">Open experiment board ↗</button></div>
+    <div class="arena-header-actions"><a class="button" href="/experiments/results">Experiment board ↗</a></div>
   </header>
-  <main id="main" class="arena-canvas showcase-canvas" tabindex="-1">
-    <header class="showcase-heading">
-      <h1 id="showcase-title">Results</h1>
-      <div class="showcase-context"><span id="showcase-status" role="status" aria-live="polite">Connect to explore recorded results.</span><button id="showcase-refresh" type="button" disabled aria-label="Refresh results">↻</button></div>
+  <main id="main" class="research-map-main" tabindex="-1">
+    <header class="research-map-heading">
+      <div><p class="map-eyebrow">THE RESEARCH LANDSCAPE</p><h1>Results</h1></div>
+      <p>Different systems. Shared scientific questions.<br>Explore where research is moving.</p>
+      <div class="map-publication"><span id="map-status" role="status">Loading the research map…</span><button id="map-refresh" type="button" aria-label="Refresh published map">↻</button></div>
     </header>
-    <section id="results-overview" aria-label="Published results overview" aria-busy="true"></section>
-    <section id="showcase-toolbar" class="showcase-toolbar" aria-label="Filter results" hidden>
-      <label>System<select id="showcase-framework"><option value="sciel-release">SCiEL</option></select></label>
-      <label>Model<select id="showcase-model"><option value="all">All models</option></select></label>
-      <label>Status<select id="showcase-state"><option value="all">All statuses</option><option value="completed">Completed</option><option value="active">Active</option><option value="attention">Needs attention</option><option value="cancelled">Cancelled</option></select></label>
-      <label>Budget<select id="showcase-budget"><option value="all">All budgets</option></select></label>
-      <label class="showcase-search-label">Search<input id="showcase-search" type="search" placeholder="Search runs, tasks or models" autocomplete="off"></label>
+    <section class="research-map-board" aria-label="Interactive research arena" aria-busy="true" id="research-map">
+      <div class="map-toolbar">
+        <div class="map-view-switch" role="group" aria-label="Map layer">
+          <button type="button" data-map-mode="landscape" aria-pressed="true">Research landscape</button>
+          <button type="button" data-map-mode="recorded" aria-pressed="false">Recorded activity</button>
+        </div>
+        <label class="map-direction"><span class="map-sr-only">Research direction</span><select id="map-domain"><option value="all">All directions</option></select></label>
+        <label class="map-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><span class="map-sr-only">Find a task or system</span><input id="map-search" type="search" placeholder="Find a task or system" autocomplete="off"></label>
+      </div>
+      <div class="map-workspace">
+        <div class="map-viewport" id="map-viewport">
+          <div class="map-loading" id="map-loading"><span class="map-loading-orbit" aria-hidden="true"></span><p>Connecting the research landscape</p><small>Tasks, systems, and published evidence</small></div>
+          <svg id="map-canvas" viewBox="0 0 1100 800" aria-label="Research network. Select a direction, system or task to inspect its evidence." role="group" hidden></svg>
+          <div class="map-search-results" id="map-search-results" hidden aria-label="Matching nodes"></div>
+          <div class="map-empty" id="map-empty" hidden>No matches in this view. Try another direction or search.</div>
+          <div class="map-caption" id="map-caption" hidden><span class="map-kicker">ONE DOT, ONE RESEARCH RECORD</span><p>Many directions.<br>A shared space to improve.</p></div>
+          <div class="map-controls" aria-label="Map controls"><button type="button" id="map-zoom-in" aria-label="Zoom in">+</button><button type="button" id="map-zoom-out" aria-label="Zoom out">−</button><button type="button" id="map-fit" aria-label="Fit map">↗↙</button><span id="map-zoom-label">100%</span></div>
+          <p class="map-hint">Drag to explore · select a node</p>
+          <div class="map-tooltip" id="map-tooltip" hidden></div>
+        </div>
+        <aside id="map-inspector" class="map-inspector" aria-label="Selected research record"></aside>
+      </div>
+      <div class="map-bottom"><div class="map-domain-legend" id="map-legend" aria-label="Research directions"></div><div class="map-encoding"><span><i class="map-key-task"></i>Task</span><span><i class="map-key-system"></i>System / work</span><span><i class="map-key-recorded"></i>Measured</span></div></div>
     </section>
-    <section id="showcase-highlights" class="showcase-highlights" aria-label="Result overview" hidden></section>
-    <p id="showcase-basis" class="showcase-basis" hidden></p>
-    <section id="showcase-empty" class="showcase-empty"><h2 id="showcase-empty-title">Connect to results</h2><p id="showcase-empty-copy">Use your Arena key to inspect recorded scores, evaluation outcomes and resources across runs.</p><div class="showcase-empty-actions"><button id="showcase-empty-connect" class="button primary" type="button">Connect with key</button><button id="showcase-empty-retry" class="button" type="button" hidden>Retry loading</button></div></section>
-    <div id="showcase-loading" class="showcase-loading" aria-hidden="true" hidden>
-      <div class="showcase-highlights">
-        <div class="showcase-highlight"><span class="showcase-skeleton showcase-skeleton-label"></span><span class="showcase-skeleton showcase-skeleton-value"></span><span class="showcase-skeleton showcase-skeleton-note"></span></div>
-        <div class="showcase-highlight"><span class="showcase-skeleton showcase-skeleton-label"></span><span class="showcase-skeleton showcase-skeleton-value"></span><span class="showcase-skeleton showcase-skeleton-note"></span></div>
-        <div class="showcase-highlight"><span class="showcase-skeleton showcase-skeleton-label"></span><span class="showcase-skeleton showcase-skeleton-value"></span><span class="showcase-skeleton showcase-skeleton-note"></span></div>
-        <div class="showcase-highlight"><span class="showcase-skeleton showcase-skeleton-label"></span><span class="showcase-skeleton showcase-skeleton-value"></span><span class="showcase-skeleton showcase-skeleton-note"></span></div>
-        <div class="showcase-highlight"><span class="showcase-skeleton showcase-skeleton-label"></span><span class="showcase-skeleton showcase-skeleton-value"></span><span class="showcase-skeleton showcase-skeleton-note"></span></div>
-        <div class="showcase-highlight"><span class="showcase-skeleton showcase-skeleton-label"></span><span class="showcase-skeleton showcase-skeleton-value"></span><span class="showcase-skeleton showcase-skeleton-note"></span></div>
-      </div>
-      <div class="showcase-chart-grid">
-        <div class="showcase-card showcase-loading-chart"><span class="showcase-skeleton showcase-skeleton-title"></span><span class="showcase-skeleton showcase-skeleton-caption"></span><div class="showcase-skeleton showcase-skeleton-plot"></div><span class="showcase-skeleton showcase-skeleton-note"></span></div>
-        <div class="showcase-card showcase-loading-chart"><span class="showcase-skeleton showcase-skeleton-title"></span><span class="showcase-skeleton showcase-skeleton-caption"></span><div class="showcase-skeleton showcase-skeleton-plot"></div><span class="showcase-skeleton showcase-skeleton-note"></span></div>
-      </div>
-      <div class="showcase-card showcase-loading-table">
-        <span class="showcase-skeleton showcase-skeleton-title"></span>
-        <div class="showcase-loading-rows">
-          <div class="showcase-loading-row"><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span></div>
-          <div class="showcase-loading-row"><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span></div>
-          <div class="showcase-loading-row"><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span></div>
-          <div class="showcase-loading-row"><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span><span class="showcase-skeleton"></span></div>
-        </div>
-      </div>
-    </div>
-    <div id="showcase-content" class="showcase-content" hidden>
-      <div class="showcase-chart-grid">
-        <section class="showcase-card showcase-chart-card" aria-labelledby="showcase-efficiency-title">
-          <header class="showcase-card-heading"><h2 id="showcase-efficiency-title">Score &amp; resources</h2><label class="showcase-inline-control">Resource<select id="showcase-axis"><option value="tokens">Tokens</option><option value="time">Wall time</option></select></label></header>
-          <label id="showcase-cohort-label" class="showcase-study-control" hidden>Task / evaluator<select id="showcase-cohort" aria-label="Task and evaluator cohort"></select></label>
-          <div id="showcase-efficiency" class="showcase-plot"></div>
-          <p id="showcase-efficiency-note" class="showcase-card-note"></p>
-        </section>
-        <section class="showcase-card showcase-chart-card" aria-labelledby="showcase-progress-title">
-          <header class="showcase-card-heading"><h2 id="showcase-progress-title">Seed → best</h2><span class="showcase-chart-key"><span class="showcase-key-seed" aria-hidden="true"></span>Seed<span class="showcase-key-best" aria-hidden="true"></span>Best</span></header>
-          <p id="showcase-score-context" class="showcase-card-context"></p>
-          <div id="showcase-progress" class="showcase-plot"></div>
-          <p id="showcase-seed-note" class="showcase-card-note"></p>
-        </section>
-        <section class="showcase-card" aria-labelledby="showcase-validity-title">
-          <header class="showcase-card-heading"><h2 id="showcase-validity-title">Evaluation outcomes</h2></header>
-          <div id="showcase-validity" class="showcase-measures"></div>
-          <p id="showcase-validity-note" class="showcase-card-note"></p>
-        </section>
-        <section class="showcase-card" aria-labelledby="showcase-tokens-title">
-          <header class="showcase-card-heading"><h2 id="showcase-tokens-title">Recorded resources</h2></header>
-          <p id="showcase-token-context" class="showcase-card-context"></p>
-          <div id="showcase-tokens" class="showcase-measures"></div>
-        </section>
-      </div>
-      <section class="showcase-card showcase-table-card" aria-labelledby="showcase-model-title">
-        <header class="showcase-card-heading"><div class="showcase-table-title"><h2 id="showcase-model-title">Run comparison</h2><span id="showcase-run-count"></span></div><label class="showcase-inline-control">Sort<select id="showcase-sort"><option value="model">System / model</option><option value="score">Best score</option><option value="tokens">Fewest tokens</option><option value="time">Shortest time</option><option value="created">Most recent</option></select></label></header>
-        <div class="showcase-table-scroll" tabindex="0" role="region" aria-label="Run comparison table, scroll horizontally for all columns">
-          <table class="showcase-table"><thead><tr><th scope="col">System / model</th><th scope="col">Status</th><th scope="col">Seed → best</th><th scope="col">Valid / evaluated</th><th scope="col">Tokens</th><th scope="col">Wall time</th><th scope="col">Details</th></tr></thead><tbody id="showcase-models"></tbody></table>
-        </div>
-        <footer class="showcase-table-pagination"><span id="showcase-table-page"></span><div><button id="showcase-page-prev" class="button" type="button" disabled>← Previous</button><button id="showcase-page-next" class="button" type="button" disabled>Next →</button></div></footer>
-      </section>
-      <section class="showcase-card showcase-coverage-card" aria-labelledby="showcase-coverage-title"><header class="showcase-card-heading"><h2 id="showcase-coverage-title">Measurement coverage</h2></header><div id="showcase-coverage"></div><p id="showcase-coverage-note" class="showcase-card-note"></p></section>
-      <details id="showcase-methodology" class="showcase-methodology" hidden><summary><span>Measurement notes</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><div id="showcase-methodology-body"></div></details>
-    </div>
-    <section class="showcase-next"><div><h2>Follow the research behind the numbers.</h2><p>Explore individual runs, candidate evidence and recorded resources in the experiment board.</p></div><a class="showcase-next-link" href="/experiments/results" aria-label="Open experiment board"><span aria-hidden="true">↗</span></a></section>
+    <div class="map-reading-note"><p id="map-counts" aria-live="polite">Preparing the map…</p><details><summary>How to read the map</summary><p>Color identifies a research direction. Thin links connect tasks to their cited research works; dark links mark published experiment measurements. Larger circles identify systems and works with more linked tasks. Positions arrange the landscape for exploration: distance is not a measure of intelligence, scientific similarity, or progress toward AGI.</p><p>Recorded activity is a published snapshot. An improvement is a change from the initial score within its own evaluator; it is not a cross-task ranking or proof of recursive self-improvement. Cells and tools show recorded research activity, with measurement coverage in the inspector.</p></details></div>
+    <section class="map-research-next"><div><h2>Follow the research behind the numbers.</h2><p>Scores, models, resource use, cells and tools — inspect the evidence in the experiment board.</p></div><a href="/experiments/results" aria-label="Open detailed experiment results">↗</a></section>
     <footer class="page-footer arena-page-footer showcase-footer"><span class="showcase-attribution"><span>Made by</span> <a href="https://cpil-lab.github.io/" target="_blank" rel="noopener noreferrer"><img src="/brand/cpil.png" width="24" height="24" alt="">CPIL Research Group</a> <span>@</span> <a href="https://mbzuai.ac.ae/" target="_blank" rel="noopener noreferrer"><img src="/brand/mbzuai.png" width="28" height="28" alt="">MBZUAI</a></span><a href="/?view=participants">Explore participating systems ↗</a></footer>
   </main>
-  <dialog id="showcase-key-dialog" class="showcase-key-dialog" aria-labelledby="showcase-key-title"><form id="showcase-key-form"><div class="showcase-dialog-heading"><h2 id="showcase-key-title">Connect to results</h2><button id="showcase-key-close" type="button" aria-label="Close">×</button></div><p>Your Arena key connects this browser tab to its recorded results.</p><label>Access key<input id="showcase-key" type="password" required autocomplete="off" spellcheck="false"></label><p id="showcase-key-error" role="alert"></p><div class="showcase-dialog-actions"><button id="showcase-disconnect" class="button" type="button">Disconnect</button><button class="button primary" type="submit">Connect</button></div></form></dialog>
 </body>
 </html>
