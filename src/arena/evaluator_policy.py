@@ -132,6 +132,7 @@ class Config:
     engine_registry: Path | None = None
     engine_staging_root: Path | None = None
     additional_tasks_roots: tuple[Path, ...] = ()
+    resource_grants: tuple[tuple[str, str, tuple[str, ...]], ...] = ()
 
     @property
     def library_roots(self):
@@ -144,7 +145,7 @@ class Config:
                     "images", "worker_uid", "worker_gid"}
         require(required <= data.keys() and not set(data) - required -
                 {"cgroup_root", "max_containers", "timeout_seconds", "engine_registry", "engine_staging_root",
-                 "additional_tasks_roots"})
+                 "additional_tasks_roots", "resource_grants"})
         for key in ("docker_socket", "socket_path", "staging_root", "tasks_root"):
             data[key] = Path(data[key])
             require(data[key].is_absolute() and ".." not in data[key].parts)
@@ -155,6 +156,8 @@ class Config:
         require(all(p.is_absolute() and len(p.parts) >= 4 and ".." not in p.parts for p in data["run_roots"]))
         require(type(data["images"]) is list and data["images"] and all(IMAGE.fullmatch(p) for p in data["images"]))
         data["images"] = tuple(data["images"])
+        from .evaluation_resources import parse_grants
+        data["resource_grants"] = parse_grants(data.get("resource_grants", []), data["images"])
         require(("engine_registry" in data) == ("engine_staging_root" in data))
         for key in ("engine_registry", "engine_staging_root"):
             if key in data:
@@ -264,7 +267,12 @@ def canonical_config(body, name, run_id, config):
     environment = ["PYTHONDONTWRITEBYTECODE=1", "PYTHONPYCACHEPREFIX=/tmp/arena-pycache"]
     require(type(body.get("Env")) is list and len(body["Env"]) == len(environment)
             and all(type(value) is str for value in body["Env"]) and set(body["Env"]) == set(environment))
-    require(body.get("Labels") == {"arena.evaluator": "canonical-v1", "arena.control-run": run_id})
+    labels = body.get("Labels")
+    expected_labels = {"arena.evaluator": "canonical-v1", "arena.control-run": run_id}
+    resource_profile = labels.get("arena.evaluation-profile") if type(labels) is dict else None
+    if resource_profile is not None:
+        expected_labels["arena.evaluation-profile"] = resource_profile
+    require(labels == expected_labels)
     command = body.get("Cmd")
     require(type(command) is list and len(command) == 14 and all(type(v) is str for v in command))
     python = command[0]
@@ -273,16 +281,27 @@ def canonical_config(body, name, run_id, config):
     require(command[6:11] == ["--candidate", "/candidate/program.py", "--python", python, "--timeout"])
     require(command[11].isdigit() and 1 <= int(command[11]) <= config.timeout_seconds)
     require(command[12:] == ["--output", "/results/native.json"])
+    from .evaluation_resources import granted_budget, require_parent_budget
+    try:
+        resources = granted_budget(resource_profile, body["Image"], command[5], config.resource_grants)
+    except ValueError as error:
+        raise Denied(str(error)) from None
+    memory = resources["memory_mb"] * 1024 ** 2
     host = body.get("HostConfig")
     allowed = {"NetworkMode", "ReadonlyRootfs", "NanoCpus", "Memory", "PidsLimit", "CapDrop", "SecurityOpt",
                "Tmpfs", "Mounts", "AutoRemove", "CgroupParent", "LogConfig", "RestartPolicy", "ConsoleSize",
                "ShmSize", "Runtime", "CgroupnsMode", "MemorySwap", "MemorySwappiness", "MaskedPaths", "ReadonlyPaths"}
     only_defaults(host, allowed)
     require(host.get("NetworkMode") == "none" and host.get("ReadonlyRootfs") is True)
-    require(host.get("NanoCpus") == 1_000_000_000 and host.get("Memory") == 2 * 1024 ** 3)
-    require(host.get("PidsLimit") == 128 and host.get("CapDrop") == ["ALL"])
+    require(host.get("NanoCpus") == 1_000_000_000 and host.get("Memory") == memory)
+    require(host.get("PidsLimit") == resources["pids"] and host.get("CapDrop") == ["ALL"])
     require(host.get("SecurityOpt") in (["no-new-privileges"], ["no-new-privileges=true"]))
     require(host.get("CgroupParent") == config.cgroup_root + "/arena-control-" + run_id)
+    if resource_profile is not None:
+        try:
+            require_parent_budget(host["CgroupParent"], resources)
+        except (ValueError, OSError) as error:
+            raise Denied("Evaluator resources exceed the admitted parent envelope") from None
     require(host.get("Tmpfs") == {"/tmp": "rw,nosuid,nodev,size=268435456"})
     require(host.get("AutoRemove") is True)
     require(host.get("LogConfig", {}) in ({}, {"Type": "", "Config": {}}))
@@ -291,7 +310,7 @@ def canonical_config(body, name, run_id, config):
     require(host.get("ShmSize", 0) in (0, 64 * 1024 ** 2))
     require(host.get("Runtime", "") in ("", "runc"))
     require(host.get("CgroupnsMode", "") in ("", "private"))
-    require(host.get("MemorySwap", 0) in (0, 2 * 1024 ** 3))
+    require(host.get("MemorySwap", 0) in (0, memory))
     require(host.get("MemorySwappiness", -1) == -1)
     # These are discarded, never propagated; our fixed daemon defaults apply.
     require(host.get("MaskedPaths") is None and host.get("ReadonlyPaths") is None)
@@ -321,7 +340,7 @@ def canonical_config(body, name, run_id, config):
                "WorkingDir": "/tmp", "Labels": body["Labels"], "AttachStdout": True, "AttachStderr": True,
                "Tty": False, "OpenStdin": False, "Entrypoint": [], "HostConfig": {
                    "NetworkMode": "none", "ReadonlyRootfs": True, "NanoCpus": 1_000_000_000,
-                   "Memory": 2 * 1024 ** 3, "MemorySwap": 2 * 1024 ** 3, "PidsLimit": 128,
+                   "Memory": memory, "MemorySwap": memory, "PidsLimit": resources["pids"],
                    "CapDrop": ["ALL"], "SecurityOpt": ["no-new-privileges"], "AutoRemove": True,
                    "CgroupParent": host["CgroupParent"], "CgroupnsMode": "private",
                    "Tmpfs": {"/tmp": "rw,nosuid,nodev,size=268435456"},
