@@ -47,12 +47,12 @@ def run_failure(rows, start, wave, status):
     if not failures:
         return None
     codes = sorted({failure['http_status'] for failure in failures})
-    labels = {429: 'Provider rate limit', 401: 'Provider authentication failed',
-              403: 'Provider access rejected'}
-    label = '; '.join(f"{labels.get(code, 'Provider error')} (HTTP {code})" for code in codes)
+    labels = {429: 'Model API rate limit', 401: 'Model API authentication failed',
+              403: 'Model API access rejected'}
+    label = '; '.join(f"{labels.get(code, 'Model API error')} (HTTP {code})" for code in codes)
     unknown = any(item['outcome_unknown'] for item in failures)
     return dict(schema='arena.run-failure/1', category=failures[-1]['category'],
         http_statuses=codes, failures=failures, outcome_unknown=unknown,
         summary=label + ('. Dispatched call outcome or usage is unknown.' if unknown else '.'),
         automatic_replay_allowed=False,
-        note='Recorded provider failures in the stopped segment; original termination reason is retained.')
+        note='HTTP status observed by the engine on its model route. This alone does not distinguish the gateway from the upstream provider. Original termination reason is retained.')
