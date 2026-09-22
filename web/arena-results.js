@@ -127,7 +127,13 @@ export function initResults({doc = document, fetcher = (...args) => fetch(...arg
       pair.append(element('span','',number(score.seed_score)),element('span','score-arrow','→'),element('strong','',number(score.best_score))); cell.append(pair);
     }
     if (showNative) cell.append(element('span','score-scope','Native'));
+    else if (finite(score.best_score)) {
+      const scope = element('span','score-scope','Best single evaluation');
+      scope.title = 'Best valid individual evaluator receipt, including individual confirmation trials; not a confirmed mean or a published reference result.';
+      cell.append(scope);
+    }
     if (score.metric) note(cell,`${score.metric}${score.direction === 'maximize' ? ' · higher is better' : score.direction === 'minimize' ? ' · lower is better' : ''}`);
+    if (!showNative && score.protocol) note(cell,`Evaluator protocol: ${score.protocol}`);
     if (showNative) note(cell,score.task || 'Native task not recorded');
     if (showNative && typeof score.score_kind === 'string') note(cell,score.score_kind);
     if (showNative && paired && !finite(score.best_score)) {
@@ -247,16 +253,16 @@ export function initResults({doc = document, fetcher = (...args) => fetch(...arg
       svgNode('text',{x:x(xv),y:height-bottom+22,'text-anchor':'middle'},axis === 'tokens' ? number(xv) : duration(xv));
     }
     svgNode('line',{x1:left,x2:width-right,y1:height-bottom,y2:height-bottom,class:'axis'});
-    svgNode('text',{x:left,y:15},`${c.metric} · ${c.direction === 'maximize' ? 'higher' : 'lower'} is better`);
+    svgNode('text',{x:left,y:15},`Best single evaluation · ${c.metric} · ${c.direction === 'maximize' ? 'higher' : 'lower'} is better`);
     svgNode('text',{x:width/2,y:height-10,'text-anchor':'middle'},axis === 'tokens' ? 'Recorded tokens · complete ledger coverage only' : 'Recorded wall time');
     const legend = element('ol','plot-key');
     points.forEach((run,index) => {
       const px = x(xValue(run)), py = y(canonical(run).best_score), circle = svgNode('circle',{cx:px,cy:py,r:6,class:`point${isSciel(run) ? ' sciel' : ''}`});
-      const title = doc.createElementNS('http://www.w3.org/2000/svg','title'); title.textContent = `${index+1}. ${systemName(run.framework)} · ${run.model}: ${number(canonical(run).best_score)}, ${axis === 'tokens' ? `${number(xValue(run))} tokens` : duration(xValue(run))}`; circle.append(title);
+      const title = doc.createElementNS('http://www.w3.org/2000/svg','title'); title.textContent = `${index+1}. ${systemName(run.framework)} · ${run.model}: Best single evaluation ${number(canonical(run).best_score)}, ${axis === 'tokens' ? `${number(xValue(run))} tokens` : duration(xValue(run))}`; circle.append(title);
       svgNode('text',{x:px+9,y:py-9,class:'point-label'},String(index+1));
       const item = element('li'); item.append(element('strong','',`${index+1}. ${systemName(run.framework)} · ${run.model || 'Unknown model'}`),element('small','',`${number(canonical(run).best_score)} ${c.metric} · ${axis === 'tokens' ? `${number(xValue(run))} tokens` : duration(xValue(run))} · ${run.state}`),element('small','',run.id)); legend.append(item);
     });
-    panel.append(element('p','plot-description',`${plural(points.length,'run')} plotted; ${members.length-points.length} omitted because paired measurements are unavailable or incomplete. Amber identifies SCiEL. Points can overlap; every run is listed below.`));
+    panel.append(element('p','plot-description',`Best single evaluation per run, including individual confirmation trials; not confirmed means or published reference results.${c.protocol ? ` Evaluator protocol: ${c.protocol}.` : ''} ${plural(points.length,'run')} plotted; ${members.length-points.length} omitted because paired measurements are unavailable or incomplete. Amber identifies SCiEL. Points can overlap; every run is listed below.`));
     const plot = element('div','results-chart-plot'); plot.tabIndex = 0; plot.setAttribute('aria-label','Score and resource plot; scroll horizontally on small screens'); plot.append(svg); panel.append(plot,legend);
   }
   function render() {

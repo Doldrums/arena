@@ -77,6 +77,21 @@ test('zero scores are real values and minimize direction handles seed gain',asyn
   const zero=clone(run);zero.metrics.canonical={...zero.metrics.canonical,best_score:0,seed_score:2,direction:'minimize',metric:'MSE'};
   const t=mount({rows:[zero]});try{await flush();assert.match(t.doc.querySelector('tbody').textContent,/2→0/);assert.match(t.doc.querySelector('tbody').textContent,/Gain over seed: 2/);assert.equal(t.doc.querySelectorAll('.point').length,1);assert.match(t.doc.querySelector('.scatter').textContent,/lower is better/);}finally{t.close();}
 });
+test('canonical score is labeled as a single evaluation rather than a confirmed mean',async()=>{
+  const trial=clone(run);
+  Object.assign(trial.metrics.canonical,{seed_score:1,best_score:9,best_score_basis:'best_single_evaluation',protocol:'recreated'});
+  const t=mount({rows:[trial]});
+  try {
+    await flush();
+    const cell=t.doc.querySelector('.score-pair').parentElement;
+    assert.match(cell.textContent,/1→9Best single evaluation/);
+    assert.match(cell.textContent,/Evaluator protocol: recreated/);
+    assert.match(cell.querySelector('.score-scope').title,/individual confirmation trials; not a confirmed mean/);
+    assert.match(t.doc.querySelector('.point title').textContent,/Best single evaluation 9/);
+    assert.match(t.doc.querySelector('.plot-description').textContent,/not confirmed means or published reference results/);
+    assert.doesNotMatch(cell.textContent,/SOTA|confirmed score|confirmed mean: 4/i);
+  } finally {t.close();}
+});
 test('shared seeds and programs are deduplicated across runs when canonical hashes are available',async()=>{
   const one=clone(run),two=clone(run);two.id='second-model';two.model='model-b';one.metrics.canonical.valid_candidate_hashes=['c'.repeat(64),'d'.repeat(64)];two.metrics.canonical.valid_candidate_hashes=['c'.repeat(64),'e'.repeat(64)];
   const t=mount({rows:[one,two]});try{await flush();const card=t.doc.querySelectorAll('.result-metric')[2];assert.equal(card.querySelector('.result-metric-value').textContent,'3');assert.match(card.textContent,/Distinct valid programs/);assert.match(card.textContent,/Includes the seed/);assert.doesNotMatch(card.textContent,/then summed/);}finally{t.close();}
