@@ -187,7 +187,12 @@ def native_configuration(task, model, campaign, slug):
 
 
 def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
-            deployment, approval, campaign, python, model="gpt-5.5", exclude_tasks=(), release_version=None):
+            deployment, approval, campaign, python, model="gpt-5.5", exclude_tasks=(), release_version=None,
+            timeout_seconds=3600):
+    # The native/control schemas allow a week, but the engine broker's reviewed
+    # upper bound is one day. Actual host policy may grant a smaller allowance.
+    if type(timeout_seconds) is not int or not 1 <= timeout_seconds <= 86400:
+        raise ValueError("timeout_seconds must be an integer between 1 and 86400")
     paths = [exact_path(path) for path in (tasks_root, config_destination, native_tasks,
                                          preflight_manifest, deployment, approval)]
     tasks_root, config_destination, native_tasks, preflight_manifest, deployment, approval = paths
@@ -283,7 +288,7 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
                               Path("/srv/arena/control/runs") / ("0" * 32) / "artifacts", GATEWAY)
         template = materialize_template(deployment, approval, template_id="sciel-cat-" + slug,
             name="SCiEL · " + task["name"][:180], model=model, python=python, config=config_path,
-            tasks_root=task_root, resources=resources, timeout_seconds=3600,
+            tasks_root=task_root, resources=resources, timeout_seconds=timeout_seconds,
             seed=0, budget=16, environment_names=())
         template["spec"]["request"].update(campaign=campaign, arm=slug)
         write(config_path.parent / "template.json", template)
@@ -291,6 +296,7 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
         record.update(status="prepared", reason=None, template_id=template["id"],
             model=model, batch_id=campaign, configuration_sha256=sha(config_path.read_bytes()),
             task_configuration_sha256=generated["configuration_sha256"], fitness=bridge["fitness"],
+            timeout_seconds=timeout_seconds,
             native_runtime_conformance="pending_first_run", research_executed=False)
         inventory.append(record)
     if verify_task_library(tasks_root, source) != identity:
@@ -298,15 +304,17 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
     validate_control({"schema": "arena.control/1", "state_dir": "/private-campaign-validation",
         "cgroup_root": "/sys/fs/cgroup/private-campaign-validation",
         "limits": {**{key: resources[key] for key in ("cpus", "memory_mb", "evaluation_slots")}, "max_active": 1,
-            "max_queued": 1, "max_runs_per_key": 1, "max_reserved_seconds_per_key": 3600},
+            "max_queued": 1, "max_runs_per_key": 1, "max_reserved_seconds_per_key": timeout_seconds},
         "templates": templates})
     result = {"schema": "arena.sciel-catalog-campaign/1", "campaign": campaign, "model": model,
         "release": manifest["release"], "deployment_sha256": deployment_sha,
         "task_source": identity, "canonical_image": preflight["image"],
         "preflight_manifest_sha256": preflight_sha, "preflight_finished": "finished_at" in preflight,
         "counts": dict(Counter(row["status"] for row in inventory)), "tasks": inventory,
-        "budgets": {"full_evaluations": 16, "max_iterations": 32, "wall_seconds": 3600,
+        "budgets": {"full_evaluations": 16, "max_iterations": 32, "wall_seconds": timeout_seconds,
                     "confirmation_samples": 3, "max_aux_calls": 4, "max_experiments": 48},
+        "reservation_seconds": timeout_seconds * len(templates),
+        "wall_time_scope": "Whole-run scheduling allowance; completing the evaluation budget is not guaranteed.",
         "resources_per_run": resources, "model_calls": 0, "canonical_evaluator_calls": 0,
         "research_executed": False, "queue_mutated": False,
         "scope": "Seed-verified task integration; benchmark reproduction and research outcomes require run evidence.",
@@ -325,6 +333,7 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
     write(config_destination / "templates.json", templates)
     write(config_destination / "campaign-inventory.json", result)
     return {"destination": str(config_destination), "campaign": campaign, "counts": result["counts"],
+            "timeout_seconds": timeout_seconds, "reservation_seconds": result["reservation_seconds"],
             "model_calls": 0, "queue_mutated": False}
 
 
@@ -336,6 +345,8 @@ def main(argv=None):
     parser.add_argument("--campaign", required=True)
     parser.add_argument("--model", default="gpt-5.5")
     parser.add_argument("--release-version", help="Explicit approved build of the same pinned SCiEL 0.2.0 source")
+    parser.add_argument("--timeout-seconds", type=int, default=3600,
+                        help="Whole-run scheduling allowance, 1–86400 seconds; host policy must grant it")
     parser.add_argument("--exclude-task", dest="exclude_tasks", action="append", default=[])
     args = parser.parse_args(argv)
     print(json.dumps(prepare(**vars(args))))
