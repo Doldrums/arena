@@ -1,0 +1,1442 @@
+{
+  "schema": "arena.task-validity-mapping-audit/1",
+  "scope": "Seed receipts from the completed CPU preflights; no model calls. Mapping repairs are not a new seed verification or paper reproduction. The original evaluator bytes and protocols remain unchanged.",
+  "previous_task_source": {
+    "external_files_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "file_count": 6503,
+    "id": "arena-tasks",
+    "kind": "bundled",
+    "manifest_sha256": "deafd7aa2200f0b977f02ca8344e6cb770532188fca2c308ade68e9bceeb5606"
+  },
+  "counts": {
+    "reviewed_failed_preflights": 60,
+    "mapping_repairs": 5,
+    "explicit_validity_contract_required": 54,
+    "explicit_evaluator_error": 1
+  },
+  "semantics": {
+    "valid": "Existing CORAL suite adapter validity signal; not a new mathematical feasibility proof.",
+    "validity": "Original circle-packing evaluator numeric 0/1 geometry validity signal."
+  },
+  "tasks": [
+    {
+      "task_id": "coral-anthropic-performance-take-home",
+      "group": null,
+      "receipt_sha256": "d165d4379a25094ff82b3baccccadea4386fba9613439cc32936e91c3fa8ba03",
+      "native_sha256": "91a6ea0e67ff854059c8b473de413ee437faea081f6dbeb309b0bf283d7118cc",
+      "status": "metadata_mapping_repaired_recheck_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 11910.0,
+        "fitness": null,
+        "candidate_sha256": "5b7eaebe567359468be48fcef17a11ab37d3710c5720c7e28d3c6cf866d847d0",
+        "evaluator_sha256": "0375885d695499180e309edd828fb86abb72f90698d0c2e000bdc6480ef8addb",
+        "problem_sha256": "46b28aa45bdcf718080bfff04076fcb26563db4a8237170295671dcd5afbe469"
+      },
+      "observed_metric_keys": [
+        "baseline_cycles",
+        "best_known_cycles",
+        "combined_score",
+        "direction",
+        "error",
+        "score",
+        "valid"
+      ],
+      "validity_key": "valid",
+      "upstream_result": {
+        "combined_score": -11910.0,
+        "score": 11910.0,
+        "direction": "minimize",
+        "valid": true,
+        "error": null,
+        "baseline_cycles": 147734,
+        "best_known_cycles": 1363
+      }
+    },
+    {
+      "task_id": "coral-model-placement-prism",
+      "group": null,
+      "receipt_sha256": "db49c2dea499d688b525aac4c2cf316940bb98850dca28ebf922462136976e81",
+      "native_sha256": "524a675bcdedfa29c70d7a6db87211c002dea06f09263b2dd62fe025bc2681af",
+      "status": "metadata_mapping_repaired_recheck_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 21.891622105209393,
+        "fitness": null,
+        "candidate_sha256": "4679530731916cf034bba4cac2a21413f7a6a3176cc333d3731b8305d6447042",
+        "evaluator_sha256": "4329af5b3e50e62d5f6221401185457803e6e0efc7b405edf7ad420d7015d676",
+        "problem_sha256": "8fc004ffbb95341ad0c29b5361ff446ee28f7f5ea8c735498ff6359c1e71bce6"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "direction",
+        "error",
+        "score",
+        "upstream",
+        "valid"
+      ],
+      "validity_key": "valid",
+      "upstream_result": {
+        "combined_score": 21.891622105209393,
+        "score": 21.891622105209393,
+        "direction": "maximize",
+        "valid": true,
+        "error": null,
+        "upstream": {
+          "max_kvpr": 20.891622105209393,
+          "execution_time": 0.00045557975769042967,
+          "success_rate": 1.0,
+          "combined_score": 21.891622105209393
+        }
+      }
+    },
+    {
+      "task_id": "coral-transaction-scheduling",
+      "group": null,
+      "receipt_sha256": "d4c4beed211a264f01c2db1df0aa923f8a1f237424bbad97463548bcc69b73a4",
+      "native_sha256": "b823752ac11b4c68bf2a7e14841430159fece3bd1fc77df957d7ddf1101e518f",
+      "status": "metadata_mapping_repaired_recheck_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 2710.027100271003,
+        "fitness": null,
+        "candidate_sha256": "f38cea06e252799611995267f10f019fa4937d9ba51c185f2e08f50986e5894a",
+        "evaluator_sha256": "3fcc090350c8b9e6e0fdf271c7642feeec9be3fab02bcc9a6c13e33830f04d1a",
+        "problem_sha256": "d2d7240c26f602114b17e59886a7fde9d4c0fdfea326e20c306c2eb4bb5202b5"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "direction",
+        "error",
+        "score",
+        "upstream",
+        "valid"
+      ],
+      "validity_key": "valid",
+      "upstream_result": {
+        "combined_score": 2710.027100271003,
+        "score": 2710.027100271003,
+        "direction": "maximize",
+        "valid": true,
+        "error": null,
+        "upstream": {
+          "makespan": 368.0,
+          "schedule": 3.0,
+          "validity": 1.0,
+          "combined_score": 2710.027100271003
+        }
+      }
+    },
+    {
+      "task_id": "sciel-bench-k-module-problem",
+      "group": null,
+      "receipt_sha256": "4dedbebd7c01c9646cb29bcedc6692d978c6a58f13d2d04211628742e4294408",
+      "native_sha256": "b52c26336c2692e18a19629da5e3c261f61229c9c0436c2abf30a5ad0036d5a1",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.0,
+        "fitness": null,
+        "candidate_sha256": "b60f1861b48218e0e7ad90fcdde7eb456fb01f4b939e00df86e6774f5df3090e",
+        "evaluator_sha256": "4f31a4306589d94e8e21e98437e8045b6b1d8a4e5977944d183ee2b31c68fb43",
+        "problem_sha256": "e591b5641b843af98bab39578bfadee086edc656ce75721366c0d8f10d599689"
+      },
+      "observed_metric_keys": [
+        "accuracy",
+        "artifacts",
+        "combined_score",
+        "correct_modules",
+        "eval_time",
+        "total_modules"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-arithmetic-kakeya",
+      "group": null,
+      "receipt_sha256": "ed88ec04c5f2e7dac2c0b283d96252881369e5ea9f04ab1d606209b92db774ca",
+      "native_sha256": "cfe042e3be4c0433592fcce9f924d7485e6aa63b59a4d1c32b5977d4cf795d9a",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.9999999999999997,
+        "fitness": null,
+        "candidate_sha256": "8f1f72d28cf90feac36b6654d47edb140660074b402485d9d56aaf7408536dd9",
+        "evaluator_sha256": "8b359cd02fd7f72449cd1d1807effb72cca8538e3b2688631cec7f085a7de5bb",
+        "problem_sha256": "6259e47bf0d4a025cbcdcb89273453275432d8467a2583d41c60b1313718ee0d"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "entropy_ratio",
+        "eval_time"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-beat-the-average",
+      "group": null,
+      "receipt_sha256": "697d7a5cb1e73da14a7c5a49fbb37e2f6a09661b435a45822ac1716e00573338",
+      "native_sha256": "374d507c9cf2b0c6c52facacd30a4fc6704b4b88a7243f499cf28cab3ac59ba8",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.6758660836869695,
+        "fitness": null,
+        "candidate_sha256": "bc0507bca404c997954a3074b2a9314ee1b8bafd5dd21e069d5a7293c7b9b229",
+        "evaluator_sha256": "6890832f27116038cd07b581f7ee86b7472bcb4cc57367abad224a05f9b30030",
+        "problem_sha256": "6f6b6f6b9625536fe93b82581bc6315c3ff108b253d03d2ed2e13f85f1d62bff"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "success_prob"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-block-stacking",
+      "group": null,
+      "receipt_sha256": "5e3f5bba9d96f608476c8b23c9485a099ff81e608bc1c7860f71e1ef50700392",
+      "native_sha256": "71a5b72e5f9fe5455bc1565a93a0a2b6c2fa487d46c7da5d126197f76b453dda",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.9999999989987453,
+        "fitness": null,
+        "candidate_sha256": "41ecf89af80ca6e60366045ccf28c65b7eb17601ba995fe79b96ec2696fd0967",
+        "evaluator_sha256": "39049b71840155d3f91b32eb89e2f993100498b8f7547c76dd7b4f994c8f2e00",
+        "problem_sha256": "d28b79e59014eeddec71670f573d5431a6c11264fa1ee8dcf144f2d436dbebc5"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "overhang"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-circle-packing-rect",
+      "group": null,
+      "receipt_sha256": "ffac9cd190433f538d12d6dea437678f9791e288acfd8c21dc7e5d3251794ddc",
+      "native_sha256": "510defd9b498b12157500e877ad5dec664de328c0a975a743544c26a16823de9",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.0,
+        "fitness": null,
+        "candidate_sha256": "e6092a1210ec6f82e55a450d38949ffe90a9f5fb96eb7825d7fec81084bef58a",
+        "evaluator_sha256": "e2ac9e5dceff4f1fc81809545f450e9c28f7bfec47e8941e126d766ade5d2f77",
+        "problem_sha256": "29cfe6dda18d622dc348e57626dd290389e0e2f9a4137167bd45da8ec6615e93"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "radii_sum"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-classical-inequalities",
+      "group": null,
+      "receipt_sha256": "6eaac6fcb00b5c49678ccdc43dd8c6859b3b701f354d60aac86be15f9c0149f9",
+      "native_sha256": "d09d925b26df00372aef1b4e1c06973fc5e04407cab874221c33d6f607c5d6c6",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 1.0000000000000002,
+        "fitness": null,
+        "candidate_sha256": "6510f4dad4f4ba2ffea02282746224cdf72d98e98afecfd9e088520087851082",
+        "evaluator_sha256": "3aa4ea9dbabf5e44ce41ee648e892ebb925e94f318995caeb85845d76c5e6ab1",
+        "problem_sha256": "108c730b1aaf7cc30b0eea6295e102ebe6bc80722585d0bcbb0b06dbd2b0f04c"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "quotient"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-crouzeix-conjecture",
+      "group": null,
+      "receipt_sha256": "8ef514061402733f6e572ce57b0d010b62385a1d650120bdaa37172fe7e5f80b",
+      "native_sha256": "90d719ba73affdb5c0443261e9f0a5828c8b6e57367ad841af52609edb02a325",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.9999999999999976,
+        "fitness": null,
+        "candidate_sha256": "8753dc4046c95608b19705da484ab08fa8831f211efd780ace09b3b8f1a86d39",
+        "evaluator_sha256": "25e1876dd2b2add52d4f52a95b5636002d2d289d5e3ef6997e1502d227c7ba7e",
+        "problem_sha256": "d12884110031bb7b981ff233945b2fe1ebd161b03b37e80a52675c858c8f958c"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "crouzeix_ratio",
+        "eval_time"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-difference-bases",
+      "group": null,
+      "receipt_sha256": "f5ce40d88b8f592651f2a7afa1cdc9de52027e6d9df8b4df601d45eaf0e402e2",
+      "native_sha256": "d0e460dd17181a679fb1f65b86eb424bac19df06b48dfcbe96dbb4127160a358",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.75,
+        "fitness": null,
+        "candidate_sha256": "de1243f8ec33ca0a015283da8fb40a51f815a0e13184897a9fcf9ec3419af620",
+        "evaluator_sha256": "eef0349b2d83332f6a048f9f87ee03937076fae732afbe8a7ff980dfe8e53bb4",
+        "problem_sha256": "06632a21cc28f4eb021036e001a2c74cfdd65cdb3b5cd235bf359c923a045349"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "set_size"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-edges-vs-triangles",
+      "group": null,
+      "receipt_sha256": "d74112d539f97346e56b489b3432e15c0e68a48e6da8fe86ab62c44980aadbeb",
+      "native_sha256": "1b49d8a761189db131d07f14619f39b6b90c522ba1fbce4085d82aa350e35863",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.234375,
+        "fitness": null,
+        "candidate_sha256": "b992afe127c694bb97d27146f44bf7b41bb3af936eecd7a3274c914b1031921b",
+        "evaluator_sha256": "f6fecc1566c0cfcf6d6bce3e9924bc047c7eb6207c4594d590269de9fe1b5eda",
+        "problem_sha256": "61fbf00eb46f432b6d1d0fdea408cf7091f01bbe8035d7ddbd3cb8426cf7fffd"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "num_edges"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-equidistant-points-convex",
+      "group": null,
+      "receipt_sha256": "e815d4808a0b2e23e727e9cc780af6d8388a05455440a7b357829ef11f1171b1",
+      "native_sha256": "91aa0900b63705dc9504f76ffba4c0dceca66ff3c2da9ad4c65f1ef99535fc66",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.67253196998203,
+        "fitness": null,
+        "candidate_sha256": "4c03fd3188494a97dd05f2af06248b6f00def05810d78f683c51044eed7126c7",
+        "evaluator_sha256": "bbec4c4a840a2b67e7298884ab027b561c9476465cd11f508457b9df0081cd63",
+        "problem_sha256": "54bcf409120b48cc75e42cec30a1f40983d1dda6437d342dd464f840f4c4c6ae"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "polygon_score"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-erdos-discrepancy",
+      "group": null,
+      "receipt_sha256": "9d7a72a972aebf3a13d0ef5c9fb311989c8cffcf19dbfca67f21641a2fe5fd0b",
+      "native_sha256": "0ff811e62defb06317ce699345d6cf962d7e6de3c5f283987408beb2a5afebdd",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.05862068965517241,
+        "fitness": null,
+        "candidate_sha256": "72979e1a4ff35bd747ffbf90aa2bc197c0050739aebc58599fa550c8277045c6",
+        "evaluator_sha256": "9a0c0bdec5d0f90f5e60c934f734c7915a28294e832e60a350114da0d6335716",
+        "problem_sha256": "81af81d4185e514658237b88ff909f5163f3c2957b35a5160113f6e01fbf4dfd"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "discrepancy",
+        "eval_time",
+        "length"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-erdos-gyarfas",
+      "group": null,
+      "receipt_sha256": "85afe00136651357307693609b49782e509e6263532f7ace12992dfba09af403",
+      "native_sha256": "c0e1c3b1f62e0aec5184ffb97c74c393ec2c77fe60a38e0598784cd4865f13c4",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 1.0,
+        "fitness": null,
+        "candidate_sha256": "c427ccb48f144727b589343f98e59dbd849f383bdd33434ac0e18dab65f39ad8",
+        "evaluator_sha256": "4565f2a2dbf523c8f2aa7a07d7e6acfa65a574205f592e685f04141145467a77",
+        "problem_sha256": "47471120eabb2edf1d457f28e492765800a55e1568e6203d633ebb182bf9754d"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "num_power2_cycles"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-erdos-squarefree",
+      "group": null,
+      "receipt_sha256": "ef8507e50eb89be4a75603a599de7e0d0ef112c19b8d17ef2d89cc9dcad31137",
+      "native_sha256": "d9cfc5988b6594530166e62fbb3ee153321044ff1c77f0bd08aa46f1da14f639",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 1.0,
+        "fitness": null,
+        "candidate_sha256": "5f42425c669dc1dd5bdf973a3b0777d07f09905f3aaf205c75f249b7610e263e",
+        "evaluator_sha256": "09a43e81f00e2f2304abd3c195ccff8db160b7d7e80b51c136098a7578fa63cb",
+        "problem_sha256": "8c023fcc7ad5e8e9b277d48628d739d6920bb29eb941095d7197ce2d4d406e50"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "subset_score",
+        "subset_size",
+        "violations"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-erdos-szekeres",
+      "group": null,
+      "receipt_sha256": "e9c7b4ca1b475ef34f082f7d0b31f6b9550d515b426cc25605fe48fad1466e41",
+      "native_sha256": "9c258587bf1544aa91053ef396126c4f364d05e5f5cae2e8dd7a2d9bdc19ae5e",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 2.1299254526091586e-05,
+        "fitness": null,
+        "candidate_sha256": "8ccc2add95834d87b8f966779827a4422acb972860432310f576309f87504f64",
+        "evaluator_sha256": "6a7dadd264d7a015b764a77625884c32715a3f92c8f282f5cae520c803f27839",
+        "problem_sha256": "36c763f1da75f9f7b6fb626fa5db3ec65a11940e0ecbb1185b554b109c66faa7"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "num_convex_kgons"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-factoring-factorials",
+      "group": null,
+      "receipt_sha256": "c862aa0dc0615d420e674b83a82188ce0f5f278ce43265a1a492386a2dad5fc6",
+      "native_sha256": "bee1336be7e9e90aaf908b868ef0946711f38400d4905deafbff0b5b670ba018",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 1.0,
+        "fitness": null,
+        "candidate_sha256": "9fe523b905157d125b9c1007155cf919be8e8c5eb7b9fb9025cbcf77108b236a",
+        "evaluator_sha256": "3bf731604c7f0a689d067b8fba365e23ff357610769a3821735f6da1005e1662",
+        "problem_sha256": "e37ca039434630652acba6834d7aaa394f089fef9c8360fb6fee2f08f8521899"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "min_factor"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-fejes-toth",
+      "group": null,
+      "receipt_sha256": "2ff417f446c714ed845e70672b3c7235b51c7b741e614cbb796a344d018dc9af",
+      "native_sha256": "d702d71eb16bcaa88cc4b394fec147e015b79b98a1ee55fb93c6896bf2f16cc5",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.08999338792993417,
+        "fitness": null,
+        "candidate_sha256": "3b5f94fce9517f56a2d62ceee54bff8935465144cb2b98abb9f61783a5e4bb83",
+        "evaluator_sha256": "85c45a9a8b2e49157138702277897ebee5f55cbb19241c74d48942ed0120b907",
+        "problem_sha256": "0781566a7b4d88d3cd99c8ee335a2af527574987a1863e808c615c5f4c7b06c3"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "volume"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-finite-field-kakeya",
+      "group": null,
+      "receipt_sha256": "865367ec15b738a917935073569be9e330d99a7af43018ce65cc3fa274df53c7",
+      "native_sha256": "c19dafd0896dfcd6f754b7675b67fc8cf1bcc81f7f4112dd0f4db6f1755e509d",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.5714285714285714,
+        "fitness": null,
+        "candidate_sha256": "40110eb441c6b0cdab1d6b090724386769950f2b769421719b71ea09fd7f17ec",
+        "evaluator_sha256": "9319ddb8844b64b1e25494642721e00fd63048c17de4f323d76543c255c47205",
+        "problem_sha256": "1dadabdab7de082bfcdff9ab3d4bdad9d0d3bcd9e87fb5a479c2ca42837177e6"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "kakeya_size"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-finite-field-nikodym",
+      "group": null,
+      "receipt_sha256": "e96850f2fa859d3ef2a52ee3f500b353f02d16fd011d348cc73cdcd0651c5ccb",
+      "native_sha256": "aaa004f7d97c45d138ad96c88320c0e08dcc41cbd854620588c0e94838a93411",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.42857142857142855,
+        "fitness": null,
+        "candidate_sha256": "6c0f0d81b8a77c50ad02e78e6bae0bbaedea25b710b938bf46fa88d76dace76e",
+        "evaluator_sha256": "36c738891ee3795be4411f20e8be483e4e76b223fe714179522d57bdbc40da63",
+        "problem_sha256": "6616dc47b26af039dc75b1e0941d26b6230fe9c6580905ab94bfca3a966fb5cb"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "complement_size",
+        "eval_time"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-finite-field-sum-product",
+      "group": null,
+      "receipt_sha256": "a10895b2e0e1f6b814c4ae9b1122c2187473efd58219ed8c5442215846d675cf",
+      "native_sha256": "9958b3d82dd5b9ae79708a223ec1759225933e6e407a543589533ceecc339169",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.8333333333333334,
+        "fitness": null,
+        "candidate_sha256": "29456da2ad61e14e36f07245b26f3d304270a14ef353474bb7022cff4b724f39",
+        "evaluator_sha256": "f8fcb931ee05b0c06d30eafca401f4ff70993b80f7c5097a337e0291631af5a8",
+        "problem_sha256": "b06c0a9cc2a7bd0b813440c0d7d11df582c001ec427b067a821ddc075ebe7a10"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "sum_product_size"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-flat-polynomials",
+      "group": null,
+      "receipt_sha256": "d4970c196cb40f6e205cd5cda103911aa33cedcda22fb536adce948e86d2f462",
+      "native_sha256": "0964eed14f9d02932155c7df82bc969686fa2388457f99d4ebbab234c32d2ba8",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.006327160493827161,
+        "fitness": null,
+        "candidate_sha256": "a28c12b50f8ae9f91b5cd5668dd331c42b0ba4431da6cba51478bffdf8bbdb85",
+        "evaluator_sha256": "a0801463110b1bd7a1e3c65f7cf1c01c34f27eb6d611dd212c86036d910cfea9",
+        "problem_sha256": "c380753b31625929aa725eaeb27f548c3631c85e2bc63a17ab8ef44561de6be3"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "merit_factor"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-function-guessing-game",
+      "group": null,
+      "receipt_sha256": "4837777cea5f8fe3b7f8b38275b049e674dba62992e4f3bbc62f2a5be0b76844",
+      "native_sha256": "46a37d7dcffd77e6652a6dda4dc18e8f9f42744fd2389ecf54461d9b8e93178a",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.993963782696177,
+        "fitness": null,
+        "candidate_sha256": "7e7855ff593f42b4dfa659a4c59196d29b7d66838035b7f0a11413dba136328a",
+        "evaluator_sha256": "0cca6aca88ee3572b4c646b54295878098d0353bf282522e119b1484e55dddf6",
+        "problem_sha256": "ca3fc69e767a48afa840dc010495808c0e851b6af09dcc3cbd9e1cb8ef736f3b"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "fraction_correct",
+        "net_reward",
+        "num_queries"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-function-minimization",
+      "group": null,
+      "receipt_sha256": "6d3c2c95ecd93cb3fa9435a31d9212bc3e1ccb8741425e98c3bb2b85ee4eea34",
+      "native_sha256": "1fb7c8594d9898dfb69fe7bff2a006ae86173cac57d77b3bb9c2dec08fde33f2",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.6251526934467033,
+        "fitness": null,
+        "candidate_sha256": "d102152b85334f29539ce2ecb51b39112023c4af15f434d63d92608ebeceaeea",
+        "evaluator_sha256": "a771b0f9445a1589ccd9da10794e8c91613f550e825b5b10ca85afa81b86cc9c",
+        "problem_sha256": "2eebc1b962abb8dfda65da64e067549a0247db034f2535a6f38ddeeb5723b09b"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "distance_score",
+        "reliability_score",
+        "value_score"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-furstenberg-sarkozy",
+      "group": null,
+      "receipt_sha256": "8ce2eb61095e37bc7f0e5d0bc3cd4f196b8152ec396d7090be4b40e978ea517e",
+      "native_sha256": "56bf3cc8c1fdc50b60b2101aadf17c757c18cb804af72d49f9d0cebe87fc4193",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.75,
+        "fitness": null,
+        "candidate_sha256": "8488d35c129745c90def10312567d79dd261eae3097a6252e58bbf9266ca6c59",
+        "evaluator_sha256": "8082024ed4ee95096b9bbc331a76d5e3f9d55f94d29cedaebbfb5cdac2e58c50",
+        "problem_sha256": "fbdeb4fa451879cb7bc7013f297782fcb1583cc0f4279636ed734bc341ed32fb"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "subset_size"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-heilbronn-convex-13",
+      "group": null,
+      "receipt_sha256": "2c747c81f9f2020d3e3553d42054f3d4cd9b2ae0c284877dc07366ca8b371e0e",
+      "native_sha256": "6308cb6b13ea18bdb62248882adb17a498ae1425a1d194d97e3e0f3fbd330a1e",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.010423103755007445,
+        "fitness": null,
+        "candidate_sha256": "954efc9dd934a408500663748bfacd13b35ab22e0c2806f6e26a046b182072cf",
+        "evaluator_sha256": "22222921580b5fb14bad238e002adcc649e5c33bcc51ca3a55a58b899707075d",
+        "problem_sha256": "f53c51fa2566ab0c28114220ea2d98316ebf0826681a7c8cd6b838e95552de21"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "min_area_normalized"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-heilbronn-triangle",
+      "group": null,
+      "receipt_sha256": "73015b1f8167fb39f453e60e4924589f48d0d95721f966f238f1aaaf68d267e4",
+      "native_sha256": "e1297a572165c8cec15a9513609238a9e33183547dabe955d3bf72cf0bd9a873",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.0,
+        "fitness": null,
+        "candidate_sha256": "512fe572cbc53b6cd07a82debac81eb0f7950c7dc263d9cd445fcb3e4adc6ba7",
+        "evaluator_sha256": "8755b71ee54a2770466647c84747bbfe04095f40e5ff3f26cd2d02986c0a321d",
+        "problem_sha256": "065eb953682f5c43e22465168f2c8608cb209d4078b21908655cebf969971034"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "min_area_normalized"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-hexagon-packing-11",
+      "group": null,
+      "receipt_sha256": "813ba9b7f80be6361915bcb271a191e2241aa153e4fd7946180e642caf852d5c",
+      "native_sha256": "57bf77139a92a02a23249f0e73ae313cf56df6c83b77bee56bbf1e06996af525",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.4912615,
+        "fitness": null,
+        "candidate_sha256": "2a38e7944e6a0217c321cdbd452857b5419a359b79ac3501d52b93fef8855692",
+        "evaluator_sha256": "20caceb8e35fea10dee95b1a7e7254cf16aee144dbd296ce94c45af9f66eafc4",
+        "problem_sha256": "2c20837e35584d243f0898d278755abbcd0ac54cb8dc9f1978c35a1f96ae3aed"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "inv_outer_hex_side_length"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-hexagon-packing-12",
+      "group": null,
+      "receipt_sha256": "e53df9f88d7432e009f6615a817d2ece3aec23239b73798b0568d07aaef0f26a",
+      "native_sha256": "2d4ea31a5951dca46c90ee117bdee6a01ea339ae1b532ce39a9a73a8d7fc6cb5",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.4927390375,
+        "fitness": null,
+        "candidate_sha256": "735932f0dcf643df36ab276f55ea705c406ac7f6782cb8588678abdebf3b0ff8",
+        "evaluator_sha256": "0e4751900a4d2dde5509f497069ff7287a8a0deaa2c89e489ed0595da0e1bcaa",
+        "problem_sha256": "c298bc8710e7c93ff04d5e751325d7d9c9b8394cd3b3e395e625ff4c4e121677"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "inv_outer_hex_side_length"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-imo-2025-p6",
+      "group": null,
+      "receipt_sha256": "448885c2999dd3d7848422e44873a4960165ae142f2063f4e8ce4336343b2974",
+      "native_sha256": "db81137556c989e2bdba471532e8570eff3972357792c0bf217abd458d9d864d",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.6428571428571429,
+        "fitness": null,
+        "candidate_sha256": "7d0a316b044dbe605754e99be7d46e6038a55a791bb3de0c13481281b81ef8ef",
+        "evaluator_sha256": "0f166cb628b873787b74073d778ec3da47a083de28e6e8c4a37c5e8c746193de",
+        "problem_sha256": "36d9a4b7b4cb4e82ae73cd06edbf1d58c7b213b7768ced97fcb6ca8b3362bc41"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "num_tiles"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-kakeya-needle-2d",
+      "group": null,
+      "receipt_sha256": "16befd671790958591951dc08f3954262c921b0efade14cac3ade42559e9e1fb",
+      "native_sha256": "6264b7d005089b9775fe48d30b3d31ea6affaa95f81b850be07a12b63fba05a5",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.9037878439101206,
+        "fitness": null,
+        "candidate_sha256": "43682d00953a5493cda97ea5baba1144a3505aba1edd1a6457062c49260eb4c4",
+        "evaluator_sha256": "ecf5a09e4d1d948f305da4dcd73ff397efaf0fe7dce3d5493585d7a390ff30d9",
+        "problem_sha256": "9c3a22faf62a0eef4cdc1fbbad41e690ce235876808dd68915a31e4fe6c6d954"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "union_area"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-kakeya-needle-3d",
+      "group": null,
+      "receipt_sha256": "11c1d42534bf8fa11136bdb92143cff794c4db7c95e1e7d89dab7b2a6e4380b8",
+      "native_sha256": "10ad32e40dfb1e8e8913a06793822f679da4edc4fdf817d3bcf2966608441c4d",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.7413772008853594,
+        "fitness": null,
+        "candidate_sha256": "5519a362aad9f052380a7c0ec386554a8c31927dd5587ccd0a5801730e896a99",
+        "evaluator_sha256": "518e704c847a3e83b8806e1324c866ed67ebe064a78e12bf6bd8187b8c8f8f22",
+        "problem_sha256": "5636ab0ea02631b634432658932bf72ba395eacbe630283c7493606e70237b4d"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "union_volume"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-kissing-cylinders",
+      "group": null,
+      "receipt_sha256": "9c61e3fcd018220b3ce6094565dd1b82a21b15eb5b28542eb79d181a136d075c",
+      "native_sha256": "cd94a6143ac03d018c7b226cd293e161e91e59b52f227db13557e7dfdf34da22",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 1.0,
+        "fitness": null,
+        "candidate_sha256": "5767585ca6d814263ad9a137c71401cbef2bb37d3c4f2f1a2c26f5db35224f09",
+        "evaluator_sha256": "507fc951e352b21923b20f2257d4099f523839deacbb5ec95cf2ad2bf6cfb9b4",
+        "problem_sha256": "566eccbc10b427b05422432e538210673340a77e1cbcbe82e8f65e566e3ad273"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "tangency_error"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-kissing-number",
+      "group": null,
+      "receipt_sha256": "86cdc1eb954cb5330eb5017173406773192757e27f290bc78b4e6082f37e86b7",
+      "native_sha256": "0c427c54bddef7fab523bb42c43723a53b04518e09d760a019999e7745c7b138",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.003372681281618887,
+        "fitness": null,
+        "candidate_sha256": "d458c1142f83a8f48c9adbc54cded088b627d7f8375f880a8dd0c9aa6b08e508",
+        "evaluator_sha256": "6f22ecc1977018be67c8bc82f53e24d84e9539fb5a833b7d1396fbd587a0f8c1",
+        "problem_sha256": "f6e47a6498c5598ed9764a1d7ef43fe4236937db91415d7c22cbc5d97b11b622"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "num_points"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-minimizing-max-min-dist-2",
+      "group": null,
+      "receipt_sha256": "c6904b78597720fde9a8af3485a2e5ba886cbc369f2e05ecd40a5dfb9a11a6b4",
+      "native_sha256": "57deecb6eb65b08b44200161755351f23c67a05f5b54b18388321035d5b2cd7a",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.01979112384555867,
+        "fitness": null,
+        "candidate_sha256": "472d8d85ad99226f7716f7cbd009f367b860aa0716e4ef2eb8e1358c7f394a95",
+        "evaluator_sha256": "86cb2303c71f9dc82db85a34373b4d7ab658a215d91c16ae34fee5da4b1af9a4",
+        "problem_sha256": "05157f51be609b8664fd14fca5cd4b0adcd777e5550b191bf1b657438c742d01"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "min_max_ratio"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-minimizing-max-min-dist-3",
+      "group": null,
+      "receipt_sha256": "0713cc36954deede2764bb8d9afcc43f695d3cdbbfd8bb62944baa5aa35a91c1",
+      "native_sha256": "d39d0194e1d2acf19d360448331e2770d26776a722af03a80b170358e2ed2776",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.017991314578709408,
+        "fitness": null,
+        "candidate_sha256": "981690897e701009153dbeac82910d354f3ac308dd1b6676bd1974878423380a",
+        "evaluator_sha256": "a4d09f58ab370b091abf62273f30a4bba381475ff15ecafbb78ae78da6bc28d0",
+        "problem_sha256": "3c08654b558a67154a94898dbf914de6f6113b69e0565856c525bae604c07c3d"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "min_max_ratio"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-moving-sofa-2d",
+      "group": null,
+      "receipt_sha256": "89457f0c1f9e01a400f6c95cd024315d3e6ed975957921eb5a6c5820339a06b1",
+      "native_sha256": "3ee97d289be66ff91c56445b3b02ce62f1a577720840bd15f144f94f356313f3",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.6880829015544042,
+        "fitness": null,
+        "candidate_sha256": "4514cf29adb53630122461e1e90a660cffd80c561039ed4027501806cbe30e0d",
+        "evaluator_sha256": "150af6338ff4a7bb3f27461a802628948903422c6841791e3bb1baf661b7ad94",
+        "problem_sha256": "3cc08d666999c3cdc39e9d474855ea62fd458496f5ee8b195bc9fe1999307801"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "sofa_area"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-moving-sofa-3d",
+      "group": null,
+      "receipt_sha256": "fa97b23c78e5b23d360b2d08840524e4d120a714da053265a82904043622559f",
+      "native_sha256": "cd7776e8596482eb37bc87ee6d01c3dc37fd8a88e7048a82e422a5e5fc782799",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.521546961325965,
+        "fitness": null,
+        "candidate_sha256": "3ca36d4025a8326f25babbe4ca909b1fea985ce2a34ab50560dec7b8ecb1e9e0",
+        "evaluator_sha256": "308263c0a0bc2536ed360242cabd427a134abc8de304e1f92e4876fd286abdb6",
+        "problem_sha256": "51447ee48bf069c13441ede2911024d85c7532437107879aefeb5c345a979549"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "volume"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-no-5-on-a-sphere",
+      "group": null,
+      "receipt_sha256": "b5e58b3357d8cdad7c1b1dd38b9a714ae7bfc1e96b05ea438f5e4c52ea342fb2",
+      "native_sha256": "c21c96629132ff2430e44268df75c780340b1180267d04666bb1e5fd74660745",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.782608695652174,
+        "fitness": null,
+        "candidate_sha256": "b5c6e91b507f1fcf61172dfb4caa5deb987c99a04835ae6021ac23086a227cdb",
+        "evaluator_sha256": "472d4e9547fa11aeea8216da7bf6136443e698c89c5584e82921a68c17700ebd",
+        "problem_sha256": "ed974df7bf84304f8a494ca2d36df363a9ed2c203a1046683abf4acbd956f7c5"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "num_points"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-ovals-problem",
+      "group": null,
+      "receipt_sha256": "f55c55d2e0d0f7edb21a67166d87dc54edef2840037f9166506b4bd95bb42941",
+      "native_sha256": "9c5b4f9e29eb5924cfcc91ae502e29b478257630886d5272b365801b5a8cb44d",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.9999999999999998,
+        "fitness": null,
+        "candidate_sha256": "7161e5c6f99bd6d4de8f3401bf87bd3d19d1516bfd4f29e0b5de57508b00e470",
+        "evaluator_sha256": "f98c497a1a645f87d1f3d7e21c4e0d20bbbf7420f1c4b62cd65b68bbaa1d9436",
+        "problem_sha256": "50908f95603f90c40e515b54c93f21eba2b08328b32101b64586d6305ace0c12"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "rayleigh_quotient"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-packing-unit-cubes",
+      "group": null,
+      "receipt_sha256": "41e4b6ed7dd218c3e7e5ce9fc4934fb63ea66679568466bb2a6b73cafb14a7ca",
+      "native_sha256": "62b587292da6fa2be75efff19a4a9cdedda6a59b2532236d1e4a81b0f53020bc",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 1.0,
+        "fitness": null,
+        "candidate_sha256": "377e3b70fb85b94dcd34401a09186a7ab62031a149dc74f801258f991fbf3a5a",
+        "evaluator_sha256": "ec35aa8a9414806f938b2dead307ff2ba206c1c4d2f88fe0d6dcc70192666e8f",
+        "problem_sha256": "741378b3e8f66173ef29dcb731d212a1efea58fbe23314d1a49f899564b52999"
+      },
+      "observed_metric_keys": [
+        "bounding_side",
+        "combined_score",
+        "eval_time"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-prime-number-theorem",
+      "group": null,
+      "receipt_sha256": "49689e689c377221d00a4bc13523a594dd2e3ff0f07bc8e478889f4f1e031f7f",
+      "native_sha256": "c7268193c0d2addf371101f2909513977cae2e76fc3e2141c4b8a18769e142e4",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.9212920229340907,
+        "fitness": null,
+        "candidate_sha256": "55941fade304330c1c9da613ae658be6b2c7075470590f47827a3a50c64d7909",
+        "evaluator_sha256": "3fed8a8d366b17db8e4243b8807c6ba8660ec73009f2db5fc1cee76931a6df20",
+        "problem_sha256": "0e2bad3dbd4c4f496b820001831819ba73b7ae1f42004639e050e73c228b3bcd"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "pnt_score"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-ring-loading-problem",
+      "group": null,
+      "receipt_sha256": "b1007eb15a894e9dc443e014cdbad71ff35f4c6ac63b01a0f866d73dec62aa6e",
+      "native_sha256": "cc1dd9edad9988822931fd23bef365eaee88f6747aa9806533e5fdd2afa3e0ac",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 1.0,
+        "fitness": null,
+        "candidate_sha256": "06cf19c3c9ca96c90ef2679100cc39586d26228b93bb4a51488e5a046f300be4",
+        "evaluator_sha256": "d7960e978facc788fd65c484957e2718cf956de784ce0cb429513abdf4ef095c",
+        "problem_sha256": "fc2add76d022d4cdbef151fca1d15c81c35faae1b2604cff22ec930c86c67d54"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "max_load"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-rudin-problem",
+      "group": null,
+      "receipt_sha256": "29fdd8a4108559a6982b7ac64eb0c7ecbbd00ddd7d814a4b1bc9476754bad297",
+      "native_sha256": "c9f80eb79671709c6ed17bb0699a8ff56d99665b79019f63deecab3a820f0762",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 1.0,
+        "fitness": null,
+        "candidate_sha256": "2ee05faf48196c7881dfcf2d41ef9523f83ada758983baf2c5fbd53dbfc10087",
+        "evaluator_sha256": "8a0f731fd32b38c99e97822153798c3fc00011545756960e80f53648dd12fa8e",
+        "problem_sha256": "d7769426510bc9a6a6ea9ec4d0d6625aec885e77600932e31712cefce036189c"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "l4_l2_ratio"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-sendov-conjecture",
+      "group": null,
+      "receipt_sha256": "92877526a5372c03b2f16229e0acf8ea57b42bc78e9c6ad750524b0f9c104f10",
+      "native_sha256": "6af306f0251cc74f578de13035586a2874070e4bb3574efc7d1f86d75f1184eb",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.2588272066104553,
+        "fitness": null,
+        "candidate_sha256": "b531cf660c6b6a091cf818aa89c2a19dc1f646805c394054cc7c54a3c71f84f5",
+        "evaluator_sha256": "3c06162fb25fa691fc45dc69bfb8753075648c8de63470c798ce07a46e61d6e4",
+        "problem_sha256": "f10e7de6f5aa59386e931ce1d4f302d4217b18a2476a9b591895ed182c8d16ff"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "sendov_distance"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-sidorenko-conjecture",
+      "group": null,
+      "receipt_sha256": "2b238385f6b2eae9f3b49f4bb0174e3c72d9ef2598533c37449b6ed00773476f",
+      "native_sha256": "729835c7c04d501706117f7e24422b26d60464860c874c2b17e56272ef49b2f9",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 1.0,
+        "fitness": null,
+        "candidate_sha256": "f96b2e41abfda11cb05f7995e79ab7951b4781b1a5a8b51256239784ad04cdc0",
+        "evaluator_sha256": "03e3fde0360bfaed172393803277cbcb7628322cee8a06efd15656d7123f5006",
+        "problem_sha256": "cfc382183d2ba921c1af1d7240e1d200ce4f62a540e2f2b1eed32e10a5a35124"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "sidorenko_ratio"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-spherical-design",
+      "group": null,
+      "receipt_sha256": "36636c3649478299932d05b8935f1be3fb5f7de14f19f3ff78cc2c920d2d0f54",
+      "native_sha256": "36c83c46822c2f916168e0f715f9c214fa3027a4f49601c011349df4f97aa9cb",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.9974490319884741,
+        "fitness": null,
+        "candidate_sha256": "9fb7d054e9f4edd8245e921779bce82e67985274cdaa3420421bfb9b6a5211fd",
+        "evaluator_sha256": "420b750b113a9f7d3c9c56c23b328f7731b5c93927e329f90f44a34322871bb2",
+        "problem_sha256": "5238bce06d256e27427da8758ac6f91d751b196569743e6d3c9bad62bfd72f0d"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "defect",
+        "eval_time"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-squares-in-square",
+      "group": null,
+      "receipt_sha256": "d46fda8d781748070cf3b92beeb786d9d6466597ad162845a4804f4d3fa03444",
+      "native_sha256": "8b5f88bfcc545f38a4459a3731719ec1fd7237745162ea9109784559fcb99b46",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.7894736842105263,
+        "fitness": null,
+        "candidate_sha256": "6bbf7bc0ff0f86a5a279b8b40a7b630bf8cd8ce35708411a46d3e2f3c2c2bc2f",
+        "evaluator_sha256": "202be092f01dbd0a14b081f51dfd42303bb036f4c7e2fe7143b40c2b60ed3ab0",
+        "problem_sha256": "408d0e0741a560540e860d729a84bdd260df20212f13e567861d518ad1e79d62"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "sum_sides"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-subsets-grid-no-isosceles",
+      "group": null,
+      "receipt_sha256": "894b49b2a7778df5863c86c7626aaf95162d8fcc79016bbb8f918a15fe45728e",
+      "native_sha256": "d6b10d0f4f8d7e3a993ab69baa3155f11c5cbfb2bb3ddf5fd42fa687a44201cb",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.25,
+        "fitness": null,
+        "candidate_sha256": "4eb07978ed81c1a519a3c6c4fd2a2b02857b06a12ecbff9acb88563888459d51",
+        "evaluator_sha256": "014a8d90105d09dda79c6114ce79a651491a43cb9527a16d4f33cbf95d8b1110",
+        "problem_sha256": "c85de28dd1f34538089113c021cbe0929083f0fd49fd43088e8efd8c5cf9b69e"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "subset_size"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-sums-diffs-finite-sets",
+      "group": null,
+      "receipt_sha256": "54fad4c7ea2074b10edf6f8b6194b5c210cffcb4c46aba408688bd379de4e52d",
+      "native_sha256": "861a1c0bed278a1064ee7564694a39c5e87a4a1d6a1f3879be67a9f471964bd2",
+      "status": "explicit_evaluator_error",
+      "original_receipt": {
+        "status": "invalid",
+        "validity": false,
+        "raw_score": 0.0,
+        "fitness": null,
+        "candidate_sha256": "65c98e3167fdb2ba82ee470efb65332ac24959207bd3a2351bcf9eef09f57e70",
+        "evaluator_sha256": "bf3c4ff0e11abe294b8f5d8c54090e2c701c9da25c52e693057c60f25aa96661",
+        "problem_sha256": "072874c95518f70242428731fba67b5429bfbb8acc6d8db08c1eb0bc92bc07f5"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "error"
+      ],
+      "validity_key": null,
+      "evaluator_error": "No module named 'jax'"
+    },
+    {
+      "task_id": "sciel-math-symbolic-regression-bench",
+      "group": null,
+      "receipt_sha256": "2d29c8043de9f7b2c67dccdaab5c75711233ac975d08ed7290fc205d41cfa868",
+      "native_sha256": "9100902d027a7276b485a597d5c23fa38f471028e31bb75928bfe5b1fd3f95dc",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.1766755735306871,
+        "fitness": null,
+        "candidate_sha256": "030a9b1c71a106d6b98f0a608db95cb5e7b8ef741561a2d42e096bdd8a608158",
+        "evaluator_sha256": "2998141b0a5edb58fb99b5b1167ec0b9ca67bc82405b6d7b9c051048b64834c4",
+        "problem_sha256": "40ece1ae7c3ab2e52eb7143dc495a8e79a372acc07b6ea4e85ac8451b72f8ffa"
+      },
+      "observed_metric_keys": [
+        "best_test_nmse",
+        "combined_score",
+        "fit_quality",
+        "reliability",
+        "test_nmse"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-szemeredi-trotter",
+      "group": null,
+      "receipt_sha256": "472869b92f7dd1feafceec43a376eb181d260b9085040df116f444bad86f7bb5",
+      "native_sha256": "8d0191262c8cf9bcb2e027ebe2052ba50702b0bd0df6fbf80c757d8f661eeecd",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 1.0,
+        "fitness": null,
+        "candidate_sha256": "b586073cc67976c42b43b3fbda54a2a949ed935477c7104f232ad234dd2adeb7",
+        "evaluator_sha256": "c4fb75e8bb01c58c09289d986d1953d0b5f7cae57947bfb71f96655394c2296e",
+        "problem_sha256": "c05ea54872e9d7805d87c928b84b1a73ea0761480a2f2e4170d0aaa2e3733744"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "incidences"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-tammes-problem",
+      "group": null,
+      "receipt_sha256": "3927c357e1fd30395b940d9c1311bf08eb808886dfe743abbb52754a09ae5341",
+      "native_sha256": "22f3a687bd62175cab34d511a7b920879373f99d7597e81a5d6c000786b9b8d4",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.8956750287291002,
+        "fitness": null,
+        "candidate_sha256": "6b8a49ff0bd2f12f84c97e6f2c5968ba477e241fec5bf4a3b1aa5f2cfdb8a3f3",
+        "evaluator_sha256": "87e6e9b41b64fb9d0cb24d047efa3385245162ec13e02c33e95cb7957635450f",
+        "problem_sha256": "5d94c566e83d09713dd7b0d397b78e427be2e4e9bb9b55df7cf403c7a6a6c22c"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "min_distance"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-thomson-problem",
+      "group": null,
+      "receipt_sha256": "b313f71f49136e4a7fced0c2fcf60dee9783c26185b3f1206ea06ec82ec19e73",
+      "native_sha256": "b08938e8ce936ec3417d89962f5071815f7f203775d8464d03acc832b12af167",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.9941882281865374,
+        "fitness": null,
+        "candidate_sha256": "1063db72dc54e10336123d2e06abf6376a47fad3768f35110ad872bfa82772a9",
+        "evaluator_sha256": "be3326370d592e2bacafa1f9632ba8e8fdbf73cc0dde4eaac6f56869e787f521",
+        "problem_sha256": "827679394b84caeae8f29d468105a9ac9af9ff7958bfe587ee529b5aa7fbf616"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "energy",
+        "eval_time"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-turan-hypergraph",
+      "group": null,
+      "receipt_sha256": "495169c2a194b60e3bdd6e3857f878602c341e02819d079b568dac27f0e281d5",
+      "native_sha256": "c0d6664661d8337126ca9e7ba121f1204b9c556557b34535153b260c2bfc35af",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 1.0,
+        "fitness": null,
+        "candidate_sha256": "ed3be6a32396b3049054b9b5c0993bce05dd0cf754bd595d431b2021c9621fc4",
+        "evaluator_sha256": "3e2b6d700f18f5ec51ea0b5a6b79c3c3b755c0f2f3e44a9914bd40b0105b4993",
+        "problem_sha256": "aafcf7743022ec3124e16e0c6f56fee9912f41c1c795095732e331778078f851"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "turan_density"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "coral-cloudcast",
+      "group": "extended",
+      "receipt_sha256": "ba9c20b92bb181f3e66ccf0b1cb0a7b28445e870d210aa13d128163f2db46399",
+      "native_sha256": "d54708d58c7a3d60cbb817917dccd766ca39b964246230ea028f98aa8b3e4b17",
+      "status": "metadata_mapping_repaired_recheck_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.0009652509652509653,
+        "fitness": null,
+        "candidate_sha256": "a3f0eab844a68407c9bee2e65e8f945bf8d4cfd76beffddba138e460eb661178",
+        "evaluator_sha256": "9fbb13c8140e4c585b99145d290b4e61d6e0329a9a2e6b5f2831ad88334bdf1d",
+        "problem_sha256": "c0310572c37d0130c969764bee66c740e10bcef43c68b626a320c483550e2dd2"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "direction",
+        "error",
+        "score",
+        "upstream",
+        "valid"
+      ],
+      "validity_key": "valid",
+      "upstream_result": {
+        "combined_score": 0.0009652509652509653,
+        "score": 0.0009652509652509653,
+        "direction": "maximize",
+        "valid": true,
+        "error": null,
+        "upstream": {
+          "combined_score": 0.0009652509652509653,
+          "runs_successfully": 1.0,
+          "total_cost": 1035.0,
+          "avg_cost": 207.0,
+          "successful_configs": 5,
+          "failed_configs": 0,
+          "cost_score": 0.0009652509652509653,
+          "success_rate": 1.0
+        }
+      }
+    },
+    {
+      "task_id": "sciel-bench-web-scraper-api-docs",
+      "group": "extended",
+      "receipt_sha256": "8350865b87f793a76455b578f6952c2ea63dbc9a2407a7083e1f957a9293227e",
+      "native_sha256": "6170b19cce4595ce9bdb0ba473f076b4428e77da4135d4c93041951406a10453",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.6863888888888889,
+        "fitness": null,
+        "candidate_sha256": "f30af2503f6a3021f3b116265bdacf628b81373d5d8f532220607c677a102bb4",
+        "evaluator_sha256": "8ed53956b546541ca0e73e884f4e24835b3ee54ac7b3218bb61db56170d740f0",
+        "problem_sha256": "720848e3175ee627de1ec264e8773817cd2ba4a9f26fe0d9fad59a97b822dd8f"
+      },
+      "observed_metric_keys": [
+        "accuracy",
+        "combined_score",
+        "completeness",
+        "parsing_errors",
+        "robustness",
+        "total_score"
+      ],
+      "validity_key": null
+    },
+    {
+      "task_id": "sciel-math-circle-packing",
+      "group": "extended",
+      "receipt_sha256": "e603c16091303515dc68e1799cdb02d6654b02df8f073af0921d1d6ef39303fb",
+      "native_sha256": "b2e11a95fca285eea9c97e11491259195e30533f5a651f13115a9ad1d117762a",
+      "status": "metadata_mapping_repaired_recheck_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.36423689449571406,
+        "fitness": null,
+        "candidate_sha256": "d432ec2da7c307180a4dafff1be1ca47cf37be07c40b12c5fedae69417fd639e",
+        "evaluator_sha256": "a1708613eefca455f8198dc46743a76e97b760b15f99ee6c3009d6803eda6812",
+        "problem_sha256": "d5cb3cd600c22bd5f4f961d207bda19beace8031b2cf096dcab3ec7067403601"
+      },
+      "observed_metric_keys": [
+        "combined_score",
+        "eval_time",
+        "sum_radii",
+        "target_ratio",
+        "validity"
+      ],
+      "validity_key": "validity",
+      "upstream_result": {
+        "sum_radii": 0.9597642169962064,
+        "target_ratio": 0.36423689449571406,
+        "validity": 1.0,
+        "eval_time": 0.36356449127197266,
+        "combined_score": 0.36423689449571406
+      }
+    },
+    {
+      "task_id": "sciel-math-signal-processing",
+      "group": "extended",
+      "receipt_sha256": "1aa6ffb87c909f21b4827f24d4c3096e3a7785208439181f0b6fde6f9b9e6377",
+      "native_sha256": "efcbdacc7818707c51dcc868fc4383eb20df1fe338962da91e1fcda6165f52be",
+      "status": "explicit_validity_contract_required",
+      "original_receipt": {
+        "status": "completed",
+        "validity": null,
+        "raw_score": 0.38987798748202884,
+        "fitness": null,
+        "candidate_sha256": "3316701515451ecbe7bd47231bfbe89155afbe31bb1bc878a0b698a79e412a34",
+        "evaluator_sha256": "b65ddc65459e64c431976a1402c45dbed9b3c698dff1a7be3ddb56082af9ad4e",
+        "problem_sha256": "10471643ead43016bf40aee08868777d7f4f78544f9615310f823bf957581bb4"
+      },
+      "observed_metric_keys": [
+        "accuracy_score",
+        "avg_error",
+        "composite_score",
+        "correlation",
+        "efficiency_score",
+        "execution_time",
+        "false_reversals",
+        "lag_error",
+        "noise_reduction",
+        "overall_score",
+        "responsiveness_score",
+        "slope_changes",
+        "smoothness_score",
+        "success_rate"
+      ],
+      "validity_key": null
+    }
+  ]
+}
