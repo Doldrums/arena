@@ -67,7 +67,8 @@ def test_science_inventory_is_explicit_and_preserves_default_cpu_selection():
     science = preflight.inventory(tasks, ROOT / "tasks", "science", SCIENCE_IMAGE_ID)
     assert len(science) == len(ordinary) == 959
     assert {r["task_id"] for r in science if r["status"] == "seed_check_pending"} == set(SCIENCE_TASK_REQUIREMENTS)
-    assert sum(r["status"] == "seed_check_deferred" for r in science) == 350
+    assert {r["task_id"] for r in science if r["status"] == "seed_check_deferred"} == {
+        r["task_id"] for r in ordinary if r["status"] == "seed_check_pending"}
     assert all(r["status"] == "environment_preparation_pending" for r in ordinary
                if r["task_id"] in SCIENCE_TASK_REQUIREMENTS)
     with pytest.raises(ValueError, match="exact reviewed image"):
