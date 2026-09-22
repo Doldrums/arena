@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import base64
 from contextlib import contextmanager
+from http.client import IncompleteRead
 import json
 import math
 import os
@@ -182,6 +183,11 @@ class CodexTransport:
             raise _upstream_error(exc.code, retry) from None
         except ProviderError:
             raise
+        except IncompleteRead:
+            # The request was dispatched: partial bytes are not a completion or
+            # usage receipt, and retrying here could duplicate a charged call.
+            raise ProviderError(502, "truncated_upstream_stream",
+                                "The account provider stream ended before a completed response.") from None
         except (TimeoutError, socket.timeout):
             raise ProviderError(504, "upstream_timeout", "The account provider request timed out.") from None
         except (error.URLError, OSError):
