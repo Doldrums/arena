@@ -18,6 +18,7 @@ import pytest
 
 from arena import evaluator_proxy as ep
 from arena import evaluator_execution, evaluator_http, evaluator_policy
+from evaluator_cpu_helpers import image as cpu_image, native_container
 
 
 RUN = "b" * 32
@@ -155,6 +156,8 @@ def test_command_and_other_run_paths_cannot_be_selected(setup):
 
 def fake_create(proxy, captures):
     def request(method, path, body=None, timeout=30):
+        if method == "GET" and path.startswith("/images/"):
+            return 200, {}, json.dumps(cpu_image(IMAGE)).encode()
         captures.append((method, path, json.loads(body) if body else None))
         return 201, {"Content-Type": "application/json"}, json.dumps({"Id": IDENT}).encode()
     proxy.request = request
@@ -279,12 +282,17 @@ def test_restart_recovers_create_transport_uncertainty_by_verified_name(setup):
     proxy = ep.Proxy(config); calls = []
     def request(method, path, **kw):
         calls.append((method, path))
+        if path.startswith("/images/"):
+            return 200, {}, json.dumps(cpu_image(IMAGE)).encode()
         if method == "GET":
-            return 200, {}, json.dumps({"Id": IDENT, "Config": {"Labels": {"arena.evaluator": "canonical-v1", "arena.control-run": RUN}}}).encode()
+            record = {"id": None, "run": RUN, "name": NAME}
+            return 200, {}, json.dumps(native_container(config, stage, record)).encode()
         return 204, {}, b""
     proxy.request = request
     proxy.recover()
-    assert calls == [("GET", "/containers/" + NAME + "/json"), ("DELETE", "/containers/" + IDENT + "?force=1")]
+    assert calls[0] == ("GET", "/containers/" + NAME + "/json")
+    assert calls[1][0] == "GET" and calls[1][1].startswith("/images/")
+    assert calls[2] == ("DELETE", "/containers/" + IDENT + "?force=1")
     assert not stage.exists()
 
 
@@ -397,6 +405,8 @@ def test_real_docker_cli_completes_against_inert_daemon_and_publishes_before_exi
             if raw: self.wfile.write(raw)
         def do_HEAD(self): self.reply(200)
         def do_GET(self):
+            if "/images/" in self.path:
+                self.reply(200, cpu_image(IMAGE)); return
             self.reply(200, {"Id": IDENT, "Config": {"Tty": False}, "HostConfig": {"AutoRemove": True},
                              "State": {"Running": not finished.is_set(), "ExitCode": 0}})
         def do_POST(self):
