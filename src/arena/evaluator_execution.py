@@ -18,6 +18,10 @@ class Proxy:
         self.config = config
         self.records = {}
         self.lock = threading.RLock()
+        self.gpu_leases = None
+        if config.lmx_gpu is not None:
+            from .evaluator_gpu_leases import GpuLeases
+            self.gpu_leases = GpuLeases(config.staging_root)
 
     def request(self, method, path, body=None, timeout=30):
         connection = DockerConnection(self.config.docker_socket, timeout)
@@ -45,6 +49,7 @@ class Proxy:
             require(len(self.records) < self.config.max_containers and name not in self.records,
                     "Evaluator container capacity reached")
             candidate_fd, output_fd, stage = None, None, None
+            gpu_lease = None
             keep_stage = False
             try:
                 candidate_fd, output_fd = directory_fd(candidate), directory_fd(output)
@@ -66,11 +71,17 @@ class Proxy:
                 recovery = {"id": None, "run": run_id, "name": name}
                 if "arena.evaluation-profile" in rebuilt["Labels"]:
                     recovery["resource_profile"] = rebuilt["Labels"]["arena.evaluation-profile"]
+                if "arena.gpu-capability" in rebuilt["Labels"]:
+                    require(self.gpu_leases is not None)
+                    recovery["gpu"] = {"device_uuid": rebuilt["Labels"]["arena.gpu-device"],
+                                       "image": rebuilt["Image"], "labels": rebuilt["Labels"]}
+                    # Durable ownership precedes both the transient staging
+                    # record and Docker POST. A lost response still owns GPU.
+                    gpu_lease = self.gpu_leases.reserve(recovery, stage)
                 (stage / "record.json").write_text(json.dumps(recovery))
                 # Retain only the trusted library mount rebuilt by policy;
                 # caller-writable candidate/results paths are always replaced.
-                rebuilt["HostConfig"]["Mounts"] = [
-                    rebuilt["HostConfig"]["Mounts"][0],
+                rebuilt["HostConfig"]["Mounts"] = [*rebuilt["HostConfig"]["Mounts"],
                     {"Type": "bind", "Source": str(stage / "candidate"), "Target": "/candidate", "ReadOnly": True},
                     {"Type": "bind", "Source": str(stage / "results"), "Target": "/results", "ReadOnly": False}]
                 keep_stage = True
@@ -78,13 +89,17 @@ class Proxy:
                 if result[0] == 201:
                     ident = json_object(result[2]).get("Id")
                     require(type(ident) is str and re.fullmatch(r"[a-f0-9]{64}", ident))
+                    if gpu_lease is not None:
+                        self.gpu_leases.identify(gpu_lease, ident)
                     recovery["id"] = ident
                     (stage / "record.json").write_text(json.dumps(recovery))
                     self.records[name] = {"id": ident, "run": run_id, "stage": stage, "output_fd": output_fd,
                                           "expires": time.monotonic() + int(rebuilt["Cmd"][11]) + 60,
                                           "candidate_sha256": hashlib.sha256(program).hexdigest()}
+                    if gpu_lease is not None:
+                        self.records[name]["gpu_lease"] = gpu_lease
                     stage, output_fd = None, None
-                elif 400 <= result[0] < 500:
+                elif 400 <= result[0] < 500 and gpu_lease is None:
                     keep_stage = False
                 return result
             finally:
@@ -92,7 +107,8 @@ class Proxy:
                     if descriptor is not None:
                         os.close(descriptor)
                 if stage is not None and not keep_stage:
-                    shutil.rmtree(stage)
+                    if self.gpu_leases is None or not self.gpu_leases.owns_stage(stage):
+                        shutil.rmtree(stage)
 
     def cgroup_info(self):
         status, _, raw = self.request("GET", "/info")
@@ -139,13 +155,17 @@ class Proxy:
                 except FileNotFoundError:
                     pass
 
-    def remove(self, name, record):
+    def remove(self, name, record, *, daemon_status=None):
         with self.lock:
+            if "gpu_lease" in record:
+                require(daemon_status in (204, 404), "GPU cleanup requires confirmed daemon deletion")
             self.publish(record)
             if not record.get("closed"):
+                shutil.rmtree(record["stage"])
+                if "gpu_lease" in record:
+                    self.gpu_leases.release(record["gpu_lease"], daemon_status)
                 record["closed"] = True
                 os.close(record["output_fd"])
-                shutil.rmtree(record["stage"])
                 self.records.pop(name, None)
 
     def reap(self):
@@ -156,13 +176,16 @@ class Proxy:
                            if time.monotonic() > record["expires"]]
             for name, record in expired:
                 try:
-                    self.request("DELETE", "/containers/" + record["id"] + "?force=1")
-                    self.remove(name, record)
+                    result = self.request("DELETE", "/containers/" + record["id"] + "?force=1")
+                    if result[0] in {204, 404}:
+                        self.remove(name, record, daemon_status=result[0])
                 except (OSError, ValueError, http.client.HTTPException):
                     pass
 
     def recover(self):
         """On restart, kill only persisted, label-verified owned containers."""
+        if self.gpu_leases is not None:
+            self.gpu_leases.recover(self.request)
         for stage in self.config.staging_root.iterdir():
             require(not stage.is_symlink() and stage.is_dir() and RUN.fullmatch(stage.name))
             metadata = stage / "record.json"
@@ -196,6 +219,6 @@ class Proxy:
             try:
                 result = self.request("DELETE", "/containers/" + record["id"] + "?force=1")
                 if result[0] in {204, 404}:
-                    self.remove(name, record)
+                    self.remove(name, record, daemon_status=result[0])
             except (OSError, ValueError, http.client.HTTPException):
                 pass  # Preserve the root-owned record for restart recovery.

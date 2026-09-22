@@ -15,7 +15,7 @@ import socketserver
 import stat
 import threading
 import time
-from .evaluator_policy import Config, Denied, DockerConnection, MAX_BODY, MAX_RESPONSE, MAX_STREAM, engine_binding, json_object, peer_run, require, route
+from .evaluator_policy import Config, Denied, GPUCapacityUnavailable, DockerConnection, MAX_BODY, MAX_RESPONSE, MAX_STREAM, engine_binding, json_object, peer_run, require, route
 from .evaluator_execution import Proxy
 
 
@@ -76,8 +76,15 @@ class Handler(BaseHTTPRequestHandler):
                 if action in {"wait", "json", "delete"}:
                     proxy.publish(record)
                 if action == "delete" and result[0] in {204, 404}:
-                    proxy.remove(name, record)
+                    proxy.remove(name, record, daemon_status=result[0])
             self.reply(*result)
+        except GPUCapacityUnavailable:
+            if not self.upgraded:
+                try:
+                    self.reply(503, {"Content-Type": "application/json"},
+                               b'{"code":"arena_gpu_capacity_busy","message":"GPU capacity is occupied; no evaluator container was created"}')
+                except OSError:
+                    pass
         except (Denied, ValueError, KeyError, TypeError, UnicodeError, OSError, http.client.HTTPException):
             if not self.upgraded:
                 try:

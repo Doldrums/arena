@@ -81,3 +81,15 @@ def worker_resources(profile=None):
     selected = budget(profile)
     return {"cpus": 4, "memory_mb": max(8192, selected["memory_mb"] + 4096),
             "evaluation_slots": 1, "pids": 512}
+
+
+def require_gpu_parent_budget(cgroup, resources):
+    """The separate LMX capability also reserves finite CPU engine headroom."""
+    require_parent_budget(cgroup, resources)
+    path = CGROUP_MOUNT / cgroup.lstrip("/") / "cpu.max"
+    if path.is_symlink():
+        raise ValueError("GPU parent CPU limit must not be a symlink")
+    fields = path.read_text().split()
+    if (len(fields) != 2 or any(not re.fullmatch(r"[1-9][0-9]{0,19}", field) for field in fields)
+            or int(fields[0]) < (resources["cpus"] + 2) * int(fields[1])):
+        raise ValueError("GPU evaluation requires finite CPU resources plus engine headroom")
