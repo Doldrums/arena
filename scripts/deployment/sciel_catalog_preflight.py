@@ -18,6 +18,7 @@ import time
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
+from arena.frameworks.sciel_catalog_jax import JAX_GROUPS, JAX_PROFILE, jax_environment, jax_task_group
 from arena.frameworks.sciel_catalog_profile import (
     SCIENCE_PROFILE, requirement_group, science_environment, supports_science_task,
 )
@@ -35,8 +36,10 @@ def write(path, value):
 
 
 def inventory(tasks, root, group="all", image=None):
-    if group not in {"base", "extended", "all", "science"}:
-        raise ValueError("Choose the base, extended, all or science CPU seed group")
+    if group not in {"base", "extended", "all", "science", *JAX_GROUPS}:
+        raise ValueError("Choose an explicit supported CPU seed group")
+    if group in JAX_GROUPS:
+        jax_environment(image, group)
     if group == "science":
         science_environment(image)
     rows = []
@@ -45,6 +48,8 @@ def inventory(tasks, root, group="all", image=None):
         required_group = requirement_group(task["requirements"])
         if group == "science" and supports_science_task(task["id"], task["requirements"]):
             required_group = "science"
+        if group in JAX_GROUPS:
+            required_group = jax_task_group(task["id"], task["requirements"]) or required_group
         if not task["executable"]:
             status, reason = "evaluation_integration_pending", "No executable evaluator definition."
         elif not seed.is_file() or seed.is_symlink():
@@ -75,6 +80,12 @@ def check_seed(row, *, root, output, image, timeout, group="all"):
         if not supports_science_task(task_id, row["requirements"]):
             raise ValueError("Task is outside the exact prepared science cohort")
         config["profile"] = SCIENCE_PROFILE
+    if group in JAX_GROUPS:
+        environment = jax_environment(image, group)
+        if jax_task_group(task_id, row["requirements"]) != group:
+            raise ValueError("Task is outside the exact prepared JAX cohort")
+        config["profile"] = JAX_PROFILE
+        config["execution"]["resource_profile"] = environment["resource_profile"]
     try:
         receipt = evaluate(config, root / "suite" / task_id / "initial_program.py", output / task_id)
         good = (receipt["status"] == "completed" and receipt["validity"] is True
@@ -98,7 +109,7 @@ def main(argv=None):
     parser.add_argument("--timeout", type=int, default=120)
     parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--execute-seeds", action="store_true")
-    parser.add_argument("--group", choices=("base", "extended", "all", "science"), default="all",
+    parser.add_argument("--group", choices=("base", "extended", "all", "science", *JAX_GROUPS), default="all",
                         help="Check one CPU dependency group; retain all other tasks in the inventory")
     args = parser.parse_args(argv)
     if not 1 <= args.workers <= 16 or not 1 <= args.timeout <= 600:
@@ -119,15 +130,23 @@ def main(argv=None):
     eligible = [row for row in rows if row["status"] == "seed_check_pending"]
     if not eligible:
         parser.error("No tasks match the prepared CPU profile")
-    validate_config({"schema": "arena.evaluation-config/1", "task_id": eligible[0]["task_id"],
-                     "tasks_dir": str(args.tasks_root), "timeout_seconds": args.timeout,
-                     "execution": {"kind": "docker", "image": args.image, "python": "python"}})
+    config = {"schema": "arena.evaluation-config/1", "task_id": eligible[0]["task_id"],
+              "tasks_dir": str(args.tasks_root), "timeout_seconds": args.timeout,
+              "execution": {"kind": "docker", "image": args.image, "python": "python"}}
+    environment = jax_environment(args.image, args.group) if args.group in JAX_GROUPS else None
+    if environment is not None:
+        config["profile"] = JAX_PROFILE
+        config["execution"]["resource_profile"] = environment["resource_profile"]
+    validate_config(config)
     args.output.mkdir(mode=0o700, parents=True)
     manifest = {"schema": "arena.sciel-catalog-preflight/1", "created_at": time.time(),
                 "task_source": identity, "image": args.image, "timeout_seconds": args.timeout,
                 "seed_workers": args.workers, "group": args.group, "model_calls": 0, "tasks": rows}
     if args.group == "science":
         manifest.update(profile=SCIENCE_PROFILE, prepared_environment=science_environment(args.image))
+    if environment is not None:
+        manifest.update(profile=JAX_PROFILE, prepared_environment=environment,
+                        resource_profile=environment["resource_profile"])
     path = args.output / "manifest.json"
 
     def save():

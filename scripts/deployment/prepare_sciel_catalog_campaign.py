@@ -20,6 +20,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from arena.engine_policy import checked_native_config
+from arena.evaluation_resources import worker_resources
+from arena.frameworks.sciel_catalog_jax import JAX_GROUPS, JAX_PROFILE, jax_environment, jax_task_group
 from arena.control_config import validate_config as validate_control
 from arena.frameworks.sciel_catalog_evaluate import create_task, validate_config as validate_bridge
 from arena.frameworks.sciel_catalog_profile import SCIENCE_PROFILE, science_environment
@@ -88,8 +90,16 @@ def preflight_records(manifest, catalog, identity):
         if (manifest.get("profile") != SCIENCE_PROFILE
                 or manifest.get("prepared_environment") != science_environment(manifest.get("image"))):
             raise ValueError("Preflight differs from the pinned prepared science environment")
-    elif "profile" in manifest or "prepared_environment" in manifest:
-        raise ValueError("Prepared environment binding requires the explicit science group")
+    elif manifest.get("group") in JAX_GROUPS:
+        environment = jax_environment(manifest.get("image"), manifest["group"])
+        if (manifest.get("profile") != JAX_PROFILE
+                or manifest.get("prepared_environment") != environment
+                or manifest.get("resource_profile") != environment["resource_profile"]):
+            raise ValueError("Preflight differs from the pinned prepared JAX environment and resources")
+    elif any(key in manifest for key in ("profile", "prepared_environment", "resource_profile")):
+        raise ValueError("Prepared environment binding requires the explicit science or JAX group")
+    if manifest.get("group") not in JAX_GROUPS and "resource_profile" in manifest:
+        raise ValueError("Resource profile requires the exact prepared JAX group")
     rows = manifest.get("tasks")
     if type(rows) is not list or any(type(row) is not dict for row in rows):
         raise ValueError("Preflight task inventory is missing")
@@ -101,6 +111,9 @@ def preflight_records(manifest, catalog, identity):
         task = tasks[row["task_id"]]
         if any(row.get(key) != task[key] for key in ("family", "protocol", "metric", "direction", "requirements")):
             raise ValueError("Preflight task metadata differs from the current catalog")
+        if (manifest.get("group") in JAX_GROUPS and row.get("status") == "seed_verified"
+                and jax_task_group(task["id"], task["requirements"]) != manifest["group"]):
+            raise ValueError("Verified seed is outside the exact prepared JAX cohort")
     return tasks, rows
 
 
@@ -122,6 +135,9 @@ def verified_seed(row, manifest, manifest_path, verified):
                 "execution": {"kind": "docker", "image": manifest["image"], "python": "python"},
                 "candidate_sha256": sha(verified["seed"]), "task_source": verified["source"],
                 "problem_sha256": verified["problem_sha256"], "evaluator_sha256": verified["evaluator_sha256"]}
+    if manifest.get("group") in JAX_GROUPS:
+        expected["execution"]["resource_profile"] = jax_environment(
+            manifest["image"], manifest["group"])["resource_profile"]
     if any(receipt.get(key) != value for key, value in expected.items()):
         raise ValueError("Seed receipt does not match the exact candidate, evaluator and Docker image")
     raw, fitness = receipt.get("raw_score"), receipt.get("fitness")
@@ -187,6 +203,7 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
     identity = verify_task_library(tasks_root, source)
     preflight, preflight_sha = read_json(preflight_manifest)
     tasks, rows = preflight_records(preflight, catalog, identity)
+    resources = worker_resources(preflight.get("resource_profile"))
     if type(exclude_tasks) not in (list, tuple, set) or any(type(task) is not str for task in exclude_tasks):
         raise ValueError("Excluded task IDs must be an explicit collection of strings")
     excluded = set(exclude_tasks)
@@ -220,6 +237,9 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
             "confirmation": {"stochastic": True, "samples": 3}}
         if preflight.get("group") == "science":
             bridge["evaluation"]["profile"] = SCIENCE_PROFILE
+        if preflight.get("group") in JAX_GROUPS:
+            bridge["evaluation"]["profile"] = JAX_PROFILE
+            bridge["evaluation"]["execution"]["resource_profile"] = preflight["resource_profile"]
         try:
             verified = validate_bridge(bridge)
         except ValueError as exc:
@@ -243,7 +263,7 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
                               Path("/srv/arena/control/runs") / ("0" * 32) / "artifacts", GATEWAY)
         template = materialize_template(deployment, approval, template_id="sciel-cat-" + slug,
             name="SCiEL · " + task["name"][:180], model=model, python=python, config=config_path,
-            tasks_root=task_root, resources=RESOURCES, timeout_seconds=3600,
+            tasks_root=task_root, resources=resources, timeout_seconds=3600,
             seed=0, budget=16, environment_names=())
         template["spec"]["request"].update(campaign=campaign, arm=slug)
         write(config_path.parent / "template.json", template)
@@ -257,7 +277,7 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
         raise ValueError("Canonical task library changed during campaign preparation")
     validate_control({"schema": "arena.control/1", "state_dir": "/private-campaign-validation",
         "cgroup_root": "/sys/fs/cgroup/private-campaign-validation",
-        "limits": {"cpus": 4, "memory_mb": 8192, "evaluation_slots": 1, "max_active": 1,
+        "limits": {**{key: resources[key] for key in ("cpus", "memory_mb", "evaluation_slots")}, "max_active": 1,
             "max_queued": 1, "max_runs_per_key": 1, "max_reserved_seconds_per_key": 3600},
         "templates": templates})
     result = {"schema": "arena.sciel-catalog-campaign/1", "campaign": campaign, "model": model,
@@ -267,13 +287,17 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
         "counts": dict(Counter(row["status"] for row in inventory)), "tasks": inventory,
         "budgets": {"full_evaluations": 16, "max_iterations": 32, "wall_seconds": 3600,
                     "confirmation_samples": 3, "max_aux_calls": 4, "max_experiments": 48},
-        "resources_per_run": RESOURCES, "model_calls": 0, "canonical_evaluator_calls": 0,
+        "resources_per_run": resources, "model_calls": 0, "canonical_evaluator_calls": 0,
         "research_executed": False, "queue_mutated": False,
         "scope": "Seed-verified task integration; benchmark reproduction and research outcomes require run evidence.",
         "score_semantics": "Raw metrics and canonical signed fitness stay in receipts; atan scales search only.",
         "storage_profile": "Explicit code-length grid; learned descriptors and learned niches disabled."}
     if preflight.get("group") == "science":
         result.update(preflight_group="science", prepared_environment=preflight["prepared_environment"])
+    if preflight.get("group") in JAX_GROUPS:
+        result.update(preflight_group=preflight["group"], profile=JAX_PROFILE,
+                      resource_profile=preflight["resource_profile"],
+                      prepared_environment=preflight["prepared_environment"])
     write(config_destination / "templates.json", templates)
     write(config_destination / "campaign-inventory.json", result)
     return {"destination": str(config_destination), "campaign": campaign, "counts": result["counts"],
