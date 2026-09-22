@@ -1,5 +1,5 @@
 {
-  "protocol": "original",
+  "protocol": "recreated",
   "family": "sciel_copy",
   "direction": "maximize",
   "contract": "See evaluator.py and README.upstream.md.",
@@ -11,13 +11,16 @@
     "py:scipy"
   ],
   "timeout": 600,
-  "notes": [],
+  "notes": [
+    "Floating triangle determinants and SciPy convex-hull area are numerical checks. Degenerate zero-area triangles may be feasible with zero quality; the convex hull itself must have positive area."
+  ],
   "entry": {
     "callable": "evaluate",
     "env": {},
     "seed": "initial_program.py",
     "score_key": "combined_score",
-    "error_key": "error"
+    "error_key": "error",
+    "validity_key": "arena_valid"
   },
   "origin": {
     "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
@@ -29,7 +32,7 @@
       "requirements.txt": "af902634ec0c0bb998bee552f78fbbd77aef7b26d3d94226a60c512b70a6b541"
     }
   },
-  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/alphaevolve_math_problems/heilbronn_convex/14` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "protocol_description": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction. The seed and source configuration are unchanged.",
   "id": "sciel-math-heilbronn-convex-14",
   "name": "SCiEL: Heilbronn convex region, 14 points",
   "paper_ids": [
@@ -55,7 +58,8 @@
     "Source-inspected SCiEL example; not a reproduced paper result.",
     "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
     "The original requirements.txt omits scipy used by the evaluator; it is included in this package’s dependency union.",
-    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+    "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+    "Floating triangle determinants and SciPy convex-hull area are numerical checks. Degenerate zero-area triangles may be feasible with zero quality; the convex hull itself must have positive area."
   ],
   "evaluator": "evaluator.py",
   "initial_program": "initial_program.py",
@@ -73,7 +77,7 @@
     "domain": "mathematics",
     "area": "mathematics",
     "data": "none",
-    "verification": "exact",
+    "verification": "sampled",
     "reference": "none",
     "resources": [
       "cpu"
@@ -87,5 +91,14 @@
     "status": "unreviewed",
     "papers": [],
     "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "adaptation": {
+    "schema": "arena.task-feasibility-adapter/1",
+    "contract": "heilbronn_convex_14",
+    "upstream_evaluator_path": "upstream_evaluator.py",
+    "upstream_evaluator_sha256": "98bdc3cfb2bc462aac552aed0d4d454d86ee8fb808d913c11f1d440b1f8ff85d",
+    "verifier": "14 finite distinct2D points; positive convex-hull area; all364 triangle areas and normalized numerical ratio",
+    "validity_key": "arena_valid",
+    "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction."
   }
 }

@@ -172137,7 +172137,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -172151,19 +172151,32 @@
           "py:optax",
           "py:tqdm"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "minimum_overlap",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "17cc5e63ab3afc530adf4a4459a576e026430fd0b6e1704d18978be771755517",
+          "verifier": "finite values in[0,1]; integral1 within source tolerance; independently recomputed discrete overlap correlation",
+          "validity_key": "arena_valid",
+          "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+      "Mass tolerance:atol1e-3,rtol1e-5. Correlation tolerance:atol1e-4,rtol1e-5. Discrete numerical feasibility is not an independent continuous-bound proof."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
-      "integrity_risks": [],
+      "integrity_risks": [
+        "Mass tolerance:atol1e-3,rtol1e-5. Correlation tolerance:atol1e-4,rtol1e-5. Discrete numerical feasibility is not an independent continuous-bound proof."
+      ],
       "execution_tested": false
     },
     "source_hashes": {
@@ -172285,7 +172298,7 @@
       "domain": "mathematics",
       "area": "mathematics",
       "data": "none",
-      "verification": "exact",
+      "verification": "sampled",
       "reference": "none",
       "resources": [
         "cpu"
@@ -173880,7 +173893,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -173893,19 +173906,32 @@
           "py:numpy",
           "py:optax"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "autocorrelation_c1",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "abfaec6dec20c41242f89c8561a952e27c3d8ee52a28e64f662b48580bcefa51",
+          "verifier": "finite nonnegative vector; nonzero mass; same-call full convolution ratio at absolute tolerance1e-6",
+          "validity_key": "arena_valid",
+          "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+      "C1 uses the original finite convolution representation and absolute consistency tolerance1e-6; validity does not certify a continuous inequality."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
-      "integrity_risks": [],
+      "integrity_risks": [
+        "C1 uses the original finite convolution representation and absolute consistency tolerance1e-6; validity does not certify a continuous inequality."
+      ],
       "execution_tested": false
     },
     "source_hashes": {
@@ -174031,7 +174057,7 @@
       "domain": "mathematics",
       "area": "mathematics",
       "data": "none",
-      "verification": "exact",
+      "verification": "sampled",
       "reference": "none",
       "resources": [
         "cpu"
@@ -175292,7 +175318,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -175306,21 +175332,32 @@
           "py:optax",
           "py:scipy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "heilbronn_convex_14",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "98bdc3cfb2bc462aac552aed0d4d454d86ee8fb808d913c11f1d440b1f8ff85d",
+          "verifier": "14 finite distinct2D points; positive convex-hull area; all364 triangle areas and normalized numerical ratio",
+          "validity_key": "arena_valid",
+          "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
       "The original requirements.txt omits scipy used by the evaluator; it is included in this package’s dependency union.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+      "Floating triangle determinants and SciPy convex-hull area are numerical checks. Degenerate zero-area triangles may be feasible with zero quality; the convex hull itself must have positive area."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [
-        "The original requirements.txt omits scipy used by the evaluator; it is included in this package’s dependency union."
+        "Floating triangle determinants and SciPy convex-hull area are numerical checks. Degenerate zero-area triangles may be feasible with zero quality; the convex hull itself must have positive area."
       ],
       "execution_tested": false
     },
@@ -175416,7 +175453,7 @@
       "domain": "mathematics",
       "area": "mathematics",
       "data": "none",
-      "verification": "exact",
+      "verification": "sampled",
       "reference": "none",
       "resources": [
         "cpu"
@@ -177101,7 +177138,7 @@
     "schema_version": "1.0",
     "id": "sciel-math-matmul",
     "name": "SCiEL: Matrix multiplication rank, intended shape ⟨2,4,5⟩",
-    "description": "Construct tensor factors for rectangular matrix multiplication and minimize the reported rank. The original evaluator trusts candidate dimensions and can skip verification on empty arrays.",
+    "description": "Construct real factors for the fixed matrix-multiplication tensor of shape<2,4,5>; verify computed tensor identity and minimize rank under the declared numerical protocol.",
     "paper_ids": [
       "sciel-supplement"
     ],
@@ -177178,7 +177215,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -177192,21 +177229,31 @@
           "py:optax",
           "py:tqdm"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "matmul_2_4_5",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "9fd059997380c4240c6eef3cdf502581f29c731963dc3b0448bca2416122c086",
+          "verifier": "fixed dimensions(2,4,5); exact integer dimensions/rank before casts; nonempty finite real factors; computed floating tensor equality; score32/rank",
+          "validity_key": "arena_valid",
+          "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The verifier returns before tensor verification if any factor array is empty. Candidate-returned n,m,p and rank determine checks/score instead of enforcing the intended fixed shape ⟨2,4,5⟩. A positive score is not evidence of a valid algorithm.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+      "Dimensions are fixed to(2,4,5); boolean, fractional and nonfinite dimensions/rank are rejected before conversion. np.array_equal compares the computed floating tensor, with residual recorded; this is not an exact algebraic certificate."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [
-        "The verifier returns before tensor verification if any factor array is empty. Candidate-returned n,m,p and rank determine checks/score instead of enforcing the intended fixed shape ⟨2,4,5⟩. A positive score is not evidence of a valid algorithm."
+        "Dimensions are fixed to(2,4,5); boolean, fractional and nonfinite dimensions/rank are rejected before conversion. np.array_equal compares the computed floating tensor, with residual recorded; this is not an exact algebraic certificate."
       ],
       "execution_tested": false
     },
@@ -177382,7 +177429,7 @@
       "domain": "mathematics",
       "area": "mathematics",
       "data": "none",
-      "verification": "exact",
+      "verification": "sampled",
       "reference": "none",
       "resources": [
         "cpu"
@@ -179945,7 +179992,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -179958,19 +180005,32 @@
           "py:numpy",
           "py:optax"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "autocorrelation_c2",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "ffc443c2b0c682fc636393adbaf731bd5799a0502386369bec1ca088ad868a83",
+          "verifier": "finite vector; explicit clipping of roundoff down to-1e-6; positive norms; recomputed piecewise-linear convolution ratio",
+          "validity_key": "arena_valid",
+          "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+      "The original scorer clips values>=-1e-6 to0 and recomputes C2; candidate-reported C2 is not authoritative. The piecewise-linear ratio is a numerical representation check, not a certified continuous bound."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
-      "integrity_risks": [],
+      "integrity_risks": [
+        "The original scorer clips values>=-1e-6 to0 and recomputes C2; candidate-reported C2 is not authoritative. The piecewise-linear ratio is a numerical representation check, not a certified continuous bound."
+      ],
       "execution_tested": false
     },
     "source_hashes": {
@@ -180096,7 +180156,7 @@
       "domain": "mathematics",
       "area": "mathematics",
       "data": "none",
-      "verification": "exact",
+      "verification": "sampled",
       "reference": "none",
       "resources": [
         "cpu"
@@ -182192,7 +182252,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -182205,32 +182265,51 @@
           "py:jax",
           "py:tqdm"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "finite_sum_difference",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "bf3c4ff0e11abe294b8f5d8c54090e2c701c9da25c52e693057c60f25aa96661",
+          "verifier": "distinct nonnegative integer set containing0; nontrivial maximum; Python-integer sum/difference counts and numerical logarithmic ratio",
+          "validity_key": "arena_valid",
+          "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+          "historical_original_protocol_evidence": {
+            "current_protocol_evidence": false,
+            "validation": {
+              "execution_tested": true,
+              "recovery_evidence": {
+                "date": "2026-09-19",
+                "seed": "known published AlphaEvolve solution_1",
+                "original_search_reproduced": false,
+                "report": "docs/TASKS.md",
+                "sciel_exercised": true,
+                "c6_bound": 1.1479888965092757,
+                "combined_score": 0.9909977300808179,
+                "route": "upstream_adapter_with_published_warm_start",
+                "suite_seed_verified": false
+              }
+            }
+          }
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified.",
-      "The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search."
+      "The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search.",
+      "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+      "Integer-domain checks occur before casts. Pair-set cardinalities use overflow-safe Python integers; the derived logarithmic ratio retains source tolerance(atol1e-8,rtol1e-5). The unchanged original JAX seed needs a separately measured4GiB CPU profile; no high-memory capability is granted by this metadata."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
-      "integrity_risks": [],
-      "execution_tested": true,
-      "recovery_evidence": {
-        "date": "2026-09-19",
-        "seed": "known published AlphaEvolve solution_1",
-        "original_search_reproduced": false,
-        "report": "docs/TASKS.md",
-        "sciel_exercised": true,
-        "c6_bound": 1.1479888965092757,
-        "combined_score": 0.9909977300808179,
-        "route": "upstream_adapter_with_published_warm_start",
-        "suite_seed_verified": false
-      }
+      "integrity_risks": [
+        "Integer-domain checks occur before casts. Pair-set cardinalities use overflow-safe Python integers; the derived logarithmic ratio retains source tolerance(atol1e-8,rtol1e-5). The unchanged original JAX seed needs a separately measured4GiB CPU profile; no high-memory capability is granted by this metadata."
+      ],
+      "execution_tested": false
     },
     "source_hashes": {
       "examples/alphaevolve_math_problems/sums_diffs_finite_sets/evaluator.py": "bf3c4ff0e11abe294b8f5d8c54090e2c701c9da25c52e693057c60f25aa96661",
@@ -183177,7 +183256,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -183190,21 +183269,32 @@
           "py:numpy",
           "py:optax"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "autocorrelation_c3",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "a5f2a99d7e13c99d85201b4f0ebbef6839c4816ef7e0456b5bcfc4ccce3fe222",
+          "verifier": "finite signed vector; nonzero integral; same-call maximum absolute convolution ratio at absolute tolerance1e-3",
+          "validity_key": "arena_valid",
+          "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
       "The evaluator uses maximum absolute self-convolution and the stored benchmark 1.4556427953745406. Treat this as the pinned implementation contract; correspondence to differently stated paper formulas is not asserted.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+      "Signed values are allowed. The original maximum-absolute convolution and absolute tolerance1e-3 are preserved; correspondence to a differently stated paper formula is not asserted."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [
-        "The evaluator uses maximum absolute self-convolution and the stored benchmark 1.4556427953745406. Treat this as the pinned implementation contract; correspondence to differently stated paper formulas is not asserted."
+        "Signed values are allowed. The original maximum-absolute convolution and absolute tolerance1e-3 are preserved; correspondence to a differently stated paper formula is not asserted."
       ],
       "execution_tested": false
     },
@@ -183331,7 +183421,7 @@
       "domain": "mathematics",
       "area": "mathematics",
       "data": "none",
-      "verification": "exact",
+      "verification": "sampled",
       "reference": "none",
       "resources": [
         "cpu"
@@ -184167,7 +184257,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -184183,21 +184273,34 @@
           "py:sympy",
           "py:tqdm"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "sign_uncertainty",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "4f2b51dc876777dfbc50f3ec75d278e974fc76e1ad4f2a42daa790b374062f45",
+          "verifier": "finite real Hermite coefficients; even polynomial vanishing at origin with positive leading term; same-call strict symbolic verifier and numerical radius/score binding",
+          "validity_key": "arena_valid",
+          "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
       "The original requirements.txt omits jax and optax imported by the baseline; both are included in this package’s actual dependency union.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+      "The original float conversion and binary-rational Hermite construction are preserved. Same-call strict verifier consistency uses atol=rtol=1e-9; this is finite-construction evidence, not an independently certified continuous uncertainty bound.",
+      "The unchanged strict symbolic verifier can reject otherwise meaningful coefficients when SymPy returns an explicit radical instead of a root object exposing eval_rational. Original verifier errors remain failed evaluations; the adapter does not silently repair the scorer."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [
-        "The original requirements.txt omits jax and optax imported by the baseline; both are included in this package’s actual dependency union."
+        "The original float conversion and binary-rational Hermite construction are preserved. Same-call strict verifier consistency uses atol=rtol=1e-9; this is finite-construction evidence, not an independently certified continuous uncertainty bound.",
+        "The unchanged strict symbolic verifier can reject otherwise meaningful coefficients when SymPy returns an explicit radical instead of a root object exposing eval_rational. Original verifier errors remain failed evaluations; the adapter does not silently repair the scorer."
       ],
       "execution_tested": false
     },
@@ -184341,7 +184444,7 @@
       "domain": "mathematics",
       "area": "mathematics",
       "data": "none",
-      "verification": "exact",
+      "verification": "sampled",
       "reference": "none",
       "resources": [
         "cpu"

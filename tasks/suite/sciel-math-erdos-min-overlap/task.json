@@ -79,7 +79,7 @@
       "Direct evaluation of original candidate contract; model-driven search is configured separately."
     ],
     "suite": {
-      "protocol": "original",
+      "protocol": "recreated",
       "family": "sciel_copy",
       "evaluator": "evaluator.py",
       "initial_program": "initial_program.py",
@@ -93,19 +93,32 @@
         "py:optax",
         "py:tqdm"
       ],
-      "timeout": 600
+      "timeout": 600,
+      "validity_key": "arena_valid",
+      "adaptation": {
+        "schema": "arena.task-feasibility-adapter/1",
+        "contract": "minimum_overlap",
+        "upstream_evaluator_path": "upstream_evaluator.py",
+        "upstream_evaluator_sha256": "17cc5e63ab3afc530adf4a4459a576e026430fd0b6e1704d18978be771755517",
+        "verifier": "finite values in[0,1]; integral1 within source tolerance; independently recomputed discrete overlap correlation",
+        "validity_key": "arena_valid",
+        "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction."
+      }
     }
   },
   "limitations": [
     "Source-inspected SCiEL example; not a reproduced paper result.",
     "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+    "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+    "Mass tolerance:atol1e-3,rtol1e-5. Correlation tolerance:atol1e-4,rtol1e-5. Discrete numerical feasibility is not an independent continuous-bound proof."
   ],
   "validation": {
-    "level": "source_inspected",
+    "level": "source_inspected_with_feasibility_adapter",
     "upstream_reproduction": false,
     "independent_verification": false,
-    "integrity_risks": [],
+    "integrity_risks": [
+      "Mass tolerance:atol1e-3,rtol1e-5. Correlation tolerance:atol1e-4,rtol1e-5. Discrete numerical feasibility is not an independent continuous-bound proof."
+    ],
     "execution_tested": false
   },
   "source_hashes": {
@@ -227,7 +240,7 @@
     "domain": "mathematics",
     "area": "mathematics",
     "data": "none",
-    "verification": "exact",
+    "verification": "sampled",
     "reference": "none",
     "resources": [
       "cpu"

@@ -1,6 +1,6 @@
 {
   "schema": "arena.insights/1",
-  "catalog_digest": "4095747e9f76ff837576d6fd276c45727453aae95dcadc51866ef24bc1b483ce",
+  "catalog_digest": "3d31f26e217ca0e36a104f09d1f8111200ca9ff60bca1a5c253ecac2f557baf1",
   "taxonomy_digest": "03627fbe5699706ef604d15936503b6006b21de7ad518adb100d5c88815784c1",
   "sources": [
     {
@@ -10,11 +10,11 @@
       "repository_url": "https://github.com/Doldrums/arena",
       "revision": "main",
       "manifest_path": "registry/task-library-manifest.json",
-      "manifest_sha256": "aeececf625ff7d4c7d22123ed2129a2b7c0215c7ccd1e1c50777b01ab80ba4ac",
+      "manifest_sha256": "a4f04678232df8b7c61ebb850e90c99406e3762487f3e0285b5eec769f98ad0e",
       "catalog_path": "catalog/tasks.json",
       "index_path": "suite/index.json",
-      "catalog_sha256": "b6709b3b6d38c56f99853bc176e93a7822dd142a550b3b36af835e0250d3e276",
-      "index_sha256": "e7a3b4f555e09945cb4feb28c9aa0039387086f648eeb9162f9f8ee98bbbc475"
+      "catalog_sha256": "22388f9714e69bc29dc14ee03f46dc80f5ba79697f96dd08c01264628c0d0b96",
+      "index_sha256": "62f8296cbc37d2279724b95c683b69afe5d679a380ce3d873f1569245cfa9557"
     }
   ],
   "denominator": {
@@ -591,8 +591,8 @@
     {
       "id": "original",
       "label": "Original protocol",
-      "total": 117,
-      "percentage": 12.2,
+      "total": 109,
+      "percentage": 11.4,
       "description": "Source labels the evaluator protocol original; this is not Arena conformance or runtime verification."
     },
     {
@@ -605,8 +605,8 @@
     {
       "id": "recreated",
       "label": "Recreated protocol",
-      "total": 491,
-      "percentage": 51.2,
+      "total": 499,
+      "percentage": 52.0,
       "description": "Recreated evaluators without the source's recreated_verified designation."
     },
     {
@@ -13111,7 +13111,7 @@
       "rationale": "The SCiEL mathematical package constructs an extremal graph, set, function, polynomial or geometric configuration; specific non-construction exceptions precede this rule.",
       "evidence": {
         "task_name": "SCiEL: Matrix multiplication rank, intended shape ⟨2,4,5⟩",
-        "description": "Construct tensor factors for rectangular matrix multiplication and minimize the reported rank. The original evaluator trusts candidate dimensions and can skip verification on empty arrays.",
+        "description": "Construct real factors for the fixed matrix-multiplication tensor of shape<2,4,5>; verify computed tensor identity and minimize rank under the declared numerical protocol.",
         "family": "sciel_copy",
         "paper_ids": [
           "sciel-supplement"

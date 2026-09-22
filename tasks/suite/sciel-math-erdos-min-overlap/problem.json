@@ -1,5 +1,5 @@
 {
-  "protocol": "original",
+  "protocol": "recreated",
   "family": "sciel_copy",
   "direction": "maximize",
   "contract": "See evaluator.py and README.upstream.md.",
@@ -11,13 +11,16 @@
     "py:tqdm"
   ],
   "timeout": 600,
-  "notes": [],
+  "notes": [
+    "Mass tolerance:atol1e-3,rtol1e-5. Correlation tolerance:atol1e-4,rtol1e-5. Discrete numerical feasibility is not an independent continuous-bound proof."
+  ],
   "entry": {
     "callable": "evaluate",
     "env": {},
     "seed": "initial_program.py",
     "score_key": "combined_score",
-    "error_key": "error"
+    "error_key": "error",
+    "validity_key": "arena_valid"
   },
   "origin": {
     "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
@@ -29,7 +32,7 @@
       "requirements.txt": "af902634ec0c0bb998bee552f78fbbd77aef7b26d3d94226a60c512b70a6b541"
     }
   },
-  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/alphaevolve_math_problems/erdos_min_overlap` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "protocol_description": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction. The seed and source configuration are unchanged.",
   "id": "sciel-math-erdos-min-overlap",
   "name": "SCiEL: Erdős minimum overlap",
   "paper_ids": [
@@ -54,7 +57,8 @@
   "limitations": [
     "Source-inspected SCiEL example; not a reproduced paper result.",
     "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+    "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+    "Mass tolerance:atol1e-3,rtol1e-5. Correlation tolerance:atol1e-4,rtol1e-5. Discrete numerical feasibility is not an independent continuous-bound proof."
   ],
   "evaluator": "evaluator.py",
   "initial_program": "initial_program.py",
@@ -72,7 +76,7 @@
     "domain": "mathematics",
     "area": "mathematics",
     "data": "none",
-    "verification": "exact",
+    "verification": "sampled",
     "reference": "none",
     "resources": [
       "cpu"
@@ -97,5 +101,14 @@
     "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
     "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
     "criterion": "primary_research_goal"
+  },
+  "adaptation": {
+    "schema": "arena.task-feasibility-adapter/1",
+    "contract": "minimum_overlap",
+    "upstream_evaluator_path": "upstream_evaluator.py",
+    "upstream_evaluator_sha256": "17cc5e63ab3afc530adf4a4459a576e026430fd0b6e1704d18978be771755517",
+    "verifier": "finite values in[0,1]; integral1 within source tolerance; independently recomputed discrete overlap correlation",
+    "validity_key": "arena_valid",
+    "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction."
   }
 }

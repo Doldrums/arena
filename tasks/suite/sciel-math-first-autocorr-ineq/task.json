@@ -77,7 +77,7 @@
       "Direct evaluation of original candidate contract; model-driven search is configured separately."
     ],
     "suite": {
-      "protocol": "original",
+      "protocol": "recreated",
       "family": "sciel_copy",
       "evaluator": "evaluator.py",
       "initial_program": "initial_program.py",
@@ -90,19 +90,32 @@
         "py:numpy",
         "py:optax"
       ],
-      "timeout": 600
+      "timeout": 600,
+      "validity_key": "arena_valid",
+      "adaptation": {
+        "schema": "arena.task-feasibility-adapter/1",
+        "contract": "autocorrelation_c1",
+        "upstream_evaluator_path": "upstream_evaluator.py",
+        "upstream_evaluator_sha256": "abfaec6dec20c41242f89c8561a952e27c3d8ee52a28e64f662b48580bcefa51",
+        "verifier": "finite nonnegative vector; nonzero mass; same-call full convolution ratio at absolute tolerance1e-6",
+        "validity_key": "arena_valid",
+        "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction."
+      }
     }
   },
   "limitations": [
     "Source-inspected SCiEL example; not a reproduced paper result.",
     "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+    "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+    "C1 uses the original finite convolution representation and absolute consistency tolerance1e-6; validity does not certify a continuous inequality."
   ],
   "validation": {
-    "level": "source_inspected",
+    "level": "source_inspected_with_feasibility_adapter",
     "upstream_reproduction": false,
     "independent_verification": false,
-    "integrity_risks": [],
+    "integrity_risks": [
+      "C1 uses the original finite convolution representation and absolute consistency tolerance1e-6; validity does not certify a continuous inequality."
+    ],
     "execution_tested": false
   },
   "source_hashes": {
@@ -228,7 +241,7 @@
     "domain": "mathematics",
     "area": "mathematics",
     "data": "none",
-    "verification": "exact",
+    "verification": "sampled",
     "reference": "none",
     "resources": [
       "cpu"
