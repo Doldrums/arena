@@ -1,31 +1,18 @@
-"""dbpedia-entity (RankEvolve).
-
-Protocol: unsupported (dataset).
-Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.
-
-The evaluator therefore returns a failure result with ``unsupported: true``
-so that harnesses can recognise the task; the interface the paper expects from
-a candidate is documented in initial_program.py and README.md.
-"""
-from __future__ import annotations
-
-import sys
+"""Pinned RankEvolve candidate runner and independent binary-qrel grading."""
 from pathlib import Path
+import sys
 
-SUITE_LIB = Path(__file__).resolve().parents[1] / "_lib"
-if str(SUITE_LIB) not in sys.path:
-    sys.path.insert(0, str(SUITE_LIB))
-
-from autoresearch_suite import runtime  # noqa: E402
-
-DIRECTION = "maximize"
-CATEGORY = 'dataset'
-REASON = 'Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.'
-REQUIRES = ["dataset:BEIR"]
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent / "_lib"))
+from autoresearch_suite import runtime
+from rankevolve.evaluator import evaluate as run_evaluation
 
 
 def evaluate(program_path="initial_program.py"):
-    return runtime.failure("unsupported in this suite: " + REASON, DIRECTION, unsupported=True, category=CATEGORY, requires=REQUIRES)
+    try:
+        return run_evaluation(program_path, HERE)
+    except Exception as error:
+        return runtime.failure(f"{type(error).__name__}: {error}", "maximize", valid=None)
 
 
 if __name__ == "__main__":

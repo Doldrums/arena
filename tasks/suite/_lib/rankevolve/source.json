@@ -1,0 +1,49 @@
+{
+  "repository": "https://github.com/fangchenli/ranking-evolved",
+  "commit": "8f664bcd5123bac2397f0c1bfbdb347ca3233483",
+  "files": {
+    "tasks/bm25/evaluator.py": "c63a3aa45265b18edbbc705eeb929a4f2a28cee88b316fe1f963be198c596c4b",
+    "tasks/bm25/library.py": "d82ba2f643d2bae14ac42b09f0d7a662157e4431e3898b01e7480831b0b238f6",
+    "tasks/bm25/seeds/freeform.py": "423084a12afd49b21b558848b47de6fe8475f8493c9dfe4f1a707d08ceeca473",
+    "tasks/_shared/metrics.py": "dfaa7d629911f1176ddf7e6a54ad8230b35e46e7fce4c24774192257d3f2cd49",
+    "tasks/_shared/datasets.py": "3002d81d3fd8a9b52af1b5501d0d35cda17ea6a2f3b210c4787641a707d27bcc",
+    "uv.lock": "6e10c59c51a6edeb3953173794da7364c7f859451d3a49882f8db7e0503a1cb5"
+  },
+  "retained": "seed and metrics byte-identical; seed_library contains byte-identical original definition spans",
+  "tokenizer_library_spans": [
+    [
+      61,
+      175
+    ],
+    [
+      194,
+      485
+    ]
+  ],
+  "dependencies": {
+    "numpy": "2.3.1",
+    "scipy": "1.16.3"
+  },
+  "not_required_for_this_path": [
+    "java",
+    "pyserini",
+    "datasets",
+    "beir"
+  ],
+  "preparation_only": {
+    "ir-datasets": "0.5.11"
+  },
+  "metric": "0.8*Recall@100+0.2*positive-qrel binary-nDCG@10",
+  "historical_baselines_inherited": false,
+  "preparation_reference": {
+    "url": "https://raw.githubusercontent.com/beir-cellar/beir/v2.2.0/beir/datasets/data_loader.py",
+    "sha256": "bcb39af11b73861eda44f3083b399ba78c46ef11c25d56d8e195572af0be336f",
+    "query_order": "GenericDataLoader.load filters queries in qrel insertion order"
+  },
+  "tokenizer_contract": {
+    "candidate_api": "LuceneTokenizer() callable",
+    "seed_implementation": "byte-preserved pure-Python regex/Porter tokenizer",
+    "candidate_may_evolve_tokenizer": true,
+    "java_lucene_equivalence_claimed": false
+  }
+}

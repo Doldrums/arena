@@ -7,7 +7,7 @@
 **An arena for research on recursive self-improvement.**
 
 [![959 tasks](.github/assets/tasks-badge.svg)](tasks/suite)
-[![689 evaluator definitions](.github/assets/evaluators-badge.svg)](registry/catalog.json)
+[![702 evaluator definitions](.github/assets/evaluators-badge.svg)](registry/catalog.json)
 [![98 research papers](.github/assets/papers-badge.svg)](registry/participant-corpus.json)
 [![Python 3.11+](.github/assets/python-badge.svg)](#quick-start)
 [![Hugging Face mirror](.github/assets/huggingface-badge.svg)](https://huggingface.co/datasets/autoresearchTasksSciel/autoresearch-tasks)
@@ -29,18 +29,18 @@ Researchers can inspect the problems a system works on, follow changes to its co
 
 ## Release snapshot — v0.1.0
 
-As of **22 September 2026**, the collection contains **959 task packages** across **151 task families** and **11 research domains**, drawing on a **98-paper research corpus** and supplementary scientific collections.
+As of **22 September 2026**, the collection contains **959 task packages** across **152 task families** and **11 research domains**, drawing on a **98-paper research corpus** and supplementary scientific collections.
 
-Our contribution is turning research problems into task packages with a shared evaluation interface. Of the **689 packages with executable evaluator definitions**, **84.18% use evaluators implemented or adapted in the task library**; **15.82% reuse upstream evaluators**.
+Our contribution is turning research problems into task packages with a shared evaluation interface. Of the **702 packages with executable evaluator definitions**, **84.47% use evaluators implemented or adapted in the task library**; **15.53% reuse upstream evaluators**.
 
 | How evaluation is provided | Task packages | Share of the full catalog |
 | --- | ---: | ---: |
-| Implemented or adapted in the task library | **580** | **60.48%** |
+| Implemented or adapted in the task library | **593** | **61.84%** |
 | Reused from upstream implementations | 109 | 11.37% |
-| Research tasks awaiting evaluation integration | 270 | 28.15% |
+| Research tasks awaiting evaluation integration | 257 | 26.80% |
 | **Total** | **959** | **100.00%** |
 
-Evaluator definitions cover **71.85%** of the catalog. **81** adapted definitions are recorded as verified reconstructions. Recorded numeric seed baselines are available for **646 packages (67.36%)**; **75 (7.82%)** include published numeric references.
+Evaluator definitions cover **73.20%** of the catalog. **81** adapted definitions are recorded as verified reconstructions. Recorded numeric seed baselines are available for **646 packages (67.36%)**; **75 (7.82%)** include published numeric references.
 
 Counts refer to task packages, including distinct parameter settings and protocols. The split describes evaluator implementation; validation and runtime requirements are recorded separately for each task.
 

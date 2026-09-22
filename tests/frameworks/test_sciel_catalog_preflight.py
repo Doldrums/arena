@@ -69,8 +69,8 @@ def test_every_catalog_record_remains_visible_and_cpu_candidates_are_manifest_bo
     assert len(rows) == len(catalog["tasks"]) == 959
     assert [row["task_id"] for row in rows] == [t["id"] for t in catalog["tasks"]]
     assert Counter(row["status"] for row in rows) == {
-        "seed_check_pending": 349, "environment_preparation_pending": 319,
-        "evaluation_integration_pending": 270, "runtime_integration_pending": 21}
+        "seed_check_pending": 349, "environment_preparation_pending": 332,
+        "evaluation_integration_pending": 257, "runtime_integration_pending": 21}
     assert all(row["status"] != "seed_verified" for row in rows)
     for row in rows:
         if row["status"] == "seed_check_pending":
@@ -83,7 +83,7 @@ def test_every_catalog_record_remains_visible_and_cpu_candidates_are_manifest_bo
         assert len(selected) == 959
         assert Counter(row["status"] for row in selected) == {
             "seed_check_pending": eligible, "seed_check_deferred": deferred,
-            "environment_preparation_pending": 319, "evaluation_integration_pending": 270,
+            "environment_preparation_pending": 332, "evaluation_integration_pending": 257,
             "runtime_integration_pending": 21}
 
 

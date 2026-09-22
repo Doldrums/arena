@@ -8,22 +8,22 @@
       "repository_url": "https://github.com/Doldrums/arena",
       "revision": "main",
       "manifest_path": "registry/task-library-manifest.json",
-      "manifest_sha256": "a4f04678232df8b7c61ebb850e90c99406e3762487f3e0285b5eec769f98ad0e",
+      "manifest_sha256": "1f94ea8e2bab66e1a509e05430f7ed13bf03e4f94d00664b65f21a4669d74d68",
       "catalog_path": "catalog/tasks.json",
       "index_path": "suite/index.json",
-      "catalog_sha256": "22388f9714e69bc29dc14ee03f46dc80f5ba79697f96dd08c01264628c0d0b96",
-      "index_sha256": "62f8296cbc37d2279724b95c683b69afe5d679a380ce3d873f1569245cfa9557"
+      "catalog_sha256": "5350af7d4f47fe0c75e49538eff7ddf177011411f56705b5552cc85e9bd8375e",
+      "index_sha256": "37c12cdf17e29c2eec0f7e7261bbdf1631bddf240bf19a5be04f32ed97800002"
     }
   ],
   "summary": {
     "task_count": 959,
-    "executable_count": 689,
-    "unsupported_count": 270,
+    "executable_count": 702,
+    "unsupported_count": 257,
     "protocol_counts": {
       "original": 109,
       "recreated_verified": 81,
-      "recreated": 499,
-      "unsupported": 270
+      "recreated": 512,
+      "unsupported": 257
     },
     "runtime_readiness": "not_verified"
   },
@@ -41659,27 +41659,29 @@
       "id": "rankevolve-climate-fever",
       "name": "climate-fever",
       "description": "climate-fever task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:BEIR"
+        "file:/opt/arena-data/rankevolve/climate-fever/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-climate-fever/problem.json",
         "path": "suite/rankevolve-climate-fever/problem.json",
-        "sha256": "2321c4c1d8bb0c7c6b173856e204dc738c23c55a43e63a62ac2b22374613a13b"
+        "sha256": "61ee3ecc0153abd40be7fc32d9a9526fa00bc1203316be8abfa5dd4471dd9493"
       },
       "provenance": {
         "kind": "upstream",
@@ -41696,9 +41698,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "BEIR",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
@@ -41715,27 +41723,29 @@
       "id": "rankevolve-cqadupstack",
       "name": "cqadupstack",
       "description": "cqadupstack task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:BEIR"
+        "file:/opt/arena-data/rankevolve/cqadupstack/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-cqadupstack/problem.json",
         "path": "suite/rankevolve-cqadupstack/problem.json",
-        "sha256": "d4f0fe08bd57d74ac251f9fe9a6b1c7be2e4d6411ed45e3b49b3df60e0953647"
+        "sha256": "46e85a6df6bbe71e8fc18404873fbf4507689271a8e4966b3caf906de34f6d4d"
       },
       "provenance": {
         "kind": "upstream",
@@ -41752,9 +41762,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "BEIR",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
@@ -41771,27 +41787,29 @@
       "id": "rankevolve-dbpedia-entity",
       "name": "dbpedia-entity",
       "description": "dbpedia-entity task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:BEIR"
+        "file:/opt/arena-data/rankevolve/dbpedia-entity/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-dbpedia-entity/problem.json",
         "path": "suite/rankevolve-dbpedia-entity/problem.json",
-        "sha256": "90a1b64f216cd534bf8722435cc5719b6b164b8a5c9ddca1c7eb32fbf17ab2a8"
+        "sha256": "5aab58e0cf5d42958f523af60b507dbfde5c4118caf6af4da7083346d3390639"
       },
       "provenance": {
         "kind": "upstream",
@@ -41808,9 +41826,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "BEIR",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
@@ -41827,27 +41851,29 @@
       "id": "rankevolve-dl19",
       "name": "dl19",
       "description": "dl19 task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:TREC DL"
+        "file:/opt/arena-data/rankevolve/dl19/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the TREC DL data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-dl19/problem.json",
         "path": "suite/rankevolve-dl19/problem.json",
-        "sha256": "4df8cb4a0ca089354ccdaa3d211f74ac9a27ca2423e8232b253f9b47255c70d4"
+        "sha256": "f9a953783ef6376053fb3c40f4e8d7a7add9f4b7002dce65c6579663d52333cb"
       },
       "provenance": {
         "kind": "upstream",
@@ -41864,9 +41890,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "TREC DL",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
@@ -41883,27 +41915,29 @@
       "id": "rankevolve-dl20",
       "name": "dl20",
       "description": "dl20 task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:TREC DL"
+        "file:/opt/arena-data/rankevolve/dl20/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the TREC DL data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-dl20/problem.json",
         "path": "suite/rankevolve-dl20/problem.json",
-        "sha256": "20905a63b016419f9b907731813d9571f3d4bb6669f5eaf535f268854fbb886c"
+        "sha256": "5875b04dfc1eea3d894806960e68c5611728cf236fcee6da50cd346add1db59c"
       },
       "provenance": {
         "kind": "upstream",
@@ -41920,9 +41954,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "TREC DL",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
@@ -42065,27 +42105,29 @@
       "id": "rankevolve-fever",
       "name": "fever",
       "description": "fever task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:BEIR"
+        "file:/opt/arena-data/rankevolve/fever/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-fever/problem.json",
         "path": "suite/rankevolve-fever/problem.json",
-        "sha256": "4132ceec29f1ca325dab0e7f528ba360f9ccb7bf3c5b66a44a8915ece5ec9728"
+        "sha256": "32c7915b803ce73dc6765201b749fafca1d99456b2709a9c3fb4e843e629f1e1"
       },
       "provenance": {
         "kind": "upstream",
@@ -42102,9 +42144,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "BEIR",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
@@ -42121,27 +42169,29 @@
       "id": "rankevolve-fiqa",
       "name": "fiqa",
       "description": "fiqa task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:BEIR"
+        "file:/opt/arena-data/rankevolve/fiqa/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-fiqa/problem.json",
         "path": "suite/rankevolve-fiqa/problem.json",
-        "sha256": "ca8e4a419f19408685cb91953d6b11458c57717f2b3df43967f595e571663ab0"
+        "sha256": "534dfa83cacad6547f8b661f2cbc8c154fff14b73ee8e686e85a1866d1c96c09"
       },
       "provenance": {
         "kind": "upstream",
@@ -42158,9 +42208,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "BEIR",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
@@ -42177,27 +42233,29 @@
       "id": "rankevolve-hotpotqa",
       "name": "hotpotqa",
       "description": "hotpotqa task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:BEIR"
+        "file:/opt/arena-data/rankevolve/hotpotqa/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-hotpotqa/problem.json",
         "path": "suite/rankevolve-hotpotqa/problem.json",
-        "sha256": "244543919a77559da5b71daf12d5d996b40aad38448c0179b563978f5fc35d5c"
+        "sha256": "e4f3a63862f85075497a0f7d99630e41d4a439c89c4df9e03a8c6990434c625b"
       },
       "provenance": {
         "kind": "upstream",
@@ -42214,9 +42272,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "BEIR",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
@@ -42358,27 +42422,29 @@
       "id": "rankevolve-nq",
       "name": "nq",
       "description": "nq task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:BEIR"
+        "file:/opt/arena-data/rankevolve/nq/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-nq/problem.json",
         "path": "suite/rankevolve-nq/problem.json",
-        "sha256": "f360d47babec3e72a97a0d463b1fcd60b482c9cf465ae8ccf168b28d2f0d78b0"
+        "sha256": "fd822502565288924d4175e9fd8a6256d7be44a27a1f6c032d82312e7ef24afb"
       },
       "provenance": {
         "kind": "upstream",
@@ -42395,9 +42461,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "BEIR",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
@@ -42540,27 +42612,29 @@
       "id": "rankevolve-quora",
       "name": "quora",
       "description": "quora task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:BEIR"
+        "file:/opt/arena-data/rankevolve/quora/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-quora/problem.json",
         "path": "suite/rankevolve-quora/problem.json",
-        "sha256": "9b18e6f4a0f2e35f28c8d47aeae64ff9fd106ab4634599689293ade77c81cffa"
+        "sha256": "5063210754d69cdc80177fe05399a36010039319dd3b28429e8ecae20ec5a8b3"
       },
       "provenance": {
         "kind": "upstream",
@@ -42577,9 +42651,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "BEIR",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
@@ -42659,27 +42739,29 @@
       "id": "rankevolve-scidocs",
       "name": "scidocs",
       "description": "scidocs task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:BEIR"
+        "file:/opt/arena-data/rankevolve/scidocs/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-scidocs/problem.json",
         "path": "suite/rankevolve-scidocs/problem.json",
-        "sha256": "c79286092a0461bfc860f6c35152dfa549389bf63789352fd9560288446cb849"
+        "sha256": "f58bf90fdc5f2a84223f9c3e4f0ad2a9836ec53bf4aa6ddf8ff5b62437766fcf"
       },
       "provenance": {
         "kind": "upstream",
@@ -42696,9 +42778,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "BEIR",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
@@ -43029,27 +43117,29 @@
       "id": "rankevolve-trec-covid",
       "name": "trec-covid",
       "description": "trec-covid task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:BEIR"
+        "file:/opt/arena-data/rankevolve/trec-covid/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-trec-covid/problem.json",
         "path": "suite/rankevolve-trec-covid/problem.json",
-        "sha256": "763cf9b1b12c7fa328f4ae6e07a2bda8c62e27154420a98935e1590a39867a14"
+        "sha256": "37ac8b71395d45ea329efb1885ca51775630b654b6636c578b1380353ccf5e04"
       },
       "provenance": {
         "kind": "upstream",
@@ -43066,9 +43156,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "BEIR",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",
@@ -43085,27 +43181,29 @@
       "id": "rankevolve-webis-touche2020",
       "name": "webis-touche2020",
       "description": "webis-touche2020 task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-      "family": null,
-      "protocol": "unsupported",
-      "executable": false,
+      "family": "rankevolve_binary_retrieval",
+      "protocol": "recreated",
+      "executable": true,
       "declared_status": "requires_setup",
       "runtime_readiness": "not_verified",
       "metric": "combined_score",
       "direction": "maximize",
       "requirements": [
-        "dataset:BEIR"
+        "file:/opt/arena-data/rankevolve/webis-touche2020/manifest.json",
+        "py:numpy",
+        "py:scipy"
       ],
       "paper_ids": [
         "rankevolve"
       ],
       "source_id": "arena-tasks",
-      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite.",
-      "unsupported_category": "dataset",
-      "contract": null,
+      "unsupported_reason": null,
+      "unsupported_category": null,
+      "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/rankevolve-webis-touche2020/problem.json",
         "path": "suite/rankevolve-webis-touche2020/problem.json",
-        "sha256": "571ee0db4d96f102e927deb565a45996e0aecce887597cf034585cda663a179f"
+        "sha256": "e397d221282d1364524c5b2222b3bd376c2710ad5a55d530dcc5a8c917dcb88e"
       },
       "provenance": {
         "kind": "upstream",
@@ -43122,9 +43220,15 @@
           }
         ],
         "limitations": [
-          "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+          "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+          "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+          "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+          "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+          "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+          "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+          "No published score or old evaluator baseline is inherited by this adapted protocol."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_candidate_boundary",
         "upstream_reproduction": false,
         "benchmark": "BEIR",
         "paper_metric": "Recall@100; nDCG@10; fitness 0.8*Recall@100+0.2*nDCG@10",

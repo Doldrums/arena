@@ -11,7 +11,7 @@ import importlib.util
 from pathlib import Path
 import sys
 
-from arena_construction_capture import _snapshot
+from arena_jax_snapshot import snapshot as _snapshot
 from arena_jax_checks import check_jax_construction
 
 
