@@ -132,6 +132,8 @@ Keep native logs and evidence immutable outside the repository. Inspect them wit
 
 Results should expose scores, budgets, elapsed time, measured calls and recorded changes to research cells or tools where available. Report the denominator and evidence source. Do not fill missing measurements, combine incompatible protocols or turn an observed association into a causal RSI claim.
 
+Elapsed time stops at a recorded terminal boundary. Keep provider-reported USD, historical token-rate estimates and amounts without verified provenance separate. A subscription token does not establish zero run cost. Without CPU/infrastructure receipts and compatible baseline measurements, total-cost savings are unknown. An engine HTTP status alone does not distinguish a gateway error from an upstream error.
+
 Changes to published snapshots and deployments require review independently of engine version registration.
 
 ## Running the services
@@ -151,6 +153,16 @@ python -m arena.control worker --config /srv/arena/control.json --concurrency 4
 The worker command executes authorized queue entries. Provision Linux isolation, cgroups, root-owned brokers, model credentials and resource limits before starting it. Choose concurrency according to evaluator CPU/RAM requirements and provider quotas. Deployment units and setup commands are in `scripts/deployment/`.
 
 Use `python -m arena.control create-key --help` for scoped credentials and quotas. Treat its output as a secret. Execution access is separate from Cloudflare sign-in; request it through the board or [arina.kharlamova@mbzuai.ac.ae](mailto:arina.kharlamova@mbzuai.ac.ae).
+
+### SCiEL research profiles
+
+`research.enabled` enables conclusions and reflections. Executable cells and tools additionally require `research_tools.enabled` and the native Docker executor. Results collected with tools disabled remain a distinct experimental profile.
+
+`scripts/deployment/prepare_sciel_catalog_campaign.py` defaults to foreground research and requires `--research-tool-image-id` with an immutable image ID. It enables native compact lesson memory, 80 auxiliary calls, bounded conclusion repair and foreground tools, preserving the 16-evaluation/32-iteration/three-confirmation protocol. An intentional tools-disabled comparison uses `--research-mode code-search-baseline`. The auxiliary cap is finite headroom, not a guarantee against skipped analysis. Compact cards retain evidence references but omit some prompt detail; verify actual delivery in subsequent prompts.
+
+The separate `arena-research-staging` and `arena-research-tools` services use a reviewed immutable release. Pin both the Python path and staging script to that release. Install exact native runner/loader files read-only and the executable CLI router with `#!/usr/local/bin/python`; pinned worker images provide Docker at `/usr/local/bin/docker`. The engine broker's root-owned `research_tools` grant binds the CLI bytes, socket, tool image and exact pilot configuration hashes. Starting this service does not authorize a configuration or unpause the queue.
+
+The executor permits one foreground tool per run and four globally, with no network, read-only inputs, 1 CPU, 512 MiB, 64 PIDs, bounded output and 30-second wall/20-second CPU limits. Tool code runs as UID/GID 10001 under its admitted parent cgroup. Configuration flags and inert fixtures are not proof of a functioning research loop: before bulk admission, require an actual model-authored tool, committed cell, invocation with bound lifecycle/resource receipts, observations and compact lessons delivered to a later prompt, an executed continuation, and independent canonical evaluation. Preserve failures and unknown outcomes; never automatically replay an ambiguously dispatched model request.
 
 ### Cloudflare development and deployment
 
