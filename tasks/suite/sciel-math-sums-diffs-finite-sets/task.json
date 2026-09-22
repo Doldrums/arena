@@ -30,13 +30,16 @@
     "python": ">=3.10",
     "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
     "dependencies": [
-      "numpy"
+      "numpy",
+      "jax",
+      "tqdm"
     ],
     "environment_variables": [],
     "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
     "notes": [
       "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
-      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+      "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+      "The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search."
     ]
   },
   "evaluation": {
@@ -94,7 +97,9 @@
       "score_key": "combined_score",
       "error_key": "error",
       "requires": [
-        "py:numpy"
+        "py:numpy",
+        "py:jax",
+        "py:tqdm"
       ],
       "timeout": 600
     }
@@ -103,7 +108,7 @@
     "Source-inspected SCiEL example; not a reproduced paper result.",
     "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
     "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified.",
-    "The bounded seed is a known published AlphaEvolve construction, not the original SCiEL simulated-annealing seed. Its score is not a newly discovered result; the source JAX search remains archived and was not reproduced."
+    "The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search."
   ],
   "validation": {
     "level": "source_inspected",
@@ -118,7 +123,9 @@
       "report": "docs/TASKS.md",
       "sciel_exercised": true,
       "c6_bound": 1.1479888965092757,
-      "combined_score": 0.9909977300808179
+      "combined_score": 0.9909977300808179,
+      "route": "upstream_adapter_with_published_warm_start",
+      "suite_seed_verified": false
     }
   },
   "source_hashes": {

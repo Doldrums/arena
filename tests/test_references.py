@@ -37,13 +37,22 @@ def test_full_coverage_and_honest_evidence_counts(snapshot, catalog):
     summary = snapshot["summary"]
     assert summary["task_count"] == 959
     assert summary["tasks_with_published_reference"] == 75
-    assert summary["tasks_with_recorded_baseline"] == 667
+    assert summary["tasks_with_recorded_baseline"] == 662
     assert summary["valid_recorded_baselines"] == 577
-    assert summary["validity_unknown_baselines"] == 90
-    assert summary["tasks_without_numeric_reference"] == 292
+    assert summary["validity_unknown_baselines"] == 85
+    assert summary["tasks_without_numeric_reference"] == 297
     assert summary["tasks_with_recorded_reproduction"] == 34
     assert summary["arena_reproduced_references"] == 0
     assert summary["current_sota_status"] == "not_assessed"
+
+
+def test_adapted_validity_contracts_do_not_inherit_original_protocol_baselines(snapshot):
+    for suffix in ("difference-bases", "finite-field-nikodym", "turan-hypergraph",
+                   "equidistant-points-convex", "erdos-discrepancy"):
+        row = task(snapshot, "sciel-math-" + suffix)
+        assert not any(anchor["kind"] == "recorded_seed_baseline" for anchor in row["anchors"])
+        assert any("different task family, protocol or direction" in note
+                   for note in row["evaluation"]["notes"])
 
 
 def test_missing_is_empty_not_zero_and_zero_is_a_real_score(snapshot):

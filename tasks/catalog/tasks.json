@@ -170381,7 +170381,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -170392,16 +170392,27 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "sidon",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "eef0349b2d83332f6a048f9f87ee03937076fae732afbe8a7ff980dfe8e53bb4",
+          "verifier": "is_sidon",
+          "validity_key": "arena_valid",
+          "scope": "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+      "The adapted Sidon contract also checks the same returned raw basis for finite integer entries and one dimension before accepting the upstream cast-and-deduplicate result. This rejects NaN or fractional inputs that the original integer cast could otherwise hide."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [],
@@ -170802,7 +170813,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -170813,16 +170824,26 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "convex_polygon",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "bbec4c4a840a2b67e7298884ab027b561c9476465cd11f508457b9df0081cd63",
+          "verifier": "is_convex_polygon",
+          "validity_key": "arena_valid",
+          "scope": "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [],
@@ -171009,7 +171030,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -171020,16 +171041,26 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "discrepancy",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "9a0c0bdec5d0f90f5e60c934f734c7915a28294e832e60a350114da0d6335716",
+          "verifier": "compute_discrepancy <= DISCREPANCY_LIMIT",
+          "validity_key": "arena_valid",
+          "scope": "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [],
@@ -172723,7 +172754,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -172734,16 +172765,26 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "nikodym",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "36c738891ee3795be4411f20e8be483e4e76b223fe714179522d57bdbc40da63",
+          "verifier": "_is_valid_nikodym",
+          "validity_key": "arena_valid",
+          "scope": "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [],
@@ -181341,13 +181382,16 @@
       "python": ">=3.10",
       "hardware": "CPU; expensive seeds and compiled kernels require separate resource budgeting.",
       "dependencies": [
-        "numpy"
+        "numpy",
+        "jax",
+        "tqdm"
       ],
       "environment_variables": [],
       "datasets": "Synthetic or mathematical inputs defined in the pinned evaluator; see upstream_contract.parameters.",
       "notes": [
         "Install the pinned SCiEL package for evaluators importing openevolve: uv sync --group benchmarks (source README).",
-        "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies."
+        "Install task-specific requirements from the pinned example requirements.txt where present; also include the actual dependency union in requirements.dependencies.",
+        "The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search."
       ]
     },
     "evaluation": {
@@ -181405,7 +181449,9 @@
         "score_key": "combined_score",
         "error_key": "error",
         "requires": [
-          "py:numpy"
+          "py:numpy",
+          "py:jax",
+          "py:tqdm"
         ],
         "timeout": 600
       }
@@ -181414,7 +181460,7 @@
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
       "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified.",
-      "The bounded seed is a known published AlphaEvolve construction, not the original SCiEL simulated-annealing seed. Its score is not a newly discovered result; the source JAX search remains archived and was not reproduced."
+      "The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search."
     ],
     "validation": {
       "level": "source_inspected",
@@ -181429,7 +181475,9 @@
         "report": "docs/TASKS.md",
         "sciel_exercised": true,
         "c6_bound": 1.1479888965092757,
-        "combined_score": 0.9909977300808179
+        "combined_score": 0.9909977300808179,
+        "route": "upstream_adapter_with_published_warm_start",
+        "suite_seed_verified": false
       }
     },
     "source_hashes": {
@@ -183140,7 +183188,7 @@
         "Direct evaluation of original candidate contract; model-driven search is configured separately."
       ],
       "suite": {
-        "protocol": "original",
+        "protocol": "recreated",
         "family": "sciel_copy",
         "evaluator": "evaluator.py",
         "initial_program": "initial_program.py",
@@ -183151,16 +183199,27 @@
         "requires": [
           "py:numpy"
         ],
-        "timeout": 600
+        "timeout": 600,
+        "validity_key": "arena_valid",
+        "adaptation": {
+          "schema": "arena.task-feasibility-adapter/1",
+          "contract": "turan",
+          "upstream_evaluator_path": "upstream_evaluator.py",
+          "upstream_evaluator_sha256": "3e2b6d700f18f5ec51ea0b5a6b79c3c3b755c0f2f3e44a9914bd40b0105b4993",
+          "verifier": "_is_tetrahedron_free",
+          "validity_key": "arena_valid",
+          "scope": "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction."
+        }
       }
     },
     "limitations": [
       "Source-inspected SCiEL example; not a reproduced paper result.",
       "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-      "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+      "Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction.",
+      "The Arena adaptation additionally requires a finite positive original weight total and a finite nonnegative normalized distribution summing to one. Finite raw weights whose sum overflows are rejected even if the original density score is finite."
     ],
     "validation": {
-      "level": "source_inspected",
+      "level": "source_inspected_with_feasibility_adapter",
       "upstream_reproduction": false,
       "independent_verification": false,
       "integrity_risks": [],

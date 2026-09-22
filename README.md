@@ -31,16 +31,16 @@ Researchers can inspect the problems a system works on, follow changes to its co
 
 As of **22 September 2026**, the collection contains **959 task packages** across **151 task families** and **11 research domains**, drawing on a **98-paper research corpus** and supplementary scientific collections.
 
-Our contribution is turning research problems into task packages with a shared evaluation interface. Of the **689 packages with executable evaluator definitions**, **81.13% use evaluators implemented or adapted in the task library**; **18.87% reuse upstream evaluators**.
+Our contribution is turning research problems into task packages with a shared evaluation interface. Of the **689 packages with executable evaluator definitions**, **81.86% use evaluators implemented or adapted in the task library**; **18.14% reuse upstream evaluators**.
 
 | How evaluation is provided | Task packages | Share of the full catalog |
 | --- | ---: | ---: |
-| Implemented or adapted in the task library | **559** | **58.29%** |
-| Reused from upstream implementations | 130 | 13.56% |
+| Implemented or adapted in the task library | **564** | **58.81%** |
+| Reused from upstream implementations | 125 | 13.03% |
 | Research tasks awaiting evaluation integration | 270 | 28.15% |
 | **Total** | **959** | **100.00%** |
 
-Evaluator definitions cover **71.85%** of the catalog. **81** adapted definitions are recorded as verified reconstructions. Recorded numeric seed baselines are available for **667 packages (69.55%)**; **75 (7.82%)** include published numeric references.
+Evaluator definitions cover **71.85%** of the catalog. **81** adapted definitions are recorded as verified reconstructions. Recorded numeric seed baselines are available for **662 packages (69.03%)**; **75 (7.82%)** include published numeric references.
 
 Counts refer to task packages, including distinct parameter settings and protocols. The split describes evaluator implementation; validation and runtime requirements are recorded separately for each task.
 
@@ -70,7 +70,7 @@ Tasks and system versions enter through GitHub PRs. Run access is granted separa
 
 ### Catalog campaigns
 
-On a provisioned Linux worker, campaigns move through four stages: **pin the release → check seeds → prepare private templates → admit bounded batches**. The inventory retains all **959 tasks**. Currently **350** match the declared CPU dependency profile; only successful seed receipts for the exact task library and evaluator image make a task eligible for preparation. Prepared templates still require their first native run to establish runtime conformance.
+On a provisioned Linux worker, campaigns move through four stages: **pin the release → check seeds → prepare private templates → admit bounded batches**. The inventory retains all **959 tasks**. Currently **349** match the declared CPU dependency profile; only successful seed receipts for the exact task library and evaluator image make a task eligible for preparation. Prepared templates still require their first native run to establish runtime conformance.
 
 1. **Pin the engine and environment.** Build the private SCiEL image with [`build_sciel_engine.py`](scripts/deployment/build_sciel_engine.py), selecting an immutable source commit and a new Arena version. The current catalog preparer targets `0.2.0+arena.a6c0d215.worker1`. Register and approve its private deployment, and pin the evaluator image by digest. [`build_catalog_cpu_image.py`](scripts/deployment/build_catalog_cpu_image.py) prepares the extended CPU dependencies with a hashed wheel lock.
 2. **Check the seeds.** Run the preflight below. It evaluates candidates without calling a model and retains tasks awaiting environment or evaluator integration in its manifest.

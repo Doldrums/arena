@@ -2,7 +2,7 @@
 
 **Paper:** SCiEL — Scientific Closed-loop Evolutionary Learning: benchmark examples (https://github.com/luciferkonn/SCiEL)\
 **Task id:** `sciel-math-turan-hypergraph`\
-**Protocol:** `original`\
+**Protocol:** `recreated`\
 **Direction:** maximize\
 
 ## Task
@@ -53,4 +53,7 @@ The evaluator prints a JSON result with `combined_score` (the value SCiEL maximi
 
 - Source-inspected SCiEL example; not a reproduced paper result.
 - The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.
-- The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified.
+- Arena adds an explicit feasibility signal from exactly one trusted original verifier call during the same evaluation. Original scoring and normalization are retained in upstream_evaluator.py. Missing or ambiguous verifier observations remain unknown; this is not an optimum, theorem, or paper reproduction.
+
+Arena adapter: _is_tetrahedron_free. Upstream evaluator SHA256: 3e2b6d700f18f5ec51ea0b5a6b79c3c3b755c0f2f3e44a9914bd40b0105b4993.
+The Arena adaptation additionally requires a finite positive original weight total and a finite nonnegative normalized distribution summing to one. Finite raw weights whose sum overflows are rejected even if the original density score is finite.
