@@ -149,9 +149,13 @@ def canonical_config(body, name, run_id, binding, config):
     for key, value in {'NanoCpus': 1_000_000_000, 'Memory': LIMITS['memory_bytes'],
                        'MemorySwap': LIMITS['memory_bytes'], 'PidsLimit': LIMITS['pids']}.items():
         require(type(host.get(key)) is int and host[key] == value)
+    # The pinned Docker CLI serializes these names with CAP_ prefixes. Accept
+    # only the exact equivalent pair; the trusted rebuilt request stays fixed.
+    aliases = {'SETUID': 'SETUID', 'SETGID': 'SETGID',
+               'CAP_SETUID': 'SETUID', 'CAP_SETGID': 'SETGID'}
     require(host.get('CapDrop') == ['ALL'] and type(host.get('CapAdd')) is list
             and len(host['CapAdd']) == 2 and all(type(x) is str for x in host['CapAdd'])
-            and set(host['CapAdd']) == {'SETUID', 'SETGID'})
+            and {aliases.get(x) for x in host['CapAdd']} == {'SETUID', 'SETGID'})
     require(host.get('SecurityOpt') in (['no-new-privileges'], ['no-new-privileges=true']))
     require(host.get('Tmpfs') == TMPFS and host.get('CgroupnsMode') == 'private'
             and host.get('LogConfig') == {'Type': 'none', 'Config': {}})
