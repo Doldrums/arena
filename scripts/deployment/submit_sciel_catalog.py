@@ -82,6 +82,7 @@ class NoRedirect(HTTPRedirectHandler):
 class Control:
     def __init__(self, token):
         self.token = token
+        self.timeout = 30
         self.opener = build_opener(ProxyHandler({}), NoRedirect())
 
     def call(self, path, body=None):
@@ -94,7 +95,7 @@ class Control:
                           headers={"Authorization": "Bearer " + self.token,
                                    "Content-Type": "application/json"})
         try:
-            with self.opener.open(request, timeout=30) as response:
+            with self.opener.open(request, timeout=self.timeout) as response:
                 raw = response.read(MAX_RESPONSE + 1)
                 if len(raw) > MAX_RESPONSE:
                     raise RuntimeError("Private control response exceeds its limit")
