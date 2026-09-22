@@ -32,6 +32,7 @@ from arena.frameworks.runtime import verify_source
 from arena.registry import get_catalog
 from arena.release_deployment import load_manifest, materialize_template
 from arena.task_library import verify_task_library
+from arena.sciel_research_profile import apply_research_profile, profile_identity
 
 COMMIT = "a6c0d215b61ee52dae608a6390c9f2c6d2f2554d"
 VERSION = "0.2.0+arena.a6c0d215.worker1"
@@ -164,7 +165,7 @@ def verified_seed(row, manifest, manifest_path, verified):
     return fitness, digest
 
 
-def native_configuration(task, model, campaign, slug):
+def baseline_configuration(task, model, campaign, slug):
     return {
         "task": "arena/" + task["id"], "budget": 16, "max_iterations": 32, "random_seed": 0,
         "num_islands": 3, "pop_cap": 12, "archive_size": 12, "grid_bins": 10,
@@ -186,9 +187,24 @@ def native_configuration(task, model, campaign, slug):
     }
 
 
+def native_configuration(task, model, campaign, slug, *, research_tool_image_id=None,
+                         research_mode='foreground'):
+    baseline = baseline_configuration(task, model, campaign, slug)
+    if research_mode == 'code-search-baseline' and research_tool_image_id is None:
+        baseline['research_tools'] = {'enabled': False}
+        return baseline
+    if research_mode != 'foreground':
+        raise ValueError('Choose foreground research or an explicit code-search-baseline without a tool image')
+    return apply_research_profile(baseline, image_id=research_tool_image_id, model=model)
+
+
 def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
             deployment, approval, campaign, python, model="gpt-5.5", exclude_tasks=(), release_version=None,
-            timeout_seconds=3600):
+            timeout_seconds=3600, research_tool_image_id=None, research_mode='foreground'):
+    # Validate the method before creating any campaign files. Missing tool
+    # capability can no longer silently produce a tools-disabled RSI campaign.
+    method_config = native_configuration({'id': 'profile-validation'}, model, campaign, 'validation',
+        research_tool_image_id=research_tool_image_id, research_mode=research_mode)
     # The native/control schemas allow a week, but the engine broker's reviewed
     # upper bound is one day. Actual host policy may grant a smaller allowance.
     if type(timeout_seconds) is not int or not 1 <= timeout_seconds <= 86400:
@@ -246,7 +262,8 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
             continue
         task = tasks[row["task_id"]]
         slug = sha(encoded({"campaign": campaign, "task": task["id"], "model": model,
-                           "release": manifest["release"]}))[:20]
+                           "release": manifest["release"], 'research_mode': research_mode,
+                           'research_tool_image_id': research_tool_image_id}))[:20]
         task_root = native_tasks / slug
         config_path = config_destination / slug / "sciel.json"
         bridge = {"schema": "arena.sciel-catalog-config/1",
@@ -282,7 +299,8 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
             continue
         for path in (task_root, *task_root.rglob("*")):
             path.chmod(0o750 if path.is_dir() else 0o640)
-        config = native_configuration(task, model, campaign, slug)
+        config = native_configuration(task, model, campaign, slug,
+            research_tool_image_id=research_tool_image_id, research_mode=research_mode)
         write(config_path, config)
         checked_native_config(config_path.read_bytes(), model,
                               Path("/srv/arena/control/runs") / ("0" * 32) / "artifacts", GATEWAY)
@@ -297,6 +315,8 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
             model=model, batch_id=campaign, configuration_sha256=sha(config_path.read_bytes()),
             task_configuration_sha256=generated["configuration_sha256"], fitness=bridge["fitness"],
             timeout_seconds=timeout_seconds,
+            research_mode=research_mode,
+            research_profile=profile_identity(config) if research_mode == 'foreground' else None,
             native_runtime_conformance="pending_first_run", research_executed=False)
         inventory.append(record)
     if verify_task_library(tasks_root, source) != identity:
@@ -307,12 +327,15 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
             "max_queued": 1, "max_runs_per_key": 1, "max_reserved_seconds_per_key": timeout_seconds},
         "templates": templates})
     result = {"schema": "arena.sciel-catalog-campaign/1", "campaign": campaign, "model": model,
+        'research_mode': research_mode, 'research_tool_image_id': research_tool_image_id,
+        'research_runtime_conformance': 'pending_actual_pilot' if research_mode == 'foreground' else 'not_applicable',
         "release": manifest["release"], "deployment_sha256": deployment_sha,
         "task_source": identity, "canonical_image": preflight["image"],
         "preflight_manifest_sha256": preflight_sha, "preflight_finished": "finished_at" in preflight,
         "counts": dict(Counter(row["status"] for row in inventory)), "tasks": inventory,
         "budgets": {"full_evaluations": 16, "max_iterations": 32, "wall_seconds": timeout_seconds,
-                    "confirmation_samples": 3, "max_aux_calls": 4, "max_experiments": 48},
+                    "confirmation_samples": 3, "max_aux_calls": method_config['research']['max_aux_calls'],
+                    "max_experiments": method_config['research']['max_experiments']},
         "reservation_seconds": timeout_seconds * len(templates),
         "wall_time_scope": "Whole-run scheduling allowance; completing the evaluation budget is not guaranteed.",
         "resources_per_run": resources, "model_calls": 0, "canonical_evaluator_calls": 0,
@@ -344,6 +367,8 @@ def main(argv=None):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--campaign", required=True)
     parser.add_argument("--model", default="gpt-5.5")
+    parser.add_argument('--research-mode', choices=('foreground', 'code-search-baseline'), default='foreground')
+    parser.add_argument('--research-tool-image-id', help='Pinned tool Docker image ID; required for foreground research')
     parser.add_argument("--release-version", help="Explicit approved build of the same pinned SCiEL 0.2.0 source")
     parser.add_argument("--timeout-seconds", type=int, default=3600,
                         help="Whole-run scheduling allowance, 1–86400 seconds; host policy must grant it")

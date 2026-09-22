@@ -85,7 +85,8 @@ def prepared_inputs(tmp_path, monkeypatch, release_fixture):
     args = {"tasks_root": tasks, "config_destination": root / "configs/campaign",
         "native_tasks": root / "native-tasks/campaign", "preflight_manifest": preflight_path,
         "deployment": release_fixture["path"], "approval": approval,
-        "campaign": "catalog-fixture", "python": Path(sys.executable), "model": "gpt-5.5"}
+        "campaign": "catalog-fixture", "python": Path(sys.executable), "model": "gpt-5.5",
+        'research_tool_image_id': 'sha256:' + 'a' * 64}
     return args, preflight_path, receipt_path, catalog
 
 
@@ -106,7 +107,10 @@ def test_only_verified_seeds_get_bounded_templates_and_all_tasks_stay_in_invento
     assert config["max_iterations"] == 32 and config["confirm_records"] is True
     assert config["embed_grid"] is config["embed_niche"] is False
     assert config["parallel_search"]["workers"] == config["parallel_search"]["host_evaluator_slots"] == 1
-    assert config["research"]["max_aux_calls"] == 4 and config["research"]["max_experiments"] == 48
+    assert config["research"]["max_aux_calls"] == 80 and config["research"]["max_experiments"] == 200
+    assert config['research']['compact_lesson_memory'] is True
+    assert config['research_tools']['enabled'] is True
+    assert config['research_tools']['image_id'] == args['research_tool_image_id']
     assert config["llm"]["models"] == ["gpt-5.5"] and config["llm"]["api_base"] == campaign.GATEWAY
     bridge = json.loads((Path(request["tasks_root"]) / "arena/fixture/evaluation.json").read_text())
     assert bridge["fitness"]["scale"] == 12 and digest(receipt_path) in bridge["fitness"]["basis"]
@@ -120,6 +124,26 @@ def test_only_verified_seeds_get_bounded_templates_and_all_tasks_stay_in_invento
     assert before == (preflight_path.read_bytes(), receipt_path.read_bytes())
     with pytest.raises(ValueError, match="new and separate"):
         campaign.prepare(**args)
+
+
+def test_missing_research_executor_cannot_silently_prepare_tools_off_campaign(prepared_inputs):
+    args, *_ = prepared_inputs
+    args.pop('research_tool_image_id')
+    with pytest.raises(ValueError, match='immutable Docker image ID'):
+        campaign.prepare(**args)
+    assert not args['config_destination'].exists()
+
+
+def test_ablation_requires_explicit_baseline_mode(prepared_inputs):
+    args, *_ = prepared_inputs
+    args.update(research_mode='code-search-baseline', research_tool_image_id=None)
+    campaign.prepare(**args)
+    inventory = json.loads((args['config_destination'] / 'campaign-inventory.json').read_text())
+    assert inventory['research_mode'] == 'code-search-baseline'
+    assert inventory['research_runtime_conformance'] == 'not_applicable'
+    template = json.loads((args['config_destination'] / 'templates.json').read_text())[0]
+    native = json.loads(Path(template['spec']['request']['config']).read_text())
+    assert native['research_tools']['enabled'] is False
 
 
 @pytest.mark.parametrize("mutation", ["digest", "image", "direction"])
