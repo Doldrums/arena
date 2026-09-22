@@ -103,7 +103,7 @@ test('architecture shows recorded options, zero values, unknowns and verified ru
     assert.match(doc.querySelector('[data-field="unsafe"]').textContent, /<img src=x/);
     assert.match(doc.getElementById('runtime-bar').textContent, /Generating a candidate/);
     assert.match(doc.getElementById('runtime-bar').textContent, /Heartbeat 2s ago/);
-    assert.match(doc.getElementById('cost-note').textContent, /Estimated/);
+    assert.match(doc.getElementById('cost-note').textContent, /Historical token-rate estimate; actual billed USD unavailable/);
     snapshot.runtime.active = false;
     snapshot.runtime.stage = 'finished';
     snapshot.run.status = 'completed';

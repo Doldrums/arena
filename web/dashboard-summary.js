@@ -136,85 +136,48 @@ export function renderSummary() {
 }
 
 export function renderSpend() {
-  const { stats, runtime } = state.snapshot,
-    pending = runtime?.uncommitted_cost;
+  const { stats, runtime } = state.snapshot;
   const physical = state.snapshot.effort?.total;
+  const subscription = physical?.billing_mode === 'subscription_unpriced' ||
+    physical?.unpriced_llm_calls > 0 || physical?.cost_status === 'subscription_unpriced' ||
+    stats.billing_mode === 'subscription_unpriced' || stats.cost_status === 'subscription_unpriced';
+  const unavailable = 'CPU/infrastructure cost unavailable · all-in cost unavailable';
   if (physical) {
+    const classified = physical.cost_accounting === 'receipt_provenance';
+    const reported = classified ? physical.reported_usd : null;
+    const estimated = classified ? physical.estimated_usd : null;
+    const unverified = classified ? physical.unattributed_recorded_usd : physical.reported_usd;
     const partial = physical.status !== 'complete';
-    const subscription =
-      physical.unpriced_llm_calls > 0 ||
-      physical.billing_mode === 'subscription_unpriced' ||
-      physical.cost_status === 'subscription_unpriced' ||
-      stats.billing_mode === 'subscription_unpriced' ||
-      stats.cost_status === 'subscription_unpriced';
     $('cost').textContent = subscription
-      ? physical.reported_usd > 0
-        ? '≥ $' + physical.reported_usd.toFixed(4) + ' + subscription'
-        : 'Subscription'
-      : (partial && numeric(physical.reported_usd) ? '≥ ' : '') +
-        (numeric(physical.reported_usd) ? '$' + physical.reported_usd.toFixed(4) : 'Unknown');
-    $('cost-note').textContent =
-      String(physical.physical_llm_calls) +
-      ' completed physical LLM calls' +
-      (subscription ? ' · USD unavailable' : '') +
-      (physical.pending_llm_calls ? ' · ' + physical.pending_llm_calls + ' pending' : '') +
-      (physical.unknown_cost_calls ? ' · ' + physical.unknown_cost_calls + ' charges unknown' : '');
-    $('cost').title = 'Receipt-backed cumulative run spend. ' + state.snapshot.effort.note;
+      ? reported > 0 ? '≥ $' + reported.toFixed(4) + ' + subscription' : 'Subscription'
+      : numeric(reported) ? (partial ? '≥ ' : '') + '$' + reported.toFixed(4)
+        : numeric(estimated) ? '$' + estimated.toFixed(4) + ' estimate' : 'USD unavailable';
+    const notes = [String(physical.physical_llm_calls) + ' completed physical LLM calls'];
+    if (numeric(reported)) notes.push('Provider-reported LLM charges only');
+    if (subscription) notes.push('Subscription · USD unavailable');
+    if (numeric(estimated)) notes.push('$' + estimated.toFixed(4) + ' historical token-rate estimate; not billed USD');
+    if (numeric(unverified)) notes.push('$' + unverified.toFixed(4) + ' recorded accounting; billing source unverified');
+    if (physical.pending_llm_calls) notes.push(physical.pending_llm_calls + ' pending');
+    if (physical.unknown_cost_calls) notes.push(physical.unknown_cost_calls + ' charges unknown');
+    notes.push(unavailable);
+    $('cost-note').textContent = notes.join(' · ');
+    $('cost').title = state.snapshot.effort.note;
     return;
   }
-  let value = stats.cost_total,
-    partial = stats.cost_status === 'known_logged_lower_bound';
-  const subscription =
-    stats.billing_mode === 'subscription_unpriced' ||
-    stats.cost_status === 'subscription_unpriced' ||
-    pending?.unpriced_call_count > 0 ||
-    pending?.baseline_unpriced_calls > 0;
-  let note =
-    stats.cost_status === 'estimated'
-      ? 'Estimated from token rates'
-      : partial
-        ? 'Partial recorded spend'
-        : 'Generation and analysis';
-  let title =
-    stats.cost_status === 'estimated'
-      ? 'Estimated LLM spend from uncached token rates; actual billed cost may differ.'
-      : 'Recorded LLM spend; excludes compute infrastructure costs.';
-  if (pending?.available === true) {
-    value = pending.known_spend;
-    partial ||= pending.unknown_call_count > 0 || pending.pending_call_count > 0;
-    const money = (n) => (numeric(n) ? '$' + n.toFixed(4) : 'unknown');
-    note =
-      money(pending.baseline_cost) + ' committed + ' + money(pending.known_cost) + ' uncommitted';
-    if (pending.unknown_call_count > 0)
-      note += ' · ' + pending.unknown_call_count + ' unknown-cost calls';
-    if (pending.pending_call_count > 0)
-      note += ' · ' + pending.pending_call_count + ' awaiting receipts';
-    if (stats.cost_status === 'estimated') note += ' · token-rate estimate';
-    title =
-      'Known spend includes authenticated receipts from unpublished wave ' +
-      pending.wave +
-      '. Scientific progress remains at the committed checkpoint. Unknown and pending charges are not estimated.';
-  } else if (pending?.available === false) {
-    partial = true;
-    note = 'Committed spend · current wave cost unavailable';
-    title = pending.reason || 'Current wave receipts are not yet verifiable.';
-  }
-  if (subscription) {
-    note =
-      'Subscription · USD price not supplied' +
-      (pending?.pending_call_count
-        ? ' · ' + pending.pending_call_count + ' awaiting receipts'
-        : '');
-    if (pending?.unknown_call_count > 0)
-      note += ' · ' + pending.unknown_call_count + ' unknown-cost calls';
-    else if (stats.unknown_cost_present) note += ' · charges unknown';
-    if (pending?.available === false) note += ' · current wave receipts unavailable';
-  }
-  $('cost').textContent = subscription
-    ? value > 0
-      ? '≥ $' + value.toFixed(4) + ' + subscription'
-      : 'Subscription'
-    : (partial && numeric(value) ? '≥ ' : '') + (numeric(value) ? '$' + value.toFixed(4) : '—');
-  $('cost-note').textContent = note;
-  $('cost').title = title;
+  const pending = runtime?.uncommitted_cost;
+  const value = pending?.available === true ? pending.known_spend : stats.cost_total;
+  const estimated = stats.cost_basis === 'token_estimate' || stats.cost_status === 'estimated';
+  const notes = [subscription ? 'Subscription · USD price not supplied'
+    : estimated ? 'Historical token-rate estimate; actual billed USD unavailable'
+      : 'Recorded accounting; provider billing unverified'];
+  if (numeric(value) && (!subscription || value > 0)) notes.push('$' + value.toFixed(4) + (estimated ? ' estimated' : ' recorded'));
+  if (pending?.pending_call_count) notes.push(pending.pending_call_count + ' awaiting receipts');
+  if (pending?.unknown_call_count) notes.push(pending.unknown_call_count + ' unknown-cost calls');
+  else if (stats.unknown_cost_present) notes.push('charges unknown');
+  if (pending?.available === false) notes.push('current wave receipts unavailable');
+  notes.push(unavailable);
+  $('cost').textContent = subscription ? 'Subscription'
+    : estimated && numeric(value) ? '$' + value.toFixed(4) + ' estimate' : 'USD unavailable';
+  $('cost-note').textContent = notes.join(' · ');
+  $('cost').title = 'Journal accounting is preserved as recorded. It does not establish all-in cost or cost savings.';
 }

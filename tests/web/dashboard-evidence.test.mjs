@@ -208,7 +208,8 @@ test('synthetic API records render score, programs, hypotheses, knowledge and pa
       'unbound legacy score must not become a native observation',
     );
     assert.equal(doc.getElementById('evaluations').textContent, '4');
-    assert.equal(doc.getElementById('cost').textContent, '$0.1157');
+    assert.equal(doc.getElementById('cost').textContent, 'USD unavailable');
+    assert.match(doc.getElementById('cost-note').textContent, /\$0\.1157 recorded/);
     assert.equal(doc.querySelectorAll('tbody tr').length, 7);
     assert.match(doc.querySelector('#chart-outcomes summary').textContent, /unavailable/);
     doc.getElementById('tab-hypotheses').click();

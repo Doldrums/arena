@@ -162,15 +162,14 @@ export const runEffort = (run) => {
   const models = new Set(value.configured_models || []);
   const subscription =
     value.billing_mode === 'subscription_unpriced' || value.cost_status === 'subscription_unpriced';
+  const reported = value.provider_reported_llm_usd;
+  const estimate = value.estimated_llm_usd;
   const price = subscription
-    ? value.known_llm_usd > 0
-      ? '≥ $' + value.known_llm_usd.toFixed(2) + ' known + subscription · USD unavailable'
+    ? reported > 0 ? '≥ $' + reported.toFixed(2) + ' known + subscription · USD unavailable'
       : 'Subscription · USD unavailable'
-    : numeric(value.known_llm_usd)
-      ? (value.cost_status === 'known_logged_lower_bound' ? '≥ ' : '') +
-        '$' +
-        value.known_llm_usd.toFixed(2)
-      : 'USD unknown';
+    : numeric(reported) ? '$' + reported.toFixed(2) + ' provider-reported'
+      : numeric(estimate) ? '$' + estimate.toFixed(2) + ' token-rate estimate'
+        : 'USD unverified';
   return (
     '<span class="run-effort" title="' +
     esc(value.note) +

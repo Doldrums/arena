@@ -17,6 +17,7 @@ import time
 import uuid
 
 from .parallel_cost import WaveSpendMonitor
+from .failures import run_failure
 from .effort import EffortMonitor
 from .llm_calls import collect_calls, detail as llm_call_detail, metadata as llm_call_metadata
 from .timing import TimingMonitor
@@ -178,15 +179,24 @@ class RunStore:
             reason = "No run_end recorded; process state is unknown."
             if runtime["status"] in {"running", "stalled", "failed", "interrupted", "paused", "stopped"}:
                 status, reason = runtime["status"], runtime["reason"]
+        failure = None
+        if status in {"stopped", "failed", "interrupted", "paused"}:
+            rows, _ = self._journal(path)
+            wave = runtime.get('uncommitted_cost') if observe_timing else self.wave_spend_monitor.observe(path.parent, start)
+            failure = run_failure(rows, start, wave, status)
+            if failure:
+                stop_detail = failure['summary'] + (' ' + stop_detail if stop_detail else '')
         # Listing archives needs status only. Observing every listed journal
         # would evict the active run's timing state and replay its history.
         timing = self.timing_monitor.observe(ident, path, runtime) if observe_timing else None
         result = {"run": {"id": ident, "status": status, "status_reason": reason,
                         "stop_detail": stop_detail if status in {"stopped", "failed", "interrupted", "paused"} else None},
                 "runtime": runtime, "timing": timing}
+        if failure:
+            result['run']['failure'] = failure
         if effort_base is not None:
             rows, _ = self._journal(path)
-            result['effort'] = self.effort_monitor.observe(path.parent, start, rows, effort_base)
+            result['effort'] = self.effort_monitor.observe(path.parent, start, rows, effort_base, runtime=runtime)
         if job_base is not None and job_base.get('available') is True:
             if path not in self._background_jobs:
                 cache_put(self._background_jobs,path,BackgroundJobView(path.parent))

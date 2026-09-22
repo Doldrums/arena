@@ -13,7 +13,7 @@ def write(path, value):
     path.write_text(json.dumps(value))
 
 
-def fixture(tmp_path, *, score=-2, unknown=False, subscription=False):
+def fixture(tmp_path, *, score=-2, unknown=False, subscription=False, cost_kind='provider_reported'):
     source='def result(): return -2\n'
     start=dict(event='run_start',run_id='run-1',segment_id='s1',event_seq=1,
         timestamp='2026-09-20T10:00:00+00:00',task='test',config={'parallel_search':{'enabled':True}})
@@ -25,7 +25,14 @@ def fixture(tmp_path, *, score=-2, unknown=False, subscription=False):
         digest=_digest(dict(kind=kind,request=request));path=directory/'calls'/hashlib.sha256(key.encode()).hexdigest()
         write(path/'intent.json',dict(schema='sciel-parallel-call/1',key=key,kind=kind,request=request,request_sha256=digest))
         write(path/'dispatched.json',dict(request_sha256=digest,timestamp='2026-09-20T10:00:00+00:00'))
-        value=dict(cost=cost,cost_provenance={'source':'provider_reported'}) if kind=='llm' else dict(result={'ok':True,'score':score,'cases':{'native':score,'validity':1}})
+        value=dict(cost=cost,cost_provenance={'schema':'sciel-llm-cost-provenance/1',
+            'source':'provider_reported','reported_cost':cost}) if kind=='llm' else dict(result={'ok':True,'score':score,'cases':{'native':score,'validity':1}})
+        if kind == 'llm' and cost_kind == 'token_estimate':
+            value.update(prompt_tokens=1000, completion_tokens=0, cost_provenance={
+                'schema':'sciel-llm-cost-provenance/1','source':'token_estimate','pricing_key':'default',
+                'prompt_usd_per_1k':cost,'completion_usd_per_1k':0})
+        if kind == 'llm' and cost_kind == 'legacy':
+            value['cost_provenance'] = {'source':'provider_reported'}
         if kind=='llm' and subscription:
             value.update(cost=None, finish_reason='stop', response_error=None, prompt_tokens=40, completion_tokens=12,
                 cost_provenance={'schema':'sciel-llm-cost-provenance/1','source':'subscription_unpriced',
@@ -127,7 +134,8 @@ def test_live_uncommitted_call_refreshes_exact_cost_and_models_without_changing_
     assert first['total']['reported_usd']==.5 and first['total']['pending_llm_calls']==1
     assert first['total']['model_count']==2
     payload={'status':'returned','completed_at':'2026-09-20T10:00:07+00:00','request_sha256':digest,
-        'value':{'cost':.9,'model':'example/b','cost_provenance':{'source':'provider_reported'}}}
+        'value':{'cost':.9,'model':'example/b','cost_provenance':{
+            'schema':'sciel-llm-cost-provenance/1','source':'provider_reported','reported_cost':.9}}}
     write(call/'receipt.json',{'payload':payload,'sha256':_digest(payload)})
     second=monitor.observe(tmp_path,start,rows,basis)
     assert second['total']['reported_usd']==1.4 and second['total']['pending_llm_calls']==0
