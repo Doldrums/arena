@@ -45,8 +45,11 @@ def _counts_equal(value, expected):
 
 
 def supports_lmx_task(task_id, requirements):
+    # Catalogs sort requirements; metadata keeps its separately checked order.
     return (type(task_id) is str and task_id in TASK_IDS and type(requirements) is list
-            and tuple(requirements) == REQUIREMENTS)
+            and len(requirements) == len(REQUIREMENTS)
+            and all(type(value) is str for value in requirements)
+            and set(requirements) == set(REQUIREMENTS))
 
 
 def lmx_environment(image):
