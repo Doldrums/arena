@@ -73,7 +73,7 @@ export function initResearchMap({doc=document, fetcher=(...args)=>fetch(...args)
     const nodes = element('g'); scene.append(nodes);
     const ordered = [...positions.values()].filter(item=>item.kind !== 'domain').sort((a,b)=>a.radius-b.radius);
     for (const node of ordered) {
-      const group = element('g', {class:`map-node ${node.kind}${node.counts.measured ? ' has-measurement' : ''}`, transform:`translate(${node.x} ${node.y})`,
+      const group = element('g', {class:`map-node ${node.kind}${node.counts.measured ? ' has-measurement' : ''}`, transform:`translate(${node.x} ${node.y})`, color:node.color,
         'data-node-id':node.id, role:'button', tabindex:node.kind === 'participant' ? '0' : '-1',
         'aria-label':`${node.label}. ${node.kind === 'participant' ? 'System or research work' : 'Task'}. ${node.counts.measured} measured outcomes.`});
       group.append(element('title', {}, node.label), element('circle', {r:Math.max(6,node.radius+3),class:'map-hit'}));
