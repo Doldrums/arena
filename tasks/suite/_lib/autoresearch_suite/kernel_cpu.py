@@ -5,21 +5,23 @@ on accelerators. This module keeps the *problem* (the operator, its shapes and
 the correctness contract) and replaces the hardware with the CPU: a candidate
 implements the operator with PyTorch tensor operations (or NumPy) and is scored
 by measured throughput against a PyTorch reference, after an exact correctness
-check. Scores are comparable within the suite, not with the papers' TFLOPS.
+check. Comparisons require the same task, hardware, image and timing protocol;
+these CPU scores are not comparable to the papers' accelerator timings.
 
 Every operator is a ``Spec`` with an input generator, a reference
 implementation, a FLOP count and tolerances. Timings take the best of several
-repeats after a warm-up; all threads of the machine are used.
+repeats after a warm-up, with one intra-op and one inter-op CPU thread. This
+versioned timing protocol is distinct from historical host-wide thread runs.
 """
 from __future__ import annotations
 
 import math
-import os
 import time
 
 import numpy as np
 
 from .runtime import CandidateError, require
+from . import kernel_threads
 
 try:
     import torch
@@ -32,8 +34,7 @@ except ImportError:  # pragma: no cover - reported as a requirement by the harne
 def _torch():
     if torch is None:
         raise CandidateError("torch is required for the CPU kernel tasks (pip install torch)")
-    torch.set_num_threads(max(1, os.cpu_count() or 1))
-    return torch
+    return kernel_threads.configure(torch)
 
 
 def _gen(seed):
@@ -363,11 +364,14 @@ OPS = {
 
 def _time(fn, repeats):
     fn()  # warm-up (allocations, thread pool)
+    kernel_threads.require_policy(torch)
     best = math.inf
     for _ in range(repeats):
         start = time.perf_counter()
         fn()
-        best = min(best, time.perf_counter() - start)
+        elapsed = time.perf_counter() - start
+        kernel_threads.require_policy(torch)  # Keep this check outside timing.
+        best = min(best, elapsed)
     return best
 
 
@@ -408,6 +412,7 @@ def kernel_score(module, ops, seed=0, repeats=3, score="speedup"):
                 raise
             except Exception as error:  # noqa: BLE001
                 raise CandidateError(f"{name} raised {type(error).__name__}: {error}") from None
+            kernel_threads.require_policy(torch)
             error = _check(name, out, ref, tol)
             t_ref = _time(lambda: reference(*inputs), repeats)
             t_new = _time(lambda: fn(*inputs), repeats)
@@ -418,4 +423,4 @@ def kernel_score(module, ops, seed=0, repeats=3, score="speedup"):
         value = float(np.mean([r["tflops"] for r in results]))
     else:
         value = float(np.exp(np.mean([np.log(r["speedup"]) for r in results])))
-    return value, {"kernels": results, "threads": torch.get_num_threads(), "metric": score}
+    return value, {"kernels": results, **kernel_threads.details(torch), "metric": score}
