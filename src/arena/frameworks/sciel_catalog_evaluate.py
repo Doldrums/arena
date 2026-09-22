@@ -80,7 +80,16 @@ def validate_config(config):
     metadata_path = f"suite/{task['id']}/task.json"
     metadata = json.loads(read_task_file(root, metadata_path, files[metadata_path]))
     suite = metadata.get("execution", {}).get("suite", {})
-    if suite.get("env", {}) or set(suite.get("requires", [])) != set(requirements):
+    from .sciel_catalog_torch import TORCH_PROFILE
+    # The reviewed CPU kernels declare these exact thread limits in task.json.
+    # They are task-runner inputs, not permission to pass arbitrary host env.
+    expected_env = ({"OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1",
+                     "OPENBLAS_NUM_THREADS": "1", "NUMEXPR_NUM_THREADS": "1"}
+                    if prepared_environment is not None
+                    and prepared_environment.get("profile") == TORCH_PROFILE else {})
+    declared_env = suite.get("env", {})
+    if (type(declared_env) is not dict or declared_env != expected_env
+            or set(suite.get("requires", [])) != set(requirements)):
         raise ValueError("Task execution requires undeclared dependencies or environment")
     seed_name = suite.get("initial_program")
     if type(seed_name) is not str or not re.fullmatch(r"[A-Za-z0-9_.-]+\.py", seed_name):

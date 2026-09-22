@@ -23,6 +23,10 @@ def torch_inputs(prepared_inputs, request):
     task_json = definition / "task.json"
     data = json.loads(task_json.read_text())
     data["execution"]["suite"]["requires"] = requirements
+    # Carry the real task's declared execution environment into the inert fixture.
+    # Omitting this previously concealed a bridge rejection of every Torch task.
+    real_task = Path(__file__).resolve().parents[2] / "tasks/suite" / name / "task.json"
+    data["execution"]["suite"]["env"] = json.loads(real_task.read_bytes())["execution"]["suite"]["env"]
     task_json.write_text(json.dumps(data))
     source = catalog["sources"][0]
     library_manifest = tasks_root.parent / "registry/task-library-manifest.json"
