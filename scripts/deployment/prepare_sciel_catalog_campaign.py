@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from arena.engine_policy import checked_native_config
 from arena.control_config import validate_config as validate_control
 from arena.frameworks.sciel_catalog_evaluate import create_task, validate_config as validate_bridge
+from arena.frameworks.sciel_catalog_profile import SCIENCE_PROFILE, science_environment
 from arena.frameworks.runtime import verify_source
 from arena.registry import get_catalog
 from arena.release_deployment import load_manifest, materialize_template
@@ -83,6 +84,12 @@ def preflight_records(manifest, catalog, identity):
             or type(manifest.get("timeout_seconds")) is not int
             or not 1 <= manifest["timeout_seconds"] <= 600):
         raise ValueError("Preflight must describe this exact task library and CPU seed profile")
+    if manifest.get("group") == "science":
+        if (manifest.get("profile") != SCIENCE_PROFILE
+                or manifest.get("prepared_environment") != science_environment(manifest.get("image"))):
+            raise ValueError("Preflight differs from the pinned prepared science environment")
+    elif "profile" in manifest or "prepared_environment" in manifest:
+        raise ValueError("Prepared environment binding requires the explicit science group")
     rows = manifest.get("tasks")
     if type(rows) is not list or any(type(row) is not dict for row in rows):
         raise ValueError("Preflight task inventory is missing")
@@ -147,7 +154,7 @@ def native_configuration(task, model, campaign, slug):
 
 
 def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
-            deployment, approval, campaign, python, model="gpt-5.5", exclude_tasks=()):
+            deployment, approval, campaign, python, model="gpt-5.5", exclude_tasks=(), release_version=None):
     paths = [exact_path(path) for path in (tasks_root, config_destination, native_tasks,
                                          preflight_manifest, deployment, approval)]
     tasks_root, config_destination, native_tasks, preflight_manifest, deployment, approval = paths
@@ -166,8 +173,12 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
         raise ValueError("Configuration and native tasks must use separate directories")
     manifest, deployment_sha = load_manifest(deployment)
     approved, approved_sha = load_manifest(approval)
+    if release_version is not None and (type(release_version) is not str
+            or not re.fullmatch(r"0\.2\.0\+arena\." + re.escape(COMMIT[:8]) + r"\.[A-Za-z0-9.-]+", release_version)):
+        raise ValueError("Explicit release version must identify a build of the pinned SCiEL 0.2.0 source")
+    expected_version = VERSION if release_version is None else release_version
     if (approved != manifest or approved_sha != deployment_sha or approval.name != deployment_sha + ".json"
-            or manifest["release"] != {"schema": "arena.release/1", "system": "sciel", "version": VERSION}
+            or manifest["release"] != {"schema": "arena.release/1", "system": "sciel", "version": expected_version}
             or manifest["binding"]["repository"]["commit"] != COMMIT):
         raise ValueError("Use the exact approved SCiEL 0.2.0 private deployment")
     verify_source(Path(manifest["source"]["path"]), COMMIT)
@@ -207,6 +218,8 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
                               "require_control_cgroup": True}},
             "fitness": {"kind": "atan", "scale": 1, "basis": "Pending exact verified seed binding"},
             "confirmation": {"stochastic": True, "samples": 3}}
+        if preflight.get("group") == "science":
+            bridge["evaluation"]["profile"] = SCIENCE_PROFILE
         try:
             verified = validate_bridge(bridge)
         except ValueError as exc:
@@ -259,6 +272,8 @@ def prepare(*, tasks_root, config_destination, native_tasks, preflight_manifest,
         "scope": "Seed-verified task integration; benchmark reproduction and research outcomes require run evidence.",
         "score_semantics": "Raw metrics and canonical signed fitness stay in receipts; atan scales search only.",
         "storage_profile": "Explicit code-length grid; learned descriptors and learned niches disabled."}
+    if preflight.get("group") == "science":
+        result.update(preflight_group="science", prepared_environment=preflight["prepared_environment"])
     write(config_destination / "templates.json", templates)
     write(config_destination / "campaign-inventory.json", result)
     return {"destination": str(config_destination), "campaign": campaign, "counts": result["counts"],
@@ -272,6 +287,7 @@ def main(argv=None):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--campaign", required=True)
     parser.add_argument("--model", default="gpt-5.5")
+    parser.add_argument("--release-version", help="Explicit approved build of the same pinned SCiEL 0.2.0 source")
     parser.add_argument("--exclude-task", dest="exclude_tasks", action="append", default=[])
     args = parser.parse_args(argv)
     print(json.dumps(prepare(**vars(args))))

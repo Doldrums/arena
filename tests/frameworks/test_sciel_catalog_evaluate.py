@@ -223,3 +223,40 @@ def test_approved_extended_cpu_requirements_pass_bridge_without_importing_packag
     evaluation.get_catalog()["sources"][0]["manifest_sha256"] = digest(manifest_path)
     assert bridge.full(config, candidate)["ok"]
     assert len(calls) == 1 and not marker.exists()
+
+
+def test_prepared_science_environment_is_embedded_hashed_and_checked_before_measurement(setup, tmp_path):
+    from arena.frameworks.sciel_catalog_profile import (
+        SCIENCE_PROFILE, SCIENCE_IMAGE_REFERENCE, SCIENCE_TASK_REQUIREMENTS, science_environment,
+    )
+    config, candidate, marker, calls, _, root, task = setup
+    name = "science-materials-cantera-mechanism-reduction"
+    task["id"], task["requirements"] = name, list(SCIENCE_TASK_REQUIREMENTS[name])
+    old = root / "suite/fixture"
+    directory = root / "suite" / name
+    old.rename(directory)
+    metadata = directory / "task.json"
+    value = json.loads(metadata.read_text())
+    value["execution"]["suite"]["requires"] = task["requirements"]
+    metadata.write_text(json.dumps(value))
+    task["contract_source"]["path"] = f"suite/{name}/problem.json"
+    manifest_path = root.parent / "registry/task-library-manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    manifest["files"] = {p.relative_to(root).as_posix(): digest(p) for p in directory.iterdir()}
+    manifest_path.write_text(json.dumps(manifest))
+    evaluation.get_catalog()["sources"][0]["manifest_sha256"] = digest(manifest_path)
+    config["evaluation"].update(task_id=name, profile=SCIENCE_PROFILE)
+    config["evaluation"]["execution"]["image"] = SCIENCE_IMAGE_REFERENCE
+    native = tmp_path / "native-science"
+    created = bridge.create_task(config, native)
+    assert created["profile"] == SCIENCE_PROFILE and not calls and not marker.exists()
+    bound = json.loads((native / "evaluation.json").read_text())
+    environment = science_environment(SCIENCE_IMAGE_REFERENCE)
+    assert bound["binding"]["prepared_environment"] == environment
+    assert environment["data_lock_sha256"] in (native / "evaluator.py").read_text()
+    result = bridge.full(bound, candidate)
+    assert result["ok"] and json.loads(result["artifacts"]["arena_prepared_environment"]) == environment
+    bound["binding"]["prepared_environment"]["data_lock_sha256"] = "0" * 64
+    with pytest.raises(ValueError, match="binding"):
+        bridge.full(bound, candidate)
+    assert len(calls) == 1 and not marker.exists()

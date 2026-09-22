@@ -16,10 +16,10 @@ import tempfile
 import uuid
 
 from .sciel_evaluate import smoke
-from .sciel_catalog_profile import supports_requirements
+from .sciel_catalog_profile import CPU_PROFILE, validate_task_profile
 
 SCHEMA = "arena.sciel-catalog-config/1"
-PROFILE = "sciel-catalog-cpu/1"
+PROFILE = CPU_PROFILE
 
 
 def _finite(value):
@@ -70,15 +70,12 @@ def validate_config(config):
     if (type(evaluation) is not dict or type(evaluation.get("execution")) is not dict
             or evaluation["execution"].get("kind") != "docker"):
         raise ValueError("Catalog candidate execution requires the canonical Docker evaluator")
-    if evaluation.get("profile", PROFILE) != PROFILE:
-        raise ValueError("Unknown catalog evaluation profile")
     verified = validate_evaluation(evaluation)
     task, root = verified["task"], Path(verified["source_dir"])
     if task["direction"] not in {"maximize", "minimize"} or not task.get("contract"):
         raise ValueError("A declared task interface and objective direction are required")
     requirements = task.get("requirements")
-    if not supports_requirements(requirements):
-        raise ValueError("Catalog CPU profile supports only explicitly approved CPU dependencies")
+    prepared_environment = validate_task_profile(task, evaluation)
     files = load_task_manifest(verified["source_registration"])["files"]
     metadata_path = f"suite/{task['id']}/task.json"
     metadata = json.loads(read_task_file(root, metadata_path, files[metadata_path]))
@@ -99,6 +96,8 @@ def validate_config(config):
     binding = {"task_source": verified["source"], "problem_sha256": verified["problem_sha256"],
                "evaluator_sha256": verified["evaluator_sha256"], "seed_sha256": files[seed_path],
                "protocol": task["protocol"], "direction": task["direction"], "metric": task["metric"]}
+    if prepared_environment is not None:
+        binding["prepared_environment"] = prepared_environment
     if "binding" in config and config["binding"] != binding:
         raise ValueError("Catalog configuration binding differs from the pinned task")
     problem = json.loads(read_task_file(root, task["contract_source"]["path"], verified["problem_sha256"]))
@@ -174,7 +173,8 @@ def confirm(program_path, n):
     except BaseException:
         shutil.rmtree(temporary, ignore_errors=True)
         raise
-    return {"profile": PROFILE, "directory": str(destination), "qualified_task": f"arena/{task['id']}",
+    return {"profile": config["evaluation"].get("profile", PROFILE),
+            "directory": str(destination), "qualified_task": f"arena/{task['id']}",
             "task_source": verified["source"], "canonical_evaluation": True,
             "configuration_sha256": digest, "fitness": config["fitness"],
             "readiness_requirements": sorted(task["requirements"]),
@@ -211,6 +211,8 @@ def _measurement(verified, program_path):
                  "arena_receipt_sha256": digest, "arena_raw_direction": task["direction"],
                  "arena_raw_metric": task["metric"], "arena_candidate_sha256": candidate_sha,
                  "arena_fitness_transform": _json(config["fitness"])}
+    if "prepared_environment" in config["binding"]:
+        artifacts["arena_prepared_environment"] = _json(config["binding"]["prepared_environment"])
     if receipt.get("status") != "completed" or receipt.get("validity") is not True:
         artifacts.update(error_type="ArenaEvaluationUnavailable", error="No explicitly valid completed canonical result")
         return {"ok": False, "score": 0.0, "cases": {}, "artifacts": artifacts}
