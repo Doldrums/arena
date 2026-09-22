@@ -188,7 +188,9 @@ The deployed observer can use a separately pinned release through the `arena-boa
 
 ### Publishing results
 
-The discovery Results page reads `registry/results-overview.json`; refresh reloads that published snapshot. Publish new measurements with an explicit export, review and deployment. The workspace uses the published overview when its private control API is unavailable.
+The discovery Results page maps the catalog, research taxonomy, participants and `registry/results-overview.json`. Refresh reloads those published records; it does not query the live queue. Citation edges and measured experiment edges stay distinct. Native task identities stay separate from canonical catalog packages, even when their titles are similar. Coordinates are an editorial arrangement, not scientific distance or an AGI progress metric. Detailed scores, model comparisons and resource accounting remain in the experiment workspace, which uses the published overview when its private control API is unavailable.
+
+Publish new measurements with an explicit export, review and deployment.
 
 ```sh
 python scripts/export_results_overview.py --help

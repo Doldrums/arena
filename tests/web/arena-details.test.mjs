@@ -146,11 +146,13 @@ test('scientific direction cards retain exact corpus counts and open real chemis
       );
       assert.ok(bar.textContent.includes(`${domain.percentage.toFixed(1)}%`));
     }
+    const awaitingEvaluator = catalog.tasks.filter((item) => item.protocol === 'unsupported').length;
+    assert.equal(insights.summary.unsupported_count, awaitingEvaluator);
     assert.ok(
       composition
         .querySelector('[role="img"]')
         .getAttribute('aria-label')
-        .includes('Evaluator to be added: 270'),
+        .includes(`Evaluator to be added: ${awaitingEvaluator.toLocaleString('en-US')}`),
     );
     composition.querySelector('summary').click();
     assert.equal(composition.open, true);

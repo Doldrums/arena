@@ -283,6 +283,8 @@ class Handler(BaseHTTPRequestHandler):
                                              "arena-results.js", "arena-results.css", "arena-workspace.css",
                                              "arena-results-showcase.js", "arena-results-showcase.css",
                                              "arena-results-overview.js", "arena-results-overview.css",
+                                             "research-map.js", "research-map.css", "research-map-model.js",
+                                             "research-map-layout.js", "research-map-inspector.js",
                                              "results-research.js", "results-efficiency.js", "results-rsi.js"}:
             file = STATIC / parts[0]
         elif len(parts) == 2 and parts[0] == "brand" and parts[1] in {"cpil.png", "mbzuai.png"}:
