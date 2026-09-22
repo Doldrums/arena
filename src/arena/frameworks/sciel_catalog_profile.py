@@ -81,6 +81,9 @@ def validate_task_profile(task, evaluation):
     from .sciel_catalog_jax import JAX_PROFILE, validate_jax_task
     from .sciel_catalog_lmx import LMX_PROFILE, validate_lmx_task
     from .sciel_catalog_torch import TORCH_PROFILE, validate_torch_task
+    from .sciel_catalog_science5 import PROFILE as SCIENCE5_PROFILE, validate_science5_task
+    if profile == SCIENCE5_PROFILE:
+        return validate_science5_task(task, evaluation)
     if profile == LMX_PROFILE:
         return validate_lmx_task(task, evaluation)
     if profile == JAX_PROFILE:

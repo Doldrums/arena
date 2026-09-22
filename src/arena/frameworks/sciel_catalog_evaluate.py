@@ -114,6 +114,9 @@ def validate_config(config):
     if evaluation.get("profile") == LMX_PROFILE:
         from .sciel_catalog_lmx import validate_lmx_metadata
         validate_lmx_metadata(task, metadata, problem, root, files)
+    if evaluation.get("profile") == "sciel-catalog-prepared-science5/1":
+        from .sciel_catalog_science5 import validate_science5_metadata
+        validate_science5_metadata(task, metadata, problem, root, files)
     return {**verified, "bridge_config": {**config, "binding": binding}, "seed": seed,
             "receipts": receipts, "parameters": problem.get("parameters", {})}
 
