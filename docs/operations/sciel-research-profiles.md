@@ -61,6 +61,16 @@ one tool per run, four globally, 1 CPU, 512 MiB, 64 PIDs, bounded output and
 disables network access, and binds execution to the authenticated engine's
 parent cgroup. The supervisor drops tool execution to UID/GID 10001.
 
+Deployment uses the separate `arena-research-staging` and `arena-research-tools`
+services. Pin their Python path to a reviewed immutable release; the staging
+unit's script path must point to that same release. Install the exact native
+runner/loader as root-owned read-only files and the standalone CLI router as
+an executable with `#!/usr/local/bin/python`. The two pinned worker images
+provide the underlying Docker binary at `/usr/local/bin/docker`.
+The engine broker's optional `research_tools` grant binds the CLI bytes,
+socket, tool image and exact pilot configuration hashes. Starting the service
+alone does not authorize a configuration or unpause the queue.
+
 First verify the actual Docker CLI lifecycle with an inert tool. That check
 does not count as a scientific experiment. Before bulk admission, a real model
 pilot must show committed cell creation, model-authored tool registration,

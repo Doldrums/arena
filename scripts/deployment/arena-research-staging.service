@@ -1,0 +1,11 @@
+[Unit]
+Description=Empira bounded host-visible research tool staging
+Before=arena-research-tools.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/arena/current/scripts/deployment/setup-research-staging.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
