@@ -10,7 +10,7 @@ from test_dashboard_parallel_cost import call, digest, wave, write
 
 
 @pytest.mark.parametrize('code,category', [(500, 'provider_unavailable'), (429, 'provider_rate_limit')])
-def test_stopped_wave_exposes_bound_error_in_detail_and_list(tmp_path, code, category):
+def test_stopped_wave_exposes_bound_error_in_selected_detail(tmp_path, code, category):
     start, directory, _ = wave(tmp_path)
     path = call(directory, 'failed-call', status='error')
     receipt = json.loads((path / 'receipt.json').read_text())
@@ -24,16 +24,27 @@ def test_stopped_wave_exposes_bound_error_in_detail_and_list(tmp_path, code, cat
     store = RunStore([tmp_path], timing_cache_dir=tmp_path / 'timings')
     listed = store.discover()[0]
     assert listed['status_reason'] == 'CampaignStopped'
-    assert f'HTTP {code}' in listed['stop_detail']
-    failure = listed['failure']
+    snap = store.snapshot(listed['id'])
+    assert f'HTTP {code}' in snap['run']['stop_detail']
+    failure = snap['run']['failure']
     assert failure['category'] == category and failure['outcome_unknown']
     assert failure['automatic_replay_allowed'] is False
     assert failure['failures'][0]['receipt_sha256'] == receipt['sha256']
     assert failure['failures'][0]['source'] == 'current_wave_receipt'
     assert 'PRIVATE' not in json.dumps(failure) and 'Private body' not in json.dumps(failure)
-    snap = store.snapshot(listed['id'])
     assert snap['run']['failure'] == failure
     assert (tmp_path / 'checkpoint.json').read_bytes() == before
+
+
+def test_archive_listing_does_not_read_physical_wave_receipts(tmp_path, monkeypatch):
+    start, _, _ = wave(tmp_path)
+    write(tmp_path / 'runtime.json', dict(schema='sciel-runtime/1', run_id=start['run_id'],
+        segment_id=start['segment_id'], status='failed', reason='CampaignStopped'))
+    store = RunStore([tmp_path], timing_cache_dir=tmp_path / 'timings')
+    def forbidden(*args):
+        pytest.fail('Archive listings must not replay every physical wave')
+    monkeypatch.setattr(store.wave_spend_monitor, 'observe', forbidden)
+    assert store.discover()[0]['status'] == 'failed'
 
 
 def test_tampered_error_and_orphan_trace_cannot_explain_stop(tmp_path):

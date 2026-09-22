@@ -180,9 +180,12 @@ class RunStore:
             if runtime["status"] in {"running", "stalled", "failed", "interrupted", "paused", "stopped"}:
                 status, reason = runtime["status"], runtime["reason"]
         failure = None
-        if status in {"stopped", "failed", "interrupted", "paused"}:
+        if observe_timing and status in {"stopped", "failed", "interrupted", "paused"}:
             rows, _ = self._journal(path)
-            wave = runtime.get('uncommitted_cost') if observe_timing else self.wave_spend_monitor.observe(path.parent, start)
+            # Reading current-wave checkpoints for every archived list row
+            # exceeds the remote observer timeout. Full failure receipts belong
+            # to the selected run/SSE view, just like physical effort receipts.
+            wave = runtime.get('uncommitted_cost')
             failure = run_failure(rows, start, wave, status)
             if failure:
                 stop_detail = failure['summary'] + (' ' + stop_detail if stop_detail else '')
