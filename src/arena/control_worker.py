@@ -79,14 +79,24 @@ def _execute(config_path, run_id, expected_hash):
 
 
 class Worker:
-    def __init__(self, service):
+    def __init__(self, service, *, claim_gate=None):
         self.service = service
         self.id = "worker-" + uuid.uuid4().hex
         self.stopping = threading.Event()
+        self.claim_gate = None
+        if claim_gate is not None:
+            from .control_claim_gate import ClaimGate
+            self.claim_gate = ClaimGate(claim_gate)
 
     def once(self):
         self.service.reconcile()
-        row = self.service.claim(self.id)
+        if self.claim_gate is None:
+            row = self.service.claim(self.id)
+        else:
+            with self.claim_gate.claim_window() as allowed:
+                if not allowed:
+                    return False
+                row = self.service.claim(self.id)
         if row is None:
             return False
         self.execute(row)

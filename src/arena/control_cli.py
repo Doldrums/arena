@@ -16,6 +16,10 @@ from .control_worker import Worker, _execute
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
+    gate = sub.add_parser("claim-gate", help="Root-only barrier for new worker claims")
+    gate.add_argument("--path", required=True, type=Path)
+    gate.add_argument("--action", required=True, choices=("initialize", "pause", "resume", "status"))
+    gate.add_argument("--timeout", type=float, default=30)
     for command in ("serve", "worker", "create-key", "revoke-key", "check", "_execute"):
         child = sub.add_parser(command)
         child.add_argument("--config", required=True, type=Path)
@@ -25,6 +29,8 @@ def main(argv=None):
         elif command == "worker":
             child.add_argument("--once", action="store_true")
             child.add_argument("--concurrency", type=int, default=1)
+            child.add_argument("--claim-gate", type=Path,
+                               help="Opt in to an existing root-owned operator claim gate")
         elif command == "create-key":
             child.add_argument("--owner", required=True)
             child.add_argument("--scope", required=True, action="append", choices=sorted(SCOPES))
@@ -37,6 +43,10 @@ def main(argv=None):
             child.add_argument("--snapshot-sha256", required=True)
     args = parser.parse_args(argv)
     try:
+        if args.command == "claim-gate":
+            from .control_claim_gate import operate
+            print(_json(operate(args.path, args.action, timeout=args.timeout)))
+            return 0
         if args.command == "_execute":
             return _execute(args.config, args.run_id, args.snapshot_sha256)
         service = ControlService(args.config)
@@ -58,7 +68,7 @@ def main(argv=None):
                 server.server_close()
         elif args.command == "worker":
             _int(args.concurrency, "worker concurrency", high=64)
-            workers = [Worker(service) for _ in range(args.concurrency)]
+            workers = [Worker(service, claim_gate=args.claim_gate) for _ in range(args.concurrency)]
             for number in (signal.SIGTERM, signal.SIGINT):
                 signal.signal(number, lambda *_: [worker.stopping.set() for worker in workers])
             if args.once:
