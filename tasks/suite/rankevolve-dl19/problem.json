@@ -1,17 +1,35 @@
 {
-  "protocol": "unsupported",
-  "family": null,
+  "protocol": "recreated",
+  "family": "rankevolve_binary_retrieval",
   "direction": "maximize",
-  "contract": null,
-  "parameters": {},
+  "contract": "Python module exports BM25, Corpus, tokenize and LuceneTokenizer. Corpus(tokenized_documents, ids=corpus_ids); BM25(corpus).rank(query_tokens, top_k=100) returns paired unique integer document indices and finite scores in descending order.",
+  "parameters": {
+    "dataset": "dl19",
+    "complete_corpus_documents": 8841823,
+    "complete_test_queries": 200,
+    "recall_k": 100,
+    "ndcg_k": 10,
+    "relevance": "positive-qrel binary",
+    "tokenizer": "candidate.LuceneTokenizer",
+    "sample_queries": 0,
+    "warmup_queries": 0
+  },
   "requires": [
-    "dataset:TREC DL"
+    "py:numpy",
+    "py:scipy",
+    "file:/opt/arena-data/rankevolve/dl19/manifest.json"
   ],
-  "timeout": 30,
-  "notes": [],
-  "unsupported_category": "dataset",
-  "unsupported_reason": "Fitness requires the TREC DL data and training pipeline, which are not redistributed with the suite.",
-  "protocol_description": "Not executable in this suite: Fitness requires the TREC DL data and training pipeline, which are not redistributed with the suite.",
+  "timeout": 14520,
+  "notes": [
+    "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+    "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+    "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+    "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+    "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+    "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+    "No published score or old evaluator baseline is inherited by this adapted protocol."
+  ],
+  "protocol_description": "Pinned lexical candidate interface and byte-preserved binary metrics, with strict ranking validation and separate subprocess grading. Full prepared data required; no paper reproduction claimed.",
   "id": "rankevolve-dl19",
   "name": "dl19",
   "paper_ids": [
@@ -34,7 +52,13 @@
     }
   ],
   "limitations": [
-    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+    "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+    "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+    "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+    "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+    "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+    "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+    "No published score or old evaluator baseline is inherited by this adapted protocol."
   ],
   "evaluator": "evaluator.py",
   "initial_program": "initial_program.py",
@@ -51,11 +75,11 @@
     "artifact": "program",
     "domain": "information_retrieval",
     "area": "information_retrieval",
-    "data": "undistributed",
-    "verification": "none",
+    "data": "public_benchmark",
+    "verification": "sampled",
     "reference": "none",
     "resources": [
-      "unavailable"
+      "cpu"
     ],
     "cost": "not_run",
     "important_to_science": false

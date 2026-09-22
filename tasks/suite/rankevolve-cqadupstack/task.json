@@ -21,28 +21,25 @@
     }
   ],
   "requirements": {
-    "python": "Upstream-defined",
-    "hardware": "See upstream requirements and task notes.",
+    "python": ">=3.11",
+    "hardware": "CPU; full corpus memory/time must be measured before admission",
     "dependencies": [
-      "numpy",
-      "scipy",
-      "datasets",
-      "beir",
-      "pyserini",
-      "ir-datasets"
+      "numpy==2.3.1",
+      "scipy==1.16.3"
     ],
     "environment_variables": [],
     "datasets": "cqadupstack",
     "notes": [
-      "Python>=3.11",
-      "uv sync",
-      "Java21 and Pyserini for original Lucene tokenization",
-      "Benchmark dataset download/cache",
-      "Up to40-65GB RAM for largest corpora",
-      "Place the BEIR cqadupstack corpus under datasets/beir/cqadupstack in the checkout; the pinned evaluator otherwise downloads the archive at run time, which seed checks do not do."
+      "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+      "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+      "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+      "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+      "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+      "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+      "No published score or old evaluator baseline is inherited by this adapted protocol."
     ],
     "required_files": [
-      "datasets/beir/cqadupstack"
+      "/opt/arena-data/rankevolve/cqadupstack/manifest.json"
     ]
   },
   "evaluation": {
@@ -51,7 +48,7 @@
     "paper_direction": "maximize",
     "direction": "maximize",
     "benchmark": "BEIR",
-    "protocol": "upstream",
+    "protocol": "recreated",
     "source_locator": "Section 4.2"
   },
   "execution": {
@@ -123,9 +120,9 @@
         "EVAL_BENCHMARKS": "all"
       },
       "notes": [
-        "Source-inspected adapter; external benchmark corpora have not been downloaded or evaluated.",
+        "Historical source-inspected upstream invocation. Current prepared data and adapted protocol are recorded separately in execution.suite and dataset-lock.json.",
         "Environment must be set BEFORE module import; excludes all other27 documented public datasets.",
-        "Candidate exports BM25, Corpus, tokenize and LuceneTokenizer. Lucene tokenizer requires Java21/Pyserini.",
+        "Candidate exports BM25, Corpus, tokenize and LuceneTokenizer. The pinned freeform seed tokenizer is pure Python; Java21/Pyserini serve a separate baseline path.",
         "One dataset worker reduces concurrency but large corpora still need substantial RAM; TREC DL indexes8.84million passages and upstream estimates40-65GB RAM per large corpus."
       ]
     },
@@ -158,8 +155,8 @@
       "Direct evaluation requires no LLM. Current release BM25 evaluator selected; archived QL results do not supply a matching QL evaluator."
     ],
     "suite": {
-      "protocol": "unsupported",
-      "family": null,
+      "protocol": "recreated",
+      "family": "rankevolve_binary_retrieval",
       "evaluator": "evaluator.py",
       "initial_program": "initial_program.py",
       "callable": "evaluate",
@@ -167,16 +164,31 @@
       "score_key": "score",
       "error_key": "error",
       "requires": [
-        "dataset:BEIR"
+        "py:numpy",
+        "py:scipy",
+        "file:/opt/arena-data/rankevolve/cqadupstack/manifest.json"
       ],
-      "timeout": 30,
+      "timeout": 3720,
       "validity_key": "valid",
-      "unsupported_category": "dataset",
-      "unsupported_reason": "Fitness requires the BEIR data and training pipeline, which are not redistributed with the suite."
+      "adaptation": {
+        "kind": "separate_candidate_runner_and_binary_qrel_grader",
+        "source_commit": "8f664bcd5123bac2397f0c1bfbdb347ca3233483",
+        "source_evaluator_sha256": "c63a3aa45265b18edbbc705eeb929a4f2a28cee88b316fe1f963be198c596c4b",
+        "source_seed_sha256": "423084a12afd49b21b558848b47de6fe8475f8493c9dfe4f1a707d08ceeca473",
+        "source_metrics_sha256": "dfaa7d629911f1176ddf7e6a54ad8230b35e46e7fce4c24774192257d3f2cd49",
+        "baseline_inheritance": false,
+        "data_manifest_state": "awaiting_full_dataset_preparation_and_review"
+      }
     }
   },
   "limitations": [
-    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+    "Full original corpus and all original test queries; sample_queries=0, warmup_queries=0.",
+    "Raw objective is 0.8*Recall@100 + 0.2*binary-nDCG@10 using positive qrels; this is not standard graded BEIR nDCG.",
+    "Search and confirmation use the same test queries: exploratory search-on-test, not held-out generalization evidence.",
+    "Candidate runs in a separate subprocess; grader never imports candidate code and loads qrels after candidate exit. Same UID/container does not guarantee adversarial qrels secrecy.",
+    "Pinned freeform seed uses the original pure-Python tokenizer. Java21/Pyserini belong to a separate baseline path, not this evaluator.",
+    "Prepared data manifest must be reviewed and hash-pinned in dataset-lock.json; unavailable data never becomes a fabricated score.",
+    "No published score or old evaluator baseline is inherited by this adapted protocol."
   ],
   "source_specification": {
     "name": "cqadupstack",
@@ -192,7 +204,7 @@
     "requirements": [
       "Python>=3.11",
       "uv sync",
-      "Java21 and Pyserini for original Lucene tokenization",
+      "Java21 and Pyserini for the separate official baseline path, not the pinned freeform seed",
       "Benchmark dataset download/cache",
       "Up to40-65GB RAM for largest corpora",
       "Place the BEIR cqadupstack corpus under datasets/beir/cqadupstack in the checkout; the pinned evaluator otherwise downloads the archive at run time, which seed checks do not do."
@@ -267,9 +279,9 @@
         "EVAL_BENCHMARKS": "all"
       },
       "notes": [
-        "Source-inspected adapter; external benchmark corpora have not been downloaded or evaluated.",
+        "Historical source-inspected upstream invocation. Current prepared data and adapted protocol are recorded separately in execution.suite and dataset-lock.json.",
         "Environment must be set BEFORE module import; excludes all other27 documented public datasets.",
-        "Candidate exports BM25, Corpus, tokenize and LuceneTokenizer. Lucene tokenizer requires Java21/Pyserini.",
+        "Candidate exports BM25, Corpus, tokenize and LuceneTokenizer. The pinned freeform seed tokenizer is pure Python; Java21/Pyserini serve a separate baseline path.",
         "One dataset worker reduces concurrency but large corpora still need substantial RAM; TREC DL indexes8.84million passages and upstream estimates40-65GB RAM per large corpus."
       ]
     },
@@ -279,9 +291,11 @@
   },
   "subtasks": [],
   "validation": {
-    "level": "source_inspected",
+    "level": "source_inspected_with_candidate_boundary",
+    "execution_tested": false,
     "upstream_reproduction": false,
-    "adapter_checks": null
+    "independent_verification": false,
+    "full_dataset_seed_verified": false
   },
   "labels": {
     "scientific_contribution": "method",
@@ -289,11 +303,11 @@
     "artifact": "program",
     "domain": "information_retrieval",
     "area": "information_retrieval",
-    "data": "undistributed",
-    "verification": "none",
+    "data": "public_benchmark",
+    "verification": "sampled",
     "reference": "none",
     "resources": [
-      "unavailable"
+      "cpu"
     ],
     "cost": "not_run",
     "important_to_science": false

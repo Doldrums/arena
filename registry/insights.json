@@ -1,7 +1,7 @@
 {
   "schema": "arena.insights/1",
-  "catalog_digest": "3d31f26e217ca0e36a104f09d1f8111200ca9ff60bca1a5c253ecac2f557baf1",
-  "taxonomy_digest": "03627fbe5699706ef604d15936503b6006b21de7ad518adb100d5c88815784c1",
+  "catalog_digest": "d3bd2eef5ea277d22ecea80b31f7f08ea7409bacc6d4932aefd35ffb8395c524",
+  "taxonomy_digest": "0f78a713b1d6e5e66dcc64b4ed5cc362ff5cd37c4fab55b8f1fba72452ca5f8e",
   "sources": [
     {
       "id": "arena-tasks",
@@ -10,11 +10,11 @@
       "repository_url": "https://github.com/Doldrums/arena",
       "revision": "main",
       "manifest_path": "registry/task-library-manifest.json",
-      "manifest_sha256": "a4f04678232df8b7c61ebb850e90c99406e3762487f3e0285b5eec769f98ad0e",
+      "manifest_sha256": "1f94ea8e2bab66e1a509e05430f7ed13bf03e4f94d00664b65f21a4669d74d68",
       "catalog_path": "catalog/tasks.json",
       "index_path": "suite/index.json",
-      "catalog_sha256": "22388f9714e69bc29dc14ee03f46dc80f5ba79697f96dd08c01264628c0d0b96",
-      "index_sha256": "62f8296cbc37d2279724b95c683b69afe5d679a380ce3d873f1569245cfa9557"
+      "catalog_sha256": "5350af7d4f47fe0c75e49538eff7ddf177011411f56705b5552cc85e9bd8375e",
+      "index_sha256": "37c12cdf17e29c2eec0f7e7261bbdf1631bddf240bf19a5be04f32ed97800002"
     }
   ],
   "denominator": {
@@ -23,12 +23,12 @@
   },
   "summary": {
     "task_count": 959,
-    "executable_count": 689,
-    "unsupported_count": 270,
+    "executable_count": 702,
+    "unsupported_count": 257,
     "unique_paper_count": 113,
     "source_group_count": 113,
     "corpus_paper_count": 98,
-    "family_count": 151,
+    "family_count": 152,
     "unknown_domain_count": 7,
     "unknown_task_type_count": 3
   },
@@ -75,11 +75,11 @@
       "description": "Learning algorithms, generic prediction, language benchmarks, retrieval and digital-agent behavior.",
       "why_it_matters": "Compare generalization, reasoning, learning procedures and retrieval quality across defined data and benchmark tasks.",
       "total": 333,
-      "executable": 210,
-      "unsupported": 123,
+      "executable": 223,
+      "unsupported": 110,
       "paper_count": 49,
       "source_group_count": 50,
-      "family_count": 11,
+      "family_count": 12,
       "representative_task_ids": [
         "adas-arc",
         "adas-asdiv",
@@ -491,11 +491,11 @@
       "description": "Optimize document retrieval or ranking.",
       "why_it_matters": "Relevance measurements compare ranking functions and document-search quality across different collections.",
       "total": 28,
-      "executable": 15,
-      "unsupported": 13,
+      "executable": 28,
+      "unsupported": 0,
       "paper_count": 1,
       "source_group_count": 1,
-      "family_count": 1,
+      "family_count": 2,
       "representative_task_ids": [
         "rankevolve-aops",
         "rankevolve-climate-fever"
@@ -577,15 +577,15 @@
     {
       "id": "executable",
       "label": "Executable definitions",
-      "total": 689,
-      "percentage": 71.8,
+      "total": 702,
+      "percentage": 73.2,
       "description": "Packages with source-declared executable evaluators; environments and runtime are not verified by Arena."
     },
     {
       "id": "unsupported",
       "label": "Unsupported definitions",
-      "total": 270,
-      "percentage": 28.2,
+      "total": 257,
+      "percentage": 26.8,
       "description": "Catalogued packages whose source marks evaluation unsupported; they remain included in domain totals."
     },
     {
@@ -605,15 +605,15 @@
     {
       "id": "recreated",
       "label": "Recreated protocol",
-      "total": 499,
-      "percentage": 52.0,
+      "total": 512,
+      "percentage": 53.4,
       "description": "Recreated evaluators without the source's recreated_verified designation."
     },
     {
       "id": "recorded_contract",
       "label": "Recorded I/O contract",
-      "total": 689,
-      "percentage": 71.8,
+      "total": 702,
+      "percentage": 73.2,
       "description": "Non-null problem.json contract text; may point to evaluator documentation rather than a complete machine-readable signature."
     },
     {
@@ -11325,7 +11325,7 @@
       "evidence": {
         "task_name": "climate-fever",
         "description": "climate-fever task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
@@ -11340,7 +11340,7 @@
       "evidence": {
         "task_name": "cqadupstack",
         "description": "cqadupstack task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
@@ -11355,7 +11355,7 @@
       "evidence": {
         "task_name": "dbpedia-entity",
         "description": "dbpedia-entity task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
@@ -11370,7 +11370,7 @@
       "evidence": {
         "task_name": "dl19",
         "description": "dl19 task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
@@ -11385,7 +11385,7 @@
       "evidence": {
         "task_name": "dl20",
         "description": "dl20 task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
@@ -11430,7 +11430,7 @@
       "evidence": {
         "task_name": "fever",
         "description": "fever task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
@@ -11445,7 +11445,7 @@
       "evidence": {
         "task_name": "fiqa",
         "description": "fiqa task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
@@ -11460,7 +11460,7 @@
       "evidence": {
         "task_name": "hotpotqa",
         "description": "hotpotqa task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
@@ -11505,7 +11505,7 @@
       "evidence": {
         "task_name": "nq",
         "description": "nq task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
@@ -11550,7 +11550,7 @@
       "evidence": {
         "task_name": "quora",
         "description": "quora task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
@@ -11580,7 +11580,7 @@
       "evidence": {
         "task_name": "scidocs",
         "description": "scidocs task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
@@ -11670,7 +11670,7 @@
       "evidence": {
         "task_name": "trec-covid",
         "description": "trec-covid task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
@@ -11685,7 +11685,7 @@
       "evidence": {
         "task_name": "webis-touche2020",
         "description": "webis-touche2020 task evaluated in RankEvolve: Automating the Discovery of Retrieval Algorithms via LLM-Driven Evolution.",
-        "family": null,
+        "family": "rankevolve_binary_retrieval",
         "paper_ids": [
           "rankevolve"
         ],
