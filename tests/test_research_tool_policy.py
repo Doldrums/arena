@@ -147,3 +147,35 @@ def test_malformed_json_members_fail_as_denials(setup):
     setup[3]['HostConfig']['Mounts'][0]['Target'] = []
     with pytest.raises(p.Denied): validate(setup)
     with pytest.raises(p.Denied): p.validate_limits({**p.LIMITS, 'cpu_seconds': 10 ** 1000})
+
+
+@pytest.mark.parametrize('capabilities', [
+    ['CAP_SETGID', 'CAP_SETUID'], ['CAP_SETUID', 'CAP_SETGID'],
+    ['CAP_SETGID', 'SETUID'], ['SETGID', 'CAP_SETUID'],
+])
+def test_pinned_cli_capability_spellings_rebuild_same_fixed_profile(setup, capabilities):
+    # Actual immutable CLI 0d7708f... (Docker28.1.1) wire capture body SHA:
+    # 59b32656c29f610a801d0cd137d8983ee0c95781a3a5542851437a08b8f00503.
+    # Wire CapAdd was [CAP_SETGID, CAP_SETUID], CapDrop ALL, Swappiness -1.
+    expected, source = validate(setup)
+    body = setup[3]
+    body['HostConfig'].update(CapAdd=capabilities, MemorySwappiness=-1,
+        MaskedPaths=None, ReadonlyPaths=None, ConsoleSize=[0, 0], ShmSize=0,
+        RestartPolicy={'Name': 'no', 'MaximumRetryCount': 0})
+    body['NetworkingConfig'] = {'EndpointsConfig': {}}
+    assert validate(setup) == (expected, source)
+    assert expected['HostConfig']['CapAdd'] == ['SETUID', 'SETGID']
+    assert body['HostConfig']['CapAdd'] == capabilities  # No caller object mutation.
+
+
+@pytest.mark.parametrize('capabilities', [
+    ['SETUID', 'CAP_SETUID'], ['SETGID', 'CAP_SETGID'],
+    ['CAP_SETUID', 'CAP_SETUID'], ['CAP_SETGID', 'CAP_SETGID'],
+    ['CAP_SETUID', 'CAP_SYS_ADMIN'], ['SETUID', 'NET_ADMIN'],
+    ['cap_setuid', 'CAP_SETGID'], ['CAP_CAP_SETUID', 'CAP_SETGID'],
+    [' CAP_SETUID', 'CAP_SETGID'], ['CAP_SETUID', 'CAP_SETGID', 'SYS_ADMIN'],
+    ['CAP_SETUID'], ['CAP_SETUID', True], ['CAP_SETUID', None],
+])
+def test_capability_aliases_cannot_duplicate_or_expand_privilege(setup, capabilities):
+    setup[3]['HostConfig']['CapAdd'] = capabilities
+    with pytest.raises(p.Denied): validate(setup)
