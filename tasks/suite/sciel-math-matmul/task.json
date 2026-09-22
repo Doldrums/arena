@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "id": "sciel-math-matmul",
   "name": "SCiEL: Matrix multiplication rank, intended shape ⟨2,4,5⟩",
-  "description": "Construct tensor factors for rectangular matrix multiplication and minimize the reported rank. The original evaluator trusts candidate dimensions and can skip verification on empty arrays.",
+  "description": "Construct real factors for the fixed matrix-multiplication tensor of shape<2,4,5>; verify computed tensor identity and minimize rank under the declared numerical protocol.",
   "paper_ids": [
     "sciel-supplement"
   ],
@@ -79,7 +79,7 @@
       "Direct evaluation of original candidate contract; model-driven search is configured separately."
     ],
     "suite": {
-      "protocol": "original",
+      "protocol": "recreated",
       "family": "sciel_copy",
       "evaluator": "evaluator.py",
       "initial_program": "initial_program.py",
@@ -93,21 +93,31 @@
         "py:optax",
         "py:tqdm"
       ],
-      "timeout": 600
+      "timeout": 600,
+      "validity_key": "arena_valid",
+      "adaptation": {
+        "schema": "arena.task-feasibility-adapter/1",
+        "contract": "matmul_2_4_5",
+        "upstream_evaluator_path": "upstream_evaluator.py",
+        "upstream_evaluator_sha256": "9fd059997380c4240c6eef3cdf502581f29c731963dc3b0448bca2416122c086",
+        "verifier": "fixed dimensions(2,4,5); exact integer dimensions/rank before casts; nonempty finite real factors; computed floating tensor equality; score32/rank",
+        "validity_key": "arena_valid",
+        "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction."
+      }
     }
   },
   "limitations": [
     "Source-inspected SCiEL example; not a reproduced paper result.",
     "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-    "The verifier returns before tensor verification if any factor array is empty. Candidate-returned n,m,p and rank determine checks/score instead of enforcing the intended fixed shape ⟨2,4,5⟩. A positive score is not evidence of a valid algorithm.",
-    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+    "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+    "Dimensions are fixed to(2,4,5); boolean, fractional and nonfinite dimensions/rank are rejected before conversion. np.array_equal compares the computed floating tensor, with residual recorded; this is not an exact algebraic certificate."
   ],
   "validation": {
-    "level": "source_inspected",
+    "level": "source_inspected_with_feasibility_adapter",
     "upstream_reproduction": false,
     "independent_verification": false,
     "integrity_risks": [
-      "The verifier returns before tensor verification if any factor array is empty. Candidate-returned n,m,p and rank determine checks/score instead of enforcing the intended fixed shape ⟨2,4,5⟩. A positive score is not evidence of a valid algorithm."
+      "Dimensions are fixed to(2,4,5); boolean, fractional and nonfinite dimensions/rank are rejected before conversion. np.array_equal compares the computed floating tensor, with residual recorded; this is not an exact algebraic certificate."
     ],
     "execution_tested": false
   },
@@ -283,7 +293,7 @@
     "domain": "mathematics",
     "area": "mathematics",
     "data": "none",
-    "verification": "exact",
+    "verification": "sampled",
     "reference": "none",
     "resources": [
       "cpu"

@@ -8,11 +8,11 @@
       "repository_url": "https://github.com/Doldrums/arena",
       "revision": "main",
       "manifest_path": "registry/task-library-manifest.json",
-      "manifest_sha256": "aeececf625ff7d4c7d22123ed2129a2b7c0215c7ccd1e1c50777b01ab80ba4ac",
+      "manifest_sha256": "a4f04678232df8b7c61ebb850e90c99406e3762487f3e0285b5eec769f98ad0e",
       "catalog_path": "catalog/tasks.json",
       "index_path": "suite/index.json",
-      "catalog_sha256": "b6709b3b6d38c56f99853bc176e93a7822dd142a550b3b36af835e0250d3e276",
-      "index_sha256": "e7a3b4f555e09945cb4feb28c9aa0039387086f648eeb9162f9f8ee98bbbc475"
+      "catalog_sha256": "22388f9714e69bc29dc14ee03f46dc80f5ba79697f96dd08c01264628c0d0b96",
+      "index_sha256": "62f8296cbc37d2279724b95c683b69afe5d679a380ce3d873f1569245cfa9557"
     }
   ],
   "summary": {
@@ -20,9 +20,9 @@
     "executable_count": 689,
     "unsupported_count": 270,
     "protocol_counts": {
-      "original": 117,
+      "original": 109,
       "recreated_verified": 81,
-      "recreated": 491,
+      "recreated": 499,
       "unsupported": 270
     },
     "runtime_readiness": "not_verified"
@@ -47553,7 +47553,7 @@
       "name": "SCiEL: Erdős minimum overlap",
       "description": "Construct a discretized function and its reported overlap constant c5; minimize the original evaluator’s overlap bound.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -47575,7 +47575,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-erdos-min-overlap/problem.json",
         "path": "suite/sciel-math-erdos-min-overlap/problem.json",
-        "sha256": "df906f20711c714f05da59a7264b8944857a4482f38ec0c11f7af3a5d6aef3d7"
+        "sha256": "55e6020c59f1d2d6fbe6c90428ac0814551097e12fb22a82d15c22f7668ee2d1"
       },
       "provenance": {
         "kind": "upstream",
@@ -47594,9 +47594,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+          "Mass tolerance:atol1e-3,rtol1e-5. Correlation tolerance:atol1e-4,rtol1e-5. Discrete numerical feasibility is not an independent continuous-bound proof."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example erdos_min_overlap",
         "paper_metric": null,
@@ -48022,7 +48023,7 @@
       "name": "SCiEL: First autocorrelation inequality",
       "description": "Construct discretized nonnegative function values and minimize the autocorrelation inequality constant c1 checked by the upstream evaluator.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -48043,7 +48044,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-first-autocorr-ineq/problem.json",
         "path": "suite/sciel-math-first-autocorr-ineq/problem.json",
-        "sha256": "d4873a148be6b96046df14ba925912d5e4373bfb5c29d8bfcef96f99afca0a59"
+        "sha256": "a27b517ced53566c0cbfb11ec697bb0d1bd381102d7e24d4c547d14f577171e7"
       },
       "provenance": {
         "kind": "upstream",
@@ -48062,9 +48063,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+          "C1 uses the original finite convolution representation and absolute consistency tolerance1e-6; validity does not certify a continuous inequality."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example first_autocorr_ineq",
         "paper_metric": null,
@@ -48379,7 +48381,7 @@
       "name": "SCiEL: Heilbronn convex region, 14 points",
       "description": "Place 14 points to maximize the smallest triangle area divided by the convex hull area.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -48401,7 +48403,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-heilbronn-convex-14/problem.json",
         "path": "suite/sciel-math-heilbronn-convex-14/problem.json",
-        "sha256": "43acea49f7f6f5cbb30605512bff9317b29ab2202cb8d3e4bdc7aa4707d34aa5"
+        "sha256": "e35853e9870adb03f1894f4d14f82cb69e66e245ab4b7f0c8898a80a150833f4"
       },
       "provenance": {
         "kind": "upstream",
@@ -48421,9 +48423,10 @@
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
           "The original requirements.txt omits scipy used by the evaluator; it is included in this package’s dependency union.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+          "Floating triangle determinants and SciPy convex-hull area are numerical checks. Degenerate zero-area triangles may be feasible with zero quality; the convex hull itself must have positive area."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example heilbronn_convex/14",
         "paper_metric": null,
@@ -48905,9 +48908,9 @@
     {
       "id": "sciel-math-matmul",
       "name": "SCiEL: Matrix multiplication rank, intended shape ⟨2,4,5⟩",
-      "description": "Construct tensor factors for rectangular matrix multiplication and minimize the reported rank. The original evaluator trusts candidate dimensions and can skip verification on empty arrays.",
+      "description": "Construct real factors for the fixed matrix-multiplication tensor of shape<2,4,5>; verify computed tensor identity and minimize rank under the declared numerical protocol.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -48929,7 +48932,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-matmul/problem.json",
         "path": "suite/sciel-math-matmul/problem.json",
-        "sha256": "8c62014015bee1a10a0654a949716a21fce6ab8442ccfb41d042f8fe312bbd0d"
+        "sha256": "32f3b1b468c5fb847a6a7756a698b811b2effc168edfe16a1f3b7127287aaac3"
       },
       "provenance": {
         "kind": "upstream",
@@ -48948,10 +48951,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The verifier returns before tensor verification if any factor array is empty. Candidate-returned n,m,p and rank determine checks/score instead of enforcing the intended fixed shape ⟨2,4,5⟩. A positive score is not evidence of a valid algorithm.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+          "Dimensions are fixed to(2,4,5); boolean, fractional and nonfinite dimensions/rank are rejected before conversion. np.array_equal compares the computed floating tensor, with residual recorded; this is not an exact algebraic certificate."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example matmul",
         "paper_metric": null,
@@ -49615,7 +49618,7 @@
       "name": "SCiEL: Second autocorrelation inequality",
       "description": "Construct discretized function values and maximize the autocorrelation inequality constant c2 checked by the upstream evaluator.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -49636,7 +49639,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-second-autocorr-ineq/problem.json",
         "path": "suite/sciel-math-second-autocorr-ineq/problem.json",
-        "sha256": "db4669605322e63c08604a3632cfc4e47c86c6e1323667d732670e5148a83c1f"
+        "sha256": "89d0fccc6158b12388f9d59d5b269c70a6b0a70f1e521c9f922b2f21adc057d0"
       },
       "provenance": {
         "kind": "upstream",
@@ -49655,9 +49658,10 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+          "The original scorer clips values>=-1e-6 to0 and recomputes C2; candidate-reported C2 is not authoritative. The piecewise-linear ratio is a numerical representation check, not a certified continuous bound."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example second_autocorr_ineq",
         "paper_metric": null,
@@ -50066,7 +50070,7 @@
       "name": "SCiEL: Finite-set sum and difference ratio",
       "description": "Construct a finite set of integers maximizing the sum/difference inequality constant c6 checked by the evaluator.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -50087,7 +50091,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-sums-diffs-finite-sets/problem.json",
         "path": "suite/sciel-math-sums-diffs-finite-sets/problem.json",
-        "sha256": "0f6ae18dc7395a65576a291eeb038c814ee2d75227deb1fcc980e07c2ea185f4"
+        "sha256": "732a77c85b4c477b928492522a12b872eeb9bf2de91332eee66239686b11996c"
       },
       "provenance": {
         "kind": "upstream",
@@ -50111,10 +50115,11 @@
         "limitations": [
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified.",
-          "The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search."
+          "The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search.",
+          "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+          "Integer-domain checks occur before casts. Pair-set cardinalities use overflow-safe Python integers; the derived logarithmic ratio retains source tolerance(atol1e-8,rtol1e-5). The unchanged original JAX seed needs a separately measured4GiB CPU profile; no high-memory capability is granted by this metadata."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example sums_diffs_finite_sets",
         "paper_metric": null,
@@ -50308,7 +50313,7 @@
       "name": "SCiEL: Third autocorrelation inequality",
       "description": "Construct discretized function values minimizing c3 as computed by the pinned evaluator using maximum absolute self-convolution. This is the upstream numerical contract.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -50329,7 +50334,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-third-autocorr-ineq/problem.json",
         "path": "suite/sciel-math-third-autocorr-ineq/problem.json",
-        "sha256": "dc124d0b6743f28e14423d0d4d484f2e3b62add2ee143399d602e4e992bbd175"
+        "sha256": "db25857ad84ea5950c364357e786468278bca31b1be54753697877d295218eee"
       },
       "provenance": {
         "kind": "upstream",
@@ -50349,9 +50354,10 @@
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
           "The evaluator uses maximum absolute self-convolution and the stored benchmark 1.4556427953745406. Treat this as the pinned implementation contract; correspondence to differently stated paper formulas is not asserted.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+          "Signed values are allowed. The original maximum-absolute convolution and absolute tolerance1e-3 are preserved; correspondence to a differently stated paper formula is not asserted."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example third_autocorr_ineq",
         "paper_metric": null,
@@ -50551,7 +50557,7 @@
       "name": "SCiEL: Sign uncertainty inequality",
       "description": "Construct Hermite expansion coefficients and a radius minimizing the sign-uncertainty bound c4 under the original root and positivity verification.",
       "family": "sciel_copy",
-      "protocol": "original",
+      "protocol": "recreated",
       "executable": true,
       "declared_status": "ready",
       "runtime_readiness": "not_verified",
@@ -50575,7 +50581,7 @@
       "contract_source": {
         "url": "https://github.com/Doldrums/arena/blob/main/tasks/suite/sciel-math-uncertainty-ineq/problem.json",
         "path": "suite/sciel-math-uncertainty-ineq/problem.json",
-        "sha256": "5c3befdc22744f18d5c73d172d616ce07043143dd779185697a33e543e58b5f7"
+        "sha256": "5988578a25c842ad8b2241b85e61c07065d166e8bb27f4ff1ce2857efb5600e6"
       },
       "provenance": {
         "kind": "upstream",
@@ -50595,9 +50601,11 @@
           "Source-inspected SCiEL example; not a reproduced paper result.",
           "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
           "The original requirements.txt omits jax and optax imported by the baseline; both are included in this package’s actual dependency union.",
-          "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified."
+          "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+          "The original float conversion and binary-rational Hermite construction are preserved. Same-call strict verifier consistency uses atol=rtol=1e-9; this is finite-construction evidence, not an independently certified continuous uncertainty bound.",
+          "The unchanged strict symbolic verifier can reject otherwise meaningful coefficients when SymPy returns an explicit radical instead of a root object exposing eval_rational. Original verifier errors remain failed evaluations; the adapter does not silently repair the scorer."
         ],
-        "validation_level": "source_inspected",
+        "validation_level": "source_inspected_with_feasibility_adapter",
         "upstream_reproduction": false,
         "benchmark": "SCiEL source example uncertainty_ineq",
         "paper_metric": null,

@@ -37,10 +37,10 @@ def test_full_coverage_and_honest_evidence_counts(snapshot, catalog):
     summary = snapshot["summary"]
     assert summary["task_count"] == 959
     assert summary["tasks_with_published_reference"] == 75
-    assert summary["tasks_with_recorded_baseline"] == 654
+    assert summary["tasks_with_recorded_baseline"] == 646
     assert summary["valid_recorded_baselines"] == 577
-    assert summary["validity_unknown_baselines"] == 77
-    assert summary["tasks_without_numeric_reference"] == 305
+    assert summary["validity_unknown_baselines"] == 69
+    assert summary["tasks_without_numeric_reference"] == 313
     assert summary["tasks_with_recorded_reproduction"] == 34
     assert summary["arena_reproduced_references"] == 0
     assert summary["current_sota_status"] == "not_assessed"
@@ -51,7 +51,10 @@ def test_adapted_validity_contracts_do_not_inherit_original_protocol_baselines(s
         "difference-bases", "finite-field-nikodym", "turan-hypergraph",
         "equidistant-points-convex", "erdos-discrepancy", "no-5-on-a-sphere",
         "erdos-squarefree", "factoring-factorials", "furstenberg-sarkozy",
-        "subsets-grid-no-isosceles", "flat-polynomials", "sendov-conjecture")]
+        "subsets-grid-no-isosceles", "flat-polynomials", "sendov-conjecture",
+        "first-autocorr-ineq", "second-autocorr-ineq", "third-autocorr-ineq",
+        "erdos-min-overlap", "heilbronn-convex-14", "sums-diffs-finite-sets",
+        "matmul", "uncertainty-ineq")]
     for task_id in [*adapted, "sciel-bench-k-module-problem"]:
         row = task(snapshot, task_id)
         assert not any(anchor["kind"] == "recorded_seed_baseline" for anchor in row["anchors"])

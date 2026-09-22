@@ -114,8 +114,8 @@ def test_papers_and_supplements_are_separate_and_coverage_is_not_readiness(input
     assert len(source_ids - non_papers) == summary["corpus_paper_count"]
     coverage = {row["id"]: row for row in insights["coverage"]}
     assert coverage["runtime_verified"]["total"] == 0
-    assert coverage["original"]["total"] == 117
-    assert coverage["recreated"]["total"] == 491
+    assert coverage["original"]["total"] == 109
+    assert coverage["recreated"]["total"] == 499
     assert coverage["recorded_contract"]["total"] == 689
     assert coverage["recreated_verified"]["total"] == 81
     assert "not independently" in coverage["recreated_verified"]["description"]

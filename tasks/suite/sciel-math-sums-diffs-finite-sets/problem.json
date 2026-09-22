@@ -1,5 +1,5 @@
 {
-  "protocol": "original",
+  "protocol": "recreated",
   "family": "sciel_copy",
   "direction": "maximize",
   "contract": "See evaluator.py and README.upstream.md.",
@@ -11,14 +11,16 @@
   ],
   "timeout": 600,
   "notes": [
-    "The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search."
+    "The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search.",
+    "Integer-domain checks occur before casts. Pair-set cardinalities use overflow-safe Python integers; the derived logarithmic ratio retains source tolerance(atol1e-8,rtol1e-5). The unchanged original JAX seed needs a separately measured4GiB CPU profile; no high-memory capability is granted by this metadata."
   ],
   "entry": {
     "callable": "evaluate",
     "env": {},
     "seed": "initial_program.py",
     "score_key": "combined_score",
-    "error_key": "error"
+    "error_key": "error",
+    "validity_key": "arena_valid"
   },
   "origin": {
     "repository": "https://github.com/luciferkonn/SCiEL/tree/da80706f98f9bf1295e502544cdf5a9200fe5f57",
@@ -30,7 +32,7 @@
       "requirements.txt": "af902634ec0c0bb998bee552f78fbbd77aef7b26d3d94226a60c512b70a6b541"
     }
   },
-  "protocol_description": "Verbatim copy of the pinned SCiEL example `examples/alphaevolve_math_problems/sums_diffs_finite_sets` (commit da80706f98f9); the evaluator, seed program and configuration are the upstream files. README.upstream.md is the upstream README when one exists.",
+  "protocol_description": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction. The seed and source configuration are unchanged.",
   "id": "sciel-math-sums-diffs-finite-sets",
   "name": "SCiEL: Finite-set sum and difference ratio",
   "paper_ids": [
@@ -60,8 +62,9 @@
   "limitations": [
     "Source-inspected SCiEL example; not a reproduced paper result.",
     "The original evaluator and baseline are fetched at the immutable source commit; no upstream implementation is silently repaired.",
-    "The upstream evaluator provides no independently trusted validity boolean; a finite returned score remains unverified.",
-    "The bounded seed is a known published AlphaEvolve construction, not the original SCiEL simulated-annealing seed. Its score is not a newly discovered result; the source JAX search remains archived and was not reproduced."
+    "The default suite uses the unchanged original JAX simulated-annealing initial_program.py and requires numpy, jax and tqdm. Only the separately selected upstream adapter uses adapters/recovered/sciel_sums_diffs/seed.py, a known published AlphaEvolve warm start; that route is not a new discovery or a reproduction of the original search.",
+    "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+    "Integer-domain checks occur before casts. Pair-set cardinalities use overflow-safe Python integers; the derived logarithmic ratio retains source tolerance(atol1e-8,rtol1e-5). The unchanged original JAX seed needs a separately measured4GiB CPU profile; no high-memory capability is granted by this metadata."
   ],
   "evaluator": "evaluator.py",
   "initial_program": "initial_program.py",
@@ -104,5 +107,31 @@
     "reason": "Primary research addresses the underlying problem directly; scientific importance does not rely on the agent/framework paper.",
     "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
     "criterion": "primary_research_goal"
+  },
+  "adaptation": {
+    "schema": "arena.task-feasibility-adapter/1",
+    "contract": "finite_sum_difference",
+    "upstream_evaluator_path": "upstream_evaluator.py",
+    "upstream_evaluator_sha256": "bf3c4ff0e11abe294b8f5d8c54090e2c701c9da25c52e693057c60f25aa96661",
+    "verifier": "distinct nonnegative integer set containing0; nontrivial maximum; Python-integer sum/difference counts and numerical logarithmic ratio",
+    "validity_key": "arena_valid",
+    "scope": "Arena observes exactly one original constructor call and binds its returned construction to the same pinned scorer and named verifier inputs. Original scorer bytes are retained in upstream_evaluator.py. Missing or ambiguous observations stay unknown. These checks establish finite representation feasibility and numerical consistency, not a theorem, exact algebraic certificate, optimum or paper reproduction.",
+    "historical_original_protocol_evidence": {
+      "current_protocol_evidence": false,
+      "validation": {
+        "execution_tested": true,
+        "recovery_evidence": {
+          "date": "2026-09-19",
+          "seed": "known published AlphaEvolve solution_1",
+          "original_search_reproduced": false,
+          "report": "docs/TASKS.md",
+          "sciel_exercised": true,
+          "c6_bound": 1.1479888965092757,
+          "combined_score": 0.9909977300808179,
+          "route": "upstream_adapter_with_published_warm_start",
+          "suite_seed_verified": false
+        }
+      }
+    }
   }
 }
