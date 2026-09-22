@@ -42,7 +42,7 @@ def test_known_native_and_canonical_commands_preserve_every_argument(args, expec
     probe = Mock(side_effect=AssertionError("Named commands need no ownership lookup"))
     plan = cli.execution_plan(args, canonical_socket="/run/c.sock", research_socket="/run/r.sock", probe=probe)
     assert plan["broker"] == expected
-    assert plan["argv"] == ["/usr/bin/docker", *args]
+    assert plan["argv"] == ["/usr/local/bin/docker", *args]
     assert plan["environment"]["DOCKER_HOST"] == "unix:///run/" + ("r" if expected == "research" else "c") + ".sock"
     probe.assert_not_called()
 
@@ -153,5 +153,5 @@ def test_main_executes_once_absolute_cli_with_no_shell(monkeypatch):
     cli.main(["version", "--format", "{{.Server.Version}}"])
     execute.assert_called_once()
     binary, argv, environment = execute.call_args.args
-    assert binary == argv[0] == "/usr/bin/docker"
+    assert binary == argv[0] == "/usr/local/bin/docker"
     assert environment["DOCKER_HOST"] == "unix://" + cli.RESEARCH_SOCKET
