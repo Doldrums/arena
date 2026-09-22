@@ -1,6 +1,6 @@
 """Identity, filesystem, and canonical profile validation for the evaluator."""
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import http.client
 import json
 import os
@@ -29,6 +29,10 @@ IMAGE = re.compile(r"(?:[A-Za-z0-9][A-Za-z0-9._/:\-]*@)?sha256:[0-9a-f]{64}\Z")
 
 class Denied(ValueError):
     """A request outside the evaluator capability."""
+
+
+class GPUCapacityUnavailable(Denied):
+    """A known GPU lease blocked this request before Docker creation."""
 
 
 def require(condition, message="Request is outside the canonical evaluator profile"):
@@ -133,6 +137,7 @@ class Config:
     engine_staging_root: Path | None = None
     additional_tasks_roots: tuple[Path, ...] = ()
     resource_grants: tuple[tuple[str, str, tuple[str, ...]], ...] = ()
+    lmx_gpu: object | None = None
 
     @property
     def library_roots(self):
@@ -145,7 +150,7 @@ class Config:
                     "images", "worker_uid", "worker_gid"}
         require(required <= data.keys() and not set(data) - required -
                 {"cgroup_root", "max_containers", "timeout_seconds", "engine_registry", "engine_staging_root",
-                 "additional_tasks_roots", "resource_grants"})
+                 "additional_tasks_roots", "resource_grants", "lmx_gpu"})
         for key in ("docker_socket", "socket_path", "staging_root", "tasks_root"):
             data[key] = Path(data[key])
             require(data[key].is_absolute() and ".." not in data[key].parts)
@@ -166,6 +171,9 @@ class Config:
         for key in ("worker_uid", "worker_gid"):
             require(type(data[key]) is int and data[key] > 0)
         config = cls(**data)
+        if "lmx_gpu" in data:
+            from .evaluator_gpu import LmxGpu
+            config = replace(config, lmx_gpu=LmxGpu.parse(data["lmx_gpu"], config))
         require(re.fullmatch(r"/(?:[a-zA-Z0-9_-]+/)*[a-zA-Z0-9_-]+", config.cgroup_root)
                 and config.cgroup_root != "/")
         require(type(config.max_containers) is int and 1 <= config.max_containers <= 64)
@@ -205,6 +213,8 @@ class Config:
                     require(parent.stat().st_uid == 0 and not parent.stat().st_mode & 0o022)
         for path in self.library_roots:
             immutable_task_library(path)
+        if self.lmx_gpu is not None:
+            self.lmx_gpu.validate_host()
 
 
 def _peer_identity(connection, config):
@@ -281,9 +291,12 @@ def canonical_config(body, name, run_id, config):
     require(command[6:11] == ["--candidate", "/candidate/program.py", "--python", python, "--timeout"])
     require(command[11].isdigit() and 1 <= int(command[11]) <= config.timeout_seconds)
     require(command[12:] == ["--output", "/results/native.json"])
-    from .evaluation_resources import granted_budget, require_parent_budget
+    from .evaluation_resources import granted_budget, require_parent_budget, require_gpu_parent_budget
+    from .evaluator_gpu import GPU_BUDGET, IMAGE as GPU_IMAGE, PROFILE as GPU_PROFILE, selected as gpu_selected
+    require(body["Image"] != GPU_IMAGE or resource_profile == GPU_PROFILE)
+    gpu = gpu_selected(config, resource_profile)
     try:
-        resources = granted_budget(resource_profile, body["Image"], command[5], config.resource_grants)
+        resources = GPU_BUDGET if gpu else granted_budget(resource_profile, body["Image"], command[5], config.resource_grants)
     except ValueError as error:
         raise Denied(str(error)) from None
     memory = resources["memory_mb"] * 1024 ** 2
@@ -293,13 +306,13 @@ def canonical_config(body, name, run_id, config):
                "ShmSize", "Runtime", "CgroupnsMode", "MemorySwap", "MemorySwappiness", "MaskedPaths", "ReadonlyPaths"}
     only_defaults(host, allowed)
     require(host.get("NetworkMode") == "none" and host.get("ReadonlyRootfs") is True)
-    require(host.get("NanoCpus") == 1_000_000_000 and host.get("Memory") == memory)
+    require(host.get("NanoCpus") == resources["cpus"] * 1_000_000_000 and host.get("Memory") == memory)
     require(host.get("PidsLimit") == resources["pids"] and host.get("CapDrop") == ["ALL"])
     require(host.get("SecurityOpt") in (["no-new-privileges"], ["no-new-privileges=true"]))
     require(host.get("CgroupParent") == config.cgroup_root + "/arena-control-" + run_id)
     if resource_profile is not None:
         try:
-            require_parent_budget(host["CgroupParent"], resources)
+            (require_gpu_parent_budget if gpu else require_parent_budget)(host["CgroupParent"], resources)
         except (ValueError, OSError) as error:
             raise Denied("Evaluator resources exceed the admitted parent envelope") from None
     require(host.get("Tmpfs") == {"/tmp": "rw,nosuid,nodev,size=268435456"})
@@ -339,13 +352,16 @@ def canonical_config(body, name, run_id, config):
     rebuilt = {"Image": body["Image"], "Cmd": command, "User": body["User"], "Env": environment,
                "WorkingDir": "/tmp", "Labels": body["Labels"], "AttachStdout": True, "AttachStderr": True,
                "Tty": False, "OpenStdin": False, "Entrypoint": [], "HostConfig": {
-                   "NetworkMode": "none", "ReadonlyRootfs": True, "NanoCpus": 1_000_000_000,
+                   "NetworkMode": "none", "ReadonlyRootfs": True, "NanoCpus": resources["cpus"] * 1_000_000_000,
                    "Memory": memory, "MemorySwap": memory, "PidsLimit": resources["pids"],
                    "CapDrop": ["ALL"], "SecurityOpt": ["no-new-privileges"], "AutoRemove": True,
                    "CgroupParent": host["CgroupParent"], "CgroupnsMode": "private",
                    "Tmpfs": {"/tmp": "rw,nosuid,nodev,size=268435456"},
                    "LogConfig": {"Type": "local", "Config": {"max-size": "1m", "max-file": "1", "compress": "false"}},
                    "Mounts": [{"Type": "bind", "Source": task_source, "Target": "/tasks", "ReadOnly": True}]}}
+    if gpu:
+        gpu.authorize(body["Image"], command[5], task_source, int(command[11]))
+        gpu.rebuild(rebuilt)
     return rebuilt, candidate, result
 
 
