@@ -1,7 +1,7 @@
 {
   "schema": "arena.insights/1",
-  "catalog_digest": "d3bd2eef5ea277d22ecea80b31f7f08ea7409bacc6d4932aefd35ffb8395c524",
-  "taxonomy_digest": "0f78a713b1d6e5e66dcc64b4ed5cc362ff5cd37c4fab55b8f1fba72452ca5f8e",
+  "catalog_digest": "c919fc97caf76af12a758b7ff6de0470864b5bcc073c85d80114eb0f9a40a7d5",
+  "taxonomy_digest": "363493f0015a2433f6b1fa89fa6b93066ee5947a010db14eca5018076f136d03",
   "sources": [
     {
       "id": "arena-tasks",
@@ -10,11 +10,11 @@
       "repository_url": "https://github.com/Doldrums/arena",
       "revision": "main",
       "manifest_path": "registry/task-library-manifest.json",
-      "manifest_sha256": "1f94ea8e2bab66e1a509e05430f7ed13bf03e4f94d00664b65f21a4669d74d68",
+      "manifest_sha256": "bce9b9bbeb293bd23ff960d99b8061c52993a92aa23215639c00e875fa51774a",
       "catalog_path": "catalog/tasks.json",
       "index_path": "suite/index.json",
-      "catalog_sha256": "5350af7d4f47fe0c75e49538eff7ddf177011411f56705b5552cc85e9bd8375e",
-      "index_sha256": "37c12cdf17e29c2eec0f7e7261bbdf1631bddf240bf19a5be04f32ed97800002"
+      "catalog_sha256": "8f44a43f19f0616de4e03f786d34fc0e907a21f2e855a09559bc2dcea6de0480",
+      "index_sha256": "ecd671ca3d25baf8cb01a3055257da35da59daeeaff8a9bb9dd802c59d135a54"
     }
   ],
   "denominator": {
@@ -23,12 +23,12 @@
   },
   "summary": {
     "task_count": 959,
-    "executable_count": 702,
-    "unsupported_count": 257,
+    "executable_count": 705,
+    "unsupported_count": 254,
     "unique_paper_count": 113,
     "source_group_count": 113,
     "corpus_paper_count": 98,
-    "family_count": 152,
+    "family_count": 153,
     "unknown_domain_count": 7,
     "unknown_task_type_count": 3
   },
@@ -75,11 +75,11 @@
       "description": "Learning algorithms, generic prediction, language benchmarks, retrieval and digital-agent behavior.",
       "why_it_matters": "Compare generalization, reasoning, learning procedures and retrieval quality across defined data and benchmark tasks.",
       "total": 333,
-      "executable": 223,
-      "unsupported": 110,
+      "executable": 226,
+      "unsupported": 107,
       "paper_count": 49,
       "source_group_count": 50,
-      "family_count": 12,
+      "family_count": 13,
       "representative_task_ids": [
         "adas-arc",
         "adas-asdiv",
@@ -383,15 +383,15 @@
       "description": "Optimize prompts, scaffolds or outputs on language, reasoning or grid-inference benchmarks.",
       "why_it_matters": "Measure compositional reasoning, language understanding and constraint satisfaction on specified benchmark cases.",
       "total": 148,
-      "executable": 123,
-      "unsupported": 25,
+      "executable": 126,
+      "unsupported": 22,
       "paper_count": 30,
       "source_group_count": 31,
-      "family_count": 3,
+      "family_count": 4,
       "representative_task_ids": [
         "adas-arc",
         "adas-asdiv",
-        "sciel-bench-arc-agi-evaluation-task-0"
+        "lmx-stable-diffusion-excess-blue"
       ],
       "percentage": 15.4
     },
@@ -577,15 +577,15 @@
     {
       "id": "executable",
       "label": "Executable definitions",
-      "total": 702,
-      "percentage": 73.2,
+      "total": 705,
+      "percentage": 73.5,
       "description": "Packages with source-declared executable evaluators; environments and runtime are not verified by Arena."
     },
     {
       "id": "unsupported",
       "label": "Unsupported definitions",
-      "total": 257,
-      "percentage": 26.8,
+      "total": 254,
+      "percentage": 26.5,
       "description": "Catalogued packages whose source marks evaluation unsupported; they remain included in domain totals."
     },
     {
@@ -605,15 +605,15 @@
     {
       "id": "recreated",
       "label": "Recreated protocol",
-      "total": 512,
-      "percentage": 53.4,
+      "total": 515,
+      "percentage": 53.7,
       "description": "Recreated evaluators without the source's recreated_verified designation."
     },
     {
       "id": "recorded_contract",
       "label": "Recorded I/O contract",
-      "total": 702,
-      "percentage": 73.2,
+      "total": 705,
+      "percentage": 73.5,
       "description": "Non-null problem.json contract text; may point to evaluator documentation rather than a complete machine-readable signature."
     },
     {
@@ -9157,46 +9157,46 @@
     "lmx-stable-diffusion-excess-blue": {
       "domain_id": "machine-learning",
       "task_type_id": "language-reasoning",
-      "rule_id": "unsupported-language-evaluation",
-      "rationale": "The reviewed source tasks optimize language-model prompts, outputs, proof reasoning or text judgments. Domain words in the benchmark name are not evidence of scientific modeling.",
+      "rule_id": "family-lmx_sd_prompt",
+      "rationale": "Optimize a text prompt using full-image excess-color feedback from a fixed diffusion model. This is generative prompt optimization, not a physical color model or a language-judgment benchmark.",
       "evidence": {
         "task_name": "Stable Diffusion excess blue",
-        "description": "Stable Diffusion excess blue: optimize the candidate specified by the paper and evaluate against the named benchmark.",
-        "family": null,
+        "description": "Optimize a text prompt to increase excess blue in a complete SD1.4-generated image.",
+        "family": "lmx_sd_prompt",
         "paper_ids": [
           "lmx"
         ],
-        "metric": "domain-specific fitness / QD score"
+        "metric": "excess blue (full-image RGB channel sums)"
       }
     },
     "lmx-stable-diffusion-excess-green": {
       "domain_id": "machine-learning",
       "task_type_id": "language-reasoning",
-      "rule_id": "unsupported-language-evaluation",
-      "rationale": "The reviewed source tasks optimize language-model prompts, outputs, proof reasoning or text judgments. Domain words in the benchmark name are not evidence of scientific modeling.",
+      "rule_id": "family-lmx_sd_prompt",
+      "rationale": "Optimize a text prompt using full-image excess-color feedback from a fixed diffusion model. This is generative prompt optimization, not a physical color model or a language-judgment benchmark.",
       "evidence": {
         "task_name": "Stable Diffusion excess green",
-        "description": "Stable Diffusion excess green: optimize the candidate specified by the paper and evaluate against the named benchmark.",
-        "family": null,
+        "description": "Optimize a text prompt to increase excess green in a complete SD1.4-generated image.",
+        "family": "lmx_sd_prompt",
         "paper_ids": [
           "lmx"
         ],
-        "metric": "domain-specific fitness / QD score"
+        "metric": "excess green (full-image RGB channel sums)"
       }
     },
     "lmx-stable-diffusion-excess-red": {
       "domain_id": "machine-learning",
       "task_type_id": "language-reasoning",
-      "rule_id": "unsupported-language-evaluation",
-      "rationale": "The reviewed source tasks optimize language-model prompts, outputs, proof reasoning or text judgments. Domain words in the benchmark name are not evidence of scientific modeling.",
+      "rule_id": "family-lmx_sd_prompt",
+      "rationale": "Optimize a text prompt using full-image excess-color feedback from a fixed diffusion model. This is generative prompt optimization, not a physical color model or a language-judgment benchmark.",
       "evidence": {
         "task_name": "Stable Diffusion excess red",
-        "description": "Stable Diffusion excess red: optimize the candidate specified by the paper and evaluate against the named benchmark.",
-        "family": null,
+        "description": "Optimize a text prompt to increase excess red in a complete SD1.4-generated image.",
+        "family": "lmx_sd_prompt",
         "paper_ids": [
           "lmx"
         ],
-        "metric": "domain-specific fitness / QD score"
+        "metric": "excess red (full-image RGB channel sums)"
       }
     },
     "lmx-woody-allen-sentence-sentiment": {
@@ -15305,6 +15305,7 @@
     "family-kissing-number": 1,
     "family-knapsack-constructive": 1,
     "family-llm-benchmark": 94,
+    "family-lmx_sd_prompt": 3,
     "family-lsr-equation": 4,
     "family-matmul-tensor": 54,
     "family-max-min-distance-ratio": 2,
@@ -15454,7 +15455,7 @@
     "unsupported-hyperagent-robotics": 1,
     "unsupported-infrastructure": 2,
     "unsupported-kernel-and-compiler": 69,
-    "unsupported-language-evaluation": 39,
+    "unsupported-language-evaluation": 36,
     "unsupported-llm-scaling-law": 1,
     "unsupported-moe-loss": 1,
     "unsupported-optimization-rewards": 5,

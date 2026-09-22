@@ -27,8 +27,8 @@ def test_every_package_occurs_once_in_each_complete_partition(inputs):
     for group, key in [("domains", "domain_id"), ("task_types", "task_type_id")]:
         rows = insights[group]
         assert sum(row["total"] for row in rows) == 959
-        assert sum(row["executable"] for row in rows) == 702
-        assert sum(row["unsupported"] for row in rows) == 257
+        assert sum(row["executable"] for row in rows) == 705
+        assert sum(row["unsupported"] for row in rows) == 254
         assert sum(Decimal(str(row["percentage"])) for row in rows) == Decimal("100.0")
         for row in rows:
             assert row["total"] == row["executable"] + row["unsupported"]
@@ -36,11 +36,11 @@ def test_every_package_occurs_once_in_each_complete_partition(inputs):
             assert all(insights["task_annotations"][ident][key] == row["id"] for ident in row["representative_task_ids"])
 
 
-def test_all_152_source_families_have_documented_defaults(inputs):
+def test_all_153_source_families_have_documented_defaults(inputs):
     catalog, taxonomy = inputs
     families = {task["family"] for task in catalog["tasks"] if task["family"] is not None}
     defaults = {rule["match"]["families"][0] for rule in taxonomy["rules"] if rule["id"].startswith("family-")}
-    assert len(families) == 152
+    assert len(families) == 153
     assert defaults == families
 
 
@@ -55,6 +55,14 @@ def test_primary_domain_follows_candidate_target_not_topic_keyword():
     assert annotations["enpire-pin-insertion"]["task_type_id"] == "control-policy"
     assert annotations["coral-frontier-cs-polyominoes-packing"]["domain_id"] == "mathematics"
     assert annotations["sciel-bench-sldbench-sft-scaling-law"]["domain_id"] == "machine-learning"
+
+
+def test_lmx_full_image_feedback_is_classified_as_generative_prompt_optimization():
+    for color in ("red", "green", "blue"):
+        annotation = get_insights()["task_annotations"]["lmx-stable-diffusion-excess-" + color]
+        assert annotation["rule_id"] == "family-lmx_sd_prompt"
+        assert annotation["domain_id"] == "machine-learning"
+        assert "full-image excess-color" in annotation["rationale"]
 
 
 @pytest.mark.parametrize("task_id,domain_id,task_type_id", [
@@ -115,8 +123,8 @@ def test_papers_and_supplements_are_separate_and_coverage_is_not_readiness(input
     coverage = {row["id"]: row for row in insights["coverage"]}
     assert coverage["runtime_verified"]["total"] == 0
     assert coverage["original"]["total"] == 109
-    assert coverage["recreated"]["total"] == 512
-    assert coverage["recorded_contract"]["total"] == 702
+    assert coverage["recreated"]["total"] == 515
+    assert coverage["recorded_contract"]["total"] == 705
     assert coverage["recreated_verified"]["total"] == 81
     assert "not independently" in coverage["recreated_verified"]["description"]
     assert "editorial inference" in insights["methodology"]["classification_authority"]

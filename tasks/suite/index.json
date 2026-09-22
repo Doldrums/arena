@@ -16844,14 +16844,22 @@
     },
     {
       "id": "lmx-stable-diffusion-excess-blue",
-      "protocol": "unsupported",
-      "family": null,
+      "protocol": "recreated",
+      "family": "lmx_sd_prompt",
       "direction": "maximize",
       "requires": [
         "hardware:gpu",
-        "model:stable-diffusion"
+        "py:numpy",
+        "py:torch",
+        "py:torchvision",
+        "py:transformers",
+        "py:diffusers",
+        "py:PIL",
+        "py:ftfy",
+        "model:stable-diffusion-v1-4@2880f2ca379f41b0226444936bb7a6766a227587",
+        "env:LMX_SD_ASSETS_DIR"
       ],
-      "timeout": 30,
+      "timeout": 600,
       "paper_ids": [
         "lmx"
       ],
@@ -16865,23 +16873,43 @@
         "verification": "none",
         "reference": "none",
         "resources": [
-          "gpu",
-          "unavailable"
+          "gpu"
         ],
         "cost": "not_run",
         "important_to_science": false
+      },
+      "evaluation_protocol": {
+        "id": "arena.lmx-sd14-excess-rgb/1",
+        "paper_reproduction": false,
+        "initialization": "Arena-authored neutral prompt",
+        "raw_metric": "excess_color",
+        "display_only_normalizer": 66846720,
+        "asset_manifest_sha256": "d0317d08be943f5105f7bd148c9bad6f5dba6e07bed85ed63007bdae3418c9c5",
+        "resources": {
+          "torch_cuda_allocator_limit_bytes": 8589934592,
+          "gpu_hard_memory_limit": null,
+          "limit_scope": "PyTorch allocator only; driver/context allocations are measured separately."
+        }
       }
     },
     {
       "id": "lmx-stable-diffusion-excess-green",
-      "protocol": "unsupported",
-      "family": null,
+      "protocol": "recreated",
+      "family": "lmx_sd_prompt",
       "direction": "maximize",
       "requires": [
         "hardware:gpu",
-        "model:stable-diffusion"
+        "py:numpy",
+        "py:torch",
+        "py:torchvision",
+        "py:transformers",
+        "py:diffusers",
+        "py:PIL",
+        "py:ftfy",
+        "model:stable-diffusion-v1-4@2880f2ca379f41b0226444936bb7a6766a227587",
+        "env:LMX_SD_ASSETS_DIR"
       ],
-      "timeout": 30,
+      "timeout": 600,
       "paper_ids": [
         "lmx"
       ],
@@ -16895,23 +16923,43 @@
         "verification": "none",
         "reference": "none",
         "resources": [
-          "gpu",
-          "unavailable"
+          "gpu"
         ],
         "cost": "not_run",
         "important_to_science": false
+      },
+      "evaluation_protocol": {
+        "id": "arena.lmx-sd14-excess-rgb/1",
+        "paper_reproduction": false,
+        "initialization": "Arena-authored neutral prompt",
+        "raw_metric": "excess_color",
+        "display_only_normalizer": 66846720,
+        "asset_manifest_sha256": "d0317d08be943f5105f7bd148c9bad6f5dba6e07bed85ed63007bdae3418c9c5",
+        "resources": {
+          "torch_cuda_allocator_limit_bytes": 8589934592,
+          "gpu_hard_memory_limit": null,
+          "limit_scope": "PyTorch allocator only; driver/context allocations are measured separately."
+        }
       }
     },
     {
       "id": "lmx-stable-diffusion-excess-red",
-      "protocol": "unsupported",
-      "family": null,
+      "protocol": "recreated",
+      "family": "lmx_sd_prompt",
       "direction": "maximize",
       "requires": [
         "hardware:gpu",
-        "model:stable-diffusion"
+        "py:numpy",
+        "py:torch",
+        "py:torchvision",
+        "py:transformers",
+        "py:diffusers",
+        "py:PIL",
+        "py:ftfy",
+        "model:stable-diffusion-v1-4@2880f2ca379f41b0226444936bb7a6766a227587",
+        "env:LMX_SD_ASSETS_DIR"
       ],
-      "timeout": 30,
+      "timeout": 600,
       "paper_ids": [
         "lmx"
       ],
@@ -16925,11 +16973,23 @@
         "verification": "none",
         "reference": "none",
         "resources": [
-          "gpu",
-          "unavailable"
+          "gpu"
         ],
         "cost": "not_run",
         "important_to_science": false
+      },
+      "evaluation_protocol": {
+        "id": "arena.lmx-sd14-excess-rgb/1",
+        "paper_reproduction": false,
+        "initialization": "Arena-authored neutral prompt",
+        "raw_metric": "excess_color",
+        "display_only_normalizer": 66846720,
+        "asset_manifest_sha256": "d0317d08be943f5105f7bd148c9bad6f5dba6e07bed85ed63007bdae3418c9c5",
+        "resources": {
+          "torch_cuda_allocator_limit_bytes": 8589934592,
+          "gpu_hard_memory_limit": null,
+          "limit_scope": "PyTorch allocator only; driver/context allocations are measured separately."
+        }
       }
     },
     {

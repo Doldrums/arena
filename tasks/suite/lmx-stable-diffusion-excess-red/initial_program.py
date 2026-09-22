@@ -1,10 +1,6 @@
-"""Placeholder candidate: Stable Diffusion excess red.
+"""Arena neutral initialization; not the paper's sampled initial population."""
 
-This task is not executable inside the suite (gpu); a real candidate would be the artifact the paper evolves for 'Stable Diffusion excess red' (see README.md).
-"""
 # EVOLVE-BLOCK-START
-
-
 def candidate():
-    raise NotImplementedError("lmx-stable-diffusion-excess-red is documented but not executable in this suite")
+    return "A photograph of a landscape."
 # EVOLVE-BLOCK-END
