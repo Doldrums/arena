@@ -14,7 +14,9 @@ import re
 import socket
 import sys
 
-DOCKER = "/usr/bin/docker"
+# Both pinned a6 worker images install the immutable Docker CLI here.
+# Keep an absolute path: PATH lookup would recurse through this wrapper.
+DOCKER = "/usr/local/bin/docker"
 CANONICAL_SOCKET = "/run/arena-evaluator/docker.sock"
 RESEARCH_SOCKET = "/run/arena-research-tools/docker.sock"
 IMAGE_FORMAT = "{{.Id}} {{.Os}} {{.Architecture}}"
