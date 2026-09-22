@@ -73,7 +73,7 @@ export function renderResearchInspector({doc, root, model, selected, onSelect}) 
   }
   append(header);
   if (!selected) {
-    append(element('h2', '', 'Research that\nbuilds on itself.'), paragraph('A shared landscape for systems that search, experiment, and develop their own research methods.'));
+    append(element('h2', '', 'Research across systems'), paragraph('Tasks, research works, and published experiment results, grouped by research direction.'));
     append(summary([[model.summary.catalogTasks, 'catalog tasks'], [model.summary.participants, 'systems & works']]));
     append(element('p', 'map-micro-note', `${model.summary.domains} research directions · select a cluster or a node.`));
     append(heading('Explore participating systems'));
