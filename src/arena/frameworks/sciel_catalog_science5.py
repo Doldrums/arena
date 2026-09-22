@@ -1,7 +1,7 @@
-"""Exact science5 draft CPU profile; data readiness is not runtime admission.
+"""Exact science5 CPU image and data profile; seed readiness is separate.
 
-No image has been built for this profile. Immutable image identities deliberately
-remain unset, so execution is fail-closed until an independently reviewed build.
+The immutable image passed dependency and data checks, including a non-root
+read-only smoke. Fresh canonical seeds still establish task runtime readiness.
 The existing eight-task science environment is unchanged.
 """
 from __future__ import annotations
@@ -14,8 +14,11 @@ from arena.task_library import read_task_file
 PROFILE = "sciel-catalog-prepared-science5/1"
 GROUP = "science5"
 RESOURCE_PROFILE = "cpu-4g-p256-v1"
-IMAGE = None
-IMAGE_ID = None
+IMAGE = ("127.0.0.1:5000/empira/canonical-science5-cpu@sha256:"
+         "d00f89512cadba58259d32532a6f66723d72a972843cb8ef84af47ab2945e6bf")
+IMAGE_ID = "sha256:81dfea2c03da99ad501c44411165299aea97d644f465cc82161d61f4a5c0c606"
+BUILD_RECEIPT_SHA256 = "91742d0ea06913de56893ae509eec3c7d2c7e639bdc39c3c0810fda5409be0a8"
+DEPENDENCY_LOCK_SHA256 = "68bce8acef7f9cea18df7afbd8eeefae99733f7fc4cacc08654ec31c49adfc7b"
 DATA_LOCK_SHA256 = "8a5a1e77b1a61ab625788b8066a0bfa6969ae065133907e28443ca43c4dd0be6"
 RUNTIME_ADDITIONS = {"viennarna": "2.6.4", "rdkit": "2026.3.6"}
 PRESERVED_RUNTIME = {"numpy": "2.2.6", "scipy": "1.15.3", "pillow": "12.3.0"}
@@ -118,13 +121,15 @@ def supports_science5_task(task_id, requirements):
 
 
 def science5_environment(image):
-    """A draft has no usable image identity; fixture injection grants no runtime."""
+    """Bind the reviewed image closure without asserting a successful seed."""
     if IMAGE is None or IMAGE_ID is None:
         raise ValueError("Science5 immutable image review is pending")
     if type(image) is not str or image not in (IMAGE, IMAGE_ID):
         raise ValueError("Science5 requires its exact reviewed immutable image")
     return {"profile": PROFILE, "group": GROUP, "image_reference": IMAGE,
             "image_id": IMAGE_ID, "data_lock_sha256": DATA_LOCK_SHA256,
+            "build_receipt_sha256": BUILD_RECEIPT_SHA256,
+            "dependency_lock_sha256": DEPENDENCY_LOCK_SHA256,
             "runtime_additions": dict(RUNTIME_ADDITIONS),
             "preserved_runtime": dict(PRESERVED_RUNTIME),
             "resource_profile": RESOURCE_PROFILE, "resources": budget(RESOURCE_PROFILE)}

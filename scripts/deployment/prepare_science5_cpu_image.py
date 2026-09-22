@@ -202,8 +202,8 @@ Proposed separately approved build sequence:
 4. Publish only to the private registry, bind the unique repository digest to that
    image ID, retain inspect/log hashes and recipe receipt. Remove only the uniquely
    named build/smoke containers; on uncertain cleanup preserve explicit evidence.
-5. Independent review must populate the currently unset science5 IMAGE/IMAGE_ID
-   pins before any runtime admission. The old science8 image/profile stays intact.
+5. Independent review must bind science5 IMAGE/IMAGE_ID to the resulting immutable
+   build before runtime admission. The old science8 image/profile stays intact.
 
 Subsequent canonical seed checks are a separate step, not authorized by this file.
 Proposed {RESOURCE_PROFILE}:1CPU/4GiB/256PID, control cgroup required,
