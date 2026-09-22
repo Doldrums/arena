@@ -1,4 +1,4 @@
-"""Real catalog/metadata contract for the separate, not-yet-built science5 image."""
+"""Real catalog/metadata contract for the separately reviewed science5 image."""
 from copy import deepcopy
 import json
 from pathlib import Path
@@ -51,7 +51,7 @@ def test_real_catalog_and_raw_metadata_match_exact_five_different_orderings():
 ]))
 def test_actual_catalog_prepares_pinned_native_contract_without_execution(name, tmp_path, monkeypatch):
     # No real image is admitted by this fixture. It tests the shared bridge's
-    # real catalog/metadata/seed/prompt path before any image is built.
+    # real catalog/metadata/seed/prompt path without executing an image.
     monkeypatch.setattr(science5, "IMAGE", FIXTURE_IMAGE)
     monkeypatch.setattr(science5, "IMAGE_ID", FIXTURE_ID)
     monkeypatch.setattr(evaluation, "evaluate", lambda *a, **k: pytest.fail("No seed evaluation"))
@@ -78,10 +78,23 @@ def test_actual_catalog_prepares_pinned_native_contract_without_execution(name, 
     assert not (tmp_path / "receipts").exists()
 
 
-def test_unbuilt_image_is_fail_closed_even_for_correct_task():
-    assert science5.IMAGE is None and science5.IMAGE_ID is None
+def test_unbuilt_image_is_fail_closed_even_for_correct_task(monkeypatch):
+    monkeypatch.setattr(science5, "IMAGE", None)
+    monkeypatch.setattr(science5, "IMAGE_ID", None)
     for image in (None, "science5:latest", FIXTURE_IMAGE, FIXTURE_ID):
         with pytest.raises(ValueError, match="pending"):
+            science5.science5_environment(image)
+
+
+def test_reviewed_image_binds_data_and_dependency_proof_without_seed_claim():
+    for image in (science5.IMAGE, science5.IMAGE_ID):
+        environment = science5.science5_environment(image)
+        assert environment["build_receipt_sha256"] == science5.BUILD_RECEIPT_SHA256
+        assert environment["dependency_lock_sha256"] == science5.DEPENDENCY_LOCK_SHA256
+        assert environment["data_lock_sha256"] == science5.DATA_LOCK_SHA256
+        assert "seed_verified" not in environment
+    for image in ("science5:latest", FIXTURE_IMAGE, FIXTURE_ID):
+        with pytest.raises(ValueError, match="exact reviewed"):
             science5.science5_environment(image)
 
 
