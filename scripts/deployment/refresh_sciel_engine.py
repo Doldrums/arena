@@ -91,6 +91,15 @@ def dockerfile(parent_reference, version, snapshot):
             "USER 998:998\n")
 
 
+def readable_runtime(root):
+    """Private staging umasks must not hide copied modules from image UID998."""
+    for path in (root, *root.rglob("*")):
+        if path.is_symlink():
+            raise ValueError("Runtime copy cannot contain symlinks")
+        mode = path.stat().st_mode
+        path.chmod(0o755 if path.is_dir() or mode & 0o111 else 0o644)
+
+
 def proof(reference):
     result = subprocess.run(["docker", "run", "--rm", "--pull=never", "--network=none", "--read-only",
         "--cpus=1", "--memory=2g", "--memory-swap=2g", "--pids-limit=128", "--cap-drop=ALL",
@@ -205,12 +214,14 @@ def main(argv=None):
     context = args.destination / "context"
     context.mkdir()
     task_source = snapshot_arena(args.app, context / "arena")
+    readable_runtime(context / "arena")
     snapshot, files = snapshot_files(context / "arena")
     inputs = {"schema": "arena.sciel-runtime-refresh/1", "release": release,
         "parent_image": args.parent_image, "parent_image_id": parent["Id"],
         "parent_release_version": args.parent_version, "parent_layers": parent["RootFS"]["Layers"],
         "arena_snapshot_sha256": snapshot, "arena_files": files, "task_source": task_source,
-        "parent_runtime": before, "research_executed": False, "dependency_downloads": 0}
+        "parent_runtime": before, "research_executed": False, "dependency_downloads": 0,
+        "runtime_permissions": "directories and executable files 0755; other files 0644"}
     (context / "refresh-inputs.json").write_bytes(encoded(inputs))
     definition = dockerfile(args.parent_image, args.version, snapshot)
     (context / "Dockerfile").write_text(definition)

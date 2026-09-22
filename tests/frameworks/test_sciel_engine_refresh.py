@@ -2,6 +2,7 @@
 from copy import deepcopy
 import importlib.util
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -93,6 +94,35 @@ def test_child_proof_must_bind_the_actual_new_runtime(change):
     (PARENT, NEW, SNAPSHOT + "\nRUN true")])
 def test_dockerfile_inputs_cannot_add_commands(reference, version, snapshot):
     with pytest.raises(ValueError): refresh.dockerfile(reference, version, snapshot)
+
+
+def test_private_staging_umask_does_not_hide_image_modules(tmp_path):
+    root = tmp_path / "arena"
+    previous = os.umask(0o077)
+    try:
+        (root / "src/arena").mkdir(parents=True)
+        (root / "src/arena/__init__.py").write_text("# module\n")
+        (root / "run-helper").write_text("#!/bin/sh\nexit 0\n")
+        (root / "run-helper").chmod(0o700)
+    finally:
+        os.umask(previous)
+    before = refresh.snapshot_files(root)
+    refresh.readable_runtime(root)
+    assert refresh.snapshot_files(root) == before
+    assert all(path.stat().st_mode & 0o777 == 0o755 for path in (root, root / "src", root / "src/arena"))
+    assert (root / "src/arena/__init__.py").stat().st_mode & 0o777 == 0o644
+    assert (root / "run-helper").stat().st_mode & 0o777 == 0o755
+
+
+def test_permission_normalization_does_not_follow_external_links(tmp_path):
+    root = tmp_path / "arena"
+    root.mkdir()
+    outside = tmp_path / "outside"
+    outside.write_text("unchanged")
+    outside.chmod(0o600)
+    (root / "linked.py").symlink_to(outside)
+    with pytest.raises(ValueError, match="symlinks"): refresh.readable_runtime(root)
+    assert outside.stat().st_mode & 0o777 == 0o600
 
 
 @pytest.mark.parametrize("status", [401, 403, 429, 500, 503])
