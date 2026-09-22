@@ -18,9 +18,13 @@ import os
 from pathlib import Path
 import re
 import stat
+import sys
 import time
 from urllib.error import HTTPError, URLError
 from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sciel_control_transition import current_revision, load_transition, snapshot_binding
 
 TERMINAL = {"completed", "failed", "cancelled", "blocked"}
 STATES = TERMINAL | {"queued", "preparing", "running"}
@@ -182,14 +186,17 @@ def native_issue(row, state_dir):
     return None
 
 
-def verify_live(control, path, planned, revision):
+def verify_live(control, path, planned, revision, *, transition=None, summary=None):
     live = json.loads(read_bytes(path))
     validate_templates(planned, live)
-    if hashlib.sha256(encoded(live)).hexdigest() != revision:
+    if transition:
+        revision = current_revision(transition, live, summary, read=read_bytes, encode=encoded)
+    elif hashlib.sha256(encoded(live)).hexdigest() != revision:
         raise ValueError("Control configuration changed during campaign admission")
     runtime = control.call("/api/control/templates")
     if runtime.get("revision") != revision or runtime.get("limits") != live["limits"]:
         raise ValueError("Running control service differs from its reviewed configuration")
+    return revision
 
 
 @contextmanager
@@ -231,13 +238,37 @@ def validate_resume(path, summary):
         for key in ("schema", "campaign", "templates_sha256", "batch_size", "models", "control_revision"):
             if previous.get(key) != summary[key]:
                 raise ValueError("Resume requires the same campaign, templates, model, batch size and control revision")
+        if previous.get("control_transition") and previous["control_transition"] != summary.get("control_transition"):
+            raise ValueError("Resume requires the same explicit control transition")
+        if summary.get("control_transition"):
+            if (previous.get("active_control_revision") == summary["control_transition"]["next_revision"]
+                    and summary["active_control_revision"] != previous["active_control_revision"]):
+                raise ValueError("Resume cannot revert an approved control append")
+            summary["run_bindings"] = dict(previous.get("run_bindings", {}))
+            for batch in previous.get("batches", []):
+                for run in batch.get("runs", []):
+                    summary["run_bindings"].setdefault(run["id"],
+                        {"revision": run.get("revision", previous["control_revision"])})
 
 
-def admit(args, planned, summary, live):
+def admit(args, planned, summary, live, transition=None):
     control = Control(read_key(args.key_file))
     revision = summary["control_revision"]
     state_dir = Path(live["state_dir"])
-    verify_live(control, args.control_config, planned, revision)
+    def check_live():
+        return verify_live(control, args.control_config, planned, revision, transition=transition, summary=summary)
+    def check_run(row, template, batch_id):
+        expected = revision
+        if transition:
+            if type(row.get("id")) is not str or not re.fullmatch(r"[a-f0-9]{32}", row["id"]):
+                raise ValueError("Invalid admitted run identity")
+            binding = snapshot_binding(row, template, transition, summary["run_bindings"].get(row["id"]),
+                                       read=read_bytes, encode=encoded)
+            expected = binding["revision"]
+        verify_run(row, template, batch_id, expected)
+        if transition:
+            summary["run_bindings"][row["id"]] = binding
+    check_live()
     existing = control.runs()
     assignments = {row["id"]: f"{args.campaign}-b{index:03d}"
         for index, start in enumerate(range(0, len(planned), args.batch_size), 1)
@@ -251,27 +282,29 @@ def admit(args, planned, summary, live):
     for index, start in enumerate(range(0, len(planned), args.batch_size), 1):
         wave = planned[start:start + args.batch_size]
         batch_id = f"{args.campaign}-b{index:03d}"
-        verify_live(control, args.control_config, planned, revision)
+        check_live()
         rows, _, _, _ = batch_state(existing, wave, batch_id)
         admitted = {row["template"]: row for row in rows}
         for template in wave:
             run = admitted.get(template["id"])
             if run is None:
                 run = control.call("/api/queue", submission(template, args.campaign, index))["run"]
-            verify_run(run, template, batch_id, revision)
+            check_run(run, template, batch_id)
             admitted[template["id"]] = run
+            if transition:
+                write_status(args.status, summary)
         previous = None
         while True:
-            verify_live(control, args.control_config, planned, revision)
+            check_live()
             rows = []
             for template in wave:
                 row = control.call("/api/queue/" + admitted[template["id"]]["id"])["run"]
-                verify_run(row, template, batch_id, revision)
+                check_run(row, template, batch_id)
                 rows.append(row)
             rows, counts, finished, failed = batch_state(rows, wave, batch_id)
             issues = {row["id"]: problem for row in rows if (problem := native_issue(row, state_dir))}
             record = {"batch_id": batch_id, "counts": counts, "native_issues": issues, "runs": [
-                {key: row[key] for key in ("id", "template", "model", "state")} for row in rows]}
+                {key: row[key] for key in ("id", "template", "model", "state", "revision")} for row in rows]}
             state = "paused_native_evidence" if issues else "paused_after_failures" if failed else "running"
             summary.update(state=state, updated_at=time.time())
             summary["batches"] = summary["batches"][:index - 1] + [record]
@@ -297,6 +330,8 @@ def main(argv=None):
     parser.add_argument("--campaign", required=True)
     parser.add_argument("--status", type=Path, required=True)
     parser.add_argument("--batch-size", type=int, default=16)
+    parser.add_argument("--control-transition", type=Path,
+                        help="Explicit private frozen old-to-new append transition; never installs configuration")
     parser.add_argument("--admit", action="store_true")
     args = parser.parse_args(argv)
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,63}", args.campaign) or not 1 <= args.batch_size <= 16:
@@ -307,18 +342,26 @@ def main(argv=None):
     planned = json.loads(raw)
     live = json.loads(read_bytes(args.control_config))
     validate_templates(planned, live)
+    transition = (load_transition(args.control_transition, control_path=args.control_config,
+                                  read=read_bytes, encode=encoded) if args.control_transition else None)
+    if transition:
+        validate_templates(planned, transition["previous"])
     summary = {"schema": "arena.sciel-catalog-admission/1", "campaign": args.campaign,
                "templates_sha256": hashlib.sha256(raw).hexdigest(), "planned": len(planned),
                "batch_size": args.batch_size, "models": sorted({row["model"] for row in planned}),
                "control_revision": hashlib.sha256(encoded(live)).hexdigest(),
                "batches": [], "state": "preview", "updated_at": time.time()}
+    if transition:
+        summary.update(control_revision=transition["identity"]["previous_revision"],
+                       control_transition=transition["identity"], run_bindings={})
+        current_revision(transition, live, summary, read=read_bytes, encode=encoded)
     print(json.dumps({key: summary[key] for key in ("campaign", "planned", "batch_size", "models")}), flush=True)
     if not args.admit:
         return 0
     with campaign_lock(args.status):
         validate_resume(args.status, summary)
         try:
-            return admit(args, planned, summary, live)
+            return admit(args, planned, summary, live, transition)
         except (OSError, ValueError, RuntimeError, KeyError, TypeError):
             summary.update(state="paused_control_error", updated_at=time.time())
             write_status(args.status, summary)
