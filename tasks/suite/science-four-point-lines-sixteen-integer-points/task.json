@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0",
+  "id": "science-four-point-lines-sixteen-integer-points",
+  "name": "Sixteen integer points with many four-point lines and no five collinear",
+  "description": "construct() -> exactly 16 distinct integer points [x, y] with |x|, |y| <= 1000 and no five collinear. Maximize the number of lines containing exactly four of the points (exact). Integer configurations are a restriction of the real problem; the real value 15 for n = 16 is an upper reference, not a documented integer optimum.",
+  "paper_ids": [
+    "science-prize_g"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1007/s00454-013-9526-9",
+      "type": "paper",
+      "locator": "József Solymosi and Miloš Stojaković, Many Collinear k-Tuples with no k+1 Collinear Points (2013). Crossref record inspected; Erdős Problem #101 ($100) page inspected: sets with no five on a line can have n^(2-O(1/sqrt(log n))) four-point lines (Solymosi and Stojaković). OEIS A006065 lists maximal numbers of 4-point lines for real configurations (15 for n = 16). Integer configurations are a restriction of the real problem; the real value 15 for n = 16 is an upper reference, not a documented integer optimum."
+    },
+    {
+      "url": "https://www.erdosproblems.com/101",
+      "type": "archive",
+      "locator": "Erdős Problem #101 (open ($100)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000114",
+      "type": "benchmark",
+      "locator": "JSP-000114; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Sixteen integer points with many four-point lines and no five collinear",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_g_four_point_lines",
+    "science_family": "science_prize_g_four_point_lines",
+    "parameters": {
+      "n": 16,
+      "bound": 1000
+    },
+    "interface": "construct() -> exactly 16 distinct integer points [x, y] with |x|, |y| <= 1000 and no five collinear. Maximize the number of lines containing exactly four of the points (exact).",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000114"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_g_four_point_lines",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No documented integer optimum (reference label none); OEIS A006065 gives real-plane values.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_g.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value for integer points; for real configurations OEIS A006065 lists 15 four-point lines for 16 points.",
+    "sources": [
+      {
+        "title": "OEIS A006065",
+        "url": "https://oeis.org/A006065"
+      },
+      {
+        "title": "Many Collinear k-Tuples with no k+1 Collinear Points",
+        "url": "https://doi.org/10.1007/s00454-013-9526-9",
+        "authors": "József Solymosi, Miloš Stojaković",
+        "year": 2013
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 101,
+      "url": "https://www.erdosproblems.com/101",
+      "status": "open ($100)",
+      "citation": "T. F. Bloom, Erdős Problem #101, https://www.erdosproblems.com/101, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how many four-point lines a set with no five collinear points can have.",
+    "importance_rationale": "Erdős offered $100 for the question whether such lines are o(n^2) (Erdős Problem #101), disproved in the stated form only by an intricate construction.",
+    "papers": [
+      {
+        "title": "Many Collinear k-Tuples with no k+1 Collinear Points",
+        "url": "https://doi.org/10.1007/s00454-013-9526-9",
+        "task_relation": "Integer configurations are a restriction of the real problem; the real value 15 for n = 16 is an upper reference, not a documented integer optimum.",
+        "primary_goal": "Determine how many four-point lines a set with no five collinear points can have.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #101 ($100) page inspected: sets with no five on a line can have n^(2-O(1/sqrt(log n))) four-point lines (Solymosi and Stojaković). OEIS A006065 lists maximal numbers of 4-point lines for real configurations (15 for n = 16).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,2247 @@
+[
+  {
+    "id": "science-number-theory-egyptian-long",
+    "name": "Few-term Egyptian fractions with denominators greater than four",
+    "description": "Return 1..256 distinct integer denominators in [5,10000000] whose reciprocal sum is exactly 1; minimize their count. Minimize the number of distinct unit fractions representing one with all denominators above a fixed threshold; denominator and term caps are local.",
+    "family": "science_prize_b_egyptian_long",
+    "parameters": {
+      "threshold": 4,
+      "maximum": 10000000
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 35. Minimize the number of distinct unit fractions representing one with all denominators above a fixed threshold; denominator and term caps are local. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000251",
+        "type": "benchmark",
+        "locator": "JSP-000251; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Minimize the number of distinct unit fractions representing one with all denominators above a fixed threshold; denominator and term caps are local."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000251",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-reciprocal-subset-free",
+    "name": "Large reciprocal-subsum-free sets",
+    "description": "Return a nonempty subset of [1,24]; no reciprocal of a selected element may equal the sum of reciprocals of a subset of the OTHER selected elements. Maximize cardinality. Finite version of the extremal S* question; operands are distinct selected elements and the target is excluded from its own subsum.",
+    "family": "science_prize_b_reciprocal_subset_free",
+    "parameters": {
+      "n": 24
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 37. Finite version of the extremal S* question; operands are distinct selected elements and the target is excluded from its own subsum. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000253",
+        "type": "benchmark",
+        "locator": "JSP-000253; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Finite version of the extremal S* question; operands are distinct selected elements and the target is excluded from its own subsum."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000253",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-reciprocal-schur-free",
+    "name": "Large sets avoiding reciprocal Schur triples",
+    "description": "Return a nonempty subset of [1,180] with no THREE DISTINCT elements a,b,c satisfying 1/a=1/b+1/c. Maximize cardinality. Three-distinct-element specialization of the reciprocal equation, weaker than forbidding arbitrary reciprocal subsums.",
+    "family": "science_prize_b_reciprocal_schur_free",
+    "parameters": {
+      "n": 180
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 37. Three-distinct-element specialization of the reciprocal equation, weaker than forbidding arbitrary reciprocal subsums. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000254",
+        "type": "benchmark",
+        "locator": "JSP-000254; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Three-distinct-element specialization of the reciprocal equation, weaker than forbidding arbitrary reciprocal subsums."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000254",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-egyptian-maximum",
+    "name": "Small largest denominator in an Egyptian expansion of 5/31",
+    "description": "Return 1..256 distinct denominators in [1,10000000] summing reciprocally to exactly 5/31. Minimize the LARGEST denominator, not the term count. One fixed rational instance of the denominator-size problem; the paper provides asymptotic bounds, not this local benchmark optimum.",
+    "family": "science_prize_b_egyptian_maximum",
+    "parameters": {
+      "numerator": 5,
+      "denominator": 31,
+      "maximum": 10000000
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2404.07113",
+        "type": "paper",
+        "locator": "Yang P. Liu and Mehtaab Sawhney (2024), On further questions regarding unit fractions. Theorem 1.5 and the introduction define the largest-denominator objective; 5/31 is a fixed finite case. Primary full HTML inspected."
+      },
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 38. One fixed rational instance of the denominator-size problem; the paper provides asymptotic bounds, not this local benchmark optimum. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000256",
+        "type": "benchmark",
+        "locator": "JSP-000256; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "One fixed rational instance of the denominator-size problem; the paper provides asymptotic bounds, not this local benchmark optimum."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Yang P. Liu and Mehtaab Sawhney (2024, On further questions regarding unit fractions) study the underlying problem.",
+      "sources": [
+        {
+          "title": "On further questions regarding unit fractions",
+          "url": "https://arxiv.org/abs/2404.07113",
+          "authors": "Yang P. Liu and Mehtaab Sawhney",
+          "year": 2024
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000256",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-unit-fraction-packing",
+    "name": "Closest strict underpacking of one by supplied unit fractions",
+    "description": "Return nonempty distinct zero-based indices into denominators [2,3,...,48]; reciprocal sum must be STRICTLY BELOW 1. Minimize positive deficit 1-sum; exact rational value is reported. Fixed finite input collection whose reciprocal total exceeds one; minimizes the strict deficit rather than asserting a uniform bound for all collections. The source permits an exact-one subsum; the local protocol explicitly excludes it.",
+    "family": "science_prize_b_unit_fraction_packing",
+    "parameters": {
+      "denominators": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48
+      ]
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 40. Fixed finite input collection whose reciprocal total exceeds one; minimizes the strict deficit rather than asserting a uniform bound for all collections. The source permits an exact-one subsum; the local protocol explicitly excludes it. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000261",
+        "type": "benchmark",
+        "locator": "JSP-000261; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Fixed finite input collection whose reciprocal total exceeds one; minimizes the strict deficit rather than asserting a uniform bound for all collections. The source permits an exact-one subsum; the local protocol explicitly excludes it.",
+      "Feasibility and rational objective are computed exactly; the standard score envelope converts the final rational to binary64, so exact numerator/denominator details should be used to resolve nearly tied scores."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000261",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-signed-harmonic",
+    "name": "Small nonzero signed harmonic subsums",
+    "description": "Return exactly 30 integer coefficients from {-1,0,1}. The signed sum coefficient[i-1]/i must be nonzero. Minimize its absolute value; exact numerator and denominator are reported. Finite signed-harmonic extremum with the zero sum excluded; no asymptotic separation claim.",
+    "family": "science_prize_b_signed_harmonic",
+    "parameters": {
+      "n": 30
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 42. Finite signed-harmonic extremum with the zero sum excluded; no asymptotic separation claim. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000263",
+        "type": "benchmark",
+        "locator": "JSP-000263; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Finite signed-harmonic extremum with the zero sum excluded; no asymptotic separation claim.",
+      "Feasibility and rational objective are computed exactly; the standard score envelope converts the final rational to binary64, so exact numerator/denominator details should be used to resolve nearly tied scores."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000263",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-dissociated-reciprocals",
+    "name": "Reciprocal sets with all subset sums distinct",
+    "description": "Return a nonempty subset of [1,22] such that ALL reciprocal subset sums, including the empty sum, are distinct. Maximize cardinality. Maximizes the size of a dissociated reciprocal set. This is not the counting task for all harmonic subset sums.",
+    "family": "science_prize_b_dissociated_reciprocals",
+    "parameters": {
+      "n": 22
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 43. Maximizes the size of a dissociated reciprocal set. This is not the counting task for all harmonic subset sums. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000267",
+        "type": "benchmark",
+        "locator": "JSP-000267; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Maximizes the size of a dissociated reciprocal set. This is not the counting task for all harmonic subset sums."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000267",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-pair-sum-nondivisibility",
+    "name": "Integer sets whose pair sums never divide pair products",
+    "description": "Return a nonempty subset of [1,256]. For every distinct a,b require (a*b)%(a+b)!=0. Maximize cardinality. The prescribed distinct-pair divisibility exclusion does not require the quotient to belong to the selected set, unlike the reciprocal Schur task. The source writes x,y without explicitly excluding equality; this implementation follows the bank's stated distinct-pair variant.",
+    "family": "science_prize_b_pair_sum_nondivisibility",
+    "parameters": {
+      "n": 256
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 37. The prescribed distinct-pair divisibility exclusion does not require the quotient to belong to the selected set, unlike the reciprocal Schur task. The source writes x,y without explicitly excluding equality; this implementation follows the bank's stated distinct-pair variant. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000273",
+        "type": "benchmark",
+        "locator": "JSP-000273; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "The prescribed distinct-pair divisibility exclusion does not require the quotient to belong to the selected set, unlike the reciprocal Schur task. The source writes x,y without explicitly excluding equality; this implementation follows the bank's stated distinct-pair variant."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000273",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-unique-interval-sums",
+    "name": "Increasing sequences with unique consecutive-block sums",
+    "description": "Return a strictly increasing sequence of integers in [1,256]. Sums of all nonempty consecutive blocks must be distinct. Maximize sequence length. Finite version of the Erdős–Harzheim increasing-sequence question. Only consecutive blocks, not arbitrary subsets, must have distinct sums.",
+    "family": "science_prize_b_unique_interval_sums",
+    "parameters": {
+      "n": 256
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 58. Finite version of the Erdős–Harzheim increasing-sequence question. Only consecutive blocks, not arbitrary subsets, must have distinct sums. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000295",
+        "type": "benchmark",
+        "locator": "JSP-000295; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Finite version of the Erdős–Harzheim increasing-sequence question. Only consecutive blocks, not arbitrary subsets, must have distinct sums."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000295",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-target-subsum-free",
+    "name": "Large interval sets avoiding a prescribed subset sum",
+    "description": "Return a nonempty subset of [1,100] with no subset summing to 200. Maximize cardinality. Each element can occur at most once in the forbidden sum. Fixes the target and ambient interval in the question about integers below n/k avoiding a subset sum n; the inclusive endpoint convention is local.",
+    "family": "science_prize_b_target_subsum_free",
+    "parameters": {
+      "n": 100,
+      "target": 200
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 59. Fixes the target and ambient interval in the question about integers below n/k avoiding a subset sum n; the inclusive endpoint convention is local. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000299",
+        "type": "benchmark",
+        "locator": "JSP-000299; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Fixes the target and ambient interval in the question about integers below n/k avoiding a subset sum n; the inclusive endpoint convention is local."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000299",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-powerful-parts",
+    "name": "Large powerful-part product for consecutive integers",
+    "description": "Return an integer n in [10000,1000000]. Its powerful part is the product of FULL prime powers p^e with exponent e>=2 in its factorization. Maximize powerful_part(n)*powerful_part(n+1). The B2 powerful-part construction allows squarefree factors and does not require either whole integer to be powerful or nonsquare; distinct from the existing Golomb counterexample certificate.",
+    "family": "science_prize_b_powerful_parts",
+    "parameters": {
+      "lower": 10000,
+      "upper": 1000000
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 68. The B2 powerful-part construction allows squarefree factors and does not require either whole integer to be powerful or nonsquare; distinct from the existing Golomb counterexample certificate. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000303",
+        "type": "benchmark",
+        "locator": "JSP-000303; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "The B2 powerful-part construction allows squarefree factors and does not require either whole integer to be powerful or nonsquare; distinct from the existing Golomb counterexample certificate."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000303",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-smooth-adjacent",
+    "name": "Small largest prime factor of consecutive-integer products",
+    "description": "Return integer n in [10000,1000000]. Minimize the largest prime factor of n(n+1), independently computed by exact trial division. Searches a bounded window for smooth consecutive integers. The local lower cutoff prevents the trivial pair1,2; it proves no asymptotic bound.",
+    "family": "science_prize_b_smooth_adjacent",
+    "parameters": {
+      "lower": 10000,
+      "upper": 1000000
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 69. Searches a bounded window for smooth consecutive integers. The local lower cutoff prevents the trivial pair1,2; it proves no asymptotic bound. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000304",
+        "type": "benchmark",
+        "locator": "JSP-000304; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Searches a bounded window for smooth consecutive integers. The local lower cutoff prevents the trivial pair1,2; it proves no asymptotic bound."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000304",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-factorial-valuation",
+    "name": "High two-adic valuation of factorial sums containing 2!",
+    "description": "Return a distinct subset of factorial indices [2,32] containing 2. Maximize v2(sum(i!)); the smallest index is FIXED at 2 to match the source question f(a1,p). Fixes the smallest factorial index as required by the original valuation question. The seed is a local greedy algorithm; any known numerical identity it rediscovers is not a novel result.",
+    "family": "science_prize_b_factorial_valuation",
+    "parameters": {
+      "n": 32,
+      "p": 2,
+      "first": 2
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 79. Fixes the smallest factorial index as required by the original valuation question. The seed is a local greedy algorithm; any known numerical identity it rediscovers is not a novel result. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000332",
+        "type": "benchmark",
+        "locator": "JSP-000332; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Fixes the smallest factorial index as required by the original valuation question. The seed is a local greedy algorithm; any known numerical identity it rediscovers is not a novel result."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000332",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-unique-block-products",
+    "name": "Dense increasing sequences with unique block products",
+    "description": "Return strictly increasing integers in [2,128]. Products of every nonempty consecutive block must be distinct. Maximize length; singleton products are included. Finite restriction of the density-one sequence question. The implementation neither verifies nor relies on the bank's unverified modern solution/priority claims.",
+    "family": "science_prize_b_unique_block_products",
+    "parameters": {
+      "n": 128
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 84. Finite restriction of the density-one sequence question. The implementation neither verifies nor relies on the bank's unverified modern solution/priority claims. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000346",
+        "type": "benchmark",
+        "locator": "JSP-000346; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Finite restriction of the density-one sequence question. The implementation neither verifies nor relies on the bank's unverified modern solution/priority claims."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000346",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-square-sum-free",
+    "name": "Integer sets avoiding square pair sums, including diagonals",
+    "description": "Return nonempty subset of [1,256] such that a+b is never a perfect square for a<=b in the set, INCLUDING a=b. Maximize cardinality. Explicit diagonal-including restriction resolves the terse bank wording; all pairs are verified with integer square roots. It is distinct from square DIFFERENCE avoidance.",
+    "family": "science_prize_b_square_sum_free",
+    "parameters": {
+      "n": 256
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://www.sciencedirect.com/science/article/pii/S0012365X01004356",
+        "type": "paper",
+        "locator": "A. Khalfalah, S. Lodha and E. Szemerédi (2002), Tight bound for the density of sequence of integers the sum of no two of which is a perfect square. Publisher abstract inspected: original hypothesis uses distinct elements; local task additionally forbids diagonal square sums, a stricter finite restriction."
+      },
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 87. Explicit diagonal-including restriction resolves the terse bank wording; all pairs are verified with integer square roots. It is distinct from square DIFFERENCE avoidance. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000357",
+        "type": "benchmark",
+        "locator": "JSP-000357; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Explicit diagonal-including restriction resolves the terse bank wording; all pairs are verified with integer square roots. It is distinct from square DIFFERENCE avoidance."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. A. Khalfalah, S. Lodha and E. Szemerédi (2002, Tight bound for the density of sequence of integers the sum of no two of which is a perfect square) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Tight bound for the density of sequence of integers the sum of no two of which is a perfect square",
+          "url": "https://www.sciencedirect.com/science/article/pii/S0012365X01004356",
+          "authors": "A. Khalfalah, S. Lodha and E. Szemerédi",
+          "year": 2002
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000357",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-bounded-lcm",
+    "name": "Large integer sets with bounded pairwise least common multiples",
+    "description": "Return a nonempty subset of [1,512] with lcm(a,b)<=512 for every pair. Maximize cardinality. Finite instance of the extremal bounded-lcm problem. The simple seed does not import Chen's asymptotic construction.",
+    "family": "science_prize_b_bounded_lcm",
+    "parameters": {
+      "n": 512
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://matwbn.icm.edu.pl/ksiazki/aa/aa84/aa8416.pdf",
+        "type": "paper",
+        "locator": "Yong-Gao Chen (1998), Sequences with bounded l.c.m. of each pair of terms. Introduction and theorem on p. 71 define A_x and establish its asymptotic size; this task is x=512. Primary first-page text inspected."
+      },
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 87. Finite instance of the extremal bounded-lcm problem. The simple seed does not import Chen's asymptotic construction. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000360",
+        "type": "benchmark",
+        "locator": "JSP-000360; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Finite instance of the extremal bounded-lcm problem. The simple seed does not import Chen's asymptotic construction."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Yong-Gao Chen (1998, Sequences with bounded l.c.m. of each pair of terms) studies the underlying problem.",
+      "sources": [
+        {
+          "title": "Sequences with bounded l.c.m. of each pair of terms",
+          "url": "https://matwbn.icm.edu.pl/ksiazki/aa/aa84/aa8416.pdf",
+          "authors": "Yong-Gao Chen",
+          "year": 1998
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000360",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-convex-primes",
+    "name": "Long increasing prime sequences with nondecreasing gaps",
+    "description": "Return increasing prime integers <=10000 with successive gaps NONDECREASING. Maximize length; these are arbitrary prime subsequences, not consecutive primes. Finite inverse form of the growth-rate question for convex prime subsequences; keeps the source non-strict gap inequality.",
+    "family": "science_prize_b_convex_primes",
+    "parameters": {
+      "n": 10000
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 90. Finite inverse form of the growth-rate question for convex prime subsequences; keeps the source non-strict gap inequality. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000369",
+        "type": "benchmark",
+        "locator": "JSP-000369; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Finite inverse form of the growth-rate question for convex prime subsequences; keeps the source non-strict gap inequality."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000369",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-totient-multiple",
+    "name": "Small integer whose totient is divisible by 120",
+    "description": "Return integer n in [1,1000000] with phi(n) divisible by 120. Minimize n; the evaluator independently factors n and computes the exact totient. Constructs m_n from the source by fixing its divisor parameter to120; does not compare asymptotic ratios with least primes in progressions.",
+    "family": "science_prize_b_totient_multiple",
+    "parameters": {
+      "modulus": 120,
+      "maximum": 1000000
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 91. Constructs m_n from the source by fixing its divisor parameter to120; does not compare asymptotic ratios with least primes in progressions. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000370",
+        "type": "benchmark",
+        "locator": "JSP-000370; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Constructs m_n from the source by fixing its divisor parameter to120; does not compare asymptotic ratios with least primes in progressions."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000370",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-smooth-parts",
+    "name": "Few distinct small-prime parts in a short integer interval",
+    "description": "Return n in [1000,1000000]. For each n+i,1<=i<=24, extract its complete factor composed of primes STRICTLY BELOW 24. MINIMIZE the number of distinct extracted factors. Uses the source minimum f(n,t) at t=24, correcting the preliminary feasibility proposal's reversed direction; the source asks for a uniform lower bound on this minimum.",
+    "family": "science_prize_b_smooth_parts",
+    "parameters": {
+      "lower": 1000,
+      "upper": 1000000,
+      "length": 24
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 91. Uses the source minimum f(n,t) at t=24, correcting the preliminary feasibility proposal's reversed direction; the source asks for a uniform lower bound on this minimum. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000374",
+        "type": "benchmark",
+        "locator": "JSP-000374; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Uses the source minimum f(n,t) at t=24, correcting the preliminary feasibility proposal's reversed direction; the source asks for a uniform lower bound on this minimum."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000374",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-algebra-sparse-polynomial-square",
+    "name": "Sparse squares of twelve-term integer polynomials",
+    "description": "Return coefficient list in ascending degree, length<=41, nonzero final coefficient, entries integers in [-64,64], exactly 12 nonzero terms. Minimize nonzero terms in the EXACT integer square. Restricts the characteristic-zero polynomial problem to bounded integer coefficients and degree; cancellation is exact and no general lower-bound theorem is claimed.",
+    "family": "science_prize_b_sparse_polynomial_square",
+    "parameters": {
+      "terms": 12,
+      "degree": 40,
+      "coefficient_bound": 64
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://ems.press/content/serial-article-files/39657",
+        "type": "paper",
+        "locator": "Andrzej Schinzel and Umberto Zannier (2009), On the number of terms of a power of a polynomial. Printed p. 95. Restricts the characteristic-zero polynomial problem to bounded integer coefficients and degree; cancellation is exact and no general lower-bound theorem is claimed. Primary full text inspected. DOI:10.4171/RLM/534."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000393",
+        "type": "benchmark",
+        "locator": "JSP-000393; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Restricts the characteristic-zero polynomial problem to bounded integer coefficients and degree; cancellation is exact and no general lower-bound theorem is claimed."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Andrzej Schinzel and Umberto Zannier (2009, On the number of terms of a power of a polynomial) study the underlying problem.",
+      "sources": [
+        {
+          "title": "On the number of terms of a power of a polynomial",
+          "url": "https://ems.press/content/serial-article-files/39657",
+          "authors": "Andrzej Schinzel and Umberto Zannier",
+          "year": 2009
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000393",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-sidon-obstruction",
+    "name": "Ambient integer sets with small largest Sidon subset",
+    "description": "Return exactly 12 distinct integers in [0,128]. Evaluator exhaustively computes the largest subset with all unordered pair sums unique INCLUDING diagonals. MINIMIZE that maximum subset size. The candidate chooses a hard AMBIENT set; the evaluator solves Sidon extraction exactly. This reverses the outer optimization compared with constructing a large Sidon set in a fixed interval.",
+    "family": "science_prize_b_sidon_obstruction",
+    "parameters": {
+      "size": 12,
+      "bound": 128
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2605.03181",
+        "type": "paper",
+        "locator": "Alexandre Bailleul and Robin Riblet (2026), On the largest Sidon subset in a finite subset of R^N. The candidate chooses a hard AMBIENT set; the evaluator solves Sidon extraction exactly. This reverses the outer optimization compared with constructing a large Sidon set in a fixed interval. Primary author abstract inspected; no use of its construction algorithm or claim to reproduce its theorem."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000426",
+        "type": "benchmark",
+        "locator": "JSP-000426; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "The candidate chooses a hard AMBIENT set; the evaluator solves Sidon extraction exactly. This reverses the outer optimization compared with constructing a large Sidon set in a fixed interval."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Alexandre Bailleul and Robin Riblet (2026, On the largest Sidon subset in a finite subset of R^N) study the underlying problem.",
+      "sources": [
+        {
+          "title": "On the largest Sidon subset in a finite subset of R^N",
+          "url": "https://arxiv.org/abs/2605.03181",
+          "authors": "Alexandre Bailleul and Robin Riblet",
+          "year": 2026
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000426",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-noncoprime-forced",
+    "name": "Large pairwise noncoprime sets containing the interval endpoint",
+    "description": "Return a nonempty subset of [1,255] containing 255, with gcd(a,b)>1 for all distinct pairs. Maximize cardinality. Fixes n=255 in g(n), the source's exact forced-maximum-element formulation; no solution to a general coprime-family conjecture is claimed.",
+    "family": "science_prize_b_noncoprime_forced",
+    "parameters": {
+      "n": 255,
+      "forced": 255
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://matwbn.icm.edu.pl/ksiazki/aa/aa75/aa7536.pdf",
+        "type": "paper",
+        "locator": "Rudolf Ahlswede and Levon H. Khachatrian (1996), Sets of integers with pairwise common divisor and a factor from a specified set of primes. Printed p. 259. Fixes n=255 in g(n), the source's exact forced-maximum-element formulation; no solution to a general coprime-family conjecture is claimed. Primary introduction inspected; author/publisher metadata independently verified. No source code reused."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000428",
+        "type": "benchmark",
+        "locator": "JSP-000428; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Fixes n=255 in g(n), the source's exact forced-maximum-element formulation; no solution to a general coprime-family conjecture is claimed."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Rudolf Ahlswede and Levon H. Khachatrian (1996, Sets of integers with pairwise common divisor and a factor from a specified set of primes) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Sets of integers with pairwise common divisor and a factor from a specified set of primes",
+          "url": "https://matwbn.icm.edu.pl/ksiazki/aa/aa75/aa7536.pdf",
+          "authors": "Rudolf Ahlswede and Levon H. Khachatrian",
+          "year": 1996
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000428",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-equal-gcd-free",
+    "name": "Large integer sets avoiding equal-gcd triples",
+    "description": "Return nonempty subset of [1,128] with no three distinct elements whose three pairwise greatest common divisors are equal. Maximize cardinality. The finite f_r(x) extremal function for r=3, not merely pairwise coprimality avoidance.",
+    "family": "science_prize_b_equal_gcd_free",
+    "parameters": {
+      "n": 128,
+      "clique_size": 3
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://users.renyi.hu/~p_erdos/1973-21.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős (1973), Problems and results on combinatorial number theory. Printed p. 123. The finite f_r(x) extremal function for r=3, not merely pairwise coprimality avoidance. Primary full PDF downloaded and its extracted full text inspected. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000429",
+        "type": "benchmark",
+        "locator": "JSP-000429; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "The finite f_r(x) extremal function for r=3, not merely pairwise coprimality avoidance."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős (1973, Problems and results on combinatorial number theory) studies the underlying problem.",
+      "sources": [
+        {
+          "title": "Problems and results on combinatorial number theory",
+          "url": "https://users.renyi.hu/~p_erdos/1973-21.pdf",
+          "authors": "Paul Erdős",
+          "year": 1973
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000429",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-equal-lcm-free",
+    "name": "Large integer sets avoiding equal-lcm triples",
+    "description": "Return nonempty subset of [1,128] containing no three distinct elements whose three pairwise least common multiples are equal. Maximize cardinality. Finite extremal version of the equal-lcm-triple density question. Distinct from the equal-gcd and bounded-lcm objectives.",
+    "family": "science_prize_b_equal_lcm_free",
+    "parameters": {
+      "n": 128
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://users.renyi.hu/~p_erdos/1973-21.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős (1973), Problems and results on combinatorial number theory. Printed p. 124. Finite extremal version of the equal-lcm-triple density question. Distinct from the equal-gcd and bounded-lcm objectives. Primary full PDF downloaded and its extracted full text inspected. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000430",
+        "type": "benchmark",
+        "locator": "JSP-000430; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Finite extremal version of the equal-lcm-triple density question. Distinct from the equal-gcd and bounded-lcm objectives."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős (1973, Problems and results on combinatorial number theory) studies the underlying problem.",
+      "sources": [
+        {
+          "title": "Problems and results on combinatorial number theory",
+          "url": "https://users.renyi.hu/~p_erdos/1973-21.pdf",
+          "authors": "Paul Erdős",
+          "year": 1973
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000430",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-lcm-reciprocal-weight",
+    "name": "Large reciprocal weight under lcm separation",
+    "description": "Return nonempty subset of [2,256] with lcm(a,b)>256 for all distinct pairs. Maximize exact reciprocal sum, not cardinality. Uses the reciprocal-sum objective in section14(1), with n fixed; pairwise lcm threshold is strict and the score is rational. The unit denominator1 is excluded locally to remove its isolated trivial certificate.",
+    "family": "science_prize_b_lcm_reciprocal_weight",
+    "parameters": {
+      "n": 256
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://users.renyi.hu/~p_erdos/1973-21.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős (1973), Problems and results on combinatorial number theory. Printed p. 134. Uses the reciprocal-sum objective in section14(1), with n fixed; pairwise lcm threshold is strict and the score is rational. The unit denominator1 is excluded locally to remove its isolated trivial certificate. Primary full PDF downloaded and its extracted full text inspected. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000433",
+        "type": "benchmark",
+        "locator": "JSP-000433; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Uses the reciprocal-sum objective in section14(1), with n fixed; pairwise lcm threshold is strict and the score is rational. The unit denominator1 is excluded locally to remove its isolated trivial certificate.",
+      "Feasibility and rational objective are computed exactly; the standard score envelope converts the final rational to binary64, so exact numerator/denominator details should be used to resolve nearly tied scores."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős (1973, Problems and results on combinatorial number theory) studies the underlying problem.",
+      "sources": [
+        {
+          "title": "Problems and results on combinatorial number theory",
+          "url": "https://users.renyi.hu/~p_erdos/1973-21.pdf",
+          "authors": "Paul Erdős",
+          "year": 1973
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000433",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-smooth-decomposition",
+    "name": "Smooth two-summand decomposition of a prescribed integer",
+    "description": "Return two positive integers a,b with a+b=123457. Minimize max(P(a),P(b)), where P is the largest prime factor and P(1)=1. The evaluator factors both integers independently. One fixed-target version of the small-prime-factor additive decomposition question; no universal bound for all large integers is asserted.",
+    "family": "science_prize_b_smooth_decomposition",
+    "parameters": {
+      "target": 123457
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 70. One fixed-target version of the small-prime-factor additive decomposition question; no universal bound for all large integers is asserted. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000277",
+        "type": "benchmark",
+        "locator": "JSP-000277; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "One fixed-target version of the small-prime-factor additive decomposition question; no universal bound for all large integers is asserted."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000277",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-factorial-large-factors",
+    "name": "Factorial decompositions into distinct factors above the index",
+    "description": "Return 1..12 DISTINCT integers all greater than 12, with product exactly 12!. Minimize the LARGEST factor; the number of factors is variable. Exact finite version of equation(6). Distinct from the existing100! benchmark: no fixed factor count, all factors must exceed12, and the objective minimizes the largest rather than maximizing the smallest.",
+    "family": "science_prize_b_factorial_large_factors",
+    "parameters": {
+      "n": 12
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 75. Exact finite version of equation(6). Distinct from the existing100! benchmark: no fixed factor count, all factors must exceed12, and the objective minimizes the largest rather than maximizing the smallest. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000323",
+        "type": "benchmark",
+        "locator": "JSP-000323; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Exact finite version of equation(6). Distinct from the existing100! benchmark: no fixed factor count, all factors must exceed12, and the objective minimizes the largest rather than maximizing the smallest."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000323",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-coprime-sumset",
+    "name": "Large pairwise-coprime sumsets of two bounded integer sets",
+    "description": "Return two lists A,B, each containing exactly 3 distinct integers in [1,128]. All DISTINCT values in A+B must be pairwise coprime. Maximize the cardinality of A+B; repeated representations are allowed. Finite construction model for the Straus sumset-density question. Three elements per summand set and the bounding box are local; finite cardinality does not establish infinite density.",
+    "family": "science_prize_b_coprime_sumset",
+    "parameters": {
+      "n": 128,
+      "size": 3
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 85. Finite construction model for the Straus sumset-density question. Three elements per summand set and the bounding box are local; finite cardinality does not establish infinite density. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000354",
+        "type": "benchmark",
+        "locator": "JSP-000354; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Finite construction model for the Straus sumset-density question. Three elements per summand set and the bounding box are local; finite cardinality does not establish infinite density."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000354",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-power-residue-run",
+    "name": "Early runs of five quadratic residues modulo1009",
+    "description": "Return {'start':s,'roots':[r0,...,r4]}, with 1<=s<=1004 and 1<=ri<=1008. Require ri**2 mod 1009 == s+i. Minimize s; zero residues and wraparound are excluded. A fixed-prime instance of the least run-start r(k,m,p), with k=2 and m=5. Each residue is certified by its root; no limsup over primes is computed.",
+    "family": "science_prize_b_power_residue_run",
+    "parameters": {
+      "p": 1009,
+      "exponent": 2,
+      "length": 5
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 86. A fixed-prime instance of the least run-start r(k,m,p), with k=2 and m=5. Each residue is certified by its root; no limsup over primes is computed. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000355",
+        "type": "benchmark",
+        "locator": "JSP-000355; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "A fixed-prime instance of the least run-start r(k,m,p), with k=2 and m=5. Each residue is certified by its root; no limsup over primes is computed."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000355",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-number-theory-inverse-free-interval",
+    "name": "Long intervals containing no modular inverse pair",
+    "description": "Return [start,length] for a nonempty interval contained in [1,1008]. For EVERY x,y in the interval, including x=y, require x*y %1009 !=1. Maximize interval length. Finite obstruction search for the modular inverse-pair interval question. Diagonal pairs are checked, so the self-inverse residues1 and1008 cannot be present; this is stricter than the preliminary distinct-pair proposal.",
+    "family": "science_prize_b_inverse_free_interval",
+    "parameters": {
+      "p": 1009
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 89. Finite obstruction search for the modular inverse-pair interval question. Diagonal pairs are checked, so the self-inverse residues1 and1008 cannot be present; this is stricter than the preliminary distinct-pair proposal. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000362",
+        "type": "benchmark",
+        "locator": "JSP-000362; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+      }
+    ],
+    "limitations": [
+      "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+      "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+      "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+      "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+      "Finite obstruction search for the modular inverse-pair interval question. Diagonal pairs are checked, so the self-inverse residues1 and1008 cannot be present; this is stricter than the preliminary distinct-pair proposal."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+      "sources": [
+        {
+          "title": "Old and New Problems and Results in Combinatorial Number Theory",
+          "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+          "authors": "Paul Erdős and Ronald L. Graham",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000362",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_b.py",
+      "evidence": "validation/prize-expansion/b-checks.json",
+      "lean_verified": false
+    }
+  }
+]

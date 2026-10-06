@@ -1,0 +1,149 @@
+{
+  "schema_version": "1.0",
+  "id": "science-flat-littlewood-polynomials-24",
+  "name": "Flattest plus-minus-one polynomials with 24 coefficients (minimum sup norm)",
+  "description": "construct() -> 24 coefficients in {+1, -1} of P(z) = sum c_k z^k. The score is max over |z| = 1 of |P(z)| divided by sqrt(24), computed by dense sampling and golden-section refinement of the highest peaks (accuracy about 1e-9). Minimize; the exhaustive optimum is 1.2583758. The exact minimum for 24 coefficients (degree 23) is recovered; Odlyzko's online tables list the optimal polynomials.",
+  "paper_ids": [
+    "science-prize_g"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1017/9781316650295.004",
+      "type": "paper",
+      "locator": "Andrew Odlyzko, Search for Ultraflat Polynomials with Plus and Minus One Coefficients (2018). Author's paper (revised 2017) inspected: exhaustive searches over all +-1 polynomials of degree n <= 52 determine M_n = min max|F|/sqrt(n+1), with M_n appearing to converge to about 1.27. Erdős Problem #1150 page inspected. The value for 24 coefficients was recomputed locally by a certified exhaustive search (grid bound grid <= max <= grid/cos(pi*23/1024)). The exact minimum for 24 coefficients (degree 23) is recovered; Odlyzko's online tables list the optimal polynomials."
+    },
+    {
+      "url": "https://www.erdosproblems.com/1150",
+      "type": "archive",
+      "locator": "Erdős Problem #1150 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000955",
+      "type": "benchmark",
+      "locator": "JSP-000955; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Flattest plus-minus-one polynomials with 24 coefficients (minimum sup norm)",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_g_littlewood",
+    "science_family": "science_prize_g_littlewood",
+    "parameters": {
+      "n": 24
+    },
+    "interface": "construct() -> 24 coefficients in {+1, -1} of P(z) = sum c_k z^k. The score is max over |z| = 1 of |P(z)| divided by sqrt(24), computed by dense sampling and golden-section refinement of the highest peaks (accuracy about 1e-9). Minimize; the exhaustive optimum is 1.2583758.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000955"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_g_littlewood",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case by exhaustive search. The reference value 1.2583758 was recomputed locally because Odlyzko's online tables were not retrievable during review.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_g.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 1.2583758,
+    "statement": "Exhaustive search (Odlyzko 2018 for all degrees <= 52; recomputed here with a certified grid bound) gives min max|P|/sqrt(24) = 1.2583758 for 24 coefficients.",
+    "sources": [
+      {
+        "title": "Search for Ultraflat Polynomials with Plus and Minus One Coefficients",
+        "url": "https://doi.org/10.1017/9781316650295.004",
+        "authors": "Andrew Odlyzko",
+        "year": 2018
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1150,
+      "url": "https://www.erdosproblems.com/1150",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1150, https://www.erdosproblems.com/1150, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how flat polynomials with plus-minus-one coefficients can be on the unit circle.",
+    "importance_rationale": "Littlewood's flatness problem and Erdős's conjecture max|P| > (1+c)sqrt(n) (Erdős Problem #1150) are classical open problems in analysis with engineering applications.",
+    "papers": [
+      {
+        "title": "Search for Ultraflat Polynomials with Plus and Minus One Coefficients",
+        "url": "https://doi.org/10.1017/9781316650295.004",
+        "task_relation": "The exact minimum for 24 coefficients (degree 23) is recovered; Odlyzko's online tables list the optimal polynomials.",
+        "primary_goal": "Determine how flat polynomials with plus-minus-one coefficients can be on the unit circle.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Author's paper (revised 2017) inspected: exhaustive searches over all +-1 polynomials of degree n <= 52 determine M_n = min max|F|/sqrt(n+1), with M_n appearing to converge to about 1.27. Erdős Problem #1150 page inspected. The value for 24 coefficients was recomputed locally by a certified exhaustive search (grid bound grid <= max <= grid/cos(pi*23/1024)).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

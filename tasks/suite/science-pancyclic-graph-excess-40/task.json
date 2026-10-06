@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.0",
+  "id": "science-pancyclic-graph-excess-40",
+  "name": "Sparse pancyclic graphs on 40 vertices",
+  "description": "construct() -> {'edges': undirected edge pairs on vertices 0..39, 'cycles': one vertex-list cycle of every length 3..40 in that order}. Edges are simple and distinct; cycle vertices are distinct and every required edge must exist. Minimize edge count minus 40. This is an independently implemented n=40 construction search with explicit cycle certificates. The seed is an elementary fan graph, not a copied minimal construction.",
+  "paper_ids": [
+    "science-prize_d"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1312.0274",
+      "type": "paper",
+      "locator": "Sean Griffin, Minimal Pancyclicity (2013). Author abstract inspected. It defines m(n), studies minimum-edge pancyclic graphs, and reports exact values through n=37. This is an independently implemented n=40 construction search with explicit cycle certificates. The seed is an elementary fan graph, not a copied minimal construction."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000846",
+      "type": "benchmark",
+      "locator": "JSP-000846; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Sparse pancyclic graphs on 40 vertices",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_d_pancyclic",
+    "science_family": "science_prize_d_pancyclic",
+    "parameters": {
+      "n": 40
+    },
+    "interface": "construct() -> {'edges': undirected edge pairs on vertices 0..39, 'cycles': one vertex-list cycle of every length 3..40 in that order}. Edges are simple and distinct; cycle vertices are distinct and every required edge must exist. Minimize edge count minus 40.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000846"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_d_pancyclic",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No current optimal value or novelty threshold for n=40 is asserted. Feasibility proves an upper bound only, not global optimality or the general asymptotic law.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_d.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value for n = 40. Griffin determined m(n) exactly for n <= 37 (m(37) = 42, an excess of 5). Bondy's counting bound gives an excess of at least 5 for n = 40, and the known five-chord constructions stop at 37 vertices.",
+    "sources": [
+      {
+        "title": "Minimal Pancyclicity",
+        "url": "https://arxiv.org/abs/1312.0274",
+        "authors": "Sean Griffin",
+        "year": 2013
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1016,
+      "url": "https://www.erdosproblems.com/1016",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1016, https://www.erdosproblems.com/1016, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Minimize the number of edges needed for a graph to contain every cycle length.",
+    "importance_rationale": "Reducing the edge count supplies a certified finite upper bound for the extremal graph function investigated by the paper.",
+    "papers": [
+      {
+        "title": "Minimal Pancyclicity",
+        "url": "https://arxiv.org/abs/1312.0274",
+        "task_relation": "This is an independently implemented n=40 construction search with explicit cycle certificates. The seed is an elementary fan graph, not a copied minimal construction.",
+        "primary_goal": "Minimize the number of edges needed for a graph to contain every cycle length.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "Primary research directly studies this mathematical objective; finite scope and rediscovery status are explicit.",
+    "verification_basis": "Author abstract inspected. It defines m(n), studies minimum-edge pancyclic graphs, and reports exact values through n=37.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

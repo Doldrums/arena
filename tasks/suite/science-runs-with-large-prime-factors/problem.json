@@ -1,0 +1,112 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_large_factor_run",
+  "direction": "maximize",
+  "contract": "construct() -> {'start': s, 'length': k} with 1 <= s <= 10^4 and 1 <= k <= 200. Each of s, ..., s + k - 1 must have a prime factor greater than k (exact factorization). Maximize k; the optimum is 30 (6961, ..., 6990).",
+  "parameters": {
+    "bound": 10000
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "For runs starting at most 10^4 the maximum is 30, so the task recovers the run 6961..6990 or an equivalent. Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-runs-with-large-prime-factors",
+  "name": "Runs of consecutive integers each with a prime factor larger than the run length (start at most 10^4)",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> {'start': s, 'length': k} with 1 <= s <= 10^4 and 1 <= k <= 200. Each of s, ..., s + k - 1 must have a prime factor greater than k (exact factorization). Maximize k; the optimum is 30 (6961, ..., 6990). For runs starting at most 10^4 the maximum is 30, so the task recovers the run 6961..6990 or an equivalent.",
+  "benchmark": "Runs of consecutive integers each with a prime factor larger than the run length (start at most 10^4)",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://github.com/QuanyuTang/erdos-problem-962/blob/main/On_Erd%C5%91s_Problem_962.pdf",
+      "type": "paper",
+      "locator": "Quanyu Tang, An improved lower bound on Erdős problem #962 (2025). Research note linked from the Erdős Problems page inspected (proves log k(n) >= (1/sqrt 2 - o(1)) sqrt(log n log log n)). Erdős Problem #962 page inspected: k(n) is the largest k such that some m <= n has m+1, ..., m+k each divisible by a prime > k; Erdős had log k(n) >> (log n log log n)^(1/2) and Tao proved k(n) <= (1+o(1)) n^(1/2). OEIS A327909 inspected: the smallest start of a run of n or more integers each with a prime factor greater than n is 6961 for n = 30 and 10305 for n = 31 (the sequence is nondecreasing), so the longest run starting at most 10^4 has 30 terms. For runs starting at most 10^4 the maximum is 30, so the task recovers the run 6961..6990 or an equivalent."
+    },
+    {
+      "url": "https://www.erdosproblems.com/962",
+      "type": "archive",
+      "locator": "Erdős Problem #962 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000800",
+      "type": "benchmark",
+      "locator": "JSP-000800; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case from the OEIS first-occurrence table.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 30,
+    "statement": "The longest run starting at most 10^4 in which each term has a prime factor exceeding the run length has 30 terms (first 6961..6990); the first run of 31 starts at 10305 (OEIS A327909).",
+    "sources": [
+      {
+        "title": "OEIS A327909: Smallest start of a run of n or more integers having a prime factor greater than n",
+        "url": "https://oeis.org/A327909"
+      },
+      {
+        "title": "An improved lower bound on Erdős problem #962",
+        "url": "https://github.com/QuanyuTang/erdos-problem-962/blob/main/On_Erd%C5%91s_Problem_962.pdf",
+        "authors": "Quanyu Tang",
+        "year": 2025
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 962,
+      "url": "https://www.erdosproblems.com/962",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #962, https://www.erdosproblems.com/962, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Estimate k(n), the longest run up to n in which every term has a prime factor exceeding the run length (Erdős Problem #962).",
+    "importance_rationale": "The problem sharpens Sylvester-Schur type theorems on prime factors of consecutive integers and measures the distribution of smooth numbers in short intervals.",
+    "papers": [
+      {
+        "title": "An improved lower bound on Erdős problem #962",
+        "url": "https://github.com/QuanyuTang/erdos-problem-962/blob/main/On_Erd%C5%91s_Problem_962.pdf",
+        "task_relation": "For runs starting at most 10^4 the maximum is 30, so the task recovers the run 6961..6990 or an equivalent.",
+        "primary_goal": "Estimate k(n), the longest run up to n in which every term has a prime factor exceeding the run length (Erdős Problem #962).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Research note linked from the Erdős Problems page inspected (proves log k(n) >= (1/sqrt 2 - o(1)) sqrt(log n log log n)). Erdős Problem #962 page inspected: k(n) is the largest k such that some m <= n has m+1, ..., m+k each divisible by a prime > k; Erdős had log k(n) >> (log n log log n)^(1/2) and Tao proved k(n) <= (1+o(1)) n^(1/2). OEIS A327909 inspected: the smallest start of a run of n or more integers each with a prime factor greater than n is 6961 for n = 30 and 10305 for n = 31 (the sequence is nondecreasing), so the longest run starting at most 10^4 has 30 terms.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

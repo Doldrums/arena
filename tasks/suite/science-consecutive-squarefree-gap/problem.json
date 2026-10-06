@@ -1,0 +1,109 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_a_squarefree_gap",
+  "direction": "maximize",
+  "contract": "construct() -> [a,b], positive squarefree endpoints a<b<=maximum=10000000, with b-a<=10000. EVERY interior integer must be nonsquarefree. Maximize b-a. Endpoints and every interior integer are tested exactly.",
+  "parameters": {
+    "maximum": 10000000,
+    "maximum_gap": 10000
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Independent finite certificate evaluator and local seed; no source implementation copied. Exact constraints are verified, but no optimality, general theorem, Lean proof, published record, or prize eligibility is claimed. See task sources and adaptation limitations."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-consecutive-squarefree-gap",
+  "name": "Large gaps between consecutive squarefree integers",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "description": "construct() -> [a,b], positive squarefree endpoints a<b<=maximum=10000000, with b-a<=10000. EVERY interior integer must be nonsquarefree. Maximize b-a. Endpoints and every interior integer are tested exactly. Maximize the gap between consecutive positive squarefree endpoints at most 10000000, with gap at most 10000. Endpoints and every interior integer are checked. The optimum is 10 (8870023 to 8870033; OEIS A020754); this is a rediscovery task.",
+  "benchmark": "Large gaps between consecutive squarefree integers",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2211.09975",
+      "type": "paper",
+      "locator": "Angel Kumchev, Wade McCormick, Nathan McNew, Ariana Park, Russell Scherr and Willow Ziehr, Explicit bounds for large gaps between squarefree integers. Author abstract inspected, including all six authors and explicit gap bounds."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000193",
+      "type": "benchmark",
+      "locator": "JSP-000193; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "limitations": [
+    "Solved finite case: The largest gap between consecutive squarefree numbers up to 10^7 is 10, from 8870023 to 8870033.",
+    "Maximize the gap between consecutive positive squarefree endpoints at most 10000000, with gap at most 10000. Endpoints and every interior integer are checked.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_a",
+      "title": "Problem-bank constructions: additive combinatorics: source-based research tasks",
+      "url": "https://arxiv.org/abs/2208.12182"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 10,
+    "statement": "The largest gap between consecutive squarefree numbers up to 10^7 is 10, from 8870023 to 8870033. The next record gap starts at 221167421 (OEIS A020754), and a sieve up to 10^7 recomputes the value.",
+    "sources": [
+      {
+        "title": "OEIS A020754: Increasing gaps between squarefree numbers (lower end)",
+        "url": "https://oeis.org/A020754"
+      },
+      {
+        "title": "Explicit bounds for large gaps between squarefree integers",
+        "url": "https://arxiv.org/abs/2211.09975",
+        "authors": "Angel Kumchev, Wade McCormick, Nathan McNew, Ariana Park, Russell Scherr, Willow Ziehr",
+        "year": 2023
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 208,
+      "url": "https://www.erdosproblems.com/208",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #208, https://www.erdosproblems.com/208, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Bound the gaps between consecutive squarefree integers.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "Explicit bounds for large gaps between squarefree integers",
+        "url": "https://arxiv.org/abs/2211.09975",
+        "task_relation": "Maximize the gap between consecutive positive squarefree endpoints at most 10000000, with gap at most 10000. Endpoints and every interior integer are checked.",
+        "primary_goal": "Bound the gaps between consecutive squarefree integers.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author abstract inspected, including all six authors and explicit gap bounds.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "id": "science-distinct-divisor-counts-run-1e10",
+  "name": "Longest run of consecutive integers with distinct divisor counts below 10^10",
+  "description": "construct() -> {'start': s, 'length': k} with s >= 1, 1 <= k <= 40 and s + k - 1 <= 10^10. The divisor counts tau(s), ..., tau(s + k - 1) must be pairwise distinct (exact factorization). Maximize k; the optimum is 14 (first run at 1745175039). Runs ending below 10^10 have at most 14 terms (first at 1745175039), so the task recovers such a run.",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1112/plms/s3-2.1.257",
+      "type": "paper",
+      "locator": "P. Erdős and L. Mirsky, The Distribution of Values of the Divisor Function d(n) (1952). Crossref record inspected; Erdős Problem #945 page inspected (Erdős and Mirsky proved (log x)^(1/2)/log log x << F(x) << exp(O((log x)^(1/2)/log log x)); Beker improved the upper bound; Guy B18). OEIS A048892 inspected: the first run of 14 consecutive integers with distinct divisor counts starts at 1745175039 and the first run of 15 at 31287652672 > 10^10, so F(10^10) = 14. Runs ending below 10^10 have at most 14 terms (first at 1745175039), so the task recovers such a run."
+    },
+    {
+      "url": "https://www.erdosproblems.com/945",
+      "type": "archive",
+      "locator": "Erdős Problem #945 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000786",
+      "type": "benchmark",
+      "locator": "JSP-000786; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Longest run of consecutive integers with distinct divisor counts below 10^10",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_h_divisor_run",
+    "science_family": "science_prize_h_divisor_run",
+    "parameters": {
+      "bound": 10000000000
+    },
+    "interface": "construct() -> {'start': s, 'length': k} with s >= 1, 1 <= k <= 40 and s + k - 1 <= 10^10. The divisor counts tau(s), ..., tau(s + k - 1) must be pairwise distinct (exact factorization). Maximize k; the optimum is 14 (first run at 1745175039).",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000786"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_h_divisor_run",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case from the OEIS first-occurrence table.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_h.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 14,
+    "statement": "F(10^10) = 14: the first run of 14 integers with distinct divisor counts starts at 1745175039 and the first run of 15 at 31287652672 (OEIS A048892).",
+    "sources": [
+      {
+        "title": "OEIS A048892: Start of n consecutive integers with distinct number of divisors",
+        "url": "https://oeis.org/A048892"
+      },
+      {
+        "title": "The Distribution of Values of the Divisor Function d(n)",
+        "url": "https://doi.org/10.1112/plms/s3-2.1.257",
+        "authors": "P. Erdős, L. Mirsky",
+        "year": 1952
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 945,
+      "url": "https://www.erdosproblems.com/945",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #945, https://www.erdosproblems.com/945, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Estimate F(x), the longest run of consecutive integers up to x with pairwise distinct numbers of divisors.",
+    "importance_rationale": "Erdős and Mirsky's problem (Erdős Problem #945) measures how irregular the divisor function is on short intervals; whether F(x) is polylogarithmic is open.",
+    "papers": [
+      {
+        "title": "The Distribution of Values of the Divisor Function d(n)",
+        "url": "https://doi.org/10.1112/plms/s3-2.1.257",
+        "task_relation": "Runs ending below 10^10 have at most 14 terms (first at 1745175039), so the task recovers such a run.",
+        "primary_goal": "Estimate F(x), the longest run of consecutive integers up to x with pairwise distinct numbers of divisors.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #945 page inspected (Erdős and Mirsky proved (log x)^(1/2)/log log x << F(x) << exp(O((log x)^(1/2)/log log x)); Beker improved the upper bound; Guy B18). OEIS A048892 inspected: the first run of 14 consecutive integers with distinct divisor counts starts at 1745175039 and the first run of 15 at 31287652672 > 10^10, so F(10^10) = 14.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

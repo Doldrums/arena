@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "id": "science-sidon-sets-of-squares-68",
+  "name": "Largest Sidon set among the first 68 squares",
+  "description": "construct() -> distinct bases x in 1..68 whose squares form a Sidon set: all sums x^2 + y^2 with x <= y are distinct. Maximize the number of bases; the optimum is 32. For N = 68 the maximum is 32, so the task recovers an extremal set.",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/S0195-6698(85)80027-5",
+      "type": "paper",
+      "locator": "Noga Alon and Paul Erdős, An Application of Graph Theory to Additive Number Theory (1985). Crossref record inspected; Erdős Problem #773 page inspected (Alon and Erdős: N^(2/3-o(1)) from random subsets; Lefmann and Thiele: N^(2/3); upper bound N^(1-c/log log N) by Croot, Mao and Yip). OEIS A390813 inspected: the largest Sidon subset of the first 68 squares has 32 elements (computed by Sievers). For N = 68 the maximum is 32, so the task recovers an extremal set."
+    },
+    {
+      "url": "https://www.erdosproblems.com/773",
+      "type": "archive",
+      "locator": "Erdős Problem #773 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000634",
+      "type": "benchmark",
+      "locator": "JSP-000634; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Largest Sidon set among the first 68 squares",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_h_sidon_squares",
+    "science_family": "science_prize_h_sidon_squares",
+    "parameters": {
+      "m": 68
+    },
+    "interface": "construct() -> distinct bases x in 1..68 whose squares form a Sidon set: all sums x^2 + y^2 with x <= y are distinct. Maximize the number of bases; the optimum is 32.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000634"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_h_sidon_squares",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case from the OEIS table.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_h.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 32,
+    "statement": "The largest Sidon subset of {1^2, ..., 68^2} has 32 elements (OEIS A390813).",
+    "sources": [
+      {
+        "title": "OEIS A390813: Size of the largest Sidon subset of the first n positive perfect squares",
+        "url": "https://oeis.org/A390813"
+      },
+      {
+        "title": "An Application of Graph Theory to Additive Number Theory",
+        "url": "https://doi.org/10.1016/S0195-6698(85)80027-5",
+        "authors": "Noga Alon, Paul Erdős",
+        "year": 1985
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 773,
+      "url": "https://www.erdosproblems.com/773",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #773, https://www.erdosproblems.com/773, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the largest Sidon subset of {1, 4, ..., N^2} (Erdős Problem #773 asks whether it is N^(1-o(1))).",
+    "importance_rationale": "Sidon sets of squares link additive combinatorics with representations by sums of two squares; the exponent is open.",
+    "papers": [
+      {
+        "title": "An Application of Graph Theory to Additive Number Theory",
+        "url": "https://doi.org/10.1016/S0195-6698(85)80027-5",
+        "task_relation": "For N = 68 the maximum is 32, so the task recovers an extremal set.",
+        "primary_goal": "Determine the largest Sidon subset of {1, 4, ..., N^2} (Erdős Problem #773 asks whether it is N^(1-o(1))).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #773 page inspected (Alon and Erdős: N^(2/3-o(1)) from random subsets; Lefmann and Thiele: N^(2/3); upper bound N^(1-c/log log N) by Croot, Mao and Yip). OEIS A390813 inspected: the largest Sidon subset of the first 68 squares has 32 elements (computed by Sievers).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

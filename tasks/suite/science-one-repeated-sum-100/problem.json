@@ -1,0 +1,112 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_one_repeated_sum",
+  "direction": "maximize",
+  "contract": "construct() -> distinct integers in 1..100 such that at most one integer has more than one representation a + b with a <= b in the set. Maximize the size; the optimum is 16.",
+  "parameters": {
+    "n": 100
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "For N = 100 the maximum is 16, so the task recovers an extremal set. Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-one-repeated-sum-100",
+  "name": "Subsets of {1, ..., 100} in which at most one sum is repeated",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> distinct integers in 1..100 such that at most one integer has more than one representation a + b with a <= b in the set. Maximize the size; the optimum is 16. For N = 100 the maximum is 16, so the task recovers an extremal set.",
+  "benchmark": "Subsets of {1, ..., 100} in which at most one sum is repeated",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/0022-314X(91)90083-N",
+      "type": "paper",
+      "locator": "P. Erdős and R. Freud, On sums of a Sidon-sequence (1991). Crossref record inspected; Erdős Problem #864 page inspected (Erdős and Freud: |A| >= (1+o(1))(2/sqrt 3)N^(1/2) by joining a Sidon set with its reflection; a matching upper bound is asked). OEIS A389182 inspected (b-file by Ferudun): the maximum for N = 100 is 16. For N = 100 the maximum is 16, so the task recovers an extremal set."
+    },
+    {
+      "url": "https://www.erdosproblems.com/864",
+      "type": "archive",
+      "locator": "Erdős Problem #864 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000716",
+      "type": "benchmark",
+      "locator": "JSP-000716; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case from the OEIS table.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 16,
+    "statement": "The maximum for N = 100 is 16 (OEIS A389182).",
+    "sources": [
+      {
+        "title": "OEIS A389182: Maximum size of a subset of {1..n} in which all sums a+b (a <= b) are distinct except possibly one",
+        "url": "https://oeis.org/A389182"
+      },
+      {
+        "title": "On sums of a Sidon-sequence",
+        "url": "https://doi.org/10.1016/0022-314X(91)90083-N",
+        "authors": "P. Erdős, R. Freud",
+        "year": 1991
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 864,
+      "url": "https://www.erdosproblems.com/864",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #864, https://www.erdosproblems.com/864, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Estimate the largest subset of {1..N} in which at most one sum has several representations (Erdős Problem #864).",
+    "importance_rationale": "A near-Sidon relaxation that measures how much one exceptional sum can enlarge Sidon sets; the constant 2/sqrt 3 is conjectured optimal.",
+    "papers": [
+      {
+        "title": "On sums of a Sidon-sequence",
+        "url": "https://doi.org/10.1016/0022-314X(91)90083-N",
+        "task_relation": "For N = 100 the maximum is 16, so the task recovers an extremal set.",
+        "primary_goal": "Estimate the largest subset of {1..N} in which at most one sum has several representations (Erdős Problem #864).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #864 page inspected (Erdős and Freud: |A| >= (1+o(1))(2/sqrt 3)N^(1/2) by joining a Sidon set with its reflection; a matching upper bound is asked). OEIS A389182 inspected (b-file by Ferudun): the maximum for N = 100 is 16.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

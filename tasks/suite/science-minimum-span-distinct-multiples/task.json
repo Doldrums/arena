@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "id": "science-minimum-span-distinct-multiples",
+  "name": "Pack distinct multiples of a fixed integer set",
+  "description": "construct() -> ten DISTINCT positive Python integers <=1000000, aligned with the pinned input [6,10,14,15,21,22,26,33,35,39]. Each representative must be divisible by its corresponding input. Minimize max(representatives)-min(representatives), the length of their closed enclosing interval. The bank’s full-matching minimum-span question is used literally for one fixed ten-element input and a representative cap. The cited related paper instead optimizes guaranteed partial cardinality in every fixed-length interval. Its theorem is not evidence of a solution or precise importance classification for this changed objective.",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2603.28636",
+      "type": "paper",
+      "locator": "Wouter van Doorn, Yanyang Li and Quanyu Tang, Optimal bounds for an Erdős problem on matching integers to distinct multiples (2026). Section 1 defines divisibility matching of an arbitrary finite A into interval integers. The main result determines guaranteed PARTIAL matching cardinality in every open interval of length twice max(A)."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000578",
+      "type": "benchmark",
+      "locator": "JSP-000578; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloads. Fixed input arrays are fully recorded in parameters; arithmetic/combinatorial validation uses the Python standard library."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Pack distinct multiples of a fixed integer set",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_c_578",
+    "science_family": "science_prize_c_578",
+    "parameters": {
+      "divisors": [
+        6,
+        10,
+        14,
+        15,
+        21,
+        22,
+        26,
+        33,
+        35,
+        39
+      ],
+      "maximum": 1000000
+    },
+    "interface": "construct() -> ten DISTINCT positive Python integers <=1000000, aligned with the pinned input [6,10,14,15,21,22,26,33,35,39]. Each representative must be divisible by its corresponding input. Minimize max(representatives)-min(representatives), the length of their closed enclosing interval.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no published candidate or source implementation copied.",
+      "prize_problem_id": "JSP-000578",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_c_578",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "The bank’s full-matching minimum-span question is used literally for one fixed ten-element input and a representative cap. The cited related paper instead optimizes guaranteed partial cardinality in every fixed-length interval. Its theorem is not evidence of a solution or precise importance classification for this changed objective.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox.",
+    "Primary-source credit is explicitly related mathematical background, not a claim that this exact full-matching movable-window objective is the cited paper’s main problem. The preprint acknowledges a ChatGPT GPT-5.4 Pro proof draft and Aristotle Lean formalization; no such code is reused locally."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/c-checks.json",
+    "tests": "tests/test_science_prize_c.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Wouter van Doorn, Yanyang Li and Quanyu Tang (2026, Optimal bounds for an Erdős problem on matching integers to distinct multiples) study the underlying problem.",
+    "sources": [
+      {
+        "title": "Optimal bounds for an Erdős problem on matching integers to distinct multiples",
+        "url": "https://arxiv.org/abs/2603.28636",
+        "authors": "Wouter van Doorn, Yanyang Li and Quanyu Tang",
+        "year": 2026
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Pack divisibility representatives of a finite integer set into a short interval.",
+    "importance_rationale": "Precise attribution is verified, but direct primary-goal evidence for this exact task is not established.",
+    "papers": [],
+    "reason": "The bank’s full-matching minimum-span question is used literally for one fixed ten-element input and a representative cap. The cited related paper instead optimizes guaranteed partial cardinality in every fixed-length interval. Its theorem is not evidence of a solution or precise importance classification for this changed objective.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Section 1 defines divisibility matching of an arbitrary finite A into interval integers. The main result determines guaranteed PARTIAL matching cardinality in every open interval of length twice max(A).",
+    "related_source_notes": [
+      {
+        "title": "Wouter van Doorn, Yanyang Li and Quanyu Tang, Optimal bounds for an Erdős problem on matching integers to distinct multiples (2026)",
+        "url": "https://arxiv.org/abs/2603.28636",
+        "primary_goal": "Pack divisibility representatives of a finite integer set into a short interval.",
+        "task_relation": "The bank’s full-matching minimum-span question is used literally for one fixed ten-element input and a representative cap. The cited related paper instead optimizes guaranteed partial cardinality in every fixed-length interval. Its theorem is not evidence of a solution or precise importance classification for this changed objective.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

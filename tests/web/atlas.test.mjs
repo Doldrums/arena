@@ -194,7 +194,7 @@ test('untrusted labels and task identifiers render as text with safe task routes
  }finally{dom.window.close();}
 });
 
-test('real catalog layouts contain all 959 task particles in both exact partitions',()=>{
+test('real catalog layouts contain all 1163 task particles in both exact partitions',()=>{
  const catalog=JSON.parse(readFileSync(new URL('../../registry/catalog.json',import.meta.url),'utf8'));
  const insights=JSON.parse(readFileSync(new URL('../../registry/insights.json',import.meta.url),'utf8'));
  const searchFamilies=JSON.parse(readFileSync(new URL('../../registry/search-families.json',import.meta.url),'utf8'));
@@ -202,7 +202,7 @@ test('real catalog layouts contain all 959 task particles in both exact partitio
  try {
   for(const mode of ['methods','families']) {
    const model=w.buildAtlasModel({catalog,insights,searchFamilies,mode}),layout=w.layoutAtlasGroups(model.groups),points=layout.flatMap(g=>g.points);
-   assert.equal(model.total,959);assert.equal(points.length,959);assert.equal(new Set(points.map(p=>p.id)).size,959);
+   assert.equal(model.total,1163);assert.equal(points.length,1163);assert.equal(new Set(points.map(p=>p.id)).size,1163);
    assert.equal(model.groups.length,mode==='methods'?10:insights.domains.length);
    if(mode==='families')for(const domain of insights.domains){
     const group=model.groups.find(group=>group.id===domain.id);
@@ -213,7 +213,7 @@ test('real catalog layouts contain all 959 task particles in both exact partitio
     assert.equal(group.filter_kind,'domain');assert.equal(group.filter_value,domain.id);
    }
    for(const point of points){assert.ok(Number.isFinite(point.x)&&Number.isFinite(point.y));assert.ok(point.x>0&&point.x<900&&point.y>0&&point.y<680,`${mode} ${point.id} is outside map`);}
-   assert.equal(model.groups.reduce((n,g)=>n+g.count,0),959);
+   assert.equal(model.groups.reduce((n,g)=>n+g.count,0),1163);
   }
  }finally{dom.window.close();}
 });
@@ -225,7 +225,7 @@ test('science and community supplements remain selectable collections with exact
  const calls=[],{dom,w,root}=mount({catalog,insights,searchFamilies,onFilter:(...args)=>calls.push(args)});
  try {
   assert.equal(root.querySelectorAll('[data-atlas-cluster]').length,10);
-  for(const[id,count]of[['science-supplement',74],['community-supplement',1]]){
+  for(const[id,count]of[['science-supplement',277],['community-supplement',1]]){
    const group=searchFamilies.groups.find(group=>group.id===id),cluster=root.querySelector(`[data-atlas-cluster="${id}"]`);
    assert.ok(cluster);assert.equal(group.paper_count,0);
    assert.match(cluster.style.getPropertyValue('--cluster-color'),/^#[a-f\d]{6}$/i);

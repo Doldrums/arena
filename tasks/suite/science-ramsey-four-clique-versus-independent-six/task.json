@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0",
+  "id": "science-ramsey-four-clique-versus-independent-six",
+  "name": "K4-free graphs without independent 6-sets (Ramsey number R(4,6))",
+  "description": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 40. It must contain no K4 and no independent set of 6 vertices, checked exactly. Maximize n. A valid graph on n vertices certifies R(4,6) > n. Exoo's 35-vertex graph is the published record; 36 vertices would be a new lower bound.",
+  "paper_ids": [
+    "science-prize_e"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.37236/2102",
+      "type": "paper",
+      "locator": "Geoffrey Exoo, On the Ramsey Number R(4,6) (2012). Crossref record inspected; survey DS1.18 Tables Ia/Ib inspected: 36 <= R(4,6) <= 40, lower bound [Ex19], upper bound by Angeltveit and McKay. A valid graph on n vertices certifies R(4,6) > n. Exoo's 35-vertex graph is the published record; 36 vertices would be a new lower bound."
+    },
+    {
+      "url": "https://www.erdosproblems.com/166",
+      "type": "archive",
+      "locator": "Erdős Problem #166 (proved (R(4,k) >> k^3/(log k)^O(1), Mattheus and Verstraete)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000163",
+      "type": "benchmark",
+      "locator": "JSP-000163; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "K4-free graphs without independent 6-sets (Ramsey number R(4,6))",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_e_ramsey_4_6",
+    "science_family": "science_prize_e_ramsey_4_6",
+    "parameters": {
+      "clique": 4,
+      "independent": 6,
+      "max_vertices": 40
+    },
+    "interface": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 40. It must contain no K4 and no independent set of 6 vertices, checked exactly. Maximize n.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000163"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_e_ramsey_4_6",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "The Paley(17) starter is a classical 17-vertex graph, not a record construction.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_e.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "best_known",
+    "value": 35,
+    "statement": "Best known (4,6)-graph has 35 vertices (Exoo 2012), so R(4,6) >= 36; the upper bound R(4,6) <= 40 is from computations of Angeltveit and McKay reported in the survey.",
+    "sources": [
+      {
+        "title": "On the Ramsey Number R(4,6)",
+        "url": "https://doi.org/10.37236/2102",
+        "authors": "Geoffrey Exoo",
+        "year": 2012
+      },
+      {
+        "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+        "authors": "Stanisław P. Radziszowski",
+        "url": "https://doi.org/10.37236/21"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 166,
+      "url": "https://www.erdosproblems.com/166",
+      "status": "proved (R(4,k) >> k^3/(log k)^O(1), Mattheus and Verstraete)",
+      "citation": "T. F. Bloom, Erdős Problem #166, https://www.erdosproblems.com/166, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the classical Ramsey number R(4,6).",
+    "importance_rationale": "R(4,k) growth was Erdős Problem #166 (now proved); R(4,6) is one of the smallest unknown classical Ramsey numbers and lower bounds come only from explicit constructions like this one.",
+    "papers": [
+      {
+        "title": "On the Ramsey Number R(4,6)",
+        "url": "https://doi.org/10.37236/2102",
+        "task_relation": "A valid graph on n vertices certifies R(4,6) > n. Exoo's 35-vertex graph is the published record; 36 vertices would be a new lower bound.",
+        "primary_goal": "Determine the classical Ramsey number R(4,6).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; survey DS1.18 Tables Ia/Ib inspected: 36 <= R(4,6) <= 40, lower bound [Ex19], upper bound by Angeltveit and McKay.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

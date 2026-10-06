@@ -1,0 +1,115 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_g_chowla",
+  "direction": "maximize",
+  "contract": "construct() -> 16 distinct integers in 1..200. The score is min over theta of sum cos(a*theta), divided by sqrt(16), computed by dense sampling of the full circle and golden-section refinement of the deepest local minima (accuracy about 1e-9). Maximize (make the minimum as shallow as possible).",
+  "parameters": {
+    "k": 16,
+    "maximum": 200
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "Shallow minima for 16 frequencies probe the finite side of Chowla's problem; no finite optimum is documented. Exact local certificates are not Lean proofs; floating-point scores are stated as such. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-chowla-cosine-sixteen-frequencies",
+  "name": "Sixteen frequencies whose cosine sum stays shallow (Chowla's cosine problem)",
+  "paper_ids": [
+    "science-prize_g"
+  ],
+  "description": "construct() -> 16 distinct integers in 1..200. The score is min over theta of sum cos(a*theta), divided by sqrt(16), computed by dense sampling of the full circle and golden-section refinement of the deepest local minima (accuracy about 1e-9). Maximize (make the minimum as shallow as possible). Shallow minima for 16 frequencies probe the finite side of Chowla's problem; no finite optimum is documented.",
+  "benchmark": "Sixteen frequencies whose cosine sum stays shallow (Chowla's cosine problem)",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.4064/aa111-2-6",
+      "type": "paper",
+      "locator": "Imre Z. Ruzsa, Negative values of cosine sums (2004). Crossref record inspected; Erdős Problem #510 page inspected: every N-element set has theta with sum cos(n theta) < -c N^(1/7) (Bedert 2025; Jin, Milojević, Tomon and Zhang independently polynomial), while A = B - B for Sidon B shows N^(1/2) would be best possible. Shallow minima for 16 frequencies probe the finite side of Chowla's problem; no finite optimum is documented."
+    },
+    {
+      "url": "https://www.erdosproblems.com/510",
+      "type": "archive",
+      "locator": "Erdős Problem #510 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000409",
+      "type": "benchmark",
+      "locator": "JSP-000409; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Floating-point score with sampling refinement; no documented finite value (reference label none).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_g",
+      "title": "Problem-bank constructions: discrete geometry and analysis: source-based research tasks",
+      "url": "https://doi.org/10.1007/s00454-007-9038-6"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented optimum for 16 frequencies; every set has minimum below -c N^(1/7) (Bedert 2025) and N^(1/2) is the conjectured order.",
+    "sources": [
+      {
+        "title": "Negative values of cosine sums",
+        "url": "https://doi.org/10.4064/aa111-2-6",
+        "authors": "Imre Z. Ruzsa",
+        "year": 2004
+      },
+      {
+        "title": "Polynomial bounds for the Chowla Cosine Problem",
+        "url": "https://arxiv.org/abs/2509.05260",
+        "authors": "B. Bedert",
+        "year": 2025
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 510,
+      "url": "https://www.erdosproblems.com/510",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #510, https://www.erdosproblems.com/510, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how negative a cosine sum over N distinct frequencies must become.",
+    "importance_rationale": "Chowla's cosine problem (Erdős Problem #510; Green's problem 81) saw polynomial bounds only in 2025.",
+    "papers": [
+      {
+        "title": "Negative values of cosine sums",
+        "url": "https://doi.org/10.4064/aa111-2-6",
+        "task_relation": "Shallow minima for 16 frequencies probe the finite side of Chowla's problem; no finite optimum is documented.",
+        "primary_goal": "Determine how negative a cosine sum over N distinct frequencies must become.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #510 page inspected: every N-element set has theta with sum cos(n theta) < -c N^(1/7) (Bedert 2025; Jin, Milojević, Tomon and Zhang independently polynomial), while A = B - B for Sidon B shows N^(1/2) would be best possible.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

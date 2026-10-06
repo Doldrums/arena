@@ -1,0 +1,2248 @@
+[
+  {
+    "id": "science-distinct-subset-sums-12",
+    "name": "Distinct subset sums with a small largest element",
+    "description": "construct() -> exactly n=12 distinct positive Python integers <= maximum=1048576. Every subset, including the empty subset, must have a different sum. Minimize the largest integer. Exactly 12 positive integers with bounded largest entry; all 4096 subset sums checked. An improved feasible largest entry is only a finite upper bound.",
+    "family": "science_prize_a_distinct_subset_sums",
+    "parameters": {
+      "n": 12,
+      "maximum": 1048576
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2208.12182",
+        "type": "paper",
+        "locator": "Stefan Steinerberger, Some Remarks on the Erdős Distinct Subset Sums Problem. Author abstract, 2022 preprint, revised 2023: distinct sums of all subsets and bounds on the largest element."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000043",
+        "type": "benchmark",
+        "locator": "JSP-000043; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Exactly 12 positive integers with bounded largest entry; all 4096 subset sums checked. An improved feasible largest entry is only a finite upper bound.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 1157,
+      "statement": "The best known 12-element set with distinct subset sums has largest element 1157 (V. Popov, 2025, recorded in OEIS A276661), below the Conway-Guy value 1164 (OEIS A005318). Exact values are known only up to n = 10 (309), and the Dubroff-Fox-Xu bound gives at least binomial(12,6) = 924 for n = 12.",
+      "sources": [
+        {
+          "title": "OEIS A276661: Least k such that some n-subset of {1..k} has distinct subset sums",
+          "url": "https://oeis.org/A276661"
+        },
+        {
+          "title": "OEIS A005318: Conway-Guy sequence",
+          "url": "https://oeis.org/A005318"
+        },
+        {
+          "title": "A Note on the Erdős Distinct Subset Sums Problem",
+          "url": "https://doi.org/10.1137/20m1385883",
+          "authors": "Quentin Dubroff, Jacob Fox, Max Wenqiang Xu",
+          "year": 2021
+        },
+        {
+          "title": "Some Remarks on the Erdős Distinct Subset Sums Problem",
+          "url": "https://arxiv.org/abs/2208.12182",
+          "authors": "Stefan Steinerberger",
+          "year": 2023
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1,
+        "url": "https://www.erdosproblems.com/1",
+        "status": "disproved (Lean)",
+        "citation": "T. F. Bloom, Erdős Problem #1, https://www.erdosproblems.com/1, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000043"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-harmonic-three-progression-free-256",
+    "name": "Reciprocal weight of three-progression-free sets",
+    "description": "construct() -> a nonempty subset of [1,n=256] without any nonconstant k=3 term arithmetic progression. Maximize the exact sum of reciprocals; score is its floating serialization with exact numerator/denominator in details. A bounded subset of [1,256] without three-term progressions, scored by reciprocal weight. It does not settle the general all-length divergent-reciprocal-sum question.",
+    "family": "science_prize_a_harmonic_progression_free",
+    "parameters": {
+      "n": 256,
+      "k": 3
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2007.03528",
+        "type": "paper",
+        "locator": "Thomas F. Bloom and Olof Sisask, Breaking the logarithmic barrier in Roth’s theorem on arithmetic progressions. Author abstract and introduction inspected; the paper proves a density bound strong enough for the three-term reciprocal-sum consequence."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000044",
+        "type": "benchmark",
+        "locator": "JSP-000044; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "A bounded subset of [1,256] without three-term progressions, scored by reciprocal weight. It does not settle the general all-length divergent-reciprocal-sum question.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented maximum of the reciprocal sum for subsets of [1,256] without three-term progressions. Bloom and Sisask proved that sets whose reciprocal sums diverge contain three-term progressions; the question for progressions of every length is Erdős Problem #3.",
+      "sources": [
+        {
+          "title": "Breaking the logarithmic barrier in Roth's theorem on arithmetic progressions",
+          "url": "https://arxiv.org/abs/2007.03528",
+          "authors": "Thomas F. Bloom, Olof Sisask",
+          "year": 2020
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 3,
+        "url": "https://www.erdosproblems.com/3",
+        "status": "open ($5000)",
+        "citation": "T. F. Bloom, Erdős Problem #3, https://www.erdosproblems.com/3, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000044"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-property-p-divisibility-256",
+    "name": "Large sets with Property P",
+    "description": "construct() -> a nonempty subset of [1,n=256]. For every a<b<=c in the set, a must NOT divide b+c. Repeated larger summands b=c are included. Maximize cardinality. Finite cardinality maximization in [1,256], including repeated larger summands. The cited work proves the extremal bound for sufficiently large n; this task claims neither novelty nor its applicability threshold at 256.",
+    "family": "science_prize_a_property_p",
+    "parameters": {
+      "n": 256
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2301.07065",
+        "type": "paper",
+        "locator": "Benjamin Bedert, On a problem of Erdős and Sárközy about sequences with no term dividing the sum of two larger terms. Author abstract inspected. Repetition convention j<=k additionally checked in Elsholtz and Planitzer, On Erdős and Sárközy’s sequences with Property P, DOI 10.1007/s00605-016-0995-9 (2016)."
+      },
+      {
+        "url": "https://link.springer.com/article/10.1007/s00605-016-0995-9",
+        "type": "paper",
+        "locator": "Christian Elsholtz and Stefan Planitzer, On Erdős and Sárközy’s sequences with Property P (2016): primary statement confirms i<j<=k, including repeated larger terms."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000051",
+        "type": "benchmark",
+        "locator": "JSP-000051; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Finite cardinality maximization in [1,256], including repeated larger summands. The cited work proves the extremal bound for sufficiently large n; this task claims neither novelty nor its applicability threshold at 256.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 86,
+      "statement": "The maximum is 86 = floor(256/3) + 1, attained by {171, ..., 256}. An exact integer programme (151,333 divisibility constraints, solved to optimality with HiGHS; scripts/check_state_of_the_art.py --slow) shows that no larger subset of [1,256] has the property. Bedert proved the bound floor(n/3) + 1 for all sufficiently large n, as conjectured by Erdős and Sárközy.",
+      "sources": [
+        {
+          "title": "On a problem of Erdős and Sárközy about sequences with no term dividing the sum of two larger terms",
+          "url": "https://arxiv.org/abs/2301.07065",
+          "authors": "Benjamin Bedert",
+          "year": 2023
+        },
+        {
+          "title": "On Erdős and Sárközy's sequences with Property P",
+          "url": "https://doi.org/10.1007/s00605-016-0995-9",
+          "authors": "Christian Elsholtz, Stefan Planitzer",
+          "year": 2016
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000051"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-cluster-prime-difference-coverage",
+    "name": "Cluster primes with complete even-difference coverage",
+    "description": "construct() -> a prime p with 3<=p<=maximum=100000. Every positive even d<=p-3 must be a difference of two primes <=p. The evaluator independently checks all differences. Maximize p. Maximize a cluster prime at most 100000; every even difference through p-3 is checked using primes at most p. No density theorem or infinity claim follows. The optimum is 99991, the largest prime below 10^5, which is itself a cluster prime (OEIS A038134); this is a rediscovery task.",
+    "family": "science_prize_a_cluster_prime",
+    "parameters": {
+      "maximum": 100000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://www.impan.pl/shop/en/publication/transaction/download/product/81920",
+        "type": "paper",
+        "locator": "Christian Elsholtz, On cluster primes. Acta Arithmetica 109.3 (2003), p.281 definition and abstract inspected. Original cluster-prime terminology is credited there to Blecksmith, Erdős and Selfridge."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000054",
+        "type": "benchmark",
+        "locator": "JSP-000054; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Solved finite case: 99991, the largest prime below 10^5, is itself a cluster prime, so it is the maximum.",
+      "Maximize a cluster prime at most 100000; every even difference through p-3 is checked using primes at most p. No density theorem or infinity claim follows.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 99991,
+      "statement": "99991, the largest prime below 10^5, is itself a cluster prime, so it is the maximum. OEIS A038134 lists all 1807 cluster primes up to 10^5, and the count was recomputed here. Whether infinitely many cluster primes exist is Erdős Problem #17. Blecksmith, Erdős and Selfridge proved that they have density zero among the primes.",
+      "sources": [
+        {
+          "title": "OEIS A038134: Cluster primes",
+          "url": "https://oeis.org/A038134"
+        },
+        {
+          "title": "Cluster Primes",
+          "url": "https://doi.org/10.1080/00029890.1999.12005005",
+          "authors": "Richard Blecksmith, Paul Erdős, J. L. Selfridge",
+          "year": 1999
+        },
+        {
+          "title": "On cluster primes",
+          "url": "https://www.impan.pl/shop/en/publication/transaction/download/product/81920",
+          "authors": "Christian Elsholtz",
+          "year": 2003
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 17,
+        "url": "https://www.erdosproblems.com/17",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #17, https://www.erdosproblems.com/17, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000054"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-practical-divisor-sum-5040",
+    "name": "Short sums of distinct divisors of 5040",
+    "description": "construct() -> at most 256 distinct positive divisors of n=5040 whose sum is target=4979. Minimize the number of selected divisors. Exact membership and sum checks; this is one finite practical-number instance. Represent 4979 as a sum of distinct divisors of 5040, minimizing the number of terms. This is one finite optimization instance, not Vose’s asymptotic theorem.",
+    "family": "science_prize_a_practical_divisor_sum",
+    "parameters": {
+      "n": 5040,
+      "target": 4979
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1112/blms/17.1.21",
+        "type": "paper",
+        "locator": "Michael D. Vose, Egyptian Fractions. Publisher metadata verified: Bulletin of the London Mathematical Society 17 (1985), 21–24. Full text was not accessible in this review. Practical-number definition additionally checked in Weingartner, arXiv:1405.2585."
+      },
+      {
+        "url": "https://arxiv.org/abs/1405.2585",
+        "type": "paper",
+        "locator": "Andreas Weingartner, Practical numbers and the distribution of divisors: primary abstract confirms distinct-divisor-sum definition, but does not establish the local minimum-term objective."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000055",
+        "type": "benchmark",
+        "locator": "JSP-000055; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Represent 4979 as a sum of distinct divisors of 5040, minimizing the number of terms. This is one finite optimization instance, not Vose’s asymptotic theorem.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Michael D. Vose (1985, Egyptian Fractions) studies the underlying problem.",
+      "sources": [
+        {
+          "title": "Egyptian Fractions",
+          "url": "https://doi.org/10.1112/blms/17.1.21",
+          "authors": "Michael D. Vose",
+          "year": 1985
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000055"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-three-sunflower-free-four-sets-16",
+    "name": "Large four-uniform families without three sunflowers",
+    "description": "construct() -> 1..maximum=250 distinct k=4 element subsets of [1,n=16]. No three distinct sets may have all three pairwise intersections equal, including an empty common core. Maximize family cardinality. Maximize a family of four-element subsets of [1,16], with at most 250 members, excluding three-petal sunflowers including the empty-core case.",
+    "family": "science_prize_a_sunflower_free",
+    "parameters": {
+      "n": 16,
+      "k": 4,
+      "petals": 3,
+      "maximum": 250
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1908.08483",
+        "type": "paper",
+        "locator": "Ryan Alweiss, Shachar Lovett, Kewen Wu and Jiapeng Zhang, Improved bounds for the sunflower lemma. Author abstract inspected: three sets form a sunflower when all pairwise intersections agree."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000057",
+        "type": "benchmark",
+        "locator": "JSP-000057; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Maximize a family of four-element subsets of [1,16], with at most 250 members, excluding three-petal sunflowers including the empty-core case.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented maximum for families of 4-subsets of a 16-element set without a three-petal sunflower (empty cores included). The exponential sunflower bound is Erdős Problem #20; Alweiss, Lovett, Wu and Zhang improved the general upper bound.",
+      "sources": [
+        {
+          "title": "Improved bounds for the sunflower lemma",
+          "url": "https://arxiv.org/abs/1908.08483",
+          "authors": "Ryan Alweiss, Shachar Lovett, Kewen Wu, Jiapeng Zhang",
+          "year": 2019
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 20,
+        "url": "https://www.erdosproblems.com/20",
+        "status": "open ($1000)",
+        "citation": "T. F. Bloom, Erdős Problem #20, https://www.erdosproblems.com/20, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000057"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-bounded-additive-basis-multiplicity-128",
+    "name": "Additive bases with few representations",
+    "description": "construct() -> a nonempty subset A of [0,n=128]. Every integer in [128,256] must be a sum of two elements of A. Pair representations are unordered and permit equal summands. Minimize the largest representation multiplicity in that target interval. Choose A in [0,128] covering [128,256] by pair sums and minimize peak multiplicity. Local pairs are unordered and include equal summands; the paper’s ordered convention differs by symmetry.",
+    "family": "science_prize_a_bounded_basis",
+    "parameters": {
+      "n": 128
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://math.bme.hu/~csandor/Publications/ErdosTuran.pdf",
+        "type": "paper",
+        "locator": "Csaba Sándor, A note on a conjecture of Erdős–Turán. Author-hosted full text, introduction and representation-function definition inspected."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000061",
+        "type": "benchmark",
+        "locator": "JSP-000061; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Choose A in [0,128] covering [128,256] by pair sums and minimize peak multiplicity. Local pairs are unordered and include equal summands; the paper’s ordered convention differs by symmetry.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented minimum for this finite window. The Erdős-Turán conjecture that the representation function of an additive basis of order 2 is unbounded is Erdős Problem #28.",
+      "sources": [
+        {
+          "title": "A note on a conjecture of Erdős-Turán",
+          "url": "https://math.bme.hu/~csandor/Publications/ErdosTuran.pdf",
+          "authors": "Csaba Sándor"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 28,
+        "url": "https://www.erdosproblems.com/28",
+        "status": "open ($500)",
+        "citation": "T. F. Bloom, Erdős Problem #28, https://www.erdosproblems.com/28, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000061"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-prime-additive-complement-256",
+    "name": "Small additive complements of the primes",
+    "description": "construct() -> a nonempty subset B of [0,n=256] such that every integer in [256,512] is p+b for a prime p and b in B. Minimize |B|. All primes and target coverage are recomputed. Choose B in [0,256] so every integer in [256,512] is prime plus B, and minimize |B|. This only certifies finite coverage, not an asymptotic complement. The optimum is 10, established by an exact set-cover computation; this is a rediscovery task.",
+    "family": "science_prize_a_prime_complement",
+    "parameters": {
+      "n": 256
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://www.impan.pl/shop/en/publication/transaction/download/product/83028",
+        "type": "paper",
+        "locator": "Li-Xia Dai and Hao Pan, The additive complements of primes and Goldbach’s problem. Acta Arithmetica 162 (2014), 209–221, introduction inspected; DOI 10.4064/aa162-3-1."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000063",
+        "type": "benchmark",
+        "locator": "JSP-000063; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Solved finite case: The minimum is 10: {11, 16, 80, 117, 199, 204, 223, 225, 228, 242} covers [256,512].",
+      "Choose B in [0,256] so every integer in [256,512] is prime plus B, and minimize |B|. This only certifies finite coverage, not an asymptotic complement.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 10,
+      "statement": "The minimum is 10: {11, 16, 80, 117, 199, 204, 223, 225, 228, 242} covers [256,512]. Exact set-cover integer programmes show that 9 elements cannot. The programmes are split by parity, with every case of the prime 2 enumerated, and solved with HiGHS (scripts/check_state_of_the_art.py --slow). The asymptotic question is Erdős Problem #32.",
+      "sources": [
+        {
+          "title": "The additive complements of primes and Goldbach's problem",
+          "url": "https://doi.org/10.4064/aa162-3-1",
+          "authors": "Li-Xia Dai, Hao Pan",
+          "year": 2014
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 32,
+        "url": "https://www.erdosproblems.com/32",
+        "status": "open ($50)",
+        "citation": "T. F. Bloom, Erdős Problem #32, https://www.erdosproblems.com/32, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000063"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-unique-triple-sum-b3-4096",
+    "name": "Large integer sets with unique triple sums",
+    "description": "construct() -> 1..80 distinct positive integers <=n=4096. Every unordered triple, allowing repetitions, must have a different sum. Maximize cardinality. At most 80 positive integers in [1,4096], with all unordered triples including repetitions having unique sums. This is B_3[1], not the g>=2 improvement in the cited paper.",
+    "family": "science_prize_a_b3_set",
+    "parameters": {
+      "n": 4096,
+      "maximum": 80
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1604.00661",
+        "type": "paper",
+        "locator": "Craig Timmons, Upper bounds for B_h[g]-sets with small h. Author abstract and B_h[g] framework checked. The paper’s improved bounds focus on g>=2; local multiplicity is g=1."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000069",
+        "type": "benchmark",
+        "locator": "JSP-000069; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "At most 80 positive integers in [1,4096], with all unordered triples including repetitions having unique sums. This is B_3[1], not the g>=2 improvement in the cited paper.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented maximum for B_3 sets in [1,4096]; the greedy B_3 sequence (OEIS A096772) already has 16 terms up to 4048. Asymptotically the maximum is between (1+o(1))N^(1/3) (Bose and Chowla) and ((7/2)^(1/3)+o(1))N^(1/3) (Green), Erdős Problem #241.",
+      "sources": [
+        {
+          "title": "Upper bounds for B_h[g]-sets with small h",
+          "url": "https://arxiv.org/abs/1604.00661",
+          "authors": "Craig Timmons",
+          "year": 2016
+        },
+        {
+          "title": "OEIS A096772: Greedy B_3 sequence",
+          "url": "https://oeis.org/A096772"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 241,
+        "url": "https://www.erdosproblems.com/241",
+        "status": "open ($100)",
+        "citation": "T. F. Bloom, Erdős Problem #241, https://www.erdosproblems.com/241, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000069"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-paired-sidon-disjoint-differences-256",
+    "name": "Two Sidon sets with disjoint difference sets",
+    "description": "construct() -> [A,B], two nonempty Sidon subsets of [1,n=256], at most 64 elements each. Pair sums inside each set, including a+a, must be unique. Their nonzero difference sets must be disjoint. Maximize |A|+|B|; A and B need not themselves be disjoint. Two Sidon subsets of [1,256]; maximize combined size and require disjoint nonzero differences. Ordinary Sidon diagonals are included, and the two sets themselves may overlap.",
+    "family": "science_prize_a_paired_sidon",
+    "parameters": {
+      "n": 256
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://users.renyi.hu/~p_erdos/1982-34.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős, Some problems on additive number theory. Annals of Discrete Mathematics 12 (1982), 113–116; p.114 explicitly poses the two-Sidon-set/disjoint-differences question."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000071",
+        "type": "benchmark",
+        "locator": "JSP-000071; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Two Sidon subsets of [1,256]; maximize combined size and require disjoint nonzero differences. Ordinary Sidon diagonals are included, and the two sets themselves may overlap.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented maximum of |A| + |B| for N = 256. Erdős's question (Problem #43) was answered negatively: one Sidon set can have the maximum size while the other grows without bound.",
+      "sources": [
+        {
+          "title": "Some problems on additive number theory",
+          "url": "https://users.renyi.hu/~p_erdos/1982-34.pdf",
+          "authors": "Paul Erdős",
+          "year": 1982
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 43,
+        "url": "https://www.erdosproblems.com/43",
+        "status": "disproved (Lean)",
+        "citation": "T. F. Bloom, Erdős Problem #43, https://www.erdosproblems.com/43, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000071"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-integer-sum-product-maximum-20",
+    "name": "Integer sum-product extremal sets",
+    "description": "construct() -> n=20 distinct positive integers <=maximum=10000. Compute A+A and A*A with equal summands/factors allowed. Minimize max(|A+A|,|A*A|). Exactly 20 distinct positive integers at most 10000, minimizing the maximum of sumset and product-set sizes. This uses integers rather than arbitrary reals, and includes diagonal pairs.",
+    "family": "science_prize_a_sum_product",
+    "parameters": {
+      "n": 20,
+      "maximum": 10000
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/0806.1040",
+        "type": "paper",
+        "locator": "József Solymosi, An upper bound on the multiplicative energy. Author abstract inspected: lower bounds on max(|A+A|,|AA|); the later publication has title Bounding multiplicative energy by the sumset."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000075",
+        "type": "benchmark",
+        "locator": "JSP-000075; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Exactly 20 distinct positive integers at most 10000, minimizing the maximum of sumset and product-set sizes. This uses integers rather than arbitrary reals, and includes diagonal pairs.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented minimum of max(|A+A|, |AA|) for 20-element integer sets. The Erdős-Szemerédi sum-product conjecture is Erdős Problem #52. Solymosi proved max(|A+A|, |AA|) >= |A|^(4/3)/(2 ceil(log |A|))^(1/3) for sets of real numbers.",
+      "sources": [
+        {
+          "title": "Bounding multiplicative energy by the sumset",
+          "url": "https://arxiv.org/abs/0806.1040",
+          "authors": "József Solymosi",
+          "year": 2009
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 52,
+        "url": "https://www.erdosproblems.com/52",
+        "status": "open ($250)",
+        "citation": "T. F. Bloom, Erdős Problem #52, https://www.erdosproblems.com/52, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000075"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-smooth-divisibility-antichain-sums-128",
+    "name": "Divisibility-antichain representations by smooth numbers",
+    "description": "construct() -> 128 rows corresponding to targets 1..128. Every row must contain 1..30 distinct positive 2^a*3^b*5^c terms summing to its target; no chosen term may divide another. All targets require valid representations. Minimize the total number of summands over all targets, an explicit local refinement of finite d-completeness. Represent targets 1..128 by sums of distinct 2,3,5-smooth numbers forming a divisibility antichain. All targets require valid representations; minimizing the total term count is an explicit local efficiency refinement of finite d-completeness. The seed uses up to three terms and is not term-minimal.",
+    "family": "science_prize_a_antichain_representations",
+    "parameters": {
+      "maximum_terms": 30
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://www.sciencedirect.com/science/article/pii/S0022314X16000342",
+        "type": "paper",
+        "locator": "Mi-Mi Ma and Yong-Gao Chen, On d-complete sequences of integers. Publisher abstract inspected: divisibility-antichain sums and d-completeness. Journal of Number Theory 164 (2016), 1–12, DOI 10.1016/j.jnt.2015.12.003. Original d-complete terminology credited to Erdős and Mordechai Lewin, Mathematics of Computation 65 (1996), 837–840."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000130",
+        "type": "benchmark",
+        "locator": "JSP-000130; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Represent targets 1..128 by sums of distinct 2,3,5-smooth numbers forming a divisibility antichain. All targets require valid representations; minimizing the total term count is an explicit local efficiency refinement of finite d-completeness. The seed uses up to three terms and is not term-minimal.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 220,
+      "statement": "The minimum total is 220. Every target up to 128 needs at most three pairwise non-dividing 5-smooth summands, and an exhaustive search for each target (scripts/check_state_of_the_art.py) gives per-target minima that sum to 220. The d-completeness of such sequences was conjectured by Erdős and Lewin (Erdős Problem #123, now proved).",
+      "sources": [
+        {
+          "title": "On d-complete sequences of integers",
+          "url": "https://doi.org/10.1016/j.jnt.2015.12.003",
+          "authors": "Mi-Mi Ma, Yong-Gao Chen",
+          "year": 2016
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 123,
+        "url": "https://www.erdosproblems.com/123",
+        "status": "proved (Lean)",
+        "citation": "T. F. Bloom, Erdős Problem #123, https://www.erdosproblems.com/123, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000130"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-pair-sum-prime-diversity-12",
+    "name": "Few prime factors across pairwise sums",
+    "description": "construct() -> n=12 distinct positive integers <=maximum=10000. Factor every sum of two DISTINCT elements, union all prime factors and minimize the number of distinct primes. Choose 12 distinct positive integers at most 10000; minimize the number of distinct primes dividing sums of distinct-index pairs. Equal-index sums are excluded.",
+    "family": "science_prize_a_pair_sum_prime_diversity",
+    "parameters": {
+      "n": 12,
+      "maximum": 10000
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://users.renyi.hu/~p_erdos/1934-03.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Paul Turán, On a Problem in the Elementary Theory of Numbers. American Mathematical Monthly 41 (1934), 608–611; full text, initial pair-sum prime-divisor problem inspected. The opening credits its original oral proposal to G. Grünwald and D. Lázár."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000133",
+        "type": "benchmark",
+        "locator": "JSP-000133; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Choose 12 distinct positive integers at most 10000; minimize the number of distinct primes dividing sums of distinct-index pairs. Equal-index sums are excluded.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented minimum for 12-element sets. Erdős and Turán proved that the number of distinct primes dividing the product of pairwise sums grows at least like log n; Erdős Problem #126, whether it grows faster, has been answered affirmatively.",
+      "sources": [
+        {
+          "title": "On a Problem in the Elementary Theory of Numbers",
+          "url": "https://users.renyi.hu/~p_erdos/1934-03.pdf",
+          "authors": "Paul Erdős, Paul Turán",
+          "year": 1934
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 126,
+        "url": "https://www.erdosproblems.com/126",
+        "status": "proved (Lean)",
+        "citation": "T. F. Bloom, Erdős Problem #126, https://www.erdosproblems.com/126, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000133"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-nondividing-three-other-sums-192",
+    "name": "No element dividing a sum of three others",
+    "description": "construct() -> 1..maximum=48 distinct positive integers <=n=192. No selected integer may divide the sum of any k=3 DISTINCT OTHER selected integers. Maximize cardinality. This excludes the tested element from the summands. Follow the prize bank’s prescribed-number wording: k=3 distinct OTHER summands in [1,192], at most 48 elements. This relaxes the broader all-subsets condition in Erdős’s survey and is not attributed as his exact original statement.",
+    "family": "science_prize_a_nondividing_k_sum",
+    "parameters": {
+      "n": 192,
+      "k": 3,
+      "maximum": 48
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://numdam.org/item/AST_1975__24-25__295_0.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős, Problems and results in combinatorial number theory. Astérisque 24–25 (1975), 295–310, p.309 inspected. The primary text studies divisibility by sums of other elements without fixing their number."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000137",
+        "type": "benchmark",
+        "locator": "JSP-000137; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Follow the prize bank’s prescribed-number wording: k=3 distinct OTHER summands in [1,192], at most 48 elements. This relaxes the broader all-subsets condition in Erdős’s survey and is not attributed as his exact original statement.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős (1975, Problems and results in combinatorial number theory) studies the underlying problem.",
+      "sources": [
+        {
+          "title": "Problems and results in combinatorial number theory",
+          "url": "https://numdam.org/item/AST_1975__24-25__295_0.pdf",
+          "authors": "Paul Erdős",
+          "year": 1975
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000137"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-two-color-four-progression-avoidance",
+    "name": "Long binary colorings without four-term progressions",
+    "description": "construct() -> a list of integer colors 0 or 1, length between k=4 and maximum=512. No nonconstant four-term arithmetic progression of positions may be monochromatic. Maximize length. Maximize binary-coloring length up to 512 with no monochromatic four-term arithmetic progression. The paper determines the six-term case; this smaller four-term instance is a known finite rediscovery exercise.",
+    "family": "science_prize_a_van_der_waerden",
+    "parameters": {
+      "k": 4,
+      "maximum": 512
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://www.cs.umd.edu/users/gasarch/TOPICS/vdw/1132.pdf",
+        "type": "paper",
+        "locator": "Michal Kouril and Jerome L. Paul, The van der Waerden Number W(2,6) Is 1132. Primary paper PDF and initial definition of W(r,k) inspected. Experimental Mathematics (2008)."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000142",
+        "type": "benchmark",
+        "locator": "JSP-000142; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Maximize binary-coloring length up to 512 with no monochromatic four-term arithmetic progression. The paper determines the six-term case; this smaller four-term instance is a known finite rediscovery exercise.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 34,
+      "statement": "W(2,4) = 35 (Chvátal 1970; OEIS A005346), so the longest 2-colouring without a monochromatic four-term progression has length 34. An exhaustive search (scripts/check_state_of_the_art.py) reproduces both the length-34 colouring and the impossibility at 35.",
+      "sources": [
+        {
+          "title": "OEIS A005346: Van der Waerden numbers W(2,n)",
+          "url": "https://oeis.org/A005346"
+        },
+        {
+          "title": "The van der Waerden Number W(2,6) Is 1132",
+          "url": "https://www.cs.umd.edu/users/gasarch/TOPICS/vdw/1132.pdf",
+          "authors": "Michal Kouril, Jerome L. Paul",
+          "year": 2008
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 138,
+        "url": "https://www.erdosproblems.com/138",
+        "status": "open ($500)",
+        "citation": "T. F. Bloom, Erdős Problem #138, https://www.erdosproblems.com/138, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000142"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-four-progression-free-512",
+    "name": "Large four-term-progression-free integer sets",
+    "description": "construct() -> a nonempty subset of [1,n=512] containing no nonconstant k=4 term arithmetic progression. Maximize cardinality. Maximize cardinality of a four-term-progression-free subset of [1,512]. A feasible construction supplies a finite lower bound, not an asymptotic theorem.",
+    "family": "science_prize_a_progression_free",
+    "parameters": {
+      "n": 512,
+      "k": 4
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1705.01703",
+        "type": "paper",
+        "locator": "Ben Green and Terence Tao, New bounds for Szemerédi’s theorem, III: A polylogarithmic bound for r_4(N). Author abstract inspected; r_4(N) is exactly the largest four-term-progression-free subset of an interval."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000144",
+        "type": "benchmark",
+        "locator": "JSP-000144; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Maximize cardinality of a four-term-progression-free subset of [1,512]. A feasible construction supplies a finite lower bound, not an asymptotic theorem.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value of r_4(512). Exact values of r_4(N) are tabulated only up to N = 142, where r_4(142) = 58 (OEIS A003003). Green and Tao proved a polylogarithmic-saving upper bound.",
+      "sources": [
+        {
+          "title": "OEIS A003003: Largest subset of [1..n] without a 4-term arithmetic progression",
+          "url": "https://oeis.org/A003003"
+        },
+        {
+          "title": "New bounds for Szemerédi's theorem, III: A polylogarithmic bound for r_4(N)",
+          "url": "https://arxiv.org/abs/1705.01703",
+          "authors": "Ben Green, Terence Tao",
+          "year": 2017
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 142,
+        "url": "https://www.erdosproblems.com/142",
+        "status": "open ($10000)",
+        "citation": "T. F. Bloom, Erdős Problem #142, https://www.erdosproblems.com/142, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000144"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-three-colors-every-four-progression-128",
+    "name": "Colorings with three colors in every four-term progression",
+    "description": "construct() -> n=128 integer color labels in 0..127. Every nonconstant four-term progression of positions must use AT LEAST three distinct colors. Minimize the number of labels actually used; labels need not be consecutive. Minimize colors on [1,128] with at least three colors on every four-term progression. The source’s largest forcing-color threshold is one below the least avoiding-color count; local score uses the latter convention.",
+    "family": "science_prize_a_three_color_progressions",
+    "parameters": {
+      "n": 128
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://users.renyi.hu/~p_erdos/1989-35.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős, Some Problems and Results on Combinatorial Number Theory. Author-hosted 1989 paper, p.143, Freud–Erdős coloring question inspected."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000158",
+        "type": "benchmark",
+        "locator": "JSP-000158; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Minimize colors on [1,128] with at least three colors on every four-term progression. The source’s largest forcing-color threshold is one below the least avoiding-color count; local score uses the latter convention.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value of h(128), the least number of colours of [1,N] such that every four-term progression receives at least three colours (Erdős Problem #160).",
+      "sources": [
+        {
+          "title": "Some Problems and Results on Combinatorial Number Theory",
+          "url": "https://users.renyi.hu/~p_erdos/1989-35.pdf",
+          "authors": "Paul Erdős",
+          "year": 1989
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 160,
+        "url": "https://www.erdosproblems.com/160",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #160, https://www.erdosproblems.com/160, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000158"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-multiplicative-triple-free-4096",
+    "name": "Large sets avoiding x, 2x, 3x",
+    "description": "construct() -> a nonempty subset of [1,n=4096] containing no triple {x,2x,3x}. Maximize cardinality; density is recorded as an exact fraction. Maximize the size of a subset of [1,4096] avoiding {x,2x,3x}. This yields a finite construction, not the exact limiting density or its irrationality. The optimum is 3281, computed exactly on the independent 3-smooth grids (OEIS A157282); this is a rediscovery task.",
+    "family": "science_prize_a_triple_free",
+    "parameters": {
+      "n": 4096
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://fanchung.ucsd.edu/ron/papers/77_05_extremal_density.pdf",
+        "type": "paper",
+        "locator": "Ronald L. Graham, Hans S. Witsenhausen and Joel H. Spencer, On Extremal Density Theorems for Linear Forms. Author-hosted full text visually inspected: Number Theory and Algebra (1977), 103–109; pp.107–108 explicitly analyze the pattern {x,2x,3x} and maximal subsets."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000165",
+        "type": "benchmark",
+        "locator": "JSP-000165; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Solved finite case: The maximum is 3281 (density 3281/4096).",
+      "Maximize the size of a subset of [1,4096] avoiding {x,2x,3x}. This yields a finite construction, not the exact limiting density or its irrationality.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 3281,
+      "statement": "The maximum is 3281 (density 3281/4096). The problem splits into independent grids {2^a 3^b m : gcd(m,6) = 1} (the decomposition behind OEIS A157282). An exact dynamic programme over every grid (scripts/check_state_of_the_art.py) gives 3281. The limiting density is Erdős Problem #168.",
+      "sources": [
+        {
+          "title": "OEIS A157282: Maximum cardinality of a weakly triple-free subset of {1..n}",
+          "url": "https://oeis.org/A157282"
+        },
+        {
+          "title": "On Extremal Density Theorems for Linear Forms",
+          "url": "https://fanchung.ucsd.edu/ron/papers/77_05_extremal_density.pdf",
+          "authors": "Ronald L. Graham, Hans S. Witsenhausen, Joel H. Spencer",
+          "year": 1977
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 168,
+        "url": "https://www.erdosproblems.com/168",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #168, https://www.erdosproblems.com/168, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000165"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-all-progression-discrepancy-256",
+    "name": "Low discrepancy on all arithmetic progressions",
+    "description": "construct() -> exactly n=256 Python integer signs -1 or +1. Minimize the maximum absolute signed sum on ANY arithmetic progression contained in [1,256], any start, positive step and length including one. Assign 256 signs and minimize the maximum absolute sum on any arithmetic progression, including arbitrary starts and singletons. This differs from homogeneous-progression Erdős discrepancy.",
+    "family": "science_prize_a_progression_discrepancy",
+    "parameters": {
+      "n": 256
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://cs.nyu.edu/~spencer/papers/matousek.pdf",
+        "type": "paper",
+        "locator": "Jiří Matoušek and Joel Spencer, Discrepancy in Arithmetic Progressions. Author-hosted full text inspected, introduction and definition of discrepancy over every arithmetic progression in [1,n]. PDF pages are in reverse order."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000171",
+        "type": "benchmark",
+        "locator": "JSP-000171; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Assign 256 signs and minimize the maximum absolute sum on any arithmetic progression, including arbitrary starts and singletons. This differs from homogeneous-progression Erdős discrepancy.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented minimum for N = 256. The discrepancy of arithmetic progressions in [1,N] has order N^(1/4): Roth proved the lower bound and Matoušek and Spencer the matching upper bound.",
+      "sources": [
+        {
+          "title": "Discrepancy in Arithmetic Progressions",
+          "url": "https://cs.nyu.edu/~spencer/papers/matousek.pdf",
+          "authors": "Jiří Matoušek, Joel Spencer",
+          "year": 1996
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000171"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-many-three-no-four-progressions-256",
+    "name": "Many three-term progressions without four-term progressions",
+    "description": "construct() -> a nonempty subset of [1,n=256], with no nonconstant four-term arithmetic progression. Maximize the number of distinct three-term arithmetic progressions (positive difference, counted once). Cardinality and ambient interval are both reported; finite-box restriction of the source extremal problem. Choose a subset of [1,256] with no four-term progression and maximize the number of three-term progressions. Unlike the paper, ambient height is fixed and cardinality varies; each result bounds f_{3,4}(|A|) from below.",
+    "family": "science_prize_a_many_short_progressions",
+    "parameters": {
+      "n": 256
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1908.09905",
+        "type": "paper",
+        "locator": "Jacob Fox and Cosmin Pohoata, Sets without k-term progressions can have many shorter progressions. Author abstract inspected; f_{s,k}(n) counts shorter progressions in n-element sets avoiding longer ones."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000173",
+        "type": "benchmark",
+        "locator": "JSP-000173; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Choose a subset of [1,256] with no four-term progression and maximize the number of three-term progressions. Unlike the paper, ambient height is fixed and cardinality varies; each result bounds f_{3,4}(|A|) from below.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented maximum for subsets of [1,256]. Fox and Pohoata showed that sets without k-term progressions can contain N^(2-o(1)) shorter progressions, which answers Erdős Problem #179.",
+      "sources": [
+        {
+          "title": "Sets without k-term progressions can have many shorter progressions",
+          "url": "https://arxiv.org/abs/1908.09905",
+          "authors": "Jacob Fox, Cosmin Pohoata",
+          "year": 2020
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 179,
+        "url": "https://www.erdosproblems.com/179",
+        "status": "proved",
+        "citation": "T. F. Bloom, Erdős Problem #179, https://www.erdosproblems.com/179, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000173"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-nonaveraging-integer-set-512",
+    "name": "Large sets without subset averages",
+    "description": "construct() -> 1..maximum=48 distinct positive integers <=n=512. No element may be the exact arithmetic mean of any subset of at least two OTHER elements. The verifier checks every possible subset cardinality by integer bitsets. Maximize cardinality. At most 48 integers in [1,512], with no element the mean of any subset of at least two distinct OTHER elements. Exact subset-sum dynamic programming verifies all subset sizes.",
+    "family": "science_prize_a_nonaveraging",
+    "parameters": {
+      "n": 512,
+      "maximum": 48
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2410.14624",
+        "type": "paper",
+        "locator": "Huy Tuan Pham and Dmitrii Zakharov, Sharp bound for the Erdős–Straus non-averaging set problem. Author abstract inspected (2024 preprint, 2025 revision): non-averaging definition and sharp asymptotic exponent."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000179",
+        "type": "benchmark",
+        "locator": "JSP-000179; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "At most 48 integers in [1,512], with no element the mean of any subset of at least two distinct OTHER elements. Exact subset-sum dynamic programming verifies all subset sizes.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented maximum for N = 512. The growth rate is N^(1/4+o(1)): Bosznay proved the lower bound and Pham and Zakharov the upper bound (Erdős Problem #186).",
+      "sources": [
+        {
+          "title": "Sharp bound for the Erdős-Straus non-averaging set problem",
+          "url": "https://arxiv.org/abs/2410.14624",
+          "authors": "Huy Tuan Pham, Dmitrii Zakharov",
+          "year": 2024
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 186,
+        "url": "https://www.erdosproblems.com/186",
+        "status": "solved",
+        "citation": "T. F. Bloom, Erdős Problem #186, https://www.erdosproblems.com/186, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000179"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-permutation-monotone-progression-128",
+    "name": "Permutations avoiding long monotone progressions",
+    "description": "construct() -> a permutation of 1..n=128. Minimize the longest subsequence whose values form an increasing OR decreasing nonconstant arithmetic progression; subsequence positions need not be adjacent. A known finite construction attains 2, so this is a rediscovery task. Permute [1,128] and minimize the longest arithmetic-progression subsequence, allowing either sign of the common difference. The known finite optimum is 2; infinite-permutation questions are not recreated here.",
+    "family": "science_prize_a_permutation_progression",
+    "parameters": {
+      "n": 128
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://fanchung.ucsd.edu/ron/papers/77_06_no_long_aps.pdf",
+        "type": "paper",
+        "locator": "James A. Davis, Roger C. Entringer, Ronald L. Graham and Gustavus J. Simmons, On permutations containing no long arithmetic progressions. Acta Arithmetica XXXIV (1977), opening page visually inspected: finite permutations avoiding increasing and decreasing three-term progressions exist for every n, with the doubling construction proved explicitly."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000184",
+        "type": "benchmark",
+        "locator": "JSP-000184; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Permute [1,128] and minimize the longest arithmetic-progression subsequence, allowing either sign of the common difference. The known finite optimum is 2; infinite-permutation questions are not recreated here.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 2,
+      "statement": "Davis, Entringer, Graham and Simmons showed that every interval [1,n] has a permutation without a monotone three-term progression (for example, evens before odds, recursively), so the minimum is 2.",
+      "sources": [
+        {
+          "title": "On permutations containing no long arithmetic progressions",
+          "url": "https://fanchung.ucsd.edu/ron/papers/77_06_no_long_aps.pdf",
+          "authors": "James A. Davis, Roger C. Entringer, Ronald L. Graham, Gustavus J. Simmons",
+          "year": 1977
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000184"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-disjoint-congruence-classes-128",
+    "name": "Many disjoint residue classes with distinct moduli",
+    "description": "construct() -> a nonempty list of [residue,modulus] pairs with distinct moduli 2..maximum=128 and canonical residues 0<=r<m. Every two infinite residue classes must be disjoint; the verifier uses the exact gcd criterion. Maximize the number of classes. Choose pairwise disjoint infinite residue classes with distinct moduli between 2 and 128; maximize their number using the exact gcd/CRT criterion.",
+    "family": "science_prize_a_disjoint_congruences",
+    "parameters": {
+      "maximum": 128
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/math/0208236",
+        "type": "paper",
+        "locator": "Ernest S. Croot III, On non-intersecting arithmetic progressions. Author preprint and published first-page definition inspected; Acta Arithmetica 110.3 (2003), 233–238."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000189",
+        "type": "benchmark",
+        "locator": "JSP-000189; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Choose pairwise disjoint infinite residue classes with distinct moduli between 2 and 128; maximize their number using the exact gcd/CRT criterion.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value for moduli up to 128. Exact values are known for n <= 100 (OEIS A389975, a(100) = 20), so at least 20 classes are possible. The growth rate is Erdős Problem #202.",
+      "sources": [
+        {
+          "title": "OEIS A389975: Maximum number of disjoint congruence classes with distinct moduli at most n",
+          "url": "https://oeis.org/A389975"
+        },
+        {
+          "title": "On non-intersecting arithmetic progressions",
+          "url": "https://arxiv.org/abs/math/0208236",
+          "authors": "Ernest S. Croot III",
+          "year": 2003
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 202,
+        "url": "https://www.erdosproblems.com/202",
+        "status": "solved (Lean)",
+        "citation": "T. F. Bloom, Erdős Problem #202, https://www.erdosproblems.com/202, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000189"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-consecutive-squarefree-gap",
+    "name": "Large gaps between consecutive squarefree integers",
+    "description": "construct() -> [a,b], positive squarefree endpoints a<b<=maximum=10000000, with b-a<=10000. EVERY interior integer must be nonsquarefree. Maximize b-a. Endpoints and every interior integer are tested exactly. Maximize the gap between consecutive positive squarefree endpoints at most 10000000, with gap at most 10000. Endpoints and every interior integer are checked. The optimum is 10 (8870023 to 8870033; OEIS A020754); this is a rediscovery task.",
+    "family": "science_prize_a_squarefree_gap",
+    "parameters": {
+      "maximum": 10000000,
+      "maximum_gap": 10000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2211.09975",
+        "type": "paper",
+        "locator": "Angel Kumchev, Wade McCormick, Nathan McNew, Ariana Park, Russell Scherr and Willow Ziehr, Explicit bounds for large gaps between squarefree integers. Author abstract inspected, including all six authors and explicit gap bounds."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000193",
+        "type": "benchmark",
+        "locator": "JSP-000193; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Solved finite case: The largest gap between consecutive squarefree numbers up to 10^7 is 10, from 8870023 to 8870033.",
+      "Maximize the gap between consecutive positive squarefree endpoints at most 10000000, with gap at most 10000. Endpoints and every interior integer are checked.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 10,
+      "statement": "The largest gap between consecutive squarefree numbers up to 10^7 is 10, from 8870023 to 8870033. The next record gap starts at 221167421 (OEIS A020754), and a sieve up to 10^7 recomputes the value.",
+      "sources": [
+        {
+          "title": "OEIS A020754: Increasing gaps between squarefree numbers (lower end)",
+          "url": "https://oeis.org/A020754"
+        },
+        {
+          "title": "Explicit bounds for large gaps between squarefree integers",
+          "url": "https://arxiv.org/abs/2211.09975",
+          "authors": "Angel Kumchev, Wade McCormick, Nathan McNew, Ariana Park, Russell Scherr, Willow Ziehr",
+          "year": 2023
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 208,
+        "url": "https://www.erdosproblems.com/208",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #208, https://www.erdosproblems.com/208, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000193"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-consecutive-two-square-gap",
+    "name": "Large gaps between sums of two squares",
+    "description": "construct() -> [a,b], positive endpoints a<b<=maximum=10000000, b-a<=10000, both sums of two integer squares (zero is permitted). No interior integer may be a sum of two squares. Maximize b-a. Positive consecutive representable endpoints at most 10000000 and distance at most 10000, with zero allowed as one of the two squared integers. Every interior integer is checked. The optimum is 50 (9565544 to 9565594; OEIS A297350); this is a rediscovery task.",
+    "family": "science_prize_a_two_square_gap",
+    "parameters": {
+      "maximum": 10000000,
+      "maximum_gap": 10000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1906.09100",
+        "type": "paper",
+        "locator": "A. B. Kalmynin and S. V. Konyagin, Large gaps between sums of two squares. Author abstract inspected: g(X) is the largest difference between consecutive sums of two squares up to X. This is a preprint; v2 notes a later expanded joint manuscript."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000201",
+        "type": "benchmark",
+        "locator": "JSP-000201; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Solved finite case: The largest gap between consecutive sums of two squares up to 10^7 is 50, from 9565544 to 9565594.",
+      "Positive consecutive representable endpoints at most 10000000 and distance at most 10000, with zero allowed as one of the two squared integers. Every interior integer is checked.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 50,
+      "statement": "The largest gap between consecutive sums of two squares up to 10^7 is 50, from 9565544 to 9565594. The next record gap starts at 13305524 (OEIS A297350), and a sieve up to 10^7 recomputes the value.",
+      "sources": [
+        {
+          "title": "OEIS A297350: Start of record gaps between sums of two squares",
+          "url": "https://oeis.org/A297350"
+        },
+        {
+          "title": "Large gaps between sums of two squares",
+          "url": "https://arxiv.org/abs/1906.09100",
+          "authors": "A. B. Kalmynin, S. V. Konyagin",
+          "year": 2019
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 222,
+        "url": "https://www.erdosproblems.com/222",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #222, https://www.erdosproblems.com/222, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000201"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-goldbach-prime-decompositions",
+    "name": "Prime decompositions of even integers",
+    "description": "construct() -> 256 rows for even targets 1000000+2*i, i=0..255. Each row is None (unsolved) or a pair of primes summing to the target; equal primes are allowed. Maximize the fraction solved; every claimed pair is checked and any malformed claim invalidates the candidate. Construct prime pairs for 256 even targets from 1000000 to 1000510. These inputs are far within published verification ranges; maximizing coverage is a rediscovery exercise.",
+    "family": "science_prize_a_goldbach_decompositions",
+    "parameters": {
+      "start": 1000000,
+      "count": 256
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1090/S0025-5718-2013-02787-1",
+        "type": "paper",
+        "locator": "Tomás Oliveira e Silva, Siegfried Herzog and Silvio Pardi, Empirical verification of the even Goldbach conjecture and computation of prime gaps up to 4·10^18. Original author project https://sweet.ua.pt/tos/goldbach.html inspected: definitions, finite verification, and full 2014 paper citation (Mathematics of Computation 83, 2033–2060)."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000008",
+        "type": "benchmark",
+        "locator": "JSP-000008; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Construct prime pairs for 256 even targets from 1000000 to 1000510. These inputs are far within published verification ranges; maximizing coverage is a rediscovery exercise.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 1.0,
+      "statement": "Every even number up to 4·10^18 is a sum of two primes (Oliveira e Silva, Herzog and Pardi), so all 256 targets are solvable and the maximum fraction is 1.",
+      "sources": [
+        {
+          "title": "Empirical verification of the even Goldbach conjecture and computation of prime gaps up to 4·10^18",
+          "url": "https://doi.org/10.1090/S0025-5718-2013-02787-1",
+          "authors": "Tomás Oliveira e Silva, Siegfried Herzog, Silvio Pardi",
+          "year": 2014
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000008"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-coprime-abc-quality",
+    "name": "High-quality coprime abc triples",
+    "description": "construct() -> [a,b,c], positive Python integers <=1000000000000, a<=b, a+b=c, gcd(a,b)=1. Maximize log(c)/log(rad(a*b*c)). The radical is the product of DISTINCT prime factors and is independently factored exactly; only the logarithmic score uses floating arithmetic. Search coprime positive triples a+b=c with c<=10^12, maximizing log(c)/log(rad(abc)). Finite high quality cannot disprove the conjecture, which allows finitely many exceptions at each exponent. The optimum is Reyssat's quality 1.62991 for 2 + 3^10*109 = 23^5; complete tables of high-quality triples show nothing better below 10^20, so this is a rediscovery task.",
+    "family": "science_prize_a_abc_quality",
+    "parameters": {
+      "maximum": 1000000000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1409.2974",
+        "type": "paper",
+        "locator": "Greg Martin and Winnie Miao, abc triples. Primary survey full text inspected: p.3 defines logarithmic quality, p.10 explicitly uses the starter (1,8,9). Author computational catalog https://pub.math.leidenuniv.nl/~smitbde/abc/ also inspected."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000010",
+        "type": "benchmark",
+        "locator": "JSP-000010; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Solved finite case: Reyssat's triple 2 + 3^10·109 = 23^5 (c = 6,436,343) has quality 1.62991.",
+      "Search coprime positive triples a+b=c with c<=10^12, maximizing log(c)/log(rad(abc)). Finite high quality cannot disprove the conjecture, which allows finitely many exceptions at each exponent.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 1.6299116841,
+      "statement": "Reyssat's triple 2 + 3^10·109 = 23^5 (c = 6,436,343) has quality 1.62991. De Smit's complete tables of triples with quality at least 1.4 and at most twenty digits, surveyed by Martin and Miao, contain nothing of higher quality, so it is the maximum for c <= 10^12.",
+      "sources": [
+        {
+          "title": "abc triples",
+          "url": "https://arxiv.org/abs/1409.2974",
+          "authors": "Greg Martin, Winnie Miao",
+          "year": 2014
+        },
+        {
+          "title": "ABC triples (tables of high-quality triples)",
+          "url": "https://www.math.leidenuniv.nl/~desmit/abc/",
+          "authors": "Bart de Smit (maintained)"
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "The classical mathematical witness (1,8,9), also displayed in Martin and Miao p.10, is reused and credited. The evaluator is independently implemented; no implementation is borrowed.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000010"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-hadamard-matrices-orders-through-100",
+    "name": "Hadamard matrix constructions through order 100",
+    "description": "construct() -> 25 rows for orders 4,8,...,100. A row is None or an n-by-n matrix of Python integer signs -1/+1 satisfying H*H^T=n*I. Maximize the fraction of orders constructed. Every row product is checked exactly. These small orders have known solutions; this is a rediscovery task. Construct sign matrices for orders 4,8,...,100, maximizing order coverage. These orders already have constructions; no SageMath code or matrix data is copied.",
+    "family": "science_prize_a_hadamard_orders",
+    "parameters": {
+      "maximum": 100
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2411.18897",
+        "type": "paper",
+        "locator": "Matteo Cati and Dmitrii V. Pasechnik, A database of constructions of Hadamard matrices. Author abstract and HTML v2 Sections 1 and 4.2 inspected: exact orthogonal-sign definition, known construction database, and Sylvester construction attribution."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000013",
+        "type": "benchmark",
+        "locator": "JSP-000013; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Construct sign matrices for orders 4,8,...,100, maximizing order coverage. These orders already have constructions; no SageMath code or matrix data is copied.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 1.0,
+      "statement": "Hadamard matrices of every order 4k up to 664 are known (668 is the smallest open order), so all 25 orders up to 100 can be constructed. Order 92 was the last of them, found by Baumert, Golomb and Hall.",
+      "sources": [
+        {
+          "title": "A database of constructions of Hadamard matrices",
+          "url": "https://arxiv.org/abs/2411.18897",
+          "authors": "Matteo Cati, Dmitrii V. Pasechnik",
+          "year": 2024
+        },
+        {
+          "title": "Discovery of an Hadamard matrix of order 92",
+          "url": "https://doi.org/10.1090/s0002-9904-1962-10761-7",
+          "authors": "Leonard Baumert, S. W. Golomb, Marshall Hall",
+          "year": 1962
+        },
+        {
+          "title": "A Hadamard matrix of order 428",
+          "url": "https://doi.org/10.1002/jcd.20043",
+          "authors": "H. Kharaghani, B. Tayfeh-Rezaie",
+          "year": 2005
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "The seed independently implements the classical Sylvester doubling construction, credited in Cati and Pasechnik Section 4.2. No SageMath code or matrix database is reused.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000013"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-lonely-runner-rational-time",
+    "name": "Rational-time lonely-runner certificates",
+    "description": "construct() -> [p,q] of Python integers with 0<p<q<=1000000, representing time p/q. For relative speeds [1,3,4,7,11,18,29] from a stationary runner, maximize the minimum circular distance of (p/q)*v to an integer. Exact rational distances are retained in details; score is their floating serialization. One stationary runner and seven fixed relative integer speeds [1,3,4,7,11,18,29]; maximize the minimum distance at a rational time with denominator<=10^6. This lower-bound certificate does not optimize over all speed sets or prove a universal conjecture. The optimum is exactly 1/5, at t = 1/5; every breakpoint of the piecewise-linear objective has been checked, so this is a rediscovery task.",
+    "family": "science_prize_a_lonely_runner",
+    "parameters": {
+      "maximum_denominator": 1000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1912.06034",
+        "type": "paper",
+        "locator": "Noah Kravitz, Barely lonely runners and very lonely runners. Author abstract inspected: maximum loneliness is max_t min_i distance(t*v_i,Z); paper studies the associated spectrum."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000017",
+        "type": "benchmark",
+        "locator": "JSP-000017; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Solved finite case: For the speeds {1,3,4,7,11,18,29} the maximum over all times of the minimum distance is exactly 1/5, attained at t = 1/5 (no speed is a multiple of 5).",
+      "One stationary runner and seven fixed relative integer speeds [1,3,4,7,11,18,29]; maximize the minimum distance at a rational time with denominator<=10^6. This lower-bound certificate does not optimize over all speed sets or prove a universal conjecture.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 0.2,
+      "statement": "For the speeds {1,3,4,7,11,18,29} the maximum over all times of the minimum distance is exactly 1/5, attained at t = 1/5 (no speed is a multiple of 5). The objective is piecewise linear with breakpoints at denominators dividing v_i + v_j or 2v_i. Checking every denominator up to 116 (scripts/check_state_of_the_art.py) therefore proves optimality. The lonely runner conjecture predicts only 1/8 for seven speeds.",
+      "sources": [
+        {
+          "title": "Barely lonely runners and very lonely runners",
+          "url": "https://arxiv.org/abs/1912.06034",
+          "authors": "Noah Kravitz",
+          "year": 2021
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000017"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-distinct-three-unit-fractions-four-over-n",
+    "name": "Distinct three-term unit-fraction representations of 4/n",
+    "description": "construct() -> 254 rows for n=3..256. Each row is None or three DISTINCT positive integer denominators x,y,z<=1000000000000 with 1/x+1/y+1/z=4/n. Maximize fraction solved. Equality is checked by cross multiplication and malformed claims invalidate the candidate. Construct distinct positive denominators for n=3..256, with denominator bound10^12. The prize bank requires distinctness, which is stricter than the paper’s general solution definition; no universal proof or published computation is reproduced.",
+    "family": "science_prize_a_egyptian_four",
+    "parameters": {
+      "start": 3,
+      "count": 254,
+      "maximum": 1000000000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1107.1010",
+        "type": "paper",
+        "locator": "Christian Elsholtz and Terence Tao, Counting the number of solutions to the Erdos-Straus equation on unit fractions. Author abstract inspected: positive-integer solutions to 4/n=1/x+1/y+1/z and bounds on their counts. Published in Journal of the Australian Mathematical Society 94 (2013), 50–105."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000213",
+        "type": "benchmark",
+        "locator": "JSP-000213; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+      }
+    ],
+    "limitations": [
+      "Construct distinct positive denominators for n=3..256, with denominator bound10^12. The prize bank requires distinctness, which is stricter than the paper’s general solution definition; no universal proof or published computation is reproduced.",
+      "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 1.0,
+      "statement": "For every n from 3 to 256, 4/n is a sum of three distinct unit fractions with denominators far below 10^12 (found for every n by scripts/check_state_of_the_art.py), so the maximum fraction is 1. The general statement is Erdős Problem #242.",
+      "sources": [
+        {
+          "title": "Counting the number of solutions to the Erdős-Straus equation on unit fractions",
+          "url": "https://arxiv.org/abs/1107.1010",
+          "authors": "Christian Elsholtz, Terence Tao",
+          "year": 2013
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 242,
+        "url": "https://www.erdosproblems.com/242",
+        "status": "open (falsifiable)",
+        "citation": "T. F. Bloom, Erdős Problem #242, https://www.erdosproblems.com/242, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000213"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; fixed finite mathematical profiles."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_a.py",
+      "evidence": "validation/prize-expansion/a-checks.json",
+      "lean_verified": false
+    }
+  }
+]

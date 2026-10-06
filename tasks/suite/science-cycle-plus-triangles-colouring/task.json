@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "id": "science-cycle-plus-triangles-colouring",
+  "name": "3-colouring five fixed cycle-plus-triangles graphs",
+  "description": "construct() -> five colourings (one colour in {0, 1, 2} per vertex), one per instance from cycle_plus_triangles(n, seed) for n = 30, 60, 90, 150, 300 with seeds 401..405 in the verifier: the Hamiltonian cycle 0-1-...-(n-1)-0 plus a random partition into triangles avoiding cycle edges. The score is the number of properly coloured instances (0..5). Maximize; every instance is 3-colourable by the Fleischner-Stiebitz theorem. The score counts fixed instances coloured properly; it measures a constructive colouring method for graphs whose colourability is known only through an algebraic proof.",
+  "paper_ids": [
+    "science-prize_i"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/0012-365X(92)90588-7",
+      "type": "paper",
+      "locator": "Herbert Fleischner and Michael Stiebitz, A solution to a colouring problem of P. Erdős (1992). Crossref record inspected; Erdős Problem #842 page inspected (the cycle-plus-triangles problem, proved by Fleischner and Stiebitz via the Alon-Tarsi method). The score counts fixed instances coloured properly; it measures a constructive colouring method for graphs whose colourability is known only through an algebraic proof."
+    },
+    {
+      "url": "https://www.erdosproblems.com/842",
+      "type": "archive",
+      "locator": "Erdős Problem #842 (proved (Fleischner and Stiebitz)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000698",
+      "type": "benchmark",
+      "locator": "JSP-000698; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "3-colouring five fixed cycle-plus-triangles graphs",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_i_cycle_plus_triangles",
+    "science_family": "science_prize_i_cycle_plus_triangles",
+    "parameters": {},
+    "interface": "construct() -> five colourings (one colour in {0, 1, 2} per vertex), one per instance from cycle_plus_triangles(n, seed) for n = 30, 60, 90, 150, 300 with seeds 401..405 in the verifier: the Hamiltonian cycle 0-1-...-(n-1)-0 plus a random partition into triangles avoiding cycle edges. The score is the number of properly coloured instances (0..5). Maximize; every instance is 3-colourable by the Fleischner-Stiebitz theorem.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000698"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_i_cycle_plus_triangles",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Instance-solving task on five fixed pseudo-random instances.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_i.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "Instance-solving task; every instance is 3-colourable, so 5 is attainable.",
+    "sources": [
+      {
+        "title": "A solution to a colouring problem of P. Erdős",
+        "url": "https://doi.org/10.1016/0012-365X(92)90588-7",
+        "authors": "Herbert Fleischner, Michael Stiebitz",
+        "year": 1992
+      },
+      {
+        "title": "Erdős Problem #842",
+        "url": "https://www.erdosproblems.com/842"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 842,
+      "url": "https://www.erdosproblems.com/842",
+      "status": "proved (Fleischner and Stiebitz)",
+      "citation": "T. F. Bloom, Erdős Problem #842, https://www.erdosproblems.com/842, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Show that every cycle-plus-triangles graph is 3-colourable (Erdős Problem #842; proved non-constructively).",
+    "importance_rationale": "The Fleischner-Stiebitz proof is non-constructive, so efficient colouring procedures are of independent interest.",
+    "papers": [
+      {
+        "title": "A solution to a colouring problem of P. Erdős",
+        "url": "https://doi.org/10.1016/0012-365X(92)90588-7",
+        "task_relation": "The score counts fixed instances coloured properly; it measures a constructive colouring method for graphs whose colourability is known only through an algebraic proof.",
+        "primary_goal": "Show that every cycle-plus-triangles graph is 3-colourable (Erdős Problem #842; proved non-constructively).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #842 page inspected (the cycle-plus-triangles problem, proved by Fleischner and Stiebitz via the Alon-Tarsi method).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

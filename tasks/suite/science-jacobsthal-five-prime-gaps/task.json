@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "id": "science-jacobsthal-five-prime-gaps",
+  "name": "Long coprimality gaps for five-prime moduli",
+  "description": "construct() -> a squarefree integer n in [2,1000000] with exactly five distinct prime factors. Maximize the longest cyclic run of residues not coprime to n. This score equals j(n)-1, not j(n); every residue and the wraparound gap are checked. The bounded five-factor search recovers a known finite case; Table 1 gives H(5)=14, so the local run-length score has a known upper bound of 13.",
+  "paper_ids": [
+    "science-prize_d"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1090/S0025-5718-2012-02581-6",
+      "type": "paper",
+      "locator": "Lajos Hajdu and N. Saradha, Disproof of a conjecture of Jacobsthal (2012). Author-hosted full text, introduction and Theorem 1.2/Table 1 inspected. It defines H(r), proves H(5)=14, and distinguishes the longest bad run from j(n). The bounded five-factor search recovers a known finite case; Table 1 gives H(5)=14, so the local run-length score has a known upper bound of 13."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000804",
+      "type": "benchmark",
+      "locator": "JSP-000804; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Long coprimality gaps for five-prime moduli",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_d_jacobsthal",
+    "science_family": "science_prize_d_jacobsthal",
+    "parameters": {
+      "maximum": 1000000,
+      "prime_count": 5
+    },
+    "interface": "construct() -> a squarefree integer n in [2,1000000] with exactly five distinct prime factors. Maximize the longest cyclic run of residues not coprime to n. This score equals j(n)-1, not j(n); every residue and the wraparound gap are checked.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000804"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_d_jacobsthal",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "The five-prime case is already resolved: H(5)=14. Neither a record here nor failure to improve a seed is progress on an unrestricted quadratic bound.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_d.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 13,
+    "statement": "Hajdu and Saradha proved H(5) = 14. The longest run of residues not coprime to a squarefree n with five prime factors is therefore at most 13, and 2310 = 2·3·5·7·11 attains it.",
+    "sources": [
+      {
+        "title": "Disproof of a conjecture of Jacobsthal",
+        "url": "https://doi.org/10.1090/S0025-5718-2012-02581-6",
+        "authors": "Lajos Hajdu, N. Saradha",
+        "year": 2012
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 970,
+      "url": "https://www.erdosproblems.com/970",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #970, https://www.erdosproblems.com/970, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine extremal Jacobsthal values at fixed distinct-prime-factor counts.",
+    "importance_rationale": "Extremal gaps between reduced residues are directly studied in the cited number-theory paper; this small case is explicitly a rediscovery exercise.",
+    "papers": [
+      {
+        "title": "Disproof of a conjecture of Jacobsthal",
+        "url": "https://doi.org/10.1090/S0025-5718-2012-02581-6",
+        "task_relation": "The bounded five-factor search recovers a known finite case; Table 1 gives H(5)=14, so the local run-length score has a known upper bound of 13.",
+        "primary_goal": "Determine extremal Jacobsthal values at fixed distinct-prime-factor counts.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "Primary research directly studies this mathematical objective; finite scope and rediscovery status are explicit.",
+    "verification_basis": "Author-hosted full text, introduction and Theorem 1.2/Table 1 inspected. It defines H(r), proves H(5)=14, and distinguishes the longest bad run from j(n).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

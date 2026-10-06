@@ -66,11 +66,11 @@ def test_every_catalog_record_remains_visible_and_cpu_candidates_are_manifest_bo
     task_library.verify_task_library(root, source)
     files = task_library.load_task_manifest(source)["files"]
     rows = preflight.inventory(catalog["tasks"], root)
-    assert len(rows) == len(catalog["tasks"]) == 959
+    assert len(rows) == len(catalog["tasks"]) == 1163
     assert [row["task_id"] for row in rows] == [t["id"] for t in catalog["tasks"]]
     assert Counter(row["status"] for row in rows) == {
-        "seed_check_pending": 349, "environment_preparation_pending": 332,
-        "evaluation_integration_pending": 257, "runtime_integration_pending": 21}
+        "seed_check_pending": 552, "environment_preparation_pending": 336,
+        "evaluation_integration_pending": 254, "runtime_integration_pending": 21}
     assert all(row["status"] != "seed_verified" for row in rows)
     for row in rows:
         if row["status"] == "seed_check_pending":
@@ -78,12 +78,12 @@ def test_every_catalog_record_remains_visible_and_cpu_candidates_are_manifest_bo
             for filename in ("initial_program.py", "evaluator.py", "task.json"):
                 relative = f"suite/{row['task_id']}/{filename}"
                 assert hashlib.sha256((root / relative).read_bytes()).hexdigest() == files[relative]
-    for group, eligible, deferred in (("base", 278, 71), ("extended", 71, 278)):
+    for group, eligible, deferred in (("base", 481, 71), ("extended", 71, 481)):
         selected = preflight.inventory(catalog["tasks"], root, group)
-        assert len(selected) == 959
+        assert len(selected) == 1163
         assert Counter(row["status"] for row in selected) == {
             "seed_check_pending": eligible, "seed_check_deferred": deferred,
-            "environment_preparation_pending": 332, "evaluation_integration_pending": 257,
+            "environment_preparation_pending": 336, "evaluation_integration_pending": 254,
             "runtime_integration_pending": 21}
 
 
@@ -115,9 +115,9 @@ def test_default_inventory_never_evaluates_and_binds_the_verified_library(tmp_pa
     assert manifest["image"] == IMAGE
     assert manifest["task_source"]["kind"] == "bundled"
     assert manifest["finished_at"] >= manifest["created_at"]
-    assert sum(manifest["counts"].values()) == 959
+    assert sum(manifest["counts"].values()) == 1163
     assert manifest["group"] == "all"
-    assert manifest["counts"]["seed_check_pending"] == 349
+    assert manifest["counts"]["seed_check_pending"] == 552
     assert not list(output.glob("*/receipt.json"))
     assert (output / "manifest.json").stat().st_mode & 0o077 == 0
 

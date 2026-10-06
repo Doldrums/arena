@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "id": "science-distinct-totient-runs-1e12",
+  "name": "Long runs of consecutive integers with distinct totients (up to 10^12)",
+  "description": "construct() -> {'start': s, 'length': k} with s >= 1, 1 <= k <= 200 and s + k - 1 <= 10^12. The values phi(s), ..., phi(s + k - 1) must be pairwise distinct (exact factorization). Maximize k. Long runs below 10^12 are finite evidence; (log 10^12)^c is about 27.6^c.",
+  "paper_ids": [
+    "science-prize_i"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.2307/2046541",
+      "type": "paper",
+      "locator": "Paul Erdős, Carl Pomerance and András Sárközy, On Locally Repeated Values of Certain Arithmetic Functions. III (1987). Crossref record inspected; Erdős Problem #1004 page inspected (does some n <= x have phi(n+1), ..., phi(n+K) distinct for K = (log x)^c? Erdős, Pomerance and Sárközy proved K <= n/exp(c(log n)^(1/3))). No finite values are documented. Long runs below 10^12 are finite evidence; (log 10^12)^c is about 27.6^c."
+    },
+    {
+      "url": "https://www.erdosproblems.com/1004",
+      "type": "archive",
+      "locator": "Erdős Problem #1004 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000836",
+      "type": "benchmark",
+      "locator": "JSP-000836; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Long runs of consecutive integers with distinct totients (up to 10^12)",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_i_totient_run",
+    "science_family": "science_prize_i_totient_run",
+    "parameters": {
+      "bound": 1000000000000
+    },
+    "interface": "construct() -> {'start': s, 'length': k} with s >= 1, 1 <= k <= 200 and s + k - 1 <= 10^12. The values phi(s), ..., phi(s + k - 1) must be pairwise distinct (exact factorization). Maximize k.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000836"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_i_totient_run",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No documented value (reference label none).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_i.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented values.",
+    "sources": [
+      {
+        "title": "On Locally Repeated Values of Certain Arithmetic Functions. III",
+        "url": "https://doi.org/10.2307/2046541",
+        "authors": "P. Erdős, C. Pomerance, A. Sárközy",
+        "year": 1987
+      },
+      {
+        "title": "Erdős Problem #1004",
+        "url": "https://www.erdosproblems.com/1004"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1004,
+      "url": "https://www.erdosproblems.com/1004",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1004, https://www.erdosproblems.com/1004, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Decide whether runs of length (log x)^c with distinct totients exist below x (Erdős Problem #1004).",
+    "importance_rationale": "Local distinctness of phi mirrors the Erdős-Mirsky divisor problem (#945) and measures the irregularity of multiplicative functions.",
+    "papers": [
+      {
+        "title": "On Locally Repeated Values of Certain Arithmetic Functions. III",
+        "url": "https://doi.org/10.2307/2046541",
+        "task_relation": "Long runs below 10^12 are finite evidence; (log 10^12)^c is about 27.6^c.",
+        "primary_goal": "Decide whether runs of length (log x)^c with distinct totients exist below x (Erdős Problem #1004).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #1004 page inspected (does some n <= x have phi(n+1), ..., phi(n+K) distinct for K = (log x)^c? Erdős, Pomerance and Sárközy proved K <= n/exp(c(log n)^(1/3))). No finite values are documented.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

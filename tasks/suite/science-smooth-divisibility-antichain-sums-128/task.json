@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0",
+  "id": "science-smooth-divisibility-antichain-sums-128",
+  "name": "Divisibility-antichain representations by smooth numbers",
+  "description": "construct() -> 128 rows corresponding to targets 1..128. Every row must contain 1..30 distinct positive 2^a*3^b*5^c terms summing to its target; no chosen term may divide another. All targets require valid representations. Minimize the total number of summands over all targets, an explicit local refinement of finite d-completeness. Represent targets 1..128 by sums of distinct 2,3,5-smooth numbers forming a divisibility antichain. All targets require valid representations; minimizing the total term count is an explicit local efficiency refinement of finite d-completeness. The seed uses up to three terms and is not term-minimal.",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://www.sciencedirect.com/science/article/pii/S0022314X16000342",
+      "type": "paper",
+      "locator": "Mi-Mi Ma and Yong-Gao Chen, On d-complete sequences of integers. Publisher abstract inspected: divisibility-antichain sums and d-completeness. Journal of Number Theory 164 (2016), 1–12, DOI 10.1016/j.jnt.2015.12.003. Original d-complete terminology credited to Erdős and Mordechai Lewin, Mathematics of Computation 65 (1996), 837–840."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000130",
+      "type": "benchmark",
+      "locator": "JSP-000130; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; fixed finite mathematical profiles."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Divisibility-antichain representations by smooth numbers",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_a_antichain_representations",
+    "science_family": "science_prize_a_antichain_representations",
+    "parameters": {
+      "maximum_terms": 30
+    },
+    "interface": "construct() -> 128 rows corresponding to targets 1..128. Every row must contain 1..30 distinct positive 2^a*3^b*5^c terms summing to its target; no chosen term may divide another. All targets require valid representations. Minimize the total number of summands over all targets, an explicit local refinement of finite d-completeness.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000130"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_a_antichain_representations",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Represent targets 1..128 by sums of distinct 2,3,5-smooth numbers forming a divisibility antichain. All targets require valid representations; minimizing the total term count is an explicit local efficiency refinement of finite d-completeness. The seed uses up to three terms and is not term-minimal.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/a-checks.json",
+    "tests": "tests/test_science_prize_a.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 220,
+    "statement": "The minimum total is 220. Every target up to 128 needs at most three pairwise non-dividing 5-smooth summands, and an exhaustive search for each target (scripts/check_state_of_the_art.py) gives per-target minima that sum to 220. The d-completeness of such sequences was conjectured by Erdős and Lewin (Erdős Problem #123, now proved).",
+    "sources": [
+      {
+        "title": "On d-complete sequences of integers",
+        "url": "https://doi.org/10.1016/j.jnt.2015.12.003",
+        "authors": "Mi-Mi Ma, Yong-Gao Chen",
+        "year": 2016
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 123,
+      "url": "https://www.erdosproblems.com/123",
+      "status": "proved (Lean)",
+      "citation": "T. F. Bloom, Erdős Problem #123, https://www.erdosproblems.com/123, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Study sequences that represent integers using sums whose summands do not divide one another.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [],
+    "reviewed_at": "2026-09-22",
+    "reason": "The primary abstract confirms d-completeness but the precise 2,3,5 base restriction was not verified there. The local finite variant is independently checked; no importance claim is inferred from the broader definition.",
+    "verification_basis": "Publisher abstract inspected: divisibility-antichain sums and d-completeness. Journal of Number Theory 164 (2016), 1–12, DOI 10.1016/j.jnt.2015.12.003. Original d-complete terminology credited to Erdős and Mordechai Lewin, Mathematics of Computation 65 (1996), 837–840.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

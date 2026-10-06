@@ -1,0 +1,158 @@
+{
+  "schema_version": "1.0",
+  "id": "science-girth-five-extremal-45",
+  "name": "Graphs of girth at least five on 45 vertices with many edges",
+  "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..44 with no triangle and no four-cycle. Maximize the number of edges; the known optimum is 145. The exact value 145 for n = 45 is known; recovering it tests constructions of dense girth-5 graphs.",
+  "paper_ids": [
+    "science-prize_f"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1511.08128",
+      "type": "paper",
+      "locator": "Jörgen Backelin, Sizes of the extremal girth 5 graphs of orders from 40 to 49 (2015). arXiv record inspected; Afzaly-McKay extremal graph tables inspected: ex(45;{C3,C4}) = 145 with a unique extremal graph (exact values through n = 53). Erdős Problem #573 page inspected. The exact value 145 for n = 45 is known; recovering it tests constructions of dense girth-5 graphs."
+    },
+    {
+      "url": "https://www.erdosproblems.com/573",
+      "type": "archive",
+      "locator": "Erdős Problem #573 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000463",
+      "type": "benchmark",
+      "locator": "JSP-000463; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Graphs of girth at least five on 45 vertices with many edges",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_f_girth_five",
+    "science_family": "science_prize_f_girth_five",
+    "parameters": {
+      "n": 45,
+      "lengths": [
+        3,
+        4
+      ]
+    },
+    "interface": "construct() -> list of edges [u, v] of a simple graph on vertices 0..44 with no triangle and no four-cycle. Maximize the number of edges; the known optimum is 145.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000463"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_f_girth_five",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case (value and extremal graph are published).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_f.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 145,
+    "statement": "ex(45;{C3,C4}) = 145 (Backelin 2015; Afzaly and McKay tables, unique extremal graph).",
+    "sources": [
+      {
+        "title": "Sizes of the extremal girth 5 graphs of orders from 40 to 49",
+        "url": "https://arxiv.org/abs/1511.08128",
+        "authors": "Jörgen Backelin",
+        "year": 2015
+      },
+      {
+        "title": "Extremal Graphs and Turán numbers (data by Narjess Afzaly and Brendan McKay)",
+        "url": "https://users.cecs.anu.edu.au/~bdm/data/extremal.html",
+        "authors": "Narjess Afzaly, Brendan D. McKay"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 573,
+      "url": "https://www.erdosproblems.com/573",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #573, https://www.erdosproblems.com/573, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the maximum number of edges in graphs of girth at least five.",
+    "importance_rationale": "Erdős and Simonovits asked whether ex(n;{C3,C4}) ~ (n/2)^(3/2) (Erdős Problem #573); exact values are the finite data for this question.",
+    "papers": [
+      {
+        "title": "Sizes of the extremal girth 5 graphs of orders from 40 to 49",
+        "url": "https://arxiv.org/abs/1511.08128",
+        "task_relation": "The exact value 145 for n = 45 is known; recovering it tests constructions of dense girth-5 graphs.",
+        "primary_goal": "Determine the maximum number of edges in graphs of girth at least five.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "arXiv record inspected; Afzaly-McKay extremal graph tables inspected: ex(45;{C3,C4}) = 145 with a unique extremal graph (exact values through n = 53). Erdős Problem #573 page inspected.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

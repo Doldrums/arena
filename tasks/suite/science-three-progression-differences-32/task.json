@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0",
+  "id": "science-three-progression-differences-32",
+  "name": "Thirty-two integers with many distinct 3-term progression differences",
+  "description": "construct() -> exactly 32 distinct integers in 1..512. The score is the number of distinct d > 0 such that a, a + d, a + 2d all lie in the set for some a. Maximize. A 32-element set with many progression differences is a finite construction for this extremal function.",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1090/S0002-9939-2015-12603-2",
+      "type": "paper",
+      "locator": "Marius Lemm, New counterexamples for sums-differences (2015). Crossref records inspected (Lemm 2015; Katz and Tao 1999). Erdős Problem #1097 page inspected: the question is equivalent to Bourgain's sums-differences problem; the optimal exponent lies in [1.77898..., 11/6] (Lemm, with a small improvement by AlphaEvolve; Katz and Tao), so the O(n^(3/2)) guess is false. No finite values are documented. A 32-element set with many progression differences is a finite construction for this extremal function."
+    },
+    {
+      "url": "https://www.erdosproblems.com/1097",
+      "type": "archive",
+      "locator": "Erdős Problem #1097 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000911",
+      "type": "benchmark",
+      "locator": "JSP-000911; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Thirty-two integers with many distinct 3-term progression differences",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_h_ap_differences",
+    "science_family": "science_prize_h_ap_differences",
+    "parameters": {
+      "size": 32,
+      "bound": 512
+    },
+    "interface": "construct() -> exactly 32 distinct integers in 1..512. The score is the number of distinct d > 0 such that a, a + d, a + 2d all lie in the set for some a. Maximize.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000911"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_h_ap_differences",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No documented value (reference label none).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_h.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented values for n = 32; asymptotically the exponent lies in [1.77898, 11/6].",
+    "sources": [
+      {
+        "title": "New counterexamples for sums-differences",
+        "url": "https://doi.org/10.1090/S0002-9939-2015-12603-2",
+        "authors": "Marius Lemm",
+        "year": 2015
+      },
+      {
+        "title": "Bounds on arithmetic projections, and applications to the Kakeya conjecture",
+        "url": "https://doi.org/10.4310/MRL.1999.v6.n6.a3",
+        "authors": "Nets Hawk Katz, Terence Tao",
+        "year": 1999
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1097,
+      "url": "https://www.erdosproblems.com/1097",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1097, https://www.erdosproblems.com/1097, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how many distinct common differences 3-term progressions in an n-element set can have (Erdős Problem #1097).",
+    "importance_rationale": "Through Bourgain's arithmetic formulation the problem bears on the Kakeya conjecture.",
+    "papers": [
+      {
+        "title": "New counterexamples for sums-differences",
+        "url": "https://doi.org/10.1090/S0002-9939-2015-12603-2",
+        "task_relation": "A 32-element set with many progression differences is a finite construction for this extremal function.",
+        "primary_goal": "Determine how many distinct common differences 3-term progressions in an n-element set can have (Erdős Problem #1097).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref records inspected (Lemm 2015; Katz and Tao 1999). Erdős Problem #1097 page inspected: the question is equivalent to Bourgain's sums-differences problem; the optimal exponent lies in [1.77898..., 11/6] (Lemm, with a small improvement by AlphaEvolve; Katz and Tao), so the O(n^(3/2)) guess is false. No finite values are documented.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

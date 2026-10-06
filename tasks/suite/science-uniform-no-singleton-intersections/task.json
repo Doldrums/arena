@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "id": "science-uniform-no-singleton-intersections",
+  "name": "Large uniform families without singleton intersections",
+  "description": "construct() -> 1..1000 distinct four-element subsets of 0..15. No two members may intersect in exactly one element. Maximize the number of members. The local parameters are n=16 and k=4. The optimum is binomial(14,2) = 91 (Keevash, Mubayi and Wilson determined the maximum for k = 4 and every n >= 9), so this is a rediscovery task.",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1017/S0004972700025521",
+      "type": "paper",
+      "locator": "Peter Frankl, On families of finite sets no two of which intersect in a singleton (1977). Publisher abstract: k-uniform families with no singleton intersection and the Erdős–Sós extremal conjecture for k>=4 and sufficiently large n."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000572",
+      "type": "benchmark",
+      "locator": "JSP-000572; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloads. Fixed input arrays are fully recorded in parameters; arithmetic/combinatorial validation uses the Python standard library."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Large uniform families without singleton intersections",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_c_572",
+    "science_family": "science_prize_c_572",
+    "parameters": {
+      "n": 16,
+      "r": 4
+    },
+    "interface": "construct() -> 1..1000 distinct four-element subsets of 0..15. No two members may intersect in exactly one element. Maximize the number of members.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value",
+      "area": "mathematics"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no published candidate or source implementation copied.",
+      "prize_problem_id": "JSP-000572",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_c_572",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case: Keevash, Mubayi and Wilson determined the maximum for 4-uniform families and every n.",
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "The local parameters are n=16 and k=4. The optimum is binomial(14,2) = 91 (Keevash, Mubayi and Wilson determined the maximum for k = 4 and every n >= 9), so this is a rediscovery task.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/c-checks.json",
+    "tests": "tests/test_science_prize_c.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 91,
+    "statement": "Keevash, Mubayi and Wilson determined the maximum for 4-uniform families and every n. For n >= 9 it is binomial(n-2, 2), attained only by all 4-sets through two fixed points, so the maximum for n = 16 is 91. Frankl proved the bound binomial(n-2, k-2) for all k >= 4 and large n (Erdős Problem #702).",
+    "sources": [
+      {
+        "title": "Set Systems with No Singleton Intersection",
+        "url": "https://doi.org/10.1137/050647372",
+        "authors": "Peter Keevash, Dhruv Mubayi, Richard M. Wilson",
+        "year": 2006
+      },
+      {
+        "title": "On families of finite sets no two of which intersect in a singleton",
+        "url": "https://doi.org/10.1017/S0004972700025521",
+        "authors": "Peter Frankl",
+        "year": 1977
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 702,
+      "url": "https://www.erdosproblems.com/702",
+      "status": "proved",
+      "citation": "T. F. Bloom, Erdős Problem #702, https://www.erdosproblems.com/702, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine extremal sizes of uniform families with a forbidden intersection size.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Peter Frankl, On families of finite sets no two of which intersect in a singleton (1977)",
+        "url": "https://doi.org/10.1017/S0004972700025521",
+        "primary_goal": "Determine extremal sizes of uniform families with a forbidden intersection size.",
+        "task_relation": "The local parameters are n=16 and k=4. The optimum is binomial(14,2) = 91 (Keevash, Mubayi and Wilson determined the maximum for k = 4 and every n >= 9), so this is a rediscovery task.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Publisher abstract: k-uniform families with no singleton intersection and the Erdős–Sós extremal conjecture for k>=4 and sufficiently large n.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

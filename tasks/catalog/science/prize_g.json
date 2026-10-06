@@ -1,0 +1,833 @@
+[
+  {
+    "id": "science-integral-point-sets-general-position",
+    "name": "Integral point sets in general position (no three collinear, no four concyclic)",
+    "description": "construct() -> {'D': D, 'points': [[[x_num, x_den], [y_num, y_den]], ...]} describing 3 to 12 distinct points (x, y*sqrt(D)) with rational x, y (|numerators|, denominators <= 10^40) and squarefree D <= 10^12. All pairwise distances must be rational (equivalently integral after scaling), no three points collinear and no four concyclic, all checked with exact rational arithmetic. Maximize the number of points. A valid set certifies such configurations of that size; 8 points would be new.",
+    "family": "science_prize_g_integral_points",
+    "parameters": {
+      "max_points": 12,
+      "bound": 10000000000000000000000000000000000000000
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/s00454-007-9038-6",
+        "type": "paper",
+        "locator": "Tobias Kreisel and Sascha Kurz, There Are Integral Heptagons, no Three Points on a Line, no Four on a Circle (2008). Crossref record inspected; Erdős Problem #213 page inspected: Anning and Erdős excluded infinite sets, Harborth found 5 points, Kreisel and Kurz 7 points (the best construction), and 8 points remain open. Every planar integral point set has a characteristic D putting its points at (a, b*sqrt(D)) after a similarity (Kemnitz), so the representation is general. A valid set certifies such configurations of that size; 8 points would be new."
+      },
+      {
+        "url": "https://www.erdosproblems.com/213",
+        "type": "archive",
+        "locator": "Erdős Problem #213 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000197",
+        "type": "benchmark",
+        "locator": "JSP-000197; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The five-point starter was found by a small local search and is not a published construction. Very large coordinates are allowed but slow the exact checks.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 7,
+      "statement": "The largest known integral point set in general position has 7 points (Kreisel and Kurz 2008); none with 8 points is known.",
+      "sources": [
+        {
+          "title": "There Are Integral Heptagons, no Three Points on a Line, no Four on a Circle",
+          "url": "https://doi.org/10.1007/s00454-007-9038-6",
+          "authors": "Tobias Kreisel, Sascha Kurz",
+          "year": 2008
+        },
+        {
+          "title": "Erdős Problem #213",
+          "url": "https://www.erdosproblems.com/213"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 213,
+        "url": "https://www.erdosproblems.com/213",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #213, https://www.erdosproblems.com/213, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000197"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_g.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-point-sets-without-empty-hexagon",
+    "name": "Point sets without an empty convex hexagon (rediscovering 29 points)",
+    "description": "construct() -> list of 1..30 distinct integer points [x, y] with |x|, |y| <= 10^6 and no three collinear. No six points may form a convex hexagon with no other point inside (exact search over all convex chains anchored at their lowest vertex). Maximize the number of points; the optimum is 29. Overmars found 29-point sets without empty hexagons and Heule and Scheucher proved every 30-point set has one, so 29 is optimal.",
+    "family": "science_prize_g_empty_hexagon",
+    "parameters": {
+      "max_points": 30,
+      "bound": 1000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/978-3-031-57246-3_5",
+        "type": "paper",
+        "locator": "Marijn J. H. Heule and Manfred Scheucher, Happy Ending: An Empty Hexagon in Every Set of 30 Points (2024). Crossref records inspected for Heule-Scheucher (TACAS 2024) and Overmars (Discrete Comput. Geom. 2003); Erdős Problem #216 page inspected: g(5) = 10 (Harborth), empty hexagons exist in large sets (Nicolás; Gerken), g(6) = 30 (Heule and Scheucher), and no g(k) for k >= 7 (Horton). Overmars found 29-point sets without empty hexagons and Heule and Scheucher proved every 30-point set has one, so 29 is optimal."
+      },
+      {
+        "url": "https://www.erdosproblems.com/216",
+        "type": "archive",
+        "locator": "Erdős Problem #216 (disproved (no g(k) for k >= 7); g(6) = 30); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000198",
+        "type": "benchmark",
+        "locator": "JSP-000198; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; Overmars' 29-point sets are published and not copied. The randomized starter has 14 points.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 29,
+      "statement": "The maximum is 29: Overmars (2003) found 29 points without an empty hexagon and Heule and Scheucher (2024) proved g(6) = 30.",
+      "sources": [
+        {
+          "title": "Happy Ending: An Empty Hexagon in Every Set of 30 Points",
+          "url": "https://doi.org/10.1007/978-3-031-57246-3_5",
+          "authors": "Marijn J. H. Heule, Manfred Scheucher",
+          "year": 2024
+        },
+        {
+          "title": "Finding Sets of Points without Empty Convex 6-Gons",
+          "url": "https://doi.org/10.1007/s00454-002-2829-x",
+          "authors": "Mark Overmars",
+          "year": 2003
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 216,
+        "url": "https://www.erdosproblems.com/216",
+        "status": "disproved (no g(k) for k >= 7); g(6) = 30",
+        "citation": "T. F. Bloom, Erdős Problem #216, https://www.erdosproblems.com/216, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000198"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_g.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-orchard-twelve-rational-points",
+    "name": "Twelve rational points with many three-point lines (orchard problem)",
+    "description": "construct() -> exactly 12 distinct integer points [x, y] with |x|, |y| <= 10^30 (any rational configuration can be scaled to integers). Maximize the number of lines containing exactly three of the points, computed exactly; the optimum is 19. The real maximum for 12 points is 19, and the group law on a rational cubic with 12-torsion realizes it with rational points, so the rational optimum is also 19.",
+    "family": "science_prize_g_orchard",
+    "parameters": {
+      "n": 12,
+      "points_per_line": 3,
+      "bound": 1000000000000000000000000000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/s00454-013-9518-9",
+        "type": "paper",
+        "locator": "Ben Green and Terence Tao, On Sets Defining Few Ordinary Lines (2013). Crossref records inspected (Green-Tao 2013; Burr-Grünbaum-Sloane 1974); OEIS A003035 inspected: maximal numbers of 3-point lines for n <= 14 with a(12) = 19, a(15) in {31, 32}; Erdős Problem #669 page inspected. A local test builds 12 rational torsion points of an elliptic curve with a 12-torsion point, which realize 19 lines. The real maximum for 12 points is 19, and the group law on a rational cubic with 12-torsion realizes it with rational points, so the rational optimum is also 19."
+      },
+      {
+        "url": "https://www.erdosproblems.com/669",
+        "type": "archive",
+        "locator": "Erdős Problem #669 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000543",
+        "type": "benchmark",
+        "locator": "JSP-000543; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; exact rational coordinates can be very large.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 19,
+      "statement": "The orchard number for 12 points is 19 (OEIS A003035, Burr-Grünbaum-Sloane); attained by rational torsion points of a cubic curve.",
+      "sources": [
+        {
+          "title": "OEIS A003035",
+          "url": "https://oeis.org/A003035"
+        },
+        {
+          "title": "The orchard problem",
+          "url": "https://doi.org/10.1007/bf00147569",
+          "authors": "Stefan A. Burr, Branko Grünbaum, N. J. A. Sloane",
+          "year": 1974
+        },
+        {
+          "title": "On Sets Defining Few Ordinary Lines",
+          "url": "https://doi.org/10.1007/s00454-013-9518-9",
+          "authors": "Ben Green, Terence Tao",
+          "year": 2013
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 669,
+        "url": "https://www.erdosproblems.com/669",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #669, https://www.erdosproblems.com/669, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000543"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_g.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-penny-graph-contacts-32",
+    "name": "Contact numbers of 32 unit pennies on the triangular lattice",
+    "description": "construct() -> exactly 32 distinct integer pairs [a, b] with |a|, |b| <= 64 denoting lattice points a + b*omega, omega = exp(i*pi/3), which are at mutual distance at least one. Maximize the number of pairs at distance exactly one; Harborth's theorem gives the optimum floor(3n - sqrt(12n - 3)) = 76. Harborth's formula gives 76 for n = 32 and triangular-lattice spirals attain it, so the lattice restriction loses nothing.",
+    "family": "science_prize_g_penny",
+    "parameters": {
+      "n": 32,
+      "bound": 64
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/978-3-662-57413-3_2",
+        "type": "paper",
+        "locator": "Károly Bezdek and Muhammad A. Khan, Contact Numbers for Sphere Packings (2018). Crossref record inspected; Erdős Problem #1084 page inspected: Harborth (1974) proved f_2(n) = floor(3n - sqrt(12n - 3)) for points at mutual distance at least one, attained by triangular-lattice spirals. Harborth's formula gives 76 for n = 32 and triangular-lattice spirals attain it, so the lattice restriction loses nothing."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1084",
+        "type": "archive",
+        "locator": "Erdős Problem #1084 (open (solved in the plane by Harborth)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000901",
+        "type": "benchmark",
+        "locator": "JSP-000901; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; candidates are restricted to the triangular lattice, which contains optimal configurations.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 76,
+      "statement": "Harborth (1974): the maximum number of unit distances among n points at mutual distance >= 1 is floor(3n - sqrt(12n - 3)) = 76 for n = 32.",
+      "sources": [
+        {
+          "title": "Erdős Problem #1084",
+          "url": "https://www.erdosproblems.com/1084"
+        },
+        {
+          "title": "Contact Numbers for Sphere Packings",
+          "url": "https://doi.org/10.1007/978-3-662-57413-3_2",
+          "authors": "Károly Bezdek, Muhammad A. Khan",
+          "year": 2018
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1084,
+        "url": "https://www.erdosproblems.com/1084",
+        "status": "open (solved in the plane by Harborth)",
+        "citation": "T. F. Bloom, Erdős Problem #1084, https://www.erdosproblems.com/1084, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000901"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_g.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-distance-product-fixed-diameter-8",
+    "name": "Eight planar points maximizing the product of distances at fixed diameter",
+    "description": "construct() -> 8 distinct points [x, y] (floats, |coordinate| < 10^6). The score is Delta/n^n, where Delta is the product over ordered pairs of distances after scaling the set to diameter 2; the regular octagon scores exactly 1. Maximize. Scores above 1 beat the regular octagon; the paper's constructions show this is possible, but no value for n = 8 is recorded here.",
+    "family": "science_prize_g_distance_product",
+    "parameters": {
+      "n": 8
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2603.07088",
+        "type": "paper",
+        "locator": "Stijn Cambie, Aron Decadt, Yanting Dong, Tianchi Hu and Quanyu Tang, On the maximum product of distances of diameter 2 point sets (2026). arXiv abstract inspected (extremal sets are convex polygons; constructions drastically improve on regular n-gons for even n); Erdős Problem #1045 page inspected: the regular polygon gives Delta = n^n for even n and is not optimal for even n >= 4 (Hu and Tang; Cambie), and liminf max Delta/n^n >= 1.268 for even n. Scores above 1 beat the regular octagon; the paper's constructions show this is possible, but no value for n = 8 is recorded here."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1045",
+        "type": "archive",
+        "locator": "Erdős Problem #1045 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000867",
+        "type": "benchmark",
+        "locator": "JSP-000867; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Floating-point score (relative accuracy about 1e-12). No documented value for n = 8 (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented optimum for n = 8; regular octagon = 1 and improvements exist for all even n >= 4 (Hu-Tang; Cambie; Cambie, Decadt, Dong, Hu and Tang 2026).",
+      "sources": [
+        {
+          "title": "On the maximum product of distances of diameter 2 point sets",
+          "url": "https://arxiv.org/abs/2603.07088",
+          "authors": "S. Cambie, A. Decadt, Y. Dong, T. Hu, Q. Tang",
+          "year": 2026
+        },
+        {
+          "title": "Erdős Problem #1045",
+          "url": "https://www.erdosproblems.com/1045"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1045,
+        "url": "https://www.erdosproblems.com/1045",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1045, https://www.erdosproblems.com/1045, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000867"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_g.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-ordinary-lines-twelve-rational-points",
+    "name": "Twelve rational points with few ordinary lines",
+    "description": "construct() -> exactly 12 distinct integer points [x, y] with |x|, |y| <= 10^9, not all collinear. Minimize the number of lines containing exactly two of the points (exact). Over the reals the minimum for 12 points is 6; whether integer (rational) coordinates reach 6 is not documented, so scores are compared with that lower bound.",
+    "family": "science_prize_g_ordinary_lines",
+    "parameters": {
+      "n": 12,
+      "bound": 1000000000
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/s00454-013-9518-9",
+        "type": "paper",
+        "locator": "Ben Green and Terence Tao, On Sets Defining Few Ordinary Lines (2013). Crossref record inspected; OEIS A003034 inspected: the minimal number of ordinary lines of n real points is 6 for n = 12; Erdős Problem #210 page inspected (proved; Green and Tao determine the minimum for large n). Over the reals the minimum for 12 points is 6; whether integer (rational) coordinates reach 6 is not documented, so scores are compared with that lower bound."
+      },
+      {
+        "url": "https://www.erdosproblems.com/210",
+        "type": "archive",
+        "locator": "Erdős Problem #210 (proved); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000194",
+        "type": "benchmark",
+        "locator": "JSP-000194; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented rational minimum (reference label none); the real minimum 6 is a lower bound.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented minimum for rational points; over the reals 12 points have at least 6 ordinary lines and 6 is attained (OEIS A003034).",
+      "sources": [
+        {
+          "title": "OEIS A003034",
+          "url": "https://oeis.org/A003034"
+        },
+        {
+          "title": "On Sets Defining Few Ordinary Lines",
+          "url": "https://doi.org/10.1007/s00454-013-9518-9",
+          "authors": "Ben Green, Terence Tao",
+          "year": 2013
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 210,
+        "url": "https://www.erdosproblems.com/210",
+        "status": "proved",
+        "citation": "T. F. Bloom, Erdős Problem #210, https://www.erdosproblems.com/210, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000194"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_g.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-no-four-collinear-general-position-20",
+    "name": "Twenty points with no four collinear and small general-position subsets",
+    "description": "construct() -> exactly 20 distinct integer points [x, y] with |x|, |y| <= 100 and no four collinear. The score is the largest subset with no three collinear (exact branch and bound). Minimize. A valid configuration with score s certifies g(20) <= s; no exact value for n = 20 is documented.",
+    "family": "science_prize_g_general_position",
+    "parameters": {
+      "n": 20,
+      "bound": 100
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.19086/da.4438",
+        "type": "paper",
+        "locator": "József Balogh and József Solymosi, On the number of points in general position in the plane (2018). Crossref record inspected; Erdős Problem #589 page inspected: n^(1/2) log n << g(n) = o(n) (Füredi) and g(n) << n^(5/6+o(1)) (Balogh and Solymosi). A valid configuration with score s certifies g(20) <= s; no exact value for n = 20 is documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/589",
+        "type": "archive",
+        "locator": "Erdős Problem #589 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000478",
+        "type": "benchmark",
+        "locator": "JSP-000478; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value for n = 20 (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value for n = 20; asymptotically n^(1/2) log n << g(n) << n^(5/6+o(1)).",
+      "sources": [
+        {
+          "title": "On the number of points in general position in the plane",
+          "url": "https://doi.org/10.19086/da.4438",
+          "authors": "József Balogh, József Solymosi",
+          "year": 2018
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 589,
+        "url": "https://www.erdosproblems.com/589",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #589, https://www.erdosproblems.com/589, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000478"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_g.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-chowla-cosine-sixteen-frequencies",
+    "name": "Sixteen frequencies whose cosine sum stays shallow (Chowla's cosine problem)",
+    "description": "construct() -> 16 distinct integers in 1..200. The score is min over theta of sum cos(a*theta), divided by sqrt(16), computed by dense sampling of the full circle and golden-section refinement of the deepest local minima (accuracy about 1e-9). Maximize (make the minimum as shallow as possible). Shallow minima for 16 frequencies probe the finite side of Chowla's problem; no finite optimum is documented.",
+    "family": "science_prize_g_chowla",
+    "parameters": {
+      "k": 16,
+      "maximum": 200
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.4064/aa111-2-6",
+        "type": "paper",
+        "locator": "Imre Z. Ruzsa, Negative values of cosine sums (2004). Crossref record inspected; Erdős Problem #510 page inspected: every N-element set has theta with sum cos(n theta) < -c N^(1/7) (Bedert 2025; Jin, Milojević, Tomon and Zhang independently polynomial), while A = B - B for Sidon B shows N^(1/2) would be best possible. Shallow minima for 16 frequencies probe the finite side of Chowla's problem; no finite optimum is documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/510",
+        "type": "archive",
+        "locator": "Erdős Problem #510 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000409",
+        "type": "benchmark",
+        "locator": "JSP-000409; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Floating-point score with sampling refinement; no documented finite value (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented optimum for 16 frequencies; every set has minimum below -c N^(1/7) (Bedert 2025) and N^(1/2) is the conjectured order.",
+      "sources": [
+        {
+          "title": "Negative values of cosine sums",
+          "url": "https://doi.org/10.4064/aa111-2-6",
+          "authors": "Imre Z. Ruzsa",
+          "year": 2004
+        },
+        {
+          "title": "Polynomial bounds for the Chowla Cosine Problem",
+          "url": "https://arxiv.org/abs/2509.05260",
+          "authors": "B. Bedert",
+          "year": 2025
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 510,
+        "url": "https://www.erdosproblems.com/510",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #510, https://www.erdosproblems.com/510, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000409"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_g.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-flat-littlewood-polynomials-24",
+    "name": "Flattest plus-minus-one polynomials with 24 coefficients (minimum sup norm)",
+    "description": "construct() -> 24 coefficients in {+1, -1} of P(z) = sum c_k z^k. The score is max over |z| = 1 of |P(z)| divided by sqrt(24), computed by dense sampling and golden-section refinement of the highest peaks (accuracy about 1e-9). Minimize; the exhaustive optimum is 1.2583758. The exact minimum for 24 coefficients (degree 23) is recovered; Odlyzko's online tables list the optimal polynomials.",
+    "family": "science_prize_g_littlewood",
+    "parameters": {
+      "n": 24
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1017/9781316650295.004",
+        "type": "paper",
+        "locator": "Andrew Odlyzko, Search for Ultraflat Polynomials with Plus and Minus One Coefficients (2018). Author's paper (revised 2017) inspected: exhaustive searches over all +-1 polynomials of degree n <= 52 determine M_n = min max|F|/sqrt(n+1), with M_n appearing to converge to about 1.27. Erdős Problem #1150 page inspected. The value for 24 coefficients was recomputed locally by a certified exhaustive search (grid bound grid <= max <= grid/cos(pi*23/1024)). The exact minimum for 24 coefficients (degree 23) is recovered; Odlyzko's online tables list the optimal polynomials."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1150",
+        "type": "archive",
+        "locator": "Erdős Problem #1150 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000955",
+        "type": "benchmark",
+        "locator": "JSP-000955; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case by exhaustive search. The reference value 1.2583758 was recomputed locally because Odlyzko's online tables were not retrievable during review.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 1.2583758,
+      "statement": "Exhaustive search (Odlyzko 2018 for all degrees <= 52; recomputed here with a certified grid bound) gives min max|P|/sqrt(24) = 1.2583758 for 24 coefficients.",
+      "sources": [
+        {
+          "title": "Search for Ultraflat Polynomials with Plus and Minus One Coefficients",
+          "url": "https://doi.org/10.1017/9781316650295.004",
+          "authors": "Andrew Odlyzko",
+          "year": 2018
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1150,
+        "url": "https://www.erdosproblems.com/1150",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1150, https://www.erdosproblems.com/1150, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000955"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_g.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-four-point-lines-sixteen-integer-points",
+    "name": "Sixteen integer points with many four-point lines and no five collinear",
+    "description": "construct() -> exactly 16 distinct integer points [x, y] with |x|, |y| <= 1000 and no five collinear. Maximize the number of lines containing exactly four of the points (exact). Integer configurations are a restriction of the real problem; the real value 15 for n = 16 is an upper reference, not a documented integer optimum.",
+    "family": "science_prize_g_four_point_lines",
+    "parameters": {
+      "n": 16,
+      "bound": 1000
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/s00454-013-9526-9",
+        "type": "paper",
+        "locator": "József Solymosi and Miloš Stojaković, Many Collinear k-Tuples with no k+1 Collinear Points (2013). Crossref record inspected; Erdős Problem #101 ($100) page inspected: sets with no five on a line can have n^(2-O(1/sqrt(log n))) four-point lines (Solymosi and Stojaković). OEIS A006065 lists maximal numbers of 4-point lines for real configurations (15 for n = 16). Integer configurations are a restriction of the real problem; the real value 15 for n = 16 is an upper reference, not a documented integer optimum."
+      },
+      {
+        "url": "https://www.erdosproblems.com/101",
+        "type": "archive",
+        "locator": "Erdős Problem #101 (open ($100)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000114",
+        "type": "benchmark",
+        "locator": "JSP-000114; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented integer optimum (reference label none); OEIS A006065 gives real-plane values.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value for integer points; for real configurations OEIS A006065 lists 15 four-point lines for 16 points.",
+      "sources": [
+        {
+          "title": "OEIS A006065",
+          "url": "https://oeis.org/A006065"
+        },
+        {
+          "title": "Many Collinear k-Tuples with no k+1 Collinear Points",
+          "url": "https://doi.org/10.1007/s00454-013-9526-9",
+          "authors": "József Solymosi, Miloš Stojaković",
+          "year": 2013
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 101,
+        "url": "https://www.erdosproblems.com/101",
+        "status": "open ($100)",
+        "citation": "T. F. Bloom, Erdős Problem #101, https://www.erdosproblems.com/101, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000114"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_g.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  }
+]

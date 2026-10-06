@@ -1,0 +1,234 @@
+{
+  "schema_version": "1.0",
+  "id": "science-triangle-free-diameter-augmentation",
+  "name": "Triangle-free diameter-four augmentation",
+  "description": "construct() -> list of added undirected edges [u,v] on vertices 0..23. Existing edges and duplicate edges are forbidden. The union with the pinned path must remain triangle-free, connected and have diameter at most four. Minimize the number of added edges. The host is a locally chosen 24-vertex path. Its h_4 upper bounds do not establish the maximum over all triangle-free hosts or the paper’s asymptotic claims.",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://users.renyi.hu/~gyarfas/Cikkek/90_howtodecrease.pdf",
+      "type": "paper",
+      "locator": "Paul Erdős, András Gyárfás and Miklós Ruszinkó, How to decrease the diameter of triangle-free graphs (1998). Abstract and introduction: h_d(G) is the minimum number of added edges preserving triangle-freeness and reducing diameter to d; d=4 is explicitly discussed."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000501",
+      "type": "benchmark",
+      "locator": "JSP-000501; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloads. Fixed input arrays are fully recorded in parameters; arithmetic/combinatorial validation uses the Python standard library."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Triangle-free diameter-four augmentation",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_c_501",
+    "science_family": "science_prize_c_501",
+    "parameters": {
+      "n": 24,
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          8
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          9,
+          10
+        ],
+        [
+          10,
+          11
+        ],
+        [
+          11,
+          12
+        ],
+        [
+          12,
+          13
+        ],
+        [
+          13,
+          14
+        ],
+        [
+          14,
+          15
+        ],
+        [
+          15,
+          16
+        ],
+        [
+          16,
+          17
+        ],
+        [
+          17,
+          18
+        ],
+        [
+          18,
+          19
+        ],
+        [
+          19,
+          20
+        ],
+        [
+          20,
+          21
+        ],
+        [
+          21,
+          22
+        ],
+        [
+          22,
+          23
+        ]
+      ],
+      "diameter": 4
+    },
+    "interface": "construct() -> list of added undirected edges [u,v] on vertices 0..23. Existing edges and duplicate edges are forbidden. The union with the pinned path must remain triangle-free, connected and have diameter at most four. Minimize the number of added edges.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no published candidate or source implementation copied.",
+      "prize_problem_id": "JSP-000501",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_c_501",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "The host is a locally chosen 24-vertex path. Its h_4 upper bounds do not establish the maximum over all triangle-free hosts or the paper’s asymptotic claims.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/c-checks.json",
+    "tests": "tests/test_science_prize_c.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős, András Gyárfás and Miklós Ruszinkó (1998, How to decrease the diameter of triangle-free graphs) study the underlying problem.",
+    "sources": [
+      {
+        "title": "How to decrease the diameter of triangle-free graphs",
+        "url": "https://users.renyi.hu/~gyarfas/Cikkek/90_howtodecrease.pdf",
+        "authors": "Paul Erdős, András Gyárfás and Miklós Ruszinkó",
+        "year": 1998
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how few new edges can reduce distances while preserving triangle-freeness.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Paul Erdős, András Gyárfás and Miklós Ruszinkó, How to decrease the diameter of triangle-free graphs (1998)",
+        "url": "https://users.renyi.hu/~gyarfas/Cikkek/90_howtodecrease.pdf",
+        "primary_goal": "Determine how few new edges can reduce distances while preserving triangle-freeness.",
+        "task_relation": "The host is a locally chosen 24-vertex path. Its h_4 upper bounds do not establish the maximum over all triangle-free hosts or the paper’s asymptotic claims.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Abstract and introduction: h_d(G) is the minimum number of added edges preserving triangle-freeness and reducing diameter to d; d=4 is explicitly discussed.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

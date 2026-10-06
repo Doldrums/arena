@@ -1,0 +1,115 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_e_ramsey_4_6",
+  "direction": "maximize",
+  "contract": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 40. It must contain no K4 and no independent set of 6 vertices, checked exactly. Maximize n.",
+  "parameters": {
+    "clique": 4,
+    "independent": 6,
+    "max_vertices": 40
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "A valid graph on n vertices certifies R(4,6) > n. Exoo's 35-vertex graph is the published record; 36 vertices would be a new lower bound. Exact local certificates are not Lean proofs. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-ramsey-four-clique-versus-independent-six",
+  "name": "K4-free graphs without independent 6-sets (Ramsey number R(4,6))",
+  "paper_ids": [
+    "science-prize_e"
+  ],
+  "description": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 40. It must contain no K4 and no independent set of 6 vertices, checked exactly. Maximize n. A valid graph on n vertices certifies R(4,6) > n. Exoo's 35-vertex graph is the published record; 36 vertices would be a new lower bound.",
+  "benchmark": "K4-free graphs without independent 6-sets (Ramsey number R(4,6))",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.37236/2102",
+      "type": "paper",
+      "locator": "Geoffrey Exoo, On the Ramsey Number R(4,6) (2012). Crossref record inspected; survey DS1.18 Tables Ia/Ib inspected: 36 <= R(4,6) <= 40, lower bound [Ex19], upper bound by Angeltveit and McKay. A valid graph on n vertices certifies R(4,6) > n. Exoo's 35-vertex graph is the published record; 36 vertices would be a new lower bound."
+    },
+    {
+      "url": "https://www.erdosproblems.com/166",
+      "type": "archive",
+      "locator": "Erdős Problem #166 (proved (R(4,k) >> k^3/(log k)^O(1), Mattheus and Verstraete)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000163",
+      "type": "benchmark",
+      "locator": "JSP-000163; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "The Paley(17) starter is a classical 17-vertex graph, not a record construction.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_e",
+      "title": "Problem-bank constructions: Ramsey theory and colourings: source-based research tasks",
+      "url": "https://doi.org/10.37236/12936"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "best_known",
+    "value": 35,
+    "statement": "Best known (4,6)-graph has 35 vertices (Exoo 2012), so R(4,6) >= 36; the upper bound R(4,6) <= 40 is from computations of Angeltveit and McKay reported in the survey.",
+    "sources": [
+      {
+        "title": "On the Ramsey Number R(4,6)",
+        "url": "https://doi.org/10.37236/2102",
+        "authors": "Geoffrey Exoo",
+        "year": 2012
+      },
+      {
+        "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+        "authors": "Stanisław P. Radziszowski",
+        "url": "https://doi.org/10.37236/21"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 166,
+      "url": "https://www.erdosproblems.com/166",
+      "status": "proved (R(4,k) >> k^3/(log k)^O(1), Mattheus and Verstraete)",
+      "citation": "T. F. Bloom, Erdős Problem #166, https://www.erdosproblems.com/166, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the classical Ramsey number R(4,6).",
+    "importance_rationale": "R(4,k) growth was Erdős Problem #166 (now proved); R(4,6) is one of the smallest unknown classical Ramsey numbers and lower bounds come only from explicit constructions like this one.",
+    "papers": [
+      {
+        "title": "On the Ramsey Number R(4,6)",
+        "url": "https://doi.org/10.37236/2102",
+        "task_relation": "A valid graph on n vertices certifies R(4,6) > n. Exoo's 35-vertex graph is the published record; 36 vertices would be a new lower bound.",
+        "primary_goal": "Determine the classical Ramsey number R(4,6).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; survey DS1.18 Tables Ia/Ib inspected: 36 <= R(4,6) <= 40, lower bound [Ex19], upper bound by Angeltveit and McKay.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

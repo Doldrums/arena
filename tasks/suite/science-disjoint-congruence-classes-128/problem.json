@@ -1,0 +1,107 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_a_disjoint_congruences",
+  "direction": "maximize",
+  "contract": "construct() -> a nonempty list of [residue,modulus] pairs with distinct moduli 2..maximum=128 and canonical residues 0<=r<m. Every two infinite residue classes must be disjoint; the verifier uses the exact gcd criterion. Maximize the number of classes.",
+  "parameters": {
+    "maximum": 128
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Independent finite certificate evaluator and local seed; no source implementation copied. Exact constraints are verified, but no optimality, general theorem, Lean proof, published record, or prize eligibility is claimed. See task sources and adaptation limitations."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-disjoint-congruence-classes-128",
+  "name": "Many disjoint residue classes with distinct moduli",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "description": "construct() -> a nonempty list of [residue,modulus] pairs with distinct moduli 2..maximum=128 and canonical residues 0<=r<m. Every two infinite residue classes must be disjoint; the verifier uses the exact gcd criterion. Maximize the number of classes. Choose pairwise disjoint infinite residue classes with distinct moduli between 2 and 128; maximize their number using the exact gcd/CRT criterion.",
+  "benchmark": "Many disjoint residue classes with distinct moduli",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/math/0208236",
+      "type": "paper",
+      "locator": "Ernest S. Croot III, On non-intersecting arithmetic progressions. Author preprint and published first-page definition inspected; Acta Arithmetica 110.3 (2003), 233–238."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000189",
+      "type": "benchmark",
+      "locator": "JSP-000189; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "limitations": [
+    "Choose pairwise disjoint infinite residue classes with distinct moduli between 2 and 128; maximize their number using the exact gcd/CRT criterion.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_a",
+      "title": "Problem-bank constructions: additive combinatorics: source-based research tasks",
+      "url": "https://arxiv.org/abs/2208.12182"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value for moduli up to 128. Exact values are known for n <= 100 (OEIS A389975, a(100) = 20), so at least 20 classes are possible. The growth rate is Erdős Problem #202.",
+    "sources": [
+      {
+        "title": "OEIS A389975: Maximum number of disjoint congruence classes with distinct moduli at most n",
+        "url": "https://oeis.org/A389975"
+      },
+      {
+        "title": "On non-intersecting arithmetic progressions",
+        "url": "https://arxiv.org/abs/math/0208236",
+        "authors": "Ernest S. Croot III",
+        "year": 2003
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 202,
+      "url": "https://www.erdosproblems.com/202",
+      "status": "solved (Lean)",
+      "citation": "T. F. Bloom, Erdős Problem #202, https://www.erdosproblems.com/202, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the maximum number of disjoint residue classes with distinct bounded moduli.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "On non-intersecting arithmetic progressions",
+        "url": "https://arxiv.org/abs/math/0208236",
+        "task_relation": "Choose pairwise disjoint infinite residue classes with distinct moduli between 2 and 128; maximize their number using the exact gcd/CRT criterion.",
+        "primary_goal": "Determine the maximum number of disjoint residue classes with distinct bounded moduli.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author preprint and published first-page definition inspected; Acta Arithmetica 110.3 (2003), 233–238.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

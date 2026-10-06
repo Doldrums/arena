@@ -1,0 +1,99 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_f_matching_two",
+  "direction": "maximize",
+  "contract": "construct() -> list of distinct triples [a, b, c] of distinct points in 0..11 containing no three pairwise disjoint triples. Maximize the number of triples; the proven optimum is 100.",
+  "parameters": {
+    "n": 12,
+    "matching": 2
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "For n = 12 and s = 2 the maximum is max{56, 100} = 100, attained by all triples meeting two fixed points. Exact local certificates are not Lean proofs. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-triple-systems-matching-two-12",
+  "name": "Triple systems on 12 points without three disjoint triples",
+  "paper_ids": [
+    "science-prize_f"
+  ],
+  "description": "construct() -> list of distinct triples [a, b, c] of distinct points in 0..11 containing no three pairwise disjoint triples. Maximize the number of triples; the proven optimum is 100. For n = 12 and s = 2 the maximum is max{56, 100} = 100, attained by all triples meeting two fixed points.",
+  "benchmark": "Triple systems on 12 points without three disjoint triples",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/j.dam.2016.08.003",
+      "type": "paper",
+      "locator": "Peter Frankl, On the maximum number of edges in a hypergraph with given matching number (2017). Crossref record and abstract inspected: the maximum number of edges of a 3-uniform hypergraph on n vertices with matching number s is max{C(3s+2,3), C(n,3)-C(n-s,3)} for n >= 3s+2. For n = 12 and s = 2 the maximum is max{56, 100} = 100, attained by all triples meeting two fixed points."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000850",
+      "type": "benchmark",
+      "locator": "JSP-000850; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case; the extremal family is elementary once known.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_f",
+      "title": "Problem-bank constructions: extremal graphs, hypergraphs and designs: source-based research tasks",
+      "url": "https://arxiv.org/abs/2103.14179"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 100,
+    "statement": "Maximum 100 = C(12,3) - C(10,3) by Frankl's theorem for triple systems.",
+    "sources": [
+      {
+        "title": "On the maximum number of edges in a hypergraph with given matching number",
+        "url": "https://doi.org/10.1016/j.dam.2016.08.003",
+        "authors": "Peter Frankl",
+        "year": 2017
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": null
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Prove the Erdős matching conjecture for triple systems.",
+    "importance_rationale": "The Erdős matching conjecture is a central open problem for general uniformity; the 3-uniform case solved by Frankl gives an exact finite target.",
+    "papers": [
+      {
+        "title": "On the maximum number of edges in a hypergraph with given matching number",
+        "url": "https://doi.org/10.1016/j.dam.2016.08.003",
+        "task_relation": "For n = 12 and s = 2 the maximum is max{56, 100} = 100, attained by all triples meeting two fixed points.",
+        "primary_goal": "Prove the Erdős matching conjecture for triple systems.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record and abstract inspected: the maximum number of edges of a 3-uniform hypergraph on n vertices with matching number s is max{C(3s+2,3), C(n,3)-C(n-s,3)} for n >= 3s+2.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

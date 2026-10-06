@@ -1,0 +1,90 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_b_smooth_decomposition",
+  "direction": "minimize",
+  "contract": "construct() -> candidate. Return two positive integers a,b with a+b=123457. Minimize max(P(a),P(b)), where P is the largest prime factor and P(1)=1. The evaluator factors both integers independently.",
+  "parameters": {
+    "target": 123457
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "One fixed-target version of the small-prime-factor additive decomposition question; no universal bound for all large integers is asserted."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-number-theory-smooth-decomposition",
+  "name": "Smooth two-summand decomposition of a prescribed integer",
+  "paper_ids": [
+    "science-prize_b"
+  ],
+  "description": "Return two positive integers a,b with a+b=123457. Minimize max(P(a),P(b)), where P is the largest prime factor and P(1)=1. The evaluator factors both integers independently. One fixed-target version of the small-prime-factor additive decomposition question; no universal bound for all large integers is asserted.",
+  "benchmark": "Smooth two-summand decomposition of a prescribed integer",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+      "type": "paper",
+      "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 70. One fixed-target version of the small-prime-factor additive decomposition question; no universal bound for all large integers is asserted. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000277",
+      "type": "benchmark",
+      "locator": "JSP-000277; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+    }
+  ],
+  "limitations": [
+    "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+    "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+    "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+    "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+    "One fixed-target version of the small-prime-factor additive decomposition question; no universal bound for all large integers is asserted."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_b",
+      "title": "Problem-bank constructions: arithmetic and extremal sets: source-based research tasks",
+      "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+    "sources": [
+      {
+        "title": "Old and New Problems and Results in Combinatorial Number Theory",
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "authors": "Paul Erdős and Ronald L. Graham",
+        "year": 1980
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "The original mathematical question is verified in the cited primary research monograph/survey, but no dedicated paper with this exact problem as a primary research goal was independently established in this review. Conservative metadata does not equate a prize listing or historical open status with important_to_science.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Original-source definition verified; stronger task-specific primary-goal evidence remains unestablished.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  }
+}

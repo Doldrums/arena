@@ -1,0 +1,100 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_a_b3_set",
+  "direction": "maximize",
+  "contract": "construct() -> 1..80 distinct positive integers <=n=4096. Every unordered triple, allowing repetitions, must have a different sum. Maximize cardinality.",
+  "parameters": {
+    "n": 4096,
+    "maximum": 80
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Independent finite certificate evaluator and local seed; no source implementation copied. Exact constraints are verified, but no optimality, general theorem, Lean proof, published record, or prize eligibility is claimed. See task sources and adaptation limitations."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-unique-triple-sum-b3-4096",
+  "name": "Large integer sets with unique triple sums",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "description": "construct() -> 1..80 distinct positive integers <=n=4096. Every unordered triple, allowing repetitions, must have a different sum. Maximize cardinality. At most 80 positive integers in [1,4096], with all unordered triples including repetitions having unique sums. This is B_3[1], not the g>=2 improvement in the cited paper.",
+  "benchmark": "Large integer sets with unique triple sums",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1604.00661",
+      "type": "paper",
+      "locator": "Craig Timmons, Upper bounds for B_h[g]-sets with small h. Author abstract and B_h[g] framework checked. The paper’s improved bounds focus on g>=2; local multiplicity is g=1."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000069",
+      "type": "benchmark",
+      "locator": "JSP-000069; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "limitations": [
+    "At most 80 positive integers in [1,4096], with all unordered triples including repetitions having unique sums. This is B_3[1], not the g>=2 improvement in the cited paper.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_a",
+      "title": "Problem-bank constructions: additive combinatorics: source-based research tasks",
+      "url": "https://arxiv.org/abs/2208.12182"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented maximum for B_3 sets in [1,4096]; the greedy B_3 sequence (OEIS A096772) already has 16 terms up to 4048. Asymptotically the maximum is between (1+o(1))N^(1/3) (Bose and Chowla) and ((7/2)^(1/3)+o(1))N^(1/3) (Green), Erdős Problem #241.",
+    "sources": [
+      {
+        "title": "Upper bounds for B_h[g]-sets with small h",
+        "url": "https://arxiv.org/abs/1604.00661",
+        "authors": "Craig Timmons",
+        "year": 2016
+      },
+      {
+        "title": "OEIS A096772: Greedy B_3 sequence",
+        "url": "https://oeis.org/A096772"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 241,
+      "url": "https://www.erdosproblems.com/241",
+      "status": "open ($100)",
+      "citation": "T. F. Bloom, Erdős Problem #241, https://www.erdosproblems.com/241, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Bound cardinalities of sets with limited higher-order additive representations.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [],
+    "reviewed_at": "2026-09-22",
+    "reason": "The verified research results are for g>=2, while the local task uses g=1. The primary source establishes the general definition; exact objective-specific importance requires a matching g=1 paper.",
+    "verification_basis": "Author abstract and B_h[g] framework checked. The paper’s improved bounds focus on g>=2; local multiplicity is g=1.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  }
+}

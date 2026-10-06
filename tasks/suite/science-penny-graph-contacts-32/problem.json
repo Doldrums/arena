@@ -1,0 +1,113 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_g_penny",
+  "direction": "maximize",
+  "contract": "construct() -> exactly 32 distinct integer pairs [a, b] with |a|, |b| <= 64 denoting lattice points a + b*omega, omega = exp(i*pi/3), which are at mutual distance at least one. Maximize the number of pairs at distance exactly one; Harborth's theorem gives the optimum floor(3n - sqrt(12n - 3)) = 76.",
+  "parameters": {
+    "n": 32,
+    "bound": 64
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "Harborth's formula gives 76 for n = 32 and triangular-lattice spirals attain it, so the lattice restriction loses nothing. Exact local certificates are not Lean proofs; floating-point scores are stated as such. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-penny-graph-contacts-32",
+  "name": "Contact numbers of 32 unit pennies on the triangular lattice",
+  "paper_ids": [
+    "science-prize_g"
+  ],
+  "description": "construct() -> exactly 32 distinct integer pairs [a, b] with |a|, |b| <= 64 denoting lattice points a + b*omega, omega = exp(i*pi/3), which are at mutual distance at least one. Maximize the number of pairs at distance exactly one; Harborth's theorem gives the optimum floor(3n - sqrt(12n - 3)) = 76. Harborth's formula gives 76 for n = 32 and triangular-lattice spirals attain it, so the lattice restriction loses nothing.",
+  "benchmark": "Contact numbers of 32 unit pennies on the triangular lattice",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1007/978-3-662-57413-3_2",
+      "type": "paper",
+      "locator": "Károly Bezdek and Muhammad A. Khan, Contact Numbers for Sphere Packings (2018). Crossref record inspected; Erdős Problem #1084 page inspected: Harborth (1974) proved f_2(n) = floor(3n - sqrt(12n - 3)) for points at mutual distance at least one, attained by triangular-lattice spirals. Harborth's formula gives 76 for n = 32 and triangular-lattice spirals attain it, so the lattice restriction loses nothing."
+    },
+    {
+      "url": "https://www.erdosproblems.com/1084",
+      "type": "archive",
+      "locator": "Erdős Problem #1084 (open (solved in the plane by Harborth)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000901",
+      "type": "benchmark",
+      "locator": "JSP-000901; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case; candidates are restricted to the triangular lattice, which contains optimal configurations.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_g",
+      "title": "Problem-bank constructions: discrete geometry and analysis: source-based research tasks",
+      "url": "https://doi.org/10.1007/s00454-007-9038-6"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 76,
+    "statement": "Harborth (1974): the maximum number of unit distances among n points at mutual distance >= 1 is floor(3n - sqrt(12n - 3)) = 76 for n = 32.",
+    "sources": [
+      {
+        "title": "Erdős Problem #1084",
+        "url": "https://www.erdosproblems.com/1084"
+      },
+      {
+        "title": "Contact Numbers for Sphere Packings",
+        "url": "https://doi.org/10.1007/978-3-662-57413-3_2",
+        "authors": "Károly Bezdek, Muhammad A. Khan",
+        "year": 2018
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1084,
+      "url": "https://www.erdosproblems.com/1084",
+      "status": "open (solved in the plane by Harborth)",
+      "citation": "T. F. Bloom, Erdős Problem #1084, https://www.erdosproblems.com/1084, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the maximum number of touching pairs among n non-overlapping unit disks (and spheres).",
+    "importance_rationale": "Contact numbers (Erdős Problem #1084) are solved in the plane but open in three dimensions; the planar case is a calibrated rediscovery.",
+    "papers": [
+      {
+        "title": "Contact Numbers for Sphere Packings",
+        "url": "https://doi.org/10.1007/978-3-662-57413-3_2",
+        "task_relation": "Harborth's formula gives 76 for n = 32 and triangular-lattice spirals attain it, so the lattice restriction loses nothing.",
+        "primary_goal": "Determine the maximum number of touching pairs among n non-overlapping unit disks (and spheres).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #1084 page inspected: Harborth (1974) proved f_2(n) = floor(3n - sqrt(12n - 3)) for points at mutual distance at least one, attained by triangular-lattice spirals.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

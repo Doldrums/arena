@@ -1,0 +1,159 @@
+{
+  "schema_version": "1.0",
+  "id": "science-narrow-factorization-of-30-factorial",
+  "name": "Narrowest factorization of 30! into increasing factors",
+  "description": "construct() -> strictly increasing positive integers a_1 < ... < a_t with 2 <= t <= 30 and product exactly 30!. Minimize a_t - a_1; the optimum is 27. For n = 30 the optimum span is 27, so the task recovers an optimal factorization.",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/0022-314X(92)90020-P",
+      "type": "paper",
+      "locator": "Daniel Berend and Charles F. Osgood, On the equation P(x) = n! and a question of Erdős (1992). Crossref records inspected (Berend and Osgood 1992; Bui, Pratt and Zaharescu 2023). Erdős Problem #393 page inspected: f(n) is the least m with n! = a_1...a_t, a_1 < ... < a_t = a_1 + m; Erdős and Graham did not know whether f(n) = 1 infinitely often, and f(n) = m has o(N) solutions n <= N for each m. OEIS A388302 inspected: f(30) = 27. For n = 30 the optimum span is 27, so the task recovers an optimal factorization."
+    },
+    {
+      "url": "https://www.erdosproblems.com/393",
+      "type": "archive",
+      "locator": "Erdős Problem #393 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000324",
+      "type": "benchmark",
+      "locator": "JSP-000324; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Narrowest factorization of 30! into increasing factors",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_h_factorial_span",
+    "science_family": "science_prize_h_factorial_span",
+    "parameters": {
+      "n": 30
+    },
+    "interface": "construct() -> strictly increasing positive integers a_1 < ... < a_t with 2 <= t <= 30 and product exactly 30!. Minimize a_t - a_1; the optimum is 27.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000324"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_h_factorial_span",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case from the OEIS table.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_h.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 27,
+    "statement": "f(30) = 27 (OEIS A388302).",
+    "sources": [
+      {
+        "title": "OEIS A388302: Smallest m >= 1 such that n! = b_1*...*b_t with b_1 < ... < b_t and m = b_t - b_1",
+        "url": "https://oeis.org/A388302"
+      },
+      {
+        "title": "On the equation P(x) = n! and a question of Erdős",
+        "url": "https://doi.org/10.1016/0022-314X(92)90020-P",
+        "authors": "Daniel Berend, Charles F. Osgood",
+        "year": 1992
+      },
+      {
+        "title": "Power savings for counting solutions to polynomial-factorial equations",
+        "url": "https://doi.org/10.1016/j.aim.2023.109021",
+        "authors": "Hung M. Bui, Kyle Pratt, Alexandru Zaharescu",
+        "year": 2023
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 393,
+      "url": "https://www.erdosproblems.com/393",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #393, https://www.erdosproblems.com/393, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Understand how narrow an interval can contain a factorization of n! into distinct factors (Erdős Problem #393).",
+    "importance_rationale": "The problem links factorials with polynomial-factorial Diophantine equations such as Brocard's problem and with smooth numbers.",
+    "papers": [
+      {
+        "title": "On the equation P(x) = n! and a question of Erdős",
+        "url": "https://doi.org/10.1016/0022-314X(92)90020-P",
+        "task_relation": "For n = 30 the optimum span is 27, so the task recovers an optimal factorization.",
+        "primary_goal": "Understand how narrow an interval can contain a factorization of n! into distinct factors (Erdős Problem #393).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref records inspected (Berend and Osgood 1992; Bui, Pratt and Zaharescu 2023). Erdős Problem #393 page inspected: f(n) is the least m with n! = a_1...a_t, a_1 < ... < a_t = a_1 + m; Erdős and Graham did not know whether f(n) = 1 infinitely often, and f(n) = m has o(N) solutions n <= N for each m. OEIS A388302 inspected: f(30) = 27.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

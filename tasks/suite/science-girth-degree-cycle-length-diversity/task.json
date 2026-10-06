@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0",
+  "id": "science-girth-degree-cycle-length-diversity",
+  "name": "Few cycle lengths under degree and girth constraints",
+  "description": "construct() -> undirected simple edges on vertices 0..11. Every vertex must have degree at least three and every simple cycle must have length at least four. Enumerating every simple cycle, the evaluator minimizes the number of distinct cycle lengths. Disconnected graphs are allowed by the source problem. The local n=12 minimum-degree-three condition is stronger than the paper’s average-degree-three hypothesis. Exhaustive cycles prove the local score, without proving any general lower bound or current extremal record.",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/0707.2117",
+      "type": "paper",
+      "locator": "Benny Sudakov and Jacques Verstraëte, Cycle lengths in sparse graphs (2007 preprint; 2008 publication). Abstract: minimum possible number of distinct cycle lengths at given average degree and girth; the first part proves an Erdős conjecture."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000619",
+      "type": "benchmark",
+      "locator": "JSP-000619; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloads. Fixed input arrays are fully recorded in parameters; arithmetic/combinatorial validation uses the Python standard library."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Few cycle lengths under degree and girth constraints",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_c_619",
+    "science_family": "science_prize_c_619",
+    "parameters": {
+      "n": 12,
+      "minimum_degree": 3,
+      "girth": 4
+    },
+    "interface": "construct() -> undirected simple edges on vertices 0..11. Every vertex must have degree at least three and every simple cycle must have length at least four. Enumerating every simple cycle, the evaluator minimizes the number of distinct cycle lengths. Disconnected graphs are allowed by the source problem.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no published candidate or source implementation copied.",
+      "prize_problem_id": "JSP-000619",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_c_619",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "The local n=12 minimum-degree-three condition is stronger than the paper’s average-degree-three hypothesis. Exhaustive cycles prove the local score, without proving any general lower bound or current extremal record.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/c-checks.json",
+    "tests": "tests/test_science_prize_c.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Benny Sudakov and Jacques Verstraëte (2007, Cycle lengths in sparse graphs) study the underlying problem.",
+    "sources": [
+      {
+        "title": "Cycle lengths in sparse graphs",
+        "url": "https://arxiv.org/abs/0707.2117",
+        "authors": "Benny Sudakov and Jacques Verstraëte",
+        "year": 2007
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Relate sparse-graph degree and girth to the diversity of cycle lengths.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Benny Sudakov and Jacques Verstraëte, Cycle lengths in sparse graphs (2007 preprint; 2008 publication)",
+        "url": "https://arxiv.org/abs/0707.2117",
+        "primary_goal": "Relate sparse-graph degree and girth to the diversity of cycle lengths.",
+        "task_relation": "The local n=12 minimum-degree-three condition is stronger than the paper’s average-degree-three hypothesis. Exhaustive cycles prove the local score, without proving any general lower bound or current extremal record.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Abstract: minimum possible number of distinct cycle lengths at given average degree and girth; the first part proves an Erdős conjecture.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

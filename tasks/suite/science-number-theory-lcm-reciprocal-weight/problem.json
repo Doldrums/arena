@@ -1,0 +1,91 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_b_lcm_reciprocal_weight",
+  "direction": "maximize",
+  "contract": "construct() -> candidate. Return nonempty subset of [2,256] with lcm(a,b)>256 for all distinct pairs. Maximize exact reciprocal sum, not cardinality.",
+  "parameters": {
+    "n": 256
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Uses the reciprocal-sum objective in section14(1), with n fixed; pairwise lcm threshold is strict and the score is rational. The unit denominator1 is excluded locally to remove its isolated trivial certificate."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-number-theory-lcm-reciprocal-weight",
+  "name": "Large reciprocal weight under lcm separation",
+  "paper_ids": [
+    "science-prize_b"
+  ],
+  "description": "Return nonempty subset of [2,256] with lcm(a,b)>256 for all distinct pairs. Maximize exact reciprocal sum, not cardinality. Uses the reciprocal-sum objective in section14(1), with n fixed; pairwise lcm threshold is strict and the score is rational. The unit denominator1 is excluded locally to remove its isolated trivial certificate.",
+  "benchmark": "Large reciprocal weight under lcm separation",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://users.renyi.hu/~p_erdos/1973-21.pdf",
+      "type": "paper",
+      "locator": "Paul Erdős (1973), Problems and results on combinatorial number theory. Printed p. 134. Uses the reciprocal-sum objective in section14(1), with n fixed; pairwise lcm threshold is strict and the score is rational. The unit denominator1 is excluded locally to remove its isolated trivial certificate. Primary full PDF downloaded and its extracted full text inspected. No contemporary open/solved status is inferred from this historical publication."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000433",
+      "type": "benchmark",
+      "locator": "JSP-000433; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+    }
+  ],
+  "limitations": [
+    "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+    "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+    "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+    "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+    "Uses the reciprocal-sum objective in section14(1), with n fixed; pairwise lcm threshold is strict and the score is rational. The unit denominator1 is excluded locally to remove its isolated trivial certificate.",
+    "Feasibility and rational objective are computed exactly; the standard score envelope converts the final rational to binary64, so exact numerator/denominator details should be used to resolve nearly tied scores."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_b",
+      "title": "Problem-bank constructions: arithmetic and extremal sets: source-based research tasks",
+      "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős (1973, Problems and results on combinatorial number theory) studies the underlying problem.",
+    "sources": [
+      {
+        "title": "Problems and results on combinatorial number theory",
+        "url": "https://users.renyi.hu/~p_erdos/1973-21.pdf",
+        "authors": "Paul Erdős",
+        "year": 1973
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "The original mathematical question is verified in the cited primary research monograph/survey, but no dedicated paper with this exact problem as a primary research goal was independently established in this review. Conservative metadata does not equate a prize listing or historical open status with important_to_science.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Original-source definition verified; stronger task-specific primary-goal evidence remains unestablished.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  }
+}

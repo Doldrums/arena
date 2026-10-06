@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "id": "science-bounded-additive-basis-multiplicity-128",
+  "name": "Additive bases with few representations",
+  "description": "construct() -> a nonempty subset A of [0,n=128]. Every integer in [128,256] must be a sum of two elements of A. Pair representations are unordered and permit equal summands. Minimize the largest representation multiplicity in that target interval. Choose A in [0,128] covering [128,256] by pair sums and minimize peak multiplicity. Local pairs are unordered and include equal summands; the paper’s ordered convention differs by symmetry.",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://math.bme.hu/~csandor/Publications/ErdosTuran.pdf",
+      "type": "paper",
+      "locator": "Csaba Sándor, A note on a conjecture of Erdős–Turán. Author-hosted full text, introduction and representation-function definition inspected."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000061",
+      "type": "benchmark",
+      "locator": "JSP-000061; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; fixed finite mathematical profiles."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Additive bases with few representations",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_a_bounded_basis",
+    "science_family": "science_prize_a_bounded_basis",
+    "parameters": {
+      "n": 128
+    },
+    "interface": "construct() -> a nonempty subset A of [0,n=128]. Every integer in [128,256] must be a sum of two elements of A. Pair representations are unordered and permit equal summands. Minimize the largest representation multiplicity in that target interval.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000061"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_a_bounded_basis",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Choose A in [0,128] covering [128,256] by pair sums and minimize peak multiplicity. Local pairs are unordered and include equal summands; the paper’s ordered convention differs by symmetry.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/a-checks.json",
+    "tests": "tests/test_science_prize_a.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented minimum for this finite window. The Erdős-Turán conjecture that the representation function of an additive basis of order 2 is unbounded is Erdős Problem #28.",
+    "sources": [
+      {
+        "title": "A note on a conjecture of Erdős-Turán",
+        "url": "https://math.bme.hu/~csandor/Publications/ErdosTuran.pdf",
+        "authors": "Csaba Sándor"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 28,
+      "url": "https://www.erdosproblems.com/28",
+      "status": "open ($500)",
+      "citation": "T. F. Bloom, Erdős Problem #28, https://www.erdosproblems.com/28, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Understand growth of representation multiplicities in additive bases of order two.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "A note on a conjecture of Erdős–Turán",
+        "url": "https://math.bme.hu/~csandor/Publications/ErdosTuran.pdf",
+        "task_relation": "Choose A in [0,128] covering [128,256] by pair sums and minimize peak multiplicity. Local pairs are unordered and include equal summands; the paper’s ordered convention differs by symmetry.",
+        "primary_goal": "Understand growth of representation multiplicities in additive bases of order two.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author-hosted full text, introduction and representation-function definition inspected.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

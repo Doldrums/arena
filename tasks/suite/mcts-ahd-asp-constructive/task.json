@@ -1,0 +1,335 @@
+{
+  "id": "mcts-ahd-asp-constructive",
+  "paper_ids": [
+    "mcts-ahd"
+  ],
+  "name": "Constant-weight ternary admissible-set construction",
+  "description": "Evolve the priority rule used by the pinned MCTS-AHD symmetric greedy constructor for constant-weight ternary admissible sets at n=15, w=10. Maximize the cardinality of the expanded set. This is a distinct problem from narrow admissible integer tuples.",
+  "kind": "upstream",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2501.08603",
+      "type": "paper",
+      "locator": "Appendix B.1 Eq. (10); Appendix F, admissible-set experiments"
+    },
+    {
+      "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+      "type": "repository",
+      "locator": "problems/asp_constructive/eval.py"
+    }
+  ],
+  "requirements": {
+    "python": "Upstream-defined",
+    "hardware": "See upstream requirements and task notes.",
+    "dependencies": [
+      "numpy",
+      "scipy",
+      "torch"
+    ],
+    "environment_variables": [],
+    "datasets": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+    "notes": [
+      "CPU Python with NumPy",
+      "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+    ],
+    "required_files": [
+      "problems/asp_constructive/eval.py",
+      "utils/utils.py"
+    ],
+    "required_file_hashes": {
+      "problems/asp_constructive/eval.py": "4267624848c083e48aa48bf85929c163bb9aa4938655a562256f0489b4d53807",
+      "utils/utils.py": "0b9cfa62adcde5046d1b90808e6477928940ef1462602b82685296831285a0b9"
+    }
+  },
+  "evaluation": {
+    "metric": "score",
+    "paper_metric": "expanded admissible set cardinality",
+    "paper_direction": "maximize",
+    "direction": "maximize",
+    "benchmark": "Constant-weight ternary admissible set I(15,10)",
+    "protocol": "upstream",
+    "source_locator": "Section 4; Appendices B-D and F"
+  },
+  "execution": {
+    "repository": "https://github.com/zz1358m/MCTS-AHD-master",
+    "commit": "ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+    "upstream_path": "problems/asp_constructive/eval.py",
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "main.py",
+          "problem=asp_constructive"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/main.py",
+        "notes": "Hydra task override derived from inspected @hydra.main configuration and verified cfg/problem file; not executed."
+      }
+    ],
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_original.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_mcts-ahd_asp_constructive.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "maximize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "asp_constructive",
+        "max_instances": 2,
+        "iterations": 5,
+        "ants": 10,
+        "random_seed": 1234,
+        "black_box": false
+      },
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "torch"
+      ],
+      "implementation_label": "bounded_original_protocol_extracted_seed",
+      "repository_files": {
+        "adapters/recovered/seeds/optimization_mcts-ahd_asp_constructive.py": "42d9e0ad33facba2c800e8303040857e2208a8286c79a012dd798e3ff9faa6df",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3"
+      },
+      "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 1.387,
+        "metrics": {
+          "score": 1842.0,
+          "validity": null,
+          "instances": 1,
+          "instance_size": 15,
+          "candidate_calls": 2432,
+          "instance_objectives": [
+            1842.0
+          ],
+          "profile": "bounded_original_training",
+          "iterations": 5,
+          "ants": 10,
+          "black_box": false,
+          "random_seed": 1234,
+          "dataset_origin": "official_training_parameters_n15_w10",
+          "dataset_sha256": null,
+          "validation_scope": "finite original solver objective; no independent solution certificate"
+        },
+        "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+      }
+    },
+    "setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+        "notes": ""
+      }
+    ],
+    "task_setup_instructions": [],
+    "framework_setup_instructions": [
+      {
+        "argv": [
+          "pip",
+          "install",
+          "-r",
+          "requirements.txt"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/README.md",
+        "notes": ""
+      }
+    ],
+    "setup_steps": [],
+    "notes": [
+      "Use cfg/problem/asp_constructive.yaml. Set max_fe=2000 for online BPP and init_pop_size=10 for black-box ACO as README instructs.",
+      "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+      "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json."
+    ],
+    "suite": {
+      "protocol": "original",
+      "family": "mcts_admissible_set",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [
+        "py:numpy",
+        "checkout:zz1358m/MCTS-AHD-master@ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+        "py:scipy",
+        "py:torch"
+      ],
+      "timeout": 300,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here.",
+    "The single n=15,w=10 original training profile is evaluated through a local adapter. A finite source-solver score is not an independent certificate; validity remains unknown.",
+    "MCTS-AHD admissible sets consist of constant-weight ternary vectors under the triple-coordinate witness rule. The restored task uses the pinned original symmetry-block greedy evaluator at n15,w10; it is distinct from prime-residue narrow tuples. The extracted source seed returns1842 on the original route. Finite output and actual candidate calls are checked, but no independent solution certificate is available, so validity remains unknown rather than true."
+  ],
+  "validation": {
+    "level": "source_inspected",
+    "upstream_reproduction": false,
+    "adapter_checks": {
+      "kind": "baseline_execution",
+      "passed": true,
+      "seconds": 1.387,
+      "metrics": {
+        "score": 1842.0,
+        "validity": null,
+        "instances": 1,
+        "instance_size": 15,
+        "candidate_calls": 2432,
+        "instance_objectives": [
+          1842.0
+        ],
+        "profile": "bounded_original_training",
+        "iterations": 5,
+        "ants": 10,
+        "black_box": false,
+        "random_seed": 1234,
+        "dataset_origin": "official_training_parameters_n15_w10",
+        "dataset_sha256": null,
+        "validation_scope": "finite original solver objective; no independent solution certificate"
+      },
+      "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+    }
+  },
+  "source_specification": {
+    "name": "Constant-weight ternary admissible-set construction",
+    "slug": "asp-constructive",
+    "description": "Evolve the priority rule used by the pinned MCTS-AHD symmetric greedy constructor for constant-weight ternary admissible sets at n=15, w=10. Maximize the cardinality of the expanded set. This is a distinct problem from narrow admissible integer tuples.",
+    "benchmark": "Constant-weight ternary admissible set I(15,10)",
+    "dataset": "Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.",
+    "metric": "admissible set size",
+    "direction": "maximize",
+    "source_url": "https://arxiv.org/pdf/2501.08603",
+    "source_locator": "Section 4; Appendices B-D and F",
+    "upstream_path": "problems/asp_constructive/eval.py",
+    "requirements": [
+      "CPU Python with NumPy",
+      "SciPy, PyTorch, NumPy; Numba/tqdm for GLS."
+    ],
+    "execution_notes": [
+      "Use cfg/problem/asp_constructive.yaml. Set max_fe=2000 for online BPP and init_pop_size=10 for black-box ACO as README instructs.",
+      "Recovered direct CPU evaluator invokes original solver without model credentials. Defaults are an explicit bounded training smoke profile, not full paper reproduction.",
+      "Source origin and recreations recorded in docs/TASKS.md and validation/recovery-optimization-provenance.json."
+    ],
+    "setup_commands": [],
+    "run_commands": [
+      {
+        "argv": [
+          "python",
+          "main.py",
+          "problem=asp_constructive"
+        ],
+        "cwd": ".",
+        "source_url": "https://github.com/zz1358m/MCTS-AHD-master/blob/ee9c4f424503c65a5fd2b899e6620ce86079fedb/main.py",
+        "notes": "Hydra task override derived from inspected @hydra.main configuration and verified cfg/problem file; not executed."
+      }
+    ],
+    "implementation_status": "recovered_direct_evaluator_tested",
+    "evaluator_adapter": {
+      "evaluator_scope": "repository",
+      "evaluator_path": "adapters/recovered/optimization_original.py",
+      "baseline_scope": "repository",
+      "baseline_path": "adapters/recovered/seeds/optimization_mcts-ahd_asp_constructive.py",
+      "callable": "evaluate",
+      "candidate_argument": "positional",
+      "cwd": ".",
+      "score_key": "score",
+      "score_direction": "maximize",
+      "validity_key": "validity",
+      "return_style": "dict",
+      "kwargs": {
+        "checkout": "{checkout}",
+        "problem": "asp_constructive",
+        "max_instances": 2,
+        "iterations": 5,
+        "ants": 10,
+        "random_seed": 1234,
+        "black_box": false
+      },
+      "dependencies": [
+        "numpy",
+        "scipy",
+        "torch"
+      ],
+      "implementation_label": "bounded_original_protocol_extracted_seed",
+      "repository_files": {
+        "adapters/recovered/seeds/optimization_mcts-ahd_asp_constructive.py": "42d9e0ad33facba2c800e8303040857e2208a8286c79a012dd798e3ff9faa6df",
+        "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3"
+      },
+      "notes": "Bounded original-training protocol. Only explicit construction validators yield validity=true; finite solver objectives without certificates remain unverified.",
+      "validation": {
+        "kind": "baseline_execution",
+        "passed": true,
+        "seconds": 1.387,
+        "metrics": {
+          "score": 1842.0,
+          "validity": null,
+          "instances": 1,
+          "instance_size": 15,
+          "candidate_calls": 2432,
+          "instance_objectives": [
+            1842.0
+          ],
+          "profile": "bounded_original_training",
+          "iterations": 5,
+          "ants": 10,
+          "black_box": false,
+          "random_seed": 1234,
+          "dataset_origin": "official_training_parameters_n15_w10",
+          "dataset_sha256": null,
+          "validation_scope": "finite original solver objective; no independent solution certificate"
+        },
+        "runtime": "Python 3.12 CPU; pinned upstream source; NumPy 2 annotation compatibility alias."
+      }
+    },
+    "required_files": [
+      "problems/asp_constructive/eval.py",
+      "utils/utils.py"
+    ],
+    "required_file_hashes": {
+      "problems/asp_constructive/eval.py": "4267624848c083e48aa48bf85929c163bb9aa4938655a562256f0489b4d53807",
+      "utils/utils.py": "0b9cfa62adcde5046d1b90808e6477928940ef1462602b82685296831285a0b9"
+    }
+  },
+  "schema_version": "1.0",
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "program",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  }
+}

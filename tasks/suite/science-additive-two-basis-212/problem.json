@@ -1,0 +1,118 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_additive_basis",
+  "direction": "minimize",
+  "contract": "construct() -> distinct integers in 0..212 such that every integer 0..212 equals a + b for some a <= b in the set (a = b allowed). Minimize the size; the optimum is 25.",
+  "parameters": {
+    "n": 212
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "For n = 212 the minimum is 25, so the task recovers an extremal basis. Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-additive-two-basis-212",
+  "name": "Smallest set whose pairwise sums cover 0..212",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> distinct integers in 0..212 such that every integer 0..212 equals a + b for some a <= b in the set (a = b allowed). Minimize the size; the optimum is 25. For n = 212 the minimum is 25, so the task recovers an extremal basis.",
+  "benchmark": "Smallest set whose pairwise sums cover 0..212",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://cs.uwaterloo.ca/journals/JIS/VOL13/Challis/challis6.html",
+      "type": "paper",
+      "locator": "Michael F. Challis and John P. Robinson, Some Extremal Postage Stamp Bases (2010). Journal of Integer Sequences article and OEIS A066063/A001212 inspected: the two-stamp postage problem has optimal range 212 with 24 denominations and 196 with 23, and a basis of {0..n} is 0 together with a set of denominations, so the minimum size for n = 212 is 25. Erdős Problem #791 page inspected (Rohrbach's problem; (2.181+o(1))n <= g(n)^2 <= (3.458+o(1))n by Yu and Kohonen). For n = 212 the minimum is 25, so the task recovers an extremal basis."
+    },
+    {
+      "url": "https://www.erdosproblems.com/791",
+      "type": "archive",
+      "locator": "Erdős Problem #791 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000650",
+      "type": "benchmark",
+      "locator": "JSP-000650; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case from published exhaustive postage-stamp computations.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 25,
+    "statement": "The least 2-basis of {0..212} has 25 elements (OEIS A066063; two-stamp range 212 needs 24 denominations, A001212).",
+    "sources": [
+      {
+        "title": "OEIS A066063: Size of the smallest subset S of {0..n} such that each element is the sum of two elements of S",
+        "url": "https://oeis.org/A066063"
+      },
+      {
+        "title": "Some Extremal Postage Stamp Bases",
+        "url": "https://cs.uwaterloo.ca/journals/JIS/VOL13/Challis/challis6.html",
+        "authors": "Michael F. Challis, John P. Robinson",
+        "year": 2010
+      },
+      {
+        "title": "An improved lower bound for finite additive 2-bases",
+        "url": "https://doi.org/10.1016/j.jnt.2016.11.011",
+        "authors": "Jukka Kohonen",
+        "year": 2017
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 791,
+      "url": "https://www.erdosproblems.com/791",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #791, https://www.erdosproblems.com/791, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Estimate g(n), the smallest additive 2-basis of {0..n} (Rohrbach's problem, Erdős Problem #791).",
+    "importance_rationale": "Finite additive bases (the postage stamp problem) are classical in additive number theory; the asymptotic constant is open.",
+    "papers": [
+      {
+        "title": "Some Extremal Postage Stamp Bases",
+        "url": "https://cs.uwaterloo.ca/journals/JIS/VOL13/Challis/challis6.html",
+        "task_relation": "For n = 212 the minimum is 25, so the task recovers an extremal basis.",
+        "primary_goal": "Estimate g(n), the smallest additive 2-basis of {0..n} (Rohrbach's problem, Erdős Problem #791).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Journal of Integer Sequences article and OEIS A066063/A001212 inspected: the two-stamp postage problem has optimal range 212 with 24 denominations and 196 with 23, and a basis of {0..n} is 0 together with a set of denominations, so the minimum size for n = 212 is 25. Erdős Problem #791 page inspected (Rohrbach's problem; (2.181+o(1))n <= g(n)^2 <= (3.458+o(1))n by Yu and Kohonen).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

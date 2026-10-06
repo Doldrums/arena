@@ -1,0 +1,119 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_van_der_waerden",
+  "direction": "maximize",
+  "contract": "construct() -> colours c_1, ..., c_N in {0, 1} with 1 <= N <= 135. Colour 0 may contain no 3-term and colour 1 no 12-term arithmetic progression (exhaustive check). Maximize N; the optimum is 134 because w(3,12) = 135.",
+  "parameters": {
+    "long_length": 12,
+    "maximum": 135
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "Since w(3,12) = 135, the longest valid colouring has 134 terms; the task recovers an extremal colouring. Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-van-der-waerden-three-versus-twelve",
+  "name": "Two-colourings avoiding a red 3-term and a blue 12-term progression (w(3,12) = 135)",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> colours c_1, ..., c_N in {0, 1} with 1 <= N <= 135. Colour 0 may contain no 3-term and colour 1 no 12-term arithmetic progression (exhaustive check). Maximize N; the optimum is 134 because w(3,12) = 135. Since w(3,12) = 135, the longest valid colouring has 134 terms; the task recovers an extremal colouring.",
+  "benchmark": "Two-colourings avoiding a red 3-term and a blue 12-term progression (w(3,12) = 135)",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/j.dam.2014.05.007",
+      "type": "paper",
+      "locator": "Tanbir Ahmed, Oliver Kullmann and Hunter Snevily, On the van der Waerden numbers w(2;3,t) (2014). Crossref records inspected (Ahmed, Kullmann and Snevily 2014; Green 2022). OEIS A171081 inspected: w(3,12) = 135. Erdős Problem #721 page inspected (Green's superpolynomial lower bound, Hunter's improvement and Schoen's upper bound meet Erdős's stated challenges). Since w(3,12) = 135, the longest valid colouring has 134 terms; the task recovers an extremal colouring."
+    },
+    {
+      "url": "https://www.erdosproblems.com/721",
+      "type": "archive",
+      "locator": "Erdős Problem #721 (solved (bounds of Green, Hunter and Schoen)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000589",
+      "type": "benchmark",
+      "locator": "JSP-000589; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case (published SAT computations).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 134,
+    "statement": "w(3,12) = 135, so 134 is the longest valid colouring (Ahmed, Kullmann and Snevily 2014; OEIS A171081).",
+    "sources": [
+      {
+        "title": "OEIS A171081: Van der Waerden numbers w(3,n)",
+        "url": "https://oeis.org/A171081"
+      },
+      {
+        "title": "On the van der Waerden numbers w(2;3,t)",
+        "url": "https://doi.org/10.1016/j.dam.2014.05.007",
+        "authors": "Tanbir Ahmed, Oliver Kullmann, Hunter Snevily",
+        "year": 2014
+      },
+      {
+        "title": "New lower bounds for van der Waerden numbers",
+        "url": "https://doi.org/10.1017/fmp.2022.12",
+        "authors": "Ben Green",
+        "year": 2022
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 721,
+      "url": "https://www.erdosproblems.com/721",
+      "status": "solved (bounds of Green, Hunter and Schoen)",
+      "citation": "T. F. Bloom, Erdős Problem #721, https://www.erdosproblems.com/721, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the growth of the off-diagonal van der Waerden numbers w(3,k).",
+    "importance_rationale": "Off-diagonal van der Waerden numbers connect Ramsey theory with bounds for sets without 3-term progressions; Graham's conjectured quadratic growth was disproved by Green.",
+    "papers": [
+      {
+        "title": "On the van der Waerden numbers w(2;3,t)",
+        "url": "https://doi.org/10.1016/j.dam.2014.05.007",
+        "task_relation": "Since w(3,12) = 135, the longest valid colouring has 134 terms; the task recovers an extremal colouring.",
+        "primary_goal": "Determine the growth of the off-diagonal van der Waerden numbers w(3,k).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref records inspected (Ahmed, Kullmann and Snevily 2014; Green 2022). OEIS A171081 inspected: w(3,12) = 135. Erdős Problem #721 page inspected (Green's superpolynomial lower bound, Hunter's improvement and Schoen's upper bound meet Erdős's stated challenges).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

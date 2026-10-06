@@ -1,0 +1,118 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_taxicab",
+  "direction": "maximize",
+  "contract": "construct() -> {'m': m, 'pairs': [[a, b], ...]} with 2 <= m <= 5*10^16 and distinct pairs of positive integers a <= b with a^3 + b^3 = m (checked exactly). Maximize the number of pairs; the optimum is 5, attained only by the fifth taxicab number 48988659276962496.",
+  "parameters": {
+    "bound": 50000000000000000
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "Below 5*10^16 the maximum is 5, attained only by the fifth taxicab number, so the task is a calibrated rediscovery of Ta(5). Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-sums-of-two-cubes-many-ways",
+  "name": "Integers up to 5*10^16 with many representations as sums of two positive cubes",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> {'m': m, 'pairs': [[a, b], ...]} with 2 <= m <= 5*10^16 and distinct pairs of positive integers a <= b with a^3 + b^3 = m (checked exactly). Maximize the number of pairs; the optimum is 5, attained only by the fifth taxicab number 48988659276962496. Below 5*10^16 the maximum is 5, attained only by the fifth taxicab number, so the task is a calibrated rediscovery of Ta(5).",
+  "benchmark": "Integers up to 5*10^16 with many representations as sums of two positive cubes",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://cs.uwaterloo.ca/journals/JIS/wilson10.html",
+      "type": "paper",
+      "locator": "David W. Wilson, The Fifth Taxicab Number is 48988659276962496 (1999). Journal of Integer Sequences article inspected: Wilson's exhaustive search listed every 3-, 4- and 5-way sum of two positive cubes below 5*10^16, and the only 5-way sum found was Ta(5) = 48988659276962496, so no integer below 5*10^16 has six representations. Erdős Problem #829 page inspected (Mordell: unbounded; Mahler: more than (log n)^(1/4) representations infinitely often; Stewart: (log n)^(11/13)). OEIS A011541 inspected. Below 5*10^16 the maximum is 5, attained only by the fifth taxicab number, so the task is a calibrated rediscovery of Ta(5)."
+    },
+    {
+      "url": "https://www.erdosproblems.com/829",
+      "type": "archive",
+      "locator": "Erdős Problem #829 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000685",
+      "type": "benchmark",
+      "locator": "JSP-000685; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case; unordered representations by positive cubes (the taxicab convention).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 5,
+    "statement": "No integer below 5*10^16 is a sum of two positive cubes in six ways, and 48988659276962496 is the only one with five (Wilson 1999, exhaustive search).",
+    "sources": [
+      {
+        "title": "The Fifth Taxicab Number is 48988659276962496",
+        "url": "https://cs.uwaterloo.ca/journals/JIS/wilson10.html",
+        "authors": "David W. Wilson",
+        "year": 1999
+      },
+      {
+        "title": "OEIS A011541: Taxicab numbers",
+        "url": "https://oeis.org/A011541"
+      },
+      {
+        "title": "Cubic Thue Equations with Many Solutions",
+        "url": "https://doi.org/10.1093/imrn/rnn040",
+        "authors": "C. L. Stewart",
+        "year": 2008
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 829,
+      "url": "https://www.erdosproblems.com/829",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #829, https://www.erdosproblems.com/829, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how many representations an integer can have as a sum of two cubes (Erdős Problem #829 asks whether the count is at most polylogarithmic).",
+    "importance_rationale": "Representation counts of binary cubic forms are tied to Thue equations and ranks of elliptic curves; Erdős asked for polylogarithmic upper bounds.",
+    "papers": [
+      {
+        "title": "The Fifth Taxicab Number is 48988659276962496",
+        "url": "https://cs.uwaterloo.ca/journals/JIS/wilson10.html",
+        "task_relation": "Below 5*10^16 the maximum is 5, attained only by the fifth taxicab number, so the task is a calibrated rediscovery of Ta(5).",
+        "primary_goal": "Determine how many representations an integer can have as a sum of two cubes (Erdős Problem #829 asks whether the count is at most polylogarithmic).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Journal of Integer Sequences article inspected: Wilson's exhaustive search listed every 3-, 4- and 5-way sum of two positive cubes below 5*10^16, and the only 5-way sum found was Ta(5) = 48988659276962496, so no integer below 5*10^16 has six representations. Erdős Problem #829 page inspected (Mordell: unbounded; Mahler: more than (log n)^(1/4) representations infinitely often; Stewart: (log n)^(11/13)). OEIS A011541 inspected.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

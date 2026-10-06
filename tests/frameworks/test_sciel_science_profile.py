@@ -65,7 +65,7 @@ def test_science_inventory_is_explicit_and_preserves_default_cpu_selection():
     tasks = get_catalog()["tasks"]
     ordinary = preflight.inventory(tasks, ROOT / "tasks")
     science = preflight.inventory(tasks, ROOT / "tasks", "science", SCIENCE_IMAGE_ID)
-    assert len(science) == len(ordinary) == 959
+    assert len(science) == len(ordinary) == 1163
     assert {r["task_id"] for r in science if r["status"] == "seed_check_pending"} == set(SCIENCE_TASK_REQUIREMENTS)
     assert {r["task_id"] for r in science if r["status"] == "seed_check_deferred"} == {
         r["task_id"] for r in ordinary if r["status"] == "seed_check_pending"}

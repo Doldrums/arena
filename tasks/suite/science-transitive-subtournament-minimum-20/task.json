@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0",
+  "id": "science-transitive-subtournament-minimum-20",
+  "name": "Tournaments with small largest transitive subtournaments",
+  "description": "construct() -> 190 integer bits, one for each pair (i,j), i<j, in lexicographic order on 20 vertices. Bit 0 orients i to j and bit 1 orients j to i. Minimize the exact largest transitive induced subtournament, computed by source-vertex subset recursion. The local n=20 task minimizes the largest transitive subset rather than reproducing the larger R(7) computation. This small order is labelled rediscovery, with no new-bound claim.",
+  "paper_ids": [
+    "science-prize_d"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1007/s00373-022-02560-5",
+      "type": "paper",
+      "locator": "David Neiman, John Mackey, and Marijn Heule, Tighter Bounds on Directed Ramsey Number R(7) (2022). Publisher abstract inspected. It defines directed Ramsey numbers and describes exact computer-assisted work on tournaments avoiding transitive subtournaments. The local n=20 task minimizes the largest transitive subset rather than reproducing the larger R(7) computation. This small order is labelled rediscovery, with no new-bound claim."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-1001-1022.md#JSP-001021",
+      "type": "benchmark",
+      "locator": "JSP-001021; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Tournaments with small largest transitive subtournaments",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_d_transitive_tournament",
+    "science_family": "science_prize_d_transitive_tournament",
+    "parameters": {
+      "n": 20
+    },
+    "interface": "construct() -> 190 integer bits, one for each pair (i,j), i<j, in lexicographic order on 20 vertices. Bit 0 orients i to j and bit 1 orients j to i. Minimize the exact largest transitive induced subtournament, computed by source-vertex subset recursion.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-001021"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_d_transitive_tournament",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "The 20-vertex case is a bounded rediscovery task, not a new solution to the all-order problem or the paper's R(7) result. No SAT solver, published tournament, or upstream implementation is copied.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_d.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 5,
+    "statement": "Every tournament on n vertices contains a transitive subtournament on floor(log2 n) + 1 vertices (Stearns), which is 5 for n = 20. The Paley tournament on 23 vertices restricted to 20 vertices has no transitive subtournament on 6 (scripts/check_state_of_the_art.py). The largest tournament without one has 27 vertices (Sanchez-Flores; confirmed by Neiman, Mackey and Heule). Erdős Problem #1216 was answered negatively by Reid and Parker.",
+    "sources": [
+      {
+        "title": "The Voting Problem",
+        "url": "https://doi.org/10.1080/00029890.1959.11989405",
+        "authors": "Richard Stearns",
+        "year": 1959
+      },
+      {
+        "title": "Tighter Bounds on Directed Ramsey Number R(7)",
+        "url": "https://doi.org/10.1007/s00373-022-02560-5",
+        "authors": "David Neiman, John Mackey, Marijn Heule",
+        "year": 2022
+      },
+      {
+        "title": "Disproof of a conjecture of Erdős and Moser on tournaments",
+        "url": "https://doi.org/10.1016/s0021-9800(70)80061-8",
+        "authors": "K. B. Reid, E. T. Parker",
+        "year": 1970
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1216,
+      "url": "https://www.erdosproblems.com/1216",
+      "status": "disproved",
+      "citation": "T. F. Bloom, Erdős Problem #1216, https://www.erdosproblems.com/1216, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how large a tournament can be while avoiding a prescribed transitive subtournament.",
+    "importance_rationale": "The finite exact search studies directed Ramsey obstructions, the same substantive combinatorial problem as the cited research.",
+    "papers": [
+      {
+        "title": "Tighter Bounds on Directed Ramsey Number R(7)",
+        "url": "https://doi.org/10.1007/s00373-022-02560-5",
+        "task_relation": "The local n=20 task minimizes the largest transitive subset rather than reproducing the larger R(7) computation. This small order is labelled rediscovery, with no new-bound claim.",
+        "primary_goal": "Determine how large a tournament can be while avoiding a prescribed transitive subtournament.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "Primary research directly studies this mathematical objective; finite scope and rediscovery status are explicit.",
+    "verification_basis": "Publisher abstract inspected. It defines directed Ramsey numbers and describes exact computer-assisted work on tournaments avoiding transitive subtournaments.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

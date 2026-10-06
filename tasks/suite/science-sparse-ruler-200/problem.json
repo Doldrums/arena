@@ -1,0 +1,112 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_sparse_ruler",
+  "direction": "minimize",
+  "contract": "construct() -> distinct integer marks in 0..200 such that every distance 1..200 is a difference of two marks. Minimize the number of marks; the optimum is 25.",
+  "parameters": {
+    "n": 200
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "For N = 200 the minimum is 25, so the task recovers an optimal ruler. Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-sparse-ruler-200",
+  "name": "Sparse ruler of length 200 with the fewest marks",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> distinct integer marks in 0..200 such that every distance 1..200 is a difference of two marks. Minimize the number of marks; the optimum is 25. For N = 200 the minimum is 25, so the task recovers an optimal ruler.",
+  "benchmark": "Sparse ruler of length 200 with the fewest marks",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1112/jlms/s1-31.2.160",
+      "type": "paper",
+      "locator": "John Leech, On the Representation of 1, 2, …, n by Differences (1956). Crossref record inspected; Erdős Problem #170 page inspected (Erdős and Gál proved that lim F(N)/N^(1/2) exists; it lies in [1.56, sqrt 3] by Leech and Wichmann). OEIS A046693 inspected (b-file by Pegg for lengths 0..213): the minimal number of marks for length 200 is 25. For N = 200 the minimum is 25, so the task recovers an optimal ruler."
+    },
+    {
+      "url": "https://www.erdosproblems.com/170",
+      "type": "archive",
+      "locator": "Erdős Problem #170 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000167",
+      "type": "benchmark",
+      "locator": "JSP-000167; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case from the OEIS table.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 25,
+    "statement": "A sparse ruler of length 200 needs 25 marks (OEIS A046693).",
+    "sources": [
+      {
+        "title": "OEIS A046693: Minimal number of marks of a sparse ruler of length n",
+        "url": "https://oeis.org/A046693"
+      },
+      {
+        "title": "On the Representation of 1, 2, …, n by Differences",
+        "url": "https://doi.org/10.1112/jlms/s1-31.2.160",
+        "authors": "John Leech",
+        "year": 1956
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 170,
+      "url": "https://www.erdosproblems.com/170",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #170, https://www.erdosproblems.com/170, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the minimal number of marks of a sparse ruler of length N and the limit of F(N)/N^(1/2) (Erdős Problem #170).",
+    "importance_rationale": "Sparse rulers are extremal difference bases with applications to minimum-redundancy antenna arrays; the limiting constant is open.",
+    "papers": [
+      {
+        "title": "On the Representation of 1, 2, …, n by Differences",
+        "url": "https://doi.org/10.1112/jlms/s1-31.2.160",
+        "task_relation": "For N = 200 the minimum is 25, so the task recovers an optimal ruler.",
+        "primary_goal": "Determine the minimal number of marks of a sparse ruler of length N and the limit of F(N)/N^(1/2) (Erdős Problem #170).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #170 page inspected (Erdős and Gál proved that lim F(N)/N^(1/2) exists; it lies in [1.56, sqrt 3] by Leech and Wichmann). OEIS A046693 inspected (b-file by Pegg for lengths 0..213): the minimal number of marks for length 200 is 25.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

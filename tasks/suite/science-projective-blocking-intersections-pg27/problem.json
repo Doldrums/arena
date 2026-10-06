@@ -1,0 +1,104 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_d_blocking_set",
+  "direction": "minimize",
+  "contract": "construct() -> distinct point indices in 0..56 for PG(2,7). Point order is (1,x,y) lexicographically for x,y=0..6, then (0,1,x), then (0,0,1). Every projective line must meet the set. Minimize the maximum intersection with any line; line-contained sets are allowed but score at least 8.",
+  "parameters": {
+    "q": 7
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "The local task searches all point subsets in the prime plane of order seven; it does not constrain candidates to unions of algebraic curves or reproduce that paper's proof. Exact local certificates are not Lean proofs. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-projective-blocking-intersections-pg27",
+  "name": "Projective blocking sets with small line intersections in PG(2,7)",
+  "paper_ids": [
+    "science-prize_d"
+  ],
+  "description": "construct() -> distinct point indices in 0..56 for PG(2,7). Point order is (1,x,y) lexicographically for x,y=0..6, then (0,1,x), then (0,0,1). Every projective line must meet the set. Minimize the maximum intersection with any line; line-contained sets are allowed but score at least 8. The local task searches all point subsets in the prime plane of order seven; it does not constrain candidates to unions of algebraic curves or reproduce that paper's proof. The optimum is 4: an exhaustive search shows that no blocking set meets every line in at most 3 points, so this is a rediscovery task.",
+  "benchmark": "Projective blocking sets with small line intersections in PG(2,7)",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2510.15332",
+      "type": "paper",
+      "locator": "Shamil Asgarli, Dragos Ghioca, and Chi Hoi Yip, Blocking sets from a union of plane curves (2025). Author abstract inspected. It explicitly motivates constructions by Erdős' question on blocking sets meeting every line only a few times. The local task searches all point subsets in the prime plane of order seven; it does not constrain candidates to unions of algebraic curves or reproduce that paper's proof."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000964",
+      "type": "benchmark",
+      "locator": "JSP-000964; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case: No blocking set of PG(2,7) meets every line in at most 3 points, while one meeting every line in at most 4 points exists.",
+    "A result in this one Desarguesian plane says nothing about a uniform constant across arbitrary finite planes. The seed is a full line and is explicitly a trivial blocking set.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_d",
+      "title": "Problem-bank constructions: geometry and discrete structures: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.1997.10504616"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 4,
+    "statement": "No blocking set of PG(2,7) meets every line in at most 3 points, while one meeting every line in at most 4 points exists. An exhaustive branch-and-bound search (scripts/check_state_of_the_art.py) establishes both, so the optimum is 4. The uniform question over all projective planes is Erdős Problem #1159.",
+    "sources": [
+      {
+        "title": "Blocking sets from a union of plane curves",
+        "url": "https://arxiv.org/abs/2510.15332",
+        "authors": "Shamil Asgarli, Dragos Ghioca, Chi Hoi Yip",
+        "year": 2025
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1159,
+      "url": "https://www.erdosproblems.com/1159",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1159, https://www.erdosproblems.com/1159, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Construct projective-plane blocking sets whose intersections with all lines are small.",
+    "importance_rationale": "Every verified improvement gives a finite construction for the same blocking-set intersection objective motivating the paper.",
+    "papers": [
+      {
+        "title": "Blocking sets from a union of plane curves",
+        "url": "https://arxiv.org/abs/2510.15332",
+        "task_relation": "The local task searches all point subsets in the prime plane of order seven; it does not constrain candidates to unions of algebraic curves or reproduce that paper's proof.",
+        "primary_goal": "Construct projective-plane blocking sets whose intersections with all lines are small.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "Primary research directly studies this mathematical objective; finite scope and rediscovery status are explicit.",
+    "verification_basis": "Author abstract inspected. It explicitly motivates constructions by Erdős' question on blocking sets meeting every line only a few times.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_squarefree_sums",
+  "direction": "maximize",
+  "contract": "construct() -> distinct integers in 1..512 such that every sum a + b with a <= b (including 2a) is squarefree. Maximize the size; the optimum is 24.",
+  "parameters": {
+    "n": 512
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "For N = 512 the maximum is 24, so the task recovers an extremal set. The bank entry is the infinite question (#1103); this is its finite analogue (#1109). Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-squarefree-pairwise-sums-512",
+  "name": "Large subsets of {1, ..., 512} whose pairwise sums are all squarefree",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> distinct integers in 1..512 such that every sum a + b with a <= b (including 2a) is squarefree. Maximize the size; the optimum is 24. For N = 512 the maximum is 24, so the task recovers an extremal set. The bank entry is the infinite question (#1103); this is its finite analogue (#1109).",
+  "benchmark": "Large subsets of {1, ..., 512} whose pairwise sums are all squarefree",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.4213/im486",
+      "type": "paper",
+      "locator": "Sergei V. Konyagin, Problems on the set of squarefree numbers (2004). Crossref record inspected; Erdős Problems #1103 (infinite sequences) and #1109 (the finite version) inspected: Erdős and Sárközy proved log N << f(N) << N^(3/4) log N and Konyagin improved this to (log log N)(log N)^2 << f(N) << N^(11/15+o(1)); van Doorn and Tao bounded the growth of infinite sequences. OEIS A392164 inspected (exact branch and bound by Carney): f(512) = 24. For N = 512 the maximum is 24, so the task recovers an extremal set. The bank entry is the infinite question (#1103); this is its finite analogue (#1109)."
+    },
+    {
+      "url": "https://www.erdosproblems.com/1103",
+      "type": "archive",
+      "locator": "Erdős Problem #1103 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000915",
+      "type": "benchmark",
+      "locator": "JSP-000915; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case from the OEIS table (finite analogue of the bank's infinite question).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 24,
+    "statement": "The largest subset of {1..512} with all pairwise sums squarefree has 24 elements (OEIS A392164).",
+    "sources": [
+      {
+        "title": "OEIS A392164: Size of the largest subset S of {1..N} such that every element of S+S is squarefree",
+        "url": "https://oeis.org/A392164"
+      },
+      {
+        "title": "Problems on the set of squarefree numbers",
+        "url": "https://doi.org/10.4213/im486",
+        "authors": "Sergei V. Konyagin",
+        "year": 2004
+      },
+      {
+        "title": "Erdős Problem #1109 (finite version)",
+        "url": "https://www.erdosproblems.com/1109"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1103,
+      "url": "https://www.erdosproblems.com/1103",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1103, https://www.erdosproblems.com/1103, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how large a set can be when all pairwise sums are squarefree, and how fast an infinite such sequence must grow.",
+    "importance_rationale": "Squarefree sumsets test the interaction of additive structure with multiplicative sieves; the gap between polylogarithmic and power bounds is open.",
+    "papers": [
+      {
+        "title": "Problems on the set of squarefree numbers",
+        "url": "https://doi.org/10.4213/im486",
+        "task_relation": "For N = 512 the maximum is 24, so the task recovers an extremal set. The bank entry is the infinite question (#1103); this is its finite analogue (#1109).",
+        "primary_goal": "Determine how large a set can be when all pairwise sums are squarefree, and how fast an infinite such sequence must grow.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problems #1103 (infinite sequences) and #1109 (the finite version) inspected: Erdős and Sárközy proved log N << f(N) << N^(3/4) log N and Konyagin improved this to (log log N)(log N)^2 << f(N) << N^(11/15+o(1)); van Doorn and Tao bounded the growth of infinite sequences. OEIS A392164 inspected (exact branch and bound by Carney): f(512) = 24.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

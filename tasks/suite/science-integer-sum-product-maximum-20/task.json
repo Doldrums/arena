@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "id": "science-integer-sum-product-maximum-20",
+  "name": "Integer sum-product extremal sets",
+  "description": "construct() -> n=20 distinct positive integers <=maximum=10000. Compute A+A and A*A with equal summands/factors allowed. Minimize max(|A+A|,|A*A|). Exactly 20 distinct positive integers at most 10000, minimizing the maximum of sumset and product-set sizes. This uses integers rather than arbitrary reals, and includes diagonal pairs.",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/0806.1040",
+      "type": "paper",
+      "locator": "József Solymosi, An upper bound on the multiplicative energy. Author abstract inspected: lower bounds on max(|A+A|,|AA|); the later publication has title Bounding multiplicative energy by the sumset."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000075",
+      "type": "benchmark",
+      "locator": "JSP-000075; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; fixed finite mathematical profiles."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Integer sum-product extremal sets",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_a_sum_product",
+    "science_family": "science_prize_a_sum_product",
+    "parameters": {
+      "n": 20,
+      "maximum": 10000
+    },
+    "interface": "construct() -> n=20 distinct positive integers <=maximum=10000. Compute A+A and A*A with equal summands/factors allowed. Minimize max(|A+A|,|A*A|).",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000075"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_a_sum_product",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Exactly 20 distinct positive integers at most 10000, minimizing the maximum of sumset and product-set sizes. This uses integers rather than arbitrary reals, and includes diagonal pairs.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/a-checks.json",
+    "tests": "tests/test_science_prize_a.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented minimum of max(|A+A|, |AA|) for 20-element integer sets. The Erdős-Szemerédi sum-product conjecture is Erdős Problem #52. Solymosi proved max(|A+A|, |AA|) >= |A|^(4/3)/(2 ceil(log |A|))^(1/3) for sets of real numbers.",
+    "sources": [
+      {
+        "title": "Bounding multiplicative energy by the sumset",
+        "url": "https://arxiv.org/abs/0806.1040",
+        "authors": "József Solymosi",
+        "year": 2009
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 52,
+      "url": "https://www.erdosproblems.com/52",
+      "status": "open ($250)",
+      "citation": "T. F. Bloom, Erdős Problem #52, https://www.erdosproblems.com/52, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Quantify the impossibility of simultaneously small additive and multiplicative growth.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "An upper bound on the multiplicative energy",
+        "url": "https://arxiv.org/abs/0806.1040",
+        "task_relation": "Exactly 20 distinct positive integers at most 10000, minimizing the maximum of sumset and product-set sizes. This uses integers rather than arbitrary reals, and includes diagonal pairs.",
+        "primary_goal": "Quantify the impossibility of simultaneously small additive and multiplicative growth.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author abstract inspected: lower bounds on max(|A+A|,|AA|); the later publication has title Bounding multiplicative energy by the sumset.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

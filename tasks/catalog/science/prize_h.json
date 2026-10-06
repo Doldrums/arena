@@ -1,0 +1,2692 @@
+[
+  {
+    "id": "science-lehmer-small-mahler-measure-degree-12",
+    "name": "Smallest Mahler measure above one in degree at most 12 (Lehmer's problem)",
+    "description": "construct() -> integer coefficients [c_0, ..., c_d] (constant term first) with 1 <= d <= 12, |c_i| <= 3 and c_d != 0. Polynomials equal to +-x^k times a product of cyclotomic polynomials (measure exactly one) are rejected by exact polynomial division. The score is the Mahler measure |c_d| * prod max(1, |z|) over all complex roots z (Aberth iteration, reported to 10 decimals). Minimize; the optimum is Lehmer's number 1.1762808183. Among integer polynomials of degree at most 12 the least measure above one is Lehmer's number, so the task recovers Lehmer's polynomial (up to sign, reversal and cyclotomic factors).",
+    "family": "science_prize_h_lehmer",
+    "parameters": {
+      "max_degree": 12,
+      "max_coefficient": 3
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1080/10586458.2008.10128872",
+        "type": "paper",
+        "locator": "Michael J. Mossinghoff, Georges Rhin and Qiang Wu, Minimal Mahler Measures (2008). Crossref records inspected for Lehmer (Ann. of Math. 1933), Smyth (Bull. LMS 1971) and Mossinghoff, Rhin and Wu (Experimental Math. 2008). Lehmer's polynomial x^10 + x^9 - x^7 - x^6 - x^5 - x^4 - x^3 + x + 1 has measure 1.17628081826; Mossinghoff, Rhin and Wu determined the minimal measure of noncyclotomic irreducible polynomials of every even degree up to 54, none below Lehmer's number, and Smyth proved that nonreciprocal polynomials (which include every noncyclotomic irreducible polynomial of odd degree) have measure at least 1.3247. Measures multiply over factors, so no integer polynomial of degree at most 12 has measure in (1, 1.17628). Among integer polynomials of degree at most 12 the least measure above one is Lehmer's number, so the task recovers Lehmer's polynomial (up to sign, reversal and cyclotomic factors)."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000025",
+        "type": "benchmark",
+        "locator": "JSP-000025; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case. The measure is evaluated in floating point after an exact cyclotomic test (accuracy about 1e-10).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 1.1762808183,
+      "statement": "Lehmer's number 1.17628081826 (degree 10) is the least Mahler measure above one for integer polynomials of degree at most 54 (Mossinghoff, Rhin and Wu 2008 for even degrees; Smyth 1971 for nonreciprocal polynomials).",
+      "sources": [
+        {
+          "title": "Minimal Mahler Measures",
+          "url": "https://doi.org/10.1080/10586458.2008.10128872",
+          "authors": "Michael J. Mossinghoff, Georges Rhin, Qiang Wu",
+          "year": 2008
+        },
+        {
+          "title": "Factorization of Certain Cyclotomic Functions",
+          "url": "https://doi.org/10.2307/1968172",
+          "authors": "D. H. Lehmer",
+          "year": 1933
+        },
+        {
+          "title": "On the Product of the Conjugates outside the unit circle of an Algebraic Integer",
+          "url": "https://doi.org/10.1112/blms/3.2.169",
+          "authors": "C. J. Smyth",
+          "year": 1971
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": null
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000025"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-consecutive-primes-arithmetic-progression-1e9",
+    "name": "Consecutive primes in arithmetic progression below 10^9",
+    "description": "construct() -> [p, d, k] describing p, p + d, ..., p + (k-1)d with 2 <= k <= 64, 1 <= d <= 5000 and last term at most 10^9. Every term must be prime (deterministic Miller-Rabin) and no prime may lie strictly between consecutive terms. Maximize k; the optimum below 10^9 is 6. Below 10^9 the longest such progressions have six terms (the first starts at 121174811), so the task recovers a six-term progression.",
+    "family": "science_prize_h_cpap",
+    "parameters": {
+      "bound": 1000000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1090/S0025-5718-67-99657-3",
+        "type": "paper",
+        "locator": "L. J. Lander and T. R. Parkin, Consecutive primes in arithmetic progression (1967). Crossref records inspected (Lander and Parkin 1967; Dubner, Forbes, Lygeros, Mizony, Nelson and Zimmermann 2002). OEIS A006560 inspected: the smallest six consecutive primes in arithmetic progression start at 121174811 with difference 30 (Lander and Parkin), and seven terms need a difference of at least 210. A local segmented sieve over all 50,847,534 primes below 10^9 confirmed that no seven consecutive primes below 10^9 form an arithmetic progression. Erdős Problem #141 page inspected. Below 10^9 the longest such progressions have six terms (the first starts at 121174811), so the task recovers a six-term progression."
+      },
+      {
+        "url": "https://www.erdosproblems.com/141",
+        "type": "archive",
+        "locator": "Erdős Problem #141 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000143",
+        "type": "benchmark",
+        "locator": "JSP-000143; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; the bound 10^9 rests on a local exhaustive scan that agrees with OEIS A006560.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 6,
+      "statement": "The longest progressions of consecutive primes below 10^9 have 6 terms, first 121174811 + 30j (Lander and Parkin 1967; OEIS A006560; local scan).",
+      "sources": [
+        {
+          "title": "OEIS A006560: Smallest starting prime for n consecutive primes in arithmetic progression",
+          "url": "https://oeis.org/A006560"
+        },
+        {
+          "title": "Consecutive primes in arithmetic progression",
+          "url": "https://doi.org/10.1090/S0025-5718-67-99657-3",
+          "authors": "L. J. Lander, T. R. Parkin",
+          "year": 1967
+        },
+        {
+          "title": "Ten consecutive primes in arithmetic progression",
+          "url": "https://doi.org/10.1090/S0025-5718-01-01374-6",
+          "authors": "H. Dubner, T. Forbes, N. Lygeros, M. Mizony, H. Nelson, P. Zimmermann",
+          "year": 2002
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 141,
+        "url": "https://www.erdosproblems.com/141",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #141, https://www.erdosproblems.com/141, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000143"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-jacobsthal-covering-first-30-primes",
+    "name": "Covering an initial interval with one residue class for each of the first 30 primes",
+    "description": "construct() -> 30 residues r_1, ..., r_30 with 0 <= r_i < p_i for the first 30 primes 2, 3, ..., 113. The score is the largest L such that every integer 1..L is congruent to r_i modulo p_i for some i. Maximize; the optimum is 329 (Jacobsthal's function of the product of the first 30 primes is 330). For the first 30 primes the optimum is 329, so the task recovers an extremal covering.",
+    "family": "science_prize_h_jacobsthal",
+    "parameters": {
+      "count": 30
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1090/S0025-5718-08-02166-2",
+        "type": "paper",
+        "locator": "Thomas Hagedorn, Computation of Jacobsthal's function h(n) for n < 50 (2009). Crossref record inspected; OEIS A048670 inspected: Jacobsthal's function of the product of the first n primes, a(30) = 330 (Hagedorn computed the values for n < 50). By the Chinese remainder theorem a run of L consecutive integers sharing a factor with the primorial is equivalent to covering 1..L with one class per prime, so the maximal covered length is 329. Erdős Problem #687 page inspected (Y(x) << x^2 by Iwaniec; lower bounds of Ford, Green, Konyagin, Maynard and Tao and later improvements). For the first 30 primes the optimum is 329, so the task recovers an extremal covering."
+      },
+      {
+        "url": "https://www.erdosproblems.com/687",
+        "type": "archive",
+        "locator": "Erdős Problem #687 (open ($1000)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000559",
+        "type": "benchmark",
+        "locator": "JSP-000559; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case (published computation).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 329,
+      "statement": "Jacobsthal's function of the product of the first 30 primes is 330 (Hagedorn 2009; OEIS A048670), so at most 329 consecutive integers can be covered.",
+      "sources": [
+        {
+          "title": "OEIS A048670: Jacobsthal function applied to the product of the first n primes",
+          "url": "https://oeis.org/A048670"
+        },
+        {
+          "title": "Computation of Jacobsthal's function h(n) for n < 50",
+          "url": "https://doi.org/10.1090/S0025-5718-08-02166-2",
+          "authors": "Thomas Hagedorn",
+          "year": 2009
+        },
+        {
+          "title": "Long gaps between primes",
+          "url": "https://doi.org/10.1090/jams/876",
+          "authors": "Kevin Ford, Ben Green, Sergei Konyagin, James Maynard, Terence Tao",
+          "year": 2018
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 687,
+        "url": "https://www.erdosproblems.com/687",
+        "status": "open ($1000)",
+        "citation": "T. F. Bloom, Erdős Problem #687, https://www.erdosproblems.com/687, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000559"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-sums-of-two-cubes-many-ways",
+    "name": "Integers up to 5*10^16 with many representations as sums of two positive cubes",
+    "description": "construct() -> {'m': m, 'pairs': [[a, b], ...]} with 2 <= m <= 5*10^16 and distinct pairs of positive integers a <= b with a^3 + b^3 = m (checked exactly). Maximize the number of pairs; the optimum is 5, attained only by the fifth taxicab number 48988659276962496. Below 5*10^16 the maximum is 5, attained only by the fifth taxicab number, so the task is a calibrated rediscovery of Ta(5).",
+    "family": "science_prize_h_taxicab",
+    "parameters": {
+      "bound": 50000000000000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://cs.uwaterloo.ca/journals/JIS/wilson10.html",
+        "type": "paper",
+        "locator": "David W. Wilson, The Fifth Taxicab Number is 48988659276962496 (1999). Journal of Integer Sequences article inspected: Wilson's exhaustive search listed every 3-, 4- and 5-way sum of two positive cubes below 5*10^16, and the only 5-way sum found was Ta(5) = 48988659276962496, so no integer below 5*10^16 has six representations. Erdős Problem #829 page inspected (Mordell: unbounded; Mahler: more than (log n)^(1/4) representations infinitely often; Stewart: (log n)^(11/13)). OEIS A011541 inspected. Below 5*10^16 the maximum is 5, attained only by the fifth taxicab number, so the task is a calibrated rediscovery of Ta(5)."
+      },
+      {
+        "url": "https://www.erdosproblems.com/829",
+        "type": "archive",
+        "locator": "Erdős Problem #829 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000685",
+        "type": "benchmark",
+        "locator": "JSP-000685; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; unordered representations by positive cubes (the taxicab convention).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 5,
+      "statement": "No integer below 5*10^16 is a sum of two positive cubes in six ways, and 48988659276962496 is the only one with five (Wilson 1999, exhaustive search).",
+      "sources": [
+        {
+          "title": "The Fifth Taxicab Number is 48988659276962496",
+          "url": "https://cs.uwaterloo.ca/journals/JIS/wilson10.html",
+          "authors": "David W. Wilson",
+          "year": 1999
+        },
+        {
+          "title": "OEIS A011541: Taxicab numbers",
+          "url": "https://oeis.org/A011541"
+        },
+        {
+          "title": "Cubic Thue Equations with Many Solutions",
+          "url": "https://doi.org/10.1093/imrn/rnn040",
+          "authors": "C. L. Stewart",
+          "year": 2008
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 829,
+        "url": "https://www.erdosproblems.com/829",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #829, https://www.erdosproblems.com/829, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000685"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-distinct-divisor-counts-run-1e10",
+    "name": "Longest run of consecutive integers with distinct divisor counts below 10^10",
+    "description": "construct() -> {'start': s, 'length': k} with s >= 1, 1 <= k <= 40 and s + k - 1 <= 10^10. The divisor counts tau(s), ..., tau(s + k - 1) must be pairwise distinct (exact factorization). Maximize k; the optimum is 14 (first run at 1745175039). Runs ending below 10^10 have at most 14 terms (first at 1745175039), so the task recovers such a run.",
+    "family": "science_prize_h_divisor_run",
+    "parameters": {
+      "bound": 10000000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1112/plms/s3-2.1.257",
+        "type": "paper",
+        "locator": "P. Erdős and L. Mirsky, The Distribution of Values of the Divisor Function d(n) (1952). Crossref record inspected; Erdős Problem #945 page inspected (Erdős and Mirsky proved (log x)^(1/2)/log log x << F(x) << exp(O((log x)^(1/2)/log log x)); Beker improved the upper bound; Guy B18). OEIS A048892 inspected: the first run of 14 consecutive integers with distinct divisor counts starts at 1745175039 and the first run of 15 at 31287652672 > 10^10, so F(10^10) = 14. Runs ending below 10^10 have at most 14 terms (first at 1745175039), so the task recovers such a run."
+      },
+      {
+        "url": "https://www.erdosproblems.com/945",
+        "type": "archive",
+        "locator": "Erdős Problem #945 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000786",
+        "type": "benchmark",
+        "locator": "JSP-000786; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS first-occurrence table.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 14,
+      "statement": "F(10^10) = 14: the first run of 14 integers with distinct divisor counts starts at 1745175039 and the first run of 15 at 31287652672 (OEIS A048892).",
+      "sources": [
+        {
+          "title": "OEIS A048892: Start of n consecutive integers with distinct number of divisors",
+          "url": "https://oeis.org/A048892"
+        },
+        {
+          "title": "The Distribution of Values of the Divisor Function d(n)",
+          "url": "https://doi.org/10.1112/plms/s3-2.1.257",
+          "authors": "P. Erdős, L. Mirsky",
+          "year": 1952
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 945,
+        "url": "https://www.erdosproblems.com/945",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #945, https://www.erdosproblems.com/945, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000786"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-powerful-numbers-between-squares",
+    "name": "Many powerful numbers strictly between consecutive squares (k <= 10^9)",
+    "description": "construct() -> an integer k with 1 <= k <= 10^9. The score is the number of powerful integers (p | n implies p^2 | n) strictly between k^2 and (k+1)^2, counted exactly through the unique form a^2 b^3 with b squarefree. Maximize; the optimum is 11 (first at k = 472532614). For k <= 10^9 the maximum is 11. Erdős's h(n) counts [n^2, (n+1)^2) and so also includes the square n^2; the task counts the open interval as in OEIS A119241.",
+    "family": "science_prize_h_powerful",
+    "parameters": {
+      "bound": 1000000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1112/S0025579300010056",
+        "type": "paper",
+        "locator": "P. Shiu, On the number of square-full integers between successive squares (1980). Crossref record inspected; OEIS A119242 inspected: the least k with exactly 11 powerful numbers strictly between k^2 and (k+1)^2 is 472532614, the least with 12 is 78102676912, and a(n) > 10^11 for n >= 13 (Donovan Johnson), so 11 is the maximum for k <= 10^9. Erdős Problem #942 page inspected (Shiu proved every count occurs with positive density; De Koninck and Luca gave growth rates for large counts). For k <= 10^9 the maximum is 11. Erdős's h(n) counts [n^2, (n+1)^2) and so also includes the square n^2; the task counts the open interval as in OEIS A119241."
+      },
+      {
+        "url": "https://www.erdosproblems.com/942",
+        "type": "archive",
+        "locator": "Erdős Problem #942 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000783",
+        "type": "benchmark",
+        "locator": "JSP-000783; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; the open interval is counted (Erdős's h(n) is one larger).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 11,
+      "statement": "For k <= 10^9 at most 11 powerful numbers lie strictly between k^2 and (k+1)^2; first at k = 472532614 (OEIS A119242).",
+      "sources": [
+        {
+          "title": "OEIS A119242: Least number k such that there are exactly n powerful numbers between k^2 and (k+1)^2",
+          "url": "https://oeis.org/A119242"
+        },
+        {
+          "title": "On the number of square-full integers between successive squares",
+          "url": "https://doi.org/10.1112/S0025579300010056",
+          "authors": "P. Shiu",
+          "year": 1980
+        },
+        {
+          "title": "Sur la proximité des nombres puissants",
+          "url": "https://doi.org/10.4064/aa114-2-4",
+          "authors": "Jean-Marie De Koninck, Florian Luca",
+          "year": 2004
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 942,
+        "url": "https://www.erdosproblems.com/942",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #942, https://www.erdosproblems.com/942, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000783"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-distinct-consecutive-prime-gaps-1e8",
+    "name": "Longest string of pairwise distinct consecutive prime gaps below 10^8",
+    "description": "construct() -> {'start': p, 'length': k} with p prime, 1 <= k <= 200, and the k + 1 consecutive primes beginning at p all at most 10^8. The k gaps between them must be pairwise distinct. Maximize k; the optimum below 10^8 is 21. Among primes below 10^8 the longest string has 21 distinct gaps, so the task recovers it.",
+    "family": "science_prize_h_prime_gaps",
+    "parameters": {
+      "bound": 100000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.4064/aa167-3-4",
+        "type": "paper",
+        "locator": "William D. Banks, Tristan Freiberg and Caroline L. Turnage-Butterbaugh, Consecutive primes in tuples (2015). Crossref record inspected (the paper produces arbitrarily long strings of consecutive primes with strictly increasing gaps, answering a question of Erdős and Turán). Erdős Problem #852 page inspected (Brun's sieve gives h(x) -> infinity). OEIS A053597 and its record positions A078515 inspected; the longest string of distinct gaps among primes below 10^8 was recomputed locally with a complete sieve: 21 gaps, starting at the prime 69931991, consistent with the OEIS records. Among primes below 10^8 the longest string has 21 distinct gaps, so the task recovers it."
+      },
+      {
+        "url": "https://www.erdosproblems.com/852",
+        "type": "archive",
+        "locator": "Erdős Problem #852 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000705",
+        "type": "benchmark",
+        "locator": "JSP-000705; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case recomputed locally from a complete sieve and consistent with OEIS A053597/A078515.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 21,
+      "statement": "The longest string of pairwise distinct consecutive gaps among primes below 10^8 has 21 gaps, starting at 69931991 (record positions OEIS A078515; recomputed locally).",
+      "sources": [
+        {
+          "title": "OEIS A078515: Numbers n such that A053597(n) sets a new record",
+          "url": "https://oeis.org/A078515"
+        },
+        {
+          "title": "OEIS A053597: Number of distinct values among consecutive prime gaps before the first duplicate",
+          "url": "https://oeis.org/A053597"
+        },
+        {
+          "title": "Consecutive primes in tuples",
+          "url": "https://doi.org/10.4064/aa167-3-4",
+          "authors": "William D. Banks, Tristan Freiberg, Caroline L. Turnage-Butterbaugh",
+          "year": 2015
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 852,
+        "url": "https://www.erdosproblems.com/852",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #852, https://www.erdosproblems.com/852, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000705"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-runs-with-large-prime-factors",
+    "name": "Runs of consecutive integers each with a prime factor larger than the run length (start at most 10^4)",
+    "description": "construct() -> {'start': s, 'length': k} with 1 <= s <= 10^4 and 1 <= k <= 200. Each of s, ..., s + k - 1 must have a prime factor greater than k (exact factorization). Maximize k; the optimum is 30 (6961, ..., 6990). For runs starting at most 10^4 the maximum is 30, so the task recovers the run 6961..6990 or an equivalent.",
+    "family": "science_prize_h_large_factor_run",
+    "parameters": {
+      "bound": 10000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://github.com/QuanyuTang/erdos-problem-962/blob/main/On_Erd%C5%91s_Problem_962.pdf",
+        "type": "paper",
+        "locator": "Quanyu Tang, An improved lower bound on Erdős problem #962 (2025). Research note linked from the Erdős Problems page inspected (proves log k(n) >= (1/sqrt 2 - o(1)) sqrt(log n log log n)). Erdős Problem #962 page inspected: k(n) is the largest k such that some m <= n has m+1, ..., m+k each divisible by a prime > k; Erdős had log k(n) >> (log n log log n)^(1/2) and Tao proved k(n) <= (1+o(1)) n^(1/2). OEIS A327909 inspected: the smallest start of a run of n or more integers each with a prime factor greater than n is 6961 for n = 30 and 10305 for n = 31 (the sequence is nondecreasing), so the longest run starting at most 10^4 has 30 terms. For runs starting at most 10^4 the maximum is 30, so the task recovers the run 6961..6990 or an equivalent."
+      },
+      {
+        "url": "https://www.erdosproblems.com/962",
+        "type": "archive",
+        "locator": "Erdős Problem #962 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000800",
+        "type": "benchmark",
+        "locator": "JSP-000800; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS first-occurrence table.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 30,
+      "statement": "The longest run starting at most 10^4 in which each term has a prime factor exceeding the run length has 30 terms (first 6961..6990); the first run of 31 starts at 10305 (OEIS A327909).",
+      "sources": [
+        {
+          "title": "OEIS A327909: Smallest start of a run of n or more integers having a prime factor greater than n",
+          "url": "https://oeis.org/A327909"
+        },
+        {
+          "title": "An improved lower bound on Erdős problem #962",
+          "url": "https://github.com/QuanyuTang/erdos-problem-962/blob/main/On_Erd%C5%91s_Problem_962.pdf",
+          "authors": "Quanyu Tang",
+          "year": 2025
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 962,
+        "url": "https://www.erdosproblems.com/962",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #962, https://www.erdosproblems.com/962, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000800"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-totient-value-with-1000-preimages",
+    "name": "Smallest totient value with exactly 1000 preimages",
+    "description": "construct() -> an integer m with 1 <= m <= 10^8 such that phi(x) = m has exactly 1000 solutions x (counted exactly by recursion over the primes p with p - 1 dividing m). Minimize m; the optimum is 1360800. The least value with exactly 1000 preimages is 1360800, so the task recovers it.",
+    "family": "science_prize_h_totient",
+    "parameters": {
+      "k": 1000,
+      "maximum": 100000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.2307/121103",
+        "type": "paper",
+        "locator": "Kevin Ford, The Number of Solutions of φ(x) = m (1999). Crossref record inspected: Ford proved Sierpiński's conjecture that every multiplicity k >= 2 occurs. OEIS A007374 inspected (b-file by Noe, Johnson and McCranie): the smallest m with exactly 1000 totient preimages is 1360800; the count for 1360800 was reproduced locally. The least value with exactly 1000 preimages is 1360800, so the task recovers it."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000677",
+        "type": "benchmark",
+        "locator": "JSP-000677; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table. No Erdős Problems page corresponds to this bank entry.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 1360800,
+      "statement": "The least m with exactly 1000 solutions of phi(x) = m is 1360800 (OEIS A007374).",
+      "sources": [
+        {
+          "title": "OEIS A007374: Smallest k such that phi(x) = k has exactly n solutions",
+          "url": "https://oeis.org/A007374"
+        },
+        {
+          "title": "The Number of Solutions of φ(x) = m",
+          "url": "https://doi.org/10.2307/121103",
+          "authors": "Kevin Ford",
+          "year": 1999
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": null
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000677"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-narrow-factorization-of-30-factorial",
+    "name": "Narrowest factorization of 30! into increasing factors",
+    "description": "construct() -> strictly increasing positive integers a_1 < ... < a_t with 2 <= t <= 30 and product exactly 30!. Minimize a_t - a_1; the optimum is 27. For n = 30 the optimum span is 27, so the task recovers an optimal factorization.",
+    "family": "science_prize_h_factorial_span",
+    "parameters": {
+      "n": 30
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/0022-314X(92)90020-P",
+        "type": "paper",
+        "locator": "Daniel Berend and Charles F. Osgood, On the equation P(x) = n! and a question of Erdős (1992). Crossref records inspected (Berend and Osgood 1992; Bui, Pratt and Zaharescu 2023). Erdős Problem #393 page inspected: f(n) is the least m with n! = a_1...a_t, a_1 < ... < a_t = a_1 + m; Erdős and Graham did not know whether f(n) = 1 infinitely often, and f(n) = m has o(N) solutions n <= N for each m. OEIS A388302 inspected: f(30) = 27. For n = 30 the optimum span is 27, so the task recovers an optimal factorization."
+      },
+      {
+        "url": "https://www.erdosproblems.com/393",
+        "type": "archive",
+        "locator": "Erdős Problem #393 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000324",
+        "type": "benchmark",
+        "locator": "JSP-000324; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 27,
+      "statement": "f(30) = 27 (OEIS A388302).",
+      "sources": [
+        {
+          "title": "OEIS A388302: Smallest m >= 1 such that n! = b_1*...*b_t with b_1 < ... < b_t and m = b_t - b_1",
+          "url": "https://oeis.org/A388302"
+        },
+        {
+          "title": "On the equation P(x) = n! and a question of Erdős",
+          "url": "https://doi.org/10.1016/0022-314X(92)90020-P",
+          "authors": "Daniel Berend, Charles F. Osgood",
+          "year": 1992
+        },
+        {
+          "title": "Power savings for counting solutions to polynomial-factorial equations",
+          "url": "https://doi.org/10.1016/j.aim.2023.109021",
+          "authors": "Hung M. Bui, Kyle Pratt, Alexandru Zaharescu",
+          "year": 2023
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 393,
+        "url": "https://www.erdosproblems.com/393",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #393, https://www.erdosproblems.com/393, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000324"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-no-square-subset-sums-134",
+    "name": "Large subsets of {1, ..., 134} with no subset sum a perfect square",
+    "description": "construct() -> distinct integers in 1..134 such that no nonempty subset sums to a perfect square (exact subset-sum bitset). Maximize the size; the optimum is 13. For N = 134 the maximum is 13, so the task recovers an extremal set.",
+    "family": "science_prize_h_square_subset_sums",
+    "parameters": {
+      "n": 134
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/978-3-642-14444-8_14",
+        "type": "paper",
+        "locator": "Hoi H. Nguyen and Van H. Vu, Squares In Sumsets (2010). Crossref record inspected; Erdős Problem #587 page inspected (Erdős: |A| >> N^(1/3) from multiples of a prime; Nguyen and Vu: |A| << N^(1/3)(log N)^O(1)). OEIS A372040 inspected: the least k admitting a 13-element subset of {1..k} without square subset sums is 134. A 14-element example in {1..134} would leave a 13-element one inside {1..133}, so the maximum for N = 134 is 13. For N = 134 the maximum is 13, so the task recovers an extremal set."
+      },
+      {
+        "url": "https://www.erdosproblems.com/587",
+        "type": "archive",
+        "locator": "Erdős Problem #587 (solved (up to logarithmic factors)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000476",
+        "type": "benchmark",
+        "locator": "JSP-000476; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 13,
+      "statement": "The largest subset of {1..134} without square subset sums has 13 elements (OEIS A372040: a(13) = 134).",
+      "sources": [
+        {
+          "title": "OEIS A372040: Smallest k such that some n-element subset of {1..k} has no subset summing to a square",
+          "url": "https://oeis.org/A372040"
+        },
+        {
+          "title": "Squares In Sumsets",
+          "url": "https://doi.org/10.1007/978-3-642-14444-8_14",
+          "authors": "Hoi H. Nguyen, Van H. Vu",
+          "year": 2010
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 587,
+        "url": "https://www.erdosproblems.com/587",
+        "status": "solved (up to logarithmic factors)",
+        "citation": "T. F. Bloom, Erdős Problem #587, https://www.erdosproblems.com/587, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000476"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-sidon-sets-of-squares-68",
+    "name": "Largest Sidon set among the first 68 squares",
+    "description": "construct() -> distinct bases x in 1..68 whose squares form a Sidon set: all sums x^2 + y^2 with x <= y are distinct. Maximize the number of bases; the optimum is 32. For N = 68 the maximum is 32, so the task recovers an extremal set.",
+    "family": "science_prize_h_sidon_squares",
+    "parameters": {
+      "m": 68
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/S0195-6698(85)80027-5",
+        "type": "paper",
+        "locator": "Noga Alon and Paul Erdős, An Application of Graph Theory to Additive Number Theory (1985). Crossref record inspected; Erdős Problem #773 page inspected (Alon and Erdős: N^(2/3-o(1)) from random subsets; Lefmann and Thiele: N^(2/3); upper bound N^(1-c/log log N) by Croot, Mao and Yip). OEIS A390813 inspected: the largest Sidon subset of the first 68 squares has 32 elements (computed by Sievers). For N = 68 the maximum is 32, so the task recovers an extremal set."
+      },
+      {
+        "url": "https://www.erdosproblems.com/773",
+        "type": "archive",
+        "locator": "Erdős Problem #773 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000634",
+        "type": "benchmark",
+        "locator": "JSP-000634; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 32,
+      "statement": "The largest Sidon subset of {1^2, ..., 68^2} has 32 elements (OEIS A390813).",
+      "sources": [
+        {
+          "title": "OEIS A390813: Size of the largest Sidon subset of the first n positive perfect squares",
+          "url": "https://oeis.org/A390813"
+        },
+        {
+          "title": "An Application of Graph Theory to Additive Number Theory",
+          "url": "https://doi.org/10.1016/S0195-6698(85)80027-5",
+          "authors": "Noga Alon, Paul Erdős",
+          "year": 1985
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 773,
+        "url": "https://www.erdosproblems.com/773",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #773, https://www.erdosproblems.com/773, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000634"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-squarefree-pairwise-sums-512",
+    "name": "Large subsets of {1, ..., 512} whose pairwise sums are all squarefree",
+    "description": "construct() -> distinct integers in 1..512 such that every sum a + b with a <= b (including 2a) is squarefree. Maximize the size; the optimum is 24. For N = 512 the maximum is 24, so the task recovers an extremal set. The bank entry is the infinite question (#1103); this is its finite analogue (#1109).",
+    "family": "science_prize_h_squarefree_sums",
+    "parameters": {
+      "n": 512
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.4213/im486",
+        "type": "paper",
+        "locator": "Sergei V. Konyagin, Problems on the set of squarefree numbers (2004). Crossref record inspected; Erdős Problems #1103 (infinite sequences) and #1109 (the finite version) inspected: Erdős and Sárközy proved log N << f(N) << N^(3/4) log N and Konyagin improved this to (log log N)(log N)^2 << f(N) << N^(11/15+o(1)); van Doorn and Tao bounded the growth of infinite sequences. OEIS A392164 inspected (exact branch and bound by Carney): f(512) = 24. For N = 512 the maximum is 24, so the task recovers an extremal set. The bank entry is the infinite question (#1103); this is its finite analogue (#1109)."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1103",
+        "type": "archive",
+        "locator": "Erdős Problem #1103 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000915",
+        "type": "benchmark",
+        "locator": "JSP-000915; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table (finite analogue of the bank's infinite question).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 24,
+      "statement": "The largest subset of {1..512} with all pairwise sums squarefree has 24 elements (OEIS A392164).",
+      "sources": [
+        {
+          "title": "OEIS A392164: Size of the largest subset S of {1..N} such that every element of S+S is squarefree",
+          "url": "https://oeis.org/A392164"
+        },
+        {
+          "title": "Problems on the set of squarefree numbers",
+          "url": "https://doi.org/10.4213/im486",
+          "authors": "Sergei V. Konyagin",
+          "year": 2004
+        },
+        {
+          "title": "Erdős Problem #1109 (finite version)",
+          "url": "https://www.erdosproblems.com/1109"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1103,
+        "url": "https://www.erdosproblems.com/1103",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1103, https://www.erdosproblems.com/1103, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000915"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-one-repeated-sum-100",
+    "name": "Subsets of {1, ..., 100} in which at most one sum is repeated",
+    "description": "construct() -> distinct integers in 1..100 such that at most one integer has more than one representation a + b with a <= b in the set. Maximize the size; the optimum is 16. For N = 100 the maximum is 16, so the task recovers an extremal set.",
+    "family": "science_prize_h_one_repeated_sum",
+    "parameters": {
+      "n": 100
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/0022-314X(91)90083-N",
+        "type": "paper",
+        "locator": "P. Erdős and R. Freud, On sums of a Sidon-sequence (1991). Crossref record inspected; Erdős Problem #864 page inspected (Erdős and Freud: |A| >= (1+o(1))(2/sqrt 3)N^(1/2) by joining a Sidon set with its reflection; a matching upper bound is asked). OEIS A389182 inspected (b-file by Ferudun): the maximum for N = 100 is 16. For N = 100 the maximum is 16, so the task recovers an extremal set."
+      },
+      {
+        "url": "https://www.erdosproblems.com/864",
+        "type": "archive",
+        "locator": "Erdős Problem #864 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000716",
+        "type": "benchmark",
+        "locator": "JSP-000716; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 16,
+      "statement": "The maximum for N = 100 is 16 (OEIS A389182).",
+      "sources": [
+        {
+          "title": "OEIS A389182: Maximum size of a subset of {1..n} in which all sums a+b (a <= b) are distinct except possibly one",
+          "url": "https://oeis.org/A389182"
+        },
+        {
+          "title": "On sums of a Sidon-sequence",
+          "url": "https://doi.org/10.1016/0022-314X(91)90083-N",
+          "authors": "P. Erdős, R. Freud",
+          "year": 1991
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 864,
+        "url": "https://www.erdosproblems.com/864",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #864, https://www.erdosproblems.com/864, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000716"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-no-element-divides-two-others-44",
+    "name": "Subsets of {1, ..., 44} in which no element divides two others",
+    "description": "construct() -> distinct integers in 1..44 such that no element divides two other elements. Maximize the size; the optimum is 30. For n = 44 the maximum is 30, so the task recovers an extremal set.",
+    "family": "science_prize_h_divides_two",
+    "parameters": {
+      "n": 44
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1002/sapm1977563291",
+        "type": "paper",
+        "locator": "Kenneth Lebensold, A Divisibility Problem (1977). Crossref record inspected; Erdős Problem #1062 page inspected (the interval [m+1, 3m+2] gives f(n) >= ceil(2n/3); Lebensold proved 0.6725n <= f(n) <= 0.6736n for large n; whether lim f(n)/n is irrational is open; Guy B24). OEIS A038372 inspected: f(44) = 30. For n = 44 the maximum is 30, so the task recovers an extremal set."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1062",
+        "type": "archive",
+        "locator": "Erdős Problem #1062 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000882",
+        "type": "benchmark",
+        "locator": "JSP-000882; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table; the simple interval construction [15, 44] already attains 30.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 30,
+      "statement": "f(44) = 30 (OEIS A038372).",
+      "sources": [
+        {
+          "title": "OEIS A038372: Largest subset of [1..n] such that no member divides two others",
+          "url": "https://oeis.org/A038372"
+        },
+        {
+          "title": "A Divisibility Problem",
+          "url": "https://doi.org/10.1002/sapm1977563291",
+          "authors": "Kenneth Lebensold",
+          "year": 1977
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1062,
+        "url": "https://www.erdosproblems.com/1062",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1062, https://www.erdosproblems.com/1062, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000882"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-sparse-ruler-200",
+    "name": "Sparse ruler of length 200 with the fewest marks",
+    "description": "construct() -> distinct integer marks in 0..200 such that every distance 1..200 is a difference of two marks. Minimize the number of marks; the optimum is 25. For N = 200 the minimum is 25, so the task recovers an optimal ruler.",
+    "family": "science_prize_h_sparse_ruler",
+    "parameters": {
+      "n": 200
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1112/jlms/s1-31.2.160",
+        "type": "paper",
+        "locator": "John Leech, On the Representation of 1, 2, …, n by Differences (1956). Crossref record inspected; Erdős Problem #170 page inspected (Erdős and Gál proved that lim F(N)/N^(1/2) exists; it lies in [1.56, sqrt 3] by Leech and Wichmann). OEIS A046693 inspected (b-file by Pegg for lengths 0..213): the minimal number of marks for length 200 is 25. For N = 200 the minimum is 25, so the task recovers an optimal ruler."
+      },
+      {
+        "url": "https://www.erdosproblems.com/170",
+        "type": "archive",
+        "locator": "Erdős Problem #170 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000167",
+        "type": "benchmark",
+        "locator": "JSP-000167; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 25,
+      "statement": "A sparse ruler of length 200 needs 25 marks (OEIS A046693).",
+      "sources": [
+        {
+          "title": "OEIS A046693: Minimal number of marks of a sparse ruler of length n",
+          "url": "https://oeis.org/A046693"
+        },
+        {
+          "title": "On the Representation of 1, 2, …, n by Differences",
+          "url": "https://doi.org/10.1112/jlms/s1-31.2.160",
+          "authors": "John Leech",
+          "year": 1956
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 170,
+        "url": "https://www.erdosproblems.com/170",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #170, https://www.erdosproblems.com/170, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000167"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-additive-two-basis-212",
+    "name": "Smallest set whose pairwise sums cover 0..212",
+    "description": "construct() -> distinct integers in 0..212 such that every integer 0..212 equals a + b for some a <= b in the set (a = b allowed). Minimize the size; the optimum is 25. For n = 212 the minimum is 25, so the task recovers an extremal basis.",
+    "family": "science_prize_h_additive_basis",
+    "parameters": {
+      "n": 212
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://cs.uwaterloo.ca/journals/JIS/VOL13/Challis/challis6.html",
+        "type": "paper",
+        "locator": "Michael F. Challis and John P. Robinson, Some Extremal Postage Stamp Bases (2010). Journal of Integer Sequences article and OEIS A066063/A001212 inspected: the two-stamp postage problem has optimal range 212 with 24 denominations and 196 with 23, and a basis of {0..n} is 0 together with a set of denominations, so the minimum size for n = 212 is 25. Erdős Problem #791 page inspected (Rohrbach's problem; (2.181+o(1))n <= g(n)^2 <= (3.458+o(1))n by Yu and Kohonen). For n = 212 the minimum is 25, so the task recovers an extremal basis."
+      },
+      {
+        "url": "https://www.erdosproblems.com/791",
+        "type": "archive",
+        "locator": "Erdős Problem #791 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000650",
+        "type": "benchmark",
+        "locator": "JSP-000650; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from published exhaustive postage-stamp computations.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 25,
+      "statement": "The least 2-basis of {0..212} has 25 elements (OEIS A066063; two-stamp range 212 needs 24 denominations, A001212).",
+      "sources": [
+        {
+          "title": "OEIS A066063: Size of the smallest subset S of {0..n} such that each element is the sum of two elements of S",
+          "url": "https://oeis.org/A066063"
+        },
+        {
+          "title": "Some Extremal Postage Stamp Bases",
+          "url": "https://cs.uwaterloo.ca/journals/JIS/VOL13/Challis/challis6.html",
+          "authors": "Michael F. Challis, John P. Robinson",
+          "year": 2010
+        },
+        {
+          "title": "An improved lower bound for finite additive 2-bases",
+          "url": "https://doi.org/10.1016/j.jnt.2016.11.011",
+          "authors": "Jukka Kohonen",
+          "year": 2017
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 791,
+        "url": "https://www.erdosproblems.com/791",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #791, https://www.erdosproblems.com/791, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000650"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-van-der-waerden-three-versus-twelve",
+    "name": "Two-colourings avoiding a red 3-term and a blue 12-term progression (w(3,12) = 135)",
+    "description": "construct() -> colours c_1, ..., c_N in {0, 1} with 1 <= N <= 135. Colour 0 may contain no 3-term and colour 1 no 12-term arithmetic progression (exhaustive check). Maximize N; the optimum is 134 because w(3,12) = 135. Since w(3,12) = 135, the longest valid colouring has 134 terms; the task recovers an extremal colouring.",
+    "family": "science_prize_h_van_der_waerden",
+    "parameters": {
+      "long_length": 12,
+      "maximum": 135
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/j.dam.2014.05.007",
+        "type": "paper",
+        "locator": "Tanbir Ahmed, Oliver Kullmann and Hunter Snevily, On the van der Waerden numbers w(2;3,t) (2014). Crossref records inspected (Ahmed, Kullmann and Snevily 2014; Green 2022). OEIS A171081 inspected: w(3,12) = 135. Erdős Problem #721 page inspected (Green's superpolynomial lower bound, Hunter's improvement and Schoen's upper bound meet Erdős's stated challenges). Since w(3,12) = 135, the longest valid colouring has 134 terms; the task recovers an extremal colouring."
+      },
+      {
+        "url": "https://www.erdosproblems.com/721",
+        "type": "archive",
+        "locator": "Erdős Problem #721 (solved (bounds of Green, Hunter and Schoen)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000589",
+        "type": "benchmark",
+        "locator": "JSP-000589; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case (published SAT computations).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 134,
+      "statement": "w(3,12) = 135, so 134 is the longest valid colouring (Ahmed, Kullmann and Snevily 2014; OEIS A171081).",
+      "sources": [
+        {
+          "title": "OEIS A171081: Van der Waerden numbers w(3,n)",
+          "url": "https://oeis.org/A171081"
+        },
+        {
+          "title": "On the van der Waerden numbers w(2;3,t)",
+          "url": "https://doi.org/10.1016/j.dam.2014.05.007",
+          "authors": "Tanbir Ahmed, Oliver Kullmann, Hunter Snevily",
+          "year": 2014
+        },
+        {
+          "title": "New lower bounds for van der Waerden numbers",
+          "url": "https://doi.org/10.1017/fmp.2022.12",
+          "authors": "Ben Green",
+          "year": 2022
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 721,
+        "url": "https://www.erdosproblems.com/721",
+        "status": "solved (bounds of Green, Hunter and Schoen)",
+        "citation": "T. F. Bloom, Erdős Problem #721, https://www.erdosproblems.com/721, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000589"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-distinct-multiples-interval-50",
+    "name": "Shortest interval above 50 containing distinct multiples of 1, ..., 50",
+    "description": "construct() -> integers b_1, ..., b_50 with 50 < b_i <= 5000, i | b_i and all b_i distinct. The score is max(b) - 50 + 1, the least k with every b_i in the open interval (50, 50 + k). Minimize; the optimum is 77. For n = 50 the optimum is 77, so the task recovers an optimal matching.",
+    "family": "science_prize_h_distinct_multiples",
+    "parameters": {
+      "n": 50
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/1385-7258(80)90018-9",
+        "type": "paper",
+        "locator": "Paul Erdős and Carl Pomerance, Matching the natural numbers up to n with distinct multiples in another interval (1980). Crossref record inspected; Erdős Problem #710 page inspected (Erdős and Pomerance: (2/sqrt e + o(1)) n (log n/log log n)^(1/2) <= f(n) <= (1.7398...+o(1)) n (log n)^(1/2); Erdős offered 2000 rupees for an asymptotic formula). OEIS A390246 inspected (b-file by Kesarwani): f(50) = 77. For n = 50 the optimum is 77, so the task recovers an optimal matching."
+      },
+      {
+        "url": "https://www.erdosproblems.com/710",
+        "type": "archive",
+        "locator": "Erdős Problem #710 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000579",
+        "type": "benchmark",
+        "locator": "JSP-000579; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 77,
+      "statement": "f(50) = 77 (OEIS A390246).",
+      "sources": [
+        {
+          "title": "OEIS A390246: Least k such that distinct b_1..b_n with n < b_i < n+k and i | b_i exist",
+          "url": "https://oeis.org/A390246"
+        },
+        {
+          "title": "Matching the natural numbers up to n with distinct multiples in another interval",
+          "url": "https://doi.org/10.1016/1385-7258(80)90018-9",
+          "authors": "Paul Erdős, Carl Pomerance",
+          "year": 1980
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 710,
+        "url": "https://www.erdosproblems.com/710",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #710, https://www.erdosproblems.com/710, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000579"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-square-products-condition-200",
+    "name": "Subsets of {1, ..., 200} in which square products of four elements force ad = bc",
+    "description": "construct() -> distinct integers in 1..200 such that whenever a <= b <= c <= d are elements (repetition allowed) with abcd a perfect square, ad = bc (checked exactly through parity vectors of prime exponents). Maximize the size; the optimum is 102. For n = 200 the maximum is 102, so the task recovers an extremal set.",
+    "family": "science_prize_h_square_products",
+    "parameters": {
+      "n": 200
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1515/9783110809794.169",
+        "type": "paper",
+        "locator": "Paul Erdős, Some of my new and almost new problems and results in combinatorial number theory (1998). Crossref record inspected; Erdős Problem #888 page inspected (a question of Erdős, Sárközy and Sós; |A| = o(n); primes and semiprimes give (1+o(1)) n log log n/log n, and a matching upper bound was proved recently and verified in Lean). OEIS A387584 inspected (b-file by Sievers for n <= 203): the maximum for n = 200 is 102, attained by the primes together with the products of two distinct primes. For n = 200 the maximum is 102, so the task recovers an extremal set."
+      },
+      {
+        "url": "https://www.erdosproblems.com/888",
+        "type": "archive",
+        "locator": "Erdős Problem #888 (solved (Lean)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000739",
+        "type": "benchmark",
+        "locator": "JSP-000739; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table; the independent tests confirm the repetition convention against the published small values.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 102,
+      "statement": "The maximum for n = 200 is 102 (OEIS A387584).",
+      "sources": [
+        {
+          "title": "OEIS A387584: Largest subset of {1..n} in which a square product abcd forces ad = bc",
+          "url": "https://oeis.org/A387584"
+        },
+        {
+          "title": "Some of my new and almost new problems and results in combinatorial number theory",
+          "url": "https://doi.org/10.1515/9783110809794.169",
+          "authors": "Paul Erdős",
+          "year": 1998
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 888,
+        "url": "https://www.erdosproblems.com/888",
+        "status": "solved (Lean)",
+        "citation": "T. F. Bloom, Erdős Problem #888, https://www.erdosproblems.com/888, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000739"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-sums-of-three-prime-cubes-1e10",
+    "name": "Integers up to 10^10 with many representations as sums of three prime cubes",
+    "description": "construct() -> {'N': N, 'triples': [[p, q, r], ...]} with N <= 10^10 and distinct prime triples p <= q <= r (each at most 3000) with p^3 + q^3 + r^3 = N. Maximize the number of triples; the optimum is 4 (first at 999979163). For k = 3 and N <= 10^10 the maximum is 4, so the task recovers such an N.",
+    "family": "science_prize_h_prime_cubes",
+    "parameters": {
+      "bound": 10000000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1112/jlms/s1-12.1.133",
+        "type": "paper",
+        "locator": "Paul Erdős, On the Sum and Difference of Squares of Primes (1937). Crossref record inspected (Erdős proved the case k = 2: the number of representations n = p^2 + q^2 is unbounded). Erdős Problem #979 page inspected. OEIS A385316 inspected: the smallest numbers with exactly 1, ..., 5 representations as sums of three prime cubes are 24, 185527, 8627527, 999979163 and 10588881419. A local enumeration of all prime triples with cube sum at most 10^10 confirmed that no N <= 10^10 has more than 4. For k = 3 and N <= 10^10 the maximum is 4, so the task recovers such an N."
+      },
+      {
+        "url": "https://www.erdosproblems.com/979",
+        "type": "archive",
+        "locator": "Erdős Problem #979 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000812",
+        "type": "benchmark",
+        "locator": "JSP-000812; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case (OEIS table and local enumeration).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 4,
+      "statement": "No N <= 10^10 is a sum of three prime cubes in more than 4 ways; the first with 4 is 999979163 (OEIS A385316; local enumeration).",
+      "sources": [
+        {
+          "title": "OEIS A385316: Smallest number that is the sum of 3 cubes of primes in exactly n ways",
+          "url": "https://oeis.org/A385316"
+        },
+        {
+          "title": "On the Sum and Difference of Squares of Primes",
+          "url": "https://doi.org/10.1112/jlms/s1-12.1.133",
+          "authors": "Paul Erdős",
+          "year": 1937
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 979,
+        "url": "https://www.erdosproblems.com/979",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #979, https://www.erdosproblems.com/979, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000812"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-gaps-coprime-to-29-primorial",
+    "name": "Which small gaps occur between consecutive integers coprime to 29#",
+    "description": "construct() -> up to 200 certificates [x, g] with 1 <= x <= 29# = 6469693230 and 2 <= g <= 1000, where x and x + g are coprime to 29# and every integer strictly between them shares a prime factor with 29#. The score is the largest L such that each even gap 2, 4, ..., L is certified. Maximize; the optimum is 46 (the gap 48 does not occur). For 29# every even gap up to 46 occurs and 48 does not, so the optimum is 46.",
+    "family": "science_prize_h_primorial_gaps",
+    "parameters": {
+      "count": 10
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.4064/aa-8-3-343-347",
+        "type": "paper",
+        "locator": "C. Hooley, On the difference of consecutive numbers prime to n (1963). Crossref record inspected (Hooley studies the distribution of differences between consecutive reduced residues). Erdős Problem #854 page inspected (Erdős first expected every even number up to the maximal gap to occur, then doubted it after computations of Lacampagne and Selfridge for 13#). OEIS A389839 inspected: the smallest even number that is not a gap between consecutive integers coprime to 29# is 48. For 29# every even gap up to 46 occurs and 48 does not, so the optimum is 46."
+      },
+      {
+        "url": "https://www.erdosproblems.com/854",
+        "type": "archive",
+        "locator": "Erdős Problem #854 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000707",
+        "type": "benchmark",
+        "locator": "JSP-000707; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 46,
+      "statement": "Every even gap up to 46 occurs between consecutive integers coprime to 29# and 48 does not (OEIS A389839).",
+      "sources": [
+        {
+          "title": "OEIS A389839: Smallest even number that is not a difference of consecutive numbers coprime to prime(n)#",
+          "url": "https://oeis.org/A389839"
+        },
+        {
+          "title": "On the difference of consecutive numbers prime to n",
+          "url": "https://doi.org/10.4064/aa-8-3-343-347",
+          "authors": "C. Hooley",
+          "year": 1963
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 854,
+        "url": "https://www.erdosproblems.com/854",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #854, https://www.erdosproblems.com/854, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000707"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-prime-plus-power-of-two-1e8",
+    "name": "Integers up to 10^8 with many representations n = p + 2^k",
+    "description": "construct() -> an integer n with 3 <= n <= 10^8. The score is the number of k >= 0 with n - 2^k prime (deterministic Miller-Rabin). Maximize; the optimum is 19 (first at 53999715). For n <= 10^8 the maximum is 19, so the task recovers such an integer.",
+    "family": "science_prize_h_prime_power_two",
+    "parameters": {
+      "bound": 100000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://users.renyi.hu/~p_erdos/1950-07.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős, On integers of the form 2^k + p and some related problems (1950). Paper located in the Rényi Institute archive (Summa Brasil. Math. 2 (1950)). Erdős Problem #236 page inspected (Erdős proved f(n) >> log log n infinitely often; whether f(n) = o(log n) is open; values are OEIS A109925). OEIS A109926 inspected: the least n with 19 representations is 53999715, with 20 it is 2282745465, and a(n) > 10^10 for n >= 21 (Donovan Johnson), so the maximum for n <= 10^8 is 19. For n <= 10^8 the maximum is 19, so the task recovers such an integer."
+      },
+      {
+        "url": "https://www.erdosproblems.com/236",
+        "type": "archive",
+        "locator": "Erdős Problem #236 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000209",
+        "type": "benchmark",
+        "locator": "JSP-000209; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS first-occurrence table.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 19,
+      "statement": "For n <= 10^8 at most 19 values n - 2^k are prime; first at 53999715 (OEIS A109926).",
+      "sources": [
+        {
+          "title": "OEIS A109926: Least k such that k - 2^r is prime for n values of r",
+          "url": "https://oeis.org/A109926"
+        },
+        {
+          "title": "On integers of the form 2^k + p and some related problems",
+          "url": "https://users.renyi.hu/~p_erdos/1950-07.pdf",
+          "authors": "Paul Erdős",
+          "year": 1950
+        },
+        {
+          "title": "Über einige Sätze der additiven Zahlentheorie",
+          "url": "https://doi.org/10.1007/BF01449161",
+          "authors": "N. P. Romanoff",
+          "year": 1934
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 236,
+        "url": "https://www.erdosproblems.com/236",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #236, https://www.erdosproblems.com/236, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000209"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-odd-covering-divisors-of-51975",
+    "name": "Odd covering systems with moduli dividing 51975 (fewest uncovered residues)",
+    "description": "construct() -> classes [[m, r], ...] with distinct moduli m > 1 dividing 51975 = 3^3 * 5^2 * 7 * 11 (hence odd) and 0 <= r < m. The score is the number of residues modulo 51975 covered by no class (exact). Minimize; 0 would be a covering system with distinct odd moduli. With every divisor of 51975 available once, a score of 0 would exhibit an odd covering; positive scores measure how close systems with this modulus come. No minimum is documented.",
+    "family": "science_prize_h_odd_covering",
+    "parameters": {
+      "base": 51975
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.2140/ant.2021.15.609",
+        "type": "paper",
+        "locator": "Paul Balister, Béla Bollobás, Robert Morris, Julian Sahasrabudhe and Marius Tiba, The Erdős–Selfridge problem with square-free moduli (2021). Crossref records inspected (Balister, Bollobás, Morris, Sahasrabudhe and Tiba 2021; Hough and Nielsen 2019). Erdős Problem #7 page inspected: no covering exists with distinct odd squarefree moduli, some modulus must be divisible by 2 or 3, and an odd covering would need a least common multiple divisible by 9 or 15; existence is open (Erdős offered $25 for a proof of nonexistence, Selfridge $300 for an example). OEIS A399152 inspected: the analogous minimum using every divisor of an odd M is tabulated only for small M (e.g. 731 for M = 1225). With every divisor of 51975 available once, a score of 0 would exhibit an odd covering; positive scores measure how close systems with this modulus come. No minimum is documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/7",
+        "type": "archive",
+        "locator": "Erdős Problem #7 (open ($25)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000047",
+        "type": "benchmark",
+        "locator": "JSP-000047; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented minimum for this modulus (reference label none). A positive minimum for one modulus says nothing about others.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented minimum for moduli dividing 51975; the analogous all-divisor minimum is tabulated only for small odd moduli (OEIS A399152), always positive.",
+      "sources": [
+        {
+          "title": "The Erdős–Selfridge problem with square-free moduli",
+          "url": "https://doi.org/10.2140/ant.2021.15.609",
+          "authors": "P. Balister, B. Bollobás, R. Morris, J. Sahasrabudhe, M. Tiba",
+          "year": 2021
+        },
+        {
+          "title": "Covering systems with restricted divisibility",
+          "url": "https://doi.org/10.1215/00127094-2019-0058",
+          "authors": "Robert D. Hough, Pace P. Nielsen",
+          "year": 2019
+        },
+        {
+          "title": "OEIS A399152: Minimum number of residues mod 2n+1 left uncovered by one class per divisor",
+          "url": "https://oeis.org/A399152"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 7,
+        "url": "https://www.erdosproblems.com/7",
+        "status": "open ($25)",
+        "citation": "T. F. Bloom, Erdős Problem #7, https://www.erdosproblems.com/7, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000047"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-double-cover-primes-to-1000",
+    "name": "Covering an initial interval twice with one residue class per prime up to 1000",
+    "description": "construct() -> 168 residues, one for each prime p <= 1000 in increasing order, with 0 <= r_p < p. The score is the largest L such that every integer 1..L satisfies at least two of the congruences x = r_p (mod p) (exact count, capped at 10^5). Maximize; L >= 1000 would realize the property asked in Erdős Problem #689 at n = 1000. Scores are doubly covered lengths for n = 1000; reaching 1000 would exhibit the property at this size.",
+    "family": "science_prize_h_double_cover",
+    "parameters": {
+      "largest_prime": 1000
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/S0167-5060(08)70697-6",
+        "type": "paper",
+        "locator": "Paul Erdős, A Survey of Problems in Combinatorial Number Theory (1980). Crossref record inspected; Erdős Problem #689 page inspected (asked in 1979-1980; the variant with ten covers instead of two is Problem 45 on Green's list of open problems). No finite values are documented. Scores are doubly covered lengths for n = 1000; reaching 1000 would exhibit the property at this size."
+      },
+      {
+        "url": "https://www.erdosproblems.com/689",
+        "type": "archive",
+        "locator": "Erdős Problem #689 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000561",
+        "type": "benchmark",
+        "locator": "JSP-000561; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented values for finite n.",
+      "sources": [
+        {
+          "title": "A Survey of Problems in Combinatorial Number Theory",
+          "url": "https://doi.org/10.1016/S0167-5060(08)70697-6",
+          "authors": "Paul Erdős",
+          "year": 1980
+        },
+        {
+          "title": "Erdős Problem #689",
+          "url": "https://www.erdosproblems.com/689"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 689,
+        "url": "https://www.erdosproblems.com/689",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #689, https://www.erdosproblems.com/689, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000561"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-sidon-prefix-of-perfect-difference-set",
+    "name": "Sidon sets containing 0 whose differences include 1, ..., 30 (prefixes of perfect difference sets)",
+    "description": "construct() -> at most 32 distinct integers in 0..10^6 including 0, with all positive differences distinct (a Sidon set) and every d in 1..30 occurring as a difference. Minimize the largest element. A Sidon set realizing all differences 1..30 is a truncated perfect difference set; its least possible diameter measures the growth cost at this scale.",
+    "family": "science_prize_h_unique_differences",
+    "parameters": {
+      "covered": 30,
+      "bound": 1000000,
+      "maximum_size": 32
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/s00493-008-2339-4",
+        "type": "paper",
+        "locator": "Javier Cilleruelo and Melvyn B. Nathanson, Perfect difference sets constructed from Sidon sets (2008). Crossref record inspected; Erdős Problem #1194 page inspected (a perfect difference set is Sidon; the greedy construction gives a_n << n^3; Erdős noted limsup a_n/n = infinity; a_n >> n^(2-o(1)) infinitely often was shown recently). No finite values of this truncation are documented. A Sidon set realizing all differences 1..30 is a truncated perfect difference set; its least possible diameter measures the growth cost at this scale."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1194",
+        "type": "archive",
+        "locator": "Erdős Problem #1194 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000999",
+        "type": "benchmark",
+        "locator": "JSP-000999; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value (reference label none); differences above 30 need not all occur.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented minimum for this truncation.",
+      "sources": [
+        {
+          "title": "Perfect difference sets constructed from Sidon sets",
+          "url": "https://doi.org/10.1007/s00493-008-2339-4",
+          "authors": "Javier Cilleruelo, Melvyn B. Nathanson",
+          "year": 2008
+        },
+        {
+          "title": "Erdős Problem #1194",
+          "url": "https://www.erdosproblems.com/1194"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1194,
+        "url": "https://www.erdosproblems.com/1194",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1194, https://www.erdosproblems.com/1194, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000999"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-sidon-extension-of-1-2-5-11",
+    "name": "Extending the Sidon set {1, 2, 5, 11} inside [1, 284]",
+    "description": "construct() -> distinct integers in 1..284 containing 1, 2, 5 and 11 whose pairwise sums a + b (a <= b) are all distinct. Maximize the size; without the prescribed elements the maximum in [1, 284] is 20 (the optimal 20-mark Golomb ruler has length 283). Scores near 20 would show that the prescribed elements barely reduce the attainable size at this scale; no value for this seed is documented.",
+    "family": "science_prize_h_sidon_extension",
+    "parameters": {
+      "n": 284,
+      "seed": [
+        1,
+        2,
+        5,
+        11
+      ]
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.37236/32",
+        "type": "paper",
+        "locator": "Kevin O'Bryant, A Complete Annotated Bibliography of Work Related to Sidon Sequences (2004). Crossref record inspected; Erdős Problem #44 page inspected (can every finite Sidon set be extended to a Sidon set of size (1-eps)M^(1/2) in [1, M]? A positive answer to #707 implies it, and it implies #329; Guy C9). OEIS A003022 inspected: the shortest 20-mark Golomb ruler has length 283. Scores near 20 would show that the prescribed elements barely reduce the attainable size at this scale; no value for this seed is documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/44",
+        "type": "archive",
+        "locator": "Erdős Problem #44 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000072",
+        "type": "benchmark",
+        "locator": "JSP-000072; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value for the seeded instance (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented maximum with the prescribed elements; without them the maximum in [1, 284] is 20 (OEIS A003022).",
+      "sources": [
+        {
+          "title": "A Complete Annotated Bibliography of Work Related to Sidon Sequences",
+          "url": "https://doi.org/10.37236/32",
+          "authors": "Kevin O'Bryant",
+          "year": 2004
+        },
+        {
+          "title": "OEIS A003022: Length of shortest (optimal) Golomb ruler with n marks",
+          "url": "https://oeis.org/A003022"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 44,
+        "url": "https://www.erdosproblems.com/44",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #44, https://www.erdosproblems.com/44, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000072"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-three-progression-differences-32",
+    "name": "Thirty-two integers with many distinct 3-term progression differences",
+    "description": "construct() -> exactly 32 distinct integers in 1..512. The score is the number of distinct d > 0 such that a, a + d, a + 2d all lie in the set for some a. Maximize. A 32-element set with many progression differences is a finite construction for this extremal function.",
+    "family": "science_prize_h_ap_differences",
+    "parameters": {
+      "size": 32,
+      "bound": 512
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1090/S0002-9939-2015-12603-2",
+        "type": "paper",
+        "locator": "Marius Lemm, New counterexamples for sums-differences (2015). Crossref records inspected (Lemm 2015; Katz and Tao 1999). Erdős Problem #1097 page inspected: the question is equivalent to Bourgain's sums-differences problem; the optimal exponent lies in [1.77898..., 11/6] (Lemm, with a small improvement by AlphaEvolve; Katz and Tao), so the O(n^(3/2)) guess is false. No finite values are documented. A 32-element set with many progression differences is a finite construction for this extremal function."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1097",
+        "type": "archive",
+        "locator": "Erdős Problem #1097 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000911",
+        "type": "benchmark",
+        "locator": "JSP-000911; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented values for n = 32; asymptotically the exponent lies in [1.77898, 11/6].",
+      "sources": [
+        {
+          "title": "New counterexamples for sums-differences",
+          "url": "https://doi.org/10.1090/S0002-9939-2015-12603-2",
+          "authors": "Marius Lemm",
+          "year": 2015
+        },
+        {
+          "title": "Bounds on arithmetic projections, and applications to the Kakeya conjecture",
+          "url": "https://doi.org/10.4310/MRL.1999.v6.n6.a3",
+          "authors": "Nets Hawk Katz, Terence Tao",
+          "year": 1999
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1097,
+        "url": "https://www.erdosproblems.com/1097",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1097, https://www.erdosproblems.com/1097, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000911"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-smooth-runs-after-prime-squares",
+    "name": "Long runs after p^2 with no prime factor exceeding p (p <= 10^9)",
+    "description": "construct() -> {'p': p, 'k': k} with p a prime at most 10^9 and 1 <= k <= 200; every integer p^2 + 1, ..., p^2 + k must have all prime factors at most p (exact factorization by trial division and Pollard-Brent with deterministic Miller-Rabin). Maximize k. Long runs for p <= 10^9 are finite evidence for the conjectured positive answer.",
+    "family": "science_prize_h_smooth_square",
+    "parameters": {
+      "prime_bound": 1000000000
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://fanchung.ucsd.edu/ron/papers/80_11_number_theory.pdf",
+        "type": "paper",
+        "locator": "Paul Erdős and Ronald L. Graham, Old and new problems and results in combinatorial number theory (1980). Erdős-Graham monograph (L'Enseignement Mathématique, 1980; source of the problem) located. Erdős Problem #383 page inspected: heuristically n has no prime factor >= n^(1/2) with probability 1 - log 2, so a positive answer is expected; it would settle part of #382. No finite values are documented. Long runs for p <= 10^9 are finite evidence for the conjectured positive answer."
+      },
+      {
+        "url": "https://www.erdosproblems.com/383",
+        "type": "archive",
+        "locator": "Erdős Problem #383 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000317",
+        "type": "benchmark",
+        "locator": "JSP-000317; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented values.",
+      "sources": [
+        {
+          "title": "Old and new problems and results in combinatorial number theory",
+          "url": "https://fanchung.ucsd.edu/ron/papers/80_11_number_theory.pdf",
+          "authors": "Paul Erdős, Ronald L. Graham",
+          "year": 1980
+        },
+        {
+          "title": "Erdős Problem #383",
+          "url": "https://www.erdosproblems.com/383"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 383,
+        "url": "https://www.erdosproblems.com/383",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #383, https://www.erdosproblems.com/383, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000317"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-many-solutions-k-sigma-k",
+    "name": "Integers M <= 10^18 with many solutions of k*sigma(k) = M",
+    "description": "construct() -> {'M': M, 'k': [k_1, ...]} with M <= 10^18 and distinct k_i <= sqrt(M) satisfying k_i * sigma(k_i) = M (checked with exact factorization). The score is the number of listed solutions, a certified lower bound for f(M). Maximize. Values with many certified solutions are finite lower-bound constructions for f; no record values are documented.",
+    "family": "science_prize_h_k_sigma",
+    "parameters": {
+      "bound": 1000000000000000000
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/978-0-387-26677-0",
+        "type": "paper",
+        "locator": "Richard K. Guy, Unsolved Problems in Number Theory (2004). Crossref record inspected (problem B11). Erdős Problem #1060 page inspected (is f(n) <= n^(o(1/log log n)), perhaps even (log n)^O(1)?). OEIS A327153 and A337873 inspected: values with several solutions such as 333312 = 336 sigma(336) = 372 sigma(372) = 434 sigma(434); no record over a range is documented. Values with many certified solutions are finite lower-bound constructions for f; no record values are documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1060",
+        "type": "archive",
+        "locator": "Erdős Problem #1060 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000880",
+        "type": "benchmark",
+        "locator": "JSP-000880; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value (reference label none). Listed solutions certify a lower bound for f(M), not its exact value.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented record values.",
+      "sources": [
+        {
+          "title": "Unsolved Problems in Number Theory",
+          "url": "https://doi.org/10.1007/978-0-387-26677-0",
+          "authors": "Richard K. Guy",
+          "year": 2004
+        },
+        {
+          "title": "OEIS A337873: Numbers m such that m = k*sigma(k) has more than one solution",
+          "url": "https://oeis.org/A337873"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1060,
+        "url": "https://www.erdosproblems.com/1060",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1060, https://www.erdosproblems.com/1060, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000880"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-prime-covers-with-reciprocal-budget",
+    "name": "Covering 1..L by prime residue classes with reciprocal budget 1 (primes up to 1000)",
+    "description": "construct() -> classes [[p, r], ...] with distinct primes p <= 1000, 0 <= r < p and sum of 1/p at most 1 (exact rationals). The score is the largest L such that every integer 1..L lies in some class (exact, capped at 10^5). Maximize; L >= 999 would realize the Erdős-Ruzsa covering statement at x = 1000 with C = 1. Covered lengths for x = 1000 and C = 1 are finite evidence for the conjecture; reaching 999 would realize it at this size.",
+    "family": "science_prize_h_budget_cover",
+    "parameters": {
+      "largest_prime": 1000,
+      "budget": 1
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/0022-314X(80)90032-3",
+        "type": "paper",
+        "locator": "P. Erdős and I. Z. Ruzsa, On the small sieve. I. Sifting by primes (1980). Crossref record inspected; Erdős Problem #1200 page inspected (the Erdős-Ruzsa conjecture that primes p < x with sum 1/p < C admit classes covering every n < x, called 'surprising' by Erdős; related to #688). No finite values are documented. Covered lengths for x = 1000 and C = 1 are finite evidence for the conjecture; reaching 999 would realize it at this size."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1200",
+        "type": "archive",
+        "locator": "Erdős Problem #1200 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-1001-1022.md#JSP-001005",
+        "type": "benchmark",
+        "locator": "JSP-001005; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented values.",
+      "sources": [
+        {
+          "title": "On the small sieve. I. Sifting by primes",
+          "url": "https://doi.org/10.1016/0022-314X(80)90032-3",
+          "authors": "P. Erdős, I. Z. Ruzsa",
+          "year": 1980
+        },
+        {
+          "title": "Erdős Problem #1200",
+          "url": "https://www.erdosproblems.com/1200"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1200,
+        "url": "https://www.erdosproblems.com/1200",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1200, https://www.erdosproblems.com/1200, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-001005"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-disjoint-residue-classes-moduli-20-200",
+    "name": "Pairwise disjoint residue classes with distinct moduli in [20, 200] (largest reciprocal sum)",
+    "description": "construct() -> classes [[m, r], ...] with distinct moduli 20 <= m <= 200 and 0 <= r < m, pairwise disjoint (r_1 != r_2 modulo gcd(m_1, m_2)). The score is the sum of 1/m (exact rational, reported as a float). Maximize. With moduli restricted to [20, 200] every valid construction bounds epsilon_19 from below.",
+    "family": "science_prize_h_disjoint_classes",
+    "parameters": {
+      "low": 20,
+      "high": 200
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.4064/aa157-4-5",
+        "type": "paper",
+        "locator": "Régis de la Bretèche, Kevin Ford and Joseph Vandehey, On non-intersecting arithmetic progressions (2013). Crossref record inspected; Erdős Problem #1190 page inspected: epsilon_m, the largest sum 1/n_i over pairwise disjoint classes with moduli m < n_1 < ..., satisfies L(m)^(-1+o(1)) < epsilon_m < L(m)^(-sqrt(3)/2+o(1)) with L(m) = exp(sqrt(log m log log m)) (de la Bretèche, Ford and Vandehey), sharpened to epsilon_m = L(m)^(-1+o(1)) through the resolution of #202. No finite values are documented. With moduli restricted to [20, 200] every valid construction bounds epsilon_19 from below."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1190",
+        "type": "archive",
+        "locator": "Erdős Problem #1190 (solved (Lean)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000995",
+        "type": "benchmark",
+        "locator": "JSP-000995; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value (reference label none); the cap at 200 makes the score a lower bound for epsilon_19.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented finite values; asymptotically epsilon_m = L(m)^(-1+o(1)).",
+      "sources": [
+        {
+          "title": "On non-intersecting arithmetic progressions",
+          "url": "https://doi.org/10.4064/aa157-4-5",
+          "authors": "Régis de la Bretèche, Kevin Ford, Joseph Vandehey",
+          "year": 2013
+        },
+        {
+          "title": "Erdős Problem #1190",
+          "url": "https://www.erdosproblems.com/1190"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1190,
+        "url": "https://www.erdosproblems.com/1190",
+        "status": "solved (Lean)",
+        "citation": "T. F. Bloom, Erdős Problem #1190, https://www.erdosproblems.com/1190, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000995"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_h.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  }
+]

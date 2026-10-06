@@ -1,0 +1,108 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_f_diameter_two",
+  "direction": "minimize",
+  "contract": "construct() -> list of edges [u, v] of a simple graph on vertices 0..49 that is triangle-free and has diameter at most two (every pair adjacent or with a common neighbour). Minimize the maximum degree; the optimum is 7.",
+  "parameters": {
+    "n": 50
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "The Moore bound forces maximum degree at least 7 on 50 vertices, and the Hoffman-Singleton graph attains it, so 7 is optimal. Exact local certificates are not Lean proofs. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-triangle-free-diameter-two-degree-50",
+  "name": "Triangle-free diameter-two graphs on 50 vertices with small maximum degree",
+  "paper_ids": [
+    "science-prize_f"
+  ],
+  "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..49 that is triangle-free and has diameter at most two (every pair adjacent or with a common neighbour). Minimize the maximum degree; the optimum is 7. The Moore bound forces maximum degree at least 7 on 50 vertices, and the Hoffman-Singleton graph attains it, so 7 is optimal.",
+  "benchmark": "Triangle-free diameter-two graphs on 50 vertices with small maximum degree",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1147/rd.45.0497",
+      "type": "paper",
+      "locator": "Alan J. Hoffman and Robert R. Singleton, On Moore Graphs with Diameters 2 and 3 (1960). Crossref record inspected; Erdős Problem #133 page inspected: a diameter-two graph of maximum degree d has at most d^2+1 vertices, and constructions of Hanson-Seyffarth and Füredi-Seress bound the growth of the minimum maximum degree. The Moore bound forces maximum degree at least 7 on 50 vertices, and the Hoffman-Singleton graph attains it, so 7 is optimal."
+    },
+    {
+      "url": "https://www.erdosproblems.com/133",
+      "type": "archive",
+      "locator": "Erdős Problem #133 (disproved (f(n)/sqrt(n) does not tend to infinity)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000139",
+      "type": "benchmark",
+      "locator": "JSP-000139; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case; the extremal object is the unique Hoffman-Singleton graph.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_f",
+      "title": "Problem-bank constructions: extremal graphs, hypergraphs and designs: source-based research tasks",
+      "url": "https://arxiv.org/abs/2103.14179"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 7,
+    "statement": "Maximum degree 7 is optimal: n <= d^2+1 for diameter two, and the 7-regular Hoffman-Singleton graph has 50 vertices, girth 5 and diameter 2.",
+    "sources": [
+      {
+        "title": "On Moore Graphs with Diameters 2 and 3",
+        "url": "https://doi.org/10.1147/rd.45.0497",
+        "authors": "A. J. Hoffman, R. R. Singleton",
+        "year": 1960
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 133,
+      "url": "https://www.erdosproblems.com/133",
+      "status": "disproved (f(n)/sqrt(n) does not tend to infinity)",
+      "citation": "T. F. Bloom, Erdős Problem #133, https://www.erdosproblems.com/133, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Find the least maximum degree of triangle-free graphs of diameter two on n vertices.",
+    "importance_rationale": "Erdős and Pach asked for the growth of this degree function (Erdős Problem #133); n = 50 is the Moore-graph case where the answer is exact.",
+    "papers": [
+      {
+        "title": "On Moore Graphs with Diameters 2 and 3",
+        "url": "https://doi.org/10.1147/rd.45.0497",
+        "task_relation": "The Moore bound forces maximum degree at least 7 on 50 vertices, and the Hoffman-Singleton graph attains it, so 7 is optimal.",
+        "primary_goal": "Find the least maximum degree of triangle-free graphs of diameter two on n vertices.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #133 page inspected: a diameter-two graph of maximum degree d has at most d^2+1 vertices, and constructions of Hanson-Seyffarth and Füredi-Seress bound the growth of the minimum maximum degree.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

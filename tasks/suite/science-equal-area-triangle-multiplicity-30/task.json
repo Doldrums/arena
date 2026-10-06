@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "id": "science-equal-area-triangle-multiplicity-30",
+  "name": "Many equal-area triangles from 30 planar points",
+  "description": "construct() -> exactly 30 distinct integer coordinate pairs in [-30,30]^2. Compute the absolute determinant for every triple, exclude zero-area triples, and maximize the largest multiplicity of a single positive doubled area. The local bounded integer configurations give lower constructions for positive-area multiplicity; they do not reproduce the paper's asymptotic upper-bound proof.",
+  "paper_ids": [
+    "science-prize_d"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/0710.4109",
+      "type": "paper",
+      "locator": "Adrian Dumitrescu, Micha Sharir, and Csaba D. Tóth, Extremal problems on triangle areas in two and three dimensions (2007). Author abstract inspected. The paper directly bounds the number of equal-area triangles determined by finite point sets. The local bounded integer configurations give lower constructions for positive-area multiplicity; they do not reproduce the paper's asymptotic upper-bound proof."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000903",
+      "type": "benchmark",
+      "locator": "JSP-000903; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Many equal-area triangles from 30 planar points",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_d_equal_area",
+    "science_family": "science_prize_d_equal_area",
+    "parameters": {
+      "n": 30,
+      "bound": 30
+    },
+    "interface": "construct() -> exactly 30 distinct integer coordinate pairs in [-30,30]^2. Compute the absolute determinant for every triple, exclude zero-area triples, and maximize the largest multiplicity of a single positive doubled area.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000903"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_d_equal_area",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Integer coordinates are a strict restriction of arbitrary real planar configurations. Collinear triples never contribute, and a finite score is not a general extremal theorem.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_d.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented maximum for 30 points in [-30,30]^2. Asymptotically the maximum number of equal-area triangles is between n^2 log log n (Erdős and Purdy) and O(n^(20/9)) (Raz and Sharir), Erdős Problem #1086.",
+    "sources": [
+      {
+        "title": "Extremal problems on triangle areas in two and three dimensions",
+        "url": "https://doi.org/10.1016/j.jcta.2009.03.008",
+        "authors": "Adrian Dumitrescu, Micha Sharir, Csaba D. Tóth",
+        "year": 2009
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1086,
+      "url": "https://www.erdosproblems.com/1086",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1086, https://www.erdosproblems.com/1086, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Bound how often a fixed positive triangle area can occur in a finite point set.",
+    "importance_rationale": "The score counts the geometric incidence phenomenon that is a main research objective of the cited paper.",
+    "papers": [
+      {
+        "title": "Extremal problems on triangle areas in two and three dimensions",
+        "url": "https://arxiv.org/abs/0710.4109",
+        "task_relation": "The local bounded integer configurations give lower constructions for positive-area multiplicity; they do not reproduce the paper's asymptotic upper-bound proof.",
+        "primary_goal": "Bound how often a fixed positive triangle area can occur in a finite point set.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "Primary research directly studies this mathematical objective; finite scope and rediscovery status are explicit.",
+    "verification_basis": "Author abstract inspected. The paper directly bounds the number of equal-area triangles determined by finite point sets.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

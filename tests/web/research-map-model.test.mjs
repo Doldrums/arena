@@ -147,13 +147,13 @@ test('missing data stays unavailable and inspector URLs reject active or credent
   assert.equal(papers[2].url,'https://example.com/paper');
 });
 
-test('actual public registry joins all 959 tasks and keeps integration and research collections separate',async()=>{
+test('actual public registry joins all 1163 tasks and keeps integration and research collections separate',async()=>{
   const read=async name=>JSON.parse(await readFile(new URL(`../../registry/${name}.json`,import.meta.url),'utf8'));
   const [catalog,insights,participants,overview]=await Promise.all(['catalog','insights','participants','results-overview'].map(read));
   const graph=buildResearchMap({catalog,insights,participants,overview});
-  assert.equal(graph.summary.catalogTasks,catalog.tasks.length);assert.equal(graph.summary.catalogTasks,959);
-  assert.equal(graph.nodes.filter(n=>n.kind==='task').length,959);
-  assert.equal(graph.domains.reduce((sum,d)=>sum+d.counts.catalogTasks,0),959);
+  assert.equal(graph.summary.catalogTasks,catalog.tasks.length);assert.equal(graph.summary.catalogTasks,1163);
+  assert.equal(graph.nodes.filter(n=>n.kind==='task').length,1163);
+  assert.equal(graph.domains.reduce((sum,d)=>sum+d.counts.catalogTasks,0),1163);
   assert.equal(graph.summary.participants,participants.participants.length);
   assert.equal(graph.nodes.filter(n=>n.source==='native_research').reduce((sum,n)=>sum+n.counts.researchRuns,0),overview.research.runs.length);
   assert.equal(graph.nodes.filter(n=>n.source==='native_result').reduce((sum,n)=>sum+n.counts.nativeOutcomes,0),overview.native_results.length);

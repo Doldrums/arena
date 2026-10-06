@@ -35,12 +35,12 @@ def anchor(snapshot, task_id, kind="published_reference"):
 def test_full_coverage_and_honest_evidence_counts(snapshot, catalog):
     assert {row["task_id"] for row in snapshot["tasks"]} == {row["id"] for row in catalog["tasks"]}
     summary = snapshot["summary"]
-    assert summary["task_count"] == 959
+    assert summary["task_count"] == 1163
     assert summary["tasks_with_published_reference"] == 75
     assert summary["tasks_with_recorded_baseline"] == 646
     assert summary["valid_recorded_baselines"] == 577
     assert summary["validity_unknown_baselines"] == 69
-    assert summary["tasks_without_numeric_reference"] == 313
+    assert summary["tasks_without_numeric_reference"] == 517
     assert summary["tasks_with_recorded_reproduction"] == 34
     assert summary["arena_reproduced_references"] == 0
     assert summary["current_sota_status"] == "not_assessed"
@@ -167,7 +167,7 @@ def test_unsupported_claims_and_metric_mismatch_rejected(snapshot, catalog, fiel
 def test_isolated_snapshot_return_and_offline_cli(snapshot):
     data = get_references()
     data["tasks"].clear()
-    assert len(get_references()["tasks"]) == 959
+    assert len(get_references()["tasks"]) == 1163
     result = subprocess.run([sys.executable, "-m", "arena.references", "validate"],
                             text=True, capture_output=True, check=True)
     assert json.loads(result.stdout) == snapshot["summary"]

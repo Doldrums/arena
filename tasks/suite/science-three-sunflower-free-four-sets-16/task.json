@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "id": "science-three-sunflower-free-four-sets-16",
+  "name": "Large four-uniform families without three sunflowers",
+  "description": "construct() -> 1..maximum=250 distinct k=4 element subsets of [1,n=16]. No three distinct sets may have all three pairwise intersections equal, including an empty common core. Maximize family cardinality. Maximize a family of four-element subsets of [1,16], with at most 250 members, excluding three-petal sunflowers including the empty-core case.",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1908.08483",
+      "type": "paper",
+      "locator": "Ryan Alweiss, Shachar Lovett, Kewen Wu and Jiapeng Zhang, Improved bounds for the sunflower lemma. Author abstract inspected: three sets form a sunflower when all pairwise intersections agree."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000057",
+      "type": "benchmark",
+      "locator": "JSP-000057; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; fixed finite mathematical profiles."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Large four-uniform families without three sunflowers",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_a_sunflower_free",
+    "science_family": "science_prize_a_sunflower_free",
+    "parameters": {
+      "n": 16,
+      "k": 4,
+      "petals": 3,
+      "maximum": 250
+    },
+    "interface": "construct() -> 1..maximum=250 distinct k=4 element subsets of [1,n=16]. No three distinct sets may have all three pairwise intersections equal, including an empty common core. Maximize family cardinality.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000057"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_a_sunflower_free",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Maximize a family of four-element subsets of [1,16], with at most 250 members, excluding three-petal sunflowers including the empty-core case.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/a-checks.json",
+    "tests": "tests/test_science_prize_a.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented maximum for families of 4-subsets of a 16-element set without a three-petal sunflower (empty cores included). The exponential sunflower bound is Erdős Problem #20; Alweiss, Lovett, Wu and Zhang improved the general upper bound.",
+    "sources": [
+      {
+        "title": "Improved bounds for the sunflower lemma",
+        "url": "https://arxiv.org/abs/1908.08483",
+        "authors": "Ryan Alweiss, Shachar Lovett, Kewen Wu, Jiapeng Zhang",
+        "year": 2019
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 20,
+      "url": "https://www.erdosproblems.com/20",
+      "status": "open ($1000)",
+      "citation": "T. F. Bloom, Erdős Problem #20, https://www.erdosproblems.com/20, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how large a uniform set family can be before a sunflower is forced.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "Improved bounds for the sunflower lemma",
+        "url": "https://arxiv.org/abs/1908.08483",
+        "task_relation": "Maximize a family of four-element subsets of [1,16], with at most 250 members, excluding three-petal sunflowers including the empty-core case.",
+        "primary_goal": "Determine how large a uniform set family can be before a sunflower is forced.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author abstract inspected: three sets form a sunflower when all pairwise intersections agree.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

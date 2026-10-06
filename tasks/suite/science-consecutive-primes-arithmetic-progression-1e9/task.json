@@ -1,0 +1,159 @@
+{
+  "schema_version": "1.0",
+  "id": "science-consecutive-primes-arithmetic-progression-1e9",
+  "name": "Consecutive primes in arithmetic progression below 10^9",
+  "description": "construct() -> [p, d, k] describing p, p + d, ..., p + (k-1)d with 2 <= k <= 64, 1 <= d <= 5000 and last term at most 10^9. Every term must be prime (deterministic Miller-Rabin) and no prime may lie strictly between consecutive terms. Maximize k; the optimum below 10^9 is 6. Below 10^9 the longest such progressions have six terms (the first starts at 121174811), so the task recovers a six-term progression.",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1090/S0025-5718-67-99657-3",
+      "type": "paper",
+      "locator": "L. J. Lander and T. R. Parkin, Consecutive primes in arithmetic progression (1967). Crossref records inspected (Lander and Parkin 1967; Dubner, Forbes, Lygeros, Mizony, Nelson and Zimmermann 2002). OEIS A006560 inspected: the smallest six consecutive primes in arithmetic progression start at 121174811 with difference 30 (Lander and Parkin), and seven terms need a difference of at least 210. A local segmented sieve over all 50,847,534 primes below 10^9 confirmed that no seven consecutive primes below 10^9 form an arithmetic progression. Erdős Problem #141 page inspected. Below 10^9 the longest such progressions have six terms (the first starts at 121174811), so the task recovers a six-term progression."
+    },
+    {
+      "url": "https://www.erdosproblems.com/141",
+      "type": "archive",
+      "locator": "Erdős Problem #141 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000143",
+      "type": "benchmark",
+      "locator": "JSP-000143; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Consecutive primes in arithmetic progression below 10^9",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_h_cpap",
+    "science_family": "science_prize_h_cpap",
+    "parameters": {
+      "bound": 1000000000
+    },
+    "interface": "construct() -> [p, d, k] describing p, p + d, ..., p + (k-1)d with 2 <= k <= 64, 1 <= d <= 5000 and last term at most 10^9. Every term must be prime (deterministic Miller-Rabin) and no prime may lie strictly between consecutive terms. Maximize k; the optimum below 10^9 is 6.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000143"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_h_cpap",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case; the bound 10^9 rests on a local exhaustive scan that agrees with OEIS A006560.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_h.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 6,
+    "statement": "The longest progressions of consecutive primes below 10^9 have 6 terms, first 121174811 + 30j (Lander and Parkin 1967; OEIS A006560; local scan).",
+    "sources": [
+      {
+        "title": "OEIS A006560: Smallest starting prime for n consecutive primes in arithmetic progression",
+        "url": "https://oeis.org/A006560"
+      },
+      {
+        "title": "Consecutive primes in arithmetic progression",
+        "url": "https://doi.org/10.1090/S0025-5718-67-99657-3",
+        "authors": "L. J. Lander, T. R. Parkin",
+        "year": 1967
+      },
+      {
+        "title": "Ten consecutive primes in arithmetic progression",
+        "url": "https://doi.org/10.1090/S0025-5718-01-01374-6",
+        "authors": "H. Dubner, T. Forbes, N. Lygeros, M. Mizony, H. Nelson, P. Zimmermann",
+        "year": 2002
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 141,
+      "url": "https://www.erdosproblems.com/141",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #141, https://www.erdosproblems.com/141, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Decide whether there are arbitrarily long arithmetic progressions of consecutive primes.",
+    "importance_rationale": "Erdős Problem #141, called 'completely hopeless' by Erdős, is open even for infinitely many three-term progressions; the Green-Tao theorem gives progressions of primes that need not be consecutive.",
+    "papers": [
+      {
+        "title": "Consecutive primes in arithmetic progression",
+        "url": "https://doi.org/10.1090/S0025-5718-67-99657-3",
+        "task_relation": "Below 10^9 the longest such progressions have six terms (the first starts at 121174811), so the task recovers a six-term progression.",
+        "primary_goal": "Decide whether there are arbitrarily long arithmetic progressions of consecutive primes.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref records inspected (Lander and Parkin 1967; Dubner, Forbes, Lygeros, Mizony, Nelson and Zimmermann 2002). OEIS A006560 inspected: the smallest six consecutive primes in arithmetic progression start at 121174811 with difference 30 (Lander and Parkin), and seven terms need a difference of at least 210. A local segmented sieve over all 50,847,534 primes below 10^9 confirmed that no seven consecutive primes below 10^9 form an arithmetic progression. Erdős Problem #141 page inspected.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

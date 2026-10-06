@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "id": "science-graph-restricted-sum-product",
+  "name": "Small sums and products along selected graph edges",
+  "description": "construct() -> {'values': fourteen distinct positive integers <=10000, 'edges': exactly 35 simple undirected edges on their indices}. Minimize max(number of distinct edge sums, number of distinct edge products). Only edges between different vertices count. The local restrictions are fourteen positive integer labels, 35 edges and label cap 10000. The max objective is stated explicitly; this does not reproduce the paper’s asymptotic graph constructions or claim a new counterexample.",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1802.06405",
+      "type": "paper",
+      "locator": "Noga Alon, Imre Ruzsa and József Solymosi, Sums, products and ratios along the edges of a graph (2018 preprint; 2020 publication). Author abstract and introduction study simultaneous sumset/product-set sizes restricted to graph edges, including constructions disproving the strongest conjecture."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000665",
+      "type": "benchmark",
+      "locator": "JSP-000665; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloads. Fixed input arrays are fully recorded in parameters; arithmetic/combinatorial validation uses the Python standard library."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Small sums and products along selected graph edges",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_c_665",
+    "science_family": "science_prize_c_665",
+    "parameters": {
+      "n": 14,
+      "m": 35,
+      "maximum": 10000
+    },
+    "interface": "construct() -> {'values': fourteen distinct positive integers <=10000, 'edges': exactly 35 simple undirected edges on their indices}. Minimize max(number of distinct edge sums, number of distinct edge products). Only edges between different vertices count.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no published candidate or source implementation copied.",
+      "prize_problem_id": "JSP-000665",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_c_665",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "The local restrictions are fourteen positive integer labels, 35 edges and label cap 10000. The max objective is stated explicitly; this does not reproduce the paper’s asymptotic graph constructions or claim a new counterexample.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/c-checks.json",
+    "tests": "tests/test_science_prize_c.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value for fourteen labels and 35 edges. Alon, Ruzsa and Solymosi disproved the strong form of the conjecture (Erdős Problem #808). They also proved max(|A+_G A|, |A·_G A|) >> m^(3/2) n^(-7/4) for m edges.",
+    "sources": [
+      {
+        "title": "Sums, products and ratios along the edges of a graph",
+        "url": "https://arxiv.org/abs/1802.06405",
+        "authors": "Noga Alon, Imre Ruzsa, József Solymosi",
+        "year": 2020
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 808,
+      "url": "https://www.erdosproblems.com/808",
+      "status": "disproved",
+      "citation": "T. F. Bloom, Erdős Problem #808, https://www.erdosproblems.com/808, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Understand simultaneous additive and multiplicative structure when observations are restricted to graph edges.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Noga Alon, Imre Ruzsa and József Solymosi, Sums, products and ratios along the edges of a graph (2018 preprint; 2020 publication)",
+        "url": "https://arxiv.org/abs/1802.06405",
+        "primary_goal": "Understand simultaneous additive and multiplicative structure when observations are restricted to graph edges.",
+        "task_relation": "The local restrictions are fourteen positive integer labels, 35 edges and label cap 10000. The max objective is stated explicitly; this does not reproduce the paper’s asymptotic graph constructions or claim a new counterexample.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Author abstract and introduction study simultaneous sumset/product-set sizes restricted to graph edges, including constructions disproving the strongest conjecture.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

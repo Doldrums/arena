@@ -1,0 +1,107 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_b_egyptian_maximum",
+  "direction": "minimize",
+  "contract": "construct() -> candidate. Return 1..256 distinct denominators in [1,10000000] summing reciprocally to exactly 5/31. Minimize the LARGEST denominator, not the term count.",
+  "parameters": {
+    "numerator": 5,
+    "denominator": 31,
+    "maximum": 10000000
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "One fixed rational instance of the denominator-size problem; the paper provides asymptotic bounds, not this local benchmark optimum."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-number-theory-egyptian-maximum",
+  "name": "Small largest denominator in an Egyptian expansion of 5/31",
+  "paper_ids": [
+    "science-prize_b"
+  ],
+  "description": "Return 1..256 distinct denominators in [1,10000000] summing reciprocally to exactly 5/31. Minimize the LARGEST denominator, not the term count. One fixed rational instance of the denominator-size problem; the paper provides asymptotic bounds, not this local benchmark optimum.",
+  "benchmark": "Small largest denominator in an Egyptian expansion of 5/31",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2404.07113",
+      "type": "paper",
+      "locator": "Yang P. Liu and Mehtaab Sawhney (2024), On further questions regarding unit fractions. Theorem 1.5 and the introduction define the largest-denominator objective; 5/31 is a fixed finite case. Primary full HTML inspected."
+    },
+    {
+      "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+      "type": "paper",
+      "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 38. One fixed rational instance of the denominator-size problem; the paper provides asymptotic bounds, not this local benchmark optimum. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000256",
+      "type": "benchmark",
+      "locator": "JSP-000256; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+    }
+  ],
+  "limitations": [
+    "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+    "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+    "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+    "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+    "One fixed rational instance of the denominator-size problem; the paper provides asymptotic bounds, not this local benchmark optimum."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_b",
+      "title": "Problem-bank constructions: arithmetic and extremal sets: source-based research tasks",
+      "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Yang P. Liu and Mehtaab Sawhney (2024, On further questions regarding unit fractions) study the underlying problem.",
+    "sources": [
+      {
+        "title": "On further questions regarding unit fractions",
+        "url": "https://arxiv.org/abs/2404.07113",
+        "authors": "Yang P. Liu and Mehtaab Sawhney",
+        "year": 2024
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Prove upper bounds on the denominator sizes needed in distinct-unit-fraction representations.",
+    "importance_rationale": "Advances quantitative understanding of exact rational representations by unit fractions.",
+    "papers": [
+      {
+        "title": "On further questions regarding unit fractions",
+        "url": "https://arxiv.org/abs/2404.07113",
+        "primary_goal": "Prove upper bounds on the denominator sizes needed in distinct-unit-fraction representations.",
+        "task_relation": "Theorem 1.5 and the introduction define the largest-denominator objective; 5/31 is a fixed finite case. Primary full HTML inspected. One fixed rational instance of the denominator-size problem; the paper provides asymptotic bounds, not this local benchmark optimum.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "A primary research paper directly studies the mathematical objective; local finite scope and restrictions are explicit. This does not certify novelty, importance of the baseline itself, or current open status.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Primary research full text, author abstract, or publisher abstract inspected; precise access level is recorded in sources and source receipts.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

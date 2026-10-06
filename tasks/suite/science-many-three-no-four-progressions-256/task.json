@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.0",
+  "id": "science-many-three-no-four-progressions-256",
+  "name": "Many three-term progressions without four-term progressions",
+  "description": "construct() -> a nonempty subset of [1,n=256], with no nonconstant four-term arithmetic progression. Maximize the number of distinct three-term arithmetic progressions (positive difference, counted once). Cardinality and ambient interval are both reported; finite-box restriction of the source extremal problem. Choose a subset of [1,256] with no four-term progression and maximize the number of three-term progressions. Unlike the paper, ambient height is fixed and cardinality varies; each result bounds f_{3,4}(|A|) from below.",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1908.09905",
+      "type": "paper",
+      "locator": "Jacob Fox and Cosmin Pohoata, Sets without k-term progressions can have many shorter progressions. Author abstract inspected; f_{s,k}(n) counts shorter progressions in n-element sets avoiding longer ones."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000173",
+      "type": "benchmark",
+      "locator": "JSP-000173; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; fixed finite mathematical profiles."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Many three-term progressions without four-term progressions",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_a_many_short_progressions",
+    "science_family": "science_prize_a_many_short_progressions",
+    "parameters": {
+      "n": 256
+    },
+    "interface": "construct() -> a nonempty subset of [1,n=256], with no nonconstant four-term arithmetic progression. Maximize the number of distinct three-term arithmetic progressions (positive difference, counted once). Cardinality and ambient interval are both reported; finite-box restriction of the source extremal problem.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000173"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_a_many_short_progressions",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Choose a subset of [1,256] with no four-term progression and maximize the number of three-term progressions. Unlike the paper, ambient height is fixed and cardinality varies; each result bounds f_{3,4}(|A|) from below.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/a-checks.json",
+    "tests": "tests/test_science_prize_a.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented maximum for subsets of [1,256]. Fox and Pohoata showed that sets without k-term progressions can contain N^(2-o(1)) shorter progressions, which answers Erdős Problem #179.",
+    "sources": [
+      {
+        "title": "Sets without k-term progressions can have many shorter progressions",
+        "url": "https://arxiv.org/abs/1908.09905",
+        "authors": "Jacob Fox, Cosmin Pohoata",
+        "year": 2020
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 179,
+      "url": "https://www.erdosproblems.com/179",
+      "status": "proved",
+      "citation": "T. F. Bloom, Erdős Problem #179, https://www.erdosproblems.com/179, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Maximize the number of short progressions compatible with avoiding a longer progression.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "Sets without k-term progressions can have many shorter progressions",
+        "url": "https://arxiv.org/abs/1908.09905",
+        "task_relation": "Choose a subset of [1,256] with no four-term progression and maximize the number of three-term progressions. Unlike the paper, ambient height is fixed and cardinality varies; each result bounds f_{3,4}(|A|) from below.",
+        "primary_goal": "Maximize the number of short progressions compatible with avoiding a longer progression.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author abstract inspected; f_{s,k}(n) counts shorter progressions in n-element sets avoiding longer ones.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

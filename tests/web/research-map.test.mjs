@@ -96,7 +96,7 @@ test('actual catalog digest and real registry render every task and retain separ
   const data=Object.fromEntries(['catalog','insights','participants','results-overview'].map(name=>[name,JSON.parse(read(`registry/${name}.json`))]));
   const t=mount({data});
   try {await settle(t);
-    assert.equal(t.root.dataset.state,'ready');assert.equal(t.doc.querySelectorAll('.map-node.task').length,959);
+    assert.equal(t.root.dataset.state,'ready');assert.equal(t.doc.querySelectorAll('.map-node.task').length,1163);
     const inspector=t.doc.getElementById('map-inspector');
     assert.equal(stat(inspector,'Integration runs'),String(data['results-overview'].summary.runs));
     assert.equal(stat(inspector,'Research observations'),String(data['results-overview'].research.total));

@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0",
+  "id": "science-three-colors-every-four-progression-128",
+  "name": "Colorings with three colors in every four-term progression",
+  "description": "construct() -> n=128 integer color labels in 0..127. Every nonconstant four-term progression of positions must use AT LEAST three distinct colors. Minimize the number of labels actually used; labels need not be consecutive. Minimize colors on [1,128] with at least three colors on every four-term progression. The source’s largest forcing-color threshold is one below the least avoiding-color count; local score uses the latter convention.",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://users.renyi.hu/~p_erdos/1989-35.pdf",
+      "type": "paper",
+      "locator": "Paul Erdős, Some Problems and Results on Combinatorial Number Theory. Author-hosted 1989 paper, p.143, Freud–Erdős coloring question inspected."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000158",
+      "type": "benchmark",
+      "locator": "JSP-000158; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; fixed finite mathematical profiles."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Colorings with three colors in every four-term progression",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_a_three_color_progressions",
+    "science_family": "science_prize_a_three_color_progressions",
+    "parameters": {
+      "n": 128
+    },
+    "interface": "construct() -> n=128 integer color labels in 0..127. Every nonconstant four-term progression of positions must use AT LEAST three distinct colors. Minimize the number of labels actually used; labels need not be consecutive.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000158"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_a_three_color_progressions",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Minimize colors on [1,128] with at least three colors on every four-term progression. The source’s largest forcing-color threshold is one below the least avoiding-color count; local score uses the latter convention.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/a-checks.json",
+    "tests": "tests/test_science_prize_a.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value of h(128), the least number of colours of [1,N] such that every four-term progression receives at least three colours (Erdős Problem #160).",
+    "sources": [
+      {
+        "title": "Some Problems and Results on Combinatorial Number Theory",
+        "url": "https://users.renyi.hu/~p_erdos/1989-35.pdf",
+        "authors": "Paul Erdős",
+        "year": 1989
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 160,
+      "url": "https://www.erdosproblems.com/160",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #160, https://www.erdosproblems.com/160, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Understand thresholds for four-term progressions using at most two color classes.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [],
+    "reviewed_at": "2026-09-22",
+    "reason": "The exact question is present in a problem survey. A primary problem-solving paper for this stronger every-progression constraint was not established; related ABBA-free-coloring papers are not treated as equivalent.",
+    "verification_basis": "Author-hosted 1989 paper, p.143, Freud–Erdős coloring question inspected.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,7 +1,6 @@
 # Narrow admissible tuple
 
 **Paper:** Generative Modeling for Mathematical Discovery (https://arxiv.org/pdf/2503.11061)\
-**Paper:** Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design (https://arxiv.org/pdf/2501.08603)\
 **Task id:** `funsearch-re-implementation-narrow-admissible-tuple`\
 **Protocol:** `recreated`\
 **Direction:** maximize\
@@ -31,15 +30,11 @@ Evidence status: **unreviewed**.
 
 No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value.
 
-## Also evaluated by
-
-The same problem (same evaluator and parameters) appears in these papers; their records were merged into this task and their pinned upstream routes remain reachable with `run.py evaluate funsearch-re-implementation-narrow-admissible-tuple --route upstream --paper <paper>`.
-
-- MCTS-AHD: asp_constructive (`mcts-ahd-asp-constructive`; asp_constructive, Pinned official training instances or exact official training generator; see docs/TASKS.md for subset and limits.)
-
 ## Evaluation protocol
 
-Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.
+Locally implemented or adapted evaluator for the cited task or benchmark. Data sources, generated instances, evaluation budgets and protocol differences are specified in the candidate contract, requirements and notes; scores are not automatically comparable with published results.
+
+- The source itself uses a fixed diameter bound n=5000 and maximizes surviving tuple size. The local constructor directly returns integers in[0,5000]; for k distinct values it checks a missing residue for every prime<=k (larger primes cannot be fully occupied). The source instead evolves a prime-residue sieve priority. The mathematical feasible set/size objective are shared but candidate interface and search differ. MCTS-AHD ternary admissible sets are a different task and have been restored separately.
 
 ## Run
 
@@ -57,9 +52,8 @@ The evaluator prints a JSON result with `combined_score` (the value SCiEL maximi
 
 - paper: https://arxiv.org/pdf/2503.11061 (Section 3, Tables 1-3)
 - repository: https://github.com/kitft/funsearch/tree/cec37d84b474ea6bbd66f6defad8f5b5758449ff (examples/nat_spec.py)
-- paper: https://arxiv.org/pdf/2501.08603 (Section 4; Appendices B-D and F)
-- repository: https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb (problems/asp_constructive/eval.py)
 
 ## Limitations
 
 - Execution interface inspected in pinned source. Full paper experiments have not been reproduced here.
+- The source itself uses a fixed diameter bound n=5000 and maximizes surviving tuple size. The local constructor directly returns integers in[0,5000]; for k distinct values it checks a missing residue for every prime<=k (larger primes cannot be fully occupied). The source instead evolves a prime-residue sieve priority. The mathematical feasible set/size objective are shared but candidate interface and search differ. MCTS-AHD ternary admissible sets are a different task and have been restored separately.

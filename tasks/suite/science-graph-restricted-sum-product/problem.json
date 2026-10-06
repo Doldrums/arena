@@ -1,0 +1,106 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_c_665",
+  "direction": "minimize",
+  "contract": "construct() -> {'values': fourteen distinct positive integers <=10000, 'edges': exactly 35 simple undirected edges on their indices}. Minimize max(number of distinct edge sums, number of distinct edge products). Only edges between different vertices count.",
+  "parameters": {
+    "n": 14,
+    "m": 35,
+    "maximum": 10000
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Exact finite certificate validation; independently implemented from the cited mathematical definition. Resource bounds and source adaptation are recorded per task. No Lean verification or general theorem is claimed."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-graph-restricted-sum-product",
+  "name": "Small sums and products along selected graph edges",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "description": "construct() -> {'values': fourteen distinct positive integers <=10000, 'edges': exactly 35 simple undirected edges on their indices}. Minimize max(number of distinct edge sums, number of distinct edge products). Only edges between different vertices count. The local restrictions are fourteen positive integer labels, 35 edges and label cap 10000. The max objective is stated explicitly; this does not reproduce the paper’s asymptotic graph constructions or claim a new counterexample.",
+  "benchmark": "Small sums and products along selected graph edges",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1802.06405",
+      "type": "paper",
+      "locator": "Noga Alon, Imre Ruzsa and József Solymosi, Sums, products and ratios along the edges of a graph (2018 preprint; 2020 publication). Author abstract and introduction study simultaneous sumset/product-set sizes restricted to graph edges, including constructions disproving the strongest conjecture."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000665",
+      "type": "benchmark",
+      "locator": "JSP-000665; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "The local restrictions are fourteen positive integer labels, 35 edges and label cap 10000. The max objective is stated explicitly; this does not reproduce the paper’s asymptotic graph constructions or claim a new counterexample.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_c",
+      "title": "Problem-bank constructions: graphs and set systems: source-based research tasks",
+      "url": "https://users.renyi.hu/~gyarfas/Cikkek/90_howtodecrease.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value for fourteen labels and 35 edges. Alon, Ruzsa and Solymosi disproved the strong form of the conjecture (Erdős Problem #808). They also proved max(|A+_G A|, |A·_G A|) >> m^(3/2) n^(-7/4) for m edges.",
+    "sources": [
+      {
+        "title": "Sums, products and ratios along the edges of a graph",
+        "url": "https://arxiv.org/abs/1802.06405",
+        "authors": "Noga Alon, Imre Ruzsa, József Solymosi",
+        "year": 2020
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 808,
+      "url": "https://www.erdosproblems.com/808",
+      "status": "disproved",
+      "citation": "T. F. Bloom, Erdős Problem #808, https://www.erdosproblems.com/808, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Understand simultaneous additive and multiplicative structure when observations are restricted to graph edges.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Noga Alon, Imre Ruzsa and József Solymosi, Sums, products and ratios along the edges of a graph (2018 preprint; 2020 publication)",
+        "url": "https://arxiv.org/abs/1802.06405",
+        "primary_goal": "Understand simultaneous additive and multiplicative structure when observations are restricted to graph edges.",
+        "task_relation": "The local restrictions are fourteen positive integer labels, 35 edges and label cap 10000. The max objective is stated explicitly; this does not reproduce the paper’s asymptotic graph constructions or claim a new counterexample.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Author abstract and introduction study simultaneous sumset/product-set sizes restricted to graph edges, including constructions disproving the strongest conjecture.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_a_goldbach_decompositions",
+  "direction": "maximize",
+  "contract": "construct() -> 256 rows for even targets 1000000+2*i, i=0..255. Each row is None (unsolved) or a pair of primes summing to the target; equal primes are allowed. Maximize the fraction solved; every claimed pair is checked and any malformed claim invalidates the candidate.",
+  "parameters": {
+    "start": 1000000,
+    "count": 256
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Independent finite certificate evaluator and local seed; no source implementation copied. Exact constraints are verified, but no optimality, general theorem, Lean proof, published record, or prize eligibility is claimed. See task sources and adaptation limitations."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-goldbach-prime-decompositions",
+  "name": "Prime decompositions of even integers",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "description": "construct() -> 256 rows for even targets 1000000+2*i, i=0..255. Each row is None (unsolved) or a pair of primes summing to the target; equal primes are allowed. Maximize the fraction solved; every claimed pair is checked and any malformed claim invalidates the candidate. Construct prime pairs for 256 even targets from 1000000 to 1000510. These inputs are far within published verification ranges; maximizing coverage is a rediscovery exercise.",
+  "benchmark": "Prime decompositions of even integers",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1090/S0025-5718-2013-02787-1",
+      "type": "paper",
+      "locator": "Tomás Oliveira e Silva, Siegfried Herzog and Silvio Pardi, Empirical verification of the even Goldbach conjecture and computation of prime gaps up to 4·10^18. Original author project https://sweet.ua.pt/tos/goldbach.html inspected: definitions, finite verification, and full 2014 paper citation (Mathematics of Computation 83, 2033–2060)."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000008",
+      "type": "benchmark",
+      "locator": "JSP-000008; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "limitations": [
+    "Construct prime pairs for 256 even targets from 1000000 to 1000510. These inputs are far within published verification ranges; maximizing coverage is a rediscovery exercise.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_a",
+      "title": "Problem-bank constructions: additive combinatorics: source-based research tasks",
+      "url": "https://arxiv.org/abs/2208.12182"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 1.0,
+    "statement": "Every even number up to 4·10^18 is a sum of two primes (Oliveira e Silva, Herzog and Pardi), so all 256 targets are solvable and the maximum fraction is 1.",
+    "sources": [
+      {
+        "title": "Empirical verification of the even Goldbach conjecture and computation of prime gaps up to 4·10^18",
+        "url": "https://doi.org/10.1090/S0025-5718-2013-02787-1",
+        "authors": "Tomás Oliveira e Silva, Siegfried Herzog, Silvio Pardi",
+        "year": 2014
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Verify finite ranges of the even Goldbach conjecture using explicit prime decompositions.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "Empirical verification of the even Goldbach conjecture and computation of prime gaps up to 4·10^18",
+        "url": "https://doi.org/10.1090/S0025-5718-2013-02787-1",
+        "task_relation": "Construct prime pairs for 256 even targets from 1000000 to 1000510. These inputs are far within published verification ranges; maximizing coverage is a rediscovery exercise.",
+        "primary_goal": "Verify finite ranges of the even Goldbach conjecture using explicit prime decompositions.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Original author project https://sweet.ua.pt/tos/goldbach.html inspected: definitions, finite verification, and full 2014 paper citation (Mathematics of Computation 83, 2033–2060).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

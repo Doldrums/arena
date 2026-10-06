@@ -1,0 +1,113 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_g_integral_points",
+  "direction": "maximize",
+  "contract": "construct() -> {'D': D, 'points': [[[x_num, x_den], [y_num, y_den]], ...]} describing 3 to 12 distinct points (x, y*sqrt(D)) with rational x, y (|numerators|, denominators <= 10^40) and squarefree D <= 10^12. All pairwise distances must be rational (equivalently integral after scaling), no three points collinear and no four concyclic, all checked with exact rational arithmetic. Maximize the number of points.",
+  "parameters": {
+    "max_points": 12,
+    "bound": 10000000000000000000000000000000000000000
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "A valid set certifies such configurations of that size; 8 points would be new. Exact local certificates are not Lean proofs; floating-point scores are stated as such. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-integral-point-sets-general-position",
+  "name": "Integral point sets in general position (no three collinear, no four concyclic)",
+  "paper_ids": [
+    "science-prize_g"
+  ],
+  "description": "construct() -> {'D': D, 'points': [[[x_num, x_den], [y_num, y_den]], ...]} describing 3 to 12 distinct points (x, y*sqrt(D)) with rational x, y (|numerators|, denominators <= 10^40) and squarefree D <= 10^12. All pairwise distances must be rational (equivalently integral after scaling), no three points collinear and no four concyclic, all checked with exact rational arithmetic. Maximize the number of points. A valid set certifies such configurations of that size; 8 points would be new.",
+  "benchmark": "Integral point sets in general position (no three collinear, no four concyclic)",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1007/s00454-007-9038-6",
+      "type": "paper",
+      "locator": "Tobias Kreisel and Sascha Kurz, There Are Integral Heptagons, no Three Points on a Line, no Four on a Circle (2008). Crossref record inspected; Erdős Problem #213 page inspected: Anning and Erdős excluded infinite sets, Harborth found 5 points, Kreisel and Kurz 7 points (the best construction), and 8 points remain open. Every planar integral point set has a characteristic D putting its points at (a, b*sqrt(D)) after a similarity (Kemnitz), so the representation is general. A valid set certifies such configurations of that size; 8 points would be new."
+    },
+    {
+      "url": "https://www.erdosproblems.com/213",
+      "type": "archive",
+      "locator": "Erdős Problem #213 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000197",
+      "type": "benchmark",
+      "locator": "JSP-000197; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "The five-point starter was found by a small local search and is not a published construction. Very large coordinates are allowed but slow the exact checks.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_g",
+      "title": "Problem-bank constructions: discrete geometry and analysis: source-based research tasks",
+      "url": "https://doi.org/10.1007/s00454-007-9038-6"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "best_known",
+    "value": 7,
+    "statement": "The largest known integral point set in general position has 7 points (Kreisel and Kurz 2008); none with 8 points is known.",
+    "sources": [
+      {
+        "title": "There Are Integral Heptagons, no Three Points on a Line, no Four on a Circle",
+        "url": "https://doi.org/10.1007/s00454-007-9038-6",
+        "authors": "Tobias Kreisel, Sascha Kurz",
+        "year": 2008
+      },
+      {
+        "title": "Erdős Problem #213",
+        "url": "https://www.erdosproblems.com/213"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 213,
+      "url": "https://www.erdosproblems.com/213",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #213, https://www.erdosproblems.com/213, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Decide how many points in general position can have all pairwise distances integral.",
+    "importance_rationale": "Erdős Problem #213 asks whether such sets exist for every n; the finite record of 7 points is the entire state of knowledge.",
+    "papers": [
+      {
+        "title": "There Are Integral Heptagons, no Three Points on a Line, no Four on a Circle",
+        "url": "https://doi.org/10.1007/s00454-007-9038-6",
+        "task_relation": "A valid set certifies such configurations of that size; 8 points would be new.",
+        "primary_goal": "Decide how many points in general position can have all pairwise distances integral.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #213 page inspected: Anning and Erdős excluded infinite sets, Harborth found 5 points, Kreisel and Kurz 7 points (the best construction), and 8 points remain open. Every planar integral point set has a characteristic D putting its points at (a, b*sqrt(D)) after a similarity (Kemnitz), so the representation is general.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

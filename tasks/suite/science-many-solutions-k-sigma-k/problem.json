@@ -1,0 +1,112 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_k_sigma",
+  "direction": "maximize",
+  "contract": "construct() -> {'M': M, 'k': [k_1, ...]} with M <= 10^18 and distinct k_i <= sqrt(M) satisfying k_i * sigma(k_i) = M (checked with exact factorization). The score is the number of listed solutions, a certified lower bound for f(M). Maximize.",
+  "parameters": {
+    "bound": 1000000000000000000
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "Values with many certified solutions are finite lower-bound constructions for f; no record values are documented. Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-many-solutions-k-sigma-k",
+  "name": "Integers M <= 10^18 with many solutions of k*sigma(k) = M",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> {'M': M, 'k': [k_1, ...]} with M <= 10^18 and distinct k_i <= sqrt(M) satisfying k_i * sigma(k_i) = M (checked with exact factorization). The score is the number of listed solutions, a certified lower bound for f(M). Maximize. Values with many certified solutions are finite lower-bound constructions for f; no record values are documented.",
+  "benchmark": "Integers M <= 10^18 with many solutions of k*sigma(k) = M",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1007/978-0-387-26677-0",
+      "type": "paper",
+      "locator": "Richard K. Guy, Unsolved Problems in Number Theory (2004). Crossref record inspected (problem B11). Erdős Problem #1060 page inspected (is f(n) <= n^(o(1/log log n)), perhaps even (log n)^O(1)?). OEIS A327153 and A337873 inspected: values with several solutions such as 333312 = 336 sigma(336) = 372 sigma(372) = 434 sigma(434); no record over a range is documented. Values with many certified solutions are finite lower-bound constructions for f; no record values are documented."
+    },
+    {
+      "url": "https://www.erdosproblems.com/1060",
+      "type": "archive",
+      "locator": "Erdős Problem #1060 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000880",
+      "type": "benchmark",
+      "locator": "JSP-000880; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "No documented value (reference label none). Listed solutions certify a lower bound for f(M), not its exact value.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented record values.",
+    "sources": [
+      {
+        "title": "Unsolved Problems in Number Theory",
+        "url": "https://doi.org/10.1007/978-0-387-26677-0",
+        "authors": "Richard K. Guy",
+        "year": 2004
+      },
+      {
+        "title": "OEIS A337873: Numbers m such that m = k*sigma(k) has more than one solution",
+        "url": "https://oeis.org/A337873"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1060,
+      "url": "https://www.erdosproblems.com/1060",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1060, https://www.erdosproblems.com/1060, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Bound the number of solutions of k sigma(k) = n (Erdős Problem #1060).",
+    "importance_rationale": "Multiplicities of multiplicative functions such as k sigma(k) measure how far they are from injective, in the spirit of Ford's work on totient multiplicities.",
+    "papers": [
+      {
+        "title": "Unsolved Problems in Number Theory",
+        "url": "https://doi.org/10.1007/978-0-387-26677-0",
+        "task_relation": "Values with many certified solutions are finite lower-bound constructions for f; no record values are documented.",
+        "primary_goal": "Bound the number of solutions of k sigma(k) = n (Erdős Problem #1060).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected (problem B11). Erdős Problem #1060 page inspected (is f(n) <= n^(o(1/log log n)), perhaps even (log n)^O(1)?). OEIS A327153 and A337873 inspected: values with several solutions such as 333312 = 336 sigma(336) = 372 sigma(372) = 434 sigma(434); no record over a range is documented.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}
