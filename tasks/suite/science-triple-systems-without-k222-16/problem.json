@@ -1,0 +1,108 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_f_tripartite_triples",
+  "direction": "maximize",
+  "contract": "construct() -> list of distinct triples [a, b, c] of distinct points in 0..15 such that no three disjoint pairs have all eight transversal triples present. Maximize the number of triples.",
+  "parameters": {
+    "n": 16
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "A valid triple system with m triples certifies ex_3(16,K(2,2,2)) >= m; no finite value is documented. Exact local certificates are not Lean proofs. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-triple-systems-without-k222-16",
+  "name": "Triple systems on 16 points without the complete 3-partite K(2,2,2)",
+  "paper_ids": [
+    "science-prize_f"
+  ],
+  "description": "construct() -> list of distinct triples [a, b, c] of distinct points in 0..15 such that no three disjoint pairs have all eight transversal triples present. Maximize the number of triples. A valid triple system with m triples certifies ex_3(16,K(2,2,2)) >= m; no finite value is documented.",
+  "benchmark": "Triple systems on 16 points without the complete 3-partite K(2,2,2)",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1007/bf02759942",
+      "type": "paper",
+      "locator": "Paul Erdős, On extremal problems of graphs and generalized graphs (1964). Crossref record inspected; Erdős Problem #1158 page inspected: n^(t-O(r^(1-t))) <= ex_t(n,K_t(r)) << n^(t-r^(1-t)) (Erdős 1964); the lower-bound exponent is known only for t = 2 and r <= 3. A valid triple system with m triples certifies ex_3(16,K(2,2,2)) >= m; no finite value is documented."
+    },
+    {
+      "url": "https://www.erdosproblems.com/1158",
+      "type": "archive",
+      "locator": "Erdős Problem #1158 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000963",
+      "type": "benchmark",
+      "locator": "JSP-000963; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "No documented value for n = 16 (reference label none).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_f",
+      "title": "Problem-bank constructions: extremal graphs, hypergraphs and designs: source-based research tasks",
+      "url": "https://arxiv.org/abs/2103.14179"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value for n = 16; ex_3(n,K(2,2,2)) << n^(11/4) by Erdős 1964.",
+    "sources": [
+      {
+        "title": "On extremal problems of graphs and generalized graphs",
+        "url": "https://doi.org/10.1007/bf02759942",
+        "authors": "P. Erdős",
+        "year": 1964
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1158,
+      "url": "https://www.erdosproblems.com/1158",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1158, https://www.erdosproblems.com/1158, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine Turán numbers of complete t-partite t-uniform hypergraphs.",
+    "importance_rationale": "Erdős's 1964 theorem introduced hypergraph Turán exponents; Erdős Problem #1158 asks whether his upper bound exponent is sharp.",
+    "papers": [
+      {
+        "title": "On extremal problems of graphs and generalized graphs",
+        "url": "https://doi.org/10.1007/bf02759942",
+        "task_relation": "A valid triple system with m triples certifies ex_3(16,K(2,2,2)) >= m; no finite value is documented.",
+        "primary_goal": "Determine Turán numbers of complete t-partite t-uniform hypergraphs.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #1158 page inspected: n^(t-O(r^(1-t))) <= ex_t(n,K_t(r)) << n^(t-r^(1-t)) (Erdős 1964); the lower-bound exponent is known only for t = 2 and r <= 3.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0",
+  "id": "science-comparable-set-family-pairs",
+  "name": "Many comparable pairs in a fixed-size set family",
+  "description": "construct() -> exactly forty distinct subsets of vertices 0..11, each as a list of distinct integers; the empty set is allowed. Maximize the number of unordered pairs in which one member is a strict subset of the other. The local parameters are n=12 and m=40. This is a finite lower-bound construction for c(12,40); the baseline consists of the first forty binary masks and does not copy the paper’s extremal constructions.",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://www.tau.ac.il/~nogaa/PDFS/compairs1.pdf",
+      "type": "paper",
+      "locator": "Noga Alon, Shagnik Das, Roman Glebov and Benny Sudakov, Comparable pairs in families of sets (2015). Abstract and section 1.1 define c(n,m) as the maximum number of comparable pairs in an m-member family of subsets of [n]."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000637",
+      "type": "benchmark",
+      "locator": "JSP-000637; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloads. Fixed input arrays are fully recorded in parameters; arithmetic/combinatorial validation uses the Python standard library."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Many comparable pairs in a fixed-size set family",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_c_637",
+    "science_family": "science_prize_c_637",
+    "parameters": {
+      "n": 12,
+      "m": 40
+    },
+    "interface": "construct() -> exactly forty distinct subsets of vertices 0..11, each as a list of distinct integers; the empty set is allowed. Maximize the number of unordered pairs in which one member is a strict subset of the other.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no published candidate or source implementation copied.",
+      "prize_problem_id": "JSP-000637",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_c_637",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "The local parameters are n=12 and m=40. This is a finite lower-bound construction for c(12,40); the baseline consists of the first forty binary masks and does not copy the paper’s extremal constructions.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/c-checks.json",
+    "tests": "tests/test_science_prize_c.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value of c(12, 40). Alon, Das, Glebov and Sudakov determine the extremal families only asymptotically or for special sizes (towers of subcubes); the related Erdős Problem #777 is solved.",
+    "sources": [
+      {
+        "title": "Comparable pairs in families of sets",
+        "url": "https://doi.org/10.1016/j.jctb.2015.05.009",
+        "authors": "Noga Alon, Shagnik Das, Roman Glebov, Benny Sudakov",
+        "year": 2015
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 777,
+      "url": "https://www.erdosproblems.com/777",
+      "status": "solved",
+      "citation": "T. F. Bloom, Erdős Problem #777, https://www.erdosproblems.com/777, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how concentrated comparability can be in a set family of prescribed size.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Noga Alon, Shagnik Das, Roman Glebov and Benny Sudakov, Comparable pairs in families of sets (2015)",
+        "url": "https://www.tau.ac.il/~nogaa/PDFS/compairs1.pdf",
+        "primary_goal": "Determine how concentrated comparability can be in a set family of prescribed size.",
+        "task_relation": "The local parameters are n=12 and m=40. This is a finite lower-bound construction for c(12,40); the baseline consists of the first forty binary masks and does not copy the paper’s extremal constructions.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Abstract and section 1.1 define c(n,m) as the maximum number of comparable pairs in an m-member family of subsets of [n].",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

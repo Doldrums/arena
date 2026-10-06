@@ -1,0 +1,149 @@
+{
+  "schema_version": "1.0",
+  "id": "science-dense-triangle-free-four-chromatic-16",
+  "name": "Dense triangle-free graphs on 16 vertices with chromatic number at least four",
+  "description": "construct() -> list of edges [u, v] of a simple triangle-free graph on vertices 0..15 that is not 3-colourable (exact backtracking). Maximize the number of edges. A valid graph with m edges shows f_4(16) > m; the published formula applies only to n >= 150.",
+  "paper_ids": [
+    "science-prize_f"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2404.07486",
+      "type": "paper",
+      "locator": "Sijie Ren, Jian Wang, Shipeng Wang and Weihua Yang, Extremal triangle-free graphs with chromatic number at least four (2024). arXiv record inspected; Erdős Problem #1011 page inspected: f_4(n) = floor((n-3)^2/4) + 6 for n >= 150 (Ren, Wang, Wang and Yang), where f_4(n) edges force a triangle in 4-chromatic graphs. A valid graph with m edges shows f_4(16) > m; the published formula applies only to n >= 150."
+    },
+    {
+      "url": "https://www.erdosproblems.com/1011",
+      "type": "archive",
+      "locator": "Erdős Problem #1011 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000841",
+      "type": "benchmark",
+      "locator": "JSP-000841; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Dense triangle-free graphs on 16 vertices with chromatic number at least four",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_f_four_chromatic_triangle_free",
+    "science_family": "science_prize_f_four_chromatic_triangle_free",
+    "parameters": {
+      "n": 16
+    },
+    "interface": "construct() -> list of edges [u, v] of a simple triangle-free graph on vertices 0..15 that is not 3-colourable (exact backtracking). Maximize the number of edges.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000841"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_f_four_chromatic_triangle_free",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No documented value for n = 16 (reference label none).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_f.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value for n = 16; for n >= 150 the maximum is floor((n-3)^2/4) + 5 edges (Ren, Wang, Wang and Yang 2024).",
+    "sources": [
+      {
+        "title": "Extremal triangle-free graphs with chromatic number at least four",
+        "url": "https://arxiv.org/abs/2404.07486",
+        "authors": "Sijie Ren, Jian Wang, Shipeng Wang, Weihua Yang",
+        "year": 2024
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1011,
+      "url": "https://www.erdosproblems.com/1011",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1011, https://www.erdosproblems.com/1011, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the maximum number of edges of triangle-free graphs with chromatic number at least r.",
+    "importance_rationale": "Erdős Problem #1011 asks for f_r(n); small orders show where the large-n extremal structure takes over.",
+    "papers": [
+      {
+        "title": "Extremal triangle-free graphs with chromatic number at least four",
+        "url": "https://arxiv.org/abs/2404.07486",
+        "task_relation": "A valid graph with m edges shows f_4(16) > m; the published formula applies only to n >= 150.",
+        "primary_goal": "Determine the maximum number of edges of triangle-free graphs with chromatic number at least r.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "arXiv record inspected; Erdős Problem #1011 page inspected: f_4(n) = floor((n-3)^2/4) + 6 for n >= 150 (Ren, Wang, Wang and Yang), where f_4(n) edges force a triangle in 4-chromatic graphs.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

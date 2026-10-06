@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "id": "science-sums-of-two-powerful-numbers",
+  "name": "Integers up to 10^18 with many representations as sums of two powerful numbers",
+  "description": "construct() -> {'N': N, 'pairs': [[a, b], ...]} with 2 <= N <= 10^18 and distinct pairs a <= b, a + b = N, where a and b are powerful (every prime factor appears squared; 1 counts as powerful), checked by exact factorization. The score is the number of pairs, a certified lower bound on the representation count. Maximize. Integers with many certified representations are finite evidence on the conjectured subpolynomial bound.",
+  "paper_ids": [
+    "science-prize_i"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1515/crll.2004.027",
+      "type": "paper",
+      "locator": "Valentin Blomer, Binary quadratic forms with large discriminants and sums of two squareful numbers (2004). Crossref record inspected (Blomer studies how many integers are sums of two squareful numbers). Erdős Problem #943 page inspected: is the number of representations n^(o(1)) for every n? OEIS A085252 inspected (counts for small n). No record values over a range are documented. Integers with many certified representations are finite evidence on the conjectured subpolynomial bound."
+    },
+    {
+      "url": "https://www.erdosproblems.com/943",
+      "type": "archive",
+      "locator": "Erdős Problem #943 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000784",
+      "type": "benchmark",
+      "locator": "JSP-000784; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Integers up to 10^18 with many representations as sums of two powerful numbers",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_i_powerful_pairs",
+    "science_family": "science_prize_i_powerful_pairs",
+    "parameters": {
+      "bound": 1000000000000000000
+    },
+    "interface": "construct() -> {'N': N, 'pairs': [[a, b], ...]} with 2 <= N <= 10^18 and distinct pairs a <= b, a + b = N, where a and b are powerful (every prime factor appears squared; 1 counts as powerful), checked by exact factorization. The score is the number of pairs, a certified lower bound on the representation count. Maximize.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000784"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_i_powerful_pairs",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No documented value (reference label none); listed pairs certify a lower bound.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_i.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented record values.",
+    "sources": [
+      {
+        "title": "Binary quadratic forms with large discriminants and sums of two squareful numbers",
+        "url": "https://doi.org/10.1515/crll.2004.027",
+        "authors": "Valentin Blomer",
+        "year": 2004
+      },
+      {
+        "title": "OEIS A085252",
+        "url": "https://oeis.org/A085252"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 943,
+      "url": "https://www.erdosproblems.com/943",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #943, https://www.erdosproblems.com/943, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Decide whether the number of representations of n as a sum of two powerful numbers is n^(o(1)) (Erdős Problem #943).",
+    "importance_rationale": "Sums of powerful numbers connect to ternary quadratic forms and the abc conjecture.",
+    "papers": [
+      {
+        "title": "Binary quadratic forms with large discriminants and sums of two squareful numbers",
+        "url": "https://doi.org/10.1515/crll.2004.027",
+        "task_relation": "Integers with many certified representations are finite evidence on the conjectured subpolynomial bound.",
+        "primary_goal": "Decide whether the number of representations of n as a sum of two powerful numbers is n^(o(1)) (Erdős Problem #943).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected (Blomer studies how many integers are sums of two squareful numbers). Erdős Problem #943 page inspected: is the number of representations n^(o(1)) for every n? OEIS A085252 inspected (counts for small n). No record values over a range are documented.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

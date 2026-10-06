@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "id": "science-distinct-multiple-worst-window",
+  "name": "Worst interval starts for distinct-multiple matching",
+  "description": "construct() -> Python integer m in 0..1000000. The evaluator computes f(12,m), the LEAST positive L such that (m,m+L] contains distinct b_1,...,b_12 with i dividing b_i. Maximize this independently computed L. Exact bipartite matching plus monotone binary search evaluates every proposal. The task fixes n=12 and bounds m by one million; it optimizes the exact finite f(n,m). It neither searches arbitrary integer sets as in JSP-000578 nor establishes asymptotic worst-case growth.",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://math.colgate.edu/~integers/aa7/aa7.pdf",
+      "type": "paper",
+      "locator": "Wouter van Doorn, On the length of an interval that contains distinct multiples of the first n positive integers (2026). Section 1 defines f(n,m) with the half-open interval (m,m+f(n,m)] and studies max_m f(n,m)-f(n,n)."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000580",
+      "type": "benchmark",
+      "locator": "JSP-000580; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloads. Fixed input arrays are fully recorded in parameters; arithmetic/combinatorial validation uses the Python standard library."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Worst interval starts for distinct-multiple matching",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_c_580",
+    "science_family": "science_prize_c_580",
+    "parameters": {
+      "n": 12,
+      "maximum_start": 1000000
+    },
+    "interface": "construct() -> Python integer m in 0..1000000. The evaluator computes f(12,m), the LEAST positive L such that (m,m+L] contains distinct b_1,...,b_12 with i dividing b_i. Maximize this independently computed L. Exact bipartite matching plus monotone binary search evaluates every proposal.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no published candidate or source implementation copied.",
+      "prize_problem_id": "JSP-000580",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_c_580",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "The task fixes n=12 and bounds m by one million; it optimizes the exact finite f(n,m). It neither searches arbitrary integer sets as in JSP-000578 nor establishes asymptotic worst-case growth.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/c-checks.json",
+    "tests": "tests/test_science_prize_c.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Wouter van Doorn (2026, On the length of an interval that contains distinct multiples of the first n positive integers) studies the underlying problem.",
+    "sources": [
+      {
+        "title": "On the length of an interval that contains distinct multiples of the first n positive integers",
+        "url": "https://math.colgate.edu/~integers/aa7/aa7.pdf",
+        "authors": "Wouter van Doorn",
+        "year": 2026
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine extremal interval lengths needed to match each small divisor to a distinct multiple.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Wouter van Doorn, On the length of an interval that contains distinct multiples of the first n positive integers (2026)",
+        "url": "https://math.colgate.edu/~integers/aa7/aa7.pdf",
+        "primary_goal": "Determine extremal interval lengths needed to match each small divisor to a distinct multiple.",
+        "task_relation": "The task fixes n=12 and bounds m by one million; it optimizes the exact finite f(n,m). It neither searches arbitrary integer sets as in JSP-000578 nor establishes asymptotic worst-case growth.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Section 1 defines f(n,m) with the half-open interval (m,m+f(n,m)] and studies max_m f(n,m)-f(n,n).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

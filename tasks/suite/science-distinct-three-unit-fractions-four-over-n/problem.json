@@ -1,0 +1,105 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_a_egyptian_four",
+  "direction": "maximize",
+  "contract": "construct() -> 254 rows for n=3..256. Each row is None or three DISTINCT positive integer denominators x,y,z<=1000000000000 with 1/x+1/y+1/z=4/n. Maximize fraction solved. Equality is checked by cross multiplication and malformed claims invalidate the candidate.",
+  "parameters": {
+    "start": 3,
+    "count": 254,
+    "maximum": 1000000000000
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Independent finite certificate evaluator and local seed; no source implementation copied. Exact constraints are verified, but no optimality, general theorem, Lean proof, published record, or prize eligibility is claimed. See task sources and adaptation limitations."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-distinct-three-unit-fractions-four-over-n",
+  "name": "Distinct three-term unit-fraction representations of 4/n",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "description": "construct() -> 254 rows for n=3..256. Each row is None or three DISTINCT positive integer denominators x,y,z<=1000000000000 with 1/x+1/y+1/z=4/n. Maximize fraction solved. Equality is checked by cross multiplication and malformed claims invalidate the candidate. Construct distinct positive denominators for n=3..256, with denominator bound10^12. The prize bank requires distinctness, which is stricter than the paper’s general solution definition; no universal proof or published computation is reproduced.",
+  "benchmark": "Distinct three-term unit-fraction representations of 4/n",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1107.1010",
+      "type": "paper",
+      "locator": "Christian Elsholtz and Terence Tao, Counting the number of solutions to the Erdos-Straus equation on unit fractions. Author abstract inspected: positive-integer solutions to 4/n=1/x+1/y+1/z and bounds on their counts. Published in Journal of the Australian Mathematical Society 94 (2013), 50–105."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000213",
+      "type": "benchmark",
+      "locator": "JSP-000213; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "limitations": [
+    "Construct distinct positive denominators for n=3..256, with denominator bound10^12. The prize bank requires distinctness, which is stricter than the paper’s general solution definition; no universal proof or published computation is reproduced.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_a",
+      "title": "Problem-bank constructions: additive combinatorics: source-based research tasks",
+      "url": "https://arxiv.org/abs/2208.12182"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 1.0,
+    "statement": "For every n from 3 to 256, 4/n is a sum of three distinct unit fractions with denominators far below 10^12 (found for every n by scripts/check_state_of_the_art.py), so the maximum fraction is 1. The general statement is Erdős Problem #242.",
+    "sources": [
+      {
+        "title": "Counting the number of solutions to the Erdős-Straus equation on unit fractions",
+        "url": "https://arxiv.org/abs/1107.1010",
+        "authors": "Christian Elsholtz, Terence Tao",
+        "year": 2013
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 242,
+      "url": "https://www.erdosproblems.com/242",
+      "status": "open (falsifiable)",
+      "citation": "T. F. Bloom, Erdős Problem #242, https://www.erdosproblems.com/242, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Understand existence and multiplicity of three-term unit-fraction decompositions of 4/n.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "Counting the number of solutions to the Erdos-Straus equation on unit fractions",
+        "url": "https://arxiv.org/abs/1107.1010",
+        "task_relation": "Construct distinct positive denominators for n=3..256, with denominator bound10^12. The prize bank requires distinctness, which is stricter than the paper’s general solution definition; no universal proof or published computation is reproduced.",
+        "primary_goal": "Understand existence and multiplicity of three-term unit-fraction decompositions of 4/n.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author abstract inspected: positive-integer solutions to 4/n=1/x+1/y+1/z and bounds on their counts. Published in Journal of the Australian Mathematical Society 94 (2013), 50–105.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

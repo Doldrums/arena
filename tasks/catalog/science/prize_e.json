@@ -1,0 +1,1527 @@
+[
+  {
+    "id": "science-ramsey-triangle-versus-independent-ten",
+    "name": "Triangle-free graphs without independent 10-sets (Ramsey number R(3,10))",
+    "description": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 41. It must contain no triangle and no independent set of 10 vertices; both conditions are checked by exact branch and bound. Maximize n. A valid graph on n vertices certifies R(3,10) > n. The survey records 39 as the largest known order, and R(3,10) <= 41 limits any valid graph to 40 vertices.",
+    "family": "science_prize_e_ramsey_3_10",
+    "parameters": {
+      "clique": 3,
+      "independent": 10,
+      "max_vertices": 41
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.37236/12936",
+        "type": "paper",
+        "locator": "Vigleik Angeltveit, R(3,10) <= 41 (2025). Crossref record for the Electronic Journal of Combinatorics article inspected; Radziszowski's survey DS1.18 (Table Ia, item 2.1.d) inspected: 40 <= R(3,10) <= 41, lower bound from Exoo (1989), at least 43 million (3,10)-graphs on 39 vertices known. A valid graph on n vertices certifies R(3,10) > n. The survey records 39 as the largest known order, and R(3,10) <= 41 limits any valid graph to 40 vertices."
+      },
+      {
+        "url": "https://www.erdosproblems.com/165",
+        "type": "archive",
+        "locator": "Erdős Problem #165 (open (asymptotics of R(3,k))); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000162",
+        "type": "benchmark",
+        "locator": "JSP-000162; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The Andrásfai starter has 26 vertices and is far below the published 39-vertex constructions, which are not copied.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 39,
+      "statement": "Largest known triangle-free graph with no independent 10-set has 39 vertices (Exoo 1989), so 40 <= R(3,10); Angeltveit (2025) proved R(3,10) <= 41. A 40-vertex graph would prove R(3,10) = 41.",
+      "sources": [
+        {
+          "title": "On Two Classical Ramsey Numbers of the Form R(3,n)",
+          "url": "https://doi.org/10.1137/0402043",
+          "authors": "Geoffrey Exoo",
+          "year": 1989
+        },
+        {
+          "title": "R(3,10) <= 41",
+          "url": "https://doi.org/10.37236/12936",
+          "authors": "Vigleik Angeltveit",
+          "year": 2025
+        },
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "authors": "Stanisław P. Radziszowski",
+          "url": "https://doi.org/10.37236/21"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 165,
+        "url": "https://www.erdosproblems.com/165",
+        "status": "open (asymptotics of R(3,k))",
+        "citation": "T. F. Bloom, Erdős Problem #165, https://www.erdosproblems.com/165, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000162"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-ramsey-four-clique-versus-independent-six",
+    "name": "K4-free graphs without independent 6-sets (Ramsey number R(4,6))",
+    "description": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 40. It must contain no K4 and no independent set of 6 vertices, checked exactly. Maximize n. A valid graph on n vertices certifies R(4,6) > n. Exoo's 35-vertex graph is the published record; 36 vertices would be a new lower bound.",
+    "family": "science_prize_e_ramsey_4_6",
+    "parameters": {
+      "clique": 4,
+      "independent": 6,
+      "max_vertices": 40
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.37236/2102",
+        "type": "paper",
+        "locator": "Geoffrey Exoo, On the Ramsey Number R(4,6) (2012). Crossref record inspected; survey DS1.18 Tables Ia/Ib inspected: 36 <= R(4,6) <= 40, lower bound [Ex19], upper bound by Angeltveit and McKay. A valid graph on n vertices certifies R(4,6) > n. Exoo's 35-vertex graph is the published record; 36 vertices would be a new lower bound."
+      },
+      {
+        "url": "https://www.erdosproblems.com/166",
+        "type": "archive",
+        "locator": "Erdős Problem #166 (proved (R(4,k) >> k^3/(log k)^O(1), Mattheus and Verstraete)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000163",
+        "type": "benchmark",
+        "locator": "JSP-000163; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The Paley(17) starter is a classical 17-vertex graph, not a record construction.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 35,
+      "statement": "Best known (4,6)-graph has 35 vertices (Exoo 2012), so R(4,6) >= 36; the upper bound R(4,6) <= 40 is from computations of Angeltveit and McKay reported in the survey.",
+      "sources": [
+        {
+          "title": "On the Ramsey Number R(4,6)",
+          "url": "https://doi.org/10.37236/2102",
+          "authors": "Geoffrey Exoo",
+          "year": 2012
+        },
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "authors": "Stanisław P. Radziszowski",
+          "url": "https://doi.org/10.37236/21"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 166,
+        "url": "https://www.erdosproblems.com/166",
+        "status": "proved (R(4,k) >> k^3/(log k)^O(1), Mattheus and Verstraete)",
+        "citation": "T. F. Bloom, Erdős Problem #166, https://www.erdosproblems.com/166, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000163"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-ramsey-four-clique-versus-independent-five",
+    "name": "K4-free graphs without independent 5-sets (rediscovering R(4,5) = 25)",
+    "description": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 25. It must contain no K4 and no independent set of 5 vertices, checked exactly. Maximize n; the proven optimum is 24. Finding a 24-vertex (4,5)-graph recovers Kalbfleisch's lower bound; no 25-vertex graph exists.",
+    "family": "science_prize_e_ramsey_4_5",
+    "parameters": {
+      "clique": 4,
+      "independent": 5,
+      "max_vertices": 25
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1002/jgt.3190190304",
+        "type": "paper",
+        "locator": "Brendan D. McKay and Stanisław P. Radziszowski, R(4,5) = 25 (1995). Crossref record inspected; survey DS1.18 item 2.1.d inspected: R(4,5) = 25 and exactly 352366 critical graphs on 24 vertices; lower bound by Kalbfleisch (1965). Finding a 24-vertex (4,5)-graph recovers Kalbfleisch's lower bound; no 25-vertex graph exists."
+      },
+      {
+        "url": "https://www.erdosproblems.com/986",
+        "type": "archive",
+        "locator": "Erdős Problem #986 (proved (Bradač 2026 for general s; Mattheus and Verstraete for s = 4)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000819",
+        "type": "benchmark",
+        "locator": "JSP-000819; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case: the optimum 24 is known and many extremal graphs are public.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 24,
+      "statement": "R(4,5) = 25 (McKay and Radziszowski 1995), so 24 vertices is optimal; Kalbfleisch (1965) gave the first 24-vertex construction.",
+      "sources": [
+        {
+          "title": "R(4,5) = 25",
+          "url": "https://doi.org/10.1002/jgt.3190190304",
+          "authors": "Brendan D. McKay, Stanislaw P. Radziszowski",
+          "year": 1995
+        },
+        {
+          "title": "Construction of Special Edge-Chromatic Graphs",
+          "url": "https://doi.org/10.4153/cmb-1965-041-7",
+          "authors": "J. G. Kalbfleisch",
+          "year": 1965
+        },
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "authors": "Stanisław P. Radziszowski",
+          "url": "https://doi.org/10.37236/21"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 986,
+        "url": "https://www.erdosproblems.com/986",
+        "status": "proved (Bradač 2026 for general s; Mattheus and Verstraete for s = 4)",
+        "citation": "T. F. Bloom, Erdős Problem #986, https://www.erdosproblems.com/986, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000819"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-ramsey-four-cycle-versus-independent-eleven",
+    "name": "Four-cycle-free graphs without independent 11-sets (Ramsey number R(C4,K11))",
+    "description": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 43. No two vertices may have two common neighbours (no C4), and there must be no independent set of 11 vertices (exact search). Maximize n. A valid graph on n vertices certifies R(C4,K11) > n. The best known construction has 39 vertices.",
+    "family": "science_prize_e_c4_versus_k11",
+    "parameters": {
+      "independent": 11,
+      "max_vertices": 43
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.7151/dmgt.2557",
+        "type": "paper",
+        "locator": "Luis Boza and Stanisław P. Radziszowski, Some upper bounds on Ramsey numbers involving C4 (2025). Crossref record inspected; survey DS1.18 Table Vb inspected: 40 <= R(C4,K11) <= 43 with lower bound [VO] (Van Overberghe, circulant constructions) and upper bound [BoRa]. A valid graph on n vertices certifies R(C4,K11) > n. The best known construction has 39 vertices."
+      },
+      {
+        "url": "https://www.erdosproblems.com/159",
+        "type": "archive",
+        "locator": "Erdős Problem #159 (open ($100)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000157",
+        "type": "benchmark",
+        "locator": "JSP-000157; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The disjoint-triangle starter is elementary; Van Overberghe's circulant record constructions are not copied.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 39,
+      "statement": "40 <= R(C4,K11) <= 43: the lower bound is a 39-vertex construction by Van Overberghe (2020 thesis, circulant graphs), the upper bound is due to Boza and Radziszowski.",
+      "sources": [
+        {
+          "title": "Algorithms for Computing Ramsey Numbers (MS thesis, Ghent University) and constructions",
+          "url": "https://github.com/Steven-VO/circulant-Ramsey",
+          "authors": "Steven Van Overberghe",
+          "year": 2020
+        },
+        {
+          "title": "Some upper bounds on Ramsey numbers involving C4",
+          "url": "https://doi.org/10.7151/dmgt.2557",
+          "authors": "Luis Boza, Stanislaw P. Radziszowski",
+          "year": 2025
+        },
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "authors": "Stanisław P. Radziszowski",
+          "url": "https://doi.org/10.37236/21"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 159,
+        "url": "https://www.erdosproblems.com/159",
+        "status": "open ($100)",
+        "citation": "T. F. Bloom, Erdős Problem #159, https://www.erdosproblems.com/159, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000157"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-ramsey-four-cycle-versus-star-39",
+    "name": "Four-cycle-free graphs of large minimum degree (Ramsey number R(C4,K1,39))",
+    "description": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 47, containing no C4, whose minimum degree is at least n - 39 (so the complement has no K1,39). Maximize n. A C4-free graph on n vertices with minimum degree at least n-39 certifies R(C4,K1,39) > n. The value is known to be 46 or 47, so 46 vertices would settle it.",
+    "family": "science_prize_e_c4_versus_star39",
+    "parameters": {
+      "star": 39,
+      "max_vertices": 47
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2409.12770",
+        "type": "paper",
+        "locator": "Luis Boza, Exact Values and Bounds for Ramsey Numbers of C4 Versus a Star Graph (2024). arXiv abstract inspected (v2, 2026): all previously unknown values R(C4,K1,n) for n <= 38 are determined. Survey DS1.18 Table IVa inspected: R(C4,K1,39) is 46 or 47 (lower bound [WuSR], upper bound [DyDz2]). A C4-free graph on n vertices with minimum degree at least n-39 certifies R(C4,K1,39) > n. The value is known to be 46 or 47, so 46 vertices would settle it."
+      },
+      {
+        "url": "https://www.erdosproblems.com/552",
+        "type": "archive",
+        "locator": "Erdős Problem #552 (open ($100)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000443",
+        "type": "benchmark",
+        "locator": "JSP-000443; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The empty-graph starter meets only the trivial bound 39.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 45,
+      "statement": "46 <= R(C4,K1,39) <= 47: Wu, Sun and Radziszowski (2015) gave the lower bound (a valid 45-vertex graph), Dybizbański and Dzido (2014) the upper bound; still open after Boza's determination of all n <= 38.",
+      "sources": [
+        {
+          "title": "Wheel and star-critical Ramsey numbers for quadrilateral",
+          "url": "https://doi.org/10.1016/j.dam.2015.01.003",
+          "authors": "Yali Wu, Yongqi Sun, Stanislaw P. Radziszowski",
+          "year": 2015
+        },
+        {
+          "title": "On Some Ramsey Numbers for Quadrilaterals Versus Wheels",
+          "url": "https://doi.org/10.1007/s00373-013-1293-0",
+          "authors": "Janusz Dybizbański, Tomasz Dzido",
+          "year": 2014
+        },
+        {
+          "title": "Exact Values and Bounds for Ramsey Numbers of C4 Versus a Star Graph",
+          "url": "https://arxiv.org/abs/2409.12770",
+          "authors": "Luis Boza",
+          "year": 2024
+        },
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "authors": "Stanisław P. Radziszowski",
+          "url": "https://doi.org/10.37236/21"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 552,
+        "url": "https://www.erdosproblems.com/552",
+        "status": "open ($100)",
+        "citation": "T. F. Bloom, Erdős Problem #552, https://www.erdosproblems.com/552, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000443"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-ramsey-two-triangles-versus-four-clique",
+    "name": "Three-colourings avoiding two triangle colours and a K4 (rediscovering R(3,3,4) = 30)",
+    "description": "construct() -> {'n': n, 'colors': [...]}: one colour in {0,1,2} for each pair (i,j), i<j, of vertices 0..n-1 in lexicographic order, 1 <= n <= 30. Colours 0 and 1 must be triangle-free and colour 2 must be K4-free. Maximize n; the proven optimum is 29. A valid colouring of K_n certifies R(3,3,4) > n; the optimum is 29 vertices.",
+    "family": "science_prize_e_r334",
+    "parameters": {
+      "clique": 4,
+      "max_vertices": 30
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/s10601-016-9240-3",
+        "type": "paper",
+        "locator": "Michael Codish, Michael Frank, Avraham Itzhakov and Alice Miller, Computing the Ramsey number R(4,3,3) using abstraction and symmetry breaking (2016). Crossref record inspected; survey DS1.18 item 6.1.2.b inspected: Kalbfleisch (1966) proved 30 <= R(3,3,4) and Codish, Frank, Itzhakov and Miller (2016) completed R(3,3,4) = 30. A valid colouring of K_n certifies R(3,3,4) > n; the optimum is 29 vertices."
+      },
+      {
+        "url": "https://www.erdosproblems.com/553",
+        "type": "archive",
+        "locator": "Erdős Problem #553 (proved (Alon and Rödl)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000444",
+        "type": "benchmark",
+        "locator": "JSP-000444; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; Kalbfleisch's 29-vertex colouring is published and not copied.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 29,
+      "statement": "R(3,3,4) = 30 (lower bound Kalbfleisch 1966, upper bound Codish, Frank, Itzhakov and Miller 2016).",
+      "sources": [
+        {
+          "title": "Computing the Ramsey number R(4,3,3) using abstraction and symmetry breaking",
+          "url": "https://doi.org/10.1007/s10601-016-9240-3",
+          "authors": "Michael Codish, Michael Frank, Avraham Itzhakov, Alice Miller",
+          "year": 2016
+        },
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "authors": "Stanisław P. Radziszowski",
+          "url": "https://doi.org/10.37236/21"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 553,
+        "url": "https://www.erdosproblems.com/553",
+        "status": "proved (Alon and Rödl)",
+        "citation": "T. F. Bloom, Erdős Problem #553, https://www.erdosproblems.com/553, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000444"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-ramsey-four-colour-triangle",
+    "name": "Four-colourings of complete graphs without monochromatic triangles (R(3,3,3,3))",
+    "description": "construct() -> {'n': n, 'colors': [...]}: one colour in {0,1,2,3} for each pair (i,j), i<j, of vertices 0..n-1 in lexicographic order, 1 <= n <= 62. No colour class may contain a triangle. Maximize n. A valid 4-colouring of K_n certifies R_4(3) > n. Chung's 50-vertex colouring is the record; 51 vertices would be new.",
+    "family": "science_prize_e_r3333",
+    "parameters": {
+      "colors": 4,
+      "max_vertices": 62
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/0012-365x(73)90125-8",
+        "type": "paper",
+        "locator": "Fan R. K. Chung, On the Ramsey numbers N(3,3,...,3;2) (1973). Crossref record inspected; survey DS1.18 section 6.1.1 inspected: 51 <= R_4(3) <= 62, lower bound [Chu1] (with a warning about a typo in the displayed matrix), upper bound [FeKR] (2004). A valid 4-colouring of K_n certifies R_4(3) > n. Chung's 50-vertex colouring is the record; 51 vertices would be new."
+      },
+      {
+        "url": "https://www.erdosproblems.com/183",
+        "type": "archive",
+        "locator": "Erdős Problem #183 (solved (Lean): the limit of R(3;k)^(1/k) is infinite); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000177",
+        "type": "benchmark",
+        "locator": "JSP-000177; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The doubled Greenwood-Gleason starter has 32 vertices; Chung's construction is not copied.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 50,
+      "statement": "51 <= R(3,3,3,3) <= 62: Chung's 1973 construction on 50 vertices; upper bound by Fettes, Kramer and Radziszowski (2004).",
+      "sources": [
+        {
+          "title": "On the Ramsey numbers N(3,3,...,3;2)",
+          "url": "https://doi.org/10.1016/0012-365x(73)90125-8",
+          "authors": "Fan R. K. Chung",
+          "year": 1973
+        },
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "authors": "Stanisław P. Radziszowski",
+          "url": "https://doi.org/10.37236/21"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 183,
+        "url": "https://www.erdosproblems.com/183",
+        "status": "solved (Lean): the limit of R(3;k)^(1/k) is infinite",
+        "citation": "T. F. Bloom, Erdős Problem #183, https://www.erdosproblems.com/183, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000177"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-ramsey-four-colour-hexagon",
+    "name": "Four-colourings of complete graphs without monochromatic hexagons (R_4(C6))",
+    "description": "construct() -> {'n': n, 'colors': [...]}: one colour in {0,1,2,3} for each pair (i,j), i<j, of vertices 0..n-1 in lexicographic order, 1 <= n <= 20. No colour class may contain a six-cycle (exact search for not necessarily induced cycles). Maximize n. A valid 4-colouring of K_n certifies R_4(C6) > n. The best known colouring has 17 vertices; 18 or 19 vertices would be new.",
+    "family": "science_prize_e_r4c6",
+    "parameters": {
+      "colors": 4,
+      "length": 6,
+      "max_vertices": 20
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.37236/21",
+        "type": "paper",
+        "locator": "Stanisław P. Radziszowski, Small Ramsey Numbers (Dynamic Survey DS1.18) (2026). Survey DS1.18 section 6.3.2 inspected (sur.pdf and ref.pdf downloaded 2026-09-24): 18 <= R_4(C6) <= 20 with lower bound [SunYJLS] (Sun, Yang, Jiang, Lin and Shi, Ars Combinatoria 84 (2007)) and upper bound [ZhaSW] (Ars Combinatoria 111 (2013)); neither article has a DOI. A valid 4-colouring of K_n certifies R_4(C6) > n. The best known colouring has 17 vertices; 18 or 19 vertices would be new."
+      },
+      {
+        "url": "https://www.erdosproblems.com/555",
+        "type": "archive",
+        "locator": "Erdős Problem #555 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000446",
+        "type": "benchmark",
+        "locator": "JSP-000446; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The distance-class starter has 9 vertices. The primary articles have no DOI, so the survey is the inspected source.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 17,
+      "statement": "18 <= R_4(C6) <= 20 (lower bound Sun, Yang, Jiang, Lin, Shi 2007; upper bound Zhang, Sun, Wu 2013), as listed in the survey.",
+      "sources": [
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "authors": "Stanisław P. Radziszowski",
+          "url": "https://doi.org/10.37236/21"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 555,
+        "url": "https://www.erdosproblems.com/555",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #555, https://www.erdosproblems.com/555, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000446"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-ramsey-five-colour-quadrilateral",
+    "name": "Five-colourings of complete graphs without monochromatic four-cycles (R_5(K2,2))",
+    "description": "construct() -> {'n': n, 'colors': [...]}: one colour in {0,...,4} for each pair (i,j), i<j, of vertices 0..n-1 in lexicographic order, 1 <= n <= 29. No colour class may contain a four-cycle (no two vertices with two common neighbours in one colour). Maximize n. A valid 5-colouring of K_n certifies R_5(C4) > n. The algebraic construction of Lazebnik and Woldar gives 26 vertices; 27 or 28 would be new.",
+    "family": "science_prize_e_r5c4",
+    "parameters": {
+      "colors": 5,
+      "length": 4,
+      "max_vertices": 29
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1006/jctb.2000.1954",
+        "type": "paper",
+        "locator": "Felix Lazebnik and Andrew J. Woldar, New Lower Bounds on the Multicolor Ramsey Numbers r_k(C4) (2000). Crossref record inspected; survey DS1.18 section 6.3.2 inspected: 27 <= R_5(C4) <= 29 [LaWo1] and R_k(C4) >= k^2+2 for odd prime powers k. A valid 5-colouring of K_n certifies R_5(C4) > n. The algebraic construction of Lazebnik and Woldar gives 26 vertices; 27 or 28 would be new."
+      },
+      {
+        "url": "https://www.erdosproblems.com/558",
+        "type": "archive",
+        "locator": "Erdős Problem #558 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000449",
+        "type": "benchmark",
+        "locator": "JSP-000449; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The distance-class starter has 11 vertices; the algebraic record construction is not copied.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 26,
+      "statement": "27 <= R_5(C4) <= 29 (Lazebnik and Woldar 2000).",
+      "sources": [
+        {
+          "title": "New Lower Bounds on the Multicolor Ramsey Numbers r_k(C4)",
+          "url": "https://doi.org/10.1006/jctb.2000.1954",
+          "authors": "Felix Lazebnik, Andrew J. Woldar",
+          "year": 2000
+        },
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "authors": "Stanisław P. Radziszowski",
+          "url": "https://doi.org/10.37236/21"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 558,
+        "url": "https://www.erdosproblems.com/558",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #558, https://www.erdosproblems.com/558, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000449"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-ramsey-octahedron",
+    "name": "Two-colourings without a monochromatic octahedron K2,2,2 (R(K2,2,2))",
+    "description": "construct() -> {'n': n, 'colors': [...]}: colour 0 or 1 for each pair (i,j), i<j, of vertices 0..n-1 in lexicographic order, 1 <= n <= 31. Neither colour class may contain K2,2,2 as a (not necessarily induced) subgraph. Maximize n. A valid colouring of K_n certifies R(K2,2,2) > n. The record has 29 vertices; a 30-vertex colouring would prove R(K2,2,2) = 31.",
+    "family": "science_prize_e_octahedron",
+    "parameters": {
+      "max_vertices": 31
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1137/18M1169473",
+        "type": "paper",
+        "locator": "Bernard Lidický and Florian Pfender, Semidefinite Programming and Ramsey Numbers (2021). Crossref and arXiv records inspected; survey DS1.18 item 5.12 inspected: 30 <= R(K2,2,2,K2,2,2) <= 31 with the lower bound from Harborth and Krause's distance colourings and the upper bound from flag algebras [LidP]. A valid colouring of K_n certifies R(K2,2,2) > n. The record has 29 vertices; a 30-vertex colouring would prove R(K2,2,2) = 31."
+      },
+      {
+        "url": "https://www.erdosproblems.com/163",
+        "type": "archive",
+        "locator": "Erdős Problem #163 (proved (Lee 2017)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000161",
+        "type": "benchmark",
+        "locator": "JSP-000161; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The Paley(17) starter is classical. Local checks found that the Paley colouring of K29 also avoids monochromatic octahedra, matching (not exceeding) the published bound.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 29,
+      "statement": "30 <= R(K2,2,2,K2,2,2) <= 31: lower bound from Harborth and Krause's distance colourings, upper bound from Lidický and Pfender's semidefinite programming.",
+      "sources": [
+        {
+          "title": "Semidefinite Programming and Ramsey Numbers",
+          "url": "https://doi.org/10.1137/18M1169473",
+          "authors": "Bernard Lidický, Florian Pfender",
+          "year": 2021
+        },
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "authors": "Stanisław P. Radziszowski",
+          "url": "https://doi.org/10.37236/21"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 163,
+        "url": "https://www.erdosproblems.com/163",
+        "status": "proved (Lee 2017)",
+        "citation": "T. F. Bloom, Erdős Problem #163, https://www.erdosproblems.com/163, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000161"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-ramsey-cube-graph",
+    "name": "Two-colourings without a monochromatic 3-cube (rediscovering R(Q3,Q3) = 13)",
+    "description": "construct() -> {'n': n, 'colors': [...]}: colour 0 or 1 for each pair (i,j), i<j, of vertices 0..n-1 in lexicographic order, 1 <= n <= 13. Neither colour class may contain the 8-vertex cube graph Q3 as a subgraph. Maximize n; the proven optimum is 12. Recovering a 12-vertex colouring with no monochromatic Q3 rediscovers the extremal lower bound.",
+    "family": "science_prize_e_cube",
+    "parameters": {
+      "max_vertices": 13
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1137/18M1169473",
+        "type": "paper",
+        "locator": "Bernard Lidický and Florian Pfender, Semidefinite Programming and Ramsey Numbers (2021). Crossref and arXiv records inspected; survey DS1.18 items 5.13 and 5.17.n inspected: R(Q3,Q3) = 13, lower bound construction by Harborth and Krause, upper bound by Lidický and Pfender. Recovering a 12-vertex colouring with no monochromatic Q3 rediscovers the extremal lower bound."
+      },
+      {
+        "url": "https://www.erdosproblems.com/181",
+        "type": "archive",
+        "locator": "Erdős Problem #181 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000175",
+        "type": "benchmark",
+        "locator": "JSP-000175; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; the published construction is not copied.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 12,
+      "statement": "R(Q3,Q3) = 13 (Harborth and Krause lower bound; Lidický and Pfender upper bound).",
+      "sources": [
+        {
+          "title": "Semidefinite Programming and Ramsey Numbers",
+          "url": "https://doi.org/10.1137/18M1169473",
+          "authors": "Bernard Lidický, Florian Pfender",
+          "year": 2021
+        },
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "authors": "Stanisław P. Radziszowski",
+          "url": "https://doi.org/10.37236/21"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 181,
+        "url": "https://www.erdosproblems.com/181",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #181, https://www.erdosproblems.com/181, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000175"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-hypergraph-ramsey-four-five",
+    "name": "Two-colourings of triples without red K4^(3) or blue K5^(3) (hypergraph Ramsey R(4,5;3))",
+    "description": "construct() -> {'n': n, 'colors': [...]}: colour 0 (red) or 1 (blue) for every triple (a,b,c), a<b<c, of vertices 0..n-1 in lexicographic order, 1 <= n <= 40. No 4 vertices may have all four triples red and no 5 vertices may have all ten triples blue. Maximize n. A valid colouring on n points certifies R(4,5;3) > n; the published construction has 34 points.",
+    "family": "science_prize_e_triple_ramsey",
+    "parameters": {
+      "red_clique": 4,
+      "blue_clique": 5,
+      "max_vertices": 40
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.55016/ojs/cdm.v13i2.62416",
+        "type": "paper",
+        "locator": "Janusz Dybizbański, A lower bound on the hypergraph Ramsey number R(4,5;3) (2018). Crossref record inspected; survey DS1.18 section 7.1 inspected: R(4,4;3) = 13 is the only known nontrivial classical hypergraph Ramsey number and 35 <= R(4,5;3) [Dyb2]. A valid colouring on n points certifies R(4,5;3) > n; the published construction has 34 points."
+      },
+      {
+        "url": "https://www.erdosproblems.com/562",
+        "type": "archive",
+        "locator": "Erdős Problem #562 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000454",
+        "type": "benchmark",
+        "locator": "JSP-000454; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The divisibility starter has 9 points. No upper bound on R(4,5;3) is recorded in the survey.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 34,
+      "statement": "35 <= R(4,5;3) (Dybizbański 2018): the best known colouring has 34 points.",
+      "sources": [
+        {
+          "title": "A lower bound on the hypergraph Ramsey number R(4,5;3)",
+          "url": "https://doi.org/10.55016/ojs/cdm.v13i2.62416",
+          "authors": "Janusz Dybizbański",
+          "year": 2018
+        },
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "authors": "Stanisław P. Radziszowski",
+          "url": "https://doi.org/10.37236/21"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 562,
+        "url": "https://www.erdosproblems.com/562",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #562, https://www.erdosproblems.com/562, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000454"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-tournament-four-dominated",
+    "name": "Small tournaments in which every four vertices have a common dominator (Schütte's problem, k = 4)",
+    "description": "construct() -> {'n': n, 'orientation': [...]}: one bit per pair (i,j), i<j, of vertices 0..n-1 in lexicographic order (0 means i -> j, 1 means j -> i), 5 <= n <= 90. Every set of 4 vertices must have a vertex with arcs to all four. Minimize n. A valid tournament on n vertices certifies f(4) <= n. The smallest known has 67 vertices; Erdős's lower bound gives f(4) >= 31.",
+    "family": "science_prize_e_schutte",
+    "parameters": {
+      "k": 4,
+      "max_vertices": 90
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.2307/3612854",
+        "type": "paper",
+        "locator": "Esther Szekeres and George Szekeres, On a Problem of Schütte and Erdös (1965). Crossref record inspected (JSTOR full text not accessible); Erdős Problem #902 page inspected: f(1)=3, f(2)=7, Szekeres and Szekeres proved f(3)=19, and 2^(k+1)-1 <= f(k). OEIS A362137 inspected: the smallest known 4-paradoxical tournament is the Paley tournament on 67 vertices. A valid tournament on n vertices certifies f(4) <= n. The smallest known has 67 vertices; Erdős's lower bound gives f(4) >= 31."
+      },
+      {
+        "url": "https://www.erdosproblems.com/902",
+        "type": "archive",
+        "locator": "Erdős Problem #902 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000750",
+        "type": "benchmark",
+        "locator": "JSP-000750; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The Paley(83) starter is larger than the known Paley(67) construction; local checks confirm Paley tournaments of order 19, 43, 47 and 59 fail and 67, 71, 79, 83 pass.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 67,
+      "statement": "Smallest known tournament with every 4 vertices dominated: the Paley tournament on 67 vertices (OEIS A362137); f(4) >= 31 from Erdős's bound 2^(k+1)-1.",
+      "sources": [
+        {
+          "title": "OEIS A362137: smallest n-paradoxical tournament built as a directed Paley graph",
+          "url": "https://oeis.org/A362137"
+        },
+        {
+          "title": "A Constructive Solution to a Tournament Problem",
+          "url": "https://doi.org/10.4153/CMB-1971-007-1",
+          "authors": "R. L. Graham, J. H. Spencer",
+          "year": 1971
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 902,
+        "url": "https://www.erdosproblems.com/902",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #902, https://www.erdosproblems.com/902, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000750"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-smallest-triangle-free-five-chromatic",
+    "name": "Smallest triangle-free graph of chromatic number five (rediscovering 22 vertices)",
+    "description": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple triangle-free graph on vertices 0..n-1 with 1 <= n <= 23 that is not 4-colourable (exact backtracking). Minimize n; the proven optimum is 22. Any valid graph certifies h_3(5) <= n; the optimum 22 was established by exhaustive computer search.",
+    "family": "science_prize_e_triangle_free_five_chromatic",
+    "parameters": {
+      "max_vertices": 23
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1002/jgt.3190190111",
+        "type": "paper",
+        "locator": "Tommy R. Jensen and Gordon F. Royle, Small graphs with chromatic number 5: A computer search (1995). Crossref record inspected; OEIS A292528 inspected: 1, 2, 5, 11, 22 with Jensen and Royle proving a(5) = 22 and Goedgebeur proving 32 <= a(6) <= 40. Any valid graph certifies h_3(5) <= n; the optimum 22 was established by exhaustive computer search."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1013",
+        "type": "archive",
+        "locator": "Erdős Problem #1013 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000843",
+        "type": "benchmark",
+        "locator": "JSP-000843; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; the 22-vertex graphs are public and not copied.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 22,
+      "statement": "The smallest triangle-free 5-chromatic graphs have 22 vertices (Jensen and Royle 1995); the Mycielski graph has 23.",
+      "sources": [
+        {
+          "title": "Small graphs with chromatic number 5: A computer search",
+          "url": "https://doi.org/10.1002/jgt.3190190111",
+          "authors": "Tommy R. Jensen, Gordon F. Royle",
+          "year": 1995
+        },
+        {
+          "title": "OEIS A292528",
+          "url": "https://oeis.org/A292528"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1013,
+        "url": "https://www.erdosproblems.com/1013",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1013, https://www.erdosproblems.com/1013, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000843"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-edge-disjoint-monochromatic-triangles-11",
+    "name": "Two-colourings of K11 with few edge-disjoint monochromatic triangles",
+    "description": "construct() -> {'n': 11, 'colors': [...]}: colour 0 or 1 for each of the 55 pairs (i,j), i<j, in lexicographic order. The score is the maximum number of edge-disjoint monochromatic triangles, computed exactly per colour by branch and bound. Minimize; the known optimum is 6. Any colouring gives an upper bound on the minimum; the tabulated value for n = 11 is 6.",
+    "family": "science_prize_e_monochromatic_triangle_packing",
+    "parameters": {
+      "n": 11
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/S0012-365X(00)00312-5",
+        "type": "paper",
+        "locator": "Paul Erdős, Ralph J. Faudree, Ronald J. Gould, Michael S. Jacobson and Jenő Lehel, Edge disjoint monochromatic triangles in 2-colored graphs (2001). Crossref record inspected (publisher page returned HTTP 403). OEIS A060407 inspected: minimum over 2-colourings of K_n of the maximum number of edge-disjoint monochromatic triangles is 0,0,0,1,2,2,3,4,6 for n = 3..11, citing this paper. Erdős Problem #76 inspected (asymptotic n^2/12, proved by Gruslys and Letzter). Any colouring gives an upper bound on the minimum; the tabulated value for n = 11 is 6."
+      },
+      {
+        "url": "https://www.erdosproblems.com/76",
+        "type": "archive",
+        "locator": "Erdős Problem #76 (proved (Gruslys and Letzter)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000093",
+        "type": "benchmark",
+        "locator": "JSP-000093; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case. The value 6 is taken from OEIS A060407, which cites the 2001 paper; the paper's full text was not accessible during review.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 6,
+      "statement": "For n = 11 every 2-colouring has 6 edge-disjoint monochromatic triangles and some colouring has no more (OEIS A060407, from Erdős, Faudree, Gould, Jacobson and Lehel 2001).",
+      "sources": [
+        {
+          "title": "OEIS A060407",
+          "url": "https://oeis.org/A060407"
+        },
+        {
+          "title": "Edge disjoint monochromatic triangles in 2-colored graphs",
+          "url": "https://doi.org/10.1016/S0012-365X(00)00312-5",
+          "authors": "P. Erdős, R.J. Faudree, R.J. Gould, M.S. Jacobson, J. Lehel",
+          "year": 2001
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 76,
+        "url": "https://www.erdosproblems.com/76",
+        "status": "proved (Gruslys and Letzter)",
+        "citation": "T. F. Bloom, Erdős Problem #76, https://www.erdosproblems.com/76, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000093"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-graphs-without-large-regular-induced-subgraphs",
+    "name": "Large graphs with no regular induced subgraph on six vertices",
+    "description": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 22. No set of 6 or more vertices may induce a regular subgraph (every vertex subset is checked). Maximize n. A valid graph on n vertices certifies G(6) > n. Graphs with 20 vertices are known; a 21-vertex graph would show G(6) >= 22.",
+    "family": "science_prize_e_regular_induced",
+    "parameters": {
+      "size": 6,
+      "max_vertices": 22
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2604.08215",
+        "type": "paper",
+        "locator": "Paul W. Dyson and Brendan D. McKay, Ramsey numbers for regular induced subgraphs (2026). arXiv record inspected; Erdős Problem #82 page inspected: G(5) = 17, G(6) >= 21 and G(7) >= 30 (Alexeev and McKay; Dyson and McKay), where G(k) is the least order forcing a regular induced subgraph on k vertices. OEIS A392636 inspected: graphs on 20 vertices without regular induced subgraphs of order 6 exist; whether any exist on 21 vertices is unknown. A valid graph on n vertices certifies G(6) > n. Graphs with 20 vertices are known; a 21-vertex graph would show G(6) >= 22."
+      },
+      {
+        "url": "https://www.erdosproblems.com/82",
+        "type": "archive",
+        "locator": "Erdős Problem #82 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000099",
+        "type": "benchmark",
+        "locator": "JSP-000099; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The five-vertex starter is trivial. Verification enumerates all vertex subsets, so n is capped at 22.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 20,
+      "statement": "G(6) >= 21: graphs on 20 vertices with no regular induced subgraph of order 6 are known (Alexeev and McKay; OEIS A392636); the existence of such a graph on 21 vertices is open.",
+      "sources": [
+        {
+          "title": "Ramsey numbers for regular induced subgraphs",
+          "url": "https://arxiv.org/abs/2604.08215",
+          "authors": "Paul W. Dyson, Brendan D. McKay",
+          "year": 2026
+        },
+        {
+          "title": "OEIS A392636",
+          "url": "https://oeis.org/A392636"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 82,
+        "url": "https://www.erdosproblems.com/82",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #82, https://www.erdosproblems.com/82, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000099"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-erdos-gyarfas-five-colours-k16",
+    "name": "Edge-colourings of K16 in which every K4 sees five colours",
+    "description": "construct() -> 120 integer colours in 0..119 for the pairs (i,j), 0<=i<j<16, in lexicographic order. Every set of four vertices must span edges of at least five distinct colours. Minimize the number of colours used. A valid colouring certifies f(16) <= colours used. The general bounds give 13 <= f(16) <= 15; no exact value for n = 16 is documented.",
+    "family": "science_prize_e_four_clique_colours",
+    "parameters": {
+      "n": 16
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/bf01195000",
+        "type": "paper",
+        "locator": "Paul Erdős and András Gyárfás, A variant of the classical Ramsey problem (1997). Crossref record inspected; Erdős Problem #136 page inspected: Erdős and Gyárfás proved 5(n-1)/6 < f(n) < n and f(9) = 8; Bennett, Cushman, Dudek and Prałat proved f(n) ~ 5n/6. A valid colouring certifies f(16) <= colours used. The general bounds give 13 <= f(16) <= 15; no exact value for n = 16 is documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/136",
+        "type": "archive",
+        "locator": "Erdős Problem #136 (solved (f(n) ~ 5n/6)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000140",
+        "type": "benchmark",
+        "locator": "JSP-000140; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No published value for n = 16 was found (reference label none); improvements are comparable across runs and with the bounds 13 <= f(16) <= 15, not with a recorded optimum.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value for n = 16. General bounds: 5(n-1)/6 < f(n) < n (Erdős and Gyárfás 1997), so 13 <= f(16) <= 15; asymptotically f(n) ~ 5n/6 (Bennett, Cushman, Dudek and Prałat).",
+      "sources": [
+        {
+          "title": "A variant of the classical Ramsey problem",
+          "url": "https://doi.org/10.1007/bf01195000",
+          "authors": "Paul Erdős, András Gyárfás",
+          "year": 1997
+        },
+        {
+          "title": "Erdős Problem #136",
+          "url": "https://www.erdosproblems.com/136"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 136,
+        "url": "https://www.erdosproblems.com/136",
+        "status": "solved (f(n) ~ 5n/6)",
+        "citation": "T. F. Bloom, Erdős Problem #136, https://www.erdosproblems.com/136, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000140"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-few-monochromatic-four-progressions-256",
+    "name": "Two-colourings of [1,256] with few monochromatic four-term progressions",
+    "description": "construct() -> 256 colours in {0,1} for the integers 1..256. Minimize the exact number of monochromatic 4-term arithmetic progressions a, a+d, a+2d, a+3d with d >= 1 inside 1..256. The finite count for n = 256 and k = 4 upper-bounds the minimum for this n; no exact finite value is documented.",
+    "family": "science_prize_e_monochromatic_progressions",
+    "parameters": {
+      "n": 256,
+      "length": 4
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/j.jcta.2007.03.006",
+        "type": "paper",
+        "locator": "Pablo A. Parrilo, Aaron Robertson and Dan Saracino, On the asymptotic minimum number of monochromatic 3-term arithmetic progressions (2008). Erdős Problem #1186 page inspected: the constant delta_k with (delta_k + o(1))n^2 monochromatic k-APs is open; Parrilo, Robertson and Saracino bound delta_3; Wolf and Lu-Peng bound the finite-field analogue for k = 4. Crossref record for the 2008 paper inspected. The finite count for n = 256 and k = 4 upper-bounds the minimum for this n; no exact finite value is documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1186",
+        "type": "archive",
+        "locator": "Erdős Problem #1186 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000991",
+        "type": "benchmark",
+        "locator": "JSP-000991; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented finite reference value (reference label none); the count is exact but only comparable across runs and with asymptotic densities.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented minimum for n = 256, k = 4. The asymptotic density delta_4 is unknown; the random colouring gives delta_k <= 1/((k-1)2^k).",
+      "sources": [
+        {
+          "title": "Erdős Problem #1186",
+          "url": "https://www.erdosproblems.com/1186"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1186,
+        "url": "https://www.erdosproblems.com/1186",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1186, https://www.erdosproblems.com/1186, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000991"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_e.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  }
+]

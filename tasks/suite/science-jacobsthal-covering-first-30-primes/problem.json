@@ -1,0 +1,118 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_jacobsthal",
+  "direction": "maximize",
+  "contract": "construct() -> 30 residues r_1, ..., r_30 with 0 <= r_i < p_i for the first 30 primes 2, 3, ..., 113. The score is the largest L such that every integer 1..L is congruent to r_i modulo p_i for some i. Maximize; the optimum is 329 (Jacobsthal's function of the product of the first 30 primes is 330).",
+  "parameters": {
+    "count": 30
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "For the first 30 primes the optimum is 329, so the task recovers an extremal covering. Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-jacobsthal-covering-first-30-primes",
+  "name": "Covering an initial interval with one residue class for each of the first 30 primes",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> 30 residues r_1, ..., r_30 with 0 <= r_i < p_i for the first 30 primes 2, 3, ..., 113. The score is the largest L such that every integer 1..L is congruent to r_i modulo p_i for some i. Maximize; the optimum is 329 (Jacobsthal's function of the product of the first 30 primes is 330). For the first 30 primes the optimum is 329, so the task recovers an extremal covering.",
+  "benchmark": "Covering an initial interval with one residue class for each of the first 30 primes",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1090/S0025-5718-08-02166-2",
+      "type": "paper",
+      "locator": "Thomas Hagedorn, Computation of Jacobsthal's function h(n) for n < 50 (2009). Crossref record inspected; OEIS A048670 inspected: Jacobsthal's function of the product of the first n primes, a(30) = 330 (Hagedorn computed the values for n < 50). By the Chinese remainder theorem a run of L consecutive integers sharing a factor with the primorial is equivalent to covering 1..L with one class per prime, so the maximal covered length is 329. Erdős Problem #687 page inspected (Y(x) << x^2 by Iwaniec; lower bounds of Ford, Green, Konyagin, Maynard and Tao and later improvements). For the first 30 primes the optimum is 329, so the task recovers an extremal covering."
+    },
+    {
+      "url": "https://www.erdosproblems.com/687",
+      "type": "archive",
+      "locator": "Erdős Problem #687 (open ($1000)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000559",
+      "type": "benchmark",
+      "locator": "JSP-000559; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case (published computation).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 329,
+    "statement": "Jacobsthal's function of the product of the first 30 primes is 330 (Hagedorn 2009; OEIS A048670), so at most 329 consecutive integers can be covered.",
+    "sources": [
+      {
+        "title": "OEIS A048670: Jacobsthal function applied to the product of the first n primes",
+        "url": "https://oeis.org/A048670"
+      },
+      {
+        "title": "Computation of Jacobsthal's function h(n) for n < 50",
+        "url": "https://doi.org/10.1090/S0025-5718-08-02166-2",
+        "authors": "Thomas Hagedorn",
+        "year": 2009
+      },
+      {
+        "title": "Long gaps between primes",
+        "url": "https://doi.org/10.1090/jams/876",
+        "authors": "Kevin Ford, Ben Green, Sergei Konyagin, James Maynard, Terence Tao",
+        "year": 2018
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 687,
+      "url": "https://www.erdosproblems.com/687",
+      "status": "open ($1000)",
+      "citation": "T. F. Bloom, Erdős Problem #687, https://www.erdosproblems.com/687, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Estimate Y(x), the longest interval that can be covered by one residue class per prime up to x (Jacobsthal's function of primorials).",
+    "importance_rationale": "This covering function controls large gaps between consecutive primes; Erdős offered $1000 for estimates (Erdős Problem #687) and its growth rate remains open.",
+    "papers": [
+      {
+        "title": "Computation of Jacobsthal's function h(n) for n < 50",
+        "url": "https://doi.org/10.1090/S0025-5718-08-02166-2",
+        "task_relation": "For the first 30 primes the optimum is 329, so the task recovers an extremal covering.",
+        "primary_goal": "Estimate Y(x), the longest interval that can be covered by one residue class per prime up to x (Jacobsthal's function of primorials).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; OEIS A048670 inspected: Jacobsthal's function of the product of the first n primes, a(30) = 330 (Hagedorn computed the values for n < 50). By the Chinese remainder theorem a run of L consecutive integers sharing a factor with the primorial is equivalent to covering 1..L with one class per prime, so the maximal covered length is 329. Erdős Problem #687 page inspected (Y(x) << x^2 by Iwaniec; lower bounds of Ford, Green, Konyagin, Maynard and Tao and later improvements).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

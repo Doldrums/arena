@@ -1,0 +1,103 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_a_abc_quality",
+  "direction": "maximize",
+  "contract": "construct() -> [a,b,c], positive Python integers <=1000000000000, a<=b, a+b=c, gcd(a,b)=1. Maximize log(c)/log(rad(a*b*c)). The radical is the product of DISTINCT prime factors and is independently factored exactly; only the logarithmic score uses floating arithmetic.",
+  "parameters": {
+    "maximum": 1000000000000
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Independent finite certificate evaluator and local seed; no source implementation copied. Exact constraints are verified, but no optimality, general theorem, Lean proof, published record, or prize eligibility is claimed. See task sources and adaptation limitations."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-coprime-abc-quality",
+  "name": "High-quality coprime abc triples",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "description": "construct() -> [a,b,c], positive Python integers <=1000000000000, a<=b, a+b=c, gcd(a,b)=1. Maximize log(c)/log(rad(a*b*c)). The radical is the product of DISTINCT prime factors and is independently factored exactly; only the logarithmic score uses floating arithmetic. Search coprime positive triples a+b=c with c<=10^12, maximizing log(c)/log(rad(abc)). Finite high quality cannot disprove the conjecture, which allows finitely many exceptions at each exponent. The optimum is Reyssat's quality 1.62991 for 2 + 3^10*109 = 23^5; complete tables of high-quality triples show nothing better below 10^20, so this is a rediscovery task.",
+  "benchmark": "High-quality coprime abc triples",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1409.2974",
+      "type": "paper",
+      "locator": "Greg Martin and Winnie Miao, abc triples. Primary survey full text inspected: p.3 defines logarithmic quality, p.10 explicitly uses the starter (1,8,9). Author computational catalog https://pub.math.leidenuniv.nl/~smitbde/abc/ also inspected."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000010",
+      "type": "benchmark",
+      "locator": "JSP-000010; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "limitations": [
+    "Solved finite case: Reyssat's triple 2 + 3^10·109 = 23^5 (c = 6,436,343) has quality 1.62991.",
+    "Search coprime positive triples a+b=c with c<=10^12, maximizing log(c)/log(rad(abc)). Finite high quality cannot disprove the conjecture, which allows finitely many exceptions at each exponent.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_a",
+      "title": "Problem-bank constructions: additive combinatorics: source-based research tasks",
+      "url": "https://arxiv.org/abs/2208.12182"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 1.6299116841,
+    "statement": "Reyssat's triple 2 + 3^10·109 = 23^5 (c = 6,436,343) has quality 1.62991. De Smit's complete tables of triples with quality at least 1.4 and at most twenty digits, surveyed by Martin and Miao, contain nothing of higher quality, so it is the maximum for c <= 10^12.",
+    "sources": [
+      {
+        "title": "abc triples",
+        "url": "https://arxiv.org/abs/1409.2974",
+        "authors": "Greg Martin, Winnie Miao",
+        "year": 2014
+      },
+      {
+        "title": "ABC triples (tables of high-quality triples)",
+        "url": "https://www.math.leidenuniv.nl/~desmit/abc/",
+        "authors": "Bart de Smit (maintained)"
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Construct and understand integer triples with unusually small radical relative to height.",
+    "importance_rationale": "The abc conjecture of Masser and Oesterlé is a central open problem in number theory; triples of high quality are the extremal examples that test it, and finding them is the main goal of the cited paper.",
+    "papers": [
+      {
+        "title": "LLL & ABC",
+        "url": "https://arxiv.org/abs/math/0307322",
+        "task_relation": "Search coprime positive triples a+b=c with c<=10^12, maximizing log(c)/log(rad(abc)). Finite high quality cannot disprove the conjecture, which allows finitely many exceptions at each exponent.",
+        "primary_goal": "Find abc triples of high quality, i.e. good examples for the abc and Szpiro conjectures, by lattice reduction.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "A problem-focused primary paper (Tim Dokchitser, Journal of Number Theory 107 (2004), DOI 10.1016/j.jnt.2004.02.003) is devoted to finding high-quality abc triples, the quantity this task maximizes. No novelty claim is implied.",
+    "verification_basis": "Author abstract, arXiv math/0307322: the LLL algorithm applied to prime powers finds good examples for the ABC and Szpiro conjectures. The Martin and Miao survey (p.3) defines the logarithmic quality used here.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

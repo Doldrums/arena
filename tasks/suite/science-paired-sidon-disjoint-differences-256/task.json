@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0",
+  "id": "science-paired-sidon-disjoint-differences-256",
+  "name": "Two Sidon sets with disjoint difference sets",
+  "description": "construct() -> [A,B], two nonempty Sidon subsets of [1,n=256], at most 64 elements each. Pair sums inside each set, including a+a, must be unique. Their nonzero difference sets must be disjoint. Maximize |A|+|B|; A and B need not themselves be disjoint. Two Sidon subsets of [1,256]; maximize combined size and require disjoint nonzero differences. Ordinary Sidon diagonals are included, and the two sets themselves may overlap.",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://users.renyi.hu/~p_erdos/1982-34.pdf",
+      "type": "paper",
+      "locator": "Paul Erdős, Some problems on additive number theory. Annals of Discrete Mathematics 12 (1982), 113–116; p.114 explicitly poses the two-Sidon-set/disjoint-differences question."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000071",
+      "type": "benchmark",
+      "locator": "JSP-000071; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; fixed finite mathematical profiles."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Two Sidon sets with disjoint difference sets",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_a_paired_sidon",
+    "science_family": "science_prize_a_paired_sidon",
+    "parameters": {
+      "n": 256
+    },
+    "interface": "construct() -> [A,B], two nonempty Sidon subsets of [1,n=256], at most 64 elements each. Pair sums inside each set, including a+a, must be unique. Their nonzero difference sets must be disjoint. Maximize |A|+|B|; A and B need not themselves be disjoint.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000071"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_a_paired_sidon",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Two Sidon subsets of [1,256]; maximize combined size and require disjoint nonzero differences. Ordinary Sidon diagonals are included, and the two sets themselves may overlap.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/a-checks.json",
+    "tests": "tests/test_science_prize_a.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented maximum of |A| + |B| for N = 256. Erdős's question (Problem #43) was answered negatively: one Sidon set can have the maximum size while the other grows without bound.",
+    "sources": [
+      {
+        "title": "Some problems on additive number theory",
+        "url": "https://users.renyi.hu/~p_erdos/1982-34.pdf",
+        "authors": "Paul Erdős",
+        "year": 1982
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 43,
+      "url": "https://www.erdosproblems.com/43",
+      "status": "disproved (Lean)",
+      "citation": "T. F. Bloom, Erdős Problem #43, https://www.erdosproblems.com/43, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Maximize combined cardinality of two Sidon sets whose nonzero differences are disjoint.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [],
+    "reviewed_at": "2026-09-22",
+    "reason": "The exact problem statement is verified in a problem survey, but no paper primarily advancing this paired-set question was established.",
+    "verification_basis": "Annals of Discrete Mathematics 12 (1982), 113–116; p.114 explicitly poses the two-Sidon-set/disjoint-differences question.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

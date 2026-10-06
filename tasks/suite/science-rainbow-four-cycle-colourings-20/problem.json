@@ -1,0 +1,113 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_i_rainbow_c4",
+  "direction": "maximize",
+  "contract": "construct() -> coloured edges [[u, v, c], ...] of a simple graph on vertices 0..19 with colours 0..19. Every 4-cycle (as a subgraph) must receive four distinct colours, checked over all 4-cycles. Maximize the number of edges.",
+  "parameters": {
+    "n": 20,
+    "colours": 20
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "Dense valid colourings for n = 20 are finite evidence on the anti-Ramsey question. Exact local certificates are not Lean proofs; reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-rainbow-four-cycle-colourings-20",
+  "name": "Dense graphs on 20 vertices edge-coloured with 20 colours so every 4-cycle is rainbow",
+  "paper_ids": [
+    "science-prize_i"
+  ],
+  "description": "construct() -> coloured edges [[u, v, c], ...] of a simple graph on vertices 0..19 with colours 0..19. Every 4-cycle (as a subgraph) must receive four distinct colours, checked over all 4-cycles. Maximize the number of edges. Dense valid colourings for n = 20 are finite evidence on the anti-Ramsey question.",
+  "benchmark": "Dense graphs on 20 vertices edge-coloured with 20 colours so every 4-cycle is rainbow",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1002/jgt.3190130302",
+      "type": "paper",
+      "locator": "S. A. Burr, P. Erdős, R. L. Graham and V. T. Sós, Maximal antiramsey graphs and the strong chromatic number (1989). Crossref record inspected; Erdős Problem #810 page inspected (Burr, Erdős, Graham and Sós believed no eps*n^2 edges admit an n-colouring with every C4 rainbow; open for C4, resolved for other connected bipartite graphs except complete bipartite ones by Sárközy and Selkow). No finite values are documented. Dense valid colourings for n = 20 are finite evidence on the anti-Ramsey question."
+    },
+    {
+      "url": "https://www.erdosproblems.com/810",
+      "type": "archive",
+      "locator": "Erdős Problem #810 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000667",
+      "type": "benchmark",
+      "locator": "JSP-000667; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "No documented value (reference label none).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_i",
+      "title": "Problem-bank constructions: hypergraphs, graph constructions and instance-solving methods: source-based research tasks",
+      "url": "https://ajc.maths.uq.edu.au/pdf/76/ajc_v76_p073.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented values.",
+    "sources": [
+      {
+        "title": "Maximal antiramsey graphs and the strong chromatic number",
+        "url": "https://doi.org/10.1002/jgt.3190130302",
+        "authors": "S. A. Burr, P. Erdős, R. L. Graham, V. T. Sós",
+        "year": 1989
+      },
+      {
+        "title": "Erdős Problem #810",
+        "url": "https://www.erdosproblems.com/810"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 810,
+      "url": "https://www.erdosproblems.com/810",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #810, https://www.erdosproblems.com/810, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Decide whether graphs with eps*n^2 edges can be n-coloured so that every 4-cycle is rainbow (Erdős Problem #810).",
+    "importance_rationale": "Anti-Ramsey problems for C4 are tied to the (7,4)-problem for 3-uniform hypergraphs and to Sidon-type constructions.",
+    "papers": [
+      {
+        "title": "Maximal antiramsey graphs and the strong chromatic number",
+        "url": "https://doi.org/10.1002/jgt.3190130302",
+        "task_relation": "Dense valid colourings for n = 20 are finite evidence on the anti-Ramsey question.",
+        "primary_goal": "Decide whether graphs with eps*n^2 edges can be n-coloured so that every 4-cycle is rainbow (Erdős Problem #810).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #810 page inspected (Burr, Erdős, Graham and Sós believed no eps*n^2 edges admit an n-colouring with every C4 rainbow; open for C4, resolved for other connected bipartite graphs except complete bipartite ones by Sárközy and Selkow). No finite values are documented.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

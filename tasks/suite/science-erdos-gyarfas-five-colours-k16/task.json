@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "id": "science-erdos-gyarfas-five-colours-k16",
+  "name": "Edge-colourings of K16 in which every K4 sees five colours",
+  "description": "construct() -> 120 integer colours in 0..119 for the pairs (i,j), 0<=i<j<16, in lexicographic order. Every set of four vertices must span edges of at least five distinct colours. Minimize the number of colours used. A valid colouring certifies f(16) <= colours used. The general bounds give 13 <= f(16) <= 15; no exact value for n = 16 is documented.",
+  "paper_ids": [
+    "science-prize_e"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1007/bf01195000",
+      "type": "paper",
+      "locator": "Paul Erdős and András Gyárfás, A variant of the classical Ramsey problem (1997). Crossref record inspected; Erdős Problem #136 page inspected: Erdős and Gyárfás proved 5(n-1)/6 < f(n) < n and f(9) = 8; Bennett, Cushman, Dudek and Prałat proved f(n) ~ 5n/6. A valid colouring certifies f(16) <= colours used. The general bounds give 13 <= f(16) <= 15; no exact value for n = 16 is documented."
+    },
+    {
+      "url": "https://www.erdosproblems.com/136",
+      "type": "archive",
+      "locator": "Erdős Problem #136 (solved (f(n) ~ 5n/6)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000140",
+      "type": "benchmark",
+      "locator": "JSP-000140; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Edge-colourings of K16 in which every K4 sees five colours",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_e_four_clique_colours",
+    "science_family": "science_prize_e_four_clique_colours",
+    "parameters": {
+      "n": 16
+    },
+    "interface": "construct() -> 120 integer colours in 0..119 for the pairs (i,j), 0<=i<j<16, in lexicographic order. Every set of four vertices must span edges of at least five distinct colours. Minimize the number of colours used.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000140"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_e_four_clique_colours",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No published value for n = 16 was found (reference label none); improvements are comparable across runs and with the bounds 13 <= f(16) <= 15, not with a recorded optimum.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_e.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value for n = 16. General bounds: 5(n-1)/6 < f(n) < n (Erdős and Gyárfás 1997), so 13 <= f(16) <= 15; asymptotically f(n) ~ 5n/6 (Bennett, Cushman, Dudek and Prałat).",
+    "sources": [
+      {
+        "title": "A variant of the classical Ramsey problem",
+        "url": "https://doi.org/10.1007/bf01195000",
+        "authors": "Paul Erdős, András Gyárfás",
+        "year": 1997
+      },
+      {
+        "title": "Erdős Problem #136",
+        "url": "https://www.erdosproblems.com/136"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 136,
+      "url": "https://www.erdosproblems.com/136",
+      "status": "solved (f(n) ~ 5n/6)",
+      "citation": "T. F. Bloom, Erdős Problem #136, https://www.erdosproblems.com/136, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the least number of colours f(n) such that every K4 receives at least five colours.",
+    "importance_rationale": "This is the Erdős-Gyárfás generalized Ramsey function f(n,4,5) (Erdős Problem #136); its asymptotics were settled only in 2022.",
+    "papers": [
+      {
+        "title": "A variant of the classical Ramsey problem",
+        "url": "https://doi.org/10.1007/bf01195000",
+        "task_relation": "A valid colouring certifies f(16) <= colours used. The general bounds give 13 <= f(16) <= 15; no exact value for n = 16 is documented.",
+        "primary_goal": "Determine the least number of colours f(n) such that every K4 receives at least five colours.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #136 page inspected: Erdős and Gyárfás proved 5(n-1)/6 < f(n) < n and f(9) = 8; Bennett, Cushman, Dudek and Prałat proved f(n) ~ 5n/6.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "schema_version": "1.0",
+  "id": "science-number-theory-powerful-consecutive-counterexample",
+  "name": "Consecutive powerful non-squares: exact counterexample certificate",
+  "description": "Provide a positive integer n and complete prime factorizations certifying that n and n+1 are powerful and neither is a square. Every prime exponent must be at least two. The verifier uses exact integers and primality tests. This recreates the resolved yes/no question in JSP-000301, with a local certificate-size bound n+1 <= 10^12 and binary validity score. The published 12167/12168 witness is explicitly credited to Solomon W. Golomb.",
+  "paper_ids": [
+    "science-prize"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1080/00029890.1970.11992598",
+      "type": "paper",
+      "locator": "Solomon W. Golomb, Powerful Numbers, American Mathematical Monthly 77(8), 1970, pp.848–852. Publisher metadata establishes author/title; the prize record explicitly attributes the 12167 counterexample to this paper. Full paper text was not independently accessible during this review."
+    },
+    {
+      "url": "https://www.fq.math.ca/Scanned/14-2/walker.pdf",
+      "type": "paper",
+      "locator": "David T. Walker, Consecutive integer pairs of powerful numbers and related Diophantine equations, Fibonacci Quarterly 14(2), 1976, pp.111–116. Primary full text inspected: Type II pairs are consecutive powerful non-squares; mathematical witness discovery remains credited to Golomb, not to this local implementation."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000301",
+      "type": "benchmark",
+      "locator": "JSP-000301: scoped yes/no question and explicit Golomb counterexample attribution; source revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased specification; no implementation copied."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; exact finite integer/combinatorial certificates."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Consecutive powerful non-squares: exact counterexample certificate",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_powerful",
+    "science_family": "science_prize_powerful",
+    "parameters": {
+      "maximum": 1000000000000
+    },
+    "interface": "construct() -> {'n': int, 'factorizations': [factors_of_n, factors_of_n_plus_1]}; each factorization is a list of distinct [prime, exponent] pairs. Require 2 <= n < 10**12, every exponent >= 2, complete prime factorizations, and neither integer a square. Score 1 for a valid disproof witness; otherwise invalid. This is a solved-problem rediscovery task, not an optimization leaderboard or Lean proof.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "mathematical_witness_credit": "Solomon W. Golomb (1970), as explicitly attributed by pinned JSP-000301; paper full text not independently accessed",
+      "borrowed_component": "Published integer witness and factorization only; no upstream evaluator or search implementation reused",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_powerful",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 30,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "These are independently implemented finite certificate/search tasks. They are not Lean proofs, prize submissions, full general-conjecture solutions, or claims of eligibility or mathematical novelty.",
+    "The prize catalog is a discovery source whose statements and contributor records can change. The pinned revision is recorded; original mathematical authorship is separate from this local implementation.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox.",
+    "The bound restricts representable certificates but does not weaken an accepted counterexample: a single verified pair disproves the universal claim. This does not solve the distinct, open counting question in Erdős problem #365.",
+    "The baseline embeds the already published mathematical witness and scores 1. This is a verification/rediscovery task; there is no claim of optimization headroom, least-counterexample proof, or new result."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-21",
+    "evidence": "validation/prize-task-checks.json",
+    "tests": "tests/test_science_prize.py",
+    "lean_verified": false
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Construct and understand consecutive powerful integers neither of which is a square.",
+    "importance_rationale": "The primary paper studies the structure and Diophantine construction of Type II powerful-number pairs.",
+    "papers": [
+      {
+        "title": "Consecutive integer pairs of powerful numbers and related Diophantine equations",
+        "url": "https://www.fq.math.ca/Scanned/14-2/walker.pdf",
+        "primary_goal": "Construct and understand consecutive powerful integers neither of which is a square.",
+        "task_relation": "The local certificate is one already known Type II pair, checked exactly; it does not reproduce the general parametrization or count all pairs.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Underlying mathematical problem is studied directly by the cited primary source; finite task scope and rediscovery are explicit.",
+    "reviewed_at": "2026-09-21",
+    "verification_basis": "Primary full text or author abstract inspected; local definition checked against mathematical statement. Not a paper-result reproduction.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": true
+  }
+}

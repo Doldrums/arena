@@ -1,0 +1,111 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_f_pentagon_hexagon_free",
+  "direction": "maximize",
+  "contract": "construct() -> list of edges [u, v] of a simple graph on vertices 0..41 containing neither a five-cycle nor a six-cycle. Maximize the number of edges; the known optimum is 104.",
+  "parameters": {
+    "n": 42,
+    "lengths": [
+      5,
+      6
+    ]
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "The exact value 104 for n = 42 is known; the task recovers it. Exact local certificates are not Lean proofs. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-pentagon-hexagon-free-extremal-42",
+  "name": "Graphs on 42 vertices without five- or six-cycles",
+  "paper_ids": [
+    "science-prize_f"
+  ],
+  "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..41 containing neither a five-cycle nor a six-cycle. Maximize the number of edges; the known optimum is 104. The exact value 104 for n = 42 is known; the task recovers it.",
+  "benchmark": "Graphs on 42 vertices without five- or six-cycles",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1007/bf02579234",
+      "type": "paper",
+      "locator": "Paul Erdős and Miklós Simonovits, Compactness results in extremal graph theory (1982). Crossref record inspected; Erdős Problem #574 page inspected (the Erdős-Simonovits formula for ex(n;{C_(2k-1),C_2k}) was disproved for k = 3 and 5). Afzaly-McKay tables inspected: ex(42;{C5,C6}) = 104 exactly. The exact value 104 for n = 42 is known; the task recovers it."
+    },
+    {
+      "url": "https://www.erdosproblems.com/574",
+      "type": "archive",
+      "locator": "Erdős Problem #574 (disproved); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000464",
+      "type": "benchmark",
+      "locator": "JSP-000464; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case per the published tables.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_f",
+      "title": "Problem-bank constructions: extremal graphs, hypergraphs and designs: source-based research tasks",
+      "url": "https://arxiv.org/abs/2103.14179"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 104,
+    "statement": "ex(42;{C5,C6}) = 104 (Afzaly and McKay tables; at least 6 extremal graphs).",
+    "sources": [
+      {
+        "title": "Extremal Graphs and Turán numbers (data by Narjess Afzaly and Brendan McKay)",
+        "url": "https://users.cecs.anu.edu.au/~bdm/data/extremal.html",
+        "authors": "Narjess Afzaly, Brendan D. McKay"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 574,
+      "url": "https://www.erdosproblems.com/574",
+      "status": "disproved",
+      "citation": "T. F. Bloom, Erdős Problem #574, https://www.erdosproblems.com/574, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine extremal numbers for excluding consecutive odd and even cycles.",
+    "importance_rationale": "This family (Erdős Problem #574) tested an Erdős-Simonovits conjecture that was later disproved; exact values expose the finite structure.",
+    "papers": [
+      {
+        "title": "Compactness results in extremal graph theory",
+        "url": "https://doi.org/10.1007/bf02579234",
+        "task_relation": "The exact value 104 for n = 42 is known; the task recovers it.",
+        "primary_goal": "Determine extremal numbers for excluding consecutive odd and even cycles.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #574 page inspected (the Erdős-Simonovits formula for ex(n;{C_(2k-1),C_2k}) was disproved for k = 3 and 5). Afzaly-McKay tables inspected: ex(42;{C5,C6}) = 104 exactly.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

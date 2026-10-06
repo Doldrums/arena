@@ -1,0 +1,112 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_i_dense_clique_partition",
+  "direction": "minimize",
+  "contract": "construct() -> two lists of cliques (vertex lists), one per instance from random_graph(n, p, seed) for (32,0.6,601) and (64,0.55,602) in the verifier (both with more than n^2/4 edges). Every listed set must be a clique with at least two vertices and every edge must lie in exactly one listed clique. Minimize the total number of cliques.",
+  "parameters": {},
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "The score totals clique partition sizes on two fixed dense graphs; it measures a partitioning method. Exact local certificates are not Lean proofs; reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-dense-clique-partition-instances",
+  "name": "Clique partitions of two fixed dense random graphs",
+  "paper_ids": [
+    "science-prize_i"
+  ],
+  "description": "construct() -> two lists of cliques (vertex lists), one per instance from random_graph(n, p, seed) for (32,0.6,601) and (64,0.55,602) in the verifier (both with more than n^2/4 edges). Every listed set must be a clique with at least two vertices and every edge must lie in exactly one listed clique. Minimize the total number of cliques. The score totals clique partition sizes on two fixed dense graphs; it measures a partitioning method.",
+  "benchmark": "Clique partitions of two fixed dense random graphs",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.4153/CJM-1966-014-3",
+      "type": "paper",
+      "locator": "Paul Erdős, A. W. Goodman and Louis Pósa, The Representation of a Graph by Set Intersections (1966). Crossref records inspected (Erdős, Goodman and Pósa 1966; Győri and Keszegh 2017). Erdős Problem #1017 page inspected: every graph has an edge partition into at most n^2/4 edges and triangles; Erdős asked for sharpening when there are more than n^2/4 edges; Győri and Keszegh settled the K4-free case. The score totals clique partition sizes on two fixed dense graphs; it measures a partitioning method."
+    },
+    {
+      "url": "https://www.erdosproblems.com/1017",
+      "type": "archive",
+      "locator": "Erdős Problem #1017 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000847",
+      "type": "benchmark",
+      "locator": "JSP-000847; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Instance-solving task on two fixed pseudo-random graphs.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_i",
+      "title": "Problem-bank constructions: hypergraphs, graph constructions and instance-solving methods: source-based research tasks",
+      "url": "https://ajc.maths.uq.edu.au/pdf/76/ajc_v76_p073.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "Instance-solving task; no reference value.",
+    "sources": [
+      {
+        "title": "The Representation of a Graph by Set Intersections",
+        "url": "https://doi.org/10.4153/CJM-1966-014-3",
+        "authors": "Paul Erdős, A. W. Goodman, Louis Pósa",
+        "year": 1966
+      },
+      {
+        "title": "On the Number of Edge-Disjoint Triangles in K4-Free Graphs",
+        "url": "https://doi.org/10.1007/s00493-016-3500-0",
+        "authors": "Ervin Győri, Balázs Keszegh",
+        "year": 2017
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1017,
+      "url": "https://www.erdosproblems.com/1017",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1017, https://www.erdosproblems.com/1017, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Estimate the clique partition number f(n,k) of graphs with k > n^2/4 edges (Erdős Problem #1017).",
+    "importance_rationale": "Clique partition numbers measure intersection representations of graphs and appear in design theory.",
+    "papers": [
+      {
+        "title": "The Representation of a Graph by Set Intersections",
+        "url": "https://doi.org/10.4153/CJM-1966-014-3",
+        "task_relation": "The score totals clique partition sizes on two fixed dense graphs; it measures a partitioning method.",
+        "primary_goal": "Estimate the clique partition number f(n,k) of graphs with k > n^2/4 edges (Erdős Problem #1017).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref records inspected (Erdős, Goodman and Pósa 1966; Győri and Keszegh 2017). Erdős Problem #1017 page inspected: every graph has an edge partition into at most n^2/4 edges and triangles; Erdős asked for sharpening when there are more than n^2/4 edges; Győri and Keszegh settled the K4-free case.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

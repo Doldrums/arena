@@ -1,0 +1,185 @@
+[
+  {
+    "id": "science-number-theory-powerful-consecutive-counterexample",
+    "name": "Consecutive powerful non-squares: exact counterexample certificate",
+    "description": "Provide a positive integer n and complete prime factorizations certifying that n and n+1 are powerful and neither is a square. Every prime exponent must be at least two. The verifier uses exact integers and primality tests. This recreates the resolved yes/no question in JSP-000301, with a local certificate-size bound n+1 <= 10^12 and binary validity score. The published 12167/12168 witness is explicitly credited to Solomon W. Golomb.",
+    "family": "science_prize_powerful",
+    "parameters": {
+      "maximum": 1000000000000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1080/00029890.1970.11992598",
+        "type": "paper",
+        "locator": "Solomon W. Golomb, Powerful Numbers, American Mathematical Monthly 77(8), 1970, pp.848–852. Publisher metadata establishes author/title; the prize record explicitly attributes the 12167 counterexample to this paper. Full paper text was not independently accessible during this review."
+      },
+      {
+        "url": "https://www.fq.math.ca/Scanned/14-2/walker.pdf",
+        "type": "paper",
+        "locator": "David T. Walker, Consecutive integer pairs of powerful numbers and related Diophantine equations, Fibonacci Quarterly 14(2), 1976, pp.111–116. Primary full text inspected: Type II pairs are consecutive powerful non-squares; mathematical witness discovery remains credited to Golomb, not to this local implementation."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000301",
+        "type": "benchmark",
+        "locator": "JSP-000301: scoped yes/no question and explicit Golomb counterexample attribution; source revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased specification; no implementation copied."
+      }
+    ],
+    "limitations": [
+      "These are independently implemented finite certificate/search tasks. They are not Lean proofs, prize submissions, full general-conjecture solutions, or claims of eligibility or mathematical novelty.",
+      "The prize catalog is a discovery source whose statements and contributor records can change. The pinned revision is recorded; original mathematical authorship is separate from this local implementation.",
+      "Candidate Python code is trusted code; the evaluator process is not a security sandbox.",
+      "The bound restricts representable certificates but does not weaken an accepted counterexample: a single verified pair disproves the universal claim. This does not solve the distinct, open counting question in Erdős problem #365.",
+      "The baseline embeds the already published mathematical witness and scores 1. This is a verification/rediscovery task; there is no claim of optimization headroom, least-counterexample proof, or new result."
+    ],
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "mathematical_witness_credit": "Solomon W. Golomb (1970), as explicitly attributed by pinned JSP-000301; paper full text not independently accessed",
+      "borrowed_component": "Published integer witness and factorization only; no upstream evaluator or search implementation reused",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; exact finite integer/combinatorial certificates."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-21",
+      "tests": "tests/test_science_prize.py",
+      "evidence": "validation/prize-task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-tcs-cerny-reset-threshold-12",
+    "name": "Černý problem: 12-state binary automata with long reset thresholds",
+    "description": "Construct a complete deterministic automaton with 12 states and two input letters that synchronizes, maximizing the length of its shortest reset word. Breadth-first search on the subset automaton computes the exact threshold and returns a shortest word. This is a finite construction adaptation of JSP-000022; a finite high score cannot prove the universal Černý conjecture.",
+    "family": "science_prize_cerny",
+    "parameters": {
+      "n": 12
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "theoretical_computer_science"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1301.2092",
+        "type": "paper",
+        "locator": "Jakub Kowalski and Marek Szykuła, The Černý conjecture for small automata: experimental report (2013): complete binary automata, shortest reset thresholds, and finite exhaustive experiments. The local n=12 search is not a reproduction of their exhaustive n<=11 classification."
+      },
+      {
+        "url": "https://doi.org/10.4230/LIPIcs.ESA.2022.85",
+        "type": "paper",
+        "locator": "Marek Szykuła and Adam Zyzik, An Improved Algorithm for Finding the Shortest Synchronizing Words (ESA 2022). Reset-word definition and exact threshold objective; this local simple BFS is independently written and does not claim to implement their improved algorithm."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000022",
+        "type": "benchmark",
+        "locator": "JSP-000022: general Černý conjecture; restriction to 12 states, binary alphabet, finite construction scoring is local."
+      }
+    ],
+    "limitations": [
+      "These are independently implemented finite certificate/search tasks. They are not Lean proofs, prize submissions, full general-conjecture solutions, or claims of eligibility or mathematical novelty.",
+      "The prize catalog is a discovery source whose statements and contributor records can change. The pinned revision is recorded; original mathematical authorship is separate from this local implementation.",
+      "Candidate Python code is trusted code; the evaluator process is not a security sandbox.",
+      "No formal proof of the general conjecture, exhaustive enumeration of 12-state automata, or current best-known threshold is claimed. (n-1)^2 is a conjectured bound and is never used to reject a larger valid score.",
+      "The simple seed has threshold 1. Tests use the classical Černý automaton with threshold 121 as a published mathematical construction, not copied implementation.",
+      "Distinct from searching a short reset word for a given automaton: the candidate here designs the automaton, and the verifier independently determines the minimum word length."
+    ],
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; exact finite integer/combinatorial certificates."
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and cited constructive reference in tests only; all evaluator and seed code authored locally",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-21",
+      "tests": "tests/test_science_prize.py",
+      "evidence": "validation/prize-task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-mathematics-minimal-maximal-sidon-256",
+    "name": "Small inclusion-maximal Sidon sets in [1,256]",
+    "description": "Construct a Sidon subset of the integer interval [1,256] that cannot be extended by any other interval element, and minimize its cardinality. The verifier checks every unordered pair sum including diagonal pairs and tries every missing element. This is the N=256 instance of the minimal-size maximal-set problem listed as JSP-000154, distinct from the existing maximum-cardinality Sidon-set task.",
+    "family": "science_prize_sidon",
+    "parameters": {
+      "n": 256
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "sources": [
+      {
+        "url": "https://link.springer.com/article/10.1023/A:1009757824153",
+        "type": "paper",
+        "locator": "Imre Z. Ruzsa, A Small Maximal Sidon Set, Ramanujan Journal 2 (1998), pp.55–58. Small inclusion-maximal Sidon sets in [1,N]; local exhaustive verifier and greedy seed do not reproduce Ruzsa's asymptotic construction. Primary publisher abstract and bibliography inspected; full text subscription restricted."
+      },
+      {
+        "url": "https://www.theoryofnumbers.com/melnathanson/pdfs/nath2009-132.pdf",
+        "type": "paper",
+        "locator": "J. A. Dias da Silva and Melvyn B. Nathanson, Maximal Sidon sets and matroids (2009), section 1. Sidon definition includes multisets (repeated elements); the example {1,3,4} is maximal in [1,7] despite a larger Sidon set existing."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000154",
+        "type": "benchmark",
+        "locator": "JSP-000154: smallest cardinality of inclusion-maximal Sidon sets; N=256 resource-bounded instance chosen locally."
+      }
+    ],
+    "limitations": [
+      "These are independently implemented finite certificate/search tasks. They are not Lean proofs, prize submissions, full general-conjecture solutions, or claims of eligibility or mathematical novelty.",
+      "The prize catalog is a discovery source whose statements and contributor records can change. The pinned revision is recorded; original mathematical authorship is separate from this local implementation.",
+      "Candidate Python code is trusted code; the evaluator process is not a security sandbox.",
+      "An accepted set establishes feasibility and an upper bound on the minimum cardinality for N=256. It does not prove optimality or resolve the general asymptotic problem.",
+      "Repeated-element sums a+a are included. Maximal means no strict Sidon superset in the interval; it does not mean maximum size.",
+      "The ascending greedy baseline is local code. No construction coordinates, implementation, or algorithm from Ruzsa's paper are imported."
+    ],
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; exact finite integer/combinatorial certificates."
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and cited constructive reference in tests only; all evaluator and seed code authored locally",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-21",
+      "tests": "tests/test_science_prize.py",
+      "evidence": "validation/prize-task-checks.json",
+      "lean_verified": false
+    }
+  }
+]

@@ -1,0 +1,116 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_f_hexagon_free",
+  "direction": "maximize",
+  "contract": "construct() -> list of edges [u, v] of a simple graph on vertices 0..39 containing no six-cycle (exact search). Maximize the number of edges.",
+  "parameters": {
+    "n": 40,
+    "lengths": [
+      6
+    ]
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "A C6-free graph with m edges certifies ex(40;C6) >= m; the best known graphs have 105 edges and optimality is unproven. Exact local certificates are not Lean proofs. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-hexagon-free-extremal-40",
+  "name": "Hexagon-free graphs on 40 vertices with many edges",
+  "paper_ids": [
+    "science-prize_f"
+  ],
+  "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..39 containing no six-cycle (exact search). Maximize the number of edges. A C6-free graph with m edges certifies ex(40;C6) >= m; the best known graphs have 105 edges and optimality is unproven.",
+  "benchmark": "Hexagon-free graphs on 40 vertices with many edges",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/j.aim.2005.04.011",
+      "type": "paper",
+      "locator": "Zoltán Füredi, Assaf Naor and Jacques Verstraëte, On the Turán number for the hexagon (2006). Crossref record inspected; Afzaly-McKay tables inspected: ex(n;C6) is exact through n = 37 (95 edges) and for n = 40 the best known value is at least 105 ('maybe' file). Erdős Problem #572 page inspected. A C6-free graph with m edges certifies ex(40;C6) >= m; the best known graphs have 105 edges and optimality is unproven."
+    },
+    {
+      "url": "https://www.erdosproblems.com/572",
+      "type": "archive",
+      "locator": "Erdős Problem #572 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000462",
+      "type": "benchmark",
+      "locator": "JSP-000462; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "The disjoint-K5 starter has 80 edges.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_f",
+      "title": "Problem-bank constructions: extremal graphs, hypergraphs and designs: source-based research tasks",
+      "url": "https://arxiv.org/abs/2103.14179"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "best_known",
+    "value": 105,
+    "statement": "Best known C6-free graph on 40 vertices has 105 edges (Afzaly and McKay, not proven optimal); exact values are known through 37 vertices.",
+    "sources": [
+      {
+        "title": "Extremal Graphs and Turán numbers (data by Narjess Afzaly and Brendan McKay)",
+        "url": "https://users.cecs.anu.edu.au/~bdm/data/extremal.html",
+        "authors": "Narjess Afzaly, Brendan D. McKay"
+      },
+      {
+        "title": "On the Turán number for the hexagon",
+        "url": "https://doi.org/10.1016/j.aim.2005.04.011",
+        "authors": "Zoltán Füredi, Assaf Naor, Jacques Verstraëte",
+        "year": 2006
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 572,
+      "url": "https://www.erdosproblems.com/572",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #572, https://www.erdosproblems.com/572, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the Turán numbers of even cycles, in particular the hexagon.",
+    "importance_rationale": "Erdős Problem #572 asks for ex(n;C_2k) >> n^(1+1/k); C6 is one of the few even cycles with known order of magnitude, and exact small values remain computationally open.",
+    "papers": [
+      {
+        "title": "On the Turán number for the hexagon",
+        "url": "https://doi.org/10.1016/j.aim.2005.04.011",
+        "task_relation": "A C6-free graph with m edges certifies ex(40;C6) >= m; the best known graphs have 105 edges and optimality is unproven.",
+        "primary_goal": "Determine the Turán numbers of even cycles, in particular the hexagon.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Afzaly-McKay tables inspected: ex(n;C6) is exact through n = 37 (95 edges) and for n = 40 the best known value is at least 105 ('maybe' file). Erdős Problem #572 page inspected.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "id": "science-ramsey-four-clique-versus-independent-five",
+  "name": "K4-free graphs without independent 5-sets (rediscovering R(4,5) = 25)",
+  "description": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 25. It must contain no K4 and no independent set of 5 vertices, checked exactly. Maximize n; the proven optimum is 24. Finding a 24-vertex (4,5)-graph recovers Kalbfleisch's lower bound; no 25-vertex graph exists.",
+  "paper_ids": [
+    "science-prize_e"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1002/jgt.3190190304",
+      "type": "paper",
+      "locator": "Brendan D. McKay and Stanisław P. Radziszowski, R(4,5) = 25 (1995). Crossref record inspected; survey DS1.18 item 2.1.d inspected: R(4,5) = 25 and exactly 352366 critical graphs on 24 vertices; lower bound by Kalbfleisch (1965). Finding a 24-vertex (4,5)-graph recovers Kalbfleisch's lower bound; no 25-vertex graph exists."
+    },
+    {
+      "url": "https://www.erdosproblems.com/986",
+      "type": "archive",
+      "locator": "Erdős Problem #986 (proved (Bradač 2026 for general s; Mattheus and Verstraete for s = 4)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000819",
+      "type": "benchmark",
+      "locator": "JSP-000819; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "K4-free graphs without independent 5-sets (rediscovering R(4,5) = 25)",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_e_ramsey_4_5",
+    "science_family": "science_prize_e_ramsey_4_5",
+    "parameters": {
+      "clique": 4,
+      "independent": 5,
+      "max_vertices": 25
+    },
+    "interface": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 25. It must contain no K4 and no independent set of 5 vertices, checked exactly. Maximize n; the proven optimum is 24.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000819"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_e_ramsey_4_5",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case: the optimum 24 is known and many extremal graphs are public.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_e.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 24,
+    "statement": "R(4,5) = 25 (McKay and Radziszowski 1995), so 24 vertices is optimal; Kalbfleisch (1965) gave the first 24-vertex construction.",
+    "sources": [
+      {
+        "title": "R(4,5) = 25",
+        "url": "https://doi.org/10.1002/jgt.3190190304",
+        "authors": "Brendan D. McKay, Stanislaw P. Radziszowski",
+        "year": 1995
+      },
+      {
+        "title": "Construction of Special Edge-Chromatic Graphs",
+        "url": "https://doi.org/10.4153/cmb-1965-041-7",
+        "authors": "J. G. Kalbfleisch",
+        "year": 1965
+      },
+      {
+        "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+        "authors": "Stanisław P. Radziszowski",
+        "url": "https://doi.org/10.37236/21"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 986,
+      "url": "https://www.erdosproblems.com/986",
+      "status": "proved (Bradač 2026 for general s; Mattheus and Verstraete for s = 4)",
+      "citation": "T. F. Bloom, Erdős Problem #986, https://www.erdosproblems.com/986, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the Ramsey number R(4,5).",
+    "importance_rationale": "The off-diagonal numbers R(s,k) with s fixed are the subject of Erdős Problem #986; R(4,5) = 25 was a landmark computer-assisted determination.",
+    "papers": [
+      {
+        "title": "R(4,5) = 25",
+        "url": "https://doi.org/10.1002/jgt.3190190304",
+        "task_relation": "Finding a 24-vertex (4,5)-graph recovers Kalbfleisch's lower bound; no 25-vertex graph exists.",
+        "primary_goal": "Determine the Ramsey number R(4,5).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; survey DS1.18 item 2.1.d inspected: R(4,5) = 25 and exactly 352366 critical graphs on 24 vertices; lower bound by Kalbfleisch (1965).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

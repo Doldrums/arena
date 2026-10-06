@@ -1,0 +1,119 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_i_cycle_spectra",
+  "direction": "maximize",
+  "contract": "construct() -> a list of at most 500 simple graphs on vertices 0..9, each a list of edges [u, v]. The cycle set of a graph (the lengths of its cycles, computed exactly by dynamic programming over paths) is recorded for every graph. Maximize the number of distinct cycle sets; the optimum is 133.",
+  "parameters": {
+    "n": 10,
+    "max_graphs": 500
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "There are exactly 133 cycle sets on 10 vertices, so a complete collection recovers f(10). Exact local certificates are not Lean proofs; reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-cycle-length-spectra-10",
+  "name": "Realizing every set of cycle lengths on 10 vertices",
+  "paper_ids": [
+    "science-prize_i"
+  ],
+  "description": "construct() -> a list of at most 500 simple graphs on vertices 0..9, each a list of edges [u, v]. The cycle set of a graph (the lengths of its cycles, computed exactly by dynamic programming over paths) is recorded for every graph. Maximize the number of distinct cycle sets; the optimum is 133. There are exactly 133 cycle sets on 10 vertices, so a complete collection recovers f(10).",
+  "benchmark": "Realizing every set of cycle lengths on 10 vertices",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.5070/C66165704",
+      "type": "paper",
+      "locator": "Rajko Nenadov, Improved bound on the number of cycle sets (2026). Crossref record inspected; Erdős Problem #84 page inspected (Erdős and Faudree showed 2^(n/2) < f(n) <= 2^(n-2); Verstraëte proved f(n) = o(2^n); Nenadov improved the bound). OEIS A399654 inspected (Dunås 2026): f(10) = 133. There are exactly 133 cycle sets on 10 vertices, so a complete collection recovers f(10)."
+    },
+    {
+      "url": "https://www.erdosproblems.com/84",
+      "type": "archive",
+      "locator": "Erdős Problem #84 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000100",
+      "type": "benchmark",
+      "locator": "JSP-000100; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case from the OEIS table.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_i",
+      "title": "Problem-bank constructions: hypergraphs, graph constructions and instance-solving methods: source-based research tasks",
+      "url": "https://ajc.maths.uq.edu.au/pdf/76/ajc_v76_p073.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 133,
+    "statement": "f(10) = 133 (OEIS A399654).",
+    "sources": [
+      {
+        "title": "OEIS A399654",
+        "url": "https://oeis.org/A399654"
+      },
+      {
+        "title": "Improved bound on the number of cycle sets",
+        "url": "https://doi.org/10.5070/C66165704",
+        "authors": "Rajko Nenadov",
+        "year": 2026
+      },
+      {
+        "title": "Unavoidable cycle lengths in graphs",
+        "url": "https://doi.org/10.1002/jgt.20072",
+        "authors": "Jacques Verstraete",
+        "year": 2005
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 84,
+      "url": "https://www.erdosproblems.com/84",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #84, https://www.erdosproblems.com/84, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Count the possible cycle sets f(n) of graphs on n vertices (Erdős Problem #84).",
+    "importance_rationale": "Cycle spectra connect extremal graph theory with pancyclicity; the growth of f(n) between 2^(n/2) and 2^n is open.",
+    "papers": [
+      {
+        "title": "Improved bound on the number of cycle sets",
+        "url": "https://doi.org/10.5070/C66165704",
+        "task_relation": "There are exactly 133 cycle sets on 10 vertices, so a complete collection recovers f(10).",
+        "primary_goal": "Count the possible cycle sets f(n) of graphs on n vertices (Erdős Problem #84).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #84 page inspected (Erdős and Faudree showed 2^(n/2) < f(n) <= 2^(n-2); Verstraëte proved f(n) = o(2^n); Nenadov improved the bound). OEIS A399654 inspected (Dunås 2026): f(10) = 133.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

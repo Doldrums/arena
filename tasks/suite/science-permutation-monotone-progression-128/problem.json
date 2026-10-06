@@ -1,0 +1,97 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_a_permutation_progression",
+  "direction": "minimize",
+  "contract": "construct() -> a permutation of 1..n=128. Minimize the longest subsequence whose values form an increasing OR decreasing nonconstant arithmetic progression; subsequence positions need not be adjacent. A known finite construction attains 2, so this is a rediscovery task.",
+  "parameters": {
+    "n": 128
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Independent finite certificate evaluator and local seed; no source implementation copied. Exact constraints are verified, but no optimality, general theorem, Lean proof, published record, or prize eligibility is claimed. See task sources and adaptation limitations."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-permutation-monotone-progression-128",
+  "name": "Permutations avoiding long monotone progressions",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "description": "construct() -> a permutation of 1..n=128. Minimize the longest subsequence whose values form an increasing OR decreasing nonconstant arithmetic progression; subsequence positions need not be adjacent. A known finite construction attains 2, so this is a rediscovery task. Permute [1,128] and minimize the longest arithmetic-progression subsequence, allowing either sign of the common difference. The known finite optimum is 2; infinite-permutation questions are not recreated here.",
+  "benchmark": "Permutations avoiding long monotone progressions",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://fanchung.ucsd.edu/ron/papers/77_06_no_long_aps.pdf",
+      "type": "paper",
+      "locator": "James A. Davis, Roger C. Entringer, Ronald L. Graham and Gustavus J. Simmons, On permutations containing no long arithmetic progressions. Acta Arithmetica XXXIV (1977), opening page visually inspected: finite permutations avoiding increasing and decreasing three-term progressions exist for every n, with the doubling construction proved explicitly."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000184",
+      "type": "benchmark",
+      "locator": "JSP-000184; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "limitations": [
+    "Permute [1,128] and minimize the longest arithmetic-progression subsequence, allowing either sign of the common difference. The known finite optimum is 2; infinite-permutation questions are not recreated here.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_a",
+      "title": "Problem-bank constructions: additive combinatorics: source-based research tasks",
+      "url": "https://arxiv.org/abs/2208.12182"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 2,
+    "statement": "Davis, Entringer, Graham and Simmons showed that every interval [1,n] has a permutation without a monotone three-term progression (for example, evens before odds, recursively), so the minimum is 2.",
+    "sources": [
+      {
+        "title": "On permutations containing no long arithmetic progressions",
+        "url": "https://fanchung.ucsd.edu/ron/papers/77_06_no_long_aps.pdf",
+        "authors": "James A. Davis, Roger C. Entringer, Ronald L. Graham, Gustavus J. Simmons",
+        "year": 1977
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Analyze progression avoidance in finite and infinite permutations of integers.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "On permutations containing no long arithmetic progressions",
+        "url": "https://fanchung.ucsd.edu/ron/papers/77_06_no_long_aps.pdf",
+        "task_relation": "Permute [1,128] and minimize the longest arithmetic-progression subsequence, allowing either sign of the common difference. The known finite optimum is 2; infinite-permutation questions are not recreated here.",
+        "primary_goal": "Analyze progression avoidance in finite and infinite permutations of integers.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Acta Arithmetica XXXIV (1977), opening page visually inspected: finite permutations avoiding increasing and decreasing three-term progressions exist for every n, with the doubling construction proved explicitly.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0",
+  "id": "science-mutually-orthogonal-latin-squares",
+  "name": "Mutually orthogonal Latin squares of order ten",
+  "description": "construct() -> a nonempty list of 10-by-10 arrays with Python integer symbols 0..9. Every row and column must contain each symbol exactly once. For every two arrays, their 100 ordered symbol pairs must be distinct. Maximize the number of pairwise orthogonal arrays. Only order ten is evaluated. The cyclic single-square baseline does not implement Wilson’s recursive constructions. No current best-known N(10), global optimality or novel family is asserted.",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/0012-365X(74)90148-4",
+      "type": "paper",
+      "locator": "Richard M. Wilson, Concerning the number of mutually orthogonal latin squares (1974). Publisher abstract defines N(n), the maximum size of a mutually orthogonal family, and proves general lower bounds through combinatorial constructions."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000592",
+      "type": "benchmark",
+      "locator": "JSP-000592; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloads. Fixed input arrays are fully recorded in parameters; arithmetic/combinatorial validation uses the Python standard library."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Mutually orthogonal Latin squares of order ten",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_c_592",
+    "science_family": "science_prize_c_592",
+    "parameters": {
+      "n": 10
+    },
+    "interface": "construct() -> a nonempty list of 10-by-10 arrays with Python integer symbols 0..9. Every row and column must contain each symbol exactly once. For every two arrays, their 100 ordered symbol pairs must be distinct. Maximize the number of pairwise orthogonal arrays.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value",
+      "area": "mathematics"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "The cyclic addition table is a classical elementary Latin square; its encoding is local, and no published orthogonal family is copied.",
+      "prize_problem_id": "JSP-000592",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_c_592",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "Only order ten is evaluated. The cyclic single-square baseline does not implement Wilson’s recursive constructions. No current best-known N(10), global optimality or novel family is asserted.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/c-checks.json",
+    "tests": "tests/test_science_prize_c.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "best_known",
+    "value": 2,
+    "statement": "Two orthogonal Latin squares of order 10 exist (Parker 1959), and no set of three has been found. Since there is no projective plane of order 10 (Lam, Thiel and Swiercz 1989), at most 8 are possible. The growth of N(n) is Erdős Problem #724.",
+    "sources": [
+      {
+        "title": "Orthogonal Latin squares",
+        "url": "https://doi.org/10.1073/pnas.45.6.859",
+        "authors": "E. T. Parker",
+        "year": 1959
+      },
+      {
+        "title": "The Non-Existence of Finite Projective Planes of Order 10",
+        "url": "https://doi.org/10.4153/cjm-1989-049-4",
+        "authors": "C. W. H. Lam, L. Thiel, S. Swiercz",
+        "year": 1989
+      },
+      {
+        "title": "Concerning the number of mutually orthogonal latin squares",
+        "url": "https://doi.org/10.1016/0012-365X(74)90148-4",
+        "authors": "Richard M. Wilson",
+        "year": 1974
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 724,
+      "url": "https://www.erdosproblems.com/724",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #724, https://www.erdosproblems.com/724, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "area": "mathematics",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine attainable numbers of mutually orthogonal Latin squares, a central design-theory construction problem.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Richard M. Wilson, Concerning the number of mutually orthogonal latin squares (1974)",
+        "url": "https://doi.org/10.1016/0012-365X(74)90148-4",
+        "primary_goal": "Determine attainable numbers of mutually orthogonal Latin squares, a central design-theory construction problem.",
+        "task_relation": "Only order ten is evaluated. The cyclic single-square baseline does not implement Wilson’s recursive constructions. No current best-known N(10), global optimality or novel family is asserted.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Publisher abstract defines N(n), the maximum size of a mutually orthogonal family, and proves general lower bounds through combinatorial constructions.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

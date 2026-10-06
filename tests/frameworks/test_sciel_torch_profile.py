@@ -93,17 +93,17 @@ def test_environment_lock_and_fixed_base_are_bound_without_runtime_success_claim
 
 
 @pytest.mark.parametrize("group,count", [("torch-cpu-2g", 24), ("torch-cpu-4g", 3), ("torch-cpu-8g", 24)])
-def test_inventory_keeps_959_and_never_relabels_resource_probes_as_verified(tmp_path, group, count):
+def test_inventory_keeps_every_task_and_never_relabels_resource_probes_as_verified(tmp_path, group, count):
     tasks = get_catalog()["tasks"]
     default = preflight.inventory(tasks, ROOT / "tasks")
-    assert sum(r["status"] == "seed_check_pending" for r in default) == 349
+    assert sum(r["status"] == "seed_check_pending" for r in default) == 552
     assert all(r["status"] == "environment_preparation_pending" for r in default
                if r["task_id"] in torch.TORCH_TASK_REQUIREMENTS)
     output = tmp_path.resolve() / group
     assert preflight.main(["--tasks-root", str(ROOT / "tasks"), "--output", str(output),
                            "--image", torch.TORCH_IMAGE, "--group", group]) == 0
     manifest = json.loads((output / "manifest.json").read_text())
-    assert len(manifest["tasks"]) == 959 and manifest["model_calls"] == 0
+    assert len(manifest["tasks"]) == 1163 and manifest["model_calls"] == 0
     assert manifest["counts"]["seed_check_pending"] == count
     assert "seed_verified" not in manifest["counts"]
     assert manifest["profile"] == torch.TORCH_PROFILE

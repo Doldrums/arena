@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0",
+  "id": "science-number-theory-factorial-valuation",
+  "name": "High two-adic valuation of factorial sums containing 2!",
+  "description": "Return a distinct subset of factorial indices [2,32] containing 2. Maximize v2(sum(i!)); the smallest index is FIXED at 2 to match the source question f(a1,p). Fixes the smallest factorial index as required by the original valuation question. The seed is a local greedy algorithm; any known numerical identity it rediscovers is not a novel result.",
+  "paper_ids": [
+    "science-prize_b"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+      "type": "paper",
+      "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 79. Fixes the smallest factorial index as required by the original valuation question. The seed is a local greedy algorithm; any known numerical identity it rediscovers is not a novel result. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000332",
+      "type": "benchmark",
+      "locator": "JSP-000332; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "High two-adic valuation of factorial sums containing 2!",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_b_factorial_valuation",
+    "science_family": "science_prize_b_factorial_valuation",
+    "parameters": {
+      "n": 32,
+      "p": 2,
+      "first": 2
+    },
+    "interface": "construct() -> candidate. Return a distinct subset of factorial indices [2,32] containing 2. Maximize v2(sum(i!)); the smallest index is FIXED at 2 to match the source question f(a1,p).",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000332",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_b_factorial_valuation",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+    "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+    "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+    "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+    "Fixes the smallest factorial index as required by the original valuation question. The seed is a local greedy algorithm; any known numerical identity it rediscovers is not a novel result."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/b-checks.json",
+    "tests": "tests/test_science_prize_b.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős and Ronald L. Graham (1980, Old and New Problems and Results in Combinatorial Number Theory) study the underlying problem.",
+    "sources": [
+      {
+        "title": "Old and New Problems and Results in Combinatorial Number Theory",
+        "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+        "authors": "Paul Erdős and Ronald L. Graham",
+        "year": 1980
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "The original mathematical question is verified in the cited primary research monograph/survey, but no dedicated paper with this exact problem as a primary research goal was independently established in this review. Conservative metadata does not equate a prize listing or historical open status with important_to_science.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Original-source definition verified; stronger task-specific primary-goal evidence remains unestablished.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

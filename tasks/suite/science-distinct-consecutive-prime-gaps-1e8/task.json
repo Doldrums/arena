@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0",
+  "id": "science-distinct-consecutive-prime-gaps-1e8",
+  "name": "Longest string of pairwise distinct consecutive prime gaps below 10^8",
+  "description": "construct() -> {'start': p, 'length': k} with p prime, 1 <= k <= 200, and the k + 1 consecutive primes beginning at p all at most 10^8. The k gaps between them must be pairwise distinct. Maximize k; the optimum below 10^8 is 21. Among primes below 10^8 the longest string has 21 distinct gaps, so the task recovers it.",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.4064/aa167-3-4",
+      "type": "paper",
+      "locator": "William D. Banks, Tristan Freiberg and Caroline L. Turnage-Butterbaugh, Consecutive primes in tuples (2015). Crossref record inspected (the paper produces arbitrarily long strings of consecutive primes with strictly increasing gaps, answering a question of Erdős and Turán). Erdős Problem #852 page inspected (Brun's sieve gives h(x) -> infinity). OEIS A053597 and its record positions A078515 inspected; the longest string of distinct gaps among primes below 10^8 was recomputed locally with a complete sieve: 21 gaps, starting at the prime 69931991, consistent with the OEIS records. Among primes below 10^8 the longest string has 21 distinct gaps, so the task recovers it."
+    },
+    {
+      "url": "https://www.erdosproblems.com/852",
+      "type": "archive",
+      "locator": "Erdős Problem #852 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000705",
+      "type": "benchmark",
+      "locator": "JSP-000705; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Longest string of pairwise distinct consecutive prime gaps below 10^8",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_h_prime_gaps",
+    "science_family": "science_prize_h_prime_gaps",
+    "parameters": {
+      "bound": 100000000
+    },
+    "interface": "construct() -> {'start': p, 'length': k} with p prime, 1 <= k <= 200, and the k + 1 consecutive primes beginning at p all at most 10^8. The k gaps between them must be pairwise distinct. Maximize k; the optimum below 10^8 is 21.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000705"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_h_prime_gaps",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case recomputed locally from a complete sieve and consistent with OEIS A053597/A078515.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_h.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 21,
+    "statement": "The longest string of pairwise distinct consecutive gaps among primes below 10^8 has 21 gaps, starting at 69931991 (record positions OEIS A078515; recomputed locally).",
+    "sources": [
+      {
+        "title": "OEIS A078515: Numbers n such that A053597(n) sets a new record",
+        "url": "https://oeis.org/A078515"
+      },
+      {
+        "title": "OEIS A053597: Number of distinct values among consecutive prime gaps before the first duplicate",
+        "url": "https://oeis.org/A053597"
+      },
+      {
+        "title": "Consecutive primes in tuples",
+        "url": "https://doi.org/10.4064/aa167-3-4",
+        "authors": "William D. Banks, Tristan Freiberg, Caroline L. Turnage-Butterbaugh",
+        "year": 2015
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 852,
+      "url": "https://www.erdosproblems.com/852",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #852, https://www.erdosproblems.com/852, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Estimate h(x), the longest string of consecutive prime gaps that are pairwise distinct (Erdős Problem #852).",
+    "importance_rationale": "Erdős asked whether h(x) exceeds a power of log x yet is o(log x); the question probes the fine structure of prime gaps and Hardy-Littlewood type heuristics.",
+    "papers": [
+      {
+        "title": "Consecutive primes in tuples",
+        "url": "https://doi.org/10.4064/aa167-3-4",
+        "task_relation": "Among primes below 10^8 the longest string has 21 distinct gaps, so the task recovers it.",
+        "primary_goal": "Estimate h(x), the longest string of consecutive prime gaps that are pairwise distinct (Erdős Problem #852).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected (the paper produces arbitrarily long strings of consecutive primes with strictly increasing gaps, answering a question of Erdős and Turán). Erdős Problem #852 page inspected (Brun's sieve gives h(x) -> infinity). OEIS A053597 and its record positions A078515 inspected; the longest string of distinct gaps among primes below 10^8 was recomputed locally with a complete sieve: 21 gaps, starting at the prime 69931991, consistent with the OEIS records.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

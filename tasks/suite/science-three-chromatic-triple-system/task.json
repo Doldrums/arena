@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "id": "science-three-chromatic-triple-system",
+  "name": "Few hyperedges forcing three colors",
+  "description": "construct() -> {'edges': distinct triples on 0..8, 'colors': nine labels from 0..2}. Every edge must be nonmonochromatic in the provided coloring. The evaluator exhaustively rejects any hypergraph admitting a two-coloring. Minimize edge count among exactly three-chromatic triple systems. This is a rediscovery task: the literature states the optimum f(3,3)=7, attainable within nine vertices. The ten-edge complete-triple-system baseline can improve to that known optimum; no mathematical novelty is asserted.",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://www.cs.tau.ac.il/~nogaa/PDFS/Publications/Hypergraphs%20with%20high%20chromatic%20number.pdf",
+      "type": "paper",
+      "locator": "Noga Alon, Hypergraphs with High Chromatic Number (1985). Page 387 defines f(k,s), gives the complete-uniform construction, and explicitly states f(3,3)=7 using the Fano plane."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000688",
+      "type": "benchmark",
+      "locator": "JSP-000688; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloads. Fixed input arrays are fully recorded in parameters; arithmetic/combinatorial validation uses the Python standard library."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Few hyperedges forcing three colors",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_c_688",
+    "science_family": "science_prize_c_688",
+    "parameters": {
+      "n": 9,
+      "r": 3,
+      "colors": 3
+    },
+    "interface": "construct() -> {'edges': distinct triples on 0..8, 'colors': nine labels from 0..2}. Every edge must be nonmonochromatic in the provided coloring. The evaluator exhaustively rejects any hypergraph admitting a two-coloring. Minimize edge count among exactly three-chromatic triple systems.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value",
+      "area": "mathematics"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "The complete 3-uniform hypergraph on five vertices is Alon’s displayed elementary construction. The Fano-plane seven-edge reference is used in tests. Both are mathematical data, not reused code.",
+      "prize_problem_id": "JSP-000688",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_c_688",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "This is a rediscovery task: the literature states the optimum f(3,3)=7, attainable within nine vertices. The ten-edge complete-triple-system baseline can improve to that known optimum; no mathematical novelty is asserted.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/c-checks.json",
+    "tests": "tests/test_science_prize_c.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 7,
+    "statement": "The Fano plane is a 3-uniform hypergraph with 7 edges that is not 2-colourable, while every triple system with at most 6 edges is 2-colourable. Hence f(3,3) = 7, as stated by Alon. Erdős Problem #832, the general edge count for large chromatic number, was disproved.",
+    "sources": [
+      {
+        "title": "Hypergraphs with high chromatic number",
+        "url": "https://doi.org/10.1007/bf02582966",
+        "authors": "Noga Alon",
+        "year": 1985
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 832,
+      "url": "https://www.erdosproblems.com/832",
+      "status": "disproved",
+      "citation": "T. F. Bloom, Erdős Problem #832, https://www.erdosproblems.com/832, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the minimum number of uniform hyperedges required to force a prescribed chromatic number.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Noga Alon, Hypergraphs with High Chromatic Number (1985)",
+        "url": "https://www.cs.tau.ac.il/~nogaa/PDFS/Publications/Hypergraphs%20with%20high%20chromatic%20number.pdf",
+        "primary_goal": "Determine the minimum number of uniform hyperedges required to force a prescribed chromatic number.",
+        "task_relation": "This is a rediscovery task: the literature states the optimum f(3,3)=7, attainable within nine vertices. The ten-edge complete-triple-system baseline can improve to that known optimum; no mathematical novelty is asserted.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Page 387 defines f(k,s), gives the complete-uniform construction, and explicitly states f(3,3)=7 using the Fano plane.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

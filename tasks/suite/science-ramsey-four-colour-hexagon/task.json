@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.0",
+  "id": "science-ramsey-four-colour-hexagon",
+  "name": "Four-colourings of complete graphs without monochromatic hexagons (R_4(C6))",
+  "description": "construct() -> {'n': n, 'colors': [...]}: one colour in {0,1,2,3} for each pair (i,j), i<j, of vertices 0..n-1 in lexicographic order, 1 <= n <= 20. No colour class may contain a six-cycle (exact search for not necessarily induced cycles). Maximize n. A valid 4-colouring of K_n certifies R_4(C6) > n. The best known colouring has 17 vertices; 18 or 19 vertices would be new.",
+  "paper_ids": [
+    "science-prize_e"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.37236/21",
+      "type": "paper",
+      "locator": "Stanisław P. Radziszowski, Small Ramsey Numbers (Dynamic Survey DS1.18) (2026). Survey DS1.18 section 6.3.2 inspected (sur.pdf and ref.pdf downloaded 2026-09-24): 18 <= R_4(C6) <= 20 with lower bound [SunYJLS] (Sun, Yang, Jiang, Lin and Shi, Ars Combinatoria 84 (2007)) and upper bound [ZhaSW] (Ars Combinatoria 111 (2013)); neither article has a DOI. A valid 4-colouring of K_n certifies R_4(C6) > n. The best known colouring has 17 vertices; 18 or 19 vertices would be new."
+    },
+    {
+      "url": "https://www.erdosproblems.com/555",
+      "type": "archive",
+      "locator": "Erdős Problem #555 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000446",
+      "type": "benchmark",
+      "locator": "JSP-000446; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Four-colourings of complete graphs without monochromatic hexagons (R_4(C6))",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_e_r4c6",
+    "science_family": "science_prize_e_r4c6",
+    "parameters": {
+      "colors": 4,
+      "length": 6,
+      "max_vertices": 20
+    },
+    "interface": "construct() -> {'n': n, 'colors': [...]}: one colour in {0,1,2,3} for each pair (i,j), i<j, of vertices 0..n-1 in lexicographic order, 1 <= n <= 20. No colour class may contain a six-cycle (exact search for not necessarily induced cycles). Maximize n.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000446"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_e_r4c6",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "The distance-class starter has 9 vertices. The primary articles have no DOI, so the survey is the inspected source.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_e.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "best_known",
+    "value": 17,
+    "statement": "18 <= R_4(C6) <= 20 (lower bound Sun, Yang, Jiang, Lin, Shi 2007; upper bound Zhang, Sun, Wu 2013), as listed in the survey.",
+    "sources": [
+      {
+        "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+        "authors": "Stanisław P. Radziszowski",
+        "url": "https://doi.org/10.37236/21"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 555,
+      "url": "https://www.erdosproblems.com/555",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #555, https://www.erdosproblems.com/555, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine multicolour Ramsey numbers of even cycles.",
+    "importance_rationale": "Erdős Problem #555 asks for R_k(C_2n); the survey lists R_4(C6) among the few small open multicolour cycle numbers.",
+    "papers": [
+      {
+        "title": "Small Ramsey Numbers (Dynamic Survey DS1.18)",
+        "url": "https://doi.org/10.37236/21",
+        "task_relation": "A valid 4-colouring of K_n certifies R_4(C6) > n. The best known colouring has 17 vertices; 18 or 19 vertices would be new.",
+        "primary_goal": "Determine multicolour Ramsey numbers of even cycles.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Survey DS1.18 section 6.3.2 inspected (sur.pdf and ref.pdf downloaded 2026-09-24): 18 <= R_4(C6) <= 20 with lower bound [SunYJLS] (Sun, Yang, Jiang, Lin and Shi, Ars Combinatoria 84 (2007)) and upper bound [ZhaSW] (Ars Combinatoria 111 (2013)); neither article has a DOI.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0",
+  "id": "science-point-sets-without-empty-hexagon",
+  "name": "Point sets without an empty convex hexagon (rediscovering 29 points)",
+  "description": "construct() -> list of 1..30 distinct integer points [x, y] with |x|, |y| <= 10^6 and no three collinear. No six points may form a convex hexagon with no other point inside (exact search over all convex chains anchored at their lowest vertex). Maximize the number of points; the optimum is 29. Overmars found 29-point sets without empty hexagons and Heule and Scheucher proved every 30-point set has one, so 29 is optimal.",
+  "paper_ids": [
+    "science-prize_g"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1007/978-3-031-57246-3_5",
+      "type": "paper",
+      "locator": "Marijn J. H. Heule and Manfred Scheucher, Happy Ending: An Empty Hexagon in Every Set of 30 Points (2024). Crossref records inspected for Heule-Scheucher (TACAS 2024) and Overmars (Discrete Comput. Geom. 2003); Erdős Problem #216 page inspected: g(5) = 10 (Harborth), empty hexagons exist in large sets (Nicolás; Gerken), g(6) = 30 (Heule and Scheucher), and no g(k) for k >= 7 (Horton). Overmars found 29-point sets without empty hexagons and Heule and Scheucher proved every 30-point set has one, so 29 is optimal."
+    },
+    {
+      "url": "https://www.erdosproblems.com/216",
+      "type": "archive",
+      "locator": "Erdős Problem #216 (disproved (no g(k) for k >= 7); g(6) = 30); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000198",
+      "type": "benchmark",
+      "locator": "JSP-000198; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Point sets without an empty convex hexagon (rediscovering 29 points)",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_g_empty_hexagon",
+    "science_family": "science_prize_g_empty_hexagon",
+    "parameters": {
+      "max_points": 30,
+      "bound": 1000000
+    },
+    "interface": "construct() -> list of 1..30 distinct integer points [x, y] with |x|, |y| <= 10^6 and no three collinear. No six points may form a convex hexagon with no other point inside (exact search over all convex chains anchored at their lowest vertex). Maximize the number of points; the optimum is 29.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000198"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_g_empty_hexagon",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case; Overmars' 29-point sets are published and not copied. The randomized starter has 14 points.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_g.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 29,
+    "statement": "The maximum is 29: Overmars (2003) found 29 points without an empty hexagon and Heule and Scheucher (2024) proved g(6) = 30.",
+    "sources": [
+      {
+        "title": "Happy Ending: An Empty Hexagon in Every Set of 30 Points",
+        "url": "https://doi.org/10.1007/978-3-031-57246-3_5",
+        "authors": "Marijn J. H. Heule, Manfred Scheucher",
+        "year": 2024
+      },
+      {
+        "title": "Finding Sets of Points without Empty Convex 6-Gons",
+        "url": "https://doi.org/10.1007/s00454-002-2829-x",
+        "authors": "Mark Overmars",
+        "year": 2003
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 216,
+      "url": "https://www.erdosproblems.com/216",
+      "status": "disproved (no g(k) for k >= 7); g(6) = 30",
+      "citation": "T. F. Bloom, Erdős Problem #216, https://www.erdosproblems.com/216, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the smallest number of points in general position that forces an empty convex hexagon.",
+    "importance_rationale": "The empty-hexagon number was a long-standing Erdős-Szekeres type question (Erdős Problem #216), settled in 2024 by a SAT computation.",
+    "papers": [
+      {
+        "title": "Happy Ending: An Empty Hexagon in Every Set of 30 Points",
+        "url": "https://doi.org/10.1007/978-3-031-57246-3_5",
+        "task_relation": "Overmars found 29-point sets without empty hexagons and Heule and Scheucher proved every 30-point set has one, so 29 is optimal.",
+        "primary_goal": "Determine the smallest number of points in general position that forces an empty convex hexagon.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref records inspected for Heule-Scheucher (TACAS 2024) and Overmars (Discrete Comput. Geom. 2003); Erdős Problem #216 page inspected: g(5) = 10 (Harborth), empty hexagons exist in large sets (Nicolás; Gerken), g(6) = 30 (Heule and Scheucher), and no g(k) for k >= 7 (Horton).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

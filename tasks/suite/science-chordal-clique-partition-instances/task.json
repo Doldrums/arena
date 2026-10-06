@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "id": "science-chordal-clique-partition-instances",
+  "name": "Clique partitions of three fixed split (chordal) graphs",
+  "description": "construct() -> three lists of cliques (vertex lists), one per instance from split_graph(n, k, p, seed) for (30,10,0.7,301), (60,20,0.7,302), (90,30,0.7,303) in the verifier: a clique on the first k vertices, an independent set on the rest and each cross pair joined with probability p (split graphs are chordal). Every listed set must be a clique with at least two vertices and every edge must lie in exactly one listed clique. Minimize the total number of cliques; the Erdős-Ordman-Zalcstein question asks whether n^2/6 + O(n) always suffice, and split graphs need at most 3n^2/16 + O(n). The score totals clique partition sizes on three fixed random split graphs; it measures a partitioning method.",
+  "paper_ids": [
+    "science-prize_i"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1017/S0963548300000808",
+      "type": "paper",
+      "locator": "Paul Erdős, Edward T. Ordman and Yechezkel Zalcstein, Clique Partitions of Chordal Graphs (1993). Crossref record inspected; Erdős Problem #81 page inspected (Erdős, Ordman and Zalcstein proved (1/4 - eps)n^2 cliques suffice and asked for n^2/6 + O(n); split graphs need at most 3n^2/16 + O(n) by Chen, Erdős and Ordman). The score totals clique partition sizes on three fixed random split graphs; it measures a partitioning method."
+    },
+    {
+      "url": "https://www.erdosproblems.com/81",
+      "type": "archive",
+      "locator": "Erdős Problem #81 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000098",
+      "type": "benchmark",
+      "locator": "JSP-000098; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Clique partitions of three fixed split (chordal) graphs",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_i_chordal_clique_partition",
+    "science_family": "science_prize_i_chordal_clique_partition",
+    "parameters": {},
+    "interface": "construct() -> three lists of cliques (vertex lists), one per instance from split_graph(n, k, p, seed) for (30,10,0.7,301), (60,20,0.7,302), (90,30,0.7,303) in the verifier: a clique on the first k vertices, an independent set on the rest and each cross pair joined with probability p (split graphs are chordal). Every listed set must be a clique with at least two vertices and every edge must lie in exactly one listed clique. Minimize the total number of cliques; the Erdős-Ordman-Zalcstein question asks whether n^2/6 + O(n) always suffice, and split graphs need at most 3n^2/16 + O(n).",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000098"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_i_chordal_clique_partition",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Instance-solving task on three fixed pseudo-random split graphs.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_i.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "Instance-solving task; no reference value.",
+    "sources": [
+      {
+        "title": "Clique Partitions of Chordal Graphs",
+        "url": "https://doi.org/10.1017/S0963548300000808",
+        "authors": "Paul Erdős, Edward T. Ordman, Yechezkel Zalcstein",
+        "year": 1993
+      },
+      {
+        "title": "Erdős Problem #81",
+        "url": "https://www.erdosproblems.com/81"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 81,
+      "url": "https://www.erdosproblems.com/81",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #81, https://www.erdosproblems.com/81, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Decide whether every chordal graph's edges split into n^2/6 + O(n) cliques (Erdős Problem #81).",
+    "importance_rationale": "Clique partitions measure the intersection-representation complexity of graphs (Erdős-Goodman-Pósa).",
+    "papers": [
+      {
+        "title": "Clique Partitions of Chordal Graphs",
+        "url": "https://doi.org/10.1017/S0963548300000808",
+        "task_relation": "The score totals clique partition sizes on three fixed random split graphs; it measures a partitioning method.",
+        "primary_goal": "Decide whether every chordal graph's edges split into n^2/6 + O(n) cliques (Erdős Problem #81).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #81 page inspected (Erdős, Ordman and Zalcstein proved (1/4 - eps)n^2 cliques suffice and asked for n^2/6 + O(n); split graphs need at most 3n^2/16 + O(n) by Chen, Erdős and Ordman).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

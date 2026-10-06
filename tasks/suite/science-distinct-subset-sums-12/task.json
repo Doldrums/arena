@@ -1,0 +1,159 @@
+{
+  "schema_version": "1.0",
+  "id": "science-distinct-subset-sums-12",
+  "name": "Distinct subset sums with a small largest element",
+  "description": "construct() -> exactly n=12 distinct positive Python integers <= maximum=1048576. Every subset, including the empty subset, must have a different sum. Minimize the largest integer. Exactly 12 positive integers with bounded largest entry; all 4096 subset sums checked. An improved feasible largest entry is only a finite upper bound.",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2208.12182",
+      "type": "paper",
+      "locator": "Stefan Steinerberger, Some Remarks on the Erdős Distinct Subset Sums Problem. Author abstract, 2022 preprint, revised 2023: distinct sums of all subsets and bounds on the largest element."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000043",
+      "type": "benchmark",
+      "locator": "JSP-000043; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; fixed finite mathematical profiles."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Distinct subset sums with a small largest element",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_a_distinct_subset_sums",
+    "science_family": "science_prize_a_distinct_subset_sums",
+    "parameters": {
+      "n": 12,
+      "maximum": 1048576
+    },
+    "interface": "construct() -> exactly n=12 distinct positive Python integers <= maximum=1048576. Every subset, including the empty subset, must have a different sum. Minimize the largest integer.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000043"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_a_distinct_subset_sums",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Exactly 12 positive integers with bounded largest entry; all 4096 subset sums checked. An improved feasible largest entry is only a finite upper bound.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/a-checks.json",
+    "tests": "tests/test_science_prize_a.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "best_known",
+    "value": 1157,
+    "statement": "The best known 12-element set with distinct subset sums has largest element 1157 (V. Popov, 2025, recorded in OEIS A276661), below the Conway-Guy value 1164 (OEIS A005318). Exact values are known only up to n = 10 (309), and the Dubroff-Fox-Xu bound gives at least binomial(12,6) = 924 for n = 12.",
+    "sources": [
+      {
+        "title": "OEIS A276661: Least k such that some n-subset of {1..k} has distinct subset sums",
+        "url": "https://oeis.org/A276661"
+      },
+      {
+        "title": "OEIS A005318: Conway-Guy sequence",
+        "url": "https://oeis.org/A005318"
+      },
+      {
+        "title": "A Note on the Erdős Distinct Subset Sums Problem",
+        "url": "https://doi.org/10.1137/20m1385883",
+        "authors": "Quentin Dubroff, Jacob Fox, Max Wenqiang Xu",
+        "year": 2021
+      },
+      {
+        "title": "Some Remarks on the Erdős Distinct Subset Sums Problem",
+        "url": "https://arxiv.org/abs/2208.12182",
+        "authors": "Stefan Steinerberger",
+        "year": 2023
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1,
+      "url": "https://www.erdosproblems.com/1",
+      "status": "disproved (Lean)",
+      "citation": "T. F. Bloom, Erdős Problem #1, https://www.erdosproblems.com/1, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Estimate the smallest possible largest element of a set with all subset sums distinct.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "Some Remarks on the Erdős Distinct Subset Sums Problem",
+        "url": "https://arxiv.org/abs/2208.12182",
+        "task_relation": "Exactly 12 positive integers with bounded largest entry; all 4096 subset sums checked. An improved feasible largest entry is only a finite upper bound.",
+        "primary_goal": "Estimate the smallest possible largest element of a set with all subset sums distinct.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author abstract, 2022 preprint, revised 2023: distinct sums of all subsets and bounds on the largest element.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

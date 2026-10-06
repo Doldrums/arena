@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0",
+  "id": "science-small-books-above-turan-40",
+  "name": "Graphs with 40 vertices and 401 edges whose largest book is small",
+  "description": "construct() -> exactly 401 distinct edges [u, v] on vertices 0..39. The score is the largest book: the maximum over edges of the number of triangles containing that edge. Minimize; the theorem of Edwards and Khadzhiivanov-Nikiforov gives score >= 40/6. For n = 40 and one edge above n^2/4 the theorem gives a book of size at least 7; the least achievable value for this finite size is not documented.",
+  "paper_ids": [
+    "science-prize_f"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/j.ejc.2004.01.007",
+      "type": "paper",
+      "locator": "Béla Bollobás and Vladimir Nikiforov, Books in graphs (2005). Crossref record inspected; Erdős Problem #905 page inspected: every graph with more than n^2/4 edges has an edge in at least n/6 triangles (Edwards; Khadzhiivanov and Nikiforov). For n = 40 and one edge above n^2/4 the theorem gives a book of size at least 7; the least achievable value for this finite size is not documented."
+    },
+    {
+      "url": "https://www.erdosproblems.com/905",
+      "type": "archive",
+      "locator": "Erdős Problem #905 (proved (Lean)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000097",
+      "type": "benchmark",
+      "locator": "JSP-000097; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Graphs with 40 vertices and 401 edges whose largest book is small",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_f_books",
+    "science_family": "science_prize_f_books",
+    "parameters": {
+      "n": 40,
+      "edges": 401
+    },
+    "interface": "construct() -> exactly 401 distinct edges [u, v] on vertices 0..39. The score is the largest book: the maximum over edges of the number of triangles containing that edge. Minimize; the theorem of Edwards and Khadzhiivanov-Nikiforov gives score >= 40/6.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000097"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_f_books",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No documented finite minimum (reference label none); the lower bound 7 follows from the theorem.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_f.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented minimum for n = 40, m = 401; the book theorem gives at least ceil(40/6) = 7.",
+    "sources": [
+      {
+        "title": "Books in graphs",
+        "url": "https://doi.org/10.1016/j.ejc.2004.01.007",
+        "authors": "Béla Bollobás, Vladimir Nikiforov",
+        "year": 2005
+      },
+      {
+        "title": "Erdős Problem #905",
+        "url": "https://www.erdosproblems.com/905"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 905,
+      "url": "https://www.erdosproblems.com/905",
+      "status": "proved (Lean)",
+      "citation": "T. F. Bloom, Erdős Problem #905, https://www.erdosproblems.com/905, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the largest book forced by a given number of edges.",
+    "importance_rationale": "The Bollobás-Erdős book conjecture (Erdős Problem #905) is a basic supersaturation statement; constructions near n/6 show its sharpness.",
+    "papers": [
+      {
+        "title": "Books in graphs",
+        "url": "https://doi.org/10.1016/j.ejc.2004.01.007",
+        "task_relation": "For n = 40 and one edge above n^2/4 the theorem gives a book of size at least 7; the least achievable value for this finite size is not documented.",
+        "primary_goal": "Determine the largest book forced by a given number of edges.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #905 page inspected: every graph with more than n^2/4 edges has an edge in at least n/6 triangles (Edwards; Khadzhiivanov and Nikiforov).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

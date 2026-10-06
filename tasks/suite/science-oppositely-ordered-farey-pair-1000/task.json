@@ -1,0 +1,149 @@
+{
+  "schema_version": "1.0",
+  "id": "science-oppositely-ordered-farey-pair-1000",
+  "name": "Nearby oppositely ordered fractions in the Farey sequence",
+  "description": "construct() -> [[a,b],[c,d]], two reduced fractions in [0,1] with denominators <=1000, a/b<c/d, and (c-a)*(d-b)<0. Minimize their rank difference in the complete Farey sequence of order 1000, including 0/1 and 1/1. Every rank is recomputed exactly. The local finite search gives an upper certificate for the first possible ordering failure at order 1000. It corrects the feasibility draft's unrelated strictly monotone-run objective. The optimum is 252, found by scanning the complete Farey sequence of order 1000; this is a rediscovery task.",
+  "paper_ids": [
+    "science-prize_d"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2509.00121",
+      "type": "paper",
+      "locator": "Wouter van Doorn, Improved bounds for the Mayer-Erdős phenomenon on similarly ordered Farey fractions (2025). Author abstract inspected. Similar ordering is the pairwise nonnegative product condition; the paper also constructs close pairs where that product is negative. The local finite search gives an upper certificate for the first possible ordering failure at order 1000. It corrects the feasibility draft's unrelated strictly monotone-run objective."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000837",
+      "type": "benchmark",
+      "locator": "JSP-000837; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Nearby oppositely ordered fractions in the Farey sequence",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_d_opposite_farey_pair",
+    "science_family": "science_prize_d_opposite_farey_pair",
+    "parameters": {
+      "order": 1000
+    },
+    "interface": "construct() -> [[a,b],[c,d]], two reduced fractions in [0,1] with denominators <=1000, a/b<c/d, and (c-a)*(d-b)<0. Minimize their rank difference in the complete Farey sequence of order 1000, including 0/1 and 1/1. Every rank is recomputed exactly.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000837"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_d_opposite_farey_pair",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case: The smallest rank difference between two oppositely ordered fractions in the Farey sequence of order 1000 is 252, i.e.",
+    "The bank's unrelated 2026 pairwise-sums citation is not used. No optimality or general all-order bound follows from an accepted pair.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_d.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 252,
+    "statement": "The smallest rank difference between two oppositely ordered fractions in the Farey sequence of order 1000 is 252, i.e. f(1000) = 251 in the notation of Erdős Problem #1005. This comes from a full scan (scripts/check_state_of_the_art.py); OEIS A386893 tabulates f(n) for n <= 100, and the same scan agrees with it. Van Doorn proved (1/12 - o(1))n <= f(n) <= n/4 + O(1).",
+    "sources": [
+      {
+        "title": "OEIS A386893: Minimal number of Farey fractions between two fractions that are not similarly ordered",
+        "url": "https://oeis.org/A386893"
+      },
+      {
+        "title": "Improved bounds for the Mayer-Erdős phenomenon on similarly ordered Farey fractions",
+        "url": "https://arxiv.org/abs/2509.00121",
+        "authors": "Wouter van Doorn",
+        "year": 2025
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1005,
+      "url": "https://www.erdosproblems.com/1005",
+      "status": "solved",
+      "citation": "T. F. Bloom, Erdős Problem #1005, https://www.erdosproblems.com/1005, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the smallest Farey-index separation at which numerator and denominator changes can have opposite signs.",
+    "importance_rationale": "The pairwise rank-separation threshold is exactly the phenomenon bounded in the source paper.",
+    "papers": [
+      {
+        "title": "Improved bounds for the Mayer-Erdős phenomenon on similarly ordered Farey fractions",
+        "url": "https://arxiv.org/abs/2509.00121",
+        "task_relation": "The local finite search gives an upper certificate for the first possible ordering failure at order 1000. It corrects the feasibility draft's unrelated strictly monotone-run objective.",
+        "primary_goal": "Determine the smallest Farey-index separation at which numerator and denominator changes can have opposite signs.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "Primary research directly studies this mathematical objective; finite scope and rediscovery status are explicit.",
+    "verification_basis": "Author abstract inspected. Similar ordering is the pairwise nonnegative product condition; the paper also constructs close pairs where that product is negative.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

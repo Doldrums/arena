@@ -1,0 +1,99 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_c_725",
+  "direction": "maximize",
+  "contract": "construct() -> 1..60 distinct integers in 1..256. Whenever two subsets have different cardinalities their sums must differ. Repeated sums within the SAME cardinality are allowed. The empty subset is included. Maximize set size using exact cardinality-indexed subset-sum dynamic programming.",
+  "parameters": {
+    "n": 256,
+    "maximum_size": 60
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Exact finite certificate validation; independently implemented from the cited mathematical definition. Resource bounds and source adaptation are recorded per task. No Lean verification or general theorem is claimed."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-cardinality-separated-subset-sums",
+  "name": "Large sets with cardinality-separated subset sums",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "description": "construct() -> 1..60 distinct integers in 1..256. Whenever two subsets have different cardinalities their sums must differ. Repeated sums within the SAME cardinality are allowed. The empty subset is included. Maximize set size using exact cardinality-indexed subset-sum dynamic programming. N=256 with at most sixty output members is a bounded finite instance. This is weaker than requiring all subset sums distinct and is intentionally a different task. No optimality or infinite-density conclusion follows.",
+  "benchmark": "Large sets with cardinality-separated subset sums",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://www.numdam.org/item/JTNB_1991__3_1_55_0/",
+      "type": "paper",
+      "locator": "Paul Erdős, Jean-Louis Nicolas and András Sárközy, Sommes de sous-ensembles (1991). Author abstract defines admissibility by distinct sums of subsets with different cardinalities and studies maximum size in [1,N]."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000725",
+      "type": "benchmark",
+      "locator": "JSP-000725; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "N=256 with at most sixty output members is a bounded finite instance. This is weaker than requiring all subset sums distinct and is intentionally a different task. No optimality or infinite-density conclusion follows.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_c",
+      "title": "Problem-bank constructions: graphs and set systems: source-based research tasks",
+      "url": "https://users.renyi.hu/~gyarfas/Cikkek/90_howtodecrease.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Paul Erdős, Jean-Louis Nicolas and András Sárközy (1991, Sommes de sous-ensembles) study the underlying problem.",
+    "sources": [
+      {
+        "title": "Sommes de sous-ensembles",
+        "url": "https://www.numdam.org/item/JTNB_1991__3_1_55_0/",
+        "authors": "Paul Erdős, Jean-Louis Nicolas and András Sárközy",
+        "year": 1991
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the maximum size of an integer set whose subset sum identifies subset cardinality.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Paul Erdős, Jean-Louis Nicolas and András Sárközy, Sommes de sous-ensembles (1991)",
+        "url": "https://www.numdam.org/item/JTNB_1991__3_1_55_0/",
+        "primary_goal": "Determine the maximum size of an integer set whose subset sum identifies subset cardinality.",
+        "task_relation": "N=256 with at most sixty output members is a bounded finite instance. This is weaker than requiring all subset sums distinct and is intentionally a different task. No optimality or infinite-density conclusion follows.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Author abstract defines admissibility by distinct sums of subsets with different cardinalities and studies maximum size in [1,N].",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

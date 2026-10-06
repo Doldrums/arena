@@ -1,0 +1,99 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_c_717",
+  "direction": "maximize",
+  "contract": "construct() -> distinct integers in 1..128. Forbid THREE DISTINCT members a,b,c for which a+b, a+c and b+c are also selected. The six displayed values need not be mutually distinct. Maximize set size.",
+  "parameters": {
+    "n": 128
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Exact finite certificate validation; independently implemented from the cited mathematical definition. Resource bounds and source adaptation are recorded per task. No Lean verification or general theorem is claimed."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-pairwise-sum-triple-free-sets",
+  "name": "Large sets without a triple and all its pair sums",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "description": "construct() -> distinct integers in 1..128. Forbid THREE DISTINCT members a,b,c for which a+b, a+c and b+c are also selected. The six displayed values need not be mutually distinct. Maximize set size. The local interval ends at 128. The evaluator uses only exact finite checks and does not assume the preprint’s proof, novelty, status, or Lean verification. The baseline is the elementary upper half interval.",
+  "benchmark": "Large sets without a triple and all its pair sums",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2606.29361",
+      "type": "paper",
+      "locator": "Ricky Cipollini, A sharp 5/8 bound for an Erdős–Sós pairwise-sums problem (2026 preprint). Abstract and section 1 define the forbidden distinct-generator triple with all pair sums present; section 5 gives a two-interval construction."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000717",
+      "type": "benchmark",
+      "locator": "JSP-000717; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "The local interval ends at 128. The evaluator uses only exact finite checks and does not assume the preprint’s proof, novelty, status, or Lean verification. The baseline is the elementary upper half interval.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox.",
+    "The cited preprint credits proof development jointly to Ricky Cipollini and GPT-5.5 Pro, and a separate formalization to Aristotle; this upstream acknowledgement is not a claim about local implementation authorship."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_c",
+      "title": "Problem-bank constructions: graphs and set systems: source-based research tasks",
+      "url": "https://users.renyi.hu/~gyarfas/Cikkek/90_howtodecrease.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Ricky Cipollini (2026, A sharp 5/8 bound for an Erdős–Sós pairwise-sums problem) studies the underlying problem.",
+    "sources": [
+      {
+        "title": "A sharp 5/8 bound for an Erdős–Sós pairwise-sums problem",
+        "url": "https://arxiv.org/abs/2606.29361",
+        "authors": "Ricky Cipollini",
+        "year": 2026
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the extremal density of integer sets avoiding a complete pairwise-sum triple.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Ricky Cipollini, A sharp 5/8 bound for an Erdős–Sós pairwise-sums problem (2026 preprint)",
+        "url": "https://arxiv.org/abs/2606.29361",
+        "primary_goal": "Determine the extremal density of integer sets avoiding a complete pairwise-sum triple.",
+        "task_relation": "The local interval ends at 128. The evaluator uses only exact finite checks and does not assume the preprint’s proof, novelty, status, or Lean verification. The baseline is the elementary upper half interval.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Abstract and section 1 define the forbidden distinct-generator triple with all pair sums present; section 5 gives a two-interval construction.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

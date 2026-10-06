@@ -1,0 +1,114 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_a_cluster_prime",
+  "direction": "maximize",
+  "contract": "construct() -> a prime p with 3<=p<=maximum=100000. Every positive even d<=p-3 must be a difference of two primes <=p. The evaluator independently checks all differences. Maximize p.",
+  "parameters": {
+    "maximum": 100000
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Independent finite certificate evaluator and local seed; no source implementation copied. Exact constraints are verified, but no optimality, general theorem, Lean proof, published record, or prize eligibility is claimed. See task sources and adaptation limitations."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-cluster-prime-difference-coverage",
+  "name": "Cluster primes with complete even-difference coverage",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "description": "construct() -> a prime p with 3<=p<=maximum=100000. Every positive even d<=p-3 must be a difference of two primes <=p. The evaluator independently checks all differences. Maximize p. Maximize a cluster prime at most 100000; every even difference through p-3 is checked using primes at most p. No density theorem or infinity claim follows. The optimum is 99991, the largest prime below 10^5, which is itself a cluster prime (OEIS A038134); this is a rediscovery task.",
+  "benchmark": "Cluster primes with complete even-difference coverage",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://www.impan.pl/shop/en/publication/transaction/download/product/81920",
+      "type": "paper",
+      "locator": "Christian Elsholtz, On cluster primes. Acta Arithmetica 109.3 (2003), p.281 definition and abstract inspected. Original cluster-prime terminology is credited there to Blecksmith, Erdős and Selfridge."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000054",
+      "type": "benchmark",
+      "locator": "JSP-000054; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "limitations": [
+    "Solved finite case: 99991, the largest prime below 10^5, is itself a cluster prime, so it is the maximum.",
+    "Maximize a cluster prime at most 100000; every even difference through p-3 is checked using primes at most p. No density theorem or infinity claim follows.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_a",
+      "title": "Problem-bank constructions: additive combinatorics: source-based research tasks",
+      "url": "https://arxiv.org/abs/2208.12182"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 99991,
+    "statement": "99991, the largest prime below 10^5, is itself a cluster prime, so it is the maximum. OEIS A038134 lists all 1807 cluster primes up to 10^5, and the count was recomputed here. Whether infinitely many cluster primes exist is Erdős Problem #17. Blecksmith, Erdős and Selfridge proved that they have density zero among the primes.",
+    "sources": [
+      {
+        "title": "OEIS A038134: Cluster primes",
+        "url": "https://oeis.org/A038134"
+      },
+      {
+        "title": "Cluster Primes",
+        "url": "https://doi.org/10.1080/00029890.1999.12005005",
+        "authors": "Richard Blecksmith, Paul Erdős, J. L. Selfridge",
+        "year": 1999
+      },
+      {
+        "title": "On cluster primes",
+        "url": "https://www.impan.pl/shop/en/publication/transaction/download/product/81920",
+        "authors": "Christian Elsholtz",
+        "year": 2003
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 17,
+      "url": "https://www.erdosproblems.com/17",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #17, https://www.erdosproblems.com/17, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Understand how rare primes with complete smaller even prime-difference coverage are.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "On cluster primes",
+        "url": "https://www.impan.pl/shop/en/publication/transaction/download/product/81920",
+        "task_relation": "Maximize a cluster prime at most 100000; every even difference through p-3 is checked using primes at most p. No density theorem or infinity claim follows.",
+        "primary_goal": "Understand how rare primes with complete smaller even prime-difference coverage are.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Acta Arithmetica 109.3 (2003), p.281 definition and abstract inspected. Original cluster-prime terminology is credited there to Blecksmith, Erdős and Selfridge.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0",
+  "id": "science-gaussian-prime-moat-path-50",
+  "name": "Gaussian-prime paths with small maximum jumps",
+  "description": "construct() -> a list of distinct integer coordinate pairs in [-64,64]^2, starting at (1,1), ending with max(abs(x),abs(y))>=50, and containing only Gaussian primes. Minimize the largest squared Euclidean step. Axis primes must be 3 modulo 4; off-axis norms must be prime. The finite path minimizes its largest jump inside a bounded square; it does not establish an infinite path or reproduce the periodic-moat proof. The optimum is 8, found by breadth-first search over all Gaussian primes in the box; this is a rediscovery task.",
+  "paper_ids": [
+    "science-prize_d"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1080/10586458.1997.10504616",
+      "type": "paper",
+      "locator": "Ellen Gethner and H. M. Stark, Periodic Gaussian Moats (1997). Publisher-indexed abstract inspected; direct page returned HTTP 403. The abstract studies bounded-step Gaussian-prime walks and periodic moats. It attributes the question to Gordon. The finite path minimizes its largest jump inside a bounded square; it does not establish an infinite path or reproduce the periodic-moat proof."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000792",
+      "type": "benchmark",
+      "locator": "JSP-000792; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Gaussian-prime paths with small maximum jumps",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_d_gaussian_path",
+    "science_family": "science_prize_d_gaussian_path",
+    "parameters": {
+      "bound": 64,
+      "target": 50
+    },
+    "interface": "construct() -> a list of distinct integer coordinate pairs in [-64,64]^2, starting at (1,1), ending with max(abs(x),abs(y))>=50, and containing only Gaussian primes. Minimize the largest squared Euclidean step. Axis primes must be 3 modulo 4; off-axis norms must be prime.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000792"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_d_gaussian_path",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case: With steps of squared length at most 5, the Gaussian primes reachable from 1+i stay inside max(|x|,|y|) < 50, while squared length 8 suffices.",
+    "The finite endpoint and coordinate bounds cannot resolve the infinite Gaussian moat problem. The elementary two-point starter is locally chosen, not a published record.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_d.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 8,
+    "statement": "With steps of squared length at most 5, the Gaussian primes reachable from 1+i stay inside max(|x|,|y|) < 50, while squared length 8 suffices. A breadth-first search over all Gaussian primes in [-64,64]^2 (scripts/check_state_of_the_art.py) gives the optimum 8. Whether a walk with bounded steps can reach infinity is the Gaussian moat problem (Erdős Problem #952).",
+    "sources": [
+      {
+        "title": "Periodic Gaussian Moats",
+        "url": "https://doi.org/10.1080/10586458.1997.10504616",
+        "authors": "Ellen Gethner, H. M. Stark",
+        "year": 1997
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 952,
+      "url": "https://www.erdosproblems.com/952",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #952, https://www.erdosproblems.com/952, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Understand the existence of bounded-step walks through Gaussian primes.",
+    "importance_rationale": "Explicit paths provide finite evidence about connectivity in the Gaussian primes, the number-theoretic question studied by Gethner and Stark.",
+    "papers": [
+      {
+        "title": "Periodic Gaussian Moats",
+        "url": "https://doi.org/10.1080/10586458.1997.10504616",
+        "task_relation": "The finite path minimizes its largest jump inside a bounded square; it does not establish an infinite path or reproduce the periodic-moat proof.",
+        "primary_goal": "Understand the existence of bounded-step walks through Gaussian primes.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "Primary research directly studies this mathematical objective; finite scope and rediscovery status are explicit.",
+    "verification_basis": "Publisher-indexed abstract inspected; direct page returned HTTP 403. The abstract studies bounded-step Gaussian-prime walks and periodic moats. It attributes the question to Gordon.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}
