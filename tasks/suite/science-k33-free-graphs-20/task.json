@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "id": "science-k33-free-graphs-20",
+  "name": "Dense graphs on 20 vertices without K3,3",
+  "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..19 in which no three vertices have three common neighbours (no K3,3). Maximize the number of edges. A K3,3-free graph with m edges certifies ex(20;K3,3) >= m; no exact value for n = 20 is documented here.",
+  "paper_ids": [
+    "science-prize_f"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.4153/cmb-1966-036-2",
+      "type": "paper",
+      "locator": "W. G. Brown, On Graphs that do not Contain a Thomsen Graph (1966). Crossref record inspected; Erdős Problem #714 page inspected: ex(n;K_r,r) >> n^(2-1/r) is known for r = 2, 3 (Brown; Erdős, Rényi and Sós for r = 3) and open for r >= 4. A K3,3-free graph with m edges certifies ex(20;K3,3) >= m; no exact value for n = 20 is documented here."
+    },
+    {
+      "url": "https://www.erdosproblems.com/714",
+      "type": "archive",
+      "locator": "Erdős Problem #714 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000583",
+      "type": "benchmark",
+      "locator": "JSP-000583; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Dense graphs on 20 vertices without K3,3",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_f_k33_free",
+    "science_family": "science_prize_f_k33_free",
+    "parameters": {
+      "n": 20,
+      "s": 3,
+      "t": 3
+    },
+    "interface": "construct() -> list of edges [u, v] of a simple graph on vertices 0..19 in which no three vertices have three common neighbours (no K3,3). Maximize the number of edges.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000583"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_f_k33_free",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No documented value for n = 20 (reference label none).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_f.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value of ex(20;K3,3) was found; ex(n;K3,3) = Theta(n^(5/3)) (Brown 1966; Kővári-Sós-Turán).",
+    "sources": [
+      {
+        "title": "On Graphs that do not Contain a Thomsen Graph",
+        "url": "https://doi.org/10.4153/cmb-1966-036-2",
+        "authors": "W. G. Brown",
+        "year": 1966
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 714,
+      "url": "https://www.erdosproblems.com/714",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #714, https://www.erdosproblems.com/714, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the Turán numbers of complete bipartite graphs K_r,r.",
+    "importance_rationale": "Erdős Problem #714 asks for the order of ex(n;K_r,r); K3,3 is the case settled by Brown's construction.",
+    "papers": [
+      {
+        "title": "On Graphs that do not Contain a Thomsen Graph",
+        "url": "https://doi.org/10.4153/cmb-1966-036-2",
+        "task_relation": "A K3,3-free graph with m edges certifies ex(20;K3,3) >= m; no exact value for n = 20 is documented here.",
+        "primary_goal": "Determine the Turán numbers of complete bipartite graphs K_r,r.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #714 page inspected: ex(n;K_r,r) >> n^(2-1/r) is known for r = 2, 3 (Brown; Erdős, Rényi and Sós for r = 3) and open for r >= 4.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

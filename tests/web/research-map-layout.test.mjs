@@ -129,7 +129,7 @@ test('actual public catalog positions preserve every node and recorded edges bin
   const read=async name=>JSON.parse(await readFile(new URL(`../../registry/${name}.json`,import.meta.url),'utf8'));
   const [catalog,insights,participants,overview]=await Promise.all(['catalog','insights','participants','results-overview'].map(read));
   const model=buildResearchMap({catalog,insights,participants,overview});
-  assert.equal(model.nodes.filter(node=>node.kind==='task').length,959);
+  assert.equal(model.nodes.filter(node=>node.kind==='task').length,1163);
   assertGeometry(model,layoutResearchMap(model));
   const options={mode:'recorded'}, visible=visibleResearchNodes(model,options);
   for (const edge of visibleResearchLinks(model,options)) {

@@ -1,0 +1,256 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_c_506",
+  "direction": "minimize",
+  "contract": "construct() -> partition of vertices 0..13 into nonempty lists. Every part must induce a clique or an independent set, and vertices occur exactly once. Minimize number of parts. The evaluator independently reports the exact ordinary chromatic number by subset dynamic programming.",
+  "parameters": {
+    "n": 14,
+    "edges": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        10
+      ],
+      [
+        0,
+        12
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        9
+      ],
+      [
+        1,
+        11
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        2,
+        12
+      ],
+      [
+        2,
+        13
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        3,
+        8
+      ],
+      [
+        3,
+        11
+      ],
+      [
+        3,
+        12
+      ],
+      [
+        3,
+        13
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        4,
+        13
+      ],
+      [
+        5,
+        8
+      ],
+      [
+        5,
+        9
+      ],
+      [
+        5,
+        10
+      ],
+      [
+        5,
+        12
+      ],
+      [
+        5,
+        13
+      ],
+      [
+        6,
+        8
+      ],
+      [
+        6,
+        11
+      ],
+      [
+        6,
+        13
+      ],
+      [
+        7,
+        12
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        8,
+        13
+      ],
+      [
+        9,
+        11
+      ],
+      [
+        9,
+        12
+      ],
+      [
+        11,
+        13
+      ]
+    ]
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Exact finite certificate validation; independently implemented from the cited mathematical definition. Resource bounds and source adaptation are recorded per task. No Lean verification or general theorem is claimed."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-cochromatic-homogeneous-partition",
+  "name": "Cochromatic partitions of a pinned random graph",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "description": "construct() -> partition of vertices 0..13 into nonempty lists. Every part must induce a clique or an independent set, and vertices occur exactly once. Minimize number of parts. The evaluator independently reports the exact ordinary chromatic number by subset dynamic programming. One explicit G(14,1/2) sample, generated locally with random.Random(506), is optimized. The candidate score is a cochromatic upper bound, not an asymptotic random-graph result or a guaranteed optimal partition.",
+  "benchmark": "Cochromatic partitions of a pinned random graph",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2409.17614",
+      "type": "paper",
+      "locator": "Annika Heckel, The difference between the chromatic and the cochromatic number of a random graph (2024; revised 2025). Author abstract: defines cochromatic number by clique-or-independent color classes and studies its gap from chromatic number in G(n,1/2)."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000506",
+      "type": "benchmark",
+      "locator": "JSP-000506; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "One explicit G(14,1/2) sample, generated locally with random.Random(506), is optimized. The candidate score is a cochromatic upper bound, not an asymptotic random-graph result or a guaranteed optimal partition.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_c",
+      "title": "Problem-bank constructions: graphs and set systems: source-based research tasks",
+      "url": "https://users.renyi.hu/~gyarfas/Cikkek/90_howtodecrease.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Annika Heckel (2024, The difference between the chromatic and the cochromatic number of a random graph) studies the underlying problem.",
+    "sources": [
+      {
+        "title": "The difference between the chromatic and the cochromatic number of a random graph",
+        "url": "https://arxiv.org/abs/2409.17614",
+        "authors": "Annika Heckel",
+        "year": 2024
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Understand the advantage of homogeneous partitions over ordinary graph coloring.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Annika Heckel, The difference between the chromatic and the cochromatic number of a random graph (2024; revised 2025)",
+        "url": "https://arxiv.org/abs/2409.17614",
+        "primary_goal": "Understand the advantage of homogeneous partitions over ordinary graph coloring.",
+        "task_relation": "One explicit G(14,1/2) sample, generated locally with random.Random(506), is optimized. The candidate score is a cochromatic upper bound, not an asymptotic random-graph result or a guaranteed optimal partition.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Author abstract: defines cochromatic number by clique-or-independent color classes and studies its gap from chromatic number in G(n,1/2).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "synthetic",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

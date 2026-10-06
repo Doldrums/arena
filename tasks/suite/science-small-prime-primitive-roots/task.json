@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "id": "science-small-prime-primitive-roots",
+  "name": "Small prime primitive roots for twelve prime moduli",
+  "description": "construct() -> twelve Python prime integers, one for each modulus [101,103,107,109,113,127,131,137,139,149,151,157]. Each root is at most 100000, coprime to its modulus, and has multiplicative order p-1. Minimize the sum of these prime roots. Twelve small fixed moduli provide a finite construction/rediscovery instance; exact orders are verified without reproducing the shifted sieve.",
+  "paper_ids": [
+    "science-prize_d"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/math/9807104",
+      "type": "paper",
+      "locator": "Greg Martin, The Least Prime Primitive Root and the Shifted Sieve (1997). Author abstract and journal metadata inspected. The paper bounds least prime primitive roots and explicitly distinguishes unconditional almost-all-modulus and conditional all-modulus results. Twelve small fixed moduli provide a finite construction/rediscovery instance; exact orders are verified without reproducing the shifted sieve."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000818",
+      "type": "benchmark",
+      "locator": "JSP-000818; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Small prime primitive roots for twelve prime moduli",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_d_prime_primitive_roots",
+    "science_family": "science_prize_d_prime_primitive_roots",
+    "parameters": {
+      "moduli": [
+        101,
+        103,
+        107,
+        109,
+        113,
+        127,
+        131,
+        137,
+        139,
+        149,
+        151,
+        157
+      ],
+      "maximum": 100000
+    },
+    "interface": "construct() -> twelve Python prime integers, one for each modulus [101,103,107,109,113,127,131,137,139,149,151,157]. Each root is at most 100000, coprime to its modulus, and has multiplicative order p-1. Minimize the sum of these prime roots.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000818"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_d_prime_primitive_roots",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "All moduli are public and small. Optimizing their roots does not prove a uniform bound or justify the generalized Riemann hypothesis.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_d.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 47,
+    "statement": "The least prime primitive roots of the twelve moduli are 2, 5, 2, 11, 3, 3, 2, 3, 2, 2, 7 and 5 (OEIS A002233), summing to 47.",
+    "sources": [
+      {
+        "title": "OEIS A002233: Least prime primitive root of the n-th prime",
+        "url": "https://oeis.org/A002233"
+      },
+      {
+        "title": "The Least Prime Primitive Root and the Shifted Sieve",
+        "url": "https://arxiv.org/abs/math/9807104",
+        "authors": "Greg Martin",
+        "year": 1997
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 985,
+      "url": "https://www.erdosproblems.com/985",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #985, https://www.erdosproblems.com/985, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Bound the smallest prime generator of the multiplicative group modulo a prime.",
+    "importance_rationale": "Prime generator size is the explicit research objective of Martin's number-theory paper.",
+    "papers": [
+      {
+        "title": "The Least Prime Primitive Root and the Shifted Sieve",
+        "url": "https://arxiv.org/abs/math/9807104",
+        "task_relation": "Twelve small fixed moduli provide a finite construction/rediscovery instance; exact orders are verified without reproducing the shifted sieve.",
+        "primary_goal": "Bound the smallest prime generator of the multiplicative group modulo a prime.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "Primary research directly studies this mathematical objective; finite scope and rediscovery status are explicit.",
+    "verification_basis": "Author abstract and journal metadata inspected. The paper bounds least prime primitive roots and explicitly distinguishes unconditional almost-all-modulus and conditional all-modulus results.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

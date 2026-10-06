@@ -23,11 +23,11 @@ def test_every_package_occurs_once_in_each_complete_partition(inputs):
     catalog, _ = inputs
     insights = get_insights()
     assert set(insights["task_annotations"]) == {task["id"] for task in catalog["tasks"]}
-    assert insights["denominator"] == {"unit": "task_package", "task_count": 959}
+    assert insights["denominator"] == {"unit": "task_package", "task_count": 1163}
     for group, key in [("domains", "domain_id"), ("task_types", "task_type_id")]:
         rows = insights[group]
-        assert sum(row["total"] for row in rows) == 959
-        assert sum(row["executable"] for row in rows) == 705
+        assert sum(row["total"] for row in rows) == 1163
+        assert sum(row["executable"] for row in rows) == 909
         assert sum(row["unsupported"] for row in rows) == 254
         assert sum(Decimal(str(row["percentage"])) for row in rows) == Decimal("100.0")
         for row in rows:
@@ -36,11 +36,11 @@ def test_every_package_occurs_once_in_each_complete_partition(inputs):
             assert all(insights["task_annotations"][ident][key] == row["id"] for ident in row["representative_task_ids"])
 
 
-def test_all_153_source_families_have_documented_defaults(inputs):
+def test_all_357_source_families_have_documented_defaults(inputs):
     catalog, taxonomy = inputs
     families = {task["family"] for task in catalog["tasks"] if task["family"] is not None}
     defaults = {rule["match"]["families"][0] for rule in taxonomy["rules"] if rule["id"].startswith("family-")}
-    assert len(families) == 153
+    assert len(families) == 357
     assert defaults == families
 
 
@@ -112,20 +112,20 @@ def test_papers_and_supplements_are_separate_and_coverage_is_not_readiness(input
     insights = get_insights()
     summary = insights["summary"]
     assert summary["corpus_paper_count"] == 98
-    assert summary["source_group_count"] == summary["unique_paper_count"] == 113
+    assert summary["source_group_count"] == summary["unique_paper_count"] == 123
     catalog, taxonomy = inputs
     source_ids = {ident for task in catalog["tasks"] for ident in task["paper_ids"]}
     non_papers = set(taxonomy["non_paper_source_ids"])
-    assert len(non_papers) == 15
+    assert len(non_papers) == 25
     assert non_papers <= source_ids
     assert {"sciel-supplement", "kaggle-santa-2025", "science-earth_data", "science-physics_expansion"} <= non_papers
     assert len(source_ids - non_papers) == summary["corpus_paper_count"]
     coverage = {row["id"]: row for row in insights["coverage"]}
     assert coverage["runtime_verified"]["total"] == 0
-    assert coverage["original"]["total"] == 109
+    assert coverage["original"]["total"] == 110
     assert coverage["recreated"]["total"] == 515
-    assert coverage["recorded_contract"]["total"] == 705
-    assert coverage["recreated_verified"]["total"] == 81
+    assert coverage["recorded_contract"]["total"] == 909
+    assert coverage["recreated_verified"]["total"] == 284
     assert "not independently" in coverage["recreated_verified"]["description"]
     assert "editorial inference" in insights["methodology"]["classification_authority"]
     assert "not counts of unique scientific problems" in insights["methodology"]["unit"]
@@ -183,7 +183,7 @@ def test_build_is_deterministic_and_api_values_are_detached(inputs):
     assert build_insights(catalog, taxonomy) == build_insights(deepcopy(catalog), deepcopy(taxonomy))
     first = get_insights()
     first["summary"]["task_count"] = 1
-    assert get_insights()["summary"]["task_count"] == 959
+    assert get_insights()["summary"]["task_count"] == 1163
 
 
 def test_check_command_never_rewrites_and_rejects_stale_snapshot(tmp_path):

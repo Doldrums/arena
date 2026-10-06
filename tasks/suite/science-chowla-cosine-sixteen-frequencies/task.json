@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0",
+  "id": "science-chowla-cosine-sixteen-frequencies",
+  "name": "Sixteen frequencies whose cosine sum stays shallow (Chowla's cosine problem)",
+  "description": "construct() -> 16 distinct integers in 1..200. The score is min over theta of sum cos(a*theta), divided by sqrt(16), computed by dense sampling of the full circle and golden-section refinement of the deepest local minima (accuracy about 1e-9). Maximize (make the minimum as shallow as possible). Shallow minima for 16 frequencies probe the finite side of Chowla's problem; no finite optimum is documented.",
+  "paper_ids": [
+    "science-prize_g"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.4064/aa111-2-6",
+      "type": "paper",
+      "locator": "Imre Z. Ruzsa, Negative values of cosine sums (2004). Crossref record inspected; Erdős Problem #510 page inspected: every N-element set has theta with sum cos(n theta) < -c N^(1/7) (Bedert 2025; Jin, Milojević, Tomon and Zhang independently polynomial), while A = B - B for Sidon B shows N^(1/2) would be best possible. Shallow minima for 16 frequencies probe the finite side of Chowla's problem; no finite optimum is documented."
+    },
+    {
+      "url": "https://www.erdosproblems.com/510",
+      "type": "archive",
+      "locator": "Erdős Problem #510 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000409",
+      "type": "benchmark",
+      "locator": "JSP-000409; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Sixteen frequencies whose cosine sum stays shallow (Chowla's cosine problem)",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_g_chowla",
+    "science_family": "science_prize_g_chowla",
+    "parameters": {
+      "k": 16,
+      "maximum": 200
+    },
+    "interface": "construct() -> 16 distinct integers in 1..200. The score is min over theta of sum cos(a*theta), divided by sqrt(16), computed by dense sampling of the full circle and golden-section refinement of the deepest local minima (accuracy about 1e-9). Maximize (make the minimum as shallow as possible).",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000409"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_g_chowla",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Floating-point score with sampling refinement; no documented finite value (reference label none).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_g.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented optimum for 16 frequencies; every set has minimum below -c N^(1/7) (Bedert 2025) and N^(1/2) is the conjectured order.",
+    "sources": [
+      {
+        "title": "Negative values of cosine sums",
+        "url": "https://doi.org/10.4064/aa111-2-6",
+        "authors": "Imre Z. Ruzsa",
+        "year": 2004
+      },
+      {
+        "title": "Polynomial bounds for the Chowla Cosine Problem",
+        "url": "https://arxiv.org/abs/2509.05260",
+        "authors": "B. Bedert",
+        "year": 2025
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 510,
+      "url": "https://www.erdosproblems.com/510",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #510, https://www.erdosproblems.com/510, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how negative a cosine sum over N distinct frequencies must become.",
+    "importance_rationale": "Chowla's cosine problem (Erdős Problem #510; Green's problem 81) saw polynomial bounds only in 2025.",
+    "papers": [
+      {
+        "title": "Negative values of cosine sums",
+        "url": "https://doi.org/10.4064/aa111-2-6",
+        "task_relation": "Shallow minima for 16 frequencies probe the finite side of Chowla's problem; no finite optimum is documented.",
+        "primary_goal": "Determine how negative a cosine sum over N distinct frequencies must become.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #510 page inspected: every N-element set has theta with sum cos(n theta) < -c N^(1/7) (Bedert 2025; Jin, Milojević, Tomon and Zhang independently polynomial), while A = B - B for Sidon B shows N^(1/2) would be best possible.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

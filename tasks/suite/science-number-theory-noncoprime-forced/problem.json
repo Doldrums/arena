@@ -1,0 +1,101 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_b_noncoprime_forced",
+  "direction": "maximize",
+  "contract": "construct() -> candidate. Return a nonempty subset of [1,255] containing 255, with gcd(a,b)>1 for all distinct pairs. Maximize cardinality.",
+  "parameters": {
+    "n": 255,
+    "forced": 255
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Fixes n=255 in g(n), the source's exact forced-maximum-element formulation; no solution to a general coprime-family conjecture is claimed."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-number-theory-noncoprime-forced",
+  "name": "Large pairwise noncoprime sets containing the interval endpoint",
+  "paper_ids": [
+    "science-prize_b"
+  ],
+  "description": "Return a nonempty subset of [1,255] containing 255, with gcd(a,b)>1 for all distinct pairs. Maximize cardinality. Fixes n=255 in g(n), the source's exact forced-maximum-element formulation; no solution to a general coprime-family conjecture is claimed.",
+  "benchmark": "Large pairwise noncoprime sets containing the interval endpoint",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://matwbn.icm.edu.pl/ksiazki/aa/aa75/aa7536.pdf",
+      "type": "paper",
+      "locator": "Rudolf Ahlswede and Levon H. Khachatrian (1996), Sets of integers with pairwise common divisor and a factor from a specified set of primes. Printed p. 259. Fixes n=255 in g(n), the source's exact forced-maximum-element formulation; no solution to a general coprime-family conjecture is claimed. Primary introduction inspected; author/publisher metadata independently verified. No source code reused."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000428",
+      "type": "benchmark",
+      "locator": "JSP-000428; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+    }
+  ],
+  "limitations": [
+    "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+    "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+    "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+    "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+    "Fixes n=255 in g(n), the source's exact forced-maximum-element formulation; no solution to a general coprime-family conjecture is claimed."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_b",
+      "title": "Problem-bank constructions: arithmetic and extremal sets: source-based research tasks",
+      "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Rudolf Ahlswede and Levon H. Khachatrian (1996, Sets of integers with pairwise common divisor and a factor from a specified set of primes) study the underlying problem.",
+    "sources": [
+      {
+        "title": "Sets of integers with pairwise common divisor and a factor from a specified set of primes",
+        "url": "https://matwbn.icm.edu.pl/ksiazki/aa/aa75/aa7536.pdf",
+        "authors": "Rudolf Ahlswede and Levon H. Khachatrian",
+        "year": 1996
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine largest integer families with pairwise common divisors and prescribed prime factors.",
+    "importance_rationale": "Studies extremal intersection properties of arithmetic sets through shared prime factors.",
+    "papers": [
+      {
+        "title": "Sets of integers with pairwise common divisor and a factor from a specified set of primes",
+        "url": "https://matwbn.icm.edu.pl/ksiazki/aa/aa75/aa7536.pdf",
+        "primary_goal": "Determine largest integer families with pairwise common divisors and prescribed prime factors.",
+        "task_relation": "Primary introduction p. 259 explicitly defines g(n) with a_k=n; local n=255 is that exact extremal problem. Fixes n=255 in g(n), the source's exact forced-maximum-element formulation; no solution to a general coprime-family conjecture is claimed.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "A primary research paper directly studies the mathematical objective; local finite scope and restrictions are explicit. This does not certify novelty, importance of the baseline itself, or current open status.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Primary research full text, author abstract, or publisher abstract inspected; precise access level is recorded in sources and source receipts.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

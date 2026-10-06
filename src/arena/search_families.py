@@ -33,6 +33,8 @@ SUPPLEMENT_FAMILIES = {
         "science-climate", "science-chemistry", "science-biology_expansion",
         "science-materials_expansion", "science-earth_expansion", "science-earth_data",
         "science-physics_expansion", "science-economics_expansion", "science-tcs_expansion",
+        "science-prize", "science-prize_a", "science-prize_b", "science-prize_c", "science-prize_d",
+        "science-prize_e", "science-prize_f", "science-prize_g", "science-prize_h", "science-prize_i",
     )},
 }
 SUPPLEMENT_GROUPS = {FAMILY_IDS[label] for label in SUPPLEMENT_FAMILIES.values()}

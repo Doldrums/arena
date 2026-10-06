@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0",
+  "id": "science-number-theory-bounded-lcm",
+  "name": "Large integer sets with bounded pairwise least common multiples",
+  "description": "Return a nonempty subset of [1,512] with lcm(a,b)<=512 for every pair. Maximize cardinality. Finite instance of the extremal bounded-lcm problem. The simple seed does not import Chen's asymptotic construction.",
+  "paper_ids": [
+    "science-prize_b"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://matwbn.icm.edu.pl/ksiazki/aa/aa84/aa8416.pdf",
+      "type": "paper",
+      "locator": "Yong-Gao Chen (1998), Sequences with bounded l.c.m. of each pair of terms. Introduction and theorem on p. 71 define A_x and establish its asymptotic size; this task is x=512. Primary first-page text inspected."
+    },
+    {
+      "url": "https://mathweb.ucsd.edu/~ronspubs/80_11_number_theory.pdf",
+      "type": "paper",
+      "locator": "Paul Erdős and Ronald L. Graham (1980), Old and New Problems and Results in Combinatorial Number Theory. Printed p. 87. Finite instance of the extremal bounded-lcm problem. The simple seed does not import Chen's asymptotic construction. Primary full text downloaded and inspected; the scanned monograph was OCRed locally and equation-sensitive passages checked against page images. No contemporary open/solved status is inferred from this historical publication."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000360",
+      "type": "benchmark",
+      "locator": "JSP-000360; pinned Justin Sun Prize bank revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Discovery source only; mathematical authorship remains with the cited researchers. Independent paraphrase and implementation."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "None; finite arithmetic constructions with no downloaded benchmark data."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Large integer sets with bounded pairwise least common multiples",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_b_bounded_lcm",
+    "science_family": "science_prize_b_bounded_lcm",
+    "parameters": {
+      "n": 512
+    },
+    "interface": "construct() -> candidate. Return a nonempty subset of [1,512] with lcm(a,b)<=512 for every pair. Maximize cardinality.",
+    "label_spec": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none",
+      "area": "mathematics"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical problem definition only. Independently written verifier and starter; elementary baseline construction data is not represented as novel.",
+      "prize_problem_id": "JSP-000360",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "source_scope": "finite_restriction",
+      "implementation_origin": "independent_reimplementation"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_b_bounded_lcm",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Independent finite adaptation, not a Lean proof, prize submission, full solution, optimality proof or claim of mathematical novelty.",
+    "Published source supplies the mathematical question; all verifier and starter code was written locally, with no upstream implementation imported.",
+    "Finite bounds and the public starter are development instances. An accepted candidate establishes only the reported local feasible value; no asymptotic inference follows.",
+    "Candidate Python code is trusted; this runner is not a malicious-code sandbox.",
+    "Finite instance of the extremal bounded-lcm problem. The simple seed does not import Chen's asymptotic construction."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/b-checks.json",
+    "tests": "tests/test_science_prize_b.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Yong-Gao Chen (1998, Sequences with bounded l.c.m. of each pair of terms) studies the underlying problem.",
+    "sources": [
+      {
+        "title": "Sequences with bounded l.c.m. of each pair of terms",
+        "url": "https://matwbn.icm.edu.pl/ksiazki/aa/aa84/aa8416.pdf",
+        "authors": "Yong-Gao Chen",
+        "year": 1998
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the maximum size and structure of integer sets with every pairwise lcm bounded by x.",
+    "importance_rationale": "Studies an explicit extremal arithmetic set problem and its asymptotic structure.",
+    "papers": [
+      {
+        "title": "Sequences with bounded l.c.m. of each pair of terms",
+        "url": "https://matwbn.icm.edu.pl/ksiazki/aa/aa84/aa8416.pdf",
+        "primary_goal": "Determine the maximum size and structure of integer sets with every pairwise lcm bounded by x.",
+        "task_relation": "Introduction and theorem on p. 71 define A_x and establish its asymptotic size; this task is x=512. Primary first-page text inspected. Finite instance of the extremal bounded-lcm problem. The simple seed does not import Chen's asymptotic construction.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "A primary research paper directly studies the mathematical objective; local finite scope and restrictions are explicit. This does not certify novelty, importance of the baseline itself, or current open status.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Primary research full text, author abstract, or publisher abstract inspected; precise access level is recorded in sources and source receipts.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

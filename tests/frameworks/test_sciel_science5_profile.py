@@ -26,7 +26,7 @@ def test_real_catalog_and_raw_metadata_match_exact_five_different_orderings():
     tasks = actual_tasks()
     assert len(tasks) == 5
     assert not set(science5.TASKS) & set(SCIENCE_TASK_REQUIREMENTS)
-    assert len(get_catalog()["tasks"]) == 959
+    assert len(get_catalog()["tasks"]) == 1163
     source = next(s for s in get_catalog()["sources"] if s["id"] == "arena-tasks")
     files = load_task_manifest(source)["files"]
     for task in tasks:

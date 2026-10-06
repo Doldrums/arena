@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "id": "science-smooth-runs-after-prime-squares",
+  "name": "Long runs after p^2 with no prime factor exceeding p (p <= 10^9)",
+  "description": "construct() -> {'p': p, 'k': k} with p a prime at most 10^9 and 1 <= k <= 200; every integer p^2 + 1, ..., p^2 + k must have all prime factors at most p (exact factorization by trial division and Pollard-Brent with deterministic Miller-Rabin). Maximize k. Long runs for p <= 10^9 are finite evidence for the conjectured positive answer.",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://fanchung.ucsd.edu/ron/papers/80_11_number_theory.pdf",
+      "type": "paper",
+      "locator": "Paul Erdős and Ronald L. Graham, Old and new problems and results in combinatorial number theory (1980). Erdős-Graham monograph (L'Enseignement Mathématique, 1980; source of the problem) located. Erdős Problem #383 page inspected: heuristically n has no prime factor >= n^(1/2) with probability 1 - log 2, so a positive answer is expected; it would settle part of #382. No finite values are documented. Long runs for p <= 10^9 are finite evidence for the conjectured positive answer."
+    },
+    {
+      "url": "https://www.erdosproblems.com/383",
+      "type": "archive",
+      "locator": "Erdős Problem #383 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0301-0400.md#JSP-000317",
+      "type": "benchmark",
+      "locator": "JSP-000317; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Long runs after p^2 with no prime factor exceeding p (p <= 10^9)",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_h_smooth_square",
+    "science_family": "science_prize_h_smooth_square",
+    "parameters": {
+      "prime_bound": 1000000000
+    },
+    "interface": "construct() -> {'p': p, 'k': k} with p a prime at most 10^9 and 1 <= k <= 200; every integer p^2 + 1, ..., p^2 + k must have all prime factors at most p (exact factorization by trial division and Pollard-Brent with deterministic Miller-Rabin). Maximize k.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000317"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_h_smooth_square",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No documented value (reference label none).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_h.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented values.",
+    "sources": [
+      {
+        "title": "Old and new problems and results in combinatorial number theory",
+        "url": "https://fanchung.ucsd.edu/ron/papers/80_11_number_theory.pdf",
+        "authors": "Paul Erdős, Ronald L. Graham",
+        "year": 1980
+      },
+      {
+        "title": "Erdős Problem #383",
+        "url": "https://www.erdosproblems.com/383"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 383,
+      "url": "https://www.erdosproblems.com/383",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #383, https://www.erdosproblems.com/383, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Decide whether for every k infinitely many primes p have p^2 + 1, ..., p^2 + k all free of prime factors larger than p (Erdős Problem #383).",
+    "importance_rationale": "The question probes smooth numbers in short intervals near squares, a regime central to sieve theory and factoring algorithms.",
+    "papers": [
+      {
+        "title": "Old and new problems and results in combinatorial number theory",
+        "url": "https://fanchung.ucsd.edu/ron/papers/80_11_number_theory.pdf",
+        "task_relation": "Long runs for p <= 10^9 are finite evidence for the conjectured positive answer.",
+        "primary_goal": "Decide whether for every k infinitely many primes p have p^2 + 1, ..., p^2 + k all free of prime factors larger than p (Erdős Problem #383).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Erdős-Graham monograph (L'Enseignement Mathématique, 1980; source of the problem) located. Erdős Problem #383 page inspected: heuristically n has no prime factor >= n^(1/2) with probability 1 - log 2, so a positive answer is expected; it would settle part of #382. No finite values are documented.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_a_lonely_runner",
+  "direction": "maximize",
+  "contract": "construct() -> [p,q] of Python integers with 0<p<q<=1000000, representing time p/q. For relative speeds [1,3,4,7,11,18,29] from a stationary runner, maximize the minimum circular distance of (p/q)*v to an integer. Exact rational distances are retained in details; score is their floating serialization.",
+  "parameters": {
+    "maximum_denominator": 1000000
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Independent finite certificate evaluator and local seed; no source implementation copied. Exact constraints are verified, but no optimality, general theorem, Lean proof, published record, or prize eligibility is claimed. See task sources and adaptation limitations."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-lonely-runner-rational-time",
+  "name": "Rational-time lonely-runner certificates",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "description": "construct() -> [p,q] of Python integers with 0<p<q<=1000000, representing time p/q. For relative speeds [1,3,4,7,11,18,29] from a stationary runner, maximize the minimum circular distance of (p/q)*v to an integer. Exact rational distances are retained in details; score is their floating serialization. One stationary runner and seven fixed relative integer speeds [1,3,4,7,11,18,29]; maximize the minimum distance at a rational time with denominator<=10^6. This lower-bound certificate does not optimize over all speed sets or prove a universal conjecture. The optimum is exactly 1/5, at t = 1/5; every breakpoint of the piecewise-linear objective has been checked, so this is a rediscovery task.",
+  "benchmark": "Rational-time lonely-runner certificates",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1912.06034",
+      "type": "paper",
+      "locator": "Noah Kravitz, Barely lonely runners and very lonely runners. Author abstract inspected: maximum loneliness is max_t min_i distance(t*v_i,Z); paper studies the associated spectrum."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000017",
+      "type": "benchmark",
+      "locator": "JSP-000017; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "limitations": [
+    "Solved finite case: For the speeds {1,3,4,7,11,18,29} the maximum over all times of the minimum distance is exactly 1/5, attained at t = 1/5 (no speed is a multiple of 5).",
+    "One stationary runner and seven fixed relative integer speeds [1,3,4,7,11,18,29]; maximize the minimum distance at a rational time with denominator<=10^6. This lower-bound certificate does not optimize over all speed sets or prove a universal conjecture.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_a",
+      "title": "Problem-bank constructions: additive combinatorics: source-based research tasks",
+      "url": "https://arxiv.org/abs/2208.12182"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 0.2,
+    "statement": "For the speeds {1,3,4,7,11,18,29} the maximum over all times of the minimum distance is exactly 1/5, attained at t = 1/5 (no speed is a multiple of 5). The objective is piecewise linear with breakpoints at denominators dividing v_i + v_j or 2v_i. Checking every denominator up to 116 (scripts/check_state_of_the_art.py) therefore proves optimality. The lonely runner conjecture predicts only 1/8 for seven speeds.",
+    "sources": [
+      {
+        "title": "Barely lonely runners and very lonely runners",
+        "url": "https://arxiv.org/abs/1912.06034",
+        "authors": "Noah Kravitz",
+        "year": 2021
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Understand maximum simultaneous circular separation for integer speed sets.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "Barely lonely runners and very lonely runners",
+        "url": "https://arxiv.org/abs/1912.06034",
+        "task_relation": "One stationary runner and seven fixed relative integer speeds [1,3,4,7,11,18,29]; maximize the minimum distance at a rational time with denominator<=10^6. This lower-bound certificate does not optimize over all speed sets or prove a universal conjecture.",
+        "primary_goal": "Understand maximum simultaneous circular separation for integer speed sets.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author abstract inspected: maximum loneliness is max_t min_i distance(t*v_i,Z); paper studies the associated spectrum.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

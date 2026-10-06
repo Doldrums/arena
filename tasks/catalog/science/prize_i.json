@@ -1,0 +1,1472 @@
+[
+  {
+    "id": "science-five-uniform-hypergraphs-without-property-b",
+    "name": "Few edges in 5-uniform hypergraphs without Property B (m(5))",
+    "description": "construct() -> {'n': n, 'edges': [[v1, ..., v5], ...]}: distinct 5-element edges on vertices 0..n-1 with 5 <= n <= 26 and at most 200 edges. The hypergraph must have no proper 2-colouring (no colouring of the vertices leaves every edge with both colours), checked exactly by backtracking with unit propagation. Minimize the number of edges. A valid hypergraph with e edges certifies m(5) <= e; the best known construction has 51 edges and every 5-uniform hypergraph with at most 28 edges is 2-colourable.",
+    "family": "science_prize_i_property_b",
+    "parameters": {
+      "uniformity": 5,
+      "max_vertices": 26
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://ajc.maths.uq.edu.au/pdf/76/ajc_v76_p073.pdf",
+        "type": "paper",
+        "locator": "Sachin Aglave, V. A. Amarnath, Saswata Shannigrahi and Shwetank Singh, Improved bounds for uniform hypergraphs without property B (2020). Australasian Journal of Combinatorics article inspected: m(5) >= 29 (new lower bound) and m(5) <= 51 from the Abbott-Hanson construction on the Fano plane (16 + 5*7 edges); Table 1 lists m(2) = 3, m(3) = 7, m(4) = 23 (Seymour; Östergård). OEIS A392185 inspected (29 <= a(5) <= 51). Erdős Problem #901 page inspected (bounds sqrt(n/log n) 2^n << m(n) << n^2 2^n). The 51-edge construction was rebuilt locally on 17 vertices and verified non-2-colourable by exhaustive search. A valid hypergraph with e edges certifies m(5) <= e; the best known construction has 51 edges and every 5-uniform hypergraph with at most 28 edges is 2-colourable."
+      },
+      {
+        "url": "https://www.erdosproblems.com/901",
+        "type": "archive",
+        "locator": "Erdős Problem #901 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000749",
+        "type": "benchmark",
+        "locator": "JSP-000749; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Constructions are limited to 26 vertices so that exhaustive non-colourability checks stay fast; the 51-edge construction uses 17.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 51,
+      "statement": "29 <= m(5) <= 51: the upper bound is the Abbott-Hanson construction (Fano plane core, 51 edges on 17 vertices) and the lower bound is Aglave, Amarnath, Shannigrahi and Singh (2020).",
+      "sources": [
+        {
+          "title": "Improved bounds for uniform hypergraphs without property B",
+          "url": "https://ajc.maths.uq.edu.au/pdf/76/ajc_v76_p073.pdf",
+          "authors": "S. Aglave, V. A. Amarnath, S. Shannigrahi, S. Singh",
+          "year": 2020
+        },
+        {
+          "title": "On A Combinatorial Problem of Erdös",
+          "url": "https://doi.org/10.4153/CMB-1969-107-x",
+          "authors": "H. L. Abbott, D. Hanson",
+          "year": 1969
+        },
+        {
+          "title": "OEIS A392185",
+          "url": "https://oeis.org/A392185"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 901,
+        "url": "https://www.erdosproblems.com/901",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #901, https://www.erdosproblems.com/901, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000749"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-forbidden-intersection-families-8-2",
+    "name": "Families of subsets of an 8-set with no two members meeting in exactly 2 elements",
+    "description": "construct() -> distinct subsets of {1, ..., 8} (lists of elements) such that no two distinct members intersect in exactly 2 elements. Maximize the number of subsets; the optimum is T(8,2) = 67. For n = 8 and r = 2 the optimum is 67, so the task recovers an extremal family.",
+    "family": "science_prize_i_forbidden_intersection",
+    "parameters": {
+      "n": 8,
+      "r": 2
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/0097-3165(84)90008-6",
+        "type": "paper",
+        "locator": "Péter Frankl and Zoltán Füredi, On hypergraphs without two edges intersecting in a given number of vertices (1984). Crossref records inspected (Frankl and Füredi 1984; Frankl and Rödl 1987). Erdős Problem #703 page inspected ($250; Frankl and Rödl proved T(n,r) < (2-delta)^n for eps*n < r < (1/2-eps)n; Frankl and Füredi determined the extremal families for large n). OEIS A390645 inspected: T(8,2) = 67, attained by the Frankl-Füredi family {A : |A \\ {1}| >= 5} together with all sets of size at most 1. For n = 8 and r = 2 the optimum is 67, so the task recovers an extremal family."
+      },
+      {
+        "url": "https://www.erdosproblems.com/703",
+        "type": "archive",
+        "locator": "Erdős Problem #703 (proved ($250; Frankl and Rödl)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000573",
+        "type": "benchmark",
+        "locator": "JSP-000573; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 67,
+      "statement": "T(8,2) = 67 (OEIS A390645), attained by the Frankl-Füredi construction.",
+      "sources": [
+        {
+          "title": "OEIS A390645",
+          "url": "https://oeis.org/A390645"
+        },
+        {
+          "title": "On hypergraphs without two edges intersecting in a given number of vertices",
+          "url": "https://doi.org/10.1016/0097-3165(84)90008-6",
+          "authors": "P. Frankl, Z. Füredi",
+          "year": 1984
+        },
+        {
+          "title": "Forbidden intersections",
+          "url": "https://doi.org/10.1090/S0002-9947-1987-0871675-6",
+          "authors": "Peter Frankl, Vojtěch Rödl",
+          "year": 1987
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 703,
+        "url": "https://www.erdosproblems.com/703",
+        "status": "proved ($250; Frankl and Rödl)",
+        "citation": "T. F. Bloom, Erdős Problem #703, https://www.erdosproblems.com/703, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000573"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-ramsey-pentagon-versus-independent-nine",
+    "name": "Pentagon-free graphs without independent 9-sets (Ramsey number R(C5,K9))",
+    "description": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 35 containing no 5-cycle (as a subgraph) and no independent set of 9 vertices, both checked exactly. Maximize n. A valid graph on n vertices certifies R(C5,K9) > n; the best known has 32 vertices and no valid graph has more than 35.",
+    "family": "science_prize_i_c5_versus_k9",
+    "parameters": {
+      "cycle": 5,
+      "independent": 9,
+      "max_vertices": 35
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1137/18M1169473",
+        "type": "paper",
+        "locator": "Bernard Lidický and Florian Pfender, Semidefinite Programming and Ramsey Numbers (2021). Crossref record inspected; Radziszowski's survey DS1.18 (Table Vb) inspected: 33 <= R(C5,K9) <= 36 with the upper bound from Lidický and Pfender's flag-algebra computations; the lower bound is attained by eight disjoint copies of K4. The conjecture R(Cn,Km) = (n-1)(m-1)+1 covers only n >= m, so this case is open. A valid graph on n vertices certifies R(C5,K9) > n; the best known has 32 vertices and no valid graph has more than 35."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000442",
+        "type": "benchmark",
+        "locator": "JSP-000442; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Exact exhaustive checks; the vertex cap 35 is the proven upper limit.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 32,
+      "statement": "33 <= R(C5,K9) <= 36 (survey DS1.18, Table Vb; upper bound Lidický-Pfender); the lower bound comes from 8 disjoint copies of K4.",
+      "sources": [
+        {
+          "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+          "url": "https://doi.org/10.37236/21",
+          "authors": "Stanisław P. Radziszowski",
+          "year": 2026
+        },
+        {
+          "title": "Semidefinite Programming and Ramsey Numbers",
+          "url": "https://doi.org/10.1137/18M1169473",
+          "authors": "Bernard Lidický, Florian Pfender",
+          "year": 2021
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": null
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000442"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-cycle-length-spectra-10",
+    "name": "Realizing every set of cycle lengths on 10 vertices",
+    "description": "construct() -> a list of at most 500 simple graphs on vertices 0..9, each a list of edges [u, v]. The cycle set of a graph (the lengths of its cycles, computed exactly by dynamic programming over paths) is recorded for every graph. Maximize the number of distinct cycle sets; the optimum is 133. There are exactly 133 cycle sets on 10 vertices, so a complete collection recovers f(10).",
+    "family": "science_prize_i_cycle_spectra",
+    "parameters": {
+      "n": 10,
+      "max_graphs": 500
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.5070/C66165704",
+        "type": "paper",
+        "locator": "Rajko Nenadov, Improved bound on the number of cycle sets (2026). Crossref record inspected; Erdős Problem #84 page inspected (Erdős and Faudree showed 2^(n/2) < f(n) <= 2^(n-2); Verstraëte proved f(n) = o(2^n); Nenadov improved the bound). OEIS A399654 inspected (Dunås 2026): f(10) = 133. There are exactly 133 cycle sets on 10 vertices, so a complete collection recovers f(10)."
+      },
+      {
+        "url": "https://www.erdosproblems.com/84",
+        "type": "archive",
+        "locator": "Erdős Problem #84 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000100",
+        "type": "benchmark",
+        "locator": "JSP-000100; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case from the OEIS table.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 133,
+      "statement": "f(10) = 133 (OEIS A399654).",
+      "sources": [
+        {
+          "title": "OEIS A399654",
+          "url": "https://oeis.org/A399654"
+        },
+        {
+          "title": "Improved bound on the number of cycle sets",
+          "url": "https://doi.org/10.5070/C66165704",
+          "authors": "Rajko Nenadov",
+          "year": 2026
+        },
+        {
+          "title": "Unavoidable cycle lengths in graphs",
+          "url": "https://doi.org/10.1002/jgt.20072",
+          "authors": "Jacques Verstraete",
+          "year": 2005
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 84,
+        "url": "https://www.erdosproblems.com/84",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #84, https://www.erdosproblems.com/84, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000100"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-coprime-reciprocal-distances-512",
+    "name": "Pairwise coprime integers below 512 with large sum of 1/(512 - a)",
+    "description": "construct() -> distinct pairwise coprime integers a in 1..511. The score is sum 1/(512 - a) (exact rational, reported as a float); the report also gives sum over primes p < 512 of 1/p. Maximize. Large sums for n = 512 compared with the prime reciprocal sum are finite evidence on the conjectured bound.",
+    "family": "science_prize_i_coprime_reciprocals",
+    "parameters": {
+      "n": 512
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/S0167-5060(08)70697-6",
+        "type": "paper",
+        "locator": "Paul Erdős, A Survey of Problems in Combinatorial Number Theory (1980). Crossref record inspected (the problem is on p. 112). Erdős Problem #1210 page inspected: is sum 1/(n - a) <= sum_{p < n} 1/p + O(1) for pairwise coprime A in [1, n)? No finite values are documented. Large sums for n = 512 compared with the prime reciprocal sum are finite evidence on the conjectured bound."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1210",
+        "type": "archive",
+        "locator": "Erdős Problem #1210 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-1001-1022.md#JSP-001015",
+        "type": "benchmark",
+        "locator": "JSP-001015; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented values.",
+      "sources": [
+        {
+          "title": "A Survey of Problems in Combinatorial Number Theory",
+          "url": "https://doi.org/10.1016/S0167-5060(08)70697-6",
+          "authors": "Paul Erdős",
+          "year": 1980
+        },
+        {
+          "title": "Erdős Problem #1210",
+          "url": "https://www.erdosproblems.com/1210"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1210,
+        "url": "https://www.erdosproblems.com/1210",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1210, https://www.erdosproblems.com/1210, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-001015"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-sums-of-two-powerful-numbers",
+    "name": "Integers up to 10^18 with many representations as sums of two powerful numbers",
+    "description": "construct() -> {'N': N, 'pairs': [[a, b], ...]} with 2 <= N <= 10^18 and distinct pairs a <= b, a + b = N, where a and b are powerful (every prime factor appears squared; 1 counts as powerful), checked by exact factorization. The score is the number of pairs, a certified lower bound on the representation count. Maximize. Integers with many certified representations are finite evidence on the conjectured subpolynomial bound.",
+    "family": "science_prize_i_powerful_pairs",
+    "parameters": {
+      "bound": 1000000000000000000
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1515/crll.2004.027",
+        "type": "paper",
+        "locator": "Valentin Blomer, Binary quadratic forms with large discriminants and sums of two squareful numbers (2004). Crossref record inspected (Blomer studies how many integers are sums of two squareful numbers). Erdős Problem #943 page inspected: is the number of representations n^(o(1)) for every n? OEIS A085252 inspected (counts for small n). No record values over a range are documented. Integers with many certified representations are finite evidence on the conjectured subpolynomial bound."
+      },
+      {
+        "url": "https://www.erdosproblems.com/943",
+        "type": "archive",
+        "locator": "Erdős Problem #943 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000784",
+        "type": "benchmark",
+        "locator": "JSP-000784; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value (reference label none); listed pairs certify a lower bound.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented record values.",
+      "sources": [
+        {
+          "title": "Binary quadratic forms with large discriminants and sums of two squareful numbers",
+          "url": "https://doi.org/10.1515/crll.2004.027",
+          "authors": "Valentin Blomer",
+          "year": 2004
+        },
+        {
+          "title": "OEIS A085252",
+          "url": "https://oeis.org/A085252"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 943,
+        "url": "https://www.erdosproblems.com/943",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #943, https://www.erdosproblems.com/943, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000784"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-distinct-totient-runs-1e12",
+    "name": "Long runs of consecutive integers with distinct totients (up to 10^12)",
+    "description": "construct() -> {'start': s, 'length': k} with s >= 1, 1 <= k <= 200 and s + k - 1 <= 10^12. The values phi(s), ..., phi(s + k - 1) must be pairwise distinct (exact factorization). Maximize k. Long runs below 10^12 are finite evidence; (log 10^12)^c is about 27.6^c.",
+    "family": "science_prize_i_totient_run",
+    "parameters": {
+      "bound": 1000000000000
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.2307/2046541",
+        "type": "paper",
+        "locator": "Paul Erdős, Carl Pomerance and András Sárközy, On Locally Repeated Values of Certain Arithmetic Functions. III (1987). Crossref record inspected; Erdős Problem #1004 page inspected (does some n <= x have phi(n+1), ..., phi(n+K) distinct for K = (log x)^c? Erdős, Pomerance and Sárközy proved K <= n/exp(c(log n)^(1/3))). No finite values are documented. Long runs below 10^12 are finite evidence; (log 10^12)^c is about 27.6^c."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1004",
+        "type": "archive",
+        "locator": "Erdős Problem #1004 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000836",
+        "type": "benchmark",
+        "locator": "JSP-000836; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented values.",
+      "sources": [
+        {
+          "title": "On Locally Repeated Values of Certain Arithmetic Functions. III",
+          "url": "https://doi.org/10.2307/2046541",
+          "authors": "P. Erdős, C. Pomerance, A. Sárközy",
+          "year": 1987
+        },
+        {
+          "title": "Erdős Problem #1004",
+          "url": "https://www.erdosproblems.com/1004"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1004,
+        "url": "https://www.erdosproblems.com/1004",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1004, https://www.erdosproblems.com/1004, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000836"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-coprime-adjacent-divisors",
+    "name": "Integers up to 10^18 with many coprime adjacent divisors",
+    "description": "construct() -> an integer n with 2 <= n <= 10^18. With the divisors of n in increasing order (exact factorization), the score tau_perp(n) is the number of adjacent pairs d_i < d_{i+1} with gcd 1. Maximize. Large values below 10^18 are finite lower-bound constructions for the maximal order of tau_perp.",
+    "family": "science_prize_i_coprime_divisors",
+    "parameters": {
+      "bound": 1000000000000000000
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1017/S1446788700021455",
+        "type": "paper",
+        "locator": "Paul Erdős and R. R. Hall, On some unconventional problems on the divisors of integers (1978). Crossref record inspected; Erdős Problem #1100 page inspected (Erdős and Hall: max_{n<x} tau_perp(n) > exp((log log x)^(2-eps)); is tau_perp(n) < exp((log n)^(o(1)))? Erdős and Simonovits: (2^(1/2)+o(1))^k < g(k) < (2-c)^k for squarefree n with k prime factors). No finite records are documented. Large values below 10^18 are finite lower-bound constructions for the maximal order of tau_perp."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1100",
+        "type": "archive",
+        "locator": "Erdős Problem #1100 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000913",
+        "type": "benchmark",
+        "locator": "JSP-000913; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented record values.",
+      "sources": [
+        {
+          "title": "On some unconventional problems on the divisors of integers",
+          "url": "https://doi.org/10.1017/S1446788700021455",
+          "authors": "P. Erdős, R. R. Hall",
+          "year": 1978
+        },
+        {
+          "title": "Erdős Problem #1100",
+          "url": "https://www.erdosproblems.com/1100"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1100,
+        "url": "https://www.erdosproblems.com/1100",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1100, https://www.erdosproblems.com/1100, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000913"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-triangle-degree-sums-above-turan-16",
+    "name": "Graphs on 16 vertices with 65 edges whose triangles have small degree sums",
+    "description": "construct() -> {'n': 16, 'edges': [[u, v], ...]}: a simple graph on 16 vertices with exactly 65 = floor(16^2/4) + 1 edges (so it has triangles). The score is the largest degree sum deg(u) + deg(v) + deg(w) over its triangles. Minimize. Scores below 24 would beat the published construction at n = 16; the conjectured asymptotic value is about 1.464n = 23.4.",
+    "family": "science_prize_i_triangle_degrees",
+    "parameters": {
+      "n": 16,
+      "edges": 65
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1002/jgt.3190120216",
+        "type": "paper",
+        "locator": "Genghua Fan, Degree sum for a triangle in a graph (1988). Crossref record inspected; Erdős Problem #1033 page inspected (Bollobás-Erdős conjecture h(n) >= (2(sqrt 3 - 1) - o(1))n; known 21n/16 <= h(n) <= 2(sqrt 3 - 1)n + O(1) with the construction of Erdős and Laskar made explicit by Fan). Evaluated locally, that construction gives 24 for n = 16 (K_{10,6} plus a perfect matching on the 10-side); no finite optimum is documented. Scores below 24 would beat the published construction at n = 16; the conjectured asymptotic value is about 1.464n = 23.4."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1033",
+        "type": "archive",
+        "locator": "Erdős Problem #1033 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000859",
+        "type": "benchmark",
+        "locator": "JSP-000859; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value for n = 16 (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented optimum for n = 16; the Erdős-Laskar/Fan construction gives 24 (evaluated locally) and 21n/16 <= h(n) asymptotically.",
+      "sources": [
+        {
+          "title": "Degree sum for a triangle in a graph",
+          "url": "https://doi.org/10.1002/jgt.3190120216",
+          "authors": "Genghua Fan",
+          "year": 1988
+        },
+        {
+          "title": "Erdős Problem #1033",
+          "url": "https://www.erdosproblems.com/1033"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1033,
+        "url": "https://www.erdosproblems.com/1033",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1033, https://www.erdosproblems.com/1033, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000859"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-rainbow-four-cycle-colourings-20",
+    "name": "Dense graphs on 20 vertices edge-coloured with 20 colours so every 4-cycle is rainbow",
+    "description": "construct() -> coloured edges [[u, v, c], ...] of a simple graph on vertices 0..19 with colours 0..19. Every 4-cycle (as a subgraph) must receive four distinct colours, checked over all 4-cycles. Maximize the number of edges. Dense valid colourings for n = 20 are finite evidence on the anti-Ramsey question.",
+    "family": "science_prize_i_rainbow_c4",
+    "parameters": {
+      "n": 20,
+      "colours": 20
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1002/jgt.3190130302",
+        "type": "paper",
+        "locator": "S. A. Burr, P. Erdős, R. L. Graham and V. T. Sós, Maximal antiramsey graphs and the strong chromatic number (1989). Crossref record inspected; Erdős Problem #810 page inspected (Burr, Erdős, Graham and Sós believed no eps*n^2 edges admit an n-colouring with every C4 rainbow; open for C4, resolved for other connected bipartite graphs except complete bipartite ones by Sárközy and Selkow). No finite values are documented. Dense valid colourings for n = 20 are finite evidence on the anti-Ramsey question."
+      },
+      {
+        "url": "https://www.erdosproblems.com/810",
+        "type": "archive",
+        "locator": "Erdős Problem #810 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000667",
+        "type": "benchmark",
+        "locator": "JSP-000667; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented values.",
+      "sources": [
+        {
+          "title": "Maximal antiramsey graphs and the strong chromatic number",
+          "url": "https://doi.org/10.1002/jgt.3190130302",
+          "authors": "S. A. Burr, P. Erdős, R. L. Graham, V. T. Sós",
+          "year": 1989
+        },
+        {
+          "title": "Erdős Problem #810",
+          "url": "https://www.erdosproblems.com/810"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 810,
+        "url": "https://www.erdosproblems.com/810",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #810, https://www.erdosproblems.com/810, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000667"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-strong-edge-colouring-instances",
+    "name": "Strong edge colourings of three fixed bounded-degree graphs",
+    "description": "construct() -> three lists of edge colours, one per instance from bounded_degree_graph(n, d, seed) for (40,4,101), (60,5,102), (80,6,103) in the verifier; colours follow the sorted edge order. Each colour class must be an induced matching (no two edges share a vertex or are joined by an edge). Minimize the total number of colours used; the Erdős-Nešetřil conjecture predicts at most 5d^2/4 per instance (20 + 31 + 45). The score totals colours on three fixed graphs of maximum degree 4, 5 and 6; it measures a colouring method, not the conjecture.",
+    "family": "science_prize_i_strong_edge_colouring",
+    "parameters": {},
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1006/jctb.1997.1724",
+        "type": "paper",
+        "locator": "Michael Molloy and Bruce Reed, A Bound on the Strong Chromatic Index of a Graph (1997). Crossref records inspected (Molloy and Reed 1997; Hurley, de Joannis de Verclos and Kang 2022). Erdős Problem #149 page inspected: the Erdős-Nešetřil conjecture sq(G) <= 5 Delta^2/4 is open; the best general bound is 1.772 Delta^2 (Hurley, de Joannis de Verclos and Kang). The score totals colours on three fixed graphs of maximum degree 4, 5 and 6; it measures a colouring method, not the conjecture."
+      },
+      {
+        "url": "https://www.erdosproblems.com/149",
+        "type": "archive",
+        "locator": "Erdős Problem #149 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000149",
+        "type": "benchmark",
+        "locator": "JSP-000149; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Instance-solving task on three fixed pseudo-random graphs; results are not claims about the conjecture.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "Instance-solving task; the conjectured bound 5 Delta^2/4 per instance is a reference line, not a documented optimum.",
+      "sources": [
+        {
+          "title": "A Bound on the Strong Chromatic Index of a Graph",
+          "url": "https://doi.org/10.1006/jctb.1997.1724",
+          "authors": "Michael Molloy, Bruce Reed",
+          "year": 1997
+        },
+        {
+          "title": "An improved procedure for colouring graphs of bounded local density",
+          "url": "https://doi.org/10.19086/aic.2022.7",
+          "authors": "Eoin Hurley, Rémi de Joannis de Verclos, Ross J. Kang",
+          "year": 2022
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 149,
+        "url": "https://www.erdosproblems.com/149",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #149, https://www.erdosproblems.com/149, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000149"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-clique-transversal-instances",
+    "name": "Small vertex sets meeting every maximal clique of three fixed random graphs",
+    "description": "construct() -> three vertex lists, one per instance from random_graph(n, p, seed) for (30,0.3,201), (35,0.25,202), (40,0.2,203) in the verifier. Each list must meet every maximal clique with at least two vertices (all maximal cliques enumerated by Bron-Kerbosch). Minimize the total size. The score totals transversal sizes on three fixed random graphs; it measures a covering method.",
+    "family": "science_prize_i_clique_transversal",
+    "parameters": {},
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/0012-365X(92)90681-5",
+        "type": "paper",
+        "locator": "Paul Erdős, Tibor Gallai and Zsolt Tuza, Covering the cliques of a graph with vertices (1992). Crossref record inspected; Erdős Problem #610 page inspected (Erdős, Gallai and Tuza proved tau(G) <= n - sqrt(2n) + O(1); tau(G) <= n - c sqrt(n log n) follows from Joret, Micek, Reed and Smid) and related problems #151 and #611. The score totals transversal sizes on three fixed random graphs; it measures a covering method."
+      },
+      {
+        "url": "https://www.erdosproblems.com/610",
+        "type": "archive",
+        "locator": "Erdős Problem #610 (proved (Lean)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000150",
+        "type": "benchmark",
+        "locator": "JSP-000150; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Instance-solving task on three fixed pseudo-random graphs.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "Instance-solving task; no reference value.",
+      "sources": [
+        {
+          "title": "Covering the cliques of a graph with vertices",
+          "url": "https://doi.org/10.1016/0012-365X(92)90681-5",
+          "authors": "Paul Erdős, Tibor Gallai, Zsolt Tuza",
+          "year": 1992
+        },
+        {
+          "title": "Erdős Problem #610",
+          "url": "https://www.erdosproblems.com/610"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 610,
+        "url": "https://www.erdosproblems.com/610",
+        "status": "proved (Lean)",
+        "citation": "T. F. Bloom, Erdős Problem #610, https://www.erdosproblems.com/610, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000150"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-chordal-clique-partition-instances",
+    "name": "Clique partitions of three fixed split (chordal) graphs",
+    "description": "construct() -> three lists of cliques (vertex lists), one per instance from split_graph(n, k, p, seed) for (30,10,0.7,301), (60,20,0.7,302), (90,30,0.7,303) in the verifier: a clique on the first k vertices, an independent set on the rest and each cross pair joined with probability p (split graphs are chordal). Every listed set must be a clique with at least two vertices and every edge must lie in exactly one listed clique. Minimize the total number of cliques; the Erdős-Ordman-Zalcstein question asks whether n^2/6 + O(n) always suffice, and split graphs need at most 3n^2/16 + O(n). The score totals clique partition sizes on three fixed random split graphs; it measures a partitioning method.",
+    "family": "science_prize_i_chordal_clique_partition",
+    "parameters": {},
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1017/S0963548300000808",
+        "type": "paper",
+        "locator": "Paul Erdős, Edward T. Ordman and Yechezkel Zalcstein, Clique Partitions of Chordal Graphs (1993). Crossref record inspected; Erdős Problem #81 page inspected (Erdős, Ordman and Zalcstein proved (1/4 - eps)n^2 cliques suffice and asked for n^2/6 + O(n); split graphs need at most 3n^2/16 + O(n) by Chen, Erdős and Ordman). The score totals clique partition sizes on three fixed random split graphs; it measures a partitioning method."
+      },
+      {
+        "url": "https://www.erdosproblems.com/81",
+        "type": "archive",
+        "locator": "Erdős Problem #81 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000098",
+        "type": "benchmark",
+        "locator": "JSP-000098; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Instance-solving task on three fixed pseudo-random split graphs.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "Instance-solving task; no reference value.",
+      "sources": [
+        {
+          "title": "Clique Partitions of Chordal Graphs",
+          "url": "https://doi.org/10.1017/S0963548300000808",
+          "authors": "Paul Erdős, Edward T. Ordman, Yechezkel Zalcstein",
+          "year": 1993
+        },
+        {
+          "title": "Erdős Problem #81",
+          "url": "https://www.erdosproblems.com/81"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 81,
+        "url": "https://www.erdosproblems.com/81",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #81, https://www.erdosproblems.com/81, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000098"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-cycle-plus-triangles-colouring",
+    "name": "3-colouring five fixed cycle-plus-triangles graphs",
+    "description": "construct() -> five colourings (one colour in {0, 1, 2} per vertex), one per instance from cycle_plus_triangles(n, seed) for n = 30, 60, 90, 150, 300 with seeds 401..405 in the verifier: the Hamiltonian cycle 0-1-...-(n-1)-0 plus a random partition into triangles avoiding cycle edges. The score is the number of properly coloured instances (0..5). Maximize; every instance is 3-colourable by the Fleischner-Stiebitz theorem. The score counts fixed instances coloured properly; it measures a constructive colouring method for graphs whose colourability is known only through an algebraic proof.",
+    "family": "science_prize_i_cycle_plus_triangles",
+    "parameters": {},
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/0012-365X(92)90588-7",
+        "type": "paper",
+        "locator": "Herbert Fleischner and Michael Stiebitz, A solution to a colouring problem of P. Erdős (1992). Crossref record inspected; Erdős Problem #842 page inspected (the cycle-plus-triangles problem, proved by Fleischner and Stiebitz via the Alon-Tarsi method). The score counts fixed instances coloured properly; it measures a constructive colouring method for graphs whose colourability is known only through an algebraic proof."
+      },
+      {
+        "url": "https://www.erdosproblems.com/842",
+        "type": "archive",
+        "locator": "Erdős Problem #842 (proved (Fleischner and Stiebitz)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000698",
+        "type": "benchmark",
+        "locator": "JSP-000698; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Instance-solving task on five fixed pseudo-random instances.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "Instance-solving task; every instance is 3-colourable, so 5 is attainable.",
+      "sources": [
+        {
+          "title": "A solution to a colouring problem of P. Erdős",
+          "url": "https://doi.org/10.1016/0012-365X(92)90588-7",
+          "authors": "Herbert Fleischner, Michael Stiebitz",
+          "year": 1992
+        },
+        {
+          "title": "Erdős Problem #842",
+          "url": "https://www.erdosproblems.com/842"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 842,
+        "url": "https://www.erdosproblems.com/842",
+        "status": "proved (Fleischner and Stiebitz)",
+        "citation": "T. F. Bloom, Erdős Problem #842, https://www.erdosproblems.com/842, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000698"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-b2-2-sets-1000",
+    "name": "Large subsets of {1, ..., 1000} in which every sum has at most two representations (B2[2] sets)",
+    "description": "construct() -> distinct integers in 1..1000 such that every integer has at most two representations a + b with a <= b from the set (exact count). Maximize the size. Sizes for N = 1000 are finite lower bounds for the extremal function (the asymptotic constant is at least 3/2); no finite optimum is documented.",
+    "family": "science_prize_i_b2_2_sets",
+    "parameters": {
+      "n": 1000,
+      "g": 2
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1006/jnth.2001.2767",
+        "type": "paper",
+        "locator": "Javier Cilleruelo, Imre Z. Ruzsa and Carlos Trujillo, Upper and Lower Bounds for Finite Bh[g] Sequences (2002). Crossref record inspected; Erdős Problem #863 page inspected: for B2[r] sets |A| ~ c_r N^(1/2) with c_2 >= 3/2 from the Cilleruelo-Ruzsa-Trujillo construction, while the difference analogue has c'_r <= sqrt(r), so c_r != c'_r (resolved). No finite maxima for N = 1000 are documented. Sizes for N = 1000 are finite lower bounds for the extremal function (the asymptotic constant is at least 3/2); no finite optimum is documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/863",
+        "type": "archive",
+        "locator": "Erdős Problem #863 (proved); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000156",
+        "type": "benchmark",
+        "locator": "JSP-000156; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value for N = 1000 (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented optimum for N = 1000; asymptotically c_2 >= 3/2 (Cilleruelo, Ruzsa and Trujillo).",
+      "sources": [
+        {
+          "title": "Upper and Lower Bounds for Finite Bh[g] Sequences",
+          "url": "https://doi.org/10.1006/jnth.2001.2767",
+          "authors": "Javier Cilleruelo, Imre Z. Ruzsa, Carlos Trujillo",
+          "year": 2002
+        },
+        {
+          "title": "Erdős Problem #863",
+          "url": "https://www.erdosproblems.com/863"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 863,
+        "url": "https://www.erdosproblems.com/863",
+        "status": "proved",
+        "citation": "T. F. Bloom, Erdős Problem #863, https://www.erdosproblems.com/863, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000156"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-dense-clique-partition-instances",
+    "name": "Clique partitions of two fixed dense random graphs",
+    "description": "construct() -> two lists of cliques (vertex lists), one per instance from random_graph(n, p, seed) for (32,0.6,601) and (64,0.55,602) in the verifier (both with more than n^2/4 edges). Every listed set must be a clique with at least two vertices and every edge must lie in exactly one listed clique. Minimize the total number of cliques. The score totals clique partition sizes on two fixed dense graphs; it measures a partitioning method.",
+    "family": "science_prize_i_dense_clique_partition",
+    "parameters": {},
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.4153/CJM-1966-014-3",
+        "type": "paper",
+        "locator": "Paul Erdős, A. W. Goodman and Louis Pósa, The Representation of a Graph by Set Intersections (1966). Crossref records inspected (Erdős, Goodman and Pósa 1966; Győri and Keszegh 2017). Erdős Problem #1017 page inspected: every graph has an edge partition into at most n^2/4 edges and triangles; Erdős asked for sharpening when there are more than n^2/4 edges; Győri and Keszegh settled the K4-free case. The score totals clique partition sizes on two fixed dense graphs; it measures a partitioning method."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1017",
+        "type": "archive",
+        "locator": "Erdős Problem #1017 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000847",
+        "type": "benchmark",
+        "locator": "JSP-000847; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Instance-solving task on two fixed pseudo-random graphs.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "Instance-solving task; no reference value.",
+      "sources": [
+        {
+          "title": "The Representation of a Graph by Set Intersections",
+          "url": "https://doi.org/10.4153/CJM-1966-014-3",
+          "authors": "Paul Erdős, A. W. Goodman, Louis Pósa",
+          "year": 1966
+        },
+        {
+          "title": "On the Number of Edge-Disjoint Triangles in K4-Free Graphs",
+          "url": "https://doi.org/10.1007/s00493-016-3500-0",
+          "authors": "Ervin Győri, Balázs Keszegh",
+          "year": 2017
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1017,
+        "url": "https://www.erdosproblems.com/1017",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1017, https://www.erdosproblems.com/1017, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000847"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-planar-bipartite-list-colouring",
+    "name": "Colouring four fixed planar bipartite graphs from lists of three colours",
+    "description": "construct() -> four colourings, one per instance from planar_bipartite_lists(splits, seed) for (20,701), (40,702), (60,703), (100,704) in the verifier: a bipartite quadrangulation grown from the cube by inserting squares into random faces (minimum degree 3), with a random list of 3 colours from 0..4 per vertex. Each vertex must take a colour from its list and adjacent vertices must differ. The score is the number of properly coloured instances (0..4). Maximize; all are colourable by the Alon-Tarsi theorem. The score counts fixed instances coloured properly from their lists; it measures a constructive list-colouring method for a theorem proved non-constructively.",
+    "family": "science_prize_i_planar_list_colouring",
+    "parameters": {},
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/BF01204715",
+        "type": "paper",
+        "locator": "Noga Alon and Michael Tarsi, Colorings and orientations of graphs (1992). Crossref record and abstract inspected: Alon and Tarsi's orientation theorem (a graph with an orientation of maximum outdegree d whose even and odd Eulerian subgraphs differ in number is (d+1)-choosable) implies that every planar bipartite graph is 3-choosable. No Erdős Problems page corresponds to this bank entry. The score counts fixed instances coloured properly from their lists; it measures a constructive list-colouring method for a theorem proved non-constructively."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000511",
+        "type": "benchmark",
+        "locator": "JSP-000511; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Instance-solving task on four fixed pseudo-random instances.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "Instance-solving task; every instance is colourable, so 4 is attainable.",
+      "sources": [
+        {
+          "title": "Colorings and orientations of graphs",
+          "url": "https://doi.org/10.1007/BF01204715",
+          "authors": "N. Alon, M. Tarsi",
+          "year": 1992
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": null
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000511"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-sum-free-subsets-instances",
+    "name": "Large sum-free subsets of three fixed sets of integers",
+    "description": "construct() -> three subsets, one per instance from sum_free_instance(size, seed) for (60,801), (120,802), (240,803) in the verifier (distinct nonzero integers in [-10000, 10000]). Each subset must be sum-free: no a + b = c with a, b, c in it (a = b allowed). Maximize the total size; every n-element set has a sum-free subset of size at least (n+2)/3 (Bourgain). The score totals sum-free subset sizes on three fixed random sets; it measures a search method, not the worst case in f(n).",
+    "family": "science_prize_i_sum_free_subsets",
+    "parameters": {},
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.4007/annals.2014.180.2.5",
+        "type": "paper",
+        "locator": "Sean Eberhard, Ben Green and Freddie Manners, Sets of integers with no large sum-free subset (2014). Crossref record inspected; Erdős Problem #792 page inspected (f(n) >= n/3 (Erdős), (n+2)/3 (Bourgain), n/3 + c log log n (Bedert 2025); f(n) <= n/3 + o(n) (Eberhard, Green and Manners); Problem 1 on Green's list). The score totals sum-free subset sizes on three fixed random sets; it measures a search method, not the worst case in f(n)."
+      },
+      {
+        "url": "https://www.erdosproblems.com/792",
+        "type": "archive",
+        "locator": "Erdős Problem #792 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000651",
+        "type": "benchmark",
+        "locator": "JSP-000651; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Instance-solving task on three fixed pseudo-random sets.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "Instance-solving task; no reference value.",
+      "sources": [
+        {
+          "title": "Sets of integers with no large sum-free subset",
+          "url": "https://doi.org/10.4007/annals.2014.180.2.5",
+          "authors": "Sean Eberhard, Ben Green, Freddie Manners",
+          "year": 2014
+        },
+        {
+          "title": "Erdős Problem #792",
+          "url": "https://www.erdosproblems.com/792"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 792,
+        "url": "https://www.erdosproblems.com/792",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #792, https://www.erdosproblems.com/792, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000651"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_i.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  }
+]

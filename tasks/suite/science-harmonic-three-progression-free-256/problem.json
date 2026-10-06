@@ -1,0 +1,104 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_a_harmonic_progression_free",
+  "direction": "maximize",
+  "contract": "construct() -> a nonempty subset of [1,n=256] without any nonconstant k=3 term arithmetic progression. Maximize the exact sum of reciprocals; score is its floating serialization with exact numerator/denominator in details.",
+  "parameters": {
+    "n": 256,
+    "k": 3
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Independent finite certificate evaluator and local seed; no source implementation copied. Exact constraints are verified, but no optimality, general theorem, Lean proof, published record, or prize eligibility is claimed. See task sources and adaptation limitations."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-harmonic-three-progression-free-256",
+  "name": "Reciprocal weight of three-progression-free sets",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "description": "construct() -> a nonempty subset of [1,n=256] without any nonconstant k=3 term arithmetic progression. Maximize the exact sum of reciprocals; score is its floating serialization with exact numerator/denominator in details. A bounded subset of [1,256] without three-term progressions, scored by reciprocal weight. It does not settle the general all-length divergent-reciprocal-sum question.",
+  "benchmark": "Reciprocal weight of three-progression-free sets",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2007.03528",
+      "type": "paper",
+      "locator": "Thomas F. Bloom and Olof Sisask, Breaking the logarithmic barrier in Roth’s theorem on arithmetic progressions. Author abstract and introduction inspected; the paper proves a density bound strong enough for the three-term reciprocal-sum consequence."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000044",
+      "type": "benchmark",
+      "locator": "JSP-000044; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "limitations": [
+    "A bounded subset of [1,256] without three-term progressions, scored by reciprocal weight. It does not settle the general all-length divergent-reciprocal-sum question.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_a",
+      "title": "Problem-bank constructions: additive combinatorics: source-based research tasks",
+      "url": "https://arxiv.org/abs/2208.12182"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented maximum of the reciprocal sum for subsets of [1,256] without three-term progressions. Bloom and Sisask proved that sets whose reciprocal sums diverge contain three-term progressions; the question for progressions of every length is Erdős Problem #3.",
+    "sources": [
+      {
+        "title": "Breaking the logarithmic barrier in Roth's theorem on arithmetic progressions",
+        "url": "https://arxiv.org/abs/2007.03528",
+        "authors": "Thomas F. Bloom, Olof Sisask",
+        "year": 2020
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 3,
+      "url": "https://www.erdosproblems.com/3",
+      "status": "open ($5000)",
+      "citation": "T. F. Bloom, Erdős Problem #3, https://www.erdosproblems.com/3, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Bound the size and harmonic weight of integer sets avoiding three-term arithmetic progressions.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "Breaking the logarithmic barrier in Roth’s theorem on arithmetic progressions",
+        "url": "https://arxiv.org/abs/2007.03528",
+        "task_relation": "A bounded subset of [1,256] without three-term progressions, scored by reciprocal weight. It does not settle the general all-length divergent-reciprocal-sum question.",
+        "primary_goal": "Bound the size and harmonic weight of integer sets avoiding three-term arithmetic progressions.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author abstract and introduction inspected; the paper proves a density bound strong enough for the three-term reciprocal-sum consequence.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

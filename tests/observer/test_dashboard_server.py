@@ -235,11 +235,11 @@ class DashboardServerTests(unittest.TestCase):
         view = json.loads(body)
         catalog = json.loads(self.get('/api/catalog')[2])
         ids = [ident for group in view['groups'] for ident in group['task_ids']]
-        self.assertEqual(len(ids), 959)
-        self.assertEqual(len(set(ids)), 959)
+        self.assertEqual(len(ids), 1163)
+        self.assertEqual(len(set(ids)), 1163)
         self.assertEqual(set(ids), {task['id'] for task in catalog['tasks']})
         self.assertEqual(view['summary']['corpus_paper_count'], 98)
-        self.assertEqual(view['summary']['source_group_count'], 113)
+        self.assertEqual(view['summary']['source_group_count'], 123)
         self.assertEqual(view['task_annotations']['eoh-online-bin-packing']['related_search_family_ids'],
                          ['alphaevolve-openevolve', 'funsearch-eoh', 'other'])
         self.assertEqual(self.fingerprints(), before)

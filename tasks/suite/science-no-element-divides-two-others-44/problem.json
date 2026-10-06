@@ -1,0 +1,112 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_divides_two",
+  "direction": "maximize",
+  "contract": "construct() -> distinct integers in 1..44 such that no element divides two other elements. Maximize the size; the optimum is 30.",
+  "parameters": {
+    "n": 44
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "For n = 44 the maximum is 30, so the task recovers an extremal set. Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-no-element-divides-two-others-44",
+  "name": "Subsets of {1, ..., 44} in which no element divides two others",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> distinct integers in 1..44 such that no element divides two other elements. Maximize the size; the optimum is 30. For n = 44 the maximum is 30, so the task recovers an extremal set.",
+  "benchmark": "Subsets of {1, ..., 44} in which no element divides two others",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1002/sapm1977563291",
+      "type": "paper",
+      "locator": "Kenneth Lebensold, A Divisibility Problem (1977). Crossref record inspected; Erdős Problem #1062 page inspected (the interval [m+1, 3m+2] gives f(n) >= ceil(2n/3); Lebensold proved 0.6725n <= f(n) <= 0.6736n for large n; whether lim f(n)/n is irrational is open; Guy B24). OEIS A038372 inspected: f(44) = 30. For n = 44 the maximum is 30, so the task recovers an extremal set."
+    },
+    {
+      "url": "https://www.erdosproblems.com/1062",
+      "type": "archive",
+      "locator": "Erdős Problem #1062 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000882",
+      "type": "benchmark",
+      "locator": "JSP-000882; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case from the OEIS table; the simple interval construction [15, 44] already attains 30.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 30,
+    "statement": "f(44) = 30 (OEIS A038372).",
+    "sources": [
+      {
+        "title": "OEIS A038372: Largest subset of [1..n] such that no member divides two others",
+        "url": "https://oeis.org/A038372"
+      },
+      {
+        "title": "A Divisibility Problem",
+        "url": "https://doi.org/10.1002/sapm1977563291",
+        "authors": "Kenneth Lebensold",
+        "year": 1977
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1062,
+      "url": "https://www.erdosproblems.com/1062",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1062, https://www.erdosproblems.com/1062, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine f(n), the largest subset of {1..n} in which no element divides two others, and its limiting density.",
+    "importance_rationale": "A classical divisibility extremal problem related to primitive sets; the limiting constant is known only to lie in [0.6725, 0.6736].",
+    "papers": [
+      {
+        "title": "A Divisibility Problem",
+        "url": "https://doi.org/10.1002/sapm1977563291",
+        "task_relation": "For n = 44 the maximum is 30, so the task recovers an extremal set.",
+        "primary_goal": "Determine f(n), the largest subset of {1..n} in which no element divides two others, and its limiting density.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #1062 page inspected (the interval [m+1, 3m+2] gives f(n) >= ceil(2n/3); Lebensold proved 0.6725n <= f(n) <= 0.6736n for large n; whether lim f(n)/n is irrational is open; Guy B24). OEIS A038372 inspected: f(44) = 30.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

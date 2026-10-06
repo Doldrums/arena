@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "id": "science-ramsey-triangle-versus-independent-ten",
+  "name": "Triangle-free graphs without independent 10-sets (Ramsey number R(3,10))",
+  "description": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 41. It must contain no triangle and no independent set of 10 vertices; both conditions are checked by exact branch and bound. Maximize n. A valid graph on n vertices certifies R(3,10) > n. The survey records 39 as the largest known order, and R(3,10) <= 41 limits any valid graph to 40 vertices.",
+  "paper_ids": [
+    "science-prize_e"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.37236/12936",
+      "type": "paper",
+      "locator": "Vigleik Angeltveit, R(3,10) <= 41 (2025). Crossref record for the Electronic Journal of Combinatorics article inspected; Radziszowski's survey DS1.18 (Table Ia, item 2.1.d) inspected: 40 <= R(3,10) <= 41, lower bound from Exoo (1989), at least 43 million (3,10)-graphs on 39 vertices known. A valid graph on n vertices certifies R(3,10) > n. The survey records 39 as the largest known order, and R(3,10) <= 41 limits any valid graph to 40 vertices."
+    },
+    {
+      "url": "https://www.erdosproblems.com/165",
+      "type": "archive",
+      "locator": "Erdős Problem #165 (open (asymptotics of R(3,k))); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000162",
+      "type": "benchmark",
+      "locator": "JSP-000162; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Triangle-free graphs without independent 10-sets (Ramsey number R(3,10))",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_e_ramsey_3_10",
+    "science_family": "science_prize_e_ramsey_3_10",
+    "parameters": {
+      "clique": 3,
+      "independent": 10,
+      "max_vertices": 41
+    },
+    "interface": "construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 41. It must contain no triangle and no independent set of 10 vertices; both conditions are checked by exact branch and bound. Maximize n.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000162"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_e_ramsey_3_10",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "The Andrásfai starter has 26 vertices and is far below the published 39-vertex constructions, which are not copied.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_e.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "best_known",
+    "value": 39,
+    "statement": "Largest known triangle-free graph with no independent 10-set has 39 vertices (Exoo 1989), so 40 <= R(3,10); Angeltveit (2025) proved R(3,10) <= 41. A 40-vertex graph would prove R(3,10) = 41.",
+    "sources": [
+      {
+        "title": "On Two Classical Ramsey Numbers of the Form R(3,n)",
+        "url": "https://doi.org/10.1137/0402043",
+        "authors": "Geoffrey Exoo",
+        "year": 1989
+      },
+      {
+        "title": "R(3,10) <= 41",
+        "url": "https://doi.org/10.37236/12936",
+        "authors": "Vigleik Angeltveit",
+        "year": 2025
+      },
+      {
+        "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+        "authors": "Stanisław P. Radziszowski",
+        "url": "https://doi.org/10.37236/21"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 165,
+      "url": "https://www.erdosproblems.com/165",
+      "status": "open (asymptotics of R(3,k))",
+      "citation": "T. F. Bloom, Erdős Problem #165, https://www.erdosproblems.com/165, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the Ramsey number R(3,10), the least n forcing a triangle or an independent 10-set.",
+    "importance_rationale": "R(3,k) is the central off-diagonal Ramsey function (Erdős Problem #165), and R(3,10) is the smallest classical two-colour case with an unknown value; a 40-vertex graph would settle it.",
+    "papers": [
+      {
+        "title": "R(3,10) <= 41",
+        "url": "https://doi.org/10.37236/12936",
+        "task_relation": "A valid graph on n vertices certifies R(3,10) > n. The survey records 39 as the largest known order, and R(3,10) <= 41 limits any valid graph to 40 vertices.",
+        "primary_goal": "Determine the Ramsey number R(3,10), the least n forcing a triangle or an independent 10-set.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record for the Electronic Journal of Combinatorics article inspected; Radziszowski's survey DS1.18 (Table Ia, item 2.1.d) inspected: 40 <= R(3,10) <= 41, lower bound from Exoo (1989), at least 43 million (3,10)-graphs on 39 vertices known.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

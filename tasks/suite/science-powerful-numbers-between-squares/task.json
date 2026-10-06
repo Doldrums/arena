@@ -1,0 +1,159 @@
+{
+  "schema_version": "1.0",
+  "id": "science-powerful-numbers-between-squares",
+  "name": "Many powerful numbers strictly between consecutive squares (k <= 10^9)",
+  "description": "construct() -> an integer k with 1 <= k <= 10^9. The score is the number of powerful integers (p | n implies p^2 | n) strictly between k^2 and (k+1)^2, counted exactly through the unique form a^2 b^3 with b squarefree. Maximize; the optimum is 11 (first at k = 472532614). For k <= 10^9 the maximum is 11. Erdős's h(n) counts [n^2, (n+1)^2) and so also includes the square n^2; the task counts the open interval as in OEIS A119241.",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1112/S0025579300010056",
+      "type": "paper",
+      "locator": "P. Shiu, On the number of square-full integers between successive squares (1980). Crossref record inspected; OEIS A119242 inspected: the least k with exactly 11 powerful numbers strictly between k^2 and (k+1)^2 is 472532614, the least with 12 is 78102676912, and a(n) > 10^11 for n >= 13 (Donovan Johnson), so 11 is the maximum for k <= 10^9. Erdős Problem #942 page inspected (Shiu proved every count occurs with positive density; De Koninck and Luca gave growth rates for large counts). For k <= 10^9 the maximum is 11. Erdős's h(n) counts [n^2, (n+1)^2) and so also includes the square n^2; the task counts the open interval as in OEIS A119241."
+    },
+    {
+      "url": "https://www.erdosproblems.com/942",
+      "type": "archive",
+      "locator": "Erdős Problem #942 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000783",
+      "type": "benchmark",
+      "locator": "JSP-000783; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Many powerful numbers strictly between consecutive squares (k <= 10^9)",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_h_powerful",
+    "science_family": "science_prize_h_powerful",
+    "parameters": {
+      "bound": 1000000000
+    },
+    "interface": "construct() -> an integer k with 1 <= k <= 10^9. The score is the number of powerful integers (p | n implies p^2 | n) strictly between k^2 and (k+1)^2, counted exactly through the unique form a^2 b^3 with b squarefree. Maximize; the optimum is 11 (first at k = 472532614).",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000783"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_h_powerful",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case; the open interval is counted (Erdős's h(n) is one larger).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_h.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 11,
+    "statement": "For k <= 10^9 at most 11 powerful numbers lie strictly between k^2 and (k+1)^2; first at k = 472532614 (OEIS A119242).",
+    "sources": [
+      {
+        "title": "OEIS A119242: Least number k such that there are exactly n powerful numbers between k^2 and (k+1)^2",
+        "url": "https://oeis.org/A119242"
+      },
+      {
+        "title": "On the number of square-full integers between successive squares",
+        "url": "https://doi.org/10.1112/S0025579300010056",
+        "authors": "P. Shiu",
+        "year": 1980
+      },
+      {
+        "title": "Sur la proximité des nombres puissants",
+        "url": "https://doi.org/10.4064/aa114-2-4",
+        "authors": "Jean-Marie De Koninck, Florian Luca",
+        "year": 2004
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 942,
+      "url": "https://www.erdosproblems.com/942",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #942, https://www.erdosproblems.com/942, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Estimate the largest number of powerful numbers between consecutive squares (Erdős Problem #942).",
+    "importance_rationale": "Powerful numbers are central to the abc conjecture and to questions on consecutive powerful numbers; the growth of h(n) is open.",
+    "papers": [
+      {
+        "title": "On the number of square-full integers between successive squares",
+        "url": "https://doi.org/10.1112/S0025579300010056",
+        "task_relation": "For k <= 10^9 the maximum is 11. Erdős's h(n) counts [n^2, (n+1)^2) and so also includes the square n^2; the task counts the open interval as in OEIS A119241.",
+        "primary_goal": "Estimate the largest number of powerful numbers between consecutive squares (Erdős Problem #942).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; OEIS A119242 inspected: the least k with exactly 11 powerful numbers strictly between k^2 and (k+1)^2 is 472532614, the least with 12 is 78102676912, and a(n) > 10^11 for n >= 13 (Donovan Johnson), so 11 is the maximum for k <= 10^9. Erdős Problem #942 page inspected (Shiu proved every count occurs with positive density; De Koninck and Luca gave growth rates for large counts).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

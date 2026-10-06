@@ -1,0 +1,104 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_c_652",
+  "direction": "maximize",
+  "contract": "construct() -> nonempty distinct integers in 2..256. For every THREE DISTINCT members a,b,c, require that a does not divide b*c. Maximize cardinality. In particular b and c cannot denote the same member; this convention is part of the finite contract.",
+  "parameters": {
+    "n": 256
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Exact finite certificate validation; independently implemented from the cited mathematical definition. Resource bounds and source adaptation are recorded per task. No Lean verification or general theorem is claimed."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-two-primitive-integer-sets",
+  "name": "Large integer sets with no two-other-product divisibility",
+  "paper_ids": [
+    "science-prize_c"
+  ],
+  "description": "construct() -> nonempty distinct integers in 2..256. For every THREE DISTINCT members a,b,c, require that a does not divide b*c. Maximize cardinality. In particular b and c cannot denote the same member; this convention is part of the finite contract. Only the interval up to 256 is searched. The verifier uses three distinct members, and it does not claim a sharp asymptotic error term or optimal cardinality.",
+  "benchmark": "Large integer sets with no two-other-product divisibility",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://www.renyi.hu/~p_erdos/1938-07.pdf",
+      "type": "paper",
+      "locator": "Paul Erdős, On sequences of integers no one of which divides the product of two others and on some related problems (1938). Introduction and section 1 study A-sequences in which no member divides the product of two other members; the sequence of primes is an explicit example."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000652",
+      "type": "benchmark",
+      "locator": "JSP-000652; pinned revision bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2. Independently paraphrased finite adaptation; catalog contributor claims are not accepted as proof."
+    }
+  ],
+  "limitations": [
+    "Independent finite computational adaptation. Not a Lean proof, prize submission, general conjecture solution, or guarantee of novelty.",
+    "Only the interval up to 256 is searched. The verifier uses three distinct members, and it does not claim a sharp asymptotic error term or optimal cardinality.",
+    "Candidate Python code is trusted code; the evaluator process is not a security sandbox."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_c",
+      "title": "Problem-bank constructions: graphs and set systems: source-based research tasks",
+      "url": "https://users.renyi.hu/~gyarfas/Cikkek/90_howtodecrease.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value for n = 256. Erdős proved F(n) = pi(n) + Theta(n^(2/3)/(log n)^2), and the asymptotic constant asked for in Erdős Problem #793 has been established.",
+    "sources": [
+      {
+        "title": "On sequences of integers no one of which divides the product of two others and on some related problems",
+        "url": "https://www.renyi.hu/~p_erdos/1938-07.pdf",
+        "authors": "Paul Erdős",
+        "year": 1938
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 793,
+      "url": "https://www.erdosproblems.com/793",
+      "status": "proved (Lean)",
+      "citation": "T. F. Bloom, Erdős Problem #793, https://www.erdosproblems.com/793, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Understand the maximum density of multiplicative divisibility-avoiding sets.",
+    "importance_rationale": "The cited paper investigates this mathematical problem as a research objective. The task evaluates a finite construction or certificate for the same quantity, with the local restriction stated explicitly.",
+    "papers": [
+      {
+        "title": "Paul Erdős, On sequences of integers no one of which divides the product of two others and on some related problems (1938)",
+        "url": "https://www.renyi.hu/~p_erdos/1938-07.pdf",
+        "primary_goal": "Understand the maximum density of multiplicative divisibility-avoiding sets.",
+        "task_relation": "Only the interval up to 256 is searched. The verifier uses three distinct members, and it does not claim a sharp asymptotic error term or optimal cardinality.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reason": "Supported by the inspected primary problem statement, rather than the prize listing or an agent benchmark. Finite progress is not automatically a novel scientific result.",
+    "reviewed_at": "2026-09-22",
+    "verification_basis": "Introduction and section 1 study A-sequences in which no member divides the product of two other members; the sequence of primes is an explicit example.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "area": "mathematics",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

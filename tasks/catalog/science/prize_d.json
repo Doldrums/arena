@@ -1,0 +1,850 @@
+[
+  {
+    "id": "science-gaussian-prime-moat-path-50",
+    "name": "Gaussian-prime paths with small maximum jumps",
+    "description": "construct() -> a list of distinct integer coordinate pairs in [-64,64]^2, starting at (1,1), ending with max(abs(x),abs(y))>=50, and containing only Gaussian primes. Minimize the largest squared Euclidean step. Axis primes must be 3 modulo 4; off-axis norms must be prime. The finite path minimizes its largest jump inside a bounded square; it does not establish an infinite path or reproduce the periodic-moat proof. The optimum is 8, found by breadth-first search over all Gaussian primes in the box; this is a rediscovery task.",
+    "family": "science_prize_d_gaussian_path",
+    "parameters": {
+      "bound": 64,
+      "target": 50
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1080/10586458.1997.10504616",
+        "type": "paper",
+        "locator": "Ellen Gethner and H. M. Stark, Periodic Gaussian Moats (1997). Publisher-indexed abstract inspected; direct page returned HTTP 403. The abstract studies bounded-step Gaussian-prime walks and periodic moats. It attributes the question to Gordon. The finite path minimizes its largest jump inside a bounded square; it does not establish an infinite path or reproduce the periodic-moat proof."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000792",
+        "type": "benchmark",
+        "locator": "JSP-000792; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case: With steps of squared length at most 5, the Gaussian primes reachable from 1+i stay inside max(|x|,|y|) < 50, while squared length 8 suffices.",
+      "The finite endpoint and coordinate bounds cannot resolve the infinite Gaussian moat problem. The elementary two-point starter is locally chosen, not a published record.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 8,
+      "statement": "With steps of squared length at most 5, the Gaussian primes reachable from 1+i stay inside max(|x|,|y|) < 50, while squared length 8 suffices. A breadth-first search over all Gaussian primes in [-64,64]^2 (scripts/check_state_of_the_art.py) gives the optimum 8. Whether a walk with bounded steps can reach infinity is the Gaussian moat problem (Erdős Problem #952).",
+      "sources": [
+        {
+          "title": "Periodic Gaussian Moats",
+          "url": "https://doi.org/10.1080/10586458.1997.10504616",
+          "authors": "Ellen Gethner, H. M. Stark",
+          "year": 1997
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 952,
+        "url": "https://www.erdosproblems.com/952",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #952, https://www.erdosproblems.com/952, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000792"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_d.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-jacobsthal-five-prime-gaps",
+    "name": "Long coprimality gaps for five-prime moduli",
+    "description": "construct() -> a squarefree integer n in [2,1000000] with exactly five distinct prime factors. Maximize the longest cyclic run of residues not coprime to n. This score equals j(n)-1, not j(n); every residue and the wraparound gap are checked. The bounded five-factor search recovers a known finite case; Table 1 gives H(5)=14, so the local run-length score has a known upper bound of 13.",
+    "family": "science_prize_d_jacobsthal",
+    "parameters": {
+      "maximum": 1000000,
+      "prime_count": 5
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1090/S0025-5718-2012-02581-6",
+        "type": "paper",
+        "locator": "Lajos Hajdu and N. Saradha, Disproof of a conjecture of Jacobsthal (2012). Author-hosted full text, introduction and Theorem 1.2/Table 1 inspected. It defines H(r), proves H(5)=14, and distinguishes the longest bad run from j(n). The bounded five-factor search recovers a known finite case; Table 1 gives H(5)=14, so the local run-length score has a known upper bound of 13."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000804",
+        "type": "benchmark",
+        "locator": "JSP-000804; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+      }
+    ],
+    "limitations": [
+      "The five-prime case is already resolved: H(5)=14. Neither a record here nor failure to improve a seed is progress on an unrestricted quadratic bound.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 13,
+      "statement": "Hajdu and Saradha proved H(5) = 14. The longest run of residues not coprime to a squarefree n with five prime factors is therefore at most 13, and 2310 = 2·3·5·7·11 attains it.",
+      "sources": [
+        {
+          "title": "Disproof of a conjecture of Jacobsthal",
+          "url": "https://doi.org/10.1090/S0025-5718-2012-02581-6",
+          "authors": "Lajos Hajdu, N. Saradha",
+          "year": 2012
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 970,
+        "url": "https://www.erdosproblems.com/970",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #970, https://www.erdosproblems.com/970, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000804"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_d.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-pancyclic-graph-excess-40",
+    "name": "Sparse pancyclic graphs on 40 vertices",
+    "description": "construct() -> {'edges': undirected edge pairs on vertices 0..39, 'cycles': one vertex-list cycle of every length 3..40 in that order}. Edges are simple and distinct; cycle vertices are distinct and every required edge must exist. Minimize edge count minus 40. This is an independently implemented n=40 construction search with explicit cycle certificates. The seed is an elementary fan graph, not a copied minimal construction.",
+    "family": "science_prize_d_pancyclic",
+    "parameters": {
+      "n": 40
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1312.0274",
+        "type": "paper",
+        "locator": "Sean Griffin, Minimal Pancyclicity (2013). Author abstract inspected. It defines m(n), studies minimum-edge pancyclic graphs, and reports exact values through n=37. This is an independently implemented n=40 construction search with explicit cycle certificates. The seed is an elementary fan graph, not a copied minimal construction."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000846",
+        "type": "benchmark",
+        "locator": "JSP-000846; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+      }
+    ],
+    "limitations": [
+      "No current optimal value or novelty threshold for n=40 is asserted. Feasibility proves an upper bound only, not global optimality or the general asymptotic law.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value for n = 40. Griffin determined m(n) exactly for n <= 37 (m(37) = 42, an excess of 5). Bondy's counting bound gives an excess of at least 5 for n = 40, and the known five-chord constructions stop at 37 vertices.",
+      "sources": [
+        {
+          "title": "Minimal Pancyclicity",
+          "url": "https://arxiv.org/abs/1312.0274",
+          "authors": "Sean Griffin",
+          "year": 2013
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1016,
+        "url": "https://www.erdosproblems.com/1016",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1016, https://www.erdosproblems.com/1016, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000846"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_d.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-equal-area-triangle-multiplicity-30",
+    "name": "Many equal-area triangles from 30 planar points",
+    "description": "construct() -> exactly 30 distinct integer coordinate pairs in [-30,30]^2. Compute the absolute determinant for every triple, exclude zero-area triples, and maximize the largest multiplicity of a single positive doubled area. The local bounded integer configurations give lower constructions for positive-area multiplicity; they do not reproduce the paper's asymptotic upper-bound proof.",
+    "family": "science_prize_d_equal_area",
+    "parameters": {
+      "n": 30,
+      "bound": 30
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/0710.4109",
+        "type": "paper",
+        "locator": "Adrian Dumitrescu, Micha Sharir, and Csaba D. Tóth, Extremal problems on triangle areas in two and three dimensions (2007). Author abstract inspected. The paper directly bounds the number of equal-area triangles determined by finite point sets. The local bounded integer configurations give lower constructions for positive-area multiplicity; they do not reproduce the paper's asymptotic upper-bound proof."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000903",
+        "type": "benchmark",
+        "locator": "JSP-000903; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+      }
+    ],
+    "limitations": [
+      "Integer coordinates are a strict restriction of arbitrary real planar configurations. Collinear triples never contribute, and a finite score is not a general extremal theorem.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented maximum for 30 points in [-30,30]^2. Asymptotically the maximum number of equal-area triangles is between n^2 log log n (Erdős and Purdy) and O(n^(20/9)) (Raz and Sharir), Erdős Problem #1086.",
+      "sources": [
+        {
+          "title": "Extremal problems on triangle areas in two and three dimensions",
+          "url": "https://doi.org/10.1016/j.jcta.2009.03.008",
+          "authors": "Adrian Dumitrescu, Micha Sharir, Csaba D. Tóth",
+          "year": 2009
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1086,
+        "url": "https://www.erdosproblems.com/1086",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1086, https://www.erdosproblems.com/1086, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000903"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_d.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-projective-blocking-intersections-pg27",
+    "name": "Projective blocking sets with small line intersections in PG(2,7)",
+    "description": "construct() -> distinct point indices in 0..56 for PG(2,7). Point order is (1,x,y) lexicographically for x,y=0..6, then (0,1,x), then (0,0,1). Every projective line must meet the set. Minimize the maximum intersection with any line; line-contained sets are allowed but score at least 8. The local task searches all point subsets in the prime plane of order seven; it does not constrain candidates to unions of algebraic curves or reproduce that paper's proof. The optimum is 4: an exhaustive search shows that no blocking set meets every line in at most 3 points, so this is a rediscovery task.",
+    "family": "science_prize_d_blocking_set",
+    "parameters": {
+      "q": 7
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2510.15332",
+        "type": "paper",
+        "locator": "Shamil Asgarli, Dragos Ghioca, and Chi Hoi Yip, Blocking sets from a union of plane curves (2025). Author abstract inspected. It explicitly motivates constructions by Erdős' question on blocking sets meeting every line only a few times. The local task searches all point subsets in the prime plane of order seven; it does not constrain candidates to unions of algebraic curves or reproduce that paper's proof."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000964",
+        "type": "benchmark",
+        "locator": "JSP-000964; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case: No blocking set of PG(2,7) meets every line in at most 3 points, while one meeting every line in at most 4 points exists.",
+      "A result in this one Desarguesian plane says nothing about a uniform constant across arbitrary finite planes. The seed is a full line and is explicitly a trivial blocking set.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 4,
+      "statement": "No blocking set of PG(2,7) meets every line in at most 3 points, while one meeting every line in at most 4 points exists. An exhaustive branch-and-bound search (scripts/check_state_of_the_art.py) establishes both, so the optimum is 4. The uniform question over all projective planes is Erdős Problem #1159.",
+      "sources": [
+        {
+          "title": "Blocking sets from a union of plane curves",
+          "url": "https://arxiv.org/abs/2510.15332",
+          "authors": "Shamil Asgarli, Dragos Ghioca, Chi Hoi Yip",
+          "year": 2025
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1159,
+        "url": "https://www.erdosproblems.com/1159",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1159, https://www.erdosproblems.com/1159, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000964"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_d.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-transitive-subtournament-minimum-20",
+    "name": "Tournaments with small largest transitive subtournaments",
+    "description": "construct() -> 190 integer bits, one for each pair (i,j), i<j, in lexicographic order on 20 vertices. Bit 0 orients i to j and bit 1 orients j to i. Minimize the exact largest transitive induced subtournament, computed by source-vertex subset recursion. The local n=20 task minimizes the largest transitive subset rather than reproducing the larger R(7) computation. This small order is labelled rediscovery, with no new-bound claim.",
+    "family": "science_prize_d_transitive_tournament",
+    "parameters": {
+      "n": 20
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/s00373-022-02560-5",
+        "type": "paper",
+        "locator": "David Neiman, John Mackey, and Marijn Heule, Tighter Bounds on Directed Ramsey Number R(7) (2022). Publisher abstract inspected. It defines directed Ramsey numbers and describes exact computer-assisted work on tournaments avoiding transitive subtournaments. The local n=20 task minimizes the largest transitive subset rather than reproducing the larger R(7) computation. This small order is labelled rediscovery, with no new-bound claim."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-1001-1022.md#JSP-001021",
+        "type": "benchmark",
+        "locator": "JSP-001021; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+      }
+    ],
+    "limitations": [
+      "The 20-vertex case is a bounded rediscovery task, not a new solution to the all-order problem or the paper's R(7) result. No SAT solver, published tournament, or upstream implementation is copied.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 5,
+      "statement": "Every tournament on n vertices contains a transitive subtournament on floor(log2 n) + 1 vertices (Stearns), which is 5 for n = 20. The Paley tournament on 23 vertices restricted to 20 vertices has no transitive subtournament on 6 (scripts/check_state_of_the_art.py). The largest tournament without one has 27 vertices (Sanchez-Flores; confirmed by Neiman, Mackey and Heule). Erdős Problem #1216 was answered negatively by Reid and Parker.",
+      "sources": [
+        {
+          "title": "The Voting Problem",
+          "url": "https://doi.org/10.1080/00029890.1959.11989405",
+          "authors": "Richard Stearns",
+          "year": 1959
+        },
+        {
+          "title": "Tighter Bounds on Directed Ramsey Number R(7)",
+          "url": "https://doi.org/10.1007/s00373-022-02560-5",
+          "authors": "David Neiman, John Mackey, Marijn Heule",
+          "year": 2022
+        },
+        {
+          "title": "Disproof of a conjecture of Erdős and Moser on tournaments",
+          "url": "https://doi.org/10.1016/s0021-9800(70)80061-8",
+          "authors": "K. B. Reid, E. T. Parker",
+          "year": 1970
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1216,
+        "url": "https://www.erdosproblems.com/1216",
+        "status": "disproved",
+        "citation": "T. F. Bloom, Erdős Problem #1216, https://www.erdosproblems.com/1216, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-001021"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_d.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-small-prime-primitive-roots",
+    "name": "Small prime primitive roots for twelve prime moduli",
+    "description": "construct() -> twelve Python prime integers, one for each modulus [101,103,107,109,113,127,131,137,139,149,151,157]. Each root is at most 100000, coprime to its modulus, and has multiplicative order p-1. Minimize the sum of these prime roots. Twelve small fixed moduli provide a finite construction/rediscovery instance; exact orders are verified without reproducing the shifted sieve.",
+    "family": "science_prize_d_prime_primitive_roots",
+    "parameters": {
+      "moduli": [
+        101,
+        103,
+        107,
+        109,
+        113,
+        127,
+        131,
+        137,
+        139,
+        149,
+        151,
+        157
+      ],
+      "maximum": 100000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/math/9807104",
+        "type": "paper",
+        "locator": "Greg Martin, The Least Prime Primitive Root and the Shifted Sieve (1997). Author abstract and journal metadata inspected. The paper bounds least prime primitive roots and explicitly distinguishes unconditional almost-all-modulus and conditional all-modulus results. Twelve small fixed moduli provide a finite construction/rediscovery instance; exact orders are verified without reproducing the shifted sieve."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000818",
+        "type": "benchmark",
+        "locator": "JSP-000818; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+      }
+    ],
+    "limitations": [
+      "All moduli are public and small. Optimizing their roots does not prove a uniform bound or justify the generalized Riemann hypothesis.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 47,
+      "statement": "The least prime primitive roots of the twelve moduli are 2, 5, 2, 11, 3, 3, 2, 3, 2, 2, 7 and 5 (OEIS A002233), summing to 47.",
+      "sources": [
+        {
+          "title": "OEIS A002233: Least prime primitive root of the n-th prime",
+          "url": "https://oeis.org/A002233"
+        },
+        {
+          "title": "The Least Prime Primitive Root and the Shifted Sieve",
+          "url": "https://arxiv.org/abs/math/9807104",
+          "authors": "Greg Martin",
+          "year": 1997
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 985,
+        "url": "https://www.erdosproblems.com/985",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #985, https://www.erdosproblems.com/985, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000818"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_d.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-oppositely-ordered-farey-pair-1000",
+    "name": "Nearby oppositely ordered fractions in the Farey sequence",
+    "description": "construct() -> [[a,b],[c,d]], two reduced fractions in [0,1] with denominators <=1000, a/b<c/d, and (c-a)*(d-b)<0. Minimize their rank difference in the complete Farey sequence of order 1000, including 0/1 and 1/1. Every rank is recomputed exactly. The local finite search gives an upper certificate for the first possible ordering failure at order 1000. It corrects the feasibility draft's unrelated strictly monotone-run objective. The optimum is 252, found by scanning the complete Farey sequence of order 1000; this is a rediscovery task.",
+    "family": "science_prize_d_opposite_farey_pair",
+    "parameters": {
+      "order": 1000
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2509.00121",
+        "type": "paper",
+        "locator": "Wouter van Doorn, Improved bounds for the Mayer-Erdős phenomenon on similarly ordered Farey fractions (2025). Author abstract inspected. Similar ordering is the pairwise nonnegative product condition; the paper also constructs close pairs where that product is negative. The local finite search gives an upper certificate for the first possible ordering failure at order 1000. It corrects the feasibility draft's unrelated strictly monotone-run objective."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000837",
+        "type": "benchmark",
+        "locator": "JSP-000837; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case: The smallest rank difference between two oppositely ordered fractions in the Farey sequence of order 1000 is 252, i.e.",
+      "The bank's unrelated 2026 pairwise-sums citation is not used. No optimality or general all-order bound follows from an accepted pair.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 252,
+      "statement": "The smallest rank difference between two oppositely ordered fractions in the Farey sequence of order 1000 is 252, i.e. f(1000) = 251 in the notation of Erdős Problem #1005. This comes from a full scan (scripts/check_state_of_the_art.py); OEIS A386893 tabulates f(n) for n <= 100, and the same scan agrees with it. Van Doorn proved (1/12 - o(1))n <= f(n) <= n/4 + O(1).",
+      "sources": [
+        {
+          "title": "OEIS A386893: Minimal number of Farey fractions between two fractions that are not similarly ordered",
+          "url": "https://oeis.org/A386893"
+        },
+        {
+          "title": "Improved bounds for the Mayer-Erdős phenomenon on similarly ordered Farey fractions",
+          "url": "https://arxiv.org/abs/2509.00121",
+          "authors": "Wouter van Doorn",
+          "year": 2025
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1005,
+        "url": "https://www.erdosproblems.com/1005",
+        "status": "solved",
+        "citation": "T. F. Bloom, Erdős Problem #1005, https://www.erdosproblems.com/1005, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000837"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_d.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-anti-ramsey-four-cycle-colors-16",
+    "name": "Many edge colors without a rainbow four-cycle",
+    "description": "construct() -> 120 integer colors in 0..119 for the lexicographically ordered pairs (i,j), 0<=i<j<16. No four-cycle may have four distinct edge colors. Maximize the number of colors actually used; all three cycles on every four-vertex subset are checked. The n=16, cycle-length-four task searches extremal colorings for a solved finite specialization, using an independently written exhaustive verifier.",
+    "family": "science_prize_d_rainbow_c4_avoidance",
+    "parameters": {
+      "n": 16
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/s00373-005-0619-y",
+        "type": "paper",
+        "locator": "Juan José Montellano-Ballesteros and Victor Neumann-Lara, An Anti-Ramsey Theorem on Cycles (2005). Authors' institutional publication abstract inspected. It defines the number of colors forcing a rainbow cycle and reports its determination for all n>=p>=3. The n=16, cycle-length-four task searches extremal colorings for a solved finite specialization, using an independently written exhaustive verifier."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000916",
+        "type": "benchmark",
+        "locator": "JSP-000916; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+      }
+    ],
+    "limitations": [
+      "This is mathematical rediscovery, not an unsolved-conjecture task. No published coloring implementation or construction is imported.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 20,
+      "statement": "Alon proved that the maximum number of colours on K_n without a rainbow C_4 is floor(4n/3) - 1, which is 20 for n = 16. Montellano-Ballesteros and Neumann-Lara extended the exact result to all cycles. The formula was rechecked exhaustively for n <= 6 (scripts/check_state_of_the_art.py).",
+      "sources": [
+        {
+          "title": "On a conjecture of Erdős, Simonovits, and Sós concerning anti-Ramsey theorems",
+          "url": "https://doi.org/10.1002/jgt.3190070112",
+          "authors": "Noga Alon",
+          "year": 1983
+        },
+        {
+          "title": "An Anti-Ramsey Theorem on Cycles",
+          "url": "https://doi.org/10.1007/s00373-005-0619-y",
+          "authors": "J. J. Montellano-Ballesteros, V. Neumann-Lara",
+          "year": 2005
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1105,
+        "url": "https://www.erdosproblems.com/1105",
+        "status": "proved",
+        "citation": "T. F. Bloom, Erdős Problem #1105, https://www.erdosproblems.com/1105, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000916"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_d.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-most-frequent-permutation-order-16",
+    "name": "Most frequent element order in the symmetric group S16",
+    "description": "construct() -> an attainable permutation order k in S16. Maximize the exact number of permutations of that order. All integer partitions of 16 are enumerated and their cycle-type multiplicities 16! / product(i**m_i * m_i!) are summed by cycle-length lcm. S16 is a finite exact rediscovery specialization. Degree 16 keeps every count below 2**53 so the common floating score envelope represents integer counts exactly.",
+    "family": "science_prize_d_frequent_permutation_order",
+    "parameters": {
+      "n": 16
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2510.11698",
+        "type": "paper",
+        "locator": "Adrian Beker, The most probable order of a random permutation (2025). Author abstract inspected. It studies the maximal order probability and proves an asymptotic description of its maximizing orders. S16 is a finite exact rediscovery specialization. Degree 16 keeps every count below 2**53 so the common floating score envelope represents integer counts exactly."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000966",
+        "type": "benchmark",
+        "locator": "JSP-000966; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+      }
+    ],
+    "limitations": [
+      "Finite enumeration does not reproduce or prove the asymptotic result. The local order cap and degree differ from the original feasibility draft's S32 instance.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 2428557331200,
+      "statement": "In S_16 the most common order is 12, shared by 2,428,557,331,200 permutations (OEIS A061125). Enumerating all 231 cycle types (scripts/check_state_of_the_art.py) confirms that no other order is more frequent. Beker described the maximizing orders asymptotically.",
+      "sources": [
+        {
+          "title": "OEIS A061125: Number of degree-n permutations of order exactly 12",
+          "url": "https://oeis.org/A061125"
+        },
+        {
+          "title": "The most probable order of a random permutation",
+          "url": "https://arxiv.org/abs/2510.11698",
+          "authors": "Adrian Beker",
+          "year": 2025
+        }
+      ],
+      "as_of": "2026-09-24"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000966"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_d.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-distinct-modular-inverse-cover-101",
+    "name": "Short distinct-denominator inverse sums covering residues modulo 101",
+    "description": "construct() -> 101 nonempty lists, row r containing distinct denominators in 1..10 whose modular inverses sum to r modulo 101. Every residue must be represented. Minimize the largest row length. Denominators may recur across different rows, but never within one row. The local p=101, denominator-bound-ten problem is a concrete finite covering certificate; it does not reproduce the all-prime, arbitrary-epsilon theorem.",
+    "family": "science_prize_d_modular_inverse_cover",
+    "parameters": {
+      "p": 101,
+      "interval": 10
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/s00013-002-8269-2",
+        "type": "paper",
+        "locator": "Igor E. Shparlinski, On a question of Erdos and Graham (2002). Author's institutional abstract inspected. It explicitly requires pairwise distinct denominator integers; the feasibility proposal allowing repetitions was corrected. The local p=101, denominator-bound-ten problem is a concrete finite covering certificate; it does not reproduce the all-prime, arbitrary-epsilon theorem."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000985",
+        "type": "benchmark",
+        "locator": "JSP-000985; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+      }
+    ],
+    "limitations": [
+      "Nonempty representations are required even for residue zero. A finite optimum does not establish a bound independent of the prime.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 5,
+      "statement": "Enumerating all 1023 nonempty subsets of {1, ..., 10} (scripts/check_state_of_the_art.py) shows that every residue modulo 101 is a sum of inverses of distinct denominators. One residue needs 5 terms, so the minimum possible longest row is 5. Shparlinski's theorem answers the asymptotic question (Erdős Problem #1180).",
+      "sources": [
+        {
+          "title": "On a question of Erdős and Graham",
+          "url": "https://doi.org/10.1007/s00013-002-8269-2",
+          "authors": "Igor E. Shparlinski",
+          "year": 2002
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1180,
+        "url": "https://www.erdosproblems.com/1180",
+        "status": "proved",
+        "citation": "T. F. Bloom, Erdős Problem #1180, https://www.erdosproblems.com/1180, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000985"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-22",
+      "tests": "tests/test_science_prize_d.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  }
+]

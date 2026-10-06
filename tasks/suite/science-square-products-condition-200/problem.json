@@ -1,0 +1,112 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_square_products",
+  "direction": "maximize",
+  "contract": "construct() -> distinct integers in 1..200 such that whenever a <= b <= c <= d are elements (repetition allowed) with abcd a perfect square, ad = bc (checked exactly through parity vectors of prime exponents). Maximize the size; the optimum is 102.",
+  "parameters": {
+    "n": 200
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "For n = 200 the maximum is 102, so the task recovers an extremal set. Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-square-products-condition-200",
+  "name": "Subsets of {1, ..., 200} in which square products of four elements force ad = bc",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> distinct integers in 1..200 such that whenever a <= b <= c <= d are elements (repetition allowed) with abcd a perfect square, ad = bc (checked exactly through parity vectors of prime exponents). Maximize the size; the optimum is 102. For n = 200 the maximum is 102, so the task recovers an extremal set.",
+  "benchmark": "Subsets of {1, ..., 200} in which square products of four elements force ad = bc",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1515/9783110809794.169",
+      "type": "paper",
+      "locator": "Paul Erdős, Some of my new and almost new problems and results in combinatorial number theory (1998). Crossref record inspected; Erdős Problem #888 page inspected (a question of Erdős, Sárközy and Sós; |A| = o(n); primes and semiprimes give (1+o(1)) n log log n/log n, and a matching upper bound was proved recently and verified in Lean). OEIS A387584 inspected (b-file by Sievers for n <= 203): the maximum for n = 200 is 102, attained by the primes together with the products of two distinct primes. For n = 200 the maximum is 102, so the task recovers an extremal set."
+    },
+    {
+      "url": "https://www.erdosproblems.com/888",
+      "type": "archive",
+      "locator": "Erdős Problem #888 (solved (Lean)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000739",
+      "type": "benchmark",
+      "locator": "JSP-000739; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case from the OEIS table; the independent tests confirm the repetition convention against the published small values.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 102,
+    "statement": "The maximum for n = 200 is 102 (OEIS A387584).",
+    "sources": [
+      {
+        "title": "OEIS A387584: Largest subset of {1..n} in which a square product abcd forces ad = bc",
+        "url": "https://oeis.org/A387584"
+      },
+      {
+        "title": "Some of my new and almost new problems and results in combinatorial number theory",
+        "url": "https://doi.org/10.1515/9783110809794.169",
+        "authors": "Paul Erdős",
+        "year": 1998
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 888,
+      "url": "https://www.erdosproblems.com/888",
+      "status": "solved (Lean)",
+      "citation": "T. F. Bloom, Erdős Problem #888, https://www.erdosproblems.com/888, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine the largest A in {1..n} such that a square product abcd (a <= b <= c <= d) forces ad = bc (Erdős Problem #888).",
+    "importance_rationale": "A multiplicative analogue of Sidon-type conditions whose order of magnitude was settled only recently.",
+    "papers": [
+      {
+        "title": "Some of my new and almost new problems and results in combinatorial number theory",
+        "url": "https://doi.org/10.1515/9783110809794.169",
+        "task_relation": "For n = 200 the maximum is 102, so the task recovers an extremal set.",
+        "primary_goal": "Determine the largest A in {1..n} such that a square product abcd (a <= b <= c <= d) forces ad = bc (Erdős Problem #888).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #888 page inspected (a question of Erdős, Sárközy and Sós; |A| = o(n); primes and semiprimes give (1+o(1)) n log log n/log n, and a matching upper bound was proved recently and verified in Lean). OEIS A387584 inspected (b-file by Sievers for n <= 203): the maximum for n = 200 is 102, attained by the primes together with the products of two distinct primes.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

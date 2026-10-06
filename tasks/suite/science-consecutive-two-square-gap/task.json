@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.0",
+  "id": "science-consecutive-two-square-gap",
+  "name": "Large gaps between sums of two squares",
+  "description": "construct() -> [a,b], positive endpoints a<b<=maximum=10000000, b-a<=10000, both sums of two integer squares (zero is permitted). No interior integer may be a sum of two squares. Maximize b-a. Positive consecutive representable endpoints at most 10000000 and distance at most 10000, with zero allowed as one of the two squared integers. Every interior integer is checked. The optimum is 50 (9565544 to 9565594; OEIS A297350); this is a rediscovery task.",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/1906.09100",
+      "type": "paper",
+      "locator": "A. B. Kalmynin and S. V. Konyagin, Large gaps between sums of two squares. Author abstract inspected: g(X) is the largest difference between consecutive sums of two squares up to X. This is a preprint; v2 notes a later expanded joint manuscript."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000201",
+      "type": "benchmark",
+      "locator": "JSP-000201; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; fixed finite mathematical profiles."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Large gaps between sums of two squares",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_a_two_square_gap",
+    "science_family": "science_prize_a_two_square_gap",
+    "parameters": {
+      "maximum": 10000000,
+      "maximum_gap": 10000
+    },
+    "interface": "construct() -> [a,b], positive endpoints a<b<=maximum=10000000, b-a<=10000, both sums of two integer squares (zero is permitted). No interior integer may be a sum of two squares. Maximize b-a.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000201"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_a_two_square_gap",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case: The largest gap between consecutive sums of two squares up to 10^7 is 50, from 9565544 to 9565594.",
+    "Positive consecutive representable endpoints at most 10000000 and distance at most 10000, with zero allowed as one of the two squared integers. Every interior integer is checked.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/a-checks.json",
+    "tests": "tests/test_science_prize_a.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 50,
+    "statement": "The largest gap between consecutive sums of two squares up to 10^7 is 50, from 9565544 to 9565594. The next record gap starts at 13305524 (OEIS A297350), and a sieve up to 10^7 recomputes the value.",
+    "sources": [
+      {
+        "title": "OEIS A297350: Start of record gaps between sums of two squares",
+        "url": "https://oeis.org/A297350"
+      },
+      {
+        "title": "Large gaps between sums of two squares",
+        "url": "https://arxiv.org/abs/1906.09100",
+        "authors": "A. B. Kalmynin, S. V. Konyagin",
+        "year": 2019
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 222,
+      "url": "https://www.erdosproblems.com/222",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #222, https://www.erdosproblems.com/222, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Find lower bounds for gaps in integers representable as sums of two squares.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "Large gaps between sums of two squares",
+        "url": "https://arxiv.org/abs/1906.09100",
+        "task_relation": "Positive consecutive representable endpoints at most 10000000 and distance at most 10000, with zero allowed as one of the two squared integers. Every interior integer is checked.",
+        "primary_goal": "Find lower bounds for gaps in integers representable as sums of two squares.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author abstract inspected: g(X) is the largest difference between consecutive sums of two squares up to X. This is a preprint; v2 notes a later expanded joint manuscript.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

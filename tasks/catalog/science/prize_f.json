@@ -1,0 +1,1763 @@
+[
+  {
+    "id": "science-triangle-free-bipartization-23",
+    "name": "Triangle-free graphs on 23 vertices that are far from bipartite",
+    "description": "construct() -> list of edges [u, v] of a simple triangle-free graph on vertices 0..22. The score is the least number of edges whose deletion leaves a bipartite graph, computed exactly as edges minus the maximum cut over all 2^22 bipartitions. Maximize; the known optimum is 20. The finite maximum over triangle-free graphs on 23 vertices is 20 (below the conjectured bound 21.16); recovering it tests constructions near the extremal C5 blow-ups.",
+    "family": "science_prize_f_bipartization",
+    "parameters": {
+      "n": 23
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2103.14179",
+        "type": "paper",
+        "locator": "József Balogh, Felix Christian Clemen and Bernard Lidický, Max Cuts in Triangle-free Graphs (2021). arXiv record inspected; Erdős Problem #23 page inspected (best general bound 1.064 n^2/25 deletions, Balogh-Clemen-Lidický). OEIS A389646 inspected: exact values through n = 23 with a(23) = 20, attained by the blow-up of C5 with class sizes 4,5,4,5,5 and five of its subgraphs (comment by B. McKay, 2025). The finite maximum over triangle-free graphs on 23 vertices is 20 (below the conjectured bound 21.16); recovering it tests constructions near the extremal C5 blow-ups."
+      },
+      {
+        "url": "https://www.erdosproblems.com/23",
+        "type": "archive",
+        "locator": "Erdős Problem #23 (open (falsifiable by a finite counterexample)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000058",
+        "type": "benchmark",
+        "locator": "JSP-000058; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; exceeding 20 is impossible. The conjecture itself concerns n = 5k and all larger n.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 20,
+      "statement": "Exhaustive computations (SeqFan 2025; B. McKay) give the maximum 20 for n = 23 (OEIS A389646); the conjectured bound n^2/25 is 21.16.",
+      "sources": [
+        {
+          "title": "OEIS A389646",
+          "url": "https://oeis.org/A389646"
+        },
+        {
+          "title": "Max Cuts in Triangle-free Graphs",
+          "url": "https://arxiv.org/abs/2103.14179",
+          "authors": "József Balogh, Felix Christian Clemen, Bernard Lidický",
+          "year": 2021
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 23,
+        "url": "https://www.erdosproblems.com/23",
+        "status": "open (falsifiable by a finite counterexample)",
+        "citation": "T. F. Bloom, Erdős Problem #23, https://www.erdosproblems.com/23, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000058"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-triangle-free-dense-halves-20",
+    "name": "Triangle-free graphs on 20 vertices whose every half is dense",
+    "description": "construct() -> list of edges [u, v] of a simple triangle-free graph on vertices 0..19. The score is the minimum number of edges induced by any 10 of the vertices, computed over all 184756 subsets. Maximize; a score above 8 would disprove the Erdős-Rousseau conjecture for n = 20. For n = 20 the conjectured maximum of the score is 8, attained by the balanced C5 blow-up; a triangle-free graph with score 9 would be a counterexample.",
+    "family": "science_prize_f_sparse_halves",
+    "parameters": {
+      "n": 20
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1070/sm9615",
+        "type": "paper",
+        "locator": "Alexander A. Razborov, More about sparse halves in triangle-free graphs (2022). Crossref record inspected; Erdős Problem #128 ($250) page inspected: every n/2-set of a triangle-free graph is conjectured to span at most n^2/50 edges, tight for the C5 blow-up and the Petersen graph; proved with 1/50 replaced by 27/1024 by Razborov. For n = 20 the conjectured maximum of the score is 8, attained by the balanced C5 blow-up; a triangle-free graph with score 9 would be a counterexample."
+      },
+      {
+        "url": "https://www.erdosproblems.com/128",
+        "type": "archive",
+        "locator": "Erdős Problem #128 (open (falsifiable, $250)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000134",
+        "type": "benchmark",
+        "locator": "JSP-000134; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The value 8 is a conjectured optimum, not a proven one; small cases have not been reported as verified. The 20-cycle starter scores 0.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "conjectured_optimum",
+      "value": 8,
+      "statement": "Conjectured maximum n^2/50 = 8 for n = 20, attained by the balanced blow-up of C5; no triangle-free graph with a larger score is known.",
+      "sources": [
+        {
+          "title": "More about sparse halves in triangle-free graphs",
+          "url": "https://doi.org/10.1070/sm9615",
+          "authors": "A. A. Razborov",
+          "year": 2022
+        },
+        {
+          "title": "Erdős Problem #128",
+          "url": "https://www.erdosproblems.com/128"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 128,
+        "url": "https://www.erdosproblems.com/128",
+        "status": "open (falsifiable, $250)",
+        "citation": "T. F. Bloom, Erdős Problem #128, https://www.erdosproblems.com/128, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000134"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-triangles-above-turan-16",
+    "name": "Fewest triangles in graphs with 16 vertices and 68 edges",
+    "description": "construct() -> exactly 68 distinct edges [u, v] on vertices 0..15. The score is the exact number of triangles. Minimize; the proven optimum is 32 = t * floor(n/2) with t = 68 - 64. With n = 16 and t = 4 the theorem gives at least 32 triangles, and K8,8 plus a 4-edge matching attains 32.",
+    "family": "science_prize_f_triangles_above_turan",
+    "parameters": {
+      "n": 16,
+      "edges": 68
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/978-3-0348-5438-2_41",
+        "type": "paper",
+        "locator": "László Lovász and Miklós Simonovits, On the number of complete subgraphs of a graph II (1983). Crossref record inspected; Erdős Problem #1010 page inspected: every graph with floor(n^2/4)+t edges, t < floor(n/2), has at least t*floor(n/2) triangles, proved independently by Lovász-Simonovits and Nikiforov-Khadzhiivanov. With n = 16 and t = 4 the theorem gives at least 32 triangles, and K8,8 plus a 4-edge matching attains 32."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1010",
+        "type": "archive",
+        "locator": "Erdős Problem #1010 (proved (Lovász-Simonovits; Nikiforov-Khadzhiivanov)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000840",
+        "type": "benchmark",
+        "locator": "JSP-000840; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case: the optimum 32 is proven and attained by a simple construction.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 32,
+      "statement": "At least t*floor(n/2) = 32 triangles (Lovász-Simonovits theorem), attained by K8,8 plus a matching of four edges.",
+      "sources": [
+        {
+          "title": "On the number of complete subgraphs of a graph II",
+          "url": "https://doi.org/10.1007/978-3-0348-5438-2_41",
+          "authors": "L. Lovász, M. Simonovits",
+          "year": 1983
+        },
+        {
+          "title": "Erdős Problem #1010",
+          "url": "https://www.erdosproblems.com/1010"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1010,
+        "url": "https://www.erdosproblems.com/1010",
+        "status": "proved (Lovász-Simonovits; Nikiforov-Khadzhiivanov)",
+        "citation": "T. F. Bloom, Erdős Problem #1010, https://www.erdosproblems.com/1010, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000840"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-triangle-free-diameter-two-degree-50",
+    "name": "Triangle-free diameter-two graphs on 50 vertices with small maximum degree",
+    "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..49 that is triangle-free and has diameter at most two (every pair adjacent or with a common neighbour). Minimize the maximum degree; the optimum is 7. The Moore bound forces maximum degree at least 7 on 50 vertices, and the Hoffman-Singleton graph attains it, so 7 is optimal.",
+    "family": "science_prize_f_diameter_two",
+    "parameters": {
+      "n": 50
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1147/rd.45.0497",
+        "type": "paper",
+        "locator": "Alan J. Hoffman and Robert R. Singleton, On Moore Graphs with Diameters 2 and 3 (1960). Crossref record inspected; Erdős Problem #133 page inspected: a diameter-two graph of maximum degree d has at most d^2+1 vertices, and constructions of Hanson-Seyffarth and Füredi-Seress bound the growth of the minimum maximum degree. The Moore bound forces maximum degree at least 7 on 50 vertices, and the Hoffman-Singleton graph attains it, so 7 is optimal."
+      },
+      {
+        "url": "https://www.erdosproblems.com/133",
+        "type": "archive",
+        "locator": "Erdős Problem #133 (disproved (f(n)/sqrt(n) does not tend to infinity)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000139",
+        "type": "benchmark",
+        "locator": "JSP-000139; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; the extremal object is the unique Hoffman-Singleton graph.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 7,
+      "statement": "Maximum degree 7 is optimal: n <= d^2+1 for diameter two, and the 7-regular Hoffman-Singleton graph has 50 vertices, girth 5 and diameter 2.",
+      "sources": [
+        {
+          "title": "On Moore Graphs with Diameters 2 and 3",
+          "url": "https://doi.org/10.1147/rd.45.0497",
+          "authors": "A. J. Hoffman, R. R. Singleton",
+          "year": 1960
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 133,
+        "url": "https://www.erdosproblems.com/133",
+        "status": "disproved (f(n)/sqrt(n) does not tend to infinity)",
+        "citation": "T. F. Bloom, Erdős Problem #133, https://www.erdosproblems.com/133, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000139"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-girth-five-extremal-45",
+    "name": "Graphs of girth at least five on 45 vertices with many edges",
+    "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..44 with no triangle and no four-cycle. Maximize the number of edges; the known optimum is 145. The exact value 145 for n = 45 is known; recovering it tests constructions of dense girth-5 graphs.",
+    "family": "science_prize_f_girth_five",
+    "parameters": {
+      "n": 45,
+      "lengths": [
+        3,
+        4
+      ]
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1511.08128",
+        "type": "paper",
+        "locator": "Jörgen Backelin, Sizes of the extremal girth 5 graphs of orders from 40 to 49 (2015). arXiv record inspected; Afzaly-McKay extremal graph tables inspected: ex(45;{C3,C4}) = 145 with a unique extremal graph (exact values through n = 53). Erdős Problem #573 page inspected. The exact value 145 for n = 45 is known; recovering it tests constructions of dense girth-5 graphs."
+      },
+      {
+        "url": "https://www.erdosproblems.com/573",
+        "type": "archive",
+        "locator": "Erdős Problem #573 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000463",
+        "type": "benchmark",
+        "locator": "JSP-000463; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case (value and extremal graph are published).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 145,
+      "statement": "ex(45;{C3,C4}) = 145 (Backelin 2015; Afzaly and McKay tables, unique extremal graph).",
+      "sources": [
+        {
+          "title": "Sizes of the extremal girth 5 graphs of orders from 40 to 49",
+          "url": "https://arxiv.org/abs/1511.08128",
+          "authors": "Jörgen Backelin",
+          "year": 2015
+        },
+        {
+          "title": "Extremal Graphs and Turán numbers (data by Narjess Afzaly and Brendan McKay)",
+          "url": "https://users.cecs.anu.edu.au/~bdm/data/extremal.html",
+          "authors": "Narjess Afzaly, Brendan D. McKay"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 573,
+        "url": "https://www.erdosproblems.com/573",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #573, https://www.erdosproblems.com/573, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000463"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-hexagon-free-extremal-40",
+    "name": "Hexagon-free graphs on 40 vertices with many edges",
+    "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..39 containing no six-cycle (exact search). Maximize the number of edges. A C6-free graph with m edges certifies ex(40;C6) >= m; the best known graphs have 105 edges and optimality is unproven.",
+    "family": "science_prize_f_hexagon_free",
+    "parameters": {
+      "n": 40,
+      "lengths": [
+        6
+      ]
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/j.aim.2005.04.011",
+        "type": "paper",
+        "locator": "Zoltán Füredi, Assaf Naor and Jacques Verstraëte, On the Turán number for the hexagon (2006). Crossref record inspected; Afzaly-McKay tables inspected: ex(n;C6) is exact through n = 37 (95 edges) and for n = 40 the best known value is at least 105 ('maybe' file). Erdős Problem #572 page inspected. A C6-free graph with m edges certifies ex(40;C6) >= m; the best known graphs have 105 edges and optimality is unproven."
+      },
+      {
+        "url": "https://www.erdosproblems.com/572",
+        "type": "archive",
+        "locator": "Erdős Problem #572 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000462",
+        "type": "benchmark",
+        "locator": "JSP-000462; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The disjoint-K5 starter has 80 edges.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 105,
+      "statement": "Best known C6-free graph on 40 vertices has 105 edges (Afzaly and McKay, not proven optimal); exact values are known through 37 vertices.",
+      "sources": [
+        {
+          "title": "Extremal Graphs and Turán numbers (data by Narjess Afzaly and Brendan McKay)",
+          "url": "https://users.cecs.anu.edu.au/~bdm/data/extremal.html",
+          "authors": "Narjess Afzaly, Brendan D. McKay"
+        },
+        {
+          "title": "On the Turán number for the hexagon",
+          "url": "https://doi.org/10.1016/j.aim.2005.04.011",
+          "authors": "Zoltán Füredi, Assaf Naor, Jacques Verstraëte",
+          "year": 2006
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 572,
+        "url": "https://www.erdosproblems.com/572",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #572, https://www.erdosproblems.com/572, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000462"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-pentagon-hexagon-free-extremal-42",
+    "name": "Graphs on 42 vertices without five- or six-cycles",
+    "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..41 containing neither a five-cycle nor a six-cycle. Maximize the number of edges; the known optimum is 104. The exact value 104 for n = 42 is known; the task recovers it.",
+    "family": "science_prize_f_pentagon_hexagon_free",
+    "parameters": {
+      "n": 42,
+      "lengths": [
+        5,
+        6
+      ]
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/bf02579234",
+        "type": "paper",
+        "locator": "Paul Erdős and Miklós Simonovits, Compactness results in extremal graph theory (1982). Crossref record inspected; Erdős Problem #574 page inspected (the Erdős-Simonovits formula for ex(n;{C_(2k-1),C_2k}) was disproved for k = 3 and 5). Afzaly-McKay tables inspected: ex(42;{C5,C6}) = 104 exactly. The exact value 104 for n = 42 is known; the task recovers it."
+      },
+      {
+        "url": "https://www.erdosproblems.com/574",
+        "type": "archive",
+        "locator": "Erdős Problem #574 (disproved); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000464",
+        "type": "benchmark",
+        "locator": "JSP-000464; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case per the published tables.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 104,
+      "statement": "ex(42;{C5,C6}) = 104 (Afzaly and McKay tables; at least 6 extremal graphs).",
+      "sources": [
+        {
+          "title": "Extremal Graphs and Turán numbers (data by Narjess Afzaly and Brendan McKay)",
+          "url": "https://users.cecs.anu.edu.au/~bdm/data/extremal.html",
+          "authors": "Narjess Afzaly, Brendan D. McKay"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 574,
+        "url": "https://www.erdosproblems.com/574",
+        "status": "disproved",
+        "citation": "T. F. Bloom, Erdős Problem #574, https://www.erdosproblems.com/574, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000464"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-triple-systems-matching-two-12",
+    "name": "Triple systems on 12 points without three disjoint triples",
+    "description": "construct() -> list of distinct triples [a, b, c] of distinct points in 0..11 containing no three pairwise disjoint triples. Maximize the number of triples; the proven optimum is 100. For n = 12 and s = 2 the maximum is max{56, 100} = 100, attained by all triples meeting two fixed points.",
+    "family": "science_prize_f_matching_two",
+    "parameters": {
+      "n": 12,
+      "matching": 2
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/j.dam.2016.08.003",
+        "type": "paper",
+        "locator": "Peter Frankl, On the maximum number of edges in a hypergraph with given matching number (2017). Crossref record and abstract inspected: the maximum number of edges of a 3-uniform hypergraph on n vertices with matching number s is max{C(3s+2,3), C(n,3)-C(n-s,3)} for n >= 3s+2. For n = 12 and s = 2 the maximum is max{56, 100} = 100, attained by all triples meeting two fixed points."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000850",
+        "type": "benchmark",
+        "locator": "JSP-000850; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; the extremal family is elementary once known.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 100,
+      "statement": "Maximum 100 = C(12,3) - C(10,3) by Frankl's theorem for triple systems.",
+      "sources": [
+        {
+          "title": "On the maximum number of edges in a hypergraph with given matching number",
+          "url": "https://doi.org/10.1016/j.dam.2016.08.003",
+          "authors": "Peter Frankl",
+          "year": 2017
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": null
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000850"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-steiner-system-s5612-packing",
+    "name": "Packings of 6-sets on 12 points with no repeated 5-subset (the Witt design S(5,6,12))",
+    "description": "construct() -> list of distinct 6-subsets of 0..11 such that no 5-subset lies in two blocks. Maximize the number of blocks; the optimum 132 is attained exactly by the Steiner system S(5,6,12). Each block covers six 5-subsets of the 792, so at most 132 blocks fit; 132 is attained only by the Witt design S(5,6,12).",
+    "family": "science_prize_f_witt_design",
+    "parameters": {
+      "points": 12,
+      "block": 6,
+      "strength": 5
+    },
+    "labels": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/1401.3665",
+        "type": "paper",
+        "locator": "Peter Keevash, The existence of designs (2014). arXiv record for Keevash's existence theorem inspected; Crossref record for Witt's 'Über Steinersche Systeme' (Abh. Math. Sem. Hamburg 12) inspected. S(5,6,12) exists and is unique up to isomorphism. Each block covers six 5-subsets of the 792, so at most 132 blocks fit; 132 is attained only by the Witt design S(5,6,12)."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000590",
+        "type": "benchmark",
+        "locator": "JSP-000590; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Solved finite case; the design is classical and unique.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "optimum",
+      "value": 132,
+      "statement": "132 = C(12,5)/C(6,5) blocks, attained by the Steiner system S(5,6,12) (Witt 1938).",
+      "sources": [
+        {
+          "title": "Über Steinersche Systeme",
+          "url": "https://doi.org/10.1007/bf02948948",
+          "authors": "Ernst Witt",
+          "year": 1938
+        },
+        {
+          "title": "The existence of designs",
+          "url": "https://arxiv.org/abs/1401.3665",
+          "authors": "Peter Keevash",
+          "year": 2014
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": null
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000590"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-hypercube-q7-four-cycle-free",
+    "name": "Four-cycle-free edge sets of the 7-dimensional hypercube",
+    "description": "construct() -> list of edges [u, v] of Q7 (vertices 0..127, endpoints differing in one bit). No 2-dimensional face may have all four edges selected. Maximize the number of edges (Q7 has 448). An edge set with m edges certifies ex(Q7,C4) >= m; 304 is the best known and 308 the best upper bound.",
+    "family": "science_prize_f_hypercube_q7",
+    "parameters": {
+      "dimension": 7
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2603.29127",
+        "type": "paper",
+        "locator": "Minamo Minamoto, C4-Free Subgraphs of the Hypercubes Q6, Q7, and Q8: Odd Squares, Fully Frustrated Models, and Computational Structure (2026). arXiv abstract inspected: ex(Q7,C4) >= 304 with certificates, 19,866 previously released 304-edge C4-free subgraphs of Q7 classified. OEIS A245762 inspected (a(6) = 132 by Harborth and Nienborg; 304 <= a(7) <= 308). Erdős Problem #86 page inspected. An edge set with m edges certifies ex(Q7,C4) >= m; 304 is the best known and 308 the best upper bound."
+      },
+      {
+        "url": "https://www.erdosproblems.com/86",
+        "type": "archive",
+        "locator": "Erdős Problem #86 (open ($100)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000102",
+        "type": "benchmark",
+        "locator": "JSP-000102; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "The greedy starter is locally computed and is not a published construction.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "best_known",
+      "value": 304,
+      "statement": "304 <= ex(Q7,C4) <= 308: 304-edge C4-free subgraphs are known (Minamoto 2026 certificates); the upper bound is recorded in OEIS A245762.",
+      "sources": [
+        {
+          "title": "C4-Free Subgraphs of the Hypercubes Q6, Q7, and Q8",
+          "url": "https://arxiv.org/abs/2603.29127",
+          "authors": "Minamo Minamoto",
+          "year": 2026
+        },
+        {
+          "title": "OEIS A245762",
+          "url": "https://oeis.org/A245762"
+        },
+        {
+          "title": "On the maximum number of edges in a C4-free subgraph of Qn",
+          "url": "https://doi.org/10.1002/jgt.3190190104",
+          "authors": "Peter Brass, Heiko Harborth, Hauke Nienborg",
+          "year": 1995
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 86,
+        "url": "https://www.erdosproblems.com/86",
+        "status": "open ($100)",
+        "citation": "T. F. Bloom, Erdős Problem #86, https://www.erdosproblems.com/86, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000102"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-four-cycle-supersaturation-31",
+    "name": "Fewest four-cycles in graphs with 31 vertices and 91 edges",
+    "description": "construct() -> exactly 91 distinct edges [u, v] on vertices 0..30 (one more than ex(31;C4) = 90). The score is the exact number of four-cycles (subgraphs). Minimize. n = 31 = 5^2+5+1 is a polarity-graph order with odd q = 5, not covered by the He-Ma-Yang theorem; no minimum count is documented.",
+    "family": "science_prize_f_c4_supersaturation",
+    "parameters": {
+      "n": 31,
+      "edges": 91
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/j.jctb.2021.01.007",
+        "type": "paper",
+        "locator": "Jialin He, Jie Ma and Tianchi Yang, Some extremal results on 4-cycles (2021). Crossref record inspected; Erdős Problem #60 page inspected: Erdős and Simonovits conjectured that more than ex(n;C4) edges force >> n^(1/2) four-cycles; He, Ma and Yang proved it for n = q^2+q+1 with q even. ex(31;C4) = 90 per the Afzaly-McKay tables. n = 31 = 5^2+5+1 is a polarity-graph order with odd q = 5, not covered by the He-Ma-Yang theorem; no minimum count is documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/60",
+        "type": "archive",
+        "locator": "Erdős Problem #60 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000079",
+        "type": "benchmark",
+        "locator": "JSP-000079; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented minimum for n = 31 (reference label none). The lexicographic starter is far from optimal.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented minimum for n = 31, m = 91. Erdős and Simonovits conjectured >> n^(1/2) four-cycles; proved by He, Ma and Yang for n = q^2+q+1 with even q.",
+      "sources": [
+        {
+          "title": "Some extremal results on 4-cycles",
+          "url": "https://doi.org/10.1016/j.jctb.2021.01.007",
+          "authors": "Jialin He, Jie Ma, Tianchi Yang",
+          "year": 2021
+        },
+        {
+          "title": "Erdős Problem #60",
+          "url": "https://www.erdosproblems.com/60"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 60,
+        "url": "https://www.erdosproblems.com/60",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #60, https://www.erdosproblems.com/60, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000079"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-small-books-above-turan-40",
+    "name": "Graphs with 40 vertices and 401 edges whose largest book is small",
+    "description": "construct() -> exactly 401 distinct edges [u, v] on vertices 0..39. The score is the largest book: the maximum over edges of the number of triangles containing that edge. Minimize; the theorem of Edwards and Khadzhiivanov-Nikiforov gives score >= 40/6. For n = 40 and one edge above n^2/4 the theorem gives a book of size at least 7; the least achievable value for this finite size is not documented.",
+    "family": "science_prize_f_books",
+    "parameters": {
+      "n": 40,
+      "edges": 401
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/j.ejc.2004.01.007",
+        "type": "paper",
+        "locator": "Béla Bollobás and Vladimir Nikiforov, Books in graphs (2005). Crossref record inspected; Erdős Problem #905 page inspected: every graph with more than n^2/4 edges has an edge in at least n/6 triangles (Edwards; Khadzhiivanov and Nikiforov). For n = 40 and one edge above n^2/4 the theorem gives a book of size at least 7; the least achievable value for this finite size is not documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/905",
+        "type": "archive",
+        "locator": "Erdős Problem #905 (proved (Lean)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000097",
+        "type": "benchmark",
+        "locator": "JSP-000097; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented finite minimum (reference label none); the lower bound 7 follows from the theorem.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented minimum for n = 40, m = 401; the book theorem gives at least ceil(40/6) = 7.",
+      "sources": [
+        {
+          "title": "Books in graphs",
+          "url": "https://doi.org/10.1016/j.ejc.2004.01.007",
+          "authors": "Béla Bollobás, Vladimir Nikiforov",
+          "year": 2005
+        },
+        {
+          "title": "Erdős Problem #905",
+          "url": "https://www.erdosproblems.com/905"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 905,
+        "url": "https://www.erdosproblems.com/905",
+        "status": "proved (Lean)",
+        "citation": "T. F. Bloom, Erdős Problem #905, https://www.erdosproblems.com/905, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000097"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-cube-free-graphs-16",
+    "name": "Dense graphs on 16 vertices without the cube Q3",
+    "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..15 containing no subgraph isomorphic to the 3-cube Q3 (exact search). Maximize the number of edges. A Q3-free graph with m edges certifies ex(16;Q3) >= m; no exact value for n = 16 is documented.",
+    "family": "science_prize_f_cube_free",
+    "parameters": {
+      "n": 16
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/s00493-005-0037-z",
+        "type": "paper",
+        "locator": "Rom Pinchasi and Micha Sharir, On Graphs That Do Not Contain The Cube And Related Problems (2005). Crossref record inspected; Erdős Problem #576 page inspected: (1/2+o(1))n^(3/2) <= ex(n;Q3) << n^(8/5) (Erdős and Simonovits), with Erdős asking whether ex(n;Q3) is of order n^(8/5). A Q3-free graph with m edges certifies ex(16;Q3) >= m; no exact value for n = 16 is documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/576",
+        "type": "archive",
+        "locator": "Erdős Problem #576 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000466",
+        "type": "benchmark",
+        "locator": "JSP-000466; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value for n = 16 (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value of ex(16;Q3); asymptotically (1/2+o(1))n^(3/2) <= ex(n;Q3) << n^(8/5).",
+      "sources": [
+        {
+          "title": "On Graphs That Do Not Contain The Cube And Related Problems",
+          "url": "https://doi.org/10.1007/s00493-005-0037-z",
+          "authors": "Rom Pinchasi, Micha Sharir",
+          "year": 2005
+        },
+        {
+          "title": "Erdős Problem #576",
+          "url": "https://www.erdosproblems.com/576"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 576,
+        "url": "https://www.erdosproblems.com/576",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #576, https://www.erdosproblems.com/576, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000466"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-k23-free-graphs-20",
+    "name": "Dense graphs on 20 vertices without K2,3",
+    "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..19 in which no two vertices have three common neighbours (no K2,3). Maximize the number of edges. A K2,3-free graph with m edges certifies ex(20;K2,3) >= m; the exact value for n = 20 is not documented here.",
+    "family": "science_prize_f_k23_free",
+    "parameters": {
+      "n": 20,
+      "s": 2,
+      "t": 3
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1006/jcta.1996.0067",
+        "type": "paper",
+        "locator": "Zoltán Füredi, New Asymptotics for Bipartite Turán Numbers (1996). Crossref record inspected; Erdős Problem #146 page inspected: the Erdős-Simonovits conjecture for r-degenerate bipartite H was disproved (Lean) by a 2-degenerate construction; K2,3 is 2-degenerate and Füredi determined ex(n;K2,t+1) asymptotically. A K2,3-free graph with m edges certifies ex(20;K2,3) >= m; the exact value for n = 20 is not documented here."
+      },
+      {
+        "url": "https://www.erdosproblems.com/146",
+        "type": "archive",
+        "locator": "Erdős Problem #146 (disproved (Lean)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000147",
+        "type": "benchmark",
+        "locator": "JSP-000147; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value for n = 20 (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value of ex(20;K2,3) was found; asymptotically ex(n;K2,3) ~ (sqrt(2)/2) n^(3/2) (Füredi 1996).",
+      "sources": [
+        {
+          "title": "New Asymptotics for Bipartite Turán Numbers",
+          "url": "https://doi.org/10.1006/jcta.1996.0067",
+          "authors": "Zoltán Füredi",
+          "year": 1996
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 146,
+        "url": "https://www.erdosproblems.com/146",
+        "status": "disproved (Lean)",
+        "citation": "T. F. Bloom, Erdős Problem #146, https://www.erdosproblems.com/146, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000147"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-k33-free-graphs-20",
+    "name": "Dense graphs on 20 vertices without K3,3",
+    "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..19 in which no three vertices have three common neighbours (no K3,3). Maximize the number of edges. A K3,3-free graph with m edges certifies ex(20;K3,3) >= m; no exact value for n = 20 is documented here.",
+    "family": "science_prize_f_k33_free",
+    "parameters": {
+      "n": 20,
+      "s": 3,
+      "t": 3
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.4153/cmb-1966-036-2",
+        "type": "paper",
+        "locator": "W. G. Brown, On Graphs that do not Contain a Thomsen Graph (1966). Crossref record inspected; Erdős Problem #714 page inspected: ex(n;K_r,r) >> n^(2-1/r) is known for r = 2, 3 (Brown; Erdős, Rényi and Sós for r = 3) and open for r >= 4. A K3,3-free graph with m edges certifies ex(20;K3,3) >= m; no exact value for n = 20 is documented here."
+      },
+      {
+        "url": "https://www.erdosproblems.com/714",
+        "type": "archive",
+        "locator": "Erdős Problem #714 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000583",
+        "type": "benchmark",
+        "locator": "JSP-000583; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value for n = 20 (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value of ex(20;K3,3) was found; ex(n;K3,3) = Theta(n^(5/3)) (Brown 1966; Kővári-Sós-Turán).",
+      "sources": [
+        {
+          "title": "On Graphs that do not Contain a Thomsen Graph",
+          "url": "https://doi.org/10.4153/cmb-1966-036-2",
+          "authors": "W. G. Brown",
+          "year": 1966
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 714,
+        "url": "https://www.erdosproblems.com/714",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #714, https://www.erdosproblems.com/714, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000583"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-erdos-rogers-k4-free-18",
+    "name": "K4-free graphs on 18 vertices with small triangle-free induced subgraphs (Erdős-Rogers)",
+    "description": "construct() -> list of edges [u, v] of a simple K4-free graph on vertices 0..17. The score is the largest number of vertices inducing a triangle-free subgraph (exact branch and bound). Minimize. A K4-free graph whose triangle-free induced subgraphs have at most s vertices certifies f(18) <= s; no exact value for n = 18 is documented.",
+    "family": "science_prize_f_erdos_rogers",
+    "parameters": {
+      "n": 18
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1112/blms.13214",
+        "type": "paper",
+        "locator": "Dhruv Mubayi and Jacques Verstraëte, On the order of the classical Erdős-Rogers functions (2024). Crossref record inspected; Erdős Problem #620 page inspected: f(n) = n^(1/2+o(1)) with the current bounds n^(1/2)(log n)^(1/2)/loglog n << f(n) << n^(1/2) log n (upper bound by Mubayi and Verstraëte). A K4-free graph whose triangle-free induced subgraphs have at most s vertices certifies f(18) <= s; no exact value for n = 18 is documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/620",
+        "type": "archive",
+        "locator": "Erdős Problem #620 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000502",
+        "type": "benchmark",
+        "locator": "JSP-000502; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value for n = 18 (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value for n = 18; asymptotically f(n) = n^(1/2+o(1)).",
+      "sources": [
+        {
+          "title": "On the order of the classical Erdős-Rogers functions",
+          "url": "https://doi.org/10.1112/blms.13214",
+          "authors": "Dhruv Mubayi, Jacques Verstraëte",
+          "year": 2024
+        },
+        {
+          "title": "Erdős Problem #620",
+          "url": "https://www.erdosproblems.com/620"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 620,
+        "url": "https://www.erdosproblems.com/620",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #620, https://www.erdosproblems.com/620, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000502"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-dense-triangle-free-four-chromatic-16",
+    "name": "Dense triangle-free graphs on 16 vertices with chromatic number at least four",
+    "description": "construct() -> list of edges [u, v] of a simple triangle-free graph on vertices 0..15 that is not 3-colourable (exact backtracking). Maximize the number of edges. A valid graph with m edges shows f_4(16) > m; the published formula applies only to n >= 150.",
+    "family": "science_prize_f_four_chromatic_triangle_free",
+    "parameters": {
+      "n": 16
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://arxiv.org/abs/2404.07486",
+        "type": "paper",
+        "locator": "Sijie Ren, Jian Wang, Shipeng Wang and Weihua Yang, Extremal triangle-free graphs with chromatic number at least four (2024). arXiv record inspected; Erdős Problem #1011 page inspected: f_4(n) = floor((n-3)^2/4) + 6 for n >= 150 (Ren, Wang, Wang and Yang), where f_4(n) edges force a triangle in 4-chromatic graphs. A valid graph with m edges shows f_4(16) > m; the published formula applies only to n >= 150."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1011",
+        "type": "archive",
+        "locator": "Erdős Problem #1011 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000841",
+        "type": "benchmark",
+        "locator": "JSP-000841; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value for n = 16 (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value for n = 16; for n >= 150 the maximum is floor((n-3)^2/4) + 5 edges (Ren, Wang, Wang and Yang 2024).",
+      "sources": [
+        {
+          "title": "Extremal triangle-free graphs with chromatic number at least four",
+          "url": "https://arxiv.org/abs/2404.07486",
+          "authors": "Sijie Ren, Jian Wang, Shipeng Wang, Weihua Yang",
+          "year": 2024
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1011,
+        "url": "https://www.erdosproblems.com/1011",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1011, https://www.erdosproblems.com/1011, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000841"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-triple-systems-without-k222-16",
+    "name": "Triple systems on 16 points without the complete 3-partite K(2,2,2)",
+    "description": "construct() -> list of distinct triples [a, b, c] of distinct points in 0..15 such that no three disjoint pairs have all eight transversal triples present. Maximize the number of triples. A valid triple system with m triples certifies ex_3(16,K(2,2,2)) >= m; no finite value is documented.",
+    "family": "science_prize_f_tripartite_triples",
+    "parameters": {
+      "n": 16
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1007/bf02759942",
+        "type": "paper",
+        "locator": "Paul Erdős, On extremal problems of graphs and generalized graphs (1964). Crossref record inspected; Erdős Problem #1158 page inspected: n^(t-O(r^(1-t))) <= ex_t(n,K_t(r)) << n^(t-r^(1-t)) (Erdős 1964); the lower-bound exponent is known only for t = 2 and r <= 3. A valid triple system with m triples certifies ex_3(16,K(2,2,2)) >= m; no finite value is documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1158",
+        "type": "archive",
+        "locator": "Erdős Problem #1158 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000963",
+        "type": "benchmark",
+        "locator": "JSP-000963; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value for n = 16 (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value for n = 16; ex_3(n,K(2,2,2)) << n^(11/4) by Erdős 1964.",
+      "sources": [
+        {
+          "title": "On extremal problems of graphs and generalized graphs",
+          "url": "https://doi.org/10.1007/bf02759942",
+          "authors": "P. Erdős",
+          "year": 1964
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1158,
+        "url": "https://www.erdosproblems.com/1158",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #1158, https://www.erdosproblems.com/1158, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000963"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-linear-triple-system-independence-16",
+    "name": "Linear triple systems on 16 points with small independence number",
+    "description": "construct() -> list of triples [a, b, c] on points 0..15 in which any two triples share at most one point. The score is the largest point set containing no triple (checked over all subsets). Minimize. A valid system with independence number a certifies f(16) <= a; no finite value is documented.",
+    "family": "science_prize_f_linear_triple_independence",
+    "parameters": {
+      "n": 16
+    },
+    "labels": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1017/s0963548312000557",
+        "type": "paper",
+        "locator": "Alex Eustis and Jacques Verstraëte, On the Independence Number of Steiner Systems (2013). Crossref record inspected; Erdős Problem #1024 page inspected: every linear 3-uniform hypergraph on n vertices has an independent set of order (n log n)^(1/2) and this is sharp up to constants (Phelps and Rödl). A valid system with independence number a certifies f(16) <= a; no finite value is documented."
+      },
+      {
+        "url": "https://www.erdosproblems.com/1024",
+        "type": "archive",
+        "locator": "Erdős Problem #1024 (solved (order (n log n)^(1/2))); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000852",
+        "type": "benchmark",
+        "locator": "JSP-000852; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "No documented value for n = 16 (reference label none).",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No documented value for n = 16; asymptotically f(n) = Theta((n log n)^(1/2)) (Phelps and Rödl).",
+      "sources": [
+        {
+          "title": "On the Independence Number of Steiner Systems",
+          "url": "https://doi.org/10.1017/s0963548312000557",
+          "authors": "Alex Eustis, Jacques Verstraëte",
+          "year": 2013
+        },
+        {
+          "title": "Erdős Problem #1024",
+          "url": "https://www.erdosproblems.com/1024"
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 1024,
+        "url": "https://www.erdosproblems.com/1024",
+        "status": "solved (order (n log n)^(1/2))",
+        "citation": "T. F. Bloom, Erdős Problem #1024, https://www.erdosproblems.com/1024, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000852"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-gallai-path-decompositions",
+    "name": "Path decompositions of three fixed connected graphs (Gallai's conjecture)",
+    "description": "construct() -> three lists of paths (vertex lists), one per fixed instance graph generated by instance_graph(n, p, seed) for (20,0.3,1), (25,0.3,2), (30,0.25,3) in the verifier. Paths must be simple, use graph edges, be edge-disjoint and cover all edges. Minimize the total number of paths; Gallai's conjecture predicts at most 10+13+15 = 38. The score is the total number of paths over three fixed random connected graphs; staying within 38 is consistent with the conjecture, exceeding it is not evidence against it.",
+    "family": "science_prize_f_gallai_paths",
+    "parameters": {},
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/j.disc.2019.01.005",
+        "type": "paper",
+        "locator": "Marthe Bonamy and Thomas J. Perrett, Gallai's path decomposition conjecture for graphs of small maximum degree (2019). Crossref record inspected; Erdős Problem #583 page inspected: every connected graph on n vertices is conjectured to decompose into at most ceil(n/2) edge-disjoint paths (Erdős-Gallai); known for maximum degree <= 5, planar and 2-degenerate graphs, among other classes. The score is the total number of paths over three fixed random connected graphs; staying within 38 is consistent with the conjecture, exceeding it is not evidence against it."
+      },
+      {
+        "url": "https://www.erdosproblems.com/583",
+        "type": "archive",
+        "locator": "Erdős Problem #583 (open (falsifiable)); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000472",
+        "type": "benchmark",
+        "locator": "JSP-000472; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Instance-solving task on three fixed pseudo-random graphs; results are not claims about the conjecture.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No published decompositions of these generated instances; Gallai's conjecture predicts at most 38 paths in total.",
+      "sources": [
+        {
+          "title": "Gallai's path decomposition conjecture for graphs of small maximum degree",
+          "url": "https://doi.org/10.1016/j.disc.2019.01.005",
+          "authors": "Marthe Bonamy, Thomas J. Perrett",
+          "year": 2019
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 583,
+        "url": "https://www.erdosproblems.com/583",
+        "status": "open (falsifiable)",
+        "citation": "T. F. Bloom, Erdős Problem #583, https://www.erdosproblems.com/583, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000472"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-cycle-and-edge-decompositions",
+    "name": "Decompositions of three fixed graphs into few cycles and edges (Erdős-Gallai)",
+    "description": "construct() -> three lists of pieces, one per fixed instance graph generated by instance_graph(n, p, seed) for (20,0.4,11), (25,0.35,12), (30,0.3,13) in the verifier. A piece is a single edge [u, v] or a cycle given by at least three distinct vertices (the closing edge is implied). Pieces must be edge-disjoint and cover all edges. Minimize the total number of pieces. The score counts pieces over three fixed random graphs; it measures decomposition algorithms, not the conjecture's constant.",
+    "family": "science_prize_f_cycle_decomposition",
+    "parameters": {},
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.1016/j.aim.2023.109434",
+        "type": "paper",
+        "locator": "Matija Bucić and Richard Montgomery, Towards the Erdős-Gallai cycle decomposition conjecture (2024). Crossref record inspected; Erdős Problem #184 page inspected: every graph is conjectured to decompose into O(n) cycles and edges; Bucić and Montgomery proved O(n log* n). The score counts pieces over three fixed random graphs; it measures decomposition algorithms, not the conjecture's constant."
+      },
+      {
+        "url": "https://www.erdosproblems.com/184",
+        "type": "archive",
+        "locator": "Erdős Problem #184 (open); statement, history and current bounds reviewed 2026-09-24."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000178",
+        "type": "benchmark",
+        "locator": "JSP-000178; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Instance-solving task on three fixed pseudo-random graphs; no claim about the asymptotic conjecture follows.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No published decompositions of these generated instances; the conjecture predicts O(n) pieces, the best general bound is O(n log* n).",
+      "sources": [
+        {
+          "title": "Towards the Erdős-Gallai cycle decomposition conjecture",
+          "url": "https://doi.org/10.1016/j.aim.2023.109434",
+          "authors": "Matija Bucić, Richard Montgomery",
+          "year": 2024
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": {
+        "number": 184,
+        "url": "https://www.erdosproblems.com/184",
+        "status": "open",
+        "citation": "T. F. Bloom, Erdős Problem #184, https://www.erdosproblems.com/184, accessed 2026-09-24"
+      }
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000178"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  },
+  {
+    "id": "science-tree-packing-20",
+    "name": "Packing trees T1..T20 into K20 (Gyárfás tree packing conjecture)",
+    "description": "construct() -> 20 entries; entry k-1 is None or an injective list of host vertices in 0..19 for the fixed tree T_k on k vertices (Prüfer-sequence trees from instance_trees(20, 611) in the verifier). Embedded trees must be edge-disjoint in K20. Maximize the number of packed edges; a complete packing uses all 190 edges. The conjecture predicts a perfect packing (190 edges) for this fixed tree sequence; scores measure packing search on one instance.",
+    "family": "science_prize_f_tree_packing",
+    "parameters": {
+      "n": 20,
+      "seed": 611
+    },
+    "labels": {
+      "scientific_contribution": "method",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "sources": [
+      {
+        "url": "https://doi.org/10.4171/jems/1794",
+        "type": "paper",
+        "locator": "Barnabás Janzer and Richard Montgomery, Packing the largest trees in the tree packing conjecture (2026). Crossref record inspected. The Gyárfás tree packing conjecture states that any trees T_1..T_n with |T_i| = i pack edge-disjointly into K_n; Janzer and Montgomery pack the largest trees under degree conditions. The conjecture predicts a perfect packing (190 edges) for this fixed tree sequence; scores measure packing search on one instance."
+      },
+      {
+        "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000611",
+        "type": "benchmark",
+        "locator": "JSP-000611; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+      }
+    ],
+    "limitations": [
+      "Instance-solving task on one fixed pseudo-random tree sequence; a full packing would be consistent with, not a proof of, the conjecture.",
+      "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+    ],
+    "state_of_the_art": {
+      "kind": "none",
+      "value": null,
+      "statement": "No published packing for this generated sequence; the conjecture predicts a complete packing of all 190 edges.",
+      "sources": [
+        {
+          "title": "Packing the largest trees in the tree packing conjecture",
+          "url": "https://doi.org/10.4171/jems/1794",
+          "authors": "Barnabás Janzer, Richard Montgomery",
+          "year": 2026
+        }
+      ],
+      "as_of": "2026-09-24",
+      "erdos": null
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000611"
+    },
+    "requirements": {
+      "dependencies": [],
+      "datasets": "No downloaded data; bounded mathematical objects."
+    },
+    "validation": {
+      "level": "automated_tests",
+      "upstream_reproduction": false,
+      "source_reviewed": "2026-09-24",
+      "tests": "tests/test_science_prize_f.py",
+      "evidence": "validation/prize-expansion/task-checks.json",
+      "lean_verified": false
+    }
+  }
+]

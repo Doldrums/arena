@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0",
+  "id": "science-ramsey-five-colour-quadrilateral",
+  "name": "Five-colourings of complete graphs without monochromatic four-cycles (R_5(K2,2))",
+  "description": "construct() -> {'n': n, 'colors': [...]}: one colour in {0,...,4} for each pair (i,j), i<j, of vertices 0..n-1 in lexicographic order, 1 <= n <= 29. No colour class may contain a four-cycle (no two vertices with two common neighbours in one colour). Maximize n. A valid 5-colouring of K_n certifies R_5(C4) > n. The algebraic construction of Lazebnik and Woldar gives 26 vertices; 27 or 28 would be new.",
+  "paper_ids": [
+    "science-prize_e"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1006/jctb.2000.1954",
+      "type": "paper",
+      "locator": "Felix Lazebnik and Andrew J. Woldar, New Lower Bounds on the Multicolor Ramsey Numbers r_k(C4) (2000). Crossref record inspected; survey DS1.18 section 6.3.2 inspected: 27 <= R_5(C4) <= 29 [LaWo1] and R_k(C4) >= k^2+2 for odd prime powers k. A valid 5-colouring of K_n certifies R_5(C4) > n. The algebraic construction of Lazebnik and Woldar gives 26 vertices; 27 or 28 would be new."
+    },
+    {
+      "url": "https://www.erdosproblems.com/558",
+      "type": "archive",
+      "locator": "Erdős Problem #558 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000449",
+      "type": "benchmark",
+      "locator": "JSP-000449; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Five-colourings of complete graphs without monochromatic four-cycles (R_5(K2,2))",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_e_r5c4",
+    "science_family": "science_prize_e_r5c4",
+    "parameters": {
+      "colors": 5,
+      "length": 4,
+      "max_vertices": 29
+    },
+    "interface": "construct() -> {'n': n, 'colors': [...]}: one colour in {0,...,4} for each pair (i,j), i<j, of vertices 0..n-1 in lexicographic order, 1 <= n <= 29. No colour class may contain a four-cycle (no two vertices with two common neighbours in one colour). Maximize n.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000449"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_e_r5c4",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "The distance-class starter has 11 vertices; the algebraic record construction is not copied.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_e.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "best_known",
+    "value": 26,
+    "statement": "27 <= R_5(C4) <= 29 (Lazebnik and Woldar 2000).",
+    "sources": [
+      {
+        "title": "New Lower Bounds on the Multicolor Ramsey Numbers r_k(C4)",
+        "url": "https://doi.org/10.1006/jctb.2000.1954",
+        "authors": "Felix Lazebnik, Andrew J. Woldar",
+        "year": 2000
+      },
+      {
+        "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+        "authors": "Stanisław P. Radziszowski",
+        "url": "https://doi.org/10.37236/21"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 558,
+      "url": "https://www.erdosproblems.com/558",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #558, https://www.erdosproblems.com/558, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine multicolour Ramsey numbers of the four-cycle K2,2.",
+    "importance_rationale": "Erdős Problem #558 asks for R_k(K_{s,t}); for K2,2 the growth (1+o(1))k^2 is known but small values remain open.",
+    "papers": [
+      {
+        "title": "New Lower Bounds on the Multicolor Ramsey Numbers r_k(C4)",
+        "url": "https://doi.org/10.1006/jctb.2000.1954",
+        "task_relation": "A valid 5-colouring of K_n certifies R_5(C4) > n. The algebraic construction of Lazebnik and Woldar gives 26 vertices; 27 or 28 would be new.",
+        "primary_goal": "Determine multicolour Ramsey numbers of the four-cycle K2,2.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; survey DS1.18 section 6.3.2 inspected: 27 <= R_5(C4) <= 29 [LaWo1] and R_k(C4) >= k^2+2 for odd prime powers k.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_f_k23_free",
+  "direction": "maximize",
+  "contract": "construct() -> list of edges [u, v] of a simple graph on vertices 0..19 in which no two vertices have three common neighbours (no K2,3). Maximize the number of edges.",
+  "parameters": {
+    "n": 20,
+    "s": 2,
+    "t": 3
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "A K2,3-free graph with m edges certifies ex(20;K2,3) >= m; the exact value for n = 20 is not documented here. Exact local certificates are not Lean proofs. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-k23-free-graphs-20",
+  "name": "Dense graphs on 20 vertices without K2,3",
+  "paper_ids": [
+    "science-prize_f"
+  ],
+  "description": "construct() -> list of edges [u, v] of a simple graph on vertices 0..19 in which no two vertices have three common neighbours (no K2,3). Maximize the number of edges. A K2,3-free graph with m edges certifies ex(20;K2,3) >= m; the exact value for n = 20 is not documented here.",
+  "benchmark": "Dense graphs on 20 vertices without K2,3",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1006/jcta.1996.0067",
+      "type": "paper",
+      "locator": "Zoltán Füredi, New Asymptotics for Bipartite Turán Numbers (1996). Crossref record inspected; Erdős Problem #146 page inspected: the Erdős-Simonovits conjecture for r-degenerate bipartite H was disproved (Lean) by a 2-degenerate construction; K2,3 is 2-degenerate and Füredi determined ex(n;K2,t+1) asymptotically. A K2,3-free graph with m edges certifies ex(20;K2,3) >= m; the exact value for n = 20 is not documented here."
+    },
+    {
+      "url": "https://www.erdosproblems.com/146",
+      "type": "archive",
+      "locator": "Erdős Problem #146 (disproved (Lean)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000147",
+      "type": "benchmark",
+      "locator": "JSP-000147; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "No documented value for n = 20 (reference label none).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_f",
+      "title": "Problem-bank constructions: extremal graphs, hypergraphs and designs: source-based research tasks",
+      "url": "https://arxiv.org/abs/2103.14179"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented value of ex(20;K2,3) was found; asymptotically ex(n;K2,3) ~ (sqrt(2)/2) n^(3/2) (Füredi 1996).",
+    "sources": [
+      {
+        "title": "New Asymptotics for Bipartite Turán Numbers",
+        "url": "https://doi.org/10.1006/jcta.1996.0067",
+        "authors": "Zoltán Füredi",
+        "year": 1996
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 146,
+      "url": "https://www.erdosproblems.com/146",
+      "status": "disproved (Lean)",
+      "citation": "T. F. Bloom, Erdős Problem #146, https://www.erdosproblems.com/146, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine Turán numbers of complete bipartite graphs K2,t.",
+    "importance_rationale": "Turán numbers of bipartite graphs of bounded degeneracy are the subject of Erdős Problem #146; K2,3 is the smallest nontrivial K2,t case.",
+    "papers": [
+      {
+        "title": "New Asymptotics for Bipartite Turán Numbers",
+        "url": "https://doi.org/10.1006/jcta.1996.0067",
+        "task_relation": "A K2,3-free graph with m edges certifies ex(20;K2,3) >= m; the exact value for n = 20 is not documented here.",
+        "primary_goal": "Determine Turán numbers of complete bipartite graphs K2,t.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #146 page inspected: the Erdős-Simonovits conjecture for r-degenerate bipartite H was disproved (Lean) by a 2-degenerate construction; K2,3 is 2-degenerate and Füredi determined ex(n;K2,t+1) asymptotically.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

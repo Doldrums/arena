@@ -1,0 +1,149 @@
+{
+  "schema_version": "1.0",
+  "id": "science-property-p-divisibility-256",
+  "name": "Large sets with Property P",
+  "description": "construct() -> a nonempty subset of [1,n=256]. For every a<b<=c in the set, a must NOT divide b+c. Repeated larger summands b=c are included. Maximize cardinality. Finite cardinality maximization in [1,256], including repeated larger summands. The cited work proves the extremal bound for sufficiently large n; this task claims neither novelty nor its applicability threshold at 256.",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2301.07065",
+      "type": "paper",
+      "locator": "Benjamin Bedert, On a problem of Erdős and Sárközy about sequences with no term dividing the sum of two larger terms. Author abstract inspected. Repetition convention j<=k additionally checked in Elsholtz and Planitzer, On Erdős and Sárközy’s sequences with Property P, DOI 10.1007/s00605-016-0995-9 (2016)."
+    },
+    {
+      "url": "https://link.springer.com/article/10.1007/s00605-016-0995-9",
+      "type": "paper",
+      "locator": "Christian Elsholtz and Stefan Planitzer, On Erdős and Sárközy’s sequences with Property P (2016): primary statement confirms i<j<=k, including repeated larger terms."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000051",
+      "type": "benchmark",
+      "locator": "JSP-000051; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; fixed finite mathematical profiles."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Large sets with Property P",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_a_property_p",
+    "science_family": "science_prize_a_property_p",
+    "parameters": {
+      "n": 256
+    },
+    "interface": "construct() -> a nonempty subset of [1,n=256]. For every a<b<=c in the set, a must NOT divide b+c. Repeated larger summands b=c are included. Maximize cardinality.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000051"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_a_property_p",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Finite cardinality maximization in [1,256], including repeated larger summands. The cited work proves the extremal bound for sufficiently large n; this task claims neither novelty nor its applicability threshold at 256.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/a-checks.json",
+    "tests": "tests/test_science_prize_a.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 86,
+    "statement": "The maximum is 86 = floor(256/3) + 1, attained by {171, ..., 256}. An exact integer programme (151,333 divisibility constraints, solved to optimality with HiGHS; scripts/check_state_of_the_art.py --slow) shows that no larger subset of [1,256] has the property. Bedert proved the bound floor(n/3) + 1 for all sufficiently large n, as conjectured by Erdős and Sárközy.",
+    "sources": [
+      {
+        "title": "On a problem of Erdős and Sárközy about sequences with no term dividing the sum of two larger terms",
+        "url": "https://arxiv.org/abs/2301.07065",
+        "authors": "Benjamin Bedert",
+        "year": 2023
+      },
+      {
+        "title": "On Erdős and Sárközy's sequences with Property P",
+        "url": "https://doi.org/10.1007/s00605-016-0995-9",
+        "authors": "Christian Elsholtz, Stefan Planitzer",
+        "year": 2016
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine extremal sizes of integer sets whose smaller elements do not divide sums of two larger elements.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "On a problem of Erdős and Sárközy about sequences with no term dividing the sum of two larger terms",
+        "url": "https://arxiv.org/abs/2301.07065",
+        "task_relation": "Finite cardinality maximization in [1,256], including repeated larger summands. The cited work proves the extremal bound for sufficiently large n; this task claims neither novelty nor its applicability threshold at 256.",
+        "primary_goal": "Determine extremal sizes of integer sets whose smaller elements do not divide sums of two larger elements.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author abstract inspected. Repetition convention j<=k additionally checked in Elsholtz and Planitzer, On Erdős and Sárközy’s sequences with Property P, DOI 10.1007/s00605-016-0995-9 (2016).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

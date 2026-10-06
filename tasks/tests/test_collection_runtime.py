@@ -19,7 +19,7 @@ class LocalLibraryTests(unittest.TestCase):
     def test_complete_corpus_validates_without_external_checkout(self):
         result = validate(ROOT)
         self.assertTrue(result["valid"], result["errors"])
-        self.assertEqual(result["task_count"], 959)
+        self.assertEqual(result["task_count"], 1163)
         self.assertEqual(result["paper_count"], 98)
 
     def test_task_identifier_cannot_escape_suite(self):

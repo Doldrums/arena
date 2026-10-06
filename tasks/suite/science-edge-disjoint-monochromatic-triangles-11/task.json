@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "id": "science-edge-disjoint-monochromatic-triangles-11",
+  "name": "Two-colourings of K11 with few edge-disjoint monochromatic triangles",
+  "description": "construct() -> {'n': 11, 'colors': [...]}: colour 0 or 1 for each of the 55 pairs (i,j), i<j, in lexicographic order. The score is the maximum number of edge-disjoint monochromatic triangles, computed exactly per colour by branch and bound. Minimize; the known optimum is 6. Any colouring gives an upper bound on the minimum; the tabulated value for n = 11 is 6.",
+  "paper_ids": [
+    "science-prize_e"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/S0012-365X(00)00312-5",
+      "type": "paper",
+      "locator": "Paul Erdős, Ralph J. Faudree, Ronald J. Gould, Michael S. Jacobson and Jenő Lehel, Edge disjoint monochromatic triangles in 2-colored graphs (2001). Crossref record inspected (publisher page returned HTTP 403). OEIS A060407 inspected: minimum over 2-colourings of K_n of the maximum number of edge-disjoint monochromatic triangles is 0,0,0,1,2,2,3,4,6 for n = 3..11, citing this paper. Erdős Problem #76 inspected (asymptotic n^2/12, proved by Gruslys and Letzter). Any colouring gives an upper bound on the minimum; the tabulated value for n = 11 is 6."
+    },
+    {
+      "url": "https://www.erdosproblems.com/76",
+      "type": "archive",
+      "locator": "Erdős Problem #76 (proved (Gruslys and Letzter)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000093",
+      "type": "benchmark",
+      "locator": "JSP-000093; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Two-colourings of K11 with few edge-disjoint monochromatic triangles",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_e_monochromatic_triangle_packing",
+    "science_family": "science_prize_e_monochromatic_triangle_packing",
+    "parameters": {
+      "n": 11
+    },
+    "interface": "construct() -> {'n': 11, 'colors': [...]}: colour 0 or 1 for each of the 55 pairs (i,j), i<j, in lexicographic order. The score is the maximum number of edge-disjoint monochromatic triangles, computed exactly per colour by branch and bound. Minimize; the known optimum is 6.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000093"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_e_monochromatic_triangle_packing",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case. The value 6 is taken from OEIS A060407, which cites the 2001 paper; the paper's full text was not accessible during review.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_e.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 6,
+    "statement": "For n = 11 every 2-colouring has 6 edge-disjoint monochromatic triangles and some colouring has no more (OEIS A060407, from Erdős, Faudree, Gould, Jacobson and Lehel 2001).",
+    "sources": [
+      {
+        "title": "OEIS A060407",
+        "url": "https://oeis.org/A060407"
+      },
+      {
+        "title": "Edge disjoint monochromatic triangles in 2-colored graphs",
+        "url": "https://doi.org/10.1016/S0012-365X(00)00312-5",
+        "authors": "P. Erdős, R.J. Faudree, R.J. Gould, M.S. Jacobson, J. Lehel",
+        "year": 2001
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 76,
+      "url": "https://www.erdosproblems.com/76",
+      "status": "proved (Gruslys and Letzter)",
+      "citation": "T. F. Bloom, Erdős Problem #76, https://www.erdosproblems.com/76, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how many edge-disjoint monochromatic triangles every 2-colouring of K_n must contain.",
+    "importance_rationale": "The asymptotic question (Erdős Problem #76, conjectured by Erdős, Faudree and Ordman) was proved by Gruslys and Letzter; exact small values come from this computation.",
+    "papers": [
+      {
+        "title": "Edge disjoint monochromatic triangles in 2-colored graphs",
+        "url": "https://doi.org/10.1016/S0012-365X(00)00312-5",
+        "task_relation": "Any colouring gives an upper bound on the minimum; the tabulated value for n = 11 is 6.",
+        "primary_goal": "Determine how many edge-disjoint monochromatic triangles every 2-colouring of K_n must contain.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected (publisher page returned HTTP 403). OEIS A060407 inspected: minimum over 2-colourings of K_n of the maximum number of edge-disjoint monochromatic triangles is 0,0,0,1,2,2,3,4,6 for n = 3..11, citing this paper. Erdős Problem #76 inspected (asymptotic n^2/12, proved by Gruslys and Letzter).",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

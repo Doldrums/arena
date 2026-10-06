@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "id": "science-pair-sum-prime-diversity-12",
+  "name": "Few prime factors across pairwise sums",
+  "description": "construct() -> n=12 distinct positive integers <=maximum=10000. Factor every sum of two DISTINCT elements, union all prime factors and minimize the number of distinct primes. Choose 12 distinct positive integers at most 10000; minimize the number of distinct primes dividing sums of distinct-index pairs. Equal-index sums are excluded.",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://users.renyi.hu/~p_erdos/1934-03.pdf",
+      "type": "paper",
+      "locator": "Paul Erdős and Paul Turán, On a Problem in the Elementary Theory of Numbers. American Mathematical Monthly 41 (1934), 608–611; full text, initial pair-sum prime-divisor problem inspected. The opening credits its original oral proposal to G. Grünwald and D. Lázár."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000133",
+      "type": "benchmark",
+      "locator": "JSP-000133; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; fixed finite mathematical profiles."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Few prime factors across pairwise sums",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_a_pair_sum_prime_diversity",
+    "science_family": "science_prize_a_pair_sum_prime_diversity",
+    "parameters": {
+      "n": 12,
+      "maximum": 10000
+    },
+    "interface": "construct() -> n=12 distinct positive integers <=maximum=10000. Factor every sum of two DISTINCT elements, union all prime factors and minimize the number of distinct primes.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; independently authored verifier and search seed, with no upstream code copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000133"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_a_pair_sum_prime_diversity",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Choose 12 distinct positive integers at most 10000; minimize the number of distinct primes dividing sums of distinct-index pairs. Equal-index sums are excluded.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/a-checks.json",
+    "tests": "tests/test_science_prize_a.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented minimum for 12-element sets. Erdős and Turán proved that the number of distinct primes dividing the product of pairwise sums grows at least like log n; Erdős Problem #126, whether it grows faster, has been answered affirmatively.",
+    "sources": [
+      {
+        "title": "On a Problem in the Elementary Theory of Numbers",
+        "url": "https://users.renyi.hu/~p_erdos/1934-03.pdf",
+        "authors": "Paul Erdős, Paul Turán",
+        "year": 1934
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 126,
+      "url": "https://www.erdosproblems.com/126",
+      "status": "proved (Lean)",
+      "citation": "T. F. Bloom, Erdős Problem #126, https://www.erdosproblems.com/126, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Relate the size of an integer set to the number of primes dividing its pairwise sums.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "On a Problem in the Elementary Theory of Numbers",
+        "url": "https://users.renyi.hu/~p_erdos/1934-03.pdf",
+        "task_relation": "Choose 12 distinct positive integers at most 10000; minimize the number of distinct primes dividing sums of distinct-index pairs. Equal-index sums are excluded.",
+        "primary_goal": "Relate the size of an integer set to the number of primes dividing its pairwise sums.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "American Mathematical Monthly 41 (1934), 608–611; full text, initial pair-sum prime-divisor problem inspected. The opening credits its original oral proposal to G. Grünwald and D. Lázár.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

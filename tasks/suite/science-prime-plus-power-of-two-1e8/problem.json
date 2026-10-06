@@ -1,0 +1,118 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_prime_power_two",
+  "direction": "maximize",
+  "contract": "construct() -> an integer n with 3 <= n <= 10^8. The score is the number of k >= 0 with n - 2^k prime (deterministic Miller-Rabin). Maximize; the optimum is 19 (first at 53999715).",
+  "parameters": {
+    "bound": 100000000
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "For n <= 10^8 the maximum is 19, so the task recovers such an integer. Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-prime-plus-power-of-two-1e8",
+  "name": "Integers up to 10^8 with many representations n = p + 2^k",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> an integer n with 3 <= n <= 10^8. The score is the number of k >= 0 with n - 2^k prime (deterministic Miller-Rabin). Maximize; the optimum is 19 (first at 53999715). For n <= 10^8 the maximum is 19, so the task recovers such an integer.",
+  "benchmark": "Integers up to 10^8 with many representations n = p + 2^k",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://users.renyi.hu/~p_erdos/1950-07.pdf",
+      "type": "paper",
+      "locator": "Paul Erdős, On integers of the form 2^k + p and some related problems (1950). Paper located in the Rényi Institute archive (Summa Brasil. Math. 2 (1950)). Erdős Problem #236 page inspected (Erdős proved f(n) >> log log n infinitely often; whether f(n) = o(log n) is open; values are OEIS A109925). OEIS A109926 inspected: the least n with 19 representations is 53999715, with 20 it is 2282745465, and a(n) > 10^10 for n >= 21 (Donovan Johnson), so the maximum for n <= 10^8 is 19. For n <= 10^8 the maximum is 19, so the task recovers such an integer."
+    },
+    {
+      "url": "https://www.erdosproblems.com/236",
+      "type": "archive",
+      "locator": "Erdős Problem #236 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0201-0300.md#JSP-000209",
+      "type": "benchmark",
+      "locator": "JSP-000209; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case from the OEIS first-occurrence table.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 19,
+    "statement": "For n <= 10^8 at most 19 values n - 2^k are prime; first at 53999715 (OEIS A109926).",
+    "sources": [
+      {
+        "title": "OEIS A109926: Least k such that k - 2^r is prime for n values of r",
+        "url": "https://oeis.org/A109926"
+      },
+      {
+        "title": "On integers of the form 2^k + p and some related problems",
+        "url": "https://users.renyi.hu/~p_erdos/1950-07.pdf",
+        "authors": "Paul Erdős",
+        "year": 1950
+      },
+      {
+        "title": "Über einige Sätze der additiven Zahlentheorie",
+        "url": "https://doi.org/10.1007/BF01449161",
+        "authors": "N. P. Romanoff",
+        "year": 1934
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 236,
+      "url": "https://www.erdosproblems.com/236",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #236, https://www.erdosproblems.com/236, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine how many representations n = p + 2^k an integer can have (Erdős Problem #236).",
+    "importance_rationale": "The problem grew out of Romanoff's theorem and led Erdős to covering congruences (odd numbers not of the form p + 2^k); f(n) = o(log n) is open.",
+    "papers": [
+      {
+        "title": "On integers of the form 2^k + p and some related problems",
+        "url": "https://users.renyi.hu/~p_erdos/1950-07.pdf",
+        "task_relation": "For n <= 10^8 the maximum is 19, so the task recovers such an integer.",
+        "primary_goal": "Determine how many representations n = p + 2^k an integer can have (Erdős Problem #236).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Paper located in the Rényi Institute archive (Summa Brasil. Math. 2 (1950)). Erdős Problem #236 page inspected (Erdős proved f(n) >> log log n infinitely often; whether f(n) = o(log n) is open; values are OEIS A109925). OEIS A109926 inspected: the least n with 19 representations is 53999715, with 20 it is 2282745465, and a(n) > 10^10 for n >= 21 (Donovan Johnson), so the maximum for n <= 10^8 is 19.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

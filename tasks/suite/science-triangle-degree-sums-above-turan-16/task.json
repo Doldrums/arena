@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0",
+  "id": "science-triangle-degree-sums-above-turan-16",
+  "name": "Graphs on 16 vertices with 65 edges whose triangles have small degree sums",
+  "description": "construct() -> {'n': 16, 'edges': [[u, v], ...]}: a simple graph on 16 vertices with exactly 65 = floor(16^2/4) + 1 edges (so it has triangles). The score is the largest degree sum deg(u) + deg(v) + deg(w) over its triangles. Minimize. Scores below 24 would beat the published construction at n = 16; the conjectured asymptotic value is about 1.464n = 23.4.",
+  "paper_ids": [
+    "science-prize_i"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1002/jgt.3190120216",
+      "type": "paper",
+      "locator": "Genghua Fan, Degree sum for a triangle in a graph (1988). Crossref record inspected; Erdős Problem #1033 page inspected (Bollobás-Erdős conjecture h(n) >= (2(sqrt 3 - 1) - o(1))n; known 21n/16 <= h(n) <= 2(sqrt 3 - 1)n + O(1) with the construction of Erdős and Laskar made explicit by Fan). Evaluated locally, that construction gives 24 for n = 16 (K_{10,6} plus a perfect matching on the 10-side); no finite optimum is documented. Scores below 24 would beat the published construction at n = 16; the conjectured asymptotic value is about 1.464n = 23.4."
+    },
+    {
+      "url": "https://www.erdosproblems.com/1033",
+      "type": "archive",
+      "locator": "Erdős Problem #1033 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0801-0900.md#JSP-000859",
+      "type": "benchmark",
+      "locator": "JSP-000859; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Graphs on 16 vertices with 65 edges whose triangles have small degree sums",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_i_triangle_degrees",
+    "science_family": "science_prize_i_triangle_degrees",
+    "parameters": {
+      "n": 16,
+      "edges": 65
+    },
+    "interface": "construct() -> {'n': 16, 'edges': [[u, v], ...]}: a simple graph on 16 vertices with exactly 65 = floor(16^2/4) + 1 edges (so it has triangles). The score is the largest degree sum deg(u) + deg(v) + deg(w) over its triangles. Minimize.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "none"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000859"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_i_triangle_degrees",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "No documented value for n = 16 (reference label none).",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_i.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No documented optimum for n = 16; the Erdős-Laskar/Fan construction gives 24 (evaluated locally) and 21n/16 <= h(n) asymptotically.",
+    "sources": [
+      {
+        "title": "Degree sum for a triangle in a graph",
+        "url": "https://doi.org/10.1002/jgt.3190120216",
+        "authors": "Genghua Fan",
+        "year": 1988
+      },
+      {
+        "title": "Erdős Problem #1033",
+        "url": "https://www.erdosproblems.com/1033"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1033,
+      "url": "https://www.erdosproblems.com/1033",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #1033, https://www.erdosproblems.com/1033, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Estimate h(n), the largest triangle degree sum forced in graphs with more than n^2/4 edges (Erdős Problem #1033).",
+    "importance_rationale": "The problem refines Mantel's theorem by asking where the forced triangles sit in the degree sequence.",
+    "papers": [
+      {
+        "title": "Degree sum for a triangle in a graph",
+        "url": "https://doi.org/10.1002/jgt.3190120216",
+        "task_relation": "Scores below 24 would beat the published construction at n = 16; the conjectured asymptotic value is about 1.464n = 23.4.",
+        "primary_goal": "Estimate h(n), the largest triangle degree sum forced in graphs with more than n^2/4 edges (Erdős Problem #1033).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #1033 page inspected (Bollobás-Erdős conjecture h(n) >= (2(sqrt 3 - 1) - o(1))n; known 21n/16 <= h(n) <= 2(sqrt 3 - 1)n + O(1) with the construction of Erdős and Laskar made explicit by Fan). Evaluated locally, that construction gives 24 for n = 16 (K_{10,6} plus a perfect matching on the 10-side); no finite optimum is documented.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

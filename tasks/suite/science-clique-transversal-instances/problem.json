@@ -1,0 +1,110 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_i_clique_transversal",
+  "direction": "minimize",
+  "contract": "construct() -> three vertex lists, one per instance from random_graph(n, p, seed) for (30,0.3,201), (35,0.25,202), (40,0.2,203) in the verifier. Each list must meet every maximal clique with at least two vertices (all maximal cliques enumerated by Bron-Kerbosch). Minimize the total size.",
+  "parameters": {},
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "The score totals transversal sizes on three fixed random graphs; it measures a covering method. Exact local certificates are not Lean proofs; reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-clique-transversal-instances",
+  "name": "Small vertex sets meeting every maximal clique of three fixed random graphs",
+  "paper_ids": [
+    "science-prize_i"
+  ],
+  "description": "construct() -> three vertex lists, one per instance from random_graph(n, p, seed) for (30,0.3,201), (35,0.25,202), (40,0.2,203) in the verifier. Each list must meet every maximal clique with at least two vertices (all maximal cliques enumerated by Bron-Kerbosch). Minimize the total size. The score totals transversal sizes on three fixed random graphs; it measures a covering method.",
+  "benchmark": "Small vertex sets meeting every maximal clique of three fixed random graphs",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/0012-365X(92)90681-5",
+      "type": "paper",
+      "locator": "Paul Erdős, Tibor Gallai and Zsolt Tuza, Covering the cliques of a graph with vertices (1992). Crossref record inspected; Erdős Problem #610 page inspected (Erdős, Gallai and Tuza proved tau(G) <= n - sqrt(2n) + O(1); tau(G) <= n - c sqrt(n log n) follows from Joret, Micek, Reed and Smid) and related problems #151 and #611. The score totals transversal sizes on three fixed random graphs; it measures a covering method."
+    },
+    {
+      "url": "https://www.erdosproblems.com/610",
+      "type": "archive",
+      "locator": "Erdős Problem #610 (proved (Lean)); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000150",
+      "type": "benchmark",
+      "locator": "JSP-000150; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Instance-solving task on three fixed pseudo-random graphs.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_i",
+      "title": "Problem-bank constructions: hypergraphs, graph constructions and instance-solving methods: source-based research tasks",
+      "url": "https://ajc.maths.uq.edu.au/pdf/76/ajc_v76_p073.pdf"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "Instance-solving task; no reference value.",
+    "sources": [
+      {
+        "title": "Covering the cliques of a graph with vertices",
+        "url": "https://doi.org/10.1016/0012-365X(92)90681-5",
+        "authors": "Paul Erdős, Tibor Gallai, Zsolt Tuza",
+        "year": 1992
+      },
+      {
+        "title": "Erdős Problem #610",
+        "url": "https://www.erdosproblems.com/610"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 610,
+      "url": "https://www.erdosproblems.com/610",
+      "status": "proved (Lean)",
+      "citation": "T. F. Bloom, Erdős Problem #610, https://www.erdosproblems.com/610, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Estimate the clique transversal number tau(G) (Erdős Problems #610, #611 and #151).",
+    "importance_rationale": "Clique transversals are a hitting-set problem on the clique hypergraph, related to independent sets in triangle-free graphs.",
+    "papers": [
+      {
+        "title": "Covering the cliques of a graph with vertices",
+        "url": "https://doi.org/10.1016/0012-365X(92)90681-5",
+        "task_relation": "The score totals transversal sizes on three fixed random graphs; it measures a covering method.",
+        "primary_goal": "Estimate the clique transversal number tau(G) (Erdős Problems #610, #611 and #151).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #610 page inspected (Erdős, Gallai and Tuza proved tau(G) <= n - sqrt(2n) + O(1); tau(G) <= n - c sqrt(n log n) follows from Joret, Micek, Reed and Smid) and related problems #151 and #611.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

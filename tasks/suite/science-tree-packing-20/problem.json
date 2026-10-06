@@ -1,0 +1,99 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_f_tree_packing",
+  "direction": "maximize",
+  "contract": "construct() -> 20 entries; entry k-1 is None or an injective list of host vertices in 0..19 for the fixed tree T_k on k vertices (Prüfer-sequence trees from instance_trees(20, 611) in the verifier). Embedded trees must be edge-disjoint in K20. Maximize the number of packed edges; a complete packing uses all 190 edges.",
+  "parameters": {
+    "n": 20,
+    "seed": 611
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "The conjecture predicts a perfect packing (190 edges) for this fixed tree sequence; scores measure packing search on one instance. Exact local certificates are not Lean proofs. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-tree-packing-20",
+  "name": "Packing trees T1..T20 into K20 (Gyárfás tree packing conjecture)",
+  "paper_ids": [
+    "science-prize_f"
+  ],
+  "description": "construct() -> 20 entries; entry k-1 is None or an injective list of host vertices in 0..19 for the fixed tree T_k on k vertices (Prüfer-sequence trees from instance_trees(20, 611) in the verifier). Embedded trees must be edge-disjoint in K20. Maximize the number of packed edges; a complete packing uses all 190 edges. The conjecture predicts a perfect packing (190 edges) for this fixed tree sequence; scores measure packing search on one instance.",
+  "benchmark": "Packing trees T1..T20 into K20 (Gyárfás tree packing conjecture)",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.4171/jems/1794",
+      "type": "paper",
+      "locator": "Barnabás Janzer and Richard Montgomery, Packing the largest trees in the tree packing conjecture (2026). Crossref record inspected. The Gyárfás tree packing conjecture states that any trees T_1..T_n with |T_i| = i pack edge-disjointly into K_n; Janzer and Montgomery pack the largest trees under degree conditions. The conjecture predicts a perfect packing (190 edges) for this fixed tree sequence; scores measure packing search on one instance."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0601-0700.md#JSP-000611",
+      "type": "benchmark",
+      "locator": "JSP-000611; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Instance-solving task on one fixed pseudo-random tree sequence; a full packing would be consistent with, not a proof of, the conjecture.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_f",
+      "title": "Problem-bank constructions: extremal graphs, hypergraphs and designs: source-based research tasks",
+      "url": "https://arxiv.org/abs/2103.14179"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No published packing for this generated sequence; the conjecture predicts a complete packing of all 190 edges.",
+    "sources": [
+      {
+        "title": "Packing the largest trees in the tree packing conjecture",
+        "url": "https://doi.org/10.4171/jems/1794",
+        "authors": "Barnabás Janzer, Richard Montgomery",
+        "year": 2026
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": null
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Prove the Gyárfás tree packing conjecture.",
+    "importance_rationale": "The tree packing conjecture (Gyárfás, 1976) is a central open problem on graph packings with recent asymptotic progress.",
+    "papers": [
+      {
+        "title": "Packing the largest trees in the tree packing conjecture",
+        "url": "https://doi.org/10.4171/jems/1794",
+        "task_relation": "The conjecture predicts a perfect packing (190 edges) for this fixed tree sequence; scores measure packing search on one instance.",
+        "primary_goal": "Prove the Gyárfás tree packing conjecture.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected. The Gyárfás tree packing conjecture states that any trees T_1..T_n with |T_i| = i pack edge-disjointly into K_n; Janzer and Montgomery pack the largest trees under degree conditions.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

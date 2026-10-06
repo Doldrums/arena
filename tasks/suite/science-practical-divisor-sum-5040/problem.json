@@ -1,0 +1,95 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_a_practical_divisor_sum",
+  "direction": "minimize",
+  "contract": "construct() -> at most 256 distinct positive divisors of n=5040 whose sum is target=4979. Minimize the number of selected divisors. Exact membership and sum checks; this is one finite practical-number instance.",
+  "parameters": {
+    "n": 5040,
+    "target": 4979
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Independent finite certificate evaluator and local seed; no source implementation copied. Exact constraints are verified, but no optimality, general theorem, Lean proof, published record, or prize eligibility is claimed. See task sources and adaptation limitations."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-practical-divisor-sum-5040",
+  "name": "Short sums of distinct divisors of 5040",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "description": "construct() -> at most 256 distinct positive divisors of n=5040 whose sum is target=4979. Minimize the number of selected divisors. Exact membership and sum checks; this is one finite practical-number instance. Represent 4979 as a sum of distinct divisors of 5040, minimizing the number of terms. This is one finite optimization instance, not Vose’s asymptotic theorem.",
+  "benchmark": "Short sums of distinct divisors of 5040",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.1112/blms/17.1.21",
+      "type": "paper",
+      "locator": "Michael D. Vose, Egyptian Fractions. Publisher metadata verified: Bulletin of the London Mathematical Society 17 (1985), 21–24. Full text was not accessible in this review. Practical-number definition additionally checked in Weingartner, arXiv:1405.2585."
+    },
+    {
+      "url": "https://arxiv.org/abs/1405.2585",
+      "type": "paper",
+      "locator": "Andreas Weingartner, Practical numbers and the distribution of divisors: primary abstract confirms distinct-divisor-sum definition, but does not establish the local minimum-term objective."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000055",
+      "type": "benchmark",
+      "locator": "JSP-000055; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "limitations": [
+    "Represent 4979 as a sum of distinct divisors of 5040, minimizing the number of terms. This is one finite optimization instance, not Vose’s asymptotic theorem.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_a",
+      "title": "Problem-bank constructions: additive combinatorics: source-based research tasks",
+      "url": "https://arxiv.org/abs/2208.12182"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "none",
+    "value": null,
+    "statement": "No value is published for this instance, which was fixed for this dataset; the task compares search methods. Michael D. Vose (1985, Egyptian Fractions) studies the underlying problem.",
+    "sources": [
+      {
+        "title": "Egyptian Fractions",
+        "url": "https://doi.org/10.1112/blms/17.1.21",
+        "authors": "Michael D. Vose",
+        "year": 1985
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "unreviewed",
+    "scientific_problem": "Minimize the number of distinct divisors needed to represent an integer below a practical number.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [],
+    "reviewed_at": "2026-09-22",
+    "reason": "Vose’s paper identity is verified, but its specific minimum-term theorem was not checked in primary full text. A related practical-number definition does not by itself establish this exact objective as a primary research goal.",
+    "verification_basis": "Publisher metadata verified: Bulletin of the London Mathematical Society 17 (1985), 21–24. Full text was not accessible in this review. Practical-number definition additionally checked in Weingartner, arXiv:1405.2585.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "method",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "none",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": false
+  }
+}

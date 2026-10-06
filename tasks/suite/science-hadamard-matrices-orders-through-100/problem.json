@@ -1,0 +1,109 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_a_hadamard_orders",
+  "direction": "maximize",
+  "contract": "construct() -> 25 rows for orders 4,8,...,100. A row is None or an n-by-n matrix of Python integer signs -1/+1 satisfying H*H^T=n*I. Maximize the fraction of orders constructed. Every row product is checked exactly. These small orders have known solutions; this is a rediscovery task.",
+  "parameters": {
+    "maximum": 100
+  },
+  "requires": [],
+  "timeout": 60,
+  "notes": [
+    "Independent finite certificate evaluator and local seed; no source implementation copied. Exact constraints are verified, but no optimality, general theorem, Lean proof, published record, or prize eligibility is claimed. See task sources and adaptation limitations."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-hadamard-matrices-orders-through-100",
+  "name": "Hadamard matrix constructions through order 100",
+  "paper_ids": [
+    "science-prize_a"
+  ],
+  "description": "construct() -> 25 rows for orders 4,8,...,100. A row is None or an n-by-n matrix of Python integer signs -1/+1 satisfying H*H^T=n*I. Maximize the fraction of orders constructed. Every row product is checked exactly. These small orders have known solutions; this is a rediscovery task. Construct sign matrices for orders 4,8,...,100, maximizing order coverage. These orders already have constructions; no SageMath code or matrix data is copied.",
+  "benchmark": "Hadamard matrix constructions through order 100",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://arxiv.org/abs/2411.18897",
+      "type": "paper",
+      "locator": "Matteo Cati and Dmitrii V. Pasechnik, A database of constructions of Hadamard matrices. Author abstract and HTML v2 Sections 1 and 4.2 inspected: exact orthogonal-sign definition, known construction database, and Sylvester construction attribution."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0001-0100.md#JSP-000013",
+      "type": "benchmark",
+      "locator": "JSP-000013; pinned discovery record, independently paraphrased. Source wording and paper-specific differences are explained in limitations."
+    }
+  ],
+  "limitations": [
+    "Construct sign matrices for orders 4,8,...,100, maximizing order coverage. These orders already have constructions; no SageMath code or matrix data is copied.",
+    "All computations are bounded. A valid certificate is not an optimality proof, new theorem, Lean proof, or evidence of prize eligibility. Candidate Python is trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_a",
+      "title": "Problem-bank constructions: additive combinatorics: source-based research tasks",
+      "url": "https://arxiv.org/abs/2208.12182"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 1.0,
+    "statement": "Hadamard matrices of every order 4k up to 664 are known (668 is the smallest open order), so all 25 orders up to 100 can be constructed. Order 92 was the last of them, found by Baumert, Golomb and Hall.",
+    "sources": [
+      {
+        "title": "A database of constructions of Hadamard matrices",
+        "url": "https://arxiv.org/abs/2411.18897",
+        "authors": "Matteo Cati, Dmitrii V. Pasechnik",
+        "year": 2024
+      },
+      {
+        "title": "Discovery of an Hadamard matrix of order 92",
+        "url": "https://doi.org/10.1090/s0002-9904-1962-10761-7",
+        "authors": "Leonard Baumert, S. W. Golomb, Marshall Hall",
+        "year": 1962
+      },
+      {
+        "title": "A Hadamard matrix of order 428",
+        "url": "https://doi.org/10.1002/jcd.20043",
+        "authors": "H. Kharaghani, B. Tayfeh-Rezaie",
+        "year": 2005
+      }
+    ],
+    "as_of": "2026-09-24"
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Construct and verify Hadamard matrices across admissible orders.",
+    "importance_rationale": "The finite certificates expose exact extremal constructions for the mathematical question studied in the source, with adaptation limits stated separately.",
+    "papers": [
+      {
+        "title": "A database of constructions of Hadamard matrices",
+        "url": "https://arxiv.org/abs/2411.18897",
+        "task_relation": "Construct sign matrices for orders 4,8,...,100, maximizing order coverage. These orders already have constructions; no SageMath code or matrix data is copied.",
+        "primary_goal": "Construct and verify Hadamard matrices across admissible orders.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "A problem-focused primary paper studies the same substantive mathematical construction or extremal quantity. No novelty claim is implied.",
+    "verification_basis": "Author abstract and HTML v2 Sections 1 and 4.2 inspected: exact orthogonal-sign definition, known construction database, and Sylvester construction attribution.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

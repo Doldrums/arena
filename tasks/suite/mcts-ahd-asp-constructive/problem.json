@@ -1,0 +1,105 @@
+{
+  "protocol": "original",
+  "family": "mcts_admissible_set",
+  "direction": "maximize",
+  "contract": "priority(vector, n, w) -> finite float. The pinned MCTS-AHD solver greedily constructs a symmetric constant-weight admissible set of ternary vectors at n=15, w=10. Score: expanded set cardinality. This is not the prime-residue admissible-tuple problem.",
+  "parameters": {
+    "checkout": "{checkout}",
+    "problem": "asp_constructive",
+    "max_instances": 2,
+    "iterations": 5,
+    "ants": 10,
+    "random_seed": 1234,
+    "black_box": false
+  },
+  "requires": [
+    "py:numpy",
+    "checkout:zz1358m/MCTS-AHD-master@ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+    "py:scipy",
+    "py:torch"
+  ],
+  "timeout": 300,
+  "notes": [
+    "MCTS-AHD Appendix B.1 Eq. (10) defines constant-weight ternary admissible sets. The original training solver uses n=15, w=10 and a symmetry-restricted greedy construction; the local adapter evaluates that single training instance, not the four-size validation profile or a complete MCTS search.",
+    "The upstream construction code and recovered priority baseline retain their pinned source credits. The local adapter checks finite score and actual candidate calls but does not independently certify the expanded set; validity remains unknown.",
+    "MCTS-AHD admissible sets consist of constant-weight ternary vectors under the triple-coordinate witness rule. The restored task uses the pinned original symmetry-block greedy evaluator at n15,w10; it is distinct from prime-residue narrow tuples. The extracted source seed returns1842 on the original route. Finite output and actual candidate calls are checked, but no independent solution certificate is available, so validity remains unknown rather than true."
+  ],
+  "entry": {
+    "callable": "evaluate",
+    "env": {},
+    "seed": "initial_program.py",
+    "score_key": "score",
+    "error_key": "error",
+    "validity_key": "valid"
+  },
+  "origin": {
+    "repository": null,
+    "scope": "local_repository",
+    "path": "adapters/recovered/optimization_original.py",
+    "files_sha256": {
+      "adapters/recovered/seeds/optimization_mcts-ahd_asp_constructive.py": "42d9e0ad33facba2c800e8303040857e2208a8286c79a012dd798e3ff9faa6df",
+      "adapters/recovered/optimization_original.py": "cebd4a9b43110d2e18aa7d4d3f1b3cee32bcb1ef72e57b595626e15d7d0b1af3"
+    },
+    "upstream_repository": "https://github.com/zz1358m/MCTS-AHD-master",
+    "upstream_commit": "ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+    "implementation_relationship": "Local adapter calling the pinned upstream implementation; its bounded profile is documented in the adapter parameters."
+  },
+  "protocol_description": "Evaluation uses pinned implementation components through this repository's local adapter. The task contract and notes specify any reconstructed loop, reduced budget, checkpoint or data changes; source identity does not establish the exact paper experiment revision. Fetch the pinned source with `python3 run.py setup mcts-ahd-asp-constructive`; data preparation is described in the notes.",
+  "id": "mcts-ahd-asp-constructive",
+  "name": "Constant-weight ternary admissible-set construction",
+  "paper_ids": [
+    "mcts-ahd"
+  ],
+  "description": "Evolve the priority rule used by the pinned MCTS-AHD symmetric greedy constructor for constant-weight ternary admissible sets at n=15, w=10. Maximize the cardinality of the expanded set. This is a distinct problem from narrow admissible integer tuples.",
+  "benchmark": "Constant-weight ternary admissible set I(15,10)",
+  "paper_metric": "expanded admissible set cardinality",
+  "paper_direction": "maximize",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/2501.08603",
+      "type": "paper",
+      "locator": "Appendix B.1 Eq. (10); Appendix F, admissible-set experiments"
+    },
+    {
+      "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
+      "type": "repository",
+      "locator": "problems/asp_constructive/eval.py"
+    }
+  ],
+  "limitations": [
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here.",
+    "The single n=15,w=10 original training profile is evaluated through a local adapter. A finite source-solver score is not an independent certificate; validity remains unknown.",
+    "MCTS-AHD admissible sets consist of constant-weight ternary vectors under the triple-coordinate witness rule. The restored task uses the pinned original symmetry-block greedy evaluator at n15,w10; it is distinct from prime-residue narrow tuples. The extracted source seed returns1842 on the original route. Finite output and actual candidate calls are checked, but no independent solution certificate is available, so validity remains unknown rather than true."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "mcts-ahd",
+      "title": "Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design",
+      "url": "https://arxiv.org/pdf/2501.08603"
+    }
+  ],
+  "science_relevance": {
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal",
+    "status": "unreviewed",
+    "papers": [],
+    "reason": "No qualifying paper whose main objective is this underlying scientific or real-world problem has been established in the evidence registry. A task's use in an agent/framework evaluation is insufficient. This label describes the available evidence, not proof that the task has no scientific value."
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "science_tier": 1,
+    "artifact": "program",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "simulation",
+    "reference": "none",
+    "resources": [
+      "cpu"
+    ],
+    "cost": "not_run",
+    "important_to_science": false
+  }
+}

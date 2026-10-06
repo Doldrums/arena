@@ -1,0 +1,532 @@
+{
+  "reviewed_at": "2026-09-22",
+  "scope": "Group A source-authored code and metadata; parent integration still required to create suite packages.",
+  "task_count": 30,
+  "planning_family_count": 30,
+  "new_ids_not_in_baseline": true,
+  "baseline_count": 963,
+  "unit_tests": {
+    "command": "python3 -m unittest discover -s tests -p test_science_prize_a.py -v",
+    "returncode": 0,
+    "tests": 30,
+    "log": "validation/prize-expansion/a-unit-tests.txt"
+  },
+  "checks": [
+    "All 30 catalog profiles run their standalone seed through the production verifier with actual catalog parameters.",
+    "Every family rejects first-integer mutation to bool, float, or string and missing certificates.",
+    "Independent exhaustive or randomized mathematical oracles cover all 30 families.",
+    "All 30 IDs and planning families are new against the frozen963-task baseline; related families are explicitly distinguished.",
+    "All source and adaptation receipts are written;7 scientific-importance claims remain unreviewed."
+  ],
+  "file_sha256": {
+    "catalog/science/prize_a.json": "1e3a3079144b68a525ec4a72df28706ceb7bb1fdf0eb158241e8f9aed1951166",
+    "scripts/science_prize_a.py": "a3754b66e3e829ec1460f27ad5f41cb51b312aaa26e723cd9eeea647bc363eee",
+    "suite/_lib/autoresearch_suite/science_prize_a.py": "43aaa756ac14473425f9f83308e0bbac54196d96fe063850996fcdd436e30f29",
+    "tests/test_science_prize_a.py": "211f54946a8d6ea458c45676f41edb91629e2498b9b558c552ec24577885d53f",
+    "validation/prize-expansion/a-evidence.json": "89aae1577a6429a6482f25667e24863a7cb521466481bb662cb7da33297a15ac",
+    "validation/prize-expansion/a-selection.json": "eff9c2ef3b5b79dd7495011a87002b80957a953d5c101689a0c5fc0e28b9eac9",
+    "validation/prize-expansion/a-sources.json": "ab0fa487b8cac19d3f1b7b5d49b7411aa20812ae58d90602e15c62f0c74b1c69"
+  },
+  "tasks": [
+    {
+      "task_id": "science-distinct-subset-sums-12",
+      "family": "distinct_subset_sums",
+      "direction": "minimize",
+      "seed_passed": true,
+      "seed_score": 2048,
+      "elapsed_seconds": 0.000221,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "subset_count": 4096
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-harmonic-three-progression-free-256",
+      "family": "harmonic_progression_free",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 2.713797159083181,
+      "elapsed_seconds": 0.005879,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "numerator": 512333432980212731265932555210245,
+        "denominator": 188788403460963728655783670312192,
+        "cardinality": 39,
+        "score_serialization": "float of exact rational; exact fraction retained"
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-property-p-divisibility-256",
+      "family": "property_p",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 65,
+      "elapsed_seconds": 0.001194,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "repeated_larger_elements_allowed": true
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-cluster-prime-difference-coverage",
+      "family": "cluster_prime",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 89,
+      "elapsed_seconds": 0.000307,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "differences_verified": 43
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-practical-divisor-sum-5040",
+      "family": "practical_divisor_sum",
+      "direction": "minimize",
+      "seed_passed": true,
+      "seed_score": 5,
+      "elapsed_seconds": 0.000205,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "target": 4979,
+        "practical_number": 5040
+      },
+      "science_evidence_status": "unreviewed"
+    },
+    {
+      "task_id": "science-three-sunflower-free-four-sets-16",
+      "family": "sunflower_free",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 44,
+      "elapsed_seconds": 0.026133,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "uniformity": 4,
+        "ground_set": 16
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-bounded-additive-basis-multiplicity-128",
+      "family": "bounded_basis",
+      "direction": "minimize",
+      "seed_passed": true,
+      "seed_score": 33,
+      "elapsed_seconds": 0.000197,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "cardinality": 65,
+        "interval": [
+          128,
+          256
+        ],
+        "pair_convention": "unordered including diagonal"
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-prime-additive-complement-256",
+      "family": "prime_complement",
+      "direction": "minimize",
+      "seed_passed": true,
+      "seed_score": 12,
+      "elapsed_seconds": 0.007588,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "target_interval": [
+          256,
+          512
+        ]
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-unique-triple-sum-b3-4096",
+      "family": "b3_set",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 9,
+      "elapsed_seconds": 0.00459,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "triple_count": 165,
+        "repetitions_allowed": true
+      },
+      "science_evidence_status": "unreviewed"
+    },
+    {
+      "task_id": "science-paired-sidon-disjoint-differences-256",
+      "family": "paired_sidon",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 17,
+      "elapsed_seconds": 0.000784,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "component_sizes": [
+          9,
+          8
+        ]
+      },
+      "science_evidence_status": "unreviewed"
+    },
+    {
+      "task_id": "science-integer-sum-product-maximum-20",
+      "family": "sum_product",
+      "direction": "minimize",
+      "seed_passed": true,
+      "seed_score": 152,
+      "elapsed_seconds": 4.8e-05,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "sumset_size": 39,
+        "product_set_size": 152
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-smooth-divisibility-antichain-sums-128",
+      "family": "antichain_representations",
+      "direction": "minimize",
+      "seed_passed": true,
+      "seed_score": 367,
+      "elapsed_seconds": 0.005874,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "solved": 128,
+        "total": 128,
+        "local_secondary_objective": "Minimize representation length with complete coverage required"
+      },
+      "science_evidence_status": "unreviewed"
+    },
+    {
+      "task_id": "science-pair-sum-prime-diversity-12",
+      "family": "pair_sum_prime_diversity",
+      "direction": "minimize",
+      "seed_passed": true,
+      "seed_score": 9,
+      "elapsed_seconds": 5.6e-05,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "prime_factors": [
+          2,
+          3,
+          5,
+          7,
+          11,
+          13,
+          17,
+          19,
+          23
+        ],
+        "distinct_index_pairs": true
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-nondividing-three-other-sums-192",
+      "family": "nondividing_k_sum",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 15,
+      "elapsed_seconds": 0.014843,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "subset_size": 3,
+        "distinct_other_elements": true
+      },
+      "science_evidence_status": "unreviewed"
+    },
+    {
+      "task_id": "science-two-color-four-progression-avoidance",
+      "family": "van_der_waerden",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 13,
+      "elapsed_seconds": 0.000209,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "progression_length": 4
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-four-progression-free-512",
+      "family": "progression_free",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 125,
+      "elapsed_seconds": 0.016978,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "progression_length": 4
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-three-colors-every-four-progression-128",
+      "family": "three_color_progressions",
+      "direction": "minimize",
+      "seed_passed": true,
+      "seed_score": 13,
+      "elapsed_seconds": 0.00392,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "progression_length": 4,
+        "minimum_colors_per_progression": 3
+      },
+      "science_evidence_status": "unreviewed"
+    },
+    {
+      "task_id": "science-multiplicative-triple-free-4096",
+      "family": "triple_free",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 3276,
+      "elapsed_seconds": 0.000979,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "density_numerator": 3276,
+        "density_denominator": 4096
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-all-progression-discrepancy-256",
+      "family": "progression_discrepancy",
+      "direction": "minimize",
+      "seed_passed": true,
+      "seed_score": 21,
+      "elapsed_seconds": 0.009291,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "includes_singletons": true,
+        "all_starts_and_positive_differences": true
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-many-three-no-four-progressions-256",
+      "family": "many_short_progressions",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 372,
+      "elapsed_seconds": 0.008392,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "cardinality": 74,
+        "ambient_interval": [
+          1,
+          256
+        ]
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-nonaveraging-integer-set-512",
+      "family": "nonaveraging",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 13,
+      "elapsed_seconds": 0.207745,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "every_subset_cardinality_checked": true
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-permutation-monotone-progression-128",
+      "family": "permutation_progression",
+      "direction": "minimize",
+      "seed_passed": true,
+      "seed_score": 7,
+      "elapsed_seconds": 0.000608,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "ascending_and_descending_values": true
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-disjoint-congruence-classes-128",
+      "family": "disjoint_congruences",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 7,
+      "elapsed_seconds": 4.9e-05,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "modulus_cap": 128
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-consecutive-squarefree-gap",
+      "family": "squarefree_gap",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 6,
+      "elapsed_seconds": 0.000542,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "endpoints": [
+          843,
+          849
+        ]
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-consecutive-two-square-gap",
+      "family": "two_square_gap",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 19,
+      "elapsed_seconds": 0.000798,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "endpoints": [
+          5165,
+          5184
+        ],
+        "zero_summands_allowed": true
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-goldbach-prime-decompositions",
+      "family": "goldbach_decompositions",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 0.15625,
+      "elapsed_seconds": 0.002304,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "solved": 40,
+        "total": 256,
+        "numerator": 40,
+        "denominator": 256
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-coprime-abc-quality",
+      "family": "abc_quality",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 1.226294385530917,
+      "elapsed_seconds": 2.3e-05,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "radical": 6,
+        "c": 9,
+        "prime_factors": [
+          2,
+          3
+        ],
+        "score_serialization": "Floating logarithmic quality; equation, coprimality and radical verified exactly"
+      },
+      "science_evidence_status": "unreviewed"
+    },
+    {
+      "task_id": "science-hadamard-matrices-orders-through-100",
+      "family": "hadamard_orders",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 0.2,
+      "elapsed_seconds": 0.003941,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "solved_orders": [
+          4,
+          8,
+          16,
+          32,
+          64
+        ],
+        "numerator": 5,
+        "denominator": 25
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-lonely-runner-rational-time",
+      "family": "lonely_runner",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 0.0625,
+      "elapsed_seconds": 4.9e-05,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "numerator": 1,
+        "denominator": 16,
+        "relative_speeds": [
+          1,
+          3,
+          4,
+          7,
+          11,
+          18,
+          29
+        ],
+        "time_numerator": 1,
+        "time_denominator": 16,
+        "score_serialization": "float of exact rational; exact fraction retained"
+      },
+      "science_evidence_status": "supported"
+    },
+    {
+      "task_id": "science-distinct-three-unit-fractions-four-over-n",
+      "family": "egyptian_four",
+      "direction": "maximize",
+      "seed_passed": true,
+      "seed_score": 0.9803149606299213,
+      "elapsed_seconds": 0.00087,
+      "details": {
+        "arithmetic": "exact integer or rational verification",
+        "lean_verified": false,
+        "solved": 249,
+        "total": 254,
+        "numerator": 249,
+        "denominator": 254,
+        "distinct_denominators": true
+      },
+      "science_evidence_status": "supported"
+    }
+  ]
+}

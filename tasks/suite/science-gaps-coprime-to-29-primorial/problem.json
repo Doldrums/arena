@@ -1,0 +1,112 @@
+{
+  "protocol": "recreated_verified",
+  "family": "science_prize_h_primorial_gaps",
+  "direction": "maximize",
+  "contract": "construct() -> up to 200 certificates [x, g] with 1 <= x <= 29# = 6469693230 and 2 <= g <= 1000, where x and x + g are coprime to 29# and every integer strictly between them shares a prime factor with 29#. The score is the largest L such that each even gap 2, 4, ..., L is certified. Maximize; the optimum is 46 (the gap 48 does not occur).",
+  "parameters": {
+    "count": 10
+  },
+  "requires": [],
+  "timeout": 120,
+  "notes": [
+    "For 29# every even gap up to 46 occurs and 48 does not, so the optimum is 46. Exact local certificates are not Lean proofs; the Mahler measure and reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests."
+  ],
+  "protocol_description": "Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.",
+  "id": "science-gaps-coprime-to-29-primorial",
+  "name": "Which small gaps occur between consecutive integers coprime to 29#",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "description": "construct() -> up to 200 certificates [x, g] with 1 <= x <= 29# = 6469693230 and 2 <= g <= 1000, where x and x + g are coprime to 29# and every integer strictly between them shares a prime factor with 29#. The score is the largest L such that each even gap 2, 4, ..., L is certified. Maximize; the optimum is 46 (the gap 48 does not occur). For 29# every even gap up to 46 occurs and 48 does not, so the optimum is 46.",
+  "benchmark": "Which small gaps occur between consecutive integers coprime to 29#",
+  "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+  "paper_direction": null,
+  "sources": [
+    {
+      "url": "https://doi.org/10.4064/aa-8-3-343-347",
+      "type": "paper",
+      "locator": "C. Hooley, On the difference of consecutive numbers prime to n (1963). Crossref record inspected (Hooley studies the distribution of differences between consecutive reduced residues). Erdős Problem #854 page inspected (Erdős first expected every even number up to the maximal gap to occur, then doubted it after computations of Lacampagne and Selfridge for 13#). OEIS A389839 inspected: the smallest even number that is not a gap between consecutive integers coprime to 29# is 48. For 29# every even gap up to 46 occurs and 48 does not, so the optimum is 46."
+    },
+    {
+      "url": "https://www.erdosproblems.com/854",
+      "type": "archive",
+      "locator": "Erdős Problem #854 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0701-0800.md#JSP-000707",
+      "type": "benchmark",
+      "locator": "JSP-000707; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "limitations": [
+    "Solved finite case from the OEIS table.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "evaluator": "evaluator.py",
+  "initial_program": "initial_program.py",
+  "papers": [
+    {
+      "id": "science-prize_h",
+      "title": "Problem-bank constructions: number theory and additive sets: source-based research tasks",
+      "url": "https://doi.org/10.1080/10586458.2008.10128872"
+    }
+  ],
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 46,
+    "statement": "Every even gap up to 46 occurs between consecutive integers coprime to 29# and 48 does not (OEIS A389839).",
+    "sources": [
+      {
+        "title": "OEIS A389839: Smallest even number that is not a difference of consecutive numbers coprime to prime(n)#",
+        "url": "https://oeis.org/A389839"
+      },
+      {
+        "title": "On the difference of consecutive numbers prime to n",
+        "url": "https://doi.org/10.4064/aa-8-3-343-347",
+        "authors": "C. Hooley",
+        "year": 1963
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 854,
+      "url": "https://www.erdosproblems.com/854",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #854, https://www.erdosproblems.com/854, accessed 2026-09-24"
+    }
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Determine which even gaps occur between consecutive integers coprime to a primorial (Erdős Problem #854).",
+    "importance_rationale": "The gap structure of reduced residues modulo primorials underlies sieve models of prime gaps and Jacobsthal's function.",
+    "papers": [
+      {
+        "title": "On the difference of consecutive numbers prime to n",
+        "url": "https://doi.org/10.4064/aa-8-3-343-347",
+        "task_relation": "For 29# every even gap up to 46 occurs and 48 does not, so the optimum is 46.",
+        "primary_goal": "Determine which even gaps occur between consecutive integers coprime to a primorial (Erdős Problem #854).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected (Hooley studies the distribution of differences between consecutive reduced residues). Erdős Problem #854 page inspected (Erdős first expected every even number up to the maximal gap to occur, then doubted it after computations of Lacampagne and Selfridge for 13#). OEIS A389839 inspected: the smallest even number that is not a gap between consecutive integers coprime to 29# is 48.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  }
+}

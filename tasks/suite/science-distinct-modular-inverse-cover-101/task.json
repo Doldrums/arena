@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "id": "science-distinct-modular-inverse-cover-101",
+  "name": "Short distinct-denominator inverse sums covering residues modulo 101",
+  "description": "construct() -> 101 nonempty lists, row r containing distinct denominators in 1..10 whose modular inverses sum to r modulo 101. Every residue must be represented. Minimize the largest row length. Denominators may recur across different rows, but never within one row. The local p=101, denominator-bound-ten problem is a concrete finite covering certificate; it does not reproduce the all-prime, arbitrary-epsilon theorem.",
+  "paper_ids": [
+    "science-prize_d"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1007/s00013-002-8269-2",
+      "type": "paper",
+      "locator": "Igor E. Shparlinski, On a question of Erdos and Graham (2002). Author's institutional abstract inspected. It explicitly requires pairwise distinct denominator integers; the feasibility proposal allowing repetitions was corrected. The local p=101, denominator-bound-ten problem is a concrete finite covering certificate; it does not reproduce the all-prime, arbitrary-epsilon theorem."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0901-1000.md#JSP-000985",
+      "type": "benchmark",
+      "locator": "JSP-000985; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the paper above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Short distinct-denominator inverse sums covering residues modulo 101",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_d_modular_inverse_cover",
+    "science_family": "science_prize_d_modular_inverse_cover",
+    "parameters": {
+      "p": 101,
+      "interval": 10
+    },
+    "interface": "construct() -> 101 nonempty lists, row r containing distinct denominators in 1..10 whose modular inverses sum to r modulo 101. Every residue must be represented. Minimize the largest row length. Denominators may recur across different rows, but never within one row.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions only; no upstream implementation or numerical construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000985"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_d_modular_inverse_cover",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 60,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Nonempty representations are required even for residue zero. A finite optimum does not establish a bound independent of the prime.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-22",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_d.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 5,
+    "statement": "Enumerating all 1023 nonempty subsets of {1, ..., 10} (scripts/check_state_of_the_art.py) shows that every residue modulo 101 is a sum of inverses of distinct denominators. One residue needs 5 terms, so the minimum possible longest row is 5. Shparlinski's theorem answers the asymptotic question (Erdős Problem #1180).",
+    "sources": [
+      {
+        "title": "On a question of Erdős and Graham",
+        "url": "https://doi.org/10.1007/s00013-002-8269-2",
+        "authors": "Igor E. Shparlinski",
+        "year": 2002
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 1180,
+      "url": "https://www.erdosproblems.com/1180",
+      "status": "proved",
+      "citation": "T. F. Bloom, Erdős Problem #1180, https://www.erdosproblems.com/1180, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Represent every residue modulo a prime as a short sum of inverses of small distinct integers.",
+    "importance_rationale": "The representation constraint and maximum number of terms instantiate the number-theoretic covering question solved in the cited paper.",
+    "papers": [
+      {
+        "title": "On a question of Erdos and Graham",
+        "url": "https://doi.org/10.1007/s00013-002-8269-2",
+        "task_relation": "The local p=101, denominator-bound-ten problem is a concrete finite covering certificate; it does not reproduce the all-prime, arbitrary-epsilon theorem.",
+        "primary_goal": "Represent every residue modulo a prime as a short sum of inverses of small distinct integers.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-22",
+    "reason": "Primary research directly studies this mathematical objective; finite scope and rediscovery status are explicit.",
+    "verification_basis": "Author's institutional abstract inspected. It explicitly requires pairwise distinct denominator integers; the feasibility proposal allowing repetitions was corrected.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

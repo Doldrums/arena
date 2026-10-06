@@ -1,0 +1,68 @@
+# Colouring four fixed planar bipartite graphs from lists of three colours
+
+**Source collection:** [Problem-bank constructions: hypergraphs, graph constructions and instance-solving methods: source-based research tasks](../../papers/science-prize_i.md)\
+**Task id:** `science-planar-bipartite-list-colouring`\
+**Protocol:** `recreated_verified`\
+**Direction:** maximize\
+
+## Task
+
+construct() -> four colourings, one per instance from planar_bipartite_lists(splits, seed) for (20,701), (40,702), (60,703), (100,704) in the verifier: a bipartite quadrangulation grown from the cube by inserting squares into random faces (minimum degree 3), with a random list of 3 colours from 0..4 per vertex. Each vertex must take a colour from its list and adjacent vertices must differ. The score is the number of properly coloured instances (0..4). Maximize; all are colourable by the Alon-Tarsi theorem. The score counts fixed instances coloured properly from their lists; it measures a constructive list-colouring method for a theorem proved non-constructively.
+
+Source-derived local benchmark; the exact objective and adaptations are specified below.
+
+## Candidate interface
+
+construct() -> four colourings, one per instance from planar_bipartite_lists(splits, seed) for (20,701), (40,702), (60,703), (100,704) in the verifier: a bipartite quadrangulation grown from the cube by inserting squares into random faces (minimum degree 3), with a random list of 3 colours from 0..4 per vertex. Each vertex must take a colour from its list and adjacent vertices must differ. The score is the number of properly coloured instances (0..4). Maximize; all are colourable by the Alon-Tarsi theorem.
+
+## State of the art
+
+Instance-solving task; every instance is colourable, so 4 is attainable.
+
+Reference value: no documented value for this finite instance (reviewed 2026-09-24).
+
+- [Colorings and orientations of graphs](https://doi.org/10.1007/BF01204715), N. Alon, M. Tarsi (1992)
+
+## Labels
+
+Scientific contribution: `method` (tier 2); artifact `construction`, domain `mathematics`, data `none`, verification `exact`, reference `none`, resources `cpu`. See [docs/LABELS.md](../../docs/LABELS.md).
+
+Research area: `mathematics`.
+
+## Importance to science
+
+A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.
+
+Evidence status: **supported**.
+
+Underlying problem: Colour planar bipartite graphs from arbitrary lists of three colours (proved possible by Alon and Tarsi).
+
+Why it matters: Choosability is a central refinement of graph colouring; the Alon-Tarsi method underlies many results in the area.
+
+- [Colorings and orientations of graphs](https://doi.org/10.1007/BF01204715): Main research objective: Colour planar bipartite graphs from arbitrary lists of three colours (proved possible by Alon and Tarsi). Task connection: The score counts fixed instances coloured properly from their lists; it measures a constructive list-colouring method for a theorem proved non-constructively.
+
+Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.
+
+## Evaluation protocol
+
+Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.
+
+- The score counts fixed instances coloured properly from their lists; it measures a constructive list-colouring method for a theorem proved non-constructively. Exact local certificates are not Lean proofs; reciprocal sums are reported as floats. Consult the independent oracle and malformed-input tests.
+
+## Run
+
+```
+python evaluator.py initial_program.py
+```
+
+The evaluator prints a JSON result with `combined_score` (the value SCiEL maximizes), `score` (the task metric in its own direction), `valid` and `error`. `config.yaml` is a ready SCiEL configuration; copied SCiEL examples keep their upstream configuration.
+
+## Sources
+
+- paper: https://doi.org/10.1007/BF01204715 (Noga Alon and Michael Tarsi, Colorings and orientations of graphs (1992). Crossref record and abstract inspected: Alon and Tarsi's orientation theorem (a graph with an orientation of maximum outdegree d whose even and odd Eulerian subgraphs differ in number is (d+1)-choosable) implies that every planar bipartite graph is 3-choosable. No Erdős Problems page corresponds to this bank entry. The score counts fixed instances coloured properly from their lists; it measures a constructive list-colouring method for a theorem proved non-constructively.)
+- benchmark: https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000511 (JSP-000511; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above.)
+
+## Limitations
+
+- Instance-solving task on four fixed pseudo-random instances.
+- Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code.

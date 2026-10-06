@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0",
+  "id": "science-hypergraph-ramsey-four-five",
+  "name": "Two-colourings of triples without red K4^(3) or blue K5^(3) (hypergraph Ramsey R(4,5;3))",
+  "description": "construct() -> {'n': n, 'colors': [...]}: colour 0 (red) or 1 (blue) for every triple (a,b,c), a<b<c, of vertices 0..n-1 in lexicographic order, 1 <= n <= 40. No 4 vertices may have all four triples red and no 5 vertices may have all ten triples blue. Maximize n. A valid colouring on n points certifies R(4,5;3) > n; the published construction has 34 points.",
+  "paper_ids": [
+    "science-prize_e"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.55016/ojs/cdm.v13i2.62416",
+      "type": "paper",
+      "locator": "Janusz Dybizbański, A lower bound on the hypergraph Ramsey number R(4,5;3) (2018). Crossref record inspected; survey DS1.18 section 7.1 inspected: R(4,4;3) = 13 is the only known nontrivial classical hypergraph Ramsey number and 35 <= R(4,5;3) [Dyb2]. A valid colouring on n points certifies R(4,5;3) > n; the published construction has 34 points."
+    },
+    {
+      "url": "https://www.erdosproblems.com/562",
+      "type": "archive",
+      "locator": "Erdős Problem #562 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0401-0500.md#JSP-000454",
+      "type": "benchmark",
+      "locator": "JSP-000454; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "maximize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Two-colourings of triples without red K4^(3) or blue K5^(3) (hypergraph Ramsey R(4,5;3))",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_e_triple_ramsey",
+    "science_family": "science_prize_e_triple_ramsey",
+    "parameters": {
+      "red_clique": 4,
+      "blue_clique": 5,
+      "max_vertices": 40
+    },
+    "interface": "construct() -> {'n': n, 'colors': [...]}: colour 0 (red) or 1 (blue) for every triple (a,b,c), a<b<c, of vertices 0..n-1 in lexicographic order, 1 <= n <= 40. No 4 vertices may have all four triples red and no 5 vertices may have all ten triples blue. Maximize n.",
+    "label_spec": {
+      "scientific_contribution": "open_problem",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000454"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_e_triple_ramsey",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "The divisibility starter has 9 points. No upper bound on R(4,5;3) is recorded in the survey.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_e.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "best_known",
+    "value": 34,
+    "statement": "35 <= R(4,5;3) (Dybizbański 2018): the best known colouring has 34 points.",
+    "sources": [
+      {
+        "title": "A lower bound on the hypergraph Ramsey number R(4,5;3)",
+        "url": "https://doi.org/10.55016/ojs/cdm.v13i2.62416",
+        "authors": "Janusz Dybizbański",
+        "year": 2018
+      },
+      {
+        "title": "Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)",
+        "authors": "Stanisław P. Radziszowski",
+        "url": "https://doi.org/10.37236/21"
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 562,
+      "url": "https://www.erdosproblems.com/562",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #562, https://www.erdosproblems.com/562, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "open_problem",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 1,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Bound classical Ramsey numbers of 3-uniform hypergraphs.",
+    "importance_rationale": "The tower growth of hypergraph Ramsey numbers is Erdős Problem #562 (Erdős-Hajnal-Rado); small values are known only from explicit constructions.",
+    "papers": [
+      {
+        "title": "A lower bound on the hypergraph Ramsey number R(4,5;3)",
+        "url": "https://doi.org/10.55016/ojs/cdm.v13i2.62416",
+        "task_relation": "A valid colouring on n points certifies R(4,5;3) > n; the published construction has 34 points.",
+        "primary_goal": "Bound classical Ramsey numbers of 3-uniform hypergraphs.",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; survey DS1.18 section 7.1 inspected: R(4,4;3) = 13 is the only known nontrivial classical hypergraph Ramsey number and 35 <= R(4,5;3) [Dyb2].",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

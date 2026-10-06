@@ -52,7 +52,7 @@
     "paper_direction": "maximize",
     "direction": "maximize",
     "benchmark": "Stable Diffusion excess red",
-    "protocol": "recreated",
+    "protocol": "paper_reimplementation",
     "source_locator": "Section 4.4 and Appendix D"
   },
   "execution": {
@@ -80,7 +80,7 @@
         "verification": "source_inspected_not_executed"
       }
     ],
-    "evaluator_adapter": "evaluator.py",
+    "evaluator_adapter": null,
     "setup_instructions": [],
     "task_setup_instructions": [],
     "framework_setup_instructions": [],
@@ -117,7 +117,8 @@
         "env:LMX_SD_ASSETS_DIR"
       ],
       "timeout": 600
-    }
+    },
+    "declared_status": "requires_setup"
   },
   "limitations": [
     "Arena initialization is the shared neutral prompt A photograph of a landscape. It replaces a non-executable placeholder and does not reproduce the paper's sampled human-prompt population or 5000-evaluation search protocol.",

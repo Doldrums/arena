@@ -10,13 +10,14 @@
     "py:numpy"
   ],
   "timeout": 300,
-  "notes": [],
-  "protocol_description": "Reimplemented in this repository from the paper's task description; instances are generated locally with a fixed seed, so scores are comparable within the suite but not with the paper's numbers.",
+  "notes": [
+    "The source itself uses a fixed diameter bound n=5000 and maximizes surviving tuple size. The local constructor directly returns integers in[0,5000]; for k distinct values it checks a missing residue for every prime<=k (larger primes cannot be fully occupied). The source instead evolves a prime-residue sieve priority. The mathematical feasible set/size objective are shared but candidate interface and search differ. MCTS-AHD ternary admissible sets are a different task and have been restored separately."
+  ],
+  "protocol_description": "Locally implemented or adapted evaluator for the cited task or benchmark. Data sources, generated instances, evaluation budgets and protocol differences are specified in the candidate contract, requirements and notes; scores are not automatically comparable with published results.",
   "id": "funsearch-re-implementation-narrow-admissible-tuple",
   "name": "Narrow admissible tuple",
   "paper_ids": [
-    "funsearch-re-implementation",
-    "mcts-ahd"
+    "funsearch-re-implementation"
   ],
   "description": "Construct the largest admissible tuple within [0, 5000] by selecting a removed residue class for each prime. This is the fixed-diameter maximization formulation actually benchmarked in paper Table 2.",
   "benchmark": "Narrow admissible tuple",
@@ -32,20 +33,11 @@
       "url": "https://github.com/kitft/funsearch/tree/cec37d84b474ea6bbd66f6defad8f5b5758449ff",
       "type": "repository",
       "locator": "examples/nat_spec.py"
-    },
-    {
-      "url": "https://arxiv.org/pdf/2501.08603",
-      "type": "paper",
-      "locator": "Section 4; Appendices B-D and F"
-    },
-    {
-      "url": "https://github.com/zz1358m/MCTS-AHD-master/tree/ee9c4f424503c65a5fd2b899e6620ce86079fedb",
-      "type": "repository",
-      "locator": "problems/asp_constructive/eval.py"
     }
   ],
   "limitations": [
-    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here."
+    "Execution interface inspected in pinned source. Full paper experiments have not been reproduced here.",
+    "The source itself uses a fixed diameter bound n=5000 and maximizes surviving tuple size. The local constructor directly returns integers in[0,5000]; for k distinct values it checks a missing residue for every prime<=k (larger primes cannot be fully occupied). The source instead evolves a prime-residue sieve priority. The mathematical feasible set/size objective are shared but candidate interface and search differ. MCTS-AHD ternary admissible sets are a different task and have been restored separately."
   ],
   "evaluator": "evaluator.py",
   "initial_program": "initial_program.py",
@@ -54,11 +46,6 @@
       "id": "funsearch-re-implementation",
       "title": "Generative Modeling for Mathematical Discovery",
       "url": "https://arxiv.org/pdf/2503.11061"
-    },
-    {
-      "id": "mcts-ahd",
-      "title": "Monte Carlo Tree Search for Comprehensive Exploration in LLM-Based Automatic Heuristic Design",
-      "url": "https://arxiv.org/pdf/2501.08603"
     }
   ],
   "labels": {

@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "id": "science-distinct-multiples-interval-50",
+  "name": "Shortest interval above 50 containing distinct multiples of 1, ..., 50",
+  "description": "construct() -> integers b_1, ..., b_50 with 50 < b_i <= 5000, i | b_i and all b_i distinct. The score is max(b) - 50 + 1, the least k with every b_i in the open interval (50, 50 + k). Minimize; the optimum is 77. For n = 50 the optimum is 77, so the task recovers an optimal matching.",
+  "paper_ids": [
+    "science-prize_h"
+  ],
+  "kind": "native",
+  "status": "ready",
+  "sources": [
+    {
+      "url": "https://doi.org/10.1016/1385-7258(80)90018-9",
+      "type": "paper",
+      "locator": "Paul Erdős and Carl Pomerance, Matching the natural numbers up to n with distinct multiples in another interval (1980). Crossref record inspected; Erdős Problem #710 page inspected (Erdős and Pomerance: (2/sqrt e + o(1)) n (log n/log log n)^(1/2) <= f(n) <= (1.7398...+o(1)) n (log n)^(1/2); Erdős offered 2000 rupees for an asymptotic formula). OEIS A390246 inspected (b-file by Kesarwani): f(50) = 77. For n = 50 the optimum is 77, so the task recovers an optimal matching."
+    },
+    {
+      "url": "https://www.erdosproblems.com/710",
+      "type": "archive",
+      "locator": "Erdős Problem #710 (open); statement, history and current bounds reviewed 2026-09-24."
+    },
+    {
+      "url": "https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0501-0600.md#JSP-000579",
+      "type": "benchmark",
+      "locator": "JSP-000579; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above."
+    }
+  ],
+  "requirements": {
+    "python": ">=3.10",
+    "hardware": "CPU",
+    "dependencies": [],
+    "environment_variables": [],
+    "datasets": "No downloaded data; bounded mathematical objects."
+  },
+  "evaluation": {
+    "metric": "score",
+    "direction": "minimize",
+    "protocol": "paper_reimplementation",
+    "benchmark": "Shortest interval above 50 containing distinct multiples of 1, ..., 50",
+    "paper_metric": "Local protocol; see candidate contract and source adaptation notes",
+    "profiles": [
+      "evaluation"
+    ]
+  },
+  "execution": {
+    "native_kind": "science_prize_h_distinct_multiples",
+    "science_family": "science_prize_h_distinct_multiples",
+    "parameters": {
+      "n": 50
+    },
+    "interface": "construct() -> integers b_1, ..., b_50 with 50 < b_i <= 5000, i | b_i and all b_i distinct. The score is max(b) - 50 + 1, the least k with every b_i in the open interval (50, 50 + k). Minimize; the optimum is 77.",
+    "label_spec": {
+      "scientific_contribution": "rediscovery",
+      "artifact": "construction",
+      "domain": "mathematics",
+      "area": "mathematics",
+      "data": "none",
+      "verification": "exact",
+      "reference": "published_value"
+    },
+    "provenance": {
+      "category": "independent_reimplementation",
+      "upstream_evaluator_reused": false,
+      "borrowed_component": "Mathematical definitions and published bounds only; no upstream implementation or record construction copied.",
+      "prize_catalog_revision": "bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2",
+      "prize_problem_id": "JSP-000579"
+    },
+    "additional_requires": [],
+    "suite": {
+      "protocol": "recreated_verified",
+      "family": "science_prize_h_distinct_multiples",
+      "evaluator": "evaluator.py",
+      "initial_program": "initial_program.py",
+      "callable": "evaluate",
+      "env": {},
+      "score_key": "score",
+      "error_key": "error",
+      "requires": [],
+      "timeout": 120,
+      "validity_key": "valid"
+    }
+  },
+  "limitations": [
+    "Solved finite case from the OEIS table.",
+    "Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code."
+  ],
+  "validation": {
+    "level": "automated_tests",
+    "upstream_reproduction": false,
+    "source_reviewed": "2026-09-24",
+    "evidence": "validation/prize-expansion/task-checks.json",
+    "tests": "tests/test_science_prize_h.py",
+    "lean_verified": false
+  },
+  "state_of_the_art": {
+    "kind": "optimum",
+    "value": 77,
+    "statement": "f(50) = 77 (OEIS A390246).",
+    "sources": [
+      {
+        "title": "OEIS A390246: Least k such that distinct b_1..b_n with n < b_i < n+k and i | b_i exist",
+        "url": "https://oeis.org/A390246"
+      },
+      {
+        "title": "Matching the natural numbers up to n with distinct multiples in another interval",
+        "url": "https://doi.org/10.1016/1385-7258(80)90018-9",
+        "authors": "Paul Erdős, Carl Pomerance",
+        "year": 1980
+      }
+    ],
+    "as_of": "2026-09-24",
+    "erdos": {
+      "number": 710,
+      "url": "https://www.erdosproblems.com/710",
+      "status": "open",
+      "citation": "T. F. Bloom, Erdős Problem #710, https://www.erdosproblems.com/710, accessed 2026-09-24"
+    }
+  },
+  "labels": {
+    "scientific_contribution": "rediscovery",
+    "artifact": "construction",
+    "domain": "mathematics",
+    "area": "mathematics",
+    "data": "none",
+    "verification": "exact",
+    "reference": "published_value",
+    "science_tier": 2,
+    "resources": [
+      "cpu"
+    ],
+    "cost": "fast",
+    "important_to_science": true
+  },
+  "science_relevance": {
+    "status": "supported",
+    "scientific_problem": "Find an asymptotic formula for f(n), the length of the shortest interval (n, n + f(n)) containing distinct multiples of 1, ..., n (Erdős Problem #710).",
+    "importance_rationale": "A matching problem between integers and their multiples, tied to smooth numbers and Hall-type arguments; the asymptotic formula is open.",
+    "papers": [
+      {
+        "title": "Matching the natural numbers up to n with distinct multiples in another interval",
+        "url": "https://doi.org/10.1016/1385-7258(80)90018-9",
+        "task_relation": "For n = 50 the optimum is 77, so the task recovers an optimal matching.",
+        "primary_goal": "Find an asymptotic formula for f(n), the length of the shortest interval (n, n + f(n)) containing distinct multiples of 1, ..., n (Erdős Problem #710).",
+        "evidence_role": "primary_problem"
+      }
+    ],
+    "reviewed_at": "2026-09-24",
+    "reason": "Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.",
+    "verification_basis": "Crossref record inspected; Erdős Problem #710 page inspected (Erdős and Pomerance: (2/sqrt e + o(1)) n (log n/log log n)^(1/2) <= f(n) <= (1.7398...+o(1)) n (log n)^(1/2); Erdős offered 2000 rupees for an asymptotic formula). OEIS A390246 inspected (b-file by Kesarwani): f(50) = 77.",
+    "definition": "A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.",
+    "criterion": "primary_research_goal"
+  }
+}

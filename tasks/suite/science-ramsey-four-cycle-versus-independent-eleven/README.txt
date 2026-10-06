@@ -1,0 +1,75 @@
+# Four-cycle-free graphs without independent 11-sets (Ramsey number R(C4,K11))
+
+**Source collection:** [Problem-bank constructions: Ramsey theory and colourings: source-based research tasks](../../papers/science-prize_e.md)\
+**Task id:** `science-ramsey-four-cycle-versus-independent-eleven`\
+**Protocol:** `recreated_verified`\
+**Direction:** maximize\
+
+## Task
+
+construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 43. No two vertices may have two common neighbours (no C4), and there must be no independent set of 11 vertices (exact search). Maximize n. A valid graph on n vertices certifies R(C4,K11) > n. The best known construction has 39 vertices.
+
+Source-derived local benchmark; the exact objective and adaptations are specified below.
+
+## Candidate interface
+
+construct() -> {'n': n, 'edges': [[u, v], ...]}: a simple graph on vertices 0..n-1 with 1 <= n <= 43. No two vertices may have two common neighbours (no C4), and there must be no independent set of 11 vertices (exact search). Maximize n.
+
+## State of the art
+
+40 <= R(C4,K11) <= 43: the lower bound is a 39-vertex construction by Van Overberghe (2020 thesis, circulant graphs), the upper bound is due to Boza and Radziszowski.
+
+Reference value: best known value `39` (reviewed 2026-09-24).
+
+Underlying problem: [Erdős Problem #159](https://www.erdosproblems.com/159), status: open ($100).
+
+- [Algorithms for Computing Ramsey Numbers (MS thesis, Ghent University) and constructions](https://github.com/Steven-VO/circulant-Ramsey), Steven Van Overberghe (2020)
+- [Some upper bounds on Ramsey numbers involving C4](https://doi.org/10.7151/dmgt.2557), Luis Boza, Stanislaw P. Radziszowski (2025)
+- [Small Ramsey Numbers (Dynamic Survey DS1, revision 18, 24 April 2026)](https://doi.org/10.37236/21), Stanisław P. Radziszowski
+
+Parameters: `{"independent": 11, "max_vertices": 43}`
+
+## Labels
+
+Scientific contribution: `open_problem` (tier 1); artifact `construction`, domain `mathematics`, data `none`, verification `exact`, reference `published_value`, resources `cpu`. See [docs/LABELS.md](../../docs/LABELS.md).
+
+Research area: `mathematics`.
+
+## Importance to science
+
+A task is important to science when it addresses a substantive scientific or real-world problem, and a cited research paper's main objective is to solve that problem or advance understanding of it. The evidence must explain why the problem matters and how the local task represents it. Using a task to evaluate an agent, framework, or general-purpose model, or citing only a benchmark, dataset, or tool, does not establish scientific importance.
+
+Evidence status: **supported**.
+
+Underlying problem: Determine the Ramsey numbers R(C4,K_n) of the four-cycle versus complete graphs.
+
+Why it matters: Erdős offered $100 (Problem #159) for deciding whether R(C4,K_n) << n^(2-c); exact small values test the constructions behind these asymptotics.
+
+- [Some upper bounds on Ramsey numbers involving C4](https://doi.org/10.7151/dmgt.2557): Main research objective: Determine the Ramsey numbers R(C4,K_n) of the four-cycle versus complete graphs. Task connection: A valid graph on n vertices certifies R(C4,K11) > n. The best known construction has 39 vertices.
+
+Primary research directly studies this mathematical objective; the finite scope, reference value and rediscovery status are explicit.
+
+## Evaluation protocol
+
+Locally implemented evaluator with recorded reference checks; consult the task-specific tests and evidence for their exact scope. This label alone does not establish reproduction of the paper's full experiment.
+
+- A valid graph on n vertices certifies R(C4,K11) > n. The best known construction has 39 vertices. Exact local certificates are not Lean proofs. Consult the independent oracle and malformed-input tests.
+
+## Run
+
+```
+python evaluator.py initial_program.py
+```
+
+The evaluator prints a JSON result with `combined_score` (the value SCiEL maximizes), `score` (the task metric in its own direction), `valid` and `error`. `config.yaml` is a ready SCiEL configuration; copied SCiEL examples keep their upstream configuration.
+
+## Sources
+
+- paper: https://doi.org/10.7151/dmgt.2557 (Luis Boza and Stanisław P. Radziszowski, Some upper bounds on Ramsey numbers involving C4 (2025). Crossref record inspected; survey DS1.18 Table Vb inspected: 40 <= R(C4,K11) <= 43 with lower bound [VO] (Van Overberghe, circulant constructions) and upper bound [BoRa]. A valid graph on n vertices certifies R(C4,K11) > n. The best known construction has 39 vertices.)
+- archive: https://www.erdosproblems.com/159 (Erdős Problem #159 (open ($100)); statement, history and current bounds reviewed 2026-09-24.)
+- benchmark: https://github.com/TheJustinSunPrize/awards/blob/bcf1866ea9a4ae82b32bd95b82ffd812b9ee80d2/problems/catalog-0101-0200.md#JSP-000157 (JSP-000157; pinned discovery source, independently paraphrased. Primary mathematical attribution follows the papers above.)
+
+## Limitations
+
+- The disjoint-triangle starter is elementary; Van Overberghe's circulant record constructions are not copied.
+- Independent Python implementation; no paper text, upstream evaluator, Lean proof or prize-bank content is redistributed. Candidate Python executes as trusted research code.
